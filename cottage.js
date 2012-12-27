@@ -29,6 +29,6 @@ var cottage = function(drone)
     // put up a sign near door. 
     //
     drone.down().right(4).sign(["Home","Sweet","Home"],68);
-	 
-	 return drone.down().left(4); // return drone to original position
+    
+    return drone.down().left(4); // return drone to original position
 };
