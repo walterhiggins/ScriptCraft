@@ -44,5 +44,15 @@ Getting Started
 ===============
 
 Once you've installed the mod, launch Minecraft and type `/js load()` and load the `cottage.js` file. Once the cottage.js file is loaded you can create a new cottage by typing `/js cottage()`.
-Take a look over the cottage.js file to see how the Drone module can be used to easily create buildings.
+Take a look over the cottage.js file to see how the Drone module can be used to easily create buildings. You can even create a whole row of cottages using the following in-game command...
+
+    /js load("./cottage"); // path may vary on your machine
+    /js d = new Drone(); for (i=0; i < 20;i++){ cottage(d).right(10);}
+
+The above code loads the example blueprint for a cottage and uses a `for` loop to create multiple cottages from the blueprint.
+
+Griefing
+========
+Don't do it.
+
 
