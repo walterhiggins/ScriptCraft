@@ -16,19 +16,19 @@ load($SCRIPTPATH + "/drone.js"); // assumes cottage.js and drone.js are in same 
 //
 var cottage = function(drone)
 {
-	 if (typeof drone == "undefined"){
-		  drone = new Drone();
-	 }
-	 drone
-		  .box0(48,7,6,2)  // a 4-walled structure 7 wide by 6 deep by 2 high using mossy-stone (48).
-		  .right(3).door() // door front and center
-		  .up(1).left(2).box(102) // windows to left and right
-	     .right(4).box(102)
-	     .left(5).up().prism0(53,7,6); // add a gable roof
-	 //
-	 // put up a sign near door. 
-	 //
-	 drone.down().right(4).sign(["Home","Sweet","Home"],68);
+    if (typeof drone == "undefined"){
+        drone = new Drone();
+    }
+    drone
+        .box0(48,7,6,2)  // a 4-walled structure 7 wide by 6 deep by 2 high using mossy-stone (48).
+        .right(3).door() // door front and center
+        .up(1).left(2).box(102) // windows to left and right
+        .right(4).box(102)
+        .left(5).up().prism0(53,7,6); // add a gable roof
+    //
+    // put up a sign near door. 
+    //
+    drone.down().right(4).sign(["Home","Sweet","Home"],68);
 	 
 	 return drone.down().left(4); // return drone to original position
 };
