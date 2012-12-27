@@ -49,7 +49,10 @@ Take a look over the cottage.js file to see how the Drone module can be used to 
     /js load("./cottage"); // path may vary on your machine
     /js d = new Drone(); for (i=0; i < 20;i++){ cottage(d).right(10);}
 
-The above code loads the example blueprint for a cottage and uses a `for` loop to create multiple cottages from the blueprint.
+The above code loads the example blueprint for a cottage and uses a `for` loop to create multiple cottages 
+from the blueprint. Keep a Minecraft Block reference handy - there's one here ...
+
+http://www.minecraftinfo.com/idlist.htm
 
 Griefing
 ========
