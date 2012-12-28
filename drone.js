@@ -1,4 +1,119 @@
 var ScriptCraft = ScriptCraft || {};
+//
+// Interface
+// =========
+//
+// Please read the following section to understand what a Minecraft Drone can do.
+//
+var Drone = {
+	 //
+	 // creating a new drone
+	 // ====================
+	 // 
+	 // Drones can be created in 2 ways...
+	 //
+	 // [1] d = new Drone()
+	 //     This will create a new Drone. If the cross-hairs are pointing 
+	 //     at a block at the time then, that block's location becomes the drone's 
+	 //     starting point.
+	 //     If the cross-hairs are _not_ pointing at a block, then the drone's starting
+	 //     location will be 2 blocks directly in front of the player.
+	 //
+	 // [2] d = new Drone(x,y,z,direction)
+	 //     This will create a new Drone at the location you specified using x, y, z
+	 //     In minecraft, the X axis runs west to east and the Z axis runs north to south.
+	 //     The direction parameter says what direction you want the drone to face:
+	 //     0 = east, 1 = south, 2 = west, 3 = north.
+	 //     If the direction parameter is omitted, the player's direction is used instead.
+	 //
+
+	 // movement
+	 // ========
+	 // 
+	 // Drones can move freely in minecraft's 3-D world. You control the Drone's movement using
+	 // any of the following methods..
+	 //
+	 // move up - n is the number of blocks you want to move (default 1)
+	 up: function(n){},
+	 // move down - n is the number of blocks you want to move (default 1)
+	 down: function(n){},
+	 // move left - n is the number of blocks you want to move (default 1)
+	 left: function(n){},
+	 // move right - n is the number of blocks you want to move (default 1)
+	 right: function(n){},
+	 // move forward - n is the number of blocks you want to move (default 1)
+	 fwd: function(n){},
+	 // move backwards - n is the number of blocks you want to move (default 1)
+	 back: function(n){},
+
+	 // to change direction - n is the number of turns right you want to make (default 1)
+	 // turns are always clock-wise. If the drone is facing north, then drone.turn() will 
+	 // make the turn face east. If the drone is facing east then drone.turn(2) will make the 
+	 // drone turn twice so that it is facing west.
+	 //
+	 turn: function(n){},
+
+	 // markers
+	 // =======
+	 // 
+	 // Markers are useful when your Drone has to do a lot of work. You can set a check-point 
+	 // and return to the check-point using the move() method.
+	 // if your drone is about to undertake a lot of work - e.g. building a road, skyscraper or forest
+	 // you should set a check-point before doing so if you want your drone to return to its current location.
+	 // e.g:
+	 // 
+	 // drone.chkpt('town-square');
+	 // for (i = 0; i< 100; i++){ 
+	 //     drone.fwd(12).box(6); 
+    // }
+	 // drone.move('town-square');
+	 //
+	 // A 'start' checkpoint is automatically created when the Drone is first created.
+	 //
+	 chkpt: function(checkpoint_name){},
+	 move: function(checkpoint_name){},
+
+	 // building 
+	 // ======== 
+	 // 
+	 // the box() method is the main method for building things.
+	 // parameters
+	 // ----------
+	 // b - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling.
+	 // w - the width of the structure (optional - default value is 1)
+	 // h - the height of the structure (optional - default value is 1)
+	 // d - the depth of the structure - NB this is *not* how deep underground the structure lies - this is 
+	 //     how far away (depth of field) from the drone the structure will extend.
+	 //     (optional - default value is 1)
+	 // e.g:
+	 // To create a stone structure 5 blocks wide, 8 blocks tall and 15 blocks long...
+	 //
+	 // drone.box(48, 5, 8, 15);
+	 //
+	 // To create an oak tree...
+	 // (we can't control the dimensions of a tree since it's a natural object in minecraft)
+	 //
+	 // drone.box(6);
+	 //
+	 box: function(b,w,h,d){},
+	 //
+	 // like box but empties out the inside - ideal for buildings.
+	 //
+	 box0: function(b,w,h,d){},
+	 prism: function(b,w,d){},
+	 prism0: function(b,w,d){},
+	 door: function(b){},
+
+	 // signs must use block 63 (stand-alone signs) or 68 (signs on walls)
+	 // s can be a string or an array of strings. 
+	 sign: function(s,b){}
+};
+//
+// Implementation
+// ==============
+// 
+// There is no need to read any further unless you want to understand how the Drone object works.
+//
 (function(){
 	 //
 	 // Drone Constructor
@@ -26,53 +141,32 @@ var ScriptCraft = ScriptCraft || {};
 				this.z = z;
 		  }
 		  if (typeof dir == "undefined"){
-				this.dir = getDirFromRotation(playerPos.rotationYaw);
+				this.dir = _getDirFromRotation(playerPos.rotationYaw);
 		  }else{
 				this.dir = dir%4;
 		  }
 		  if (usePlayerCoords){
 				this.fwd(2);
 		  }
-		  this.homeCoords = {x:this.x,y:this.y,z:this.z,dir:this.dir};
+		  this.chkpt('start');
+
 	 };
-	 var getDirFromRotation = function(r){
-		  var result = 1;
-		  r = Math.abs(Math.ceil(r));
-		  if (r >= 45 && r < 135){
-				result = 0;
-		  }
-		  if (r >= 135 && r < 225){
-				result = 3;
-				}
-		  if (r >= 225 && r < 315){
-				result = 2;
-		  }
-		  return result;
+	 Drone.prototype.chkpt = function(name){
+		  this.checkpoints[name] = {x:this.x,y:this.y,z:this.z,dir:this.dir};
+		  return this;
 	 };
-	 //
-	 // movement
-	 //
-	 var movements = [{},{},{},{}];
-	 // east
-	 movements[0].right = function(that,n){ that.z +=n; return that;};
-	 movements[0].left = function(that,n){ that.z -=n; return that;};
-	 movements[0].fwd = function(that,n){ that.x +=n; return that;};
-	 movements[0].back = function(that,n){ that.x -= n; return that;};
-	 // south
-	 movements[1].right = movements[0].back;
-	 movements[1].left = movements[0].fwd;
-	 movements[1].fwd = movements[0].right;
-	 movements[1].back = movements[0].left;
-	 // west
-	 movements[2].right = movements[0].left;
-	 movements[2].left = movements[0].right;
-	 movements[2].fwd = movements[0].back;
-	 movements[2].back = movements[0].fwd;
-	 // north
-	 movements[3].right = movements[0].fwd;
-	 movements[3].left = movements[0].back;
-	 movements[3].fwd = movements[0].left;
-	 movements[3].back = movements[0].right;
+	 Drone.prototype.move = function(name){
+		  var coords = this.checkpoints[name];
+		  if (coords){
+				this.x = coords.x;
+				this.y = coords.y;
+				this.z = coords.z;
+				this.dir = coords.dir;
+		  }
+		  return this;
+	 };
+	 Drone.prototype.checkpoints = {};
+
 	 Drone.prototype.turn = function(n)
 	 {
 		  if (typeof n == "undefined"){
@@ -83,84 +177,21 @@ var ScriptCraft = ScriptCraft || {};
 		  this.dir %=4;
 		  return this;
 	 };
-	 Drone.prototype.right = function(n){ if (typeof n == "undefined"){ n = 1;} return movements[this.dir].right(this,n);};
-	 Drone.prototype.left = function(n){ if (typeof n == "undefined"){ n = 1;}  return movements[this.dir].left(this,n);};
-	 Drone.prototype.fwd = function(n){ if (typeof n == "undefined"){ n = 1;}  return movements[this.dir].fwd(this,n);};
-	 Drone.prototype.back = function(n){ if (typeof n == "undefined"){ n = 1;} return movements[this.dir].back(this,n);};
+	 Drone.prototype.right = function(n){ if (typeof n == "undefined"){ n = 1;} return _movements[this.dir].right(this,n);};
+	 Drone.prototype.left = function(n){ if (typeof n == "undefined"){ n = 1;}  return _movements[this.dir].left(this,n);};
+	 Drone.prototype.fwd = function(n){ if (typeof n == "undefined"){ n = 1;}  return _movements[this.dir].fwd(this,n);};
+	 Drone.prototype.back = function(n){ if (typeof n == "undefined"){ n = 1;} return _movements[this.dir].back(this,n);};
 	 Drone.prototype.up = function(n){ if (typeof n == "undefined"){ n = 1;}  this.y+=n; return this;};
 	 Drone.prototype.down = function(n){ if (typeof n == "undefined"){ n = 1;}  this.y-=n; return this;};
-	 Drone.prototype.home = function()
-	 {
-		  this.x = this.homeCoords.x;
-		  this.y = this.homeCoords.y;
-		  this.z = this.homeCoords.z;
-		  this.dir = this.homeCoords.dir;
-		  return this;
-	 };
 	 //
 	 // building
 	 //
-	 var traverse = [{},{},{},{}];
-	 // east
-	 traverse[0].width = function(that,n,callback){
-		  var s = that.z, e = s + n;
-		  for (; that.z < e; that.z++){
-				callback();
-		  }
-		  that.z = s;
-	 };
-	 traverse[0].depth = function(that,n,callback){
-		  var s = that.x, e = s+n;
-		  for (;that.x < e;that.x++){
-				callback();
-		  }
-		  that.x = s;
-	 };
-	 // south
-	 traverse[1].width = function(that,n,callback){
-		  var s = that.x, e = s-n;
-		  for (;that.x > e;that.x--){
-				callback();
-		  }
-		  that.x = s;
-	 };
-	 traverse[1].depth = traverse[0].width;
-	 // west
-	 traverse[2].width = function(that,n,callback){
-		  var s = that.z, e = s-n;
-		  for (;that.z > e;that.z--){
-				callback();
-		  }
-		  that.z = s;
-	 };
-	 traverse[2].depth = traverse[1].width;
-	 // north
-	 traverse[3].width = traverse[0].depth;
-	 traverse[3].depth = traverse[2].width;
-	 traverseHeight = function(that,n,callback){
-		  var s = that.y, e = s + n;
-		  for (; that.y < e; that.y++){
-				callback();
-		  }
-		  that.y = s;
-	 };
-	 var getBlockIdAndMeta = function(b){
-		  if (typeof b == 'string'){
-				var bs = b;
-				var sp = bs.indexOf(':')
-				b = parseInt(bs.substring(0,sp));
-				md = parseInt(bs.substring(sp+1,bs.length));
-				return [b,md];
-		  }else{
-				return [b,0];
-		  }
-	 };
 	 Drone.prototype.sign = function(message,block){
 		  if (message.constructor == Array){
 		  }else{
 				message = [message];
 		  }
-		  var bm = getBlockIdAndMeta(block);
+		  var bm = _getBlockIdAndMeta(block);
 		  block = bm[0];
 		  meta = bm[1];
 		  if (block != 63 && block != 68){
@@ -178,12 +209,12 @@ var ScriptCraft = ScriptCraft || {};
 		  return this;
 	 };
 
-	 Drone.prototype.cuboid = function(block,w,d,h){
+	 Drone.prototype.cuboid = function(block,w,h,d){
 		  var md = 0;
 		  if (typeof block == 'object'){
 				block = block.blockID;
 		  }else{
-				var bm = getBlockIdAndMeta(block);
+				var bm = _getBlockIdAndMeta(block);
 				block = bm[0];
 				md = bm[1];
 		  }
@@ -197,17 +228,17 @@ var ScriptCraft = ScriptCraft || {};
 				w = 1;
 		  }
 		  var that = this;
-		  traverse[this.dir].width(that,w,function(){
-				traverseHeight(that,h,function(){
-					 traverse[that.dir].depth(that,d,function(){
+		  _traverse[this.dir].width(that,w,function(){
+				_traverseHeight(that,h,function(){
+					 _traverse[that.dir].depth(that,d,function(){
 						  putBlock(that.x,that.y,that.z,block,md);
 					 });
 				});
 		  });
 		  return this;
 	 };
-	 Drone.prototype.cuboid0 = function(block,w,d,h){
-		  return this.cuboid(block,w,d,h).fwd().right().cuboid(0,w-2,d-2,h).back().left();
+	 Drone.prototype.cuboid0 = function(block,w,h,d){
+		  return this.cuboid(block,w,h,d).fwd().right().cuboid(0,w-2,h,d-2).back().left();
 	 };
 	 Drone.prototype.door = function(door){
 		  if (typeof door == "undefined"){
@@ -308,7 +339,7 @@ var ScriptCraft = ScriptCraft || {};
 				var d2 = d;
 				while(d2 >= 1){
 				var bd = block + ':' + (d2 >= d/2?this.dir:(this.dir+2)%4);
-					 this.cuboid(bd,w,d2,1);
+					 this.cuboid(bd,w,1,d2);
 					 d2 -= 2;
 					 this.fwd().up();
 					 c++;
@@ -325,27 +356,108 @@ var ScriptCraft = ScriptCraft || {};
 		  print([this.x,this.y,this.z,this.dir,dirs[this.dir]]);
 		  return this;
 	 }
-	 Drone.prototype.rehome = function(){
-		  var mp = getMousePos();
-		  var playerPos = getPlayerPos();
-		  if (mp){
-				this.x= mp.x;
-				this.y= mp.y;
-				this.z= mp.z;
-		  }else{
-				// base it on the player's current location
-				this.x = playerPos.x;
-				this.y = playerPos.y;
-				this.z = playerPos.z;
-				this.fwd(2);
+
+	 // ========================================================================
+	 // Private variables and functions
+	 // ========================================================================
+
+	 var _getDirFromRotation = function(r){
+		  var result = 1;
+		  r = Math.abs(Math.ceil(r));
+		  if (r >= 45 && r < 135){
+				result = 0;
 		  }
-		  this.dir = getDirFromRotation(playerPos.rotationYaw);
-		  this.homeCoords = {x:this.x,y:this.y,z:this.z,dir:this.dir};
-		  return this;
+		  if (r >= 135 && r < 225){
+				result = 3;
+				}
+		  if (r >= 225 && r < 315){
+				result = 2;
+		  }
+		  return result;
 	 };
+	 var _getBlockIdAndMeta = function(b){
+		  if (typeof b == 'string'){
+				var bs = b;
+				var sp = bs.indexOf(':')
+				b = parseInt(bs.substring(0,sp));
+				md = parseInt(bs.substring(sp+1,bs.length));
+				return [b,md];
+		  }else{
+				return [b,0];
+		  }
+	 };
+	 //
+	 // movement
+	 //
+	 var _movements = [{},{},{},{}];
+	 // east
+	 _movements[0].right = function(that,n){ that.z +=n; return that;};
+	 _movements[0].left = function(that,n){ that.z -=n; return that;};
+	 _movements[0].fwd = function(that,n){ that.x +=n; return that;};
+	 _movements[0].back = function(that,n){ that.x -= n; return that;};
+	 // south
+	 _movements[1].right = _movements[0].back;
+	 _movements[1].left = _movements[0].fwd;
+	 _movements[1].fwd = _movements[0].right;
+	 _movements[1].back = _movements[0].left;
+	 // west
+	 _movements[2].right = _movements[0].left;
+	 _movements[2].left = _movements[0].right;
+	 _movements[2].fwd = _movements[0].back;
+	 _movements[2].back = _movements[0].fwd;
+	 // north
+	 _movements[3].right = _movements[0].fwd;
+	 _movements[3].left = _movements[0].back;
+	 _movements[3].fwd = _movements[0].left;
+	 _movements[3].back = _movements[0].right;
+	 var _traverse = [{},{},{},{}];
+	 // east
+	 _traverse[0].width = function(that,n,callback){
+		  var s = that.z, e = s + n;
+		  for (; that.z < e; that.z++){
+				callback();
+		  }
+		  that.z = s;
+	 };
+	 _traverse[0].depth = function(that,n,callback){
+		  var s = that.x, e = s+n;
+		  for (;that.x < e;that.x++){
+				callback();
+		  }
+		  that.x = s;
+	 };
+	 // south
+	 _traverse[1].width = function(that,n,callback){
+		  var s = that.x, e = s-n;
+		  for (;that.x > e;that.x--){
+				callback();
+		  }
+		  that.x = s;
+	 };
+	 _traverse[1].depth = _traverse[0].width;
+	 // west
+	 _traverse[2].width = function(that,n,callback){
+		  var s = that.z, e = s-n;
+		  for (;that.z > e;that.z--){
+				callback();
+		  }
+		  that.z = s;
+	 };
+	 _traverse[2].depth = _traverse[1].width;
+	 // north
+	 _traverse[3].width = _traverse[0].depth;
+	 _traverse[3].depth = _traverse[2].width;
+	 _traverseHeight = function(that,n,callback){
+		  var s = that.y, e = s + n;
+		  for (; that.y < e; that.y++){
+				callback();
+		  }
+		  that.y = s;
+	 };
+
 	 ScriptCraft.Drone = Drone;
 	 
 }());
-var Drone = ScriptCraft.Drone;
+Drone = ScriptCraft.Drone;
 drone = new Drone();
 
