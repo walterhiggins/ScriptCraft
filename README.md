@@ -52,7 +52,7 @@ If Rhino is not already installed you can [download it][1], unzip it and copy th
 
  * Macintosh - /System/Library/Java/Extensions/
  * Windows - C:\jdk\jre\lib\ext (assuming the Java Dev Kit has been installed in c:\jdk)
- * Linux - 
+ * Linux (Ubuntu) - /usr/lib/jvm/java-6-openjdk-i386/jre/lib/ext/
 
 [1]: https://developer.mozilla.org/en/RhinoDownload
 
