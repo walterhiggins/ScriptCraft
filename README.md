@@ -48,7 +48,7 @@ You will also need to install Rhino (A javascript implementation for java) if it
 
     js> 
     
-If Rhino is not already installed you can [download it][1] unzip it and copy the jar files to ...
+If Rhino is not already installed you can [download it][1], unzip it and copy the js.jar file to ...
 
  * Macintosh - /System/Library/Java/Extensions/
  * Windows - C:\jdk\jre\lib\ext (assuming the Java Dev Kit has been installed in c:\jdk)
