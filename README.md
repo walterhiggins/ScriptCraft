@@ -40,6 +40,22 @@ http://mcp.ocean-labs.de/index.php/Main_Page
 Then copy the CommandScript.java file to $MCP/src/minecraft/net/minecraft/src/ directory (where $MCP is the location where you've installed Minecraft Coder pack).
 Then run ./reobfuscate.sh and follow MCP's instructions for copying the obfuscated files and rebuilding the minecraft.jar file.
 
+You will also need to install Rhino (A javascript implementation for java) if it is not already installed. Type...
+
+    java org.mozilla.javascript.tools.shell.Main 
+    
+... at a command prompt to see if Rhino is already installed. If Rhino is installed you should see the following...
+
+    js> 
+    
+If Rhino is not already installed you can [download it][1], unzip it and copy the js.jar file to ...
+
+ * Macintosh - /System/Library/Java/Extensions/
+ * Windows - C:\jdk\jre\lib\ext (assuming the Java Dev Kit has been installed in c:\jdk)
+ * Linux (Ubuntu) - /usr/lib/jvm/java-6-openjdk-i386/jre/lib/ext/
+
+[1]: https://developer.mozilla.org/en/RhinoDownload
+
 Getting Started
 ===============
 
