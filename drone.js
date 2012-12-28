@@ -102,11 +102,21 @@ var Drone = {
 	 box0: function(b,w,h,d){},
 	 prism: function(b,w,d){},
 	 prism0: function(b,w,d){},
-	 door: function(b){},
 
+	 // miscellaneous
+	 // =============
+
+	 // create a door - if a parameter is supplied an Iron door is created otherwise a wooden door is created.
+	 door: function(b){},
 	 // signs must use block 63 (stand-alone signs) or 68 (signs on walls)
 	 // s can be a string or an array of strings. 
-	 sign: function(s,b){}
+	 sign: function(s,b){},
+
+	 // create trees.
+	 oak: function(){},
+	 spruce: function(){},
+	 birch: function(){},
+	 jungle: function(){}
 };
 //
 // Implementation
@@ -454,6 +464,15 @@ var Drone = {
 		  }
 		  that.y = s;
 	 };
+	 
+	 var _trees = {oak: 6
+						,spruce: '6:1'
+						,birch: '6:2'
+						,jungle: '6:3'
+					  };
+	 for (var p in _trees){
+		  Drone.prototype[p] = function(v){return function(){ return this.box(v);};}(_trees[p]);
+	 }
 
 	 ScriptCraft.Drone = Drone;
 	 
