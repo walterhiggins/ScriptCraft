@@ -4,7 +4,7 @@ import java.util.List;
 import java.io.*;
 import javax.swing.JFileChooser;
 import net.minecraft.server.MinecraftServer;
-import sun.org.mozilla.javascript.*;
+import org.mozilla.javascript.*;
 import net.minecraft.client.*;
 /**
  * This mod lets you load and run javascript to build structures which would otherwise be tedious.
