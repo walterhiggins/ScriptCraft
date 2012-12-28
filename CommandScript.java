@@ -171,7 +171,7 @@ public class CommandScript extends CommandBase {
         }
         filename = scriptFile.getAbsolutePath();
         ((ScriptableObject)thisObj).defineProperty("$SCRIPT",scriptFile.getAbsolutePath(),ScriptableObject.DONTENUM);
-        ((ScriptableObject)thisObj).defineProperty("$SCRIPTPATH",scriptFile.getParentFile().getAbsolutePath(),ScriptableObject.DONTENUM);
+        ((ScriptableObject)thisObj).defineProperty("$SCRIPT_DIR",scriptFile.getParentFile().getAbsolutePath(),ScriptableObject.DONTENUM);
         
         try {
             // Here we evalute the entire contents of the file as
@@ -244,6 +244,13 @@ public class CommandScript extends CommandBase {
         int b = new Double(args[3].toString()).intValue();
         int m = new Double(args[4].toString()).intValue();
         putBlockImpl(x,y,z,b,m);
+        switch (b){
+        case 6: 
+            EntityPlayer player = (EntityPlayer)CommandScript.sender;
+            World world = player.worldObj;
+            ((BlockSapling)Block.sapling).growTree(world,x,y,z,world.rand);
+            break;
+        }
     }
     public static void putSign(Context cx, Scriptable thisObj,Object[] args, Function funObj){
         List jsArray = (List)args[0];
