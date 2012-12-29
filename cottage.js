@@ -6,7 +6,8 @@
 // current script resides.
 // $SCRIPT is a special javascript variable whose value is the full name of the current script.
 //
-load($SCRIPT_DIR + "/drone.js"); // assumes cottage.js and drone.js are in same directory
+var scriptDir = $SCRIPT_DIR;
+load(scriptDir + "/drone.js"); // assumes cottage.js and drone.js are in same directory
 //
 // usage: 
 // [1] to build a cottage at the player's current location or the cross-hairs location...
@@ -17,6 +18,7 @@ load($SCRIPT_DIR + "/drone.js"); // assumes cottage.js and drone.js are in same 
 // 
 // /js cottage(drone);
 //
+
 function cottage(/* optional */ drone)
 {
     if (typeof drone == "undefined"){
