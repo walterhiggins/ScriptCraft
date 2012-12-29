@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.util.List;
+import java.util.Stack;
 import java.io.*;
 import javax.swing.JFileChooser;
 import net.minecraft.server.MinecraftServer;
@@ -143,6 +144,7 @@ public class CommandScript extends CommandBase {
         }
         return;
     }
+
     public static void load(Context cx, Scriptable thisObj,
                              Object[] args, Function funObj)
     {
@@ -166,31 +168,43 @@ public class CommandScript extends CommandBase {
             in = new FileReader(scriptFile);
         }
         catch (FileNotFoundException ex) {
+            notifyAdmins(CommandScript.sender, "Error - File not found " + args[0], args);
             Context.reportError("Couldn't open file \"" + scriptFile + "\".");
             return;
         }
         filename = scriptFile.getAbsolutePath();
-        ((ScriptableObject)thisObj).defineProperty("$SCRIPT",scriptFile.getAbsolutePath(),ScriptableObject.DONTENUM);
-        ((ScriptableObject)thisObj).defineProperty("$SCRIPT_DIR",scriptFile.getParentFile().getAbsolutePath(),ScriptableObject.DONTENUM);
+        String filedir = scriptFile.getParentFile().getAbsolutePath();
+        //
+        // setup the special script-context-only variables
+        //
+        ((ScriptableObject)thisObj).defineProperty("$SCRIPT",filename,ScriptableObject.DONTENUM);
+        ((ScriptableObject)thisObj).defineProperty("$SCRIPT_DIR",filedir,ScriptableObject.DONTENUM);
         
         try {
             // Here we evalute the entire contents of the file as
             // a script. Text is printed only if the print() function
             // is called.
+            notifyAdmins(CommandScript.sender, "Loading " + filename, args);
             cx.evaluateReader(thisObj, in, filename, 1, null);
+            notifyAdmins(CommandScript.sender, "Successfully loaded " + filename, args);
         }
         catch (WrappedException we) {
-            System.err.println(we.getWrappedException().toString());
+            String wes = we.getWrappedException().toString();
+            notifyAdmins(CommandScript.sender, "Error loading " + filename + ": " + wes, args);
+            System.err.println(wes);
             we.printStackTrace();
         }
         catch (EvaluatorException ee) {
             System.err.println("js: " + ee.getMessage());
+            notifyAdmins(CommandScript.sender, "Error loading " + filename + ": " + ee.getMessage(), args);
         }
         catch (JavaScriptException jse) {
             System.err.println("js: " + jse.getMessage());
+            notifyAdmins(CommandScript.sender, "Error loading " + filename + ": " + jse.getMessage(), args);
         }
         catch (IOException ioe) {
             System.err.println(ioe.toString());
+            notifyAdmins(CommandScript.sender, "Error loading " + filename + ": " + ioe.getMessage(), args);
         }
         finally {
             try {
