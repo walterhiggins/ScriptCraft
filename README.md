@@ -36,9 +36,7 @@ You can get the Minecraft Coder Pack here...
 
 http://mcp.ocean-labs.de/index.php/Main_Page
 
-... You will need to follow MCP's instructions to decompile your minecraft.jar file, then apply the ServerCommandManager.patch file to the $MCP/src/minecraft/net/minecraft/src/ServerCommandManager.java file. 
-Then copy the CommandScript.java file to $MCP/src/minecraft/net/minecraft/src/ directory (where $MCP is the location where you've installed Minecraft Coder pack).
-Then run ./reobfuscate.sh and follow MCP's instructions for copying the obfuscated files and rebuilding the minecraft.jar file.
+... You will need to follow MCP's instructions to decompile your minecraft.jar file.
 
 You will also need to install Rhino (A javascript implementation for java) if it is not already installed. Type...
 
@@ -56,9 +54,26 @@ If Rhino is not already installed you can [download it][1], unzip it and copy th
 
 [1]: https://developer.mozilla.org/en/RhinoDownload
 
+Installing
+==========
+Once you've installed Minecraft Coder Pack (MCP) and Rhino...
+ 1. Copy the CommandScript.java file to the src/minecraft/net/minecraft/src/ located in the directory where you installed MCP.
+ 2. Create a new directory called _ScriptCraft_ on your C:\ drive (Windows) or your home directory (Linux/Max), and copy all of the .js files provided.
+ 3. If you are on a Windows computer ...
+    1. Launch Notepad (or your favourite text editor) and open file src/minecraft/net/minecraft/src/ServerCommandManager.java
+    2. Insert a new line after `this.registerCommand(new CommandTime());`
+    3. type `this.registerCommand(new CommandScript());` 
+    4. Save the file and close the editor.
+ 4. If you are on a Linux or Mac OS X computer...
+    1. Open a terminal window and `cd` to the directory where you installed MCP.
+    2. enter the following command `patch src/minecraft/net/minecraft/src/ServerCommandManager.java ServerCommandManager.patch` 
+
+ 5. Open a Command Prompt (windows) or Terminal (Linux/Mac), go to the MCP directory and run `recompile.bat` (windows) or `./recompile.sh` (Linux/Mac)
+ 6. Run `reobfuscate.bat` (windows) or `./recompile.sh` (Linux/Mac).
+ 7. Follow MCP's instructions for copying the obfuscated files and rebuilding the minecraft.jar file.
+
 Getting Started
 ===============
-
 Once you've installed the mod, launch Minecraft and type `/js load()` and load the `cottage.js` file. Once the cottage.js file is loaded you can create a new cottage by typing `/js cottage()`.
 Take a look over the cottage.js file to see how the Drone module can be used to easily create buildings. You can even create a whole row of cottages using the following in-game command...
 
