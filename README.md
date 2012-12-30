@@ -21,7 +21,8 @@ As of Dec 27 2012, the ScriptCraft mod includes just a few built-in objects and 
  * world - The minecraft world object - again - all properties are currently obfuscated.
  * getMousePos() - A function which returns the current position of the cross-hairs (if a block is selected)
  * getPlayerPos() - A function which returns the current position of the player.
- * putBlock(x,y,z,blockId,metaData) - A function which lets you place a block anywhere
+ * putBlock(x,y,z,blockId,metaData) - A function which lets you place a block anywhere (if no coordinates are given the block the player is currently looking at is replaced).
+ * getBlock(x,y,z) - returns the blockId and metadata at the given location (if no coordinates are given the cross-hair location is used)
  * putSign(String[] texts, x,y,z,blockId, metaData) - A function which lets you place a sign.
 
 The above primitives can be used to create buildings which would otherwise be time-consuming to create manually.
@@ -84,9 +85,4 @@ The above code loads the example blueprint for a cottage and uses a `for` loop t
 from the blueprint. Keep a Minecraft Block reference handy - there's one here ...
 
 http://www.minecraftinfo.com/idlist.htm
-
-Griefing
-========
-Don't do it.
-
 
