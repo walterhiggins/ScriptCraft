@@ -88,6 +88,23 @@ public class CommandScript extends CommandBase {
         EntityPlayer player = (EntityPlayer)CommandScript.sender;
         player.worldObj.setBlockAndMetadata(x,y,z,blockId,meta);
     }
+    //
+    // returns the block id and metadata at a given location in the world
+    // e.g. returns "98" for a stone block or "98:2" for a mossy stone block.
+    //
+    public static String getBlockImpl(int x, int y, int z)
+    {
+        EntityPlayer player = (EntityPlayer)CommandScript.sender;
+        World world = player.worldObj;
+        int blockId = world.getBlockId(x,y,z);
+        int metadata = world.getBlockMetadata(x,y,z);
+        if (metadata !=0){
+            return "" + blockId + ":" + metadata;
+        }else{
+            return "" + blockId;
+        }
+    }
+    
     
     public String getCommandName() {
         return "js";
@@ -119,6 +136,7 @@ public class CommandScript extends CommandBase {
                 ,"getPlayerPos"
                 ,"getMousePos" 
                 ,"putBlock"
+                ,"getBlock"
                 ,"putSign"
             };
             importer.defineFunctionProperties(names, CommandScript.class,ScriptableObject.DONTENUM);            
@@ -224,6 +242,7 @@ public class CommandScript extends CommandBase {
                              "load() (with no params) lets you choose a script file",
                              "getPlayerPos() returns player coords",
                              "getMousePos() returns mouse/crosshair coords",
+                             "getBlock(x,y,z) returns the block and metadata e.g. '98' for a stone block or '98:2' for a mossy stone block",
                              "putBlock(x,y,z,blockId,meta) e.g. putBlock(100,2,50,44,2) puts a sandstone slab (44:2) at position 100,2,50. See http://www.minecraftinfo.com/idlist.htm for block ids"
         };
         print(cx,thisObj,helpArgs,funObj);
@@ -251,20 +270,67 @@ public class CommandScript extends CommandBase {
     public static PlayerPos getMousePos(Context cx, Scriptable thisObj,Object[] args, Function funObj){
         return getMousePosImpl();
     }
-    public static void putBlock(Context cx, Scriptable thisObj,Object[] args, Function funObj){
-        int x = new Double(args[0].toString()).intValue();
-        int y = new Double(args[1].toString()).intValue();
-        int z = new Double(args[2].toString()).intValue();
-        int b = new Double(args[3].toString()).intValue();
-        int m = new Double(args[4].toString()).intValue();
+    public static void putBlock(Context cx, Scriptable thisObj,Object[] args, Function funObj)
+    {
+        int x;
+        int y;
+        int z;
+        int b;
+        int m;
+        
+        if (args.length == 2){
+            PlayerPos mousePos = getMousePosImpl();
+            if (mousePos != null){
+                x = (int)mousePos.x;
+                y = (int)mousePos.y;
+                z = (int)mousePos.z;
+                b = new Double(args[0].toString()).intValue();
+                m = new Double(args[1].toString()).intValue();
+
+            }else{
+                return;
+            }
+        }else {
+            x = new Double(args[0].toString()).intValue();
+            y = new Double(args[1].toString()).intValue();
+            z = new Double(args[2].toString()).intValue();
+            b = new Double(args[3].toString()).intValue();
+            m = new Double(args[4].toString()).intValue();
+        }
         putBlockImpl(x,y,z,b,m);
-        switch (b){
+        switch (b)
+        {
         case 6: 
             EntityPlayer player = (EntityPlayer)CommandScript.sender;
             World world = player.worldObj;
             ((BlockSapling)Block.sapling).growTree(world,x,y,z,world.rand);
             break;
         }
+    }
+    //
+    // gets the blockId and metadata at the given coords
+    // if no coords are provided then the mouse position is used instead.
+    //
+    public static String getBlock(Context cx, Scriptable thisObj,Object[] args, Function funObj){
+        int x;
+        int y;
+        int z;
+        
+        if (args.length != 0){
+            x = new Double(args[0].toString()).intValue();
+            y = new Double(args[1].toString()).intValue();
+            z = new Double(args[2].toString()).intValue();
+        }else{
+            PlayerPos mousePos = getMousePosImpl();
+            if (mousePos != null){
+                x = (int)mousePos.x;
+                y = (int)mousePos.y;
+                z = (int)mousePos.z;
+            }else{
+                return null;
+            }
+        }
+        return getBlockImpl(x,y,z);
     }
     public static void putSign(Context cx, Scriptable thisObj,Object[] args, Function funObj){
         List jsArray = (List)args[0];

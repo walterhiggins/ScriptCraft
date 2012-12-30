@@ -79,7 +79,9 @@ var Drone = {
 	 // the box() method is the main method for building things.
 	 // parameters
 	 // ----------
-	 // b - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling.
+	 // b - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
+	 //     An array of block ids can also be used in which case each block in the array
+	 //     will be placed in turn.
 	 // w - the width of the structure (optional - default value is 1)
 	 // h - the height of the structure (optional - default value is 1)
 	 // d - the depth of the structure - NB this is *not* how deep underground the structure lies - this is 
@@ -116,7 +118,23 @@ var Drone = {
 	 oak: function(){},
 	 spruce: function(){},
 	 birch: function(){},
-	 jungle: function(){}
+	 jungle: function(){},
+	 //
+	 // rand takes either an array (if each blockid is the same weight)
+	 // or an object where each property is a blockid and the value is it's weight (an integer)
+	 // e.g.
+	 // rand([98,'98:1','98:2'],w,d,h) will place random blocks stone, mossy stone and cracked stone (each block has the same chance of being picked)
+	 // rand({98: 5, '98:1': 3,'98:2': 2},w,d,h) will place random blocks stone has a 50% chance of being picked, 
+	 //                               mossy stone has a 30% chance and cracked stone has just a 20% chance of being picked.
+	 //
+	 rand: function(distribution,w,h,d){},
+	 //
+	 // places random flowers and long grass (similar to the effect of placing bonemeal on grass)
+	 //
+	 garden: function(w,d){},
+	 
+	 copy: function(name,w,h,d){},
+	 paste: function(name){}
 };
 //
 // Implementation
@@ -221,13 +239,6 @@ var Drone = {
 
 	 Drone.prototype.cuboid = function(block,w,h,d){
 		  var md = 0;
-		  if (typeof block == 'object'){
-				block = block.blockID;
-		  }else{
-				var bm = _getBlockIdAndMeta(block);
-				block = bm[0];
-				md = bm[1];
-		  }
 		  if (typeof h == "undefined"){
 				h = 1;
 		  }
@@ -237,11 +248,25 @@ var Drone = {
 		  if (typeof w == "undefined"){
 				w = 1;
 		  }
+		  var bi = 0;
 		  var that = this;
 		  _traverse[this.dir].width(that,w,function(){
 				_traverseHeight(that,h,function(){
 					 _traverse[that.dir].depth(that,d,function(){
-						  putBlock(that.x,that.y,that.z,block,md);
+						  //
+						  // wph 20121229 - slower but supports random blocks
+						  //
+						  var cb = 0;
+						  if (block.constructor == Array){
+								cb = block[bi%block.length];
+						  }else{
+								cb = block;
+						  }
+						  var bm = _getBlockIdAndMeta(cb);
+						  cb = bm[0];
+						  md = bm[1];
+						  putBlock(that.x,that.y,that.z,cb,md);
+						  bi++;
 					 });
 				});
 		  });
@@ -388,7 +413,10 @@ var Drone = {
 	 var _getBlockIdAndMeta = function(b){
 		  if (typeof b == 'string'){
 				var bs = b;
-				var sp = bs.indexOf(':')
+				var sp = bs.indexOf(':');
+				if (sp == -1){
+					 return [parseInt(bs),0];
+				}
 				b = parseInt(bs.substring(0,sp));
 				md = parseInt(bs.substring(sp+1,bs.length));
 				return [b,md];
@@ -425,14 +453,14 @@ var Drone = {
 	 _traverse[0].width = function(that,n,callback){
 		  var s = that.z, e = s + n;
 		  for (; that.z < e; that.z++){
-				callback();
+				callback(that.z-s);
 		  }
 		  that.z = s;
 	 };
 	 _traverse[0].depth = function(that,n,callback){
 		  var s = that.x, e = s+n;
 		  for (;that.x < e;that.x++){
-				callback();
+				callback(that.x-s);
 		  }
 		  that.x = s;
 	 };
@@ -440,7 +468,7 @@ var Drone = {
 	 _traverse[1].width = function(that,n,callback){
 		  var s = that.x, e = s-n;
 		  for (;that.x > e;that.x--){
-				callback();
+				callback(s-that.x);
 		  }
 		  that.x = s;
 	 };
@@ -449,7 +477,7 @@ var Drone = {
 	 _traverse[2].width = function(that,n,callback){
 		  var s = that.z, e = s-n;
 		  for (;that.z > e;that.z--){
-				callback();
+				callback(s-that.z);
 		  }
 		  that.z = s;
 	 };
@@ -460,23 +488,113 @@ var Drone = {
 	 _traverseHeight = function(that,n,callback){
 		  var s = that.y, e = s + n;
 		  for (; that.y < e; that.y++){
-				callback();
+				callback(that.y-s);
 		  }
 		  that.y = s;
 	 };
+
+	 var _fisherYates = function( myArray ) {
+		  var i = myArray.length;
+		  if ( i == 0 ) return false;
+		  while ( --i ) {
+				var j = Math.floor( Math.random() * ( i + 1 ) );
+				var tempi = myArray[i];
+				var tempj = myArray[j];
+				myArray[i] = tempj;
+				myArray[j] = tempi;
+		  }
+	 };
 	 
+	 var _rand = function(blockDistribution){
+		  if (!(blockDistribution.constructor == Array)){
+				var a = [];
+				for (var p in blockDistribution){
+					 var n = blockDistribution[p];
+					 for (var i = 0;i < n;i++){
+						  a.push(p);
+					 }
+				}
+				blockDistribution = a;
+		  }
+		  while (blockDistribution.length < 1000){
+				// make array bigger so that it's more random
+				blockDistribution = blockDistribution.concat(blockDistribution);
+		  }
+		  _fisherYates(blockDistribution);
+		  return blockDistribution;
+	 };
+	 Drone.prototype.rand = function(dist,w,h,d){
+		  var randomized = _rand(dist);
+		  return this.box(randomized,w,h,d);
+	 };
 	 var _trees = {oak: 6
-						,spruce: '6:1'
-						,birch: '6:2'
-						,jungle: '6:3'
-					  };
+                  ,spruce: '6:1'
+                  ,birch: '6:2'
+                  ,jungle: '6:3'
+                 };
 	 for (var p in _trees){
 		  Drone.prototype[p] = function(v){return function(){ return this.box(v);};}(_trees[p]);
 	 }
 
+	 Drone.prototype.garden = function(w,d)
+	 {
+		  // make sure grass is present first
+		  this.down().box(2,w,1,d).up(); 
+		  
+		  // make flowers more common than long grass
+		  var dist = {37: 3, // red flower
+						  38: 3, // yellow flower
+						  '31:1': 2, // long grass
+						  0: 1
+						 };
+		  
+		  return this.rand(dist,w,1,d);
+	 };
+	 Drone.clipBoard = {};
+	 Drone.prototype.copy = function(name, w, h, d){
+		  var that = this;
+		  var ccContent = [];
+		  _traverse[this.dir].width(that,w,function(ww){
+				ccContent.push([]);
+				_traverseHeight(that,h,function(hh){
+					 ccContent[ww].push([]);
+					 _traverse[that.dir].depth(that,d,function(dd){
+						  var b = getBlock(that.x,that.y,that.z);
+						  ccContent[ww][hh][dd] = b;
+					 });
+				});
+		  });
+		  Drone.clipBoard[name] = ccContent;
+		  return this;
+	 };
+	 Drone.prototype.paste = function(name){
+		  var ccContent = Drone.clipBoard[name];
+		  var that = this;
+		  _traverse[this.dir].width(that,ccContent.length,function(ww){
+				var h = ccContent[ww].length;
+				_traverseHeight(that,h,function(hh){
+					 var d = ccContent[ww][hh].length;
+					 _traverse[that.dir].depth(that,d,function(dd){
+						  var b = ccContent[ww][hh][dd];
+						  var bm = _getBlockIdAndMeta(b);
+						  var cb = bm[0];
+						  var md = bm[1];
+						  putBlock(that.x,that.y,that.z,cb,md);
+					 });
+				});
+		  });
+		  return this;
+	 };
 	 ScriptCraft.Drone = Drone;
 	 
 }());
 Drone = ScriptCraft.Drone;
+/*
+getPlayerPos = function(){return {x:0,y:0,z:0,rotationYaw:0};};
+getMousePos = function(){return null;};
+putBlock = function(){};
+getBlock = function(){};
+drone.copy('x',4,2,3);
+*/
 drone = new Drone();
 
