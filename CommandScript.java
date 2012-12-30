@@ -104,8 +104,6 @@ public class CommandScript extends CommandBase {
             return "" + blockId;
         }
     }
-    
-    
     public String getCommandName() {
         return "js";
     }
@@ -163,9 +161,11 @@ public class CommandScript extends CommandBase {
         return;
     }
 
-    public static void load(Context cx, Scriptable thisObj,
+    public static Object load(Context cx, Scriptable thisObj,
                              Object[] args, Function funObj)
     {
+        Object result = null;
+        
         File scriptFile = null;
         String filename = null;
         
@@ -175,7 +175,7 @@ public class CommandScript extends CommandBase {
             if (rc ==JFileChooser.APPROVE_OPTION){
                 scriptFile = fc.getSelectedFile();
             }else{
-                return;
+                return result;
             }
         }else{
             scriptFile = new File((String)args[0]);
@@ -188,7 +188,7 @@ public class CommandScript extends CommandBase {
         catch (FileNotFoundException ex) {
             notifyAdmins(CommandScript.sender, "Error - File not found " + args[0], args);
             Context.reportError("Couldn't open file \"" + scriptFile + "\".");
-            return;
+            return null;
         }
         filename = scriptFile.getAbsolutePath();
         String filedir = scriptFile.getParentFile().getAbsolutePath();
@@ -203,7 +203,7 @@ public class CommandScript extends CommandBase {
             // a script. Text is printed only if the print() function
             // is called.
             notifyAdmins(CommandScript.sender, "Loading " + filename, args);
-            cx.evaluateReader(thisObj, in, filename, 1, null);
+            result = cx.evaluateReader(thisObj, in, filename, 1, null);
             notifyAdmins(CommandScript.sender, "Successfully loaded " + filename, args);
         }
         catch (WrappedException we) {
@@ -232,6 +232,7 @@ public class CommandScript extends CommandBase {
                 System.err.println(ioe.toString());
             }
         }
+        return result;
     }
     public static void help(Context cx, Scriptable thisObj,
                              Object[] args, Function funObj)
@@ -286,7 +287,6 @@ public class CommandScript extends CommandBase {
                 z = (int)mousePos.z;
                 b = new Double(args[0].toString()).intValue();
                 m = new Double(args[1].toString()).intValue();
-
             }else{
                 return;
             }

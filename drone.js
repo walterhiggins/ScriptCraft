@@ -110,6 +110,8 @@ var Drone = {
 
 	 // create a door - if a parameter is supplied an Iron door is created otherwise a wooden door is created.
 	 door: function(b){},
+	 // create double doors (left and right side)
+	 door2: function(b){}, 
 	 // signs must use block 63 (stand-alone signs) or 68 (signs on walls)
 	 // s can be a string or an array of strings. 
 	 sign: function(s,b){},
@@ -132,9 +134,43 @@ var Drone = {
 	 // places random flowers and long grass (similar to the effect of placing bonemeal on grass)
 	 //
 	 garden: function(w,d){},
+
+	 // Copy & Paste
+	 // ============
 	 
+	 // copy an area so it can be pasted elsewhere. The name can be used for pasting the copied area elsewhere...
+	 // drone.copy('somethingCool',10,5,10).right(12).paste('somethingCool');
+	 // ... copies a 10x5x10 area (using the drone's coordinates as the starting point) into memory.
+	 // the copied area can be referenced using the name 'somethingCool'. The drone moves 12 blocks right then
+	 // pastes the copy.
+	 //
 	 copy: function(name,w,h,d){},
 	 paste: function(name){}
+
+	 // Chaining
+	 // ========
+	 // 
+	 // All of the above methods return a Drone object, which means methods can be 'chained' together so instead of writing this...
+	 //
+	 // drone = new Drone(); 
+	 // drone.fwd(3);
+	 // drone.left(2);
+	 // drone.box(2); // create a grass block
+	 // drone.up();
+	 // drone.box(2); // create another grass block
+	 // drone.down();
+	 // 
+	 // ...you could simply write ...
+	 //
+	 // var drone = new Drone().fwd(3).left(2).box(2).up().box(2).down();
+	 //
+	 // The Drone object uses a Fluent Interface ( http://en.wikipedia.org/wiki/Fluent_interface ) 
+	 // to make ScriptCraft scripts more concise and easier to write and read.
+	 // Minecraft's in-game command prompt is limited to about 80 characters so chaining drone commands together
+	 // means more can be done before hitting the command prompt limit. For complex building you should save your 
+	 // commands in a new script file and load it using /js load()
+	 //
+
 };
 //
 // Implementation
@@ -227,7 +263,7 @@ var Drone = {
 				return;
 		  }
 		  if (block == 68){
-				meta = this.playerToSignDirs[this.dir];
+				meta = Drone.PLAYER_SIGN_FACING[this.dir];
 				this.back();
 		  }
 		  putSign(message,this.x,this.y,this.z,block,meta);
@@ -281,13 +317,21 @@ var Drone = {
 		  }else{
 				door = 71;
 		  }
-		  return this.cuboid(door+':' + this.dir,1,1,1).up().cuboid(door+':8',1,1,1).down();
+		  return this.cuboid(door+':' + this.dir).up().cuboid(door+':8').down();
+	 };
+	 Drone.prototype.door2 = function(door){
+		  if (typeof door == "undefined"){
+				door = 64;
+		  }else{
+				door = 71;
+		  }
+		  return this.cuboid(door+':' + this.dir).up().cuboid(door+':8').right().cuboid(door+':9').down().cuboid(door+':' + this.dir).left();
 	 };
 	 // player dirs: 0 = east, 1 = south, 2 = west,   3 = north
 	 // block dirs:  0 = east, 1 = west,  2 = south , 3 = north
 	 // sign dirs:   5 = east, 3 = south, 4 = west, 2 = north
-	 Drone.prototype.playerToBlockDirs = [0,2,1,3];
-	 Drone.prototype.playerToSignDirs = [4,2,5,3];
+	 Drone.PLAYER_STAIRS_FACING = [0,2,1,3];
+	 Drone.PLAYER_SIGN_FACING = [4,2,5,3]; // for blocks 68 (wall signs) 65 (ladders) 61,62 (furnaces) 23 (dispenser) and 54 (chest)
 
 	 Drone.prototype.prism0 = function(block,w,d){
 		  this.prism(block,w,d).fwd().right().prism(0,w-2,d-2).left().back();
@@ -295,7 +339,7 @@ var Drone = {
 		  if (d % 2 == 1 && se){
 				// top of roof will be open - need repair
 				var f = Math.floor(d/2);
-				this.fwd(f).up(f).cuboid(se,w,1,1).down(f).back(f);
+				this.fwd(f).up(f).cuboid(se,w).down(f).back(f);
 		  }
 	 };
 	 Drone.STAIRBLOCKS = {53: 5     // oak wood
@@ -339,7 +383,7 @@ var Drone = {
 				while (d2 < d)
 				{
 					 var di = (d2 < middle?this.dir:(this.dir+2)%4);
-					 var bd = block + ':' + this.playerToBlockDirs[di];
+					 var bd = block + ':' + Drone.PLAYER_STAIRS_FACING[di];
 					 var putStep = true;
 					 if (d2 == middle){
 						  if (d % 2 == 1){
@@ -347,7 +391,7 @@ var Drone = {
 						  }
 					 }
 					 if (putStep)
-						  this.cuboid(bd,w,1,1);
+						  this.cuboid(bd,w);
 					 if (d2 < middle-1){
 						  this.up();
 						  uc++;
@@ -527,11 +571,7 @@ var Drone = {
 		  var randomized = _rand(dist);
 		  return this.box(randomized,w,h,d);
 	 };
-	 var _trees = {oak: 6
-                  ,spruce: '6:1'
-                  ,birch: '6:2'
-                  ,jungle: '6:3'
-                 };
+	 var _trees = {oak: 6 ,spruce: '6:1' ,birch: '6:2' ,jungle: '6:3' };
 	 for (var p in _trees){
 		  Drone.prototype[p] = function(v){return function(){ return this.box(v);};}(_trees[p]);
 	 }
@@ -550,8 +590,12 @@ var Drone = {
 		  
 		  return this.rand(dist,w,1,d);
 	 };
+	 //
+	 // Drone's clipboard 
+	 //
 	 Drone.clipBoard = {};
-	 Drone.prototype.copy = function(name, w, h, d){
+	 Drone.prototype.copy = function(name, w, h, d)
+	 {
 		  var that = this;
 		  var ccContent = [];
 		  _traverse[this.dir].width(that,w,function(ww){
@@ -564,21 +608,86 @@ var Drone = {
 					 });
 				});
 		  });
-		  Drone.clipBoard[name] = ccContent;
+		  Drone.clipBoard[name] = {dir: this.dir, blocks: ccContent};
 		  return this;
 	 };
-	 Drone.prototype.paste = function(name){
+
+	 Drone.prototype.paste = function(name)
+	 {
 		  var ccContent = Drone.clipBoard[name];
+		  var srcBlocks = ccContent.blocks;
+		  var srcDir = ccContent.dir; // direction player was facing when copied.
+		  var dirOffset = (4 + (this.dir - srcDir)) %4;
 		  var that = this;
-		  _traverse[this.dir].width(that,ccContent.length,function(ww){
-				var h = ccContent[ww].length;
+		  _traverse[this.dir].width(that,srcBlocks.length,function(ww){
+				var h = srcBlocks[ww].length;
 				_traverseHeight(that,h,function(hh){
-					 var d = ccContent[ww][hh].length;
+					 var d = srcBlocks[ww][hh].length;
 					 _traverse[that.dir].depth(that,d,function(dd){
-						  var b = ccContent[ww][hh][dd];
+						  var b = srcBlocks[ww][hh][dd];
 						  var bm = _getBlockIdAndMeta(b);
 						  var cb = bm[0];
 						  var md = bm[1];
+						  //
+						  // need to adjust blocks which face a direction
+						  //
+						  switch (cb)
+						  {
+								// 
+								// doors
+								//
+						  case 64: // wood
+						  case 71: // iron
+								// top half of door doesn't need to change
+								if (md < 8) {
+									 md = (md + dirOffset) % 4;
+								}
+								break;
+								//
+								// stairs
+								//
+						  case 53:  // oak 
+						  case 67:  // cobblestone 
+						  case 108: // red brick 
+						  case 109: // stone brick 
+						  case 114: // nether brick
+						  case 128: // sandstone
+						  case 134: // spruce
+						  case 135: // birch
+						  case 136: // junglewood
+								var dir = md & 0x3;
+								var a = Drone.PLAYER_STAIRS_FACING;
+								var len = a.length;
+								for (var c=0;c < len;c++){
+									 if (a[c] == dir){
+										  break;
+									 }
+								}
+								c = (c + dirOffset) %4;
+								var newDir = a[c];
+								md = (md >>2<<2) + newDir;
+								break;
+								//
+								// signs , ladders etc
+								//
+						  case 23: // dispenser
+						  case 54: // chest
+						  case 61: // furnace
+						  case 62: // burning furnace
+						  case 65: // ladder
+						  case 68: // wall sign
+								var a = Drone.PLAYER_SIGN_FACING;
+								var len = a.length;
+								for (var c=0;c < len;c++){
+									 if (a[c] == md){
+										  break;
+									 }
+								}
+								c = (c + dirOffset) %4;
+								var newDir = a[c];
+								md = newDir;
+								break;
+						  }
 						  putBlock(that.x,that.y,that.z,cb,md);
 					 });
 				});
@@ -597,4 +706,3 @@ getBlock = function(){};
 drone.copy('x',4,2,3);
 */
 drone = new Drone();
-
