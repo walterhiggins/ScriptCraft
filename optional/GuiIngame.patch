@@ -1,0 +1,10 @@
+466a467,475
+>             //
+>             // wph 20121231 show the block id and metadata for in-focus block
+>             //
+>             MovingObjectPosition omo = this.mc.objectMouseOver;
+>             if (omo != null){
+>                 int bi = this.mc.theWorld.getBlockId(omo.blockX,omo.blockY,omo.blockZ);
+>                 int md = this.mc.theWorld.getBlockMetadata(omo.blockX,omo.blockY,omo.blockZ);
+>                 this.drawString(var8,"Mouse:" + omo.blockX + ", " + omo.blockY + ", " + omo.blockZ + " block data value: " + bi + ":" + md,2,112,14737632);
+>             }
