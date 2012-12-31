@@ -338,7 +338,9 @@ var Drone = {
     // block dirs:  0 = east, 1 = west,  2 = south , 3 = north
     // sign dirs:   5 = east, 3 = south, 4 = west, 2 = north
     Drone.PLAYER_STAIRS_FACING = [0,2,1,3];
-    Drone.PLAYER_SIGN_FACING = [4,2,5,3]; // for blocks 68 (wall signs) 65 (ladders) 61,62 (furnaces) 23 (dispenser) and 54 (chest)
+	 // for blocks 68 (wall signs) 65 (ladders) 61,62 (furnaces) 23 (dispenser) and 54 (chest)
+    Drone.PLAYER_SIGN_FACING = [4,2,5,3]; 
+	 Drone.PLAYER_TORCH_FACING = [2,4,1,3];
 
     Drone.prototype.prism0 = function(block,w,d){
         this.prism(block,w,d).fwd().right().prism(0,w-2,d-2).left().back();

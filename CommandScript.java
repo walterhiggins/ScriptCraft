@@ -154,7 +154,12 @@ public class CommandScript extends CommandBase {
         }
         // Now evaluate the string we've colected.
         notifyAdmins(par1ICommandSender, "js> " + s, (Object[])args);
-        Object result = ctx.evaluateString(scope, s, "<cmd>", 1, null);
+        Object result = null;
+        try {
+            result = ctx.evaluateString(scope, s, "<cmd>", 1, null);
+        }catch(Exception e){
+            notifyAdmins(par1ICommandSender, "ERROR: " + e.getMessage(), (Object[])args);
+        }
         if (result != null){
             notifyAdmins(par1ICommandSender, Context.toString(result), (Object[])args);
         }
