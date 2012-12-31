@@ -51,7 +51,7 @@ If Rhino is not already installed you can [download it][1], unzip it and copy th
 
  * Macintosh - /System/Library/Java/Extensions/
  * Windows - C:\jdk\jre\lib\ext (assuming the Java Dev Kit has been installed in c:\jdk)
- * Linux (Ubuntu) - /usr/lib/jvm/java-6-openjdk-i386/jre/lib/ext/
+ * Linux (Ubuntu) - /usr/lib/jvm/java-6-openjdk-i386/jre/lib/ext/ or /usr/lib/jvm/java-7-oracle/jre/lib/ext/ for Oracle Java
 
 [1]: https://developer.mozilla.org/en/RhinoDownload
 
@@ -66,12 +66,13 @@ Once you've installed Minecraft Coder Pack (MCP) and Rhino...
     3. type `this.registerCommand(new CommandScript());` 
     4. Save the file and close the editor.
  4. If you are on a Linux or Mac OS X computer...
-    1. Open a terminal window and `cd` to the directory where you installed MCP.
-    2. enter the following command `patch src/minecraft/net/minecraft/src/ServerCommandManager.java ServerCommandManager.patch` 
+    1. Copy ServerCommandManager.patch to the directory where you installed MCP.
+    2. Open a terminal window and `cd` to the directory where you installed MCP.
+    3. enter the following command `patch src/minecraft/net/minecraft/src/ServerCommandManager.java ServerCommandManager.patch` 
 
  5. Open a Command Prompt (windows) or Terminal (Linux/Mac), go to the MCP directory and run `recompile.bat` (windows) or `./recompile.sh` (Linux/Mac)
- 6. Run `reobfuscate.bat` (windows) or `./recompile.sh` (Linux/Mac).
- 7. Follow MCP's instructions for copying the obfuscated files and rebuilding the minecraft.jar file.
+ 6. Run `reobfuscate.bat` (windows) or `./reobfuscate.sh` (Linux/Mac).
+ 7. Follow MCP's instructions for copying the obfuscated files and rebuilding the minecraft.jar file that is in %appdata%/minecraft/bin (windows), ~/Library/Application Support/Minecraft/bin (Mac) or ~/.minecraft/bin (Linux).
 
 Getting Started
 ===============
