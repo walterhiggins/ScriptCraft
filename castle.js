@@ -1,6 +1,6 @@
 load($SCRIPT_DIR + "/fort.js");
 //
-// a castle is just a big wide fort with 4 smaller forts at each corner
+// a castle is just a big wide fort with 4 taller forts at each corner
 //
 function castle (side, height, drone)
 {
