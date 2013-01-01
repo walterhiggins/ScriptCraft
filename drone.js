@@ -1,4 +1,5 @@
 var ScriptCraft = ScriptCraft || {};
+var global = this;
 //
 // Interface
 // =========
@@ -18,6 +19,24 @@ var Drone = {
     //     starting point.
     //     If the cross-hairs are _not_ pointing at a block, then the drone's starting
     //     location will be 2 blocks directly in front of the player.
+    // TIP: Building always happens right and front of the drone's position...
+    //
+    //      Plan View:
+    //
+    //      ^
+    //      |
+    //      |
+    //      D---->
+    //  
+    //      For convenience you can use a 'corner stone' to begin building. 
+    //      The corner stone should be located just above ground level.
+    //      If the cross-hair is point at or into ground level when you create a new Drone(),
+    //      then building begins at that point. You can get around this by pointing at a 
+    //      'corner stone' just above ground level or alternatively use the following statement...
+    //
+    //      /js d = new Drone().up()
+    //      
+    //      ... which will move the drone up one block as soon as it's created.
     //
     // [2] d = new Drone(x,y,z,direction)
     //     This will create a new Drone at the location you specified using x, y, z
@@ -97,14 +116,22 @@ var Drone = {
     //
     // drone.box(6);
     //
-    box: function(b,w,h,d){},
+    box: function(block,width,height,depth){},
     //
     // like box but empties out the inside - ideal for buildings.
     //
-    box0: function(b,w,h,d){},
-    prism: function(b,w,d){},
-    prism0: function(b,w,d){},
-
+    box0: function(block,width,height,depth){},
+    prism: function(block,width,depth){},
+    prism0: function(block,width,depth){},
+    //
+    // create a cylinder - building begins radius blocks to the right and forward.
+    //
+    cylinder: function(block,radius,height){},
+    //
+    // create an empty cylinder
+    //
+    cylinder0: function(block,radius,height){},
+    
     // miscellaneous
     // =============
 
@@ -338,9 +365,9 @@ var Drone = {
     // block dirs:  0 = east, 1 = west,  2 = south , 3 = north
     // sign dirs:   5 = east, 3 = south, 4 = west, 2 = north
     Drone.PLAYER_STAIRS_FACING = [0,2,1,3];
-	 // for blocks 68 (wall signs) 65 (ladders) 61,62 (furnaces) 23 (dispenser) and 54 (chest)
+    // for blocks 68 (wall signs) 65 (ladders) 61,62 (furnaces) 23 (dispenser) and 54 (chest)
     Drone.PLAYER_SIGN_FACING = [4,2,5,3]; 
-	 Drone.PLAYER_TORCH_FACING = [2,4,1,3];
+    Drone.PLAYER_TORCH_FACING = [2,4,1,3];
 
     Drone.prototype.prism0 = function(block,w,d){
         this.prism(block,w,d).fwd().right().prism(0,w-2,d-2).left().back();
@@ -382,7 +409,8 @@ var Drone = {
     //  012
     //  d = 3, m = 1
     //
-    Drone.prototype.prism = function(block,w,d){
+    Drone.prototype.prism = function(block,w,d)
+    {
         var stairEquiv = Drone.STAIRBLOCKS[block];
         if (stairEquiv){
             this.fwd().prism(stairEquiv,w,d-2).back();
@@ -435,19 +463,111 @@ var Drone = {
         }
         return this;
     };
+
     Drone.prototype.box = Drone.prototype.cuboid;
     Drone.prototype.box0 = Drone.prototype.cuboid0;
-    Drone.prototype.debug = function(){
-        this.debug = true;
+    //
+    // show the Drone's position and direction 
+    //
+    Drone.prototype.toString = function(){
         var dirs = ["east","south","west","north"];
-        print([this.x,this.y,this.z,this.dir,dirs[this.dir]]);
+        return "x: " + this.x + " y: "+this.y + " z: " + this.z + " dir: " + this.dir  + " "+dirs[this.dir];
+    };
+    Drone.prototype.debug = function(){
+        print(this);
         return this;
-    }
+    };
 
     // ========================================================================
     // Private variables and functions
     // ========================================================================
-
+    var _cylinderX = function(block,radius,height,drone,fill)
+    {
+        drone.chkpt('cylinderX');
+        var x0, y0, gotoxy;
+        drone.right(radius).fwd(radius).chkpt('center');
+        switch (drone.dir){
+        case 0: // east
+            x0 = drone.z;
+            y0 = drone.x;
+            gotoxy = function(xo,yo){ return drone.right(xo).fwd(yo);};
+            break;
+        case 1: // south
+            x0 = drone.x;
+            y0 = drone.z;
+            gotoxy = function(xo,yo){ return drone.right(xo).fwd(0-yo);};
+            break;
+        case 2: // west
+            x0 = drone.z;
+            y0 = drone.x;
+            gotoxy = function(xo,yo){ return drone.right(0-xo).fwd(0-yo);};
+            break;
+        case 3: // north
+            x0 = drone.x;
+            y0 = drone.z;
+            gotoxy = function(xo,yo){ return drone.right(xo).fwd(0-yo);};
+            break;
+        }
+        var points = [];
+        var setPixel = function(a,b){
+            var xo = (a-x0);
+            var yo = (b-y0);
+            if (fill){
+                if (xo < 0 && yo < 0){
+                    // bottom left quadrant
+                    drone.fwd(yo).right(xo)
+                        .box(block,Math.abs(xo*2)+1,height,Math.abs(yo*2)+1)
+                        .back(yo).left(xo);
+                }
+            }
+            gotoxy(xo,yo).box(block,1,height,1).move('center');
+        };
+        //
+        // credit: Following code is copied almost verbatim from
+        // http://en.wikipedia.org/wiki/Midpoint_circle_algorithm
+        // Bresenham's circle algorithm
+        //
+        var f = 1 - radius;
+        var ddF_x = 1;
+        var ddF_y = -2 * radius;
+        var x = 0;
+        var y = radius;
+        setPixel(x0, y0 + radius);
+        setPixel(x0, y0 - radius);
+        setPixel(x0 + radius, y0);
+        setPixel(x0 - radius, y0);
+        
+        while(x < y)
+        {
+            // ddF_x == 2 * x + 1;
+            // ddF_y == -2 * y;
+            // f == x*x + y*y - radius*radius + 2*x - y + 1;
+            if(f >= 0) 
+            {
+                y--;
+                ddF_y += 2;
+                f += ddF_y;
+            }
+            x++;
+            ddF_x += 2;
+            f += ddF_x;    
+            setPixel(x0 + x, y0 + y);
+            setPixel(x0 - x, y0 + y);
+            setPixel(x0 + x, y0 - y);
+            setPixel(x0 - x, y0 - y);
+            setPixel(x0 + y, y0 + x);
+            setPixel(x0 - y, y0 + x);
+            setPixel(x0 + y, y0 - x);
+            setPixel(x0 - y, y0 - x);
+        }
+        return drone.move('cylinderX');
+    }
+    var _cylinder0 = function(block,radius,height){
+        return _cylinderX(block,radius,height,this,false);
+    };
+    var _cylinder1 = function(block,radius,height){
+        return _cylinderX(block,radius,height,this,true);
+    };
     var _getDirFromRotation = function(r){
         var result = 1;
         r = Math.abs(Math.ceil(r));
@@ -537,14 +657,16 @@ var Drone = {
     // north
     _traverse[3].width = _traverse[0].depth;
     _traverse[3].depth = _traverse[2].width;
-    _traverseHeight = function(that,n,callback){
+    var _traverseHeight = function(that,n,callback){
         var s = that.y, e = s + n;
         for (; that.y < e; that.y++){
             callback(that.y-s);
         }
         that.y = s;
     };
-
+    //
+    // standard fisher-yates shuffle algorithm
+    //
     var _fisherYates = function( myArray ) {
         var i = myArray.length;
         if ( i == 0 ) return false;
@@ -702,8 +824,38 @@ var Drone = {
         });
         return this;
     };
+    Drone.prototype.cylinder0 = _cylinder0;
+    Drone.prototype.cylinder = _cylinder1;
     ScriptCraft.Drone = Drone;
-    
+
+    //
+    // make all Drone's methods available also as standalone functions
+    // which return a drone object
+    // this way drones can be created and used as follows...
+    //
+    // /js box(5,7,3,4)
+    // 
+    // ... which is a short-hand way to create a wooden building 7x3x4
+    //
+    var ops = ['up','down','left','right','fwd','back','turn',
+               'chkpt','move',
+               'box','box0','prism','prism0','cylinder','cylinder0',
+               'door','door2','sign','oak','spruce','birch','jungle',
+               'rand','garden',
+               'copy','paste'
+              ];
+    for (var i = 0;i < ops.length; i++){
+        global[ops[i]] = function(op){
+            return function(){
+                for (var i = 0;i < arguments.length;i++)
+                    print ("DEBUG:" + arguments[i]);
+                var result = new Drone();
+                result[op].apply(result,arguments);
+                return result;
+            };
+        }(ops[i]);
+    }
+               
 }());
 Drone = ScriptCraft.Drone;
 /*
