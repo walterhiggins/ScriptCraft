@@ -2,14 +2,12 @@ load($SCRIPT_DIR + "/fort.js");
 //
 // a castle is just a big wide fort with 4 taller forts at each corner
 //
-function castle (side, height, drone)
+Drone.extend('castle', function(side, height)
 {
 	 // 
 	 // use sensible default parameter values
 	 // if no parameters are supplied
 	 //
-	 if (typeof drone == "undefined")
-		  drone = new Drone();
 	 if (typeof side == "undefined")
 		  side = 24;
 	 if (typeof height == "undefined")
@@ -19,7 +17,7 @@ function castle (side, height, drone)
 	 //
 	 // remember where the drone is so it can return 'home'
 	 //
-	 drone.chkpt('castle');
+	 this.chkpt('castle');
 	 // 
 	 // how big the towers at each corner will be...
 	 //
@@ -29,24 +27,24 @@ function castle (side, height, drone)
 	 //
 	 // the main castle building will be front and right of the first tower
 	 //
-	 drone.fwd(towerSide/2).right(towerSide/2);
+	 this.fwd(towerSide/2).right(towerSide/2);
 	 //
 	 // the castle is really just a big fort with 4 smaller 'tower' forts at each corner
 	 //
-	 drone = fort(side,height,drone);
+	 this.fort(side,height);
 	 //
 	 // move back to start position
 	 //
-	 drone.move('castle');
+	 this.move('castle');
 	 //
 	 // now place 4 towers at each corner (each tower is another fort)
 	 //
 	 for (var corner = 0; corner < 4; corner++)
 	 {
 		  // construct a 'tower' fort
-		  fort(towerSide,towerHeight,drone); 
+		  this.fort(towerSide,towerHeight); 
 		  // move forward the length of the castle then turn right
-		  drone.fwd(side+towerSide-1).turn(); 
+		  this.fwd(side+towerSide-1).turn(); 
 	 }
-	 return drone.move('castle');
-}
+	 return this.move('castle');
+});

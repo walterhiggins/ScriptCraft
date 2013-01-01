@@ -368,6 +368,18 @@ var Drone = {
     // for blocks 68 (wall signs) 65 (ladders) 61,62 (furnaces) 23 (dispenser) and 54 (chest)
     Drone.PLAYER_SIGN_FACING = [4,2,5,3]; 
     Drone.PLAYER_TORCH_FACING = [2,4,1,3];
+	 //
+	 // add custom methods to the Drone object using this function
+	 //
+	 Drone.extend = function(name, func)
+	 {
+		  Drone.prototype[name] = func;
+        global[name] = function(){
+            var result = new Drone();
+            result[name].apply(result,arguments);
+            return result;
+        };
+	 };
 
     Drone.prototype.prism0 = function(block,w,d){
         this.prism(block,w,d).fwd().right().prism(0,w-2,d-2).left().back();
@@ -847,8 +859,6 @@ var Drone = {
     for (var i = 0;i < ops.length; i++){
         global[ops[i]] = function(op){
             return function(){
-                for (var i = 0;i < arguments.length;i++)
-                    print ("DEBUG:" + arguments[i]);
                 var result = new Drone();
                 result[op].apply(result,arguments);
                 return result;
