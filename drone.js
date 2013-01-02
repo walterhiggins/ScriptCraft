@@ -465,8 +465,7 @@ var Drone = {
             var c = 0;
             var d2 = d;
             while(d2 >= 1){
-            var bd = block + ':' + (d2 >= d/2?this.dir:(this.dir+2)%4);
-                this.cuboid(bd,w,1,d2);
+                this.cuboid(block,w,1,d2);
                 d2 -= 2;
                 this.fwd().up();
                 c++;
