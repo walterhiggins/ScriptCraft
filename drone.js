@@ -7,43 +7,43 @@ var global = this;
 // Please read the following section to understand what a Minecraft Drone can do.
 //
 var Drone = {
-	 //
-	 // TLDNR; (Just read this if you're impatient)
-	 // ======
-	 // At the in-game command prompt type...
-	 // 
-	 // /js box(5)  
     //
-	 // ... creates a single wooden block at the cross-hairs or player location
-	 //
-	 // /js box(5).right(2).box('35:15',3,7,2)
-	 //
-	 // ... creates a single wooden block and a 2001 black obelisk 3x7x2 in size.
-	 // If you want to see what else ScriptCraft's Drone can do, read on...
-	 // 
+    // TLDNR; (Just read this if you're impatient)
+    // ======
+    // At the in-game command prompt type...
+    // 
+    // /js box(5)  
+    //
+    // ... creates a single wooden block at the cross-hairs or player location
+    //
+    // /js box(5).right(2).box('35:15',3,7,2)
+    //
+    // ... creates a single wooden block and a 2001 black obelisk 3x7x2 in size.
+    // If you want to see what else ScriptCraft's Drone can do, read on...
+    // 
     // creating a new drone
     // ====================
     // 
     // Drones can be created in 3 ways...
     //
-	 // [1] Calling any one of the methods listed below will return a Drone object. For example...
-	 //     
-	 //     /js var d = box(5)
-	 //    
-	 //     ... creates a 1x1x1 wooden block at the cross-hairs or player's location and returns a Drone
-	 //    object. This might look odd (if you're familiar with Java's Object-dot-method syntax) but all 
-	 //    of the Drone class's methods are also global functions that return new Drone objects. 
-	 //    This is short-hand for creating drones and is useful for playing around with Drones at the in-game 
-	 //    command prompt. It's shorter than typing ...
-	 //
-	 //    /js var d = new Drone().box(5) 
-	 //    
-	 //    ... All of the Drone's methods return `this` (self) so you can chain operations together like this...
-	 //    
-	 //    /js var d = box(5).up().box(5,3,1,3).down().fwd(2).box(5).turn().fwd(2).box(5).turn().fwd(2).box(5)
-	 //
+    // [1] Calling any one of the methods listed below will return a Drone object. For example...
+    //     
+    //     /js var d = box(5)
+    //    
+    //     ... creates a 1x1x1 wooden block at the cross-hairs or player's location and returns a Drone
+    //    object. This might look odd (if you're familiar with Java's Object-dot-method syntax) but all 
+    //    of the Drone class's methods are also global functions that return new Drone objects. 
+    //    This is short-hand for creating drones and is useful for playing around with Drones at the in-game 
+    //    command prompt. It's shorter than typing ...
+    //
+    //    /js var d = new Drone().box(5) 
+    //    
+    //    ... All of the Drone's methods return `this` (self) so you can chain operations together like this...
+    //    
+    //    /js var d = box(5).up().box(5,3,1,3).down().fwd(2).box(5).turn().fwd(2).box(5).turn().fwd(2).box(5)
+    //
     // [2] /js d = new Drone()
-	 //
+    //
     //     This will create a new Drone. If the cross-hairs are pointing 
     //     at a block at the time then, that block's location becomes the drone's 
     //     starting point.
@@ -69,16 +69,16 @@ var Drone = {
     //      ... which will move the drone up one block as soon as it's created.
     //
     // [3] d = new Drone(x,y,z,direction)
-	 //
+    //
     //     This will create a new Drone at the location you specified using x, y, z
     //     In minecraft, the X axis runs west to east and the Z axis runs north to south.
     //     The direction parameter says what direction you want the drone to face:
     //     0 = east, 1 = south, 2 = west, 3 = north.
     //     If the direction parameter is omitted, the player's direction is used instead.
     //
-	 // When you load() the drone.js javascript file, a default `drone` Object is created at
-	 // the cross-hair's or player's location.
-	 //
+    // When you load() the drone.js javascript file, a default `drone` Object is created at
+    // the cross-hair's or player's location.
+    //
     // movement
     // ========
     // 
@@ -401,18 +401,18 @@ var Drone = {
     // for blocks 68 (wall signs) 65 (ladders) 61,62 (furnaces) 23 (dispenser) and 54 (chest)
     Drone.PLAYER_SIGN_FACING = [4,2,5,3]; 
     Drone.PLAYER_TORCH_FACING = [2,4,1,3];
-	 //
-	 // add custom methods to the Drone object using this function
-	 //
-	 Drone.extend = function(name, func)
-	 {
-		  Drone.prototype[name] = func;
+    //
+    // add custom methods to the Drone object using this function
+    //
+    Drone.extend = function(name, func)
+    {
+        Drone.prototype[name] = func;
         global[name] = function(){
             var result = new Drone();
             result[name].apply(result,arguments);
             return result;
         };
-	 };
+    };
 
     Drone.prototype.prism0 = function(block,w,d){
         this.prism(block,w,d).fwd().right().prism(0,w-2,d-2).left().back();
