@@ -1,7 +1,7 @@
 ScriptCraft
 ===========
 
-A Minecraft mod that lets you build using Javascript
+A Minecraft mod that lets you build using Javascript.
 
 Description
 ===========
@@ -86,4 +86,10 @@ The above code loads the example blueprint for a cottage and uses a `for` loop t
 from the blueprint. Keep a Minecraft Block reference handy - there's one here ...
 
 http://www.minecraftinfo.com/idlist.htm
+
+Further Reading
+===============
+You can find more information about [ScriptCraft on my blog][blog].
+
+[blog]: http://walterhiggins.net/blog/cat-index-scriptcraft.html
 
