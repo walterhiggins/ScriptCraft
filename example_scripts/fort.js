@@ -8,11 +8,11 @@ Drone.extend('fort', function(side, height)
 		  side = 18;
 	 if (typeof height == "undefined")
 		  height = 6;
-	 if (height < 4 || side < 10)
-		  throw new java.lang.RuntimeException("Forts must be at least 9 wide X 4 tall");
 	 // make sure side is even
 	 if (side%2)
 		  side++;
+	 if (height < 4 || side < 10)
+		  throw new java.lang.RuntimeException("Forts must be at least 10 wide X 4 tall");
 	 var brick = 98;
 	 //
 	 // build walls.
