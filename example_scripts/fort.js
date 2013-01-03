@@ -19,7 +19,7 @@ Drone.extend('fort', function(side, height)
 	 //
 	 this.chkpt('fort').box0(brick,side,height-1,side);
 	 //
-	 // build turrets
+	 // build battlements
 	 //
 	 this.up(height-1);
 	 for (i = 0;i <= 3;i++){
@@ -32,10 +32,10 @@ Drone.extend('fort', function(side, height)
 		  this.box(turret,1,1,side-2).fwd(side-2).turn();
 	 }
 	 //
-	 // build battlements
+	 // build battlement's floor
 	 //
 	 this.move('fort');
-	 this.up(height-2).fwd().right().box('44:5',side-2,1,side-2);
+	 this.up(height-2).fwd().right().box('126:0',side-2,1,side-2);
 	 var battlementWidth = 3;
 	 if (side <= 12)
 		  battlementWidth = 2;
