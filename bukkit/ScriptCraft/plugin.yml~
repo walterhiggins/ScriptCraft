@@ -1,0 +1,9 @@
+name: ScriptCraft
+main: net.walterhiggins.scriptcraft.ScriptCraft
+version: 0.01
+commands:
+   js:
+      description: Evaluate javascript.
+      usage: /<command> Javascript code
+      permission: ScriptCraft.js
+      permission-message: You don't have <permission>
