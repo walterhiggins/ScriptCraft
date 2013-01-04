@@ -44,13 +44,15 @@ public class CommandScript extends CommandBase {
     public static PlayerPos getPlayerPosImpl()
     {
         PlayerPos pos = new PlayerPos();
-        EntityPlayer player = (EntityPlayer)CommandScript.sender;
-        
-        pos.x = player.posX;
-        pos.y = player.posY;
-        pos.z = player.posZ;
-        pos.rotationYaw = player.rotationYaw;
-        return pos;
+        if (CommandScript.sender instanceof EntityPlayer){
+            EntityPlayer player = (EntityPlayer)CommandScript.sender;
+            pos.x = player.posX;
+            pos.y = player.posY;
+            pos.z = player.posZ;
+            pos.rotationYaw = player.rotationYaw;
+            return pos;
+        }
+        return null;
     }
     public static PlayerPos getMousePosImpl()
     {
@@ -85,8 +87,13 @@ public class CommandScript extends CommandBase {
     }
     
     public static void putBlockImpl(int x, int y, int z, int blockId, int meta){
-        EntityPlayer player = (EntityPlayer)CommandScript.sender;
-        player.worldObj.setBlockAndMetadata(x,y,z,blockId,meta);
+        World world = null;
+        if (CommandScript.sender instanceof EntityPlayer){
+            world = ((EntityPlayer)(CommandScript.sender)).worldObj;
+        }else if (CommandScript.sender instanceof TileEntity){
+            world = ((TileEntity)(CommandScript.sender)).getWorldObj();
+        }
+        world.setBlockAndMetadata(x,y,z,blockId,meta);
     }
     //
     // returns the block id and metadata at a given location in the world
@@ -143,6 +150,8 @@ public class CommandScript extends CommandBase {
             importer.defineProperty("player", player,ScriptableObject.DONTENUM);
             importer.defineProperty("world", player.worldObj,ScriptableObject.DONTENUM);
         }
+        ((ScriptableObject)(this.scope)).defineProperty("sender", par1ICommandSender,ScriptableObject.DONTENUM);
+
         if (System.out !=null){
             System.out.println(this.scope);
         }
