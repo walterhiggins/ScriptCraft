@@ -16,9 +16,11 @@ var Drone = {
     //
     // ... creates a single wooden block at the cross-hairs or player location
     //
-    // /js box(5).right(2).box('35:15',3,7,2)
+    // /js box(5).right(2).box('35:15',4,9,1)
     //
-    // ... creates a single wooden block and a 2001 black obelisk 3x7x2 in size.
+    // ... creates a single wooden block and a 2001 black obelisk that is 
+	 // 4 wide x 9 tall x 1 long in size.
+	 //
     // If you want to see what else ScriptCraft's Drone can do, read on...
     // 
     // creating a new drone
@@ -256,15 +258,22 @@ var Drone = {
         if (typeof x == "undefined"){
             var mp = getMousePos();
             if (mp){
-                this.x = mp.x;
-                this.y = mp.y;
-                this.z = mp.z;
+                this.x = mp[0];
+                this.y = mp[1];
+                this.z = mp[2];
             }else{
                 // base it on the player's current location
                 usePlayerCoords = true;
-                this.x = playerPos.x;
-                this.y = playerPos.y;
-                this.z = playerPos.z;
+					 //
+					 // it's possible that drone.js could be loaded by a non-playing op 
+					 // (from the server console)
+					 //
+					 if (!playerPos){
+						  return null;
+					 }
+                this.x = playerPos[0];
+                this.y = playerPos[1];
+                this.z = playerPos[2];
             }
         }else{
             this.x = x;
@@ -272,12 +281,12 @@ var Drone = {
             this.z = z;
         }
         if (typeof dir == "undefined"){
-            this.dir = _getDirFromRotation(playerPos.rotationYaw);
+            this.dir = _getDirFromRotation(playerPos[3]);
         }else{
             this.dir = dir%4;
         }
         if (usePlayerCoords){
-            this.fwd(2);
+            this.fwd(3);
         }
         this.chkpt('start');
 
