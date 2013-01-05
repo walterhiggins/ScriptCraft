@@ -19,13 +19,20 @@ public class ScriptCraftBukkit implements IScriptCraft
         // TODO Auto-generated method stub
         putBlock(x,y,z,blockId,meta);
         Block block = this.getBlockObjectAt(x, y, z);
-        if (block instanceof Sign){
-            Sign sign = (Sign)block;
+        BlockState blockState = block.getState();
+        if (blockState instanceof Sign){
+            Sign sign = (Sign)blockState;
             for (int i = 0; i < texts.length;i++){
                 sign.setLine(i%4, texts[i]);
             }
             sign.update(true);
         }
+    }
+    private void _putBlock(World world,int x, int y, int z, int blockId, int meta){
+        Block block = world.getBlockAt(x, y, z);
+        block.setTypeId(blockId);
+        block.setData((byte)meta);
+        // TODO - add support for trees.
     }
     /* (non-Javadoc)
      * @see net.walterhiggins.scriptcraft.IScriptCraft#putBlock(int, int, int, int, int)
@@ -44,6 +51,12 @@ public class ScriptCraftBukkit implements IScriptCraft
             BlockCommandSender bcs = (BlockCommandSender)this.invoker;
             return bcs.getBlock().getLocation().getWorld();
         }
+        return null;
+    }
+    private final Block getBlockObjectAt(int x,int y, int z){
+        World world = getInvokerWorld();
+        if (world != null)
+            return world.getBlockAt(x, y, z);
         return null;
     }
     /* (non-Javadoc)
@@ -69,19 +82,6 @@ public class ScriptCraftBukkit implements IScriptCraft
             }
         }
         this.plugin.getLogger().info(message);
-    }
-
-    private void _putBlock(World world,int x, int y, int z, int blockId, int meta){
-        Block block = world.getBlockAt(x, y, z);
-        block.setTypeId(blockId);
-        block.setData((byte)meta);
-      
-    }
-    private final Block getBlockObjectAt(int x,int y, int z){
-        World world = getInvokerWorld();
-        if (world != null)
-            return world.getBlockAt(x, y, z);
-        return null;
     }
     protected JavaPlugin plugin = null;
     public CommandSender invoker = null;
