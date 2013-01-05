@@ -4,6 +4,7 @@ import org.mozilla.javascript.*;
 import java.util.List;
 import java.io.*;
 import javax.swing.JFileChooser;
+import org.bukkit.entity.Player;
 
 public class ScriptCraftEvaluator 
 {
@@ -54,9 +55,17 @@ public class ScriptCraftEvaluator
     {
         return (ScriptableObject)this.scope;
     }
+    //
+    // wph 20130105 - Only the console user should be able to load a script
+    // players should not be able to open scripts
+    //
+    private static Object invoker = null;
     
+
     public Object eval(String javascript, Object invoker)
     {
+        ScriptCraftEvaluator.invoker = invoker;
+        
         ScriptCraftEvaluator.sc.setInvoker(invoker);
         ScriptCraftEvaluator.sc.notifyAdministrators("js> " + javascript);
         Object result = null;
@@ -81,6 +90,13 @@ public class ScriptCraftEvaluator
      */
     public static Object load(Context cx, Scriptable thisObj, Object[] args, Function funObj)
     {
+        if (ScriptCraftEvaluator.invoker instanceof Player){
+            ScriptCraftEvaluator.sc.notifyAdministrators(invoker.toString() + " tried to load a script.\n" + 
+                                                         "Only the console user can load scripts.\n" +
+                                                         "Players cannot load scripts.");
+            return null;
+        }
+        
         Object result = null;
         
         File scriptFile = null;
