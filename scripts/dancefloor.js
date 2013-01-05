@@ -1,10 +1,10 @@
+load($SCRIPT_DIR + "/drone.js");
 //
 // Create a floor of colored tiles some of which emit light.
 // The tiles change color every second creating a strobe-lit dance-floor.
 // 
 // See it in action here => http://www.youtube.com/watch?v=UEooBt6NTFo
 //
-load($SCRIPT_DIR + "/../drone.js");
 Drone.extend('dancefloor',function(width,length)
 {
     if (typeof width == "undefined")
