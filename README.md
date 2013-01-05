@@ -34,14 +34,7 @@ The Javascript `Drone` class provides a much richer API which can be used to con
 
 Prerequisites
 =============
-You'll need to install the Minecraft Coder Pack and be comfortable installing a Minecraft Mod.
-You can get the Minecraft Coder Pack here...
-
-http://mcp.ocean-labs.de/index.php/Main_Page
-
-... You will need to follow MCP's instructions to decompile your minecraft.jar file.
-
-You will also need to install Rhino (A javascript implementation for java) if it is not already installed. Type...
+You will need to install Rhino (A javascript implementation for java) if it is not already installed. Type...
 
     java org.mozilla.javascript.tools.shell.Main 
     
@@ -56,6 +49,13 @@ If Rhino is not already installed you can [download it][1], unzip it and copy th
  * Linux (Ubuntu) - /usr/lib/jvm/java-6-openjdk-i386/jre/lib/ext/ or /usr/lib/jvm/java-7-oracle/jre/lib/ext/ for Oracle Java
 
 [1]: https://developer.mozilla.org/en/RhinoDownload
+
+You will also need to install the Minecraft Coder Pack (CraftBukkit Users - please skip this section and [go here instead][buk]) and be comfortable installing a Minecraft Mod.
+You can get the Minecraft Coder Pack here...
+
+http://mcp.ocean-labs.de/index.php/Main_Page
+
+... You will need to follow MCP's instructions to decompile your minecraft.jar file.
 
 Installing
 ==========
