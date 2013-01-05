@@ -3,6 +3,8 @@ ScriptCraft
 
 A Minecraft mod that lets you build using Javascript.
 
+(Update 2013/01/04 - I've created a Bukkit Plugin as this makes installing the mod much easier - assuming you're running a CraftBukkit server - which I recommend. See [Bukkit Support][buk] for details).
+
 Description
 ===========
 The ScriptCraft mod lets you enter javascript commands at the in-game prompt. 
@@ -92,4 +94,5 @@ Further Reading
 You can find more information about [ScriptCraft on my blog][blog].
 
 [blog]: http://walterhiggins.net/blog/cat-index-scriptcraft.html
+[buk]: https://github.com/walterhiggins/ScriptCraft/blob/master/bukkit.md
 
