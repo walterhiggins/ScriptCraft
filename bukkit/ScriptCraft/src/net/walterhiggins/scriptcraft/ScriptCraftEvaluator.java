@@ -13,11 +13,11 @@ public class ScriptCraftEvaluator
 
     public static class MCScope extends ImporterTopLevel{
         /**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 
-		public MCScope(Context ctx){
+        public MCScope(Context ctx){
             super(ctx);
         }
     }
@@ -253,18 +253,18 @@ public class ScriptCraftEvaluator
         return ScriptCraftEvaluator.sc.getBlock(x,y,z);
     }
     @SuppressWarnings("unchecked")
-	public static void putSign(Context cx, Scriptable thisObj,Object[] args, Function funObj){
+        public static void putSign(Context cx, Scriptable thisObj,Object[] args, Function funObj){
         List<String> jsArray = (List<String>)args[0];
         
         String[] texts = new String[4];
         int i = 0;
         for (String s : jsArray){
-        	texts[i++] = s;
+            texts[i++] = s;
         }
         /*
-        for (int i = 0; i < jsArray.size() && i <= 3;i++){
-            texts[i] = (String)jsArray.get(i);
-        }
+          for (int i = 0; i < jsArray.size() && i <= 3;i++){
+          texts[i] = (String)jsArray.get(i);
+          }
         */
         int x = new Double(args[1].toString()).intValue();
         int y = new Double(args[2].toString()).intValue();

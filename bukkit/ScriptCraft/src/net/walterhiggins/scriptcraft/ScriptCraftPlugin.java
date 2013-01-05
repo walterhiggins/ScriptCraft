@@ -7,41 +7,41 @@ import org.mozilla.javascript.*;
 
 public class ScriptCraftPlugin extends JavaPlugin
 {
-	// right now all ops share the same JS context/scope
-	// need to look at possibly having context/scope per operator
-	//protected Map<CommandSender,ScriptCraftEvaluator> playerContexts = new HashMap<CommandSender,ScriptCraftEvaluator>();
+    // right now all ops share the same JS context/scope
+    // need to look at possibly having context/scope per operator
+    //protected Map<CommandSender,ScriptCraftEvaluator> playerContexts = new HashMap<CommandSender,ScriptCraftEvaluator>();
     protected ScriptCraftEvaluator evaluator = null;
     
     @Override
-    public void onEnable(){
+        public void onEnable(){
         getLogger().info("ScriptCraft enabled.");
         if (this.evaluator == null){
-    		this.evaluator = new ScriptCraftEvaluator(new ScriptCraftBukkit(this));
-    		this.evaluator.getScope().defineProperty("plugin", this, ScriptableObject.READONLY);
-    		//
-    		// Auto-load Javascript plugins from the js-plugins directory 
-    		// in the current working directory
-    		//
-    		String userDir = System.getProperty("user.dir");
-    		File jsPlugins = new File(userDir + System.getProperty("file.separator") + "js-plugins");
-    		if (jsPlugins.exists()){
-    			File[] files = jsPlugins.listFiles();
-    			for (File f: files){
-    				this.evaluator.eval("load(\"" + f.getAbsolutePath() + "\")", null);
-    			}
-    		}
+            this.evaluator = new ScriptCraftEvaluator(new ScriptCraftBukkit(this));
+            this.evaluator.getScope().defineProperty("plugin", this, ScriptableObject.READONLY);
+            //
+            // Auto-load Javascript plugins from the js-plugins directory 
+            // in the current working directory
+            //
+            String userDir = System.getProperty("user.dir");
+            File jsPlugins = new File(userDir + System.getProperty("file.separator") + "js-plugins");
+            if (jsPlugins.exists()){
+                File[] files = jsPlugins.listFiles();
+                for (File f: files){
+                    this.evaluator.eval("load(\"" + f.getAbsolutePath() + "\")", null);
+                }
+            }
         }
-		
+      
     }
     
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
-    	if(cmd.getName().equalsIgnoreCase("js"))
+        if(cmd.getName().equalsIgnoreCase("js"))
         { 
-    		this.evaluator.getScope().defineProperty("self", sender, ScriptableObject.DONTENUM);
-        	String javascriptCode = "";
+            this.evaluator.getScope().defineProperty("self", sender, ScriptableObject.DONTENUM);
+            String javascriptCode = "";
             for (int i = 0;i < args.length; i++){
-            	javascriptCode = javascriptCode + args[i] + " ";
+                javascriptCode = javascriptCode + args[i] + " ";
             }
             this.evaluator.eval(javascriptCode, sender);
             return true;
