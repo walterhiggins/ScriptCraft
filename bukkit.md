@@ -31,8 +31,8 @@ Post Install
 ============
 If you want certain javascript source files to load automatically when you start up your CraftBukkit server, do the following...
 
- * Create a new js-plugins directory in the location where you normally launch CraftBukkit.
- * Copy the drone.js file to the newly-created js-plugins directory.
+ * Create a new js-plugins directory in the CraftBukkit directory.
+ * Copy all of the .js files located in the scripts directory to the newly-created js-plugins directory.
 
 ... All files in the js-plugins directory will be automatically loaded when CraftBukkit starts.
 *Only players who are ops can use this plugin.* You can grant a player `op` privileges by adding them to the ops.txt file in your craftbukkit directory.
