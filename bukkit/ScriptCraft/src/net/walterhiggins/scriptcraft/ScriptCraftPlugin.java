@@ -27,7 +27,18 @@ public class ScriptCraftPlugin extends JavaPlugin
             if (jsPlugins.exists()){
                 File[] files = jsPlugins.listFiles();
                 for (File f: files){
-                    this.evaluator.eval("load(\"" + f.getAbsolutePath() + "\")", null);
+                    String canonicalPath = null;
+                    try {
+                        //
+                        // fix for bug #11
+                        //
+                        canonicalPath = f.getCanonicalPath();
+                        canonicalPath.replaceAll("\\\\", "/");
+                        this.evaluator.eval("load(\"" + canonicalPath + "\")", null);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
             }
         }
