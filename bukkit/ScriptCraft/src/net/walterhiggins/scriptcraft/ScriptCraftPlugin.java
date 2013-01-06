@@ -25,25 +25,34 @@ public class ScriptCraftPlugin extends JavaPlugin
             String userDir = System.getProperty("user.dir");
             File jsPlugins = new File(userDir + System.getProperty("file.separator") + "js-plugins");
             if (jsPlugins.exists()){
-                File[] files = jsPlugins.listFiles();
-                for (File f: files){
-                    String canonicalPath = null;
-                    try {
-                        //
-                        // fix for bug #11
-                        //
-                        canonicalPath = f.getCanonicalPath().replaceAll("\\\\", "/");
-                        this.evaluator.eval("load(\"" + canonicalPath + "\")", null);
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
+            	loadJsPlugins(jsPlugins);
             }
         }
-      
     }
     
+    private void loadJsPlugins (File directory){
+    	File[] files = directory.listFiles();
+        for (File f: files){
+            String canonicalPath = null;
+        	try {
+                this.getLogger().info("Loading javascript source file " + f);
+        		if (f.isDirectory()){
+        			loadJsPlugins(f);
+        		}else{
+        			//
+        			// fix for bug #11
+        			//
+        			canonicalPath = f.getCanonicalPath().replaceAll("\\\\", "/");
+        			if (canonicalPath.endsWith(".js")){
+        				ScriptCraftEvaluator.loadJsFile(f,this.evaluator.ctx,this.evaluator.scope);
+        			}
+        		}
+            }catch(IOException e) {
+            	// TODO Auto-generated catch block
+            	e.printStackTrace();
+            }
+        }
+    }
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
         if(cmd.getName().equalsIgnoreCase("js"))
