@@ -6,7 +6,7 @@ var global = this;
 //
 // Please read the following section to understand what a Minecraft Drone can do.
 //
-var Drone = {
+var Drone = Drone || {
     //
     // TLDNR; (Just read this if you're impatient)
     // ======
@@ -248,6 +248,12 @@ var Drone = {
 // There is no need to read any further unless you want to understand how the Drone object works.
 //
 (function(){
+	 // 
+	 // don't want to declare object more than once
+	 //
+	 if (ScriptCraft.Drone){
+		  return;
+	 }
     //
     // Drone Constructor
     //
