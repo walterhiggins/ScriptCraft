@@ -1,10 +1,16 @@
 package net.walterhiggins.scriptcraft;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.command.*;
-import org.mozilla.javascript.*;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ScriptableObject;
 
 public class ScriptCraftPlugin extends JavaPlugin
 {
@@ -14,7 +20,7 @@ public class ScriptCraftPlugin extends JavaPlugin
     protected ScriptCraftEvaluator evaluator = null;
     
     @Override
-        public void onEnable(){
+    public void onEnable(){
         getLogger().info("ScriptCraft enabled.");
         if (this.evaluator == null){
             this.evaluator = new ScriptCraftEvaluator(new ScriptCraftBukkit(this));
@@ -24,7 +30,8 @@ public class ScriptCraftPlugin extends JavaPlugin
             // in the current working directory
             //
             String userDir = System.getProperty("user.dir");
-            File jsPlugins = new File(userDir + System.getProperty("file.separator") + "js-plugins");
+            String pluginsDirectoryPath = userDir + System.getProperty("file.separator") + "js-plugins";
+            File jsPlugins = new File(pluginsDirectoryPath);
             if (jsPlugins.exists()){
                 File[] files = jsPlugins.listFiles();
                 for (File f: files){
@@ -41,9 +48,29 @@ public class ScriptCraftPlugin extends JavaPlugin
                         e.printStackTrace();
                     }
                 }
+                watchPluginsDirectory(pluginsDirectoryPath, evaluator);
             }
         }
       
+    }
+    
+    private void watchPluginsDirectory(String pluginsDirectory, final ScriptCraftEvaluator evaluator){
+    	final Path dir = Paths.get(pluginsDirectory);
+    	ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(1);
+    	newFixedThreadPool.execute(new Runnable() { 
+			public void run() { 
+				Context.enter();
+				try {
+					try {
+						new WatchJsPlugins(dir, true).processEvents(evaluator);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} finally {
+				    Context.exit();
+				}
+			}
+		});
     }
     
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
