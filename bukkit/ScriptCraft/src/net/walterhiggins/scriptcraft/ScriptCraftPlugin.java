@@ -1,6 +1,6 @@
 package net.walterhiggins.scriptcraft;
 import java.io.File;
-import java.io.IOException;
+
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.*;
 import org.mozilla.javascript.*;
@@ -25,31 +25,24 @@ public class ScriptCraftPlugin extends JavaPlugin
             String userDir = System.getProperty("user.dir");
             File jsPlugins = new File(userDir + System.getProperty("file.separator") + "js-plugins");
             if (jsPlugins.exists()){
-            	loadJsPlugins(jsPlugins);
+                loadJsPlugins(jsPlugins);
             }
         }
     }
-    
+    //
+    // called recursively to load all js plugins in the js-plugins directory and 
+    // sub-directories
+    //
     private void loadJsPlugins (File directory){
-    	File[] files = directory.listFiles();
+        File[] files = directory.listFiles();
         for (File f: files){
-            String canonicalPath = null;
-        	try {
-                this.getLogger().info("Loading javascript source file " + f);
-        		if (f.isDirectory()){
-        			loadJsPlugins(f);
-        		}else{
-        			//
-        			// fix for bug #11
-        			//
-        			canonicalPath = f.getCanonicalPath().replaceAll("\\\\", "/");
-        			if (canonicalPath.endsWith(".js")){
-        				ScriptCraftEvaluator.loadJsFile(f,this.evaluator.ctx,this.evaluator.scope);
-        			}
-        		}
-            }catch(IOException e) {
-            	// TODO Auto-generated catch block
-            	e.printStackTrace();
+            if (f.isDirectory()){
+                loadJsPlugins(f);
+            }else{
+                if (f.getAbsolutePath().endsWith(".js")){
+                    this.getLogger().info("Loading javascript source file " + f);
+                    ScriptCraftEvaluator.loadJsFile(f,this.evaluator.ctx,this.evaluator.scope);
+                }
             }
         }
     }
