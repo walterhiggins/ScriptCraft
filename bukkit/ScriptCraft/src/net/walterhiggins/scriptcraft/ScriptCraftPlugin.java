@@ -33,7 +33,7 @@ public class ScriptCraftPlugin extends JavaPlugin
                         // fix for bug #11
                         //
                         canonicalPath = f.getCanonicalPath();
-                        canonicalPath.replaceAll("\\\\", "/");
+                        canonicalPath = canonicalPath.replaceAll("\\\\", "/");
                         this.evaluator.eval("load(\"" + canonicalPath + "\")", null);
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
