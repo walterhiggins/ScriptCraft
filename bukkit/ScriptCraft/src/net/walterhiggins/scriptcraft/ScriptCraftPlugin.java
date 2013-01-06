@@ -1,5 +1,6 @@
 package net.walterhiggins.scriptcraft;
 import java.io.File;
+import java.io.IOException;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.*;
