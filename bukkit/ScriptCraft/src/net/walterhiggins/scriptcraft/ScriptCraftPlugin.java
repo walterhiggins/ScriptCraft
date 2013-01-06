@@ -1,6 +1,6 @@
 package net.walterhiggins.scriptcraft;
 import java.io.File;
-
+import java.io.IOException;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.*;
 import org.mozilla.javascript.*;
@@ -32,8 +32,7 @@ public class ScriptCraftPlugin extends JavaPlugin
                         //
                         // fix for bug #11
                         //
-                        canonicalPath = f.getCanonicalPath();
-                        canonicalPath = canonicalPath.replaceAll("\\\\", "/");
+                        canonicalPath = f.getCanonicalPath().replaceAll("\\\\", "/");
                         this.evaluator.eval("load(\"" + canonicalPath + "\")", null);
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
