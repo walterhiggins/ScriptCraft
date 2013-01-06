@@ -84,37 +84,9 @@ public class ScriptCraftEvaluator
         }
         return result;
     }
-    
-    /**
-     * Load a javascript source file and evaluate its contents.
-     */
-    public static Object load(Context cx, Scriptable thisObj, Object[] args, Function funObj)
+    protected static Object loadJsFile(File scriptFile,Context cx, Scriptable thisObj)
     {
-        if (ScriptCraftEvaluator.invoker instanceof Player){
-            ScriptCraftEvaluator.sc.notifyAdministrators(invoker.toString() + " tried to load a script.\n" + 
-                                                         "Only the console user can load scripts.\n" +
-                                                         "Players cannot load scripts.");
-            return null;
-        }
-        
-        Object result = null;
-        
-        File scriptFile = null;
-        String filename = null;
-        
-        if (args.length == 0)
-        {
-            JFileChooser fc = new javax.swing.JFileChooser();
-            int rc = fc.showOpenDialog(null);
-            if (rc ==JFileChooser.APPROVE_OPTION){
-                scriptFile = fc.getSelectedFile();
-            }else{
-                return result;
-            }
-        }else{
-            scriptFile = new File((String)args[0]);
-        }
-        
+    	Object result = null;
         FileReader in = null;
         try {
             in = new FileReader(scriptFile);
@@ -122,16 +94,19 @@ public class ScriptCraftEvaluator
         catch (FileNotFoundException ex) 
         {
             ex.printStackTrace(System.err);
-            ScriptCraftEvaluator.sc.notifyAdministrators( "Error - File not found " + args[0]);
-            Context.reportError("Couldn't open file \"" + scriptFile + "\".");
             return null;
         }
-        filename = scriptFile.getAbsolutePath();
-        System.out.println("ScripCraftEvaluator: filename=" + filename);
-        File parentFile = scriptFile.getParentFile();
+        String filename = null;
         String filedir = null;
-        if (parentFile !=null){
-            filedir = parentFile.getAbsolutePath();
+        File parentFile = null;
+        try{
+        	filename = scriptFile.getCanonicalPath().replaceAll("\\\\","/");
+        	parentFile = scriptFile.getParentFile();
+        	if (parentFile !=null){
+        		filedir = parentFile.getCanonicalPath().replaceAll("\\\\","/");
+        	}
+        }catch(IOException ioe){
+        	ioe.printStackTrace(System.err);
         }
         //
         // setup the special script-context-only variables
@@ -143,9 +118,8 @@ public class ScriptCraftEvaluator
             // Here we evalute the entire contents of the file as
             // a script. Text is printed only if the print() function
             // is called.
-            ScriptCraftEvaluator.sc.notifyAdministrators( "Loading " + filename);
             result = cx.evaluateReader(thisObj, in, filename, 1, null);
-            ScriptCraftEvaluator.sc.notifyAdministrators( "Successfully loaded " + filename);
+            
         }
         catch (WrappedException we) {
             we.printStackTrace(System.err);
@@ -177,7 +151,40 @@ public class ScriptCraftEvaluator
                 System.err.println(ioe.toString());
             }
         }
+        return result;    	
+    }
+    /**
+     * Load a javascript source file and evaluate its contents.
+     */
+    public static Object load(Context cx, Scriptable thisObj, Object[] args, Function funObj)
+    {
+        if (ScriptCraftEvaluator.invoker instanceof Player){
+            ScriptCraftEvaluator.sc.notifyAdministrators(invoker.toString() + " tried to load a script.\n" + 
+                                                         "Only the console user can load scripts.\n" +
+                                                         "Players cannot load scripts.");
+            return null;
+        }
+        
+        Object result = null;
+        
+        File scriptFile = null;
+        
+        if (args.length == 0)
+        {
+            JFileChooser fc = new javax.swing.JFileChooser();
+            int rc = fc.showOpenDialog(null);
+            if (rc ==JFileChooser.APPROVE_OPTION){
+                scriptFile = fc.getSelectedFile();
+            }else{
+                return result;
+            }
+        }else{
+            scriptFile = new File((String)args[0]);
+        }
+        
+        result = loadJsFile(scriptFile,cx,thisObj);
         return result;
+        
     }
     public static void help(Context cx, Scriptable thisObj, Object[] args, Function funObj)
     {
