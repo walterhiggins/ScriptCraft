@@ -11,8 +11,6 @@ The ScriptCraft mod lets you enter javascript commands at the in-game prompt.
 To bring up the in-game prompt press the `/` key then type `js ` followed by any javascript statement. 
 E.g. `/js 1+1` will print 2.
 ScriptCraft uses Rhino (The built-in javascript interpreter that comes with current versions of Java).  
-Unfortunately, due to the need to reobfuscate the Minecraft codebase , it is not possible to expose the entire 
-Minecraft Java API via Javascript as this goes against the current terms of use for MCP (Minecraft is not open source).
 
 As of Dec 27 2012, the ScriptCraft mod includes just a few built-in objects and functions to make building easier.
 
@@ -32,8 +30,10 @@ It is highly recommended using the attached drone.js javascript module which pro
 The Javascript `Drone` class provides a much richer API which can be used to construct buildings. See the attached
 `cottage.js` file for an example of how to load and use the `drone.js` module.
 
-Prerequisites
+Prerequisites 
 =============
+(Minecraft Coder Pack Only - [Bukkit users go here][buk] 
+
 You will need to install Rhino (A javascript implementation for java) if it is not already installed. Type...
 
     java org.mozilla.javascript.tools.shell.Main 
@@ -59,6 +59,8 @@ http://mcp.ocean-labs.de/index.php/Main_Page
 
 Installing
 ==========
+(Minecraft Coder Pack only - [Bukkit users go here][buk].
+
 Once you've installed Minecraft Coder Pack (MCP) and Rhino...
  1. Copy the CommandScript.java file to the src/minecraft/net/minecraft/src/ located in the directory where you installed MCP.
  2. Create a new directory called _ScriptCraft_ on your C:\ drive (Windows) or your home directory (Linux/Max), and copy all of the .js files provided.
@@ -78,6 +80,7 @@ Once you've installed Minecraft Coder Pack (MCP) and Rhino...
 
 Getting Started
 ===============
+(Minecraft Coder pack version only - [Bukkit users go here][buk] )
 Once you've installed the mod, launch Minecraft and type `/js load()` and load the `cottage.js` file. Once the cottage.js file is loaded you can create a new cottage by typing `/js cottage()`.
 Take a look over the cottage.js file to see how the Drone module can be used to easily create buildings. You can even create a whole row of cottages using the following in-game command...
 
