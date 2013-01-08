@@ -14,22 +14,26 @@ ScriptCraft uses Rhino (The built-in javascript interpreter that comes with curr
 
 As of Dec 27 2012, the ScriptCraft mod includes just a few built-in objects and functions to make building easier.
 
- * print(message) - prints a message on the command screen. e.g. `/js print(1+3);`  
- * getMousePos() - A function which returns the current position of the cross-hairs (if a block is selected)
+ * echo( message ) - displays a message on the player's screen. e.g. `/js echo( 1 + 3 )` or `/js echo ("Hello World")`   
+ * getMousePos() - A function which returns the current position of the cross-hairs (if a block is targeted)
  * getPlayerPos() - A function which returns the current position of the player.
- * putBlock(x,y,z,blockId,metaData) - A function which lets you place a block anywhere (if no coordinates are given the block the player is currently looking at is replaced).
- * getBlock(x,y,z) - returns the blockId and metadata at the given location (if no coordinates are given the cross-hair location is used)
- * putSign(String[] texts, x,y,z,blockId, metaData) - A function which lets you place a sign.
+ * putBlock( x, y, z, blockId, metaData ) - A function which lets you place a block anywhere (if no coordinates are given the block the player is currently looking at is replaced).
+ * getBlock( x, y, z ) - returns the blockId and metadata at the given location (if no coordinates are given the cross-hair location is used)
+ * putSign( String[] texts, x, y, z, blockId, metaData ) - A function which lets you place a sign.
+
+The above primitives can be used to create buildings which would otherwise be time-consuming to create manually.
+It is highly recommended using the attached [drone][drone] javascript plugin which provides a fluent API for building. 
+The Javascript `Drone` class provides a much richer API which can be used to construct buildings. See the attached
+[cottage.js][cottage] file for an example of how to load and use the `drone.js` module.
+
+[drone][https://github.com/walterhiggins/ScriptCraft/tree/master/js-plugins/drone]
+[cottage][https://github.com/walterhiggins/ScriptCraft/tree/master/js-plugins/drone/cottage.js]
 
 Functions in MCP version of Scriptcraft (no longer supported).
 
  * help() - Brings up a short help message.
- * load('path-to-script.js') - lets you load and execute any javascript source file. Calling load() with no parameters will bring up a File Chooser dialog. (In the context of script files, the $SCRIPT js variable will refer to the current script filename and $SCRIPTPATH refers to the directory in which the current script resides.)
+ * load('path-to-script.js') - lets you load and execute any javascript source file.  In the context of script files, the `__script` variable will refer to the current script filename and `__folder` refers to the directory in which the current script resides. In the MCP (Minecraft Coder Pack) version of ScriptCraft, calling `load()` with no parameters will bring up a File Chooser dialog. This feature was removed from the multi-player bukkit version of ScriptCraft.
 
-The above primitives can be used to create buildings which would otherwise be time-consuming to create manually.
-It is highly recommended using the attached drone.js javascript module which provides a fluent API for building. 
-The Javascript `Drone` class provides a much richer API which can be used to construct buildings. See the attached
-`cottage.js` file for an example of how to load and use the `drone.js` module.
 
 Prerequisites 
 =============
