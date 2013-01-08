@@ -6,22 +6,8 @@ The Bukkit Plugin version is also *much easer to install*.
 
 Prerequisites
 =============
-You will need to install Rhino (A javascript implementation for java) if it is not already installed. 
-To check if Rhino is already installed type...
-
-    java org.mozilla.javascript.tools.shell.Main 
-    
-... at a command prompt. If Rhino is installed you should see the following...
-
-    js> 
-    
-If Rhino is not already installed you can [download it][1], unzip it and copy the js.jar file to ...
-
- * Macintosh - /System/Library/Java/Extensions/
- * Windows - C:\jdk\jre\lib\ext (assuming the Java Dev Kit has been installed in c:\jdk)
- * Linux (Ubuntu) - /usr/lib/jvm/java-6-openjdk-i386/jre/lib/ext/ or /usr/lib/jvm/java-7-oracle/jre/lib/ext/ for Oracle Java
-
-[1]: https://developer.mozilla.org/en/RhinoDownload
+You will need to have Java version 6 or 7 installed on your machine. Check the version by typing `java -version` at a command prompt.
+You will need to install Bukkit on your machine. Bukkit is a version of Minecraft (server) that makes it easy to install plugins and customize Minecraft.
 
 Installation
 ============
@@ -29,21 +15,24 @@ If you don't want to compile from source, you can [download the compiled plugin 
 
 Post Install
 ============
-If you want certain javascript source files to load automatically when you start up your CraftBukkit server, do the following...
-
- * Create a new js-plugins directory in the CraftBukkit directory.
- * Copy all of the .js files located in the scripts directory to the newly-created js-plugins directory.
-
-... All files in the js-plugins directory will be automatically loaded when CraftBukkit starts.
+Once installed, a new js-plugins directory is automatically created in the same directory as the plugins folder.
+All files in the js-plugins directory will be automatically loaded when CraftBukkit starts.
 *Only players who are ops can use this plugin.* You can grant a player `op` privileges by adding them to the ops.txt file in your craftbukkit directory.
-I need to add further (java level) security permissions to the plugin so that ops using the `js` command have limited access to the filesystem and OS.
+
+Launch CraftBukkit, then launch the Minecraft client and create a new server connection. The IP address will be `localhost` . Once you've connected to your bukkit server and have entered the game, look at a ground-level block and type ...
+
+    /js dancefloor().up().box('35:15', 4, 9, 1)
+
+... This will create a black monolith structure 4 blocks wide by 9 blocks high by 1 block long.
+Take a look at the js-plugins/drone/drone.js file to see what ScriptCraft's drone can do.
+If you're interested in customizing minecraft beyond just creating new buildings, take a look at bukkit/event.js.
 
 Additional information
 ======================
 Because the Bukkit API is open, all of the Bukkit API is accessible via javascript once the ScriptCraft plugin is loaded. For example, in addition to the functions provided in the MCP version of ScriptCraft, there are a couple of useful Java objects exposed via javascript in the Bukkit ScriptCraft plugin...
 
- * plugin - the ScriptCraft Plugin itself. This is a useful starting point for accessing other Bukkit objects. The `plugin` object is of type [org.bukkit.plugin.java.JavaPlugin][api] and all of its properties and methods are accessible. For example... `js plugin.getServer().getMotd()` returns the server's message of the day.
- * self - The player/command-block or server console operator who invoked the js command. Again, this is a good jumping off point for diving into the Bukkit API.
+ * `__plugin` - the ScriptCraft Plugin itself. This is a useful starting point for accessing other Bukkit objects. The `__plugin` object is of type [org.bukkit.plugin.java.JavaPlugin][api] and all of its properties and methods are accessible. For example... `js plugin.getServer().getMotd()` returns the server's message of the day.
+ * `__self` - The player/command-block or server console operator who invoked the js command. Again, this is a good jumping off point for diving into the Bukkit API.
 
 [dl]: http://walterhiggins.net/blog/files/scriptcraft.jar
 [api]: http://jd.bukkit.org/apidocs/org/bukkit/plugin/java/JavaPlugin.html
