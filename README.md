@@ -24,10 +24,10 @@ As of Dec 27 2012, the ScriptCraft mod includes just a few built-in objects and 
 The above primitives can be used to create buildings which would otherwise be time-consuming to create manually.
 It is highly recommended using the attached [drone][drone] javascript plugin which provides a fluent API for building. 
 The Javascript `Drone` class provides a much richer API which can be used to construct buildings. See the attached
-[cottage.js][cottage] file for an example of how to load and use the `drone.js` module.
+[cottage.js][cottage] file for an example of you can use the sample Drone plugin to create new buildings in Minecraft.
 
-[drone][https://github.com/walterhiggins/ScriptCraft/tree/master/js-plugins/drone]
-[cottage][https://github.com/walterhiggins/ScriptCraft/tree/master/js-plugins/drone/cottage.js]
+[drone]: https://github.com/walterhiggins/ScriptCraft/tree/master/js-plugins/drone
+[cottage]: https://github.com/walterhiggins/ScriptCraft/tree/master/js-plugins/drone/cottage.js
 
 Functions in MCP version of Scriptcraft (no longer supported).
 
