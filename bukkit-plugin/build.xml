@@ -24,7 +24,7 @@
     <mkdir dir="${dist}/lib"/>
 	 <copy file="plugin.yml" todir="${build}"/>
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-    <jar jarfile="${dist}/scriptcraft-${DSTAMP}.jar" basedir="${build}"/>
+    <jar jarfile="${dist}/scriptcraft.jar" basedir="${build}"/>
   </target>
   
   <target name="clean" description="clean up" >
