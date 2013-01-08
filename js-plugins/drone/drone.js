@@ -1,4 +1,4 @@
-var ScriptCraft = ScriptCraft || {};
+load(__folder + "../core/_primitives.js");
 var global = this;
 //
 // Interface
@@ -251,22 +251,22 @@ var Drone = Drone || {
 	 // 
 	 // don't want to declare object more than once
 	 //
-	 if (ScriptCraft.Drone){
+	 if (Drone.constructor == Function)
 		  return;
-	 }
+
     //
     // Drone Constructor
     //
-    var Drone = function(x,y,z,dir)
+    Drone = function(x,y,z,dir)
     {
         var usePlayerCoords = false;
         var playerPos = getPlayerPos();
         if (typeof x == "undefined"){
             var mp = getMousePos();
             if (mp){
-                this.x = mp[0];
-                this.y = mp[1];
-                this.z = mp[2];
+                this.x = mp.x;
+                this.y = mp.y;
+                this.z = mp.z;
             }else{
                 // base it on the player's current location
                 usePlayerCoords = true;
@@ -277,9 +277,9 @@ var Drone = Drone || {
 					 if (!playerPos){
 						  return null;
 					 }
-                this.x = playerPos[0];
-                this.y = playerPos[1];
-                this.z = playerPos[2];
+                this.x = playerPos.x;
+                this.y = playerPos.y;
+                this.z = playerPos.z;
             }
         }else{
             this.x = x;
@@ -287,7 +287,7 @@ var Drone = Drone || {
             this.z = z;
         }
         if (typeof dir == "undefined"){
-            this.dir = _getDirFromRotation(playerPos[3]);
+            this.dir = _getDirFromRotation(playerPos.yaw);
         }else{
             this.dir = dir%4;
         }
@@ -885,7 +885,6 @@ var Drone = Drone || {
     };
     Drone.prototype.cylinder0 = _cylinder0;
     Drone.prototype.cylinder = _cylinder1;
-    ScriptCraft.Drone = Drone;
 
     //
     // make all Drone's methods available also as standalone functions
@@ -914,12 +913,3 @@ var Drone = Drone || {
     }
                
 }());
-Drone = ScriptCraft.Drone;
-/*
-getPlayerPos = function(){return {x:0,y:0,z:0,rotationYaw:0};};
-getMousePos = function(){return null;};
-putBlock = function(){};
-getBlock = function(){};
-drone.copy('x',4,2,3);
-*/
-drone = new Drone();

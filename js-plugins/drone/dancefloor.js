@@ -1,4 +1,4 @@
-load($SCRIPT_DIR + "/drone.js");
+load(__folder + "drone.js");
 //
 // Create a floor of colored tiles some of which emit light.
 // The tiles change color every second creating a strobe-lit dance-floor.
@@ -21,10 +21,13 @@ Drone.extend('dancefloor',function(width,length)
     disco.down().box(89,width,1,length).up();
     var floorTiles = [35,35,'35:1','35:2','35:3','35:4','35:4','35:4','35:6',20,20];
     //
-    // strobe gets called in a java thread
+    // strobe gets called in a java thread - disco only lasts 30 seconds.
     //
-    var strobe = function(){
-        while(true){
+	 var discoTicks = 30;
+    var strobe = function()
+	 {
+        while(discoTicks--)
+		  {
             disco.rand(floorTiles,width,1,length);
             java.lang.Thread.sleep(1000);
         }

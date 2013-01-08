@@ -1,4 +1,4 @@
-load($SCRIPT_DIR + "/drone.js");
+load(__folder + "drone.js");
 //
 // constructs a medieval fort
 // 

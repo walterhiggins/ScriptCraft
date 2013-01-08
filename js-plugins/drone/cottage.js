@@ -1,13 +1,10 @@
-var scriptDir = $SCRIPT_DIR;
-load(scriptDir + "/drone.js"); // assumes cottage.js and drone.js are in same directory
+load(__folder + "drone.js"); // assumes cottage.js and drone.js are in same directory
 //
 // need to use the drone module to create buildings easily
 // it can be done using calls to putBlock(), putSign(), getPlayerPos() and getMousePos()
 // but it's easier to use the Drone class
-// $SCRIPT_DIR is a special javascript variable whose value is the directory where the 
+// __folder is a special javascript variable whose value is the directory where the 
 // current script resides.
-// $SCRIPT is a special javascript variable whose value is the full name of the current script.
-//
 //
 // usage: 
 // [1] to build a cottage at the player's current location or the cross-hairs location...
