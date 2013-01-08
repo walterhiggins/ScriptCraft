@@ -4,8 +4,15 @@ var global = this;
 //
 //  The following code will print a message on screen every time a block is broken in the game
 //
-//    bukkit.on('block.BlockBreakEvent',function(evt){ 
+//    bukkit.on("block.BlockBreakEvent", function(listener, evt){ 
 //        print (evt.player.name + " broke a block!");
+//    });
+//
+//  To handle an event only once and unregister from further events...
+//    
+//    bukk.on("block.BlockBreakEvent", function(listener, evt){ 
+//        print (evt.player.name + " broke a block!");
+//        evt.handlers.unregister(listener);
 //    });
 // 
 var bukkit = bukkit || {
@@ -33,9 +40,11 @@ var bukkit = bukkit || {
     }
     var _event = org.bukkit.event;
     var _plugin = org.bukkit.plugin;
+	 // 
+	 // can't have objects that implement multiple interface in javax.scripts.* 
+	 //
     var theListener = new _event.Listener(){};
 
-    //
     var _on = function(eventType, handler, priority)
     {
         if (typeof priority == "undefined"){
@@ -51,18 +60,17 @@ var bukkit = bukkit || {
             }
         }
         var handlerList = eventType.getHandlerList();
-        var handlerWrapper = {
-            execute: function(l,e){
-                // drop listener
-                handler(e);
-            } 
-        };
-        var registeredListener = new _plugin.RegisteredListener(theListener,
-                                                                handlerWrapper,
-                                                                priority,
-                                                                plugin,
-                                                                true);
-        handlerList.register(registeredListener);
+		  var listener = {};
+        var eventExecutor = new _plugin.EventExecutor(){
+				execute: function(l,e){
+					 handler(listener.reg,e);
+				} 
+		  };
+		  listener.reg = new _plugin.RegisteredListener(
+				theListener,eventExecutor,priority,__plugin,true
+		  )
+        handlerList.register(listener.reg);
+		  return listener.reg;
     };
     bukkit.on = _on;
     bukkit._eventsLoaded = true;
