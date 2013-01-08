@@ -14,16 +14,17 @@ ScriptCraft uses Rhino (The built-in javascript interpreter that comes with curr
 
 As of Dec 27 2012, the ScriptCraft mod includes just a few built-in objects and functions to make building easier.
 
- * help() - Brings up a short help message.
  * print(message) - prints a message on the command screen. e.g. `/js print(1+3);`  
- * load('path-to-script.js') - lets you load and execute any javascript source file. Calling load() with no parameters will bring up a File Chooser dialog. (In the context of script files, the $SCRIPT js variable will refer to the current script filename and $SCRIPTPATH refers to the directory in which the current script resides.)
- * player - the Player object - unfortunately this isn't currently useful as its properties are obfuscated.
- * world - The minecraft world object - again - all properties are currently obfuscated.
  * getMousePos() - A function which returns the current position of the cross-hairs (if a block is selected)
  * getPlayerPos() - A function which returns the current position of the player.
  * putBlock(x,y,z,blockId,metaData) - A function which lets you place a block anywhere (if no coordinates are given the block the player is currently looking at is replaced).
  * getBlock(x,y,z) - returns the blockId and metadata at the given location (if no coordinates are given the cross-hair location is used)
  * putSign(String[] texts, x,y,z,blockId, metaData) - A function which lets you place a sign.
+
+Functions in MCP version of Scriptcraft (no longer supported).
+
+ * help() - Brings up a short help message.
+ * load('path-to-script.js') - lets you load and execute any javascript source file. Calling load() with no parameters will bring up a File Chooser dialog. (In the context of script files, the $SCRIPT js variable will refer to the current script filename and $SCRIPTPATH refers to the directory in which the current script resides.)
 
 The above primitives can be used to create buildings which would otherwise be time-consuming to create manually.
 It is highly recommended using the attached drone.js javascript module which provides a fluent API for building. 
@@ -32,7 +33,7 @@ The Javascript `Drone` class provides a much richer API which can be used to con
 
 Prerequisites 
 =============
-(Minecraft Coder Pack Only - [Bukkit users go here][buk] 
+(Minecraft Coder Pack Only - [Bukkit users go here][buk] )
 
 You will need to install Rhino (A javascript implementation for java) if it is not already installed. Type...
 
@@ -59,7 +60,7 @@ http://mcp.ocean-labs.de/index.php/Main_Page
 
 Installing
 ==========
-(Minecraft Coder Pack only - [Bukkit users go here][buk].
+(Minecraft Coder Pack only - [Bukkit users go here][buk]. )
 
 Once you've installed Minecraft Coder Pack (MCP) and Rhino...
  1. Copy the CommandScript.java file to the src/minecraft/net/minecraft/src/ located in the directory where you installed MCP.
