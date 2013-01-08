@@ -17,8 +17,8 @@ ScriptCraft.core = ScriptCraft.core || {};
 		  return file.getCanonicalPath().replaceAll("\\\\","/");
 	 };
 	 var _load = function(filename){
-		  print("loading " + filename);
 		  var file = new File(filename);
+		  print("loading " + _canonize(file));
 		  if (file.exists()){
 				var parent = file.getParentFile();
 				var reader = new FileReader(file);
