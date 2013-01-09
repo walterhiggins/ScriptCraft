@@ -7,6 +7,8 @@ import java.io.IOException;
 import javax.script.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.Collection;
+import java.util.Arrays;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.*;
@@ -90,8 +92,14 @@ public class ScriptCraftPlugin extends JavaPlugin
             }
             try{
                 Object result = this.engine.eval(javascriptCode);
-                if (result != null)
-                    sender.sendMessage(result.toString());
+                if (result != null){
+                    if (result instanceof java.util.Collection){
+                        java.util.Collection collection = (java.util.Collection)result;
+                        sender.sendMessage(Arrays.toString(collection.toArray()));
+                    }else{
+                        sender.sendMessage(result.toString());
+                    }
+                }
                 return true;
             }catch (Exception e){
                 sender.sendMessage(e.getMessage());
