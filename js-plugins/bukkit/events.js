@@ -23,11 +23,11 @@ var bukkit = bukkit || {
     // if the string "block.BlockBreakEvent" is supplied then it's converted to the 
     // org.bukkit.event.block.BlockBreakEvent class . For custom event classes, just 
     // supply the custom event class e.g.
-    // bukkit.on(net.yourdomain.events.YourCustomEvent,function(e){ ... });
+    // bukkit.on(net.yourdomain.events.YourCustomEvent,function(l,e){ ... });
     //
     on: function(
         /* String or java Class */ eventType, 
-        /* function */ handler, 
+        /* function( registeredListener, event) */ handler, 
         /* (optional) String (HIGH, HIGHEST, LOW, LOWEST, NORMAL, MONITOR), */ priority
     ){}
 };
