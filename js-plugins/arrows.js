@@ -16,9 +16,9 @@
  * /js arrows.explosive('player23') makes player23's arrows explosive.
  *
  ************************************************************************/
-
-load(__folder + "signs/select.js");
-load(__folder + "bukkit/events.js");
+var rootDir = __folder;
+load(rootDir + "signs/select.js");
+load(rootDir + "bukkit/events.js");
 var arrows = arrows || {};
 // ------------------------------------------------------------------------
 // Private implementation
