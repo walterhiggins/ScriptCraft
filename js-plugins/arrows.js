@@ -24,6 +24,8 @@ var arrows = arrows || {};
 // Private implementation
 // ------------------------------------------------------------------------
 (function(){
+	 var _players = {};
+
 	 //
 	 // setup functions for the arrow types
 	 //
@@ -45,8 +47,6 @@ var arrows = arrows || {};
 	 if (typeof arrows.sign != "undefined")
 		  return;
 	 
-	 var _players = {};
-
 	 var _arrowSign = 
 		  signs.select("Arrow",
 							["Normal","Explosive","Teleport","Flourish","Lightning"],
