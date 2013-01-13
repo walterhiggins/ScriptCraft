@@ -34,6 +34,6 @@ Because the Bukkit API is open, all of the Bukkit API is accessible via javascri
  * `__plugin` - the ScriptCraft Plugin itself. This is a useful starting point for accessing other Bukkit objects. The `__plugin` object is of type [org.bukkit.plugin.java.JavaPlugin][api] and all of its properties and methods are accessible. For example... `js plugin.getServer().getMotd()` returns the server's message of the day.
  * `__self` - The player/command-block or server console operator who invoked the js command. Again, this is a good jumping off point for diving into the Bukkit API.
 
-[dl]: http://walterhiggins.net/blog/files/scriptcraft.jar
+[dl]: http://walterhiggins.net/blog/files/scriptcraft/
 [api]: http://jd.bukkit.org/apidocs/org/bukkit/plugin/java/JavaPlugin.html
 [ib]: http://wiki.bukkit.org/Setting_up_a_server
