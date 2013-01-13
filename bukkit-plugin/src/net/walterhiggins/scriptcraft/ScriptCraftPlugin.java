@@ -9,6 +9,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.Collection;
 import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.*;
@@ -22,9 +24,11 @@ public class ScriptCraftPlugin extends JavaPlugin
     //protected Map<CommandSender,ScriptCraftEvaluator> playerContexts = new HashMap<CommandSender,ScriptCraftEvaluator>();
     protected ScriptEngine engine = null;
     private static final String JS_PLUGINS_DIR = "js-plugins";
-    
-    @Override
-        public void onEnable()
+
+    /** 
+     * Unzips bundled javascript code.
+     */
+    private void unzipJS()
     {
         //
         // does the js-plugins directory exist?
@@ -66,6 +70,12 @@ public class ScriptCraftPlugin extends JavaPlugin
                 ioe.printStackTrace();
             }
         }
+    }
+    
+    @Override
+        public void onEnable()
+    {
+        unzipJS();
         
         if (this.engine == null){
             try{
@@ -81,6 +91,28 @@ public class ScriptCraftPlugin extends JavaPlugin
             }
         }
     }
+    public List<String> onTabComplete(CommandSender sender, Command cmd,
+                                      String alias,
+                                      String[] args)
+    {
+        //
+        // delegate to javascript
+        //
+        List<String> result = new ArrayList<String>();
+        try {
+            this.engine.put("__onTC_result",result);
+            this.engine.put("__onTC_sender",sender);
+            this.engine.put("__onTC_cmd",cmd);
+            this.engine.put("__onTC_alias",alias);
+            this.engine.put("__onTC_args",args);
+            this.engine.eval("_onTabComplete()");
+        }catch (Exception e){
+            sender.sendMessage(e.getMessage());
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
         if(cmd.getName().equalsIgnoreCase("js"))
