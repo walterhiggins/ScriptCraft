@@ -12,16 +12,16 @@ ScriptCraft.core = ScriptCraft.core || {};
         return ;
     
     var _originalScript = __script;
-    importPackage(java.io);
+    //importPackage(java.io);
     var _canonize = function(file){
         return file.getCanonicalPath().replaceAll("\\\\","/");
     };
     var _load = function(filename){
-        var file = new File(filename);
+        var file = new java.io.File(filename);
         print("loading " + _canonize(file));
         if (file.exists()){
             var parent = file.getParentFile();
-            var reader = new FileReader(file);
+            var reader = new java.io.FileReader(file);
             __engine.put("__script",_canonize(file));
             __engine.put("__folder",(parent?_canonize(parent):"")+"/");
             __engine.eval(reader);
@@ -196,7 +196,7 @@ ScriptCraft.core = ScriptCraft.core || {};
     //
     // assumes this was loaded from js-plugins/core/
     //
-    reload(new File(__script).getParentFile().getParentFile());
+    reload(new java.io.File(__script).getParentFile().getParentFile());
 
 }());
 
