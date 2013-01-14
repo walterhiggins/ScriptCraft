@@ -572,12 +572,10 @@ var Drone = Drone || {
             var xo = (a-x0);
             var yo = (b-y0);
             if (fill){
-                if (xo < 0 && yo < 0){
-                    // bottom left quadrant
-                    drone.fwd(yo).right(xo)
-                        .box(block,Math.abs(xo*2)+1,height,Math.abs(yo*2)+1)
-                        .back(yo).left(xo);
-                }
+					 // wph 20130114 more efficient esp. for large cylinders/spheres
+					 if (yo < 0){
+						  drone.fwd(yo).right(xo).box(block,1,height,Math.abs(yo*2)+1).back(yo).left(xo);
+					 }
             }
             gotoxy(xo,yo).box(block,1,height,1).move('center');
         };
