@@ -48,7 +48,7 @@ var events = events || {
     var _on = function(eventType, handler, priority)
     {
         if (typeof priority == "undefined"){
-            priority = _event.EventPriority.NORMAL;
+            priority = _event.EventPriority.HIGHEST;
         }else{
             priority = _event.EventPriority[priority];
         }
