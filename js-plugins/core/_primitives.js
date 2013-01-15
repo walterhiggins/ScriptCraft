@@ -18,10 +18,6 @@
 		  return;
 	 }
 
-	 importPackage(org.bukkit.command);
-	 importPackage(org.bukkit.block);
-	 importPackage(org.bukkit.entity);
-
 	 var _getPlayerPos = function(){
 		  if (typeof __self == "undefined")
 				return;
@@ -58,7 +54,7 @@
 		  putBlock(x,y,z,blockId,meta);
 		  var block = _getBlockObject(x,y,z);
 		  state = block.state;
-		  if (state instanceof Sign){
+		  if (state instanceof org.bukkit.block.Sign){
 				for (var i = 0;i < texts.length; i++)
 					 state.setLine(i%4,texts[i]);
 				state.update(true);
@@ -80,9 +76,9 @@
 	 var _getWorld = function(){
 		  if (typeof __self == "undefined")
 				return;
-		  if (__self instanceof BlockCommandSender)
+		  if (__self instanceof org.bukkit.command.BlockCommandSender)
 				return __self.block.location.world;
-		  if (__self instanceof Player)
+		  if (__self instanceof org.bukkit.entity.Player)
 				return __self.location.world;
 	 };
 	 

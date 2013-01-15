@@ -61,7 +61,9 @@ var arrows = arrows || {};
 		  var projectile = event.entity;
 		  var world = projectile.world;
 		  var shooter = projectile.shooter;
-		  if (projectile instanceof Arrow && shooter instanceof Player){
+		  if (projectile instanceof org.bukkit.entity.Arrow && 
+				shooter instanceof org.bukkit.entity.Player)
+		  {
 				var arrowType = _players[shooter.name];
 				switch (arrowType){
 				case 1:
