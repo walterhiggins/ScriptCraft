@@ -5,6 +5,7 @@
   <property name="src" location="${bukkit}/src"/>
   <property name="build" location="${bukkit}/build"/>
   <property name="dist" location="./" />
+
   <target name="init">
 	 <tstamp/>
 	 <mkdir dir="${build}"/>
@@ -32,9 +33,11 @@
     <delete dir="${build}"/>
   </target>
 
-  <target name="copy-js-cb-live">
-	 <copy todir="${craftbukkit}/js-plugins">
-		<fileset dir="js-plugins"/>
-	 </copy>
+  <target name="update-live-cb" depends="bukkit-dist" description="Copy the built plugin to the live craftbukkit folder for testing.">
+	 <delete dir="${craftbukkit}/js-plugins" />
+	 <delete>
+		<fileset dir="${craftbukkit}/plugins/" includes="scriptcraft.*"/>
+	 </delete>
+	 <copy file="${dist}/scriptcraft-${bukkit-version}-${DSTAMP}.jar" todir="${craftbukkit}/plugins"/>
   </target>
 </project>

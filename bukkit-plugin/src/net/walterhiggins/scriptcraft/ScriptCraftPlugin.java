@@ -36,8 +36,8 @@ public class ScriptCraftPlugin extends JavaPlugin
         File jsPlugins = new File(JS_PLUGINS_DIR);
         if (!jsPlugins.exists())
         {
-            getLogger().info("Directory " + JS_PLUGINS_DIR + " does not exist.");
-            getLogger().info("Initializing " + JS_PLUGINS_DIR + " directory with contents from plugin archive.");
+            getLogger().finest("Directory " + JS_PLUGINS_DIR + " does not exist.");
+            getLogger().finest("Initializing " + JS_PLUGINS_DIR + " directory with contents from plugin archive.");
             
             jsPlugins.mkdir();
             
@@ -47,7 +47,7 @@ public class ScriptCraftPlugin extends JavaPlugin
                 while ( ( entry = zis.getNextEntry() ) != null)
                 {
                     String filename = entry.getName();
-                    getLogger().info("Unzipping " + filename);
+                    getLogger().finest("Unzipping " + filename);
                     File newFile = new File(jsPlugins.getName() + File.separator + filename);
  
                     //create all non exists folders

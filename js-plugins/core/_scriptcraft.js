@@ -1,4 +1,5 @@
 var global = this;
+var verbose = verbose || false;
 var ScriptCraft = ScriptCraft || {};
 ScriptCraft.core = ScriptCraft.core || {};
 //
@@ -18,31 +19,38 @@ ScriptCraft.core = ScriptCraft.core || {};
     };
     var _load = function(filename){
         var file = new java.io.File(filename);
-        print("loading " + _canonize(file));
+
+		  var canonizedFilename = _canonize(file);
+
+		  if (verbose)
+				print("loading " + canonizedFilename);
+
         if (file.exists()){
             var parent = file.getParentFile();
             var reader = new java.io.FileReader(file);
-            __engine.put("__script",_canonize(file));
+            __engine.put("__script",canonizedFilename);
             __engine.put("__folder",(parent?_canonize(parent):"")+"/");
             __engine.eval(reader);
         }else{
-            print("Error: " + filename + " not found");
+            print("Error: " + canonizedFilename + " not found");
         }
     };
     var _listJsFiles = function(store,dir)
     {
         if (typeof dir == "undefined"){
-            dir = new File(_originalScript).getParentFile().getParentFile();
+            dir = new java.io.File(_originalScript).getParentFile().getParentFile();
         }
         var files = dir.listFiles();
         for (var i = 0;i < files.length; i++){
-            if (files[i].isDirectory()){
-                _listJsFiles(store,files[i]);
+				var file = files[i];
+            if (file.isDirectory()){
+                _listJsFiles(store,file);
             }else{
-                if (files[i].getCanonicalPath().endsWith(".js") &&
-                   !(files[i].getName().startsWith("_")))
+                if (file.getCanonicalPath().endsWith(".js") &&
+                   !(file.getName().startsWith("_")) &&
+						  file.exists())
                 {
-                    store.push(files[i]);
+                    store.push(file);
                 }
             }
         }
