@@ -5,5 +5,23 @@ commands:
    js:
       description: Evaluate javascript.
       usage: /<command> Javascript code
-      permission: ScriptCraftPlugin.evaluate
-      permission-message: You don't have <permission> permission. This permission is only available to operators.
+      permission: scriptcraft.evaluate
+      permission-message: You don't have <permission> permission. 
+   jsp:
+      description: run a javascript plugin command.
+      usage: /<command> command-name command-parameters
+      permission: scriptcraft.proxy
+      permission-message: You don't have <permission> permission. 
+
+permissions:
+   scriptcraft.*:
+        description: Gives access to all scriptcraft comands
+        children:
+                scriptcraft.evaluate: true
+                scriptcraft.proxy: true
+   scriptcraft.evaluate:
+        description: Allows you to evaluate javascript code
+        default: op
+   scriptcraft.proxy:
+        description: Allows you to run a javascript command blessed by the operator
+        default: true

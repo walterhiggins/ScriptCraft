@@ -115,31 +115,37 @@ public class ScriptCraftPlugin extends JavaPlugin
     
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
-        if(cmd.getName().equalsIgnoreCase("js"))
-        { 
-            this.engine.put("__self",sender);
-            String javascriptCode = "";
+        boolean result = false;
+        String javascriptCode = "";
+        
+        if(cmd.getName().equalsIgnoreCase("js")){ 
             for (int i = 0;i < args.length; i++){
                 javascriptCode = javascriptCode + args[i] + " ";
             }
+            result = true;
+        } else if (cmd.getName().equalsIgnoreCase("jsp")){
+            javascriptCode = "command.invoke()";
+            this.engine.put("__cmdArgs",args);
+            result = true;
+        }
+        if (result){
+            this.engine.put("__self",sender);
             try{
-                Object result = this.engine.eval(javascriptCode);
-                if (result != null){
-                    if (result instanceof java.util.Collection){
-                        java.util.Collection collection = (java.util.Collection)result;
+                Object resultObj = this.engine.eval(javascriptCode);
+                if (resultObj != null){
+                    if (resultObj instanceof java.util.Collection){
+                        java.util.Collection collection = (java.util.Collection)resultObj;
                         sender.sendMessage(Arrays.toString(collection.toArray()));
                     }else{
-                        sender.sendMessage(result.toString());
+                        sender.sendMessage(resultObj.toString());
                     }
                 }
-                return true;
             }catch (Exception e){
                 sender.sendMessage(e.getMessage());
                 e.printStackTrace();
             }
-            return true;
-        } 
-        return false; 
+        }
+        return result; 
     }
 
 }
