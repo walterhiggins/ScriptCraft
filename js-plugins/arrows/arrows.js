@@ -17,8 +17,8 @@
  *
  ************************************************************************/
 var rootDir = __folder;
-load(rootDir + "signs/select.js");
-load(rootDir + "events/events.js");
+load(rootDir + "../signs/select.js");
+load(rootDir + "../events/events.js");
 var arrows = arrows || {};
 // ------------------------------------------------------------------------
 // Private implementation

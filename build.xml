@@ -16,6 +16,8 @@
 	 </javac>
   </target>
 	 
+	 
+
   <target name="zip_js">
 	 <zip zipfile="${build}/js-plugins.zip" basedir="./js-plugins"/>
   </target>
@@ -25,6 +27,10 @@
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}/lib"/>
 	 <copy file="bukkit-plugin/plugin.yml" todir="${build}"/>
+	 <replace file="${build}/plugin.yml" value="${bukkit-version}-${DSTAMP}">
+		<replacetoken>[[version]]</replacetoken>
+	 </replace>
+
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
     <jar jarfile="${dist}/scriptcraft-${bukkit-version}-${DSTAMP}.jar" basedir="${build}"/>
   </target>

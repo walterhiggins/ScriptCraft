@@ -1,9 +1,9 @@
 name: ScriptCraftPlugin
 main: net.walterhiggins.scriptcraft.ScriptCraftPlugin
-version: 0.01
+version: [[version]]
 commands:
    js:
       description: Evaluate javascript.
       usage: /<command> Javascript code
-      permission: ScriptCraftPlugin.js
-      permission-message: You don't have <permission>
+      permission: ScriptCraftPlugin.evaluate
+      permission-message: You don't have <permission> permission. This permission is only available to operators.
