@@ -1,4 +1,4 @@
-load(__folder + "../bukkit/events.js");
+load(__folder + "../events/events.js");
 //
 // signs module declaration
 //
@@ -87,7 +87,7 @@ signs.select = function(/* String */ label, /* Array */ options, /* Function */ 
 				//
 				// update it every time player interacts with it.
 				//
-				bukkit.on("player.PlayerInteractEvent",function(listener, event) {
+				events.on("player.PlayerInteractEvent",function(listener, event) {
 					 if (event.clickedBlock.state.equals(sign))
 						  _updateSign(event.player,sign);
 				});
