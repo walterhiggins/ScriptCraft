@@ -38,16 +38,37 @@
 	 };
 
 	 var _putBlock = function(x,y,z,blockId,metadata){
+		  
 		  if (typeof metadata == "undefined"){
 				metadata = 0;
 		  }
 		  var world = _getWorld();
-		  if (world){
-				var block = world.getBlockAt(x,y,z);
+		  if (!world)
+				return;
+		  
+		  var block = world.getBlockAt(x,y,z);
+
+		  if (blockId === 6){
+				var treeType = null;
+				switch (metadata){
+				case 0:
+					 treeType = org.bukkit.TreeType.BIG_TREE;
+					 break;
+				case 1:
+					 treeType = org.bukkit.TreeType.REDWOOD;
+					 break;
+				case 2:
+					 treeType = org.bukkit.TreeType.BIRCH;
+					 break;
+				case 3:
+					 treeType = org.bukkit.TreeType.JUNGLE;
+					 break;
+				}
+				return world.generateTree(block.location,treeType);
+		  }else{
 				block.setTypeId(blockId);
 				block.setData(metadata);
 		  }
-		  // todo add support for trees.
 	 };
 
 	 var _putSign = function(texts, x, y, z, blockId, meta){
