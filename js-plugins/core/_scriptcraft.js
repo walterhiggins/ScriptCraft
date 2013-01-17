@@ -19,7 +19,7 @@
   
 */
 var global = this;
-var verbose = true;//verbose || false;
+var verbose = verbose || false;
 //
 // private implementation
 //
