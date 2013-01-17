@@ -124,7 +124,7 @@ public class ScriptCraftPlugin extends JavaPlugin
             }
             result = true;
         } else if (cmd.getName().equalsIgnoreCase("jsp")){
-            javascriptCode = "command.invoke()";
+            javascriptCode = "command()";
             this.engine.put("__cmdArgs",args);
             result = true;
         }

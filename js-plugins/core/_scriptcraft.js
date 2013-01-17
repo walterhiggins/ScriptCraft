@@ -1,7 +1,24 @@
+/*
+  This file defines commonly used functions by all plugins...
+  
+  load (filename) - loads and evaluates a javascript file, returning the evaluated object.
+  
+  save (object, filename) - saves an object to a file.
+
+  plugin (name, interface, isPersistent) - defines a new plugin. If isPersistent is true then
+                                           the plugin doesn't have to worry about loading and saving
+														 state - that will be done by the framework. Just make sure 
+														 that anything you want to save (and restore) is in the 'store'
+														 property - this will be created automatically if not already defined.
+														 (its type is object {} )
+
+  ready (function) - specifies code to be executed only when all the plugins have loaded.
+
+  command (name, function) - defines a command that can be used by non-operators.
+  
+*/
 var global = this;
-var verbose = verbose || false;
-var ScriptCraft = ScriptCraft || {};
-ScriptCraft.core = ScriptCraft.core || {};
+var verbose = true;//verbose || false;
 //
 // private implementation
 //
@@ -11,13 +28,23 @@ ScriptCraft.core = ScriptCraft.core || {};
     //
     if (typeof load == "function")
         return ;
+
+    var _canonize = function(file){ return file.getCanonicalPath().replaceAll("\\\\","/"); };
     
     var _originalScript = __script;
-    //importPackage(java.io);
-    var _canonize = function(file){
-        return file.getCanonicalPath().replaceAll("\\\\","/");
-    };
-    var _load = function(filename){
+	 var parentFileObj = new java.io.File(__script).getParentFile();
+	 var jsPluginsRootDir = parentFileObj.getParentFile();
+	 var jsPluginsRootDirName = _canonize(jsPluginsRootDir);
+
+
+	 /*
+
+		Load the contents of the file and evaluate as javascript
+		
+	  */
+    var _load = function(filename)
+	 {
+		  var result = null;
         var file = new java.io.File(filename);
 
 		  var canonizedFilename = _canonize(file);
@@ -30,11 +57,17 @@ ScriptCraft.core = ScriptCraft.core || {};
             var reader = new java.io.FileReader(file);
             __engine.put("__script",canonizedFilename);
             __engine.put("__folder",(parent?_canonize(parent):"")+"/");
-            __engine.eval(reader);
+            result = __engine.eval(reader);
         }else{
             print("Error: " + canonizedFilename + " not found");
         }
+		  return result;
     };
+	 /*
+		
+		recursively walk the given directory and return a list of all .js files 
+		
+	  */
     var _listJsFiles = function(store,dir)
     {
         if (typeof dir == "undefined"){
@@ -55,6 +88,11 @@ ScriptCraft.core = ScriptCraft.core || {};
             }
         }
     };
+	 /*
+
+		Reload all of the .js files in the given directory 
+		
+	 */
     var _reload = function(pluginDir)
     {
         var jsFiles = [];
@@ -73,6 +111,77 @@ ScriptCraft.core = ScriptCraft.core || {};
             load(_canonize(jsFiles[i]));
         }
     };
+
+	 /*
+		
+		Save a javascript object to a file (saves using JSON notation)
+		
+	 */
+	 var _save = function(object, filename){
+		  var objectToStr = JSON.stringify(object);
+		  var f = new java.io.File(filename);
+		  print(filename);
+		  var out = new java.io.PrintWriter(new java.io.FileWriter(f));
+		  out.println("__data = " + objectToStr);
+		  out.close();
+	 };
+
+
+	 /*
+		plugin mgmt
+	 */
+	 var _plugins = {};
+	 var _plugin = function(/* String */ moduleName, /* Object */ moduleObject, isPersistent)
+	 {
+		  //
+		  // don't load plugin more than once
+		  //
+		  if (typeof _plugins[moduleName] != "undefined")
+				return;
+
+		  var pluginData = {persistent: isPersistent, module: moduleObject};
+		  moduleObject.store = moduleObject.store || {};
+		  _plugins[moduleName] = pluginData;
+
+		  if (isPersistent)
+				moduleObject.store = load(jsPluginsRootDirName + "/" + moduleName + "-store.txt") || {};
+		  
+		  global[moduleName] = moduleObject;
+	 };
+	 /*
+		allow for deferred execution (once all modules have loaded)
+	  */
+	 var _deferred = [];
+	 var _ready = function( func ){
+		  _deferred.push(func);
+	 };
+	 /* 
+		 command management - allow for non-ops to execute approved javascript code.
+	  */
+	 var _commands = {};
+	 var _command = function(name,func){
+		  if (typeof name == "undefined"){
+				// it's an invocation from the Java Plugin!
+				if (__cmdArgs.length === 0)
+					 throw new Error("Usage: jsp command-name command-parameters");
+				var name = __cmdArgs[0];
+				func = _commands[name]
+				if (typeof func === "undefined")
+					 throw new Error("Command '" + name + "' does not exist.");
+				var params = [];
+				for (var i =1; i < __cmdArgs.length;i++){
+					 params.push("" + __cmdArgs[i]);
+				}
+				return func(params);
+		  }else{
+				_commands[name] = func;
+				return func;
+		  }
+	 };
+
+	 /*
+		Tab Completion of the /js and /jsp commands
+	 */
     var _isJavaObject = function(o){
         var result = false;
         try {
@@ -88,9 +197,11 @@ ScriptCraft.core = ScriptCraft.core || {};
     var _getProperties = function(o)
     {
         var result = [];
-        if (_isJavaObject(o)){
+        if (_isJavaObject(o))
+		  {
             propertyLoop:
-            for (var i in o){
+            for (var i in o)
+				{
                 //
                 // don't include standard Object methods
                 //
@@ -117,9 +228,23 @@ ScriptCraft.core = ScriptCraft.core || {};
         }
         return result.sort();
     };
-
-    var __onTabComplete2 = function()
+	 /*
+		Tab completion for the /jsp commmand
+	 */
+	 var __onTabCompleteJSP = function() {
+		  var result = global.__onTC_result;
+		  for (var i in _commands)
+				result.add(i);
+		  return result;
+	 };
+	 /*
+		Tab completion for the /js command
+	 */
+    var __onTabCompleteJS = function()
     {
+		  if (__onTC_cmd.name == "jsp")
+				return __onTabCompleteJSP()
+
         var _globalSymbols = _getProperties(global)
         var result = global.__onTC_result;
         var args = global.__onTC_args;
@@ -127,9 +252,9 @@ ScriptCraft.core = ScriptCraft.core || {};
         var statement = args.join(" ");
 		  statement = statement.replace(/^\s+/,"").replace(/\s+$/,"");
 		  
-        if (statement.length == 0){
+        if (statement.length == 0)
 				propsOfLastArg = _globalSymbols;
-        }else{
+        else{
             var statementSyms = statement.split(/[^a-zA-Z0-9_\.]/);
             var lastSymbol = statementSyms[statementSyms.length-1];
             //
@@ -158,54 +283,68 @@ ScriptCraft.core = ScriptCraft.core || {};
 								// ScriptCraft.
 								//
                         for (var i =0;i < objectProps.length;i++)
-                            propsOfLastArg.push(statement+objectProps[i]);;
-                    }else{
+                            propsOfLastArg.push(statement+objectProps[i]);
+								
+						  }else{
 								// it looks like this..
 								// ScriptCraft.co
 								//
 								var li = statement.lastIndexOf(name);
 								statement = statement.substring(0,li);
 
-                        for (var i = 0; i < objectProps.length;i++){
-                            if (objectProps[i].indexOf(name) == 0){
+                        for (var i = 0; i < objectProps.length;i++)
+                            if (objectProps[i].indexOf(name) == 0)
                                 propsOfLastArg.push(statement + objectProps[i]);
-                            }
-                        }
+								
                     }
                 }else{
                     var objectProps = _getProperties(symbol);
-                    for (var i = 0; i < objectProps.length; i++){
+                    for (var i = 0; i < objectProps.length; i++)
                         propsOfLastArg.push(statement + objectProps[i]);
-                    }
                 }
             }else{
                 // loop thru globalSymbols looking for a good match
-                for (var i = 0;i < _globalSymbols.length; i++){
-                    if (_globalSymbols[i].indexOf(lastSymbol) == 0){
+                for (var i = 0;i < _globalSymbols.length; i++)
+                    if (_globalSymbols[i].indexOf(lastSymbol) == 0)
                         propsOfLastArg.push(statement.replace(lastSymbol,_globalSymbols[i]));
-                    }
-                }
+					 
             }
         }
-        for (var i = 0;i < propsOfLastArg.length; i++){
+        for (var i = 0;i < propsOfLastArg.length; i++)
             result.add(propsOfLastArg[i]);
-        }
     };
-    global._onTabComplete = __onTabComplete2;
 
+	 global.load = _load;
+	 global.save = _save;
+	 global.reload = _reload;
+	 global.plugin = _plugin;
+	 global.ready = _ready;
+	 global.command = _command;
+    global._onTabComplete = __onTabCompleteJS;
 
-    ScriptCraft.core.load = _load;
-    ScriptCraft.core.reload = _reload;
-
-    for (var f in ScriptCraft.core){
-        global[f] = ScriptCraft.core[f];
-    }
-    ScriptCraft.core.initialized = true;
     //
     // assumes this was loaded from js-plugins/core/
+	 // load all of the plugins.
     //
-    reload(new java.io.File(__script).getParentFile().getParentFile());
+    reload(jsPluginsRootDir);
 
+	 // 
+	 // all modules have loaded
+	 //
+	 for (var i =0;i < _deferred.length;i++)
+		  _deferred[i]();
+	 
+	 events.on("server.PluginDisableEvent",function(l,e){
+		  //
+		  // save all plugins which have persistent data
+		  //
+		  for (var moduleName in _plugins){
+				var pluginData = _plugins[moduleName];
+				if (pluginData.persistent)
+					 save(pluginData.module.store, jsPluginsRootDirName + "/" + moduleName + "-store.txt");
+		  }
+	 });
+	 
 }());
 
 
