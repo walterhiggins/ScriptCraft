@@ -1,4 +1,3 @@
-var rootDir = __folder;
 /*
   This module is responsible for managing commands which can be used by non-operator.
   Since by default the /js command is op-only , there needs to be a way to expose javascript
@@ -15,34 +14,26 @@ var rootDir = __folder;
   
   2. The non-operator can now change the time to day...
   /jsp time_set 0
+plugin("command", {
 
-  TODO: Figure out how to persist the 'command' module's configuration so it can be saved/restored
-  on server shutdown/startup. THis should be done in a generic way so other modules can use it.
-  
-*/
-var command = command || {
-	 
-	 register: function(/* String */ namedFunction){
-		  //
-		  // namedFunction must be in the global namespace for this to work
-		  // JSON cannot persist functions.
-		  //
-		  if (typeof namedFunction !== "string")
-				throw new Error("Usage: command.register(/* String */ namedFunction)");
-
-		  command.data[namedFunction] = true;
+	 register: function(name, func){
+		  this.store[name] = func;
 	 },
+
 	 invoke: function(){
 		  if (__cmdArgs.length === 0)
 				throw new Error("Usage: jsp command-name command-parameters");
-		  var cmdName = __cmdArgs[0];
-		  if (typeof command.data[cmdName] === "undefined")
-				throw new Error("Command '" + cmdName + "' does not exist.");
+		  var name = __cmdArgs[0];
+		  var func = this.store[name]
+		  if (typeof func === "undefined")
+				throw new Error("Command '" + name + "' does not exist.");
 		  var params = [];
 		  for (var i =1; i < __cmdArgs.length;i++){
 				params.push("" + __cmdArgs[i]);
 		  }
-		  global[cmdName](params);
-	 },
-	 data: {},
-};
+		  func(params);
+	 }
+});
+
+*/
+
