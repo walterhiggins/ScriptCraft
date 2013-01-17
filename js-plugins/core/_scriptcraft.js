@@ -5,13 +5,14 @@
   
   save (object, filename) - saves an object to a file.
 
-  plugin (name, interface, isPersistent) - defines a new plugin. If isPersistent is true then
-                                           the plugin doesn't have to worry about loading and saving
-														 state - that will be done by the framework. Just make sure 
-														 that anything you want to save (and restore) is in the 'store'
-														 property - this will be created automatically if not already defined.
-														 (its type is object {} )
-
+  plugin (name, interface, isPersistent) 
+  - defines a new plugin. If isPersistent is true then
+    the plugin doesn't have to worry about loading and saving
+	 state - that will be done by the framework. Just make sure 
+	 that anything you want to save (and restore) is in the 'store'
+	 property - this will be created automatically if not already defined.
+	 (its type is object {} )
+	 
   ready (function) - specifies code to be executed only when all the plugins have loaded.
 
   command (name, function) - defines a command that can be used by non-operators.
@@ -32,25 +33,23 @@ var verbose = true;//verbose || false;
     var _canonize = function(file){ return file.getCanonicalPath().replaceAll("\\\\","/"); };
     
     var _originalScript = __script;
-	 var parentFileObj = new java.io.File(__script).getParentFile();
-	 var jsPluginsRootDir = parentFileObj.getParentFile();
-	 var jsPluginsRootDirName = _canonize(jsPluginsRootDir);
+    var parentFileObj = new java.io.File(__script).getParentFile();
+    var jsPluginsRootDir = parentFileObj.getParentFile();
+    var jsPluginsRootDirName = _canonize(jsPluginsRootDir);
 
 
-	 /*
-
-		Load the contents of the file and evaluate as javascript
-		
-	  */
+    /*
+      Load the contents of the file and evaluate as javascript
+     */
     var _load = function(filename)
-	 {
-		  var result = null;
+    {
+        var result = null;
         var file = new java.io.File(filename);
 
-		  var canonizedFilename = _canonize(file);
+        var canonizedFilename = _canonize(file);
 
-		  if (verbose)
-				print("loading " + canonizedFilename);
+        if (verbose)
+            print("loading " + canonizedFilename);
 
         if (file.exists()){
             var parent = file.getParentFile();
@@ -61,13 +60,11 @@ var verbose = true;//verbose || false;
         }else{
             print("Error: " + canonizedFilename + " not found");
         }
-		  return result;
+        return result;
     };
-	 /*
-		
-		recursively walk the given directory and return a list of all .js files 
-		
-	  */
+    /*
+      recursively walk the given directory and return a list of all .js files 
+     */
     var _listJsFiles = function(store,dir)
     {
         if (typeof dir == "undefined"){
@@ -75,24 +72,22 @@ var verbose = true;//verbose || false;
         }
         var files = dir.listFiles();
         for (var i = 0;i < files.length; i++){
-				var file = files[i];
+            var file = files[i];
             if (file.isDirectory()){
                 _listJsFiles(store,file);
             }else{
                 if (file.getCanonicalPath().endsWith(".js") &&
                    !(file.getName().startsWith("_")) &&
-						  file.exists())
+                    file.exists())
                 {
                     store.push(file);
                 }
             }
         }
     };
-	 /*
-
-		Reload all of the .js files in the given directory 
-		
-	 */
+    /*
+      Reload all of the .js files in the given directory 
+    */
     var _reload = function(pluginDir)
     {
         var jsFiles = [];
@@ -112,76 +107,73 @@ var verbose = true;//verbose || false;
         }
     };
 
-	 /*
-		
-		Save a javascript object to a file (saves using JSON notation)
-		
-	 */
-	 var _save = function(object, filename){
-		  var objectToStr = JSON.stringify(object);
-		  var f = new java.io.File(filename);
-		  print(filename);
-		  var out = new java.io.PrintWriter(new java.io.FileWriter(f));
-		  out.println("__data = " + objectToStr);
-		  out.close();
-	 };
+    /*
+      Save a javascript object to a file (saves using JSON notation)
+    */
+    var _save = function(object, filename){
+        print(filename);
+        var objectToStr = JSON.stringify(object);
+        var f = new java.io.File(filename);
+        var out = new java.io.PrintWriter(new java.io.FileWriter(f));
+        out.println("__data = " + objectToStr);
+        out.close();
+    };
+    /*
+      plugin management
+    */
+    var _plugins = {};
+    var _plugin = function(/* String */ moduleName, /* Object */ moduleObject, isPersistent)
+    {
+        //
+        // don't load plugin more than once
+        //
+        if (typeof _plugins[moduleName] != "undefined")
+            return;
 
+        var pluginData = {persistent: isPersistent, module: moduleObject};
+        moduleObject.store = moduleObject.store || {};
+        _plugins[moduleName] = pluginData;
 
-	 /*
-		plugin mgmt
-	 */
-	 var _plugins = {};
-	 var _plugin = function(/* String */ moduleName, /* Object */ moduleObject, isPersistent)
-	 {
-		  //
-		  // don't load plugin more than once
-		  //
-		  if (typeof _plugins[moduleName] != "undefined")
-				return;
+        if (isPersistent)
+            moduleObject.store = load(jsPluginsRootDirName + "/" + moduleName + "-store.txt") || {};
+        
+        global[moduleName] = moduleObject;
+        return moduleObject;
+    };
+    /*
+      allow for deferred execution (once all modules have loaded)
+     */
+    var _deferred = [];
+    var _ready = function( func ){
+        _deferred.push(func);
+    };
+    /* 
+       command management - allow for non-ops to execute approved javascript code.
+     */
+    var _commands = {};
+    var _command = function(name,func){
+        if (typeof name == "undefined"){
+            // it's an invocation from the Java Plugin!
+            if (__cmdArgs.length === 0)
+                throw new Error("Usage: jsp command-name command-parameters");
+            var name = __cmdArgs[0];
+            func = _commands[name]
+            if (typeof func === "undefined")
+                throw new Error("Command '" + name + "' does not exist.");
+            var params = [];
+            for (var i =1; i < __cmdArgs.length;i++){
+                params.push("" + __cmdArgs[i]);
+            }
+            return func(params);
+        }else{
+            _commands[name] = func;
+            return func;
+        }
+    };
 
-		  var pluginData = {persistent: isPersistent, module: moduleObject};
-		  moduleObject.store = moduleObject.store || {};
-		  _plugins[moduleName] = pluginData;
-
-		  if (isPersistent)
-				moduleObject.store = load(jsPluginsRootDirName + "/" + moduleName + "-store.txt") || {};
-		  
-		  global[moduleName] = moduleObject;
-	 };
-	 /*
-		allow for deferred execution (once all modules have loaded)
-	  */
-	 var _deferred = [];
-	 var _ready = function( func ){
-		  _deferred.push(func);
-	 };
-	 /* 
-		 command management - allow for non-ops to execute approved javascript code.
-	  */
-	 var _commands = {};
-	 var _command = function(name,func){
-		  if (typeof name == "undefined"){
-				// it's an invocation from the Java Plugin!
-				if (__cmdArgs.length === 0)
-					 throw new Error("Usage: jsp command-name command-parameters");
-				var name = __cmdArgs[0];
-				func = _commands[name]
-				if (typeof func === "undefined")
-					 throw new Error("Command '" + name + "' does not exist.");
-				var params = [];
-				for (var i =1; i < __cmdArgs.length;i++){
-					 params.push("" + __cmdArgs[i]);
-				}
-				return func(params);
-		  }else{
-				_commands[name] = func;
-				return func;
-		  }
-	 };
-
-	 /*
-		Tab Completion of the /js and /jsp commands
-	 */
+    /*
+      Tab Completion of the /js and /jsp commands
+    */
     var _isJavaObject = function(o){
         var result = false;
         try {
@@ -198,10 +190,10 @@ var verbose = true;//verbose || false;
     {
         var result = [];
         if (_isJavaObject(o))
-		  {
+        {
             propertyLoop:
             for (var i in o)
-				{
+            {
                 //
                 // don't include standard Object methods
                 //
@@ -228,32 +220,32 @@ var verbose = true;//verbose || false;
         }
         return result.sort();
     };
-	 /*
-		Tab completion for the /jsp commmand
-	 */
-	 var __onTabCompleteJSP = function() {
-		  var result = global.__onTC_result;
-		  for (var i in _commands)
-				result.add(i);
-		  return result;
-	 };
-	 /*
-		Tab completion for the /js command
-	 */
+    /*
+      Tab completion for the /jsp commmand
+    */
+    var __onTabCompleteJSP = function() {
+        var result = global.__onTC_result;
+        for (var i in _commands)
+            result.add(i);
+        return result;
+    };
+    /*
+      Tab completion for the /js command
+    */
     var __onTabCompleteJS = function()
     {
-		  if (__onTC_cmd.name == "jsp")
-				return __onTabCompleteJSP()
+        if (__onTC_cmd.name == "jsp")
+            return __onTabCompleteJSP()
 
         var _globalSymbols = _getProperties(global)
         var result = global.__onTC_result;
         var args = global.__onTC_args;
         var propsOfLastArg = [];
         var statement = args.join(" ");
-		  statement = statement.replace(/^\s+/,"").replace(/\s+$/,"");
-		  
+        statement = statement.replace(/^\s+/,"").replace(/\s+$/,"");
+        
         if (statement.length == 0)
-				propsOfLastArg = _globalSymbols;
+            propsOfLastArg = _globalSymbols;
         else{
             var statementSyms = statement.split(/[^a-zA-Z0-9_\.]/);
             var lastSymbol = statementSyms[statementSyms.length-1];
@@ -274,28 +266,28 @@ var verbose = true;//verbose || false;
                     lastGoodSymbol = symbol;
                 }
                 if (typeof symbol == "undefined"){
-						  //
+                    //
                     // look up partial matches against last good symbol
                     //
                     var objectProps = _getProperties(lastGoodSymbol);
                     if (name == ""){
-								// if the last symbol looks like this.. 
-								// ScriptCraft.
-								//
+                        // if the last symbol looks like this.. 
+                        // ScriptCraft.
+                        //
                         for (var i =0;i < objectProps.length;i++)
                             propsOfLastArg.push(statement+objectProps[i]);
-								
-						  }else{
-								// it looks like this..
-								// ScriptCraft.co
-								//
-								var li = statement.lastIndexOf(name);
-								statement = statement.substring(0,li);
+                        
+                    }else{
+                        // it looks like this..
+                        // ScriptCraft.co
+                        //
+                        var li = statement.lastIndexOf(name);
+                        statement = statement.substring(0,li);
 
                         for (var i = 0; i < objectProps.length;i++)
                             if (objectProps[i].indexOf(name) == 0)
                                 propsOfLastArg.push(statement + objectProps[i]);
-								
+                        
                     }
                 }else{
                     var objectProps = _getProperties(symbol);
@@ -307,44 +299,51 @@ var verbose = true;//verbose || false;
                 for (var i = 0;i < _globalSymbols.length; i++)
                     if (_globalSymbols[i].indexOf(lastSymbol) == 0)
                         propsOfLastArg.push(statement.replace(lastSymbol,_globalSymbols[i]));
-					 
+                
             }
         }
         for (var i = 0;i < propsOfLastArg.length; i++)
             result.add(propsOfLastArg[i]);
     };
 
-	 global.load = _load;
-	 global.save = _save;
-	 global.reload = _reload;
-	 global.plugin = _plugin;
-	 global.ready = _ready;
-	 global.command = _command;
+    /* 
+       utility function - convert a Location to a string
+     */
+    var _locToString = function(location){
+        return JSON.stringify([""+location.world.name,location.x, location.y, location.z]);
+    };
+    global.load = _load;
+    global.save = _save;
+    global.reload = _reload;
+    global.plugin = _plugin;
+    global.ready = _ready;
+    global.command = _command;
     global._onTabComplete = __onTabCompleteJS;
+    global.locationToString = _locToString;
 
     //
     // assumes this was loaded from js-plugins/core/
-	 // load all of the plugins.
+    // load all of the plugins.
     //
     reload(jsPluginsRootDir);
 
-	 // 
-	 // all modules have loaded
-	 //
-	 for (var i =0;i < _deferred.length;i++)
-		  _deferred[i]();
-	 
-	 events.on("server.PluginDisableEvent",function(l,e){
-		  //
-		  // save all plugins which have persistent data
-		  //
-		  for (var moduleName in _plugins){
-				var pluginData = _plugins[moduleName];
-				if (pluginData.persistent)
-					 save(pluginData.module.store, jsPluginsRootDirName + "/" + moduleName + "-store.txt");
-		  }
-	 });
-	 
+    // 
+    // all modules have loaded
+    //
+    for (var i =0;i < _deferred.length;i++)
+        _deferred[i]();
+    
+    events.on("server.PluginDisableEvent",function(l,e){
+        //
+        // save all plugins which have persistent data
+        //
+        for (var moduleName in _plugins){
+            var pluginData = _plugins[moduleName];
+            if (pluginData.persistent)
+                save(pluginData.module.store, jsPluginsRootDirName + "/" + moduleName + "-store.txt");
+        }
+    });
+    
 }());
 
 

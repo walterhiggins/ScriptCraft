@@ -40,9 +40,9 @@ var events = events || {
     }
     var _event = org.bukkit.event;
     var _plugin = org.bukkit.plugin;
-	 // 
-	 // can't have objects that implement multiple interface in javax.scripts.* 
-	 //
+    // 
+    // can't have objects that implement multiple interface in javax.scripts.* 
+    //
     var theListener = new _event.Listener(){};
 
     var _on = function(eventType, handler, priority)
@@ -60,17 +60,17 @@ var events = events || {
             }
         }
         var handlerList = eventType.getHandlerList();
-		  var listener = {};
+        var listener = {};
         var eventExecutor = new _plugin.EventExecutor(){
-				execute: function(l,e){
-					 handler(listener.reg,e);
-				} 
-		  };
-		  listener.reg = new _plugin.RegisteredListener(
-				theListener,eventExecutor,priority,__plugin,true
-		  )
+            execute: function(l,e){
+                handler(listener.reg,e);
+            } 
+        };
+        listener.reg = new _plugin.RegisteredListener(
+            theListener,eventExecutor,priority,__plugin,true
+        )
         handlerList.register(listener.reg);
-		  return listener.reg;
+        return listener.reg;
     };
     events.on = _on;
     events._eventsLoaded = true;

@@ -19,8 +19,8 @@ var Drone = Drone || {
     // /js box(5).right(2).box('35:15',4,9,1)
     //
     // ... creates a single wooden block and a 2001 black obelisk that is 
-	 // 4 wide x 9 tall x 1 long in size.
-	 //
+    // 4 wide x 9 tall x 1 long in size.
+    //
     // If you want to see what else ScriptCraft's Drone can do, read on...
     // 
     // creating a new drone
@@ -248,11 +248,11 @@ var Drone = Drone || {
 // There is no need to read any further unless you want to understand how the Drone object works.
 //
 (function(){
-	 // 
-	 // don't want to declare object more than once
-	 //
-	 if (Drone.constructor == Function)
-		  return;
+    // 
+    // don't want to declare object more than once
+    //
+    if (Drone.constructor == Function)
+        return;
 
     //
     // Drone Constructor
@@ -270,13 +270,13 @@ var Drone = Drone || {
             }else{
                 // base it on the player's current location
                 usePlayerCoords = true;
-					 //
-					 // it's possible that drone.js could be loaded by a non-playing op 
-					 // (from the server console)
-					 //
-					 if (!playerPos){
-						  return null;
-					 }
+                //
+                // it's possible that drone.js could be loaded by a non-playing op 
+                // (from the server console)
+                //
+                if (!playerPos){
+                    return null;
+                }
                 this.x = playerPos.x;
                 this.y = playerPos.y;
                 this.z = playerPos.z;
@@ -572,10 +572,10 @@ var Drone = Drone || {
             var xo = (a-x0);
             var yo = (b-y0);
             if (fill){
-					 // wph 20130114 more efficient esp. for large cylinders/spheres
-					 if (yo < 0){
-						  drone.fwd(yo).right(xo).box(block,1,height,Math.abs(yo*2)+1).back(yo).left(xo);
-					 }
+                // wph 20130114 more efficient esp. for large cylinders/spheres
+                if (yo < 0){
+                    drone.fwd(yo).right(xo).box(block,1,height,Math.abs(yo*2)+1).back(yo).left(xo);
+                }
             }
             gotoxy(xo,yo).box(block,1,height,1).move('center');
         };
