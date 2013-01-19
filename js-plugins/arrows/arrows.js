@@ -44,6 +44,10 @@ var arrows = arrows || plugin("arrows",{
      */
     lightning: function(player){}
 },true);
+/*
+  initialize data
+*/
+arrows.store.players = arrows.store.players || {};
 
 /*
   private implementation of normal, explosive, teleport, flourish and lightning functions
@@ -79,8 +83,6 @@ ready(function()
       called when the player chooses an arrow option from a menu sign
      */
     var _onMenuChoice = function(event){
-        if (typeof arrows.store.players == "undefined")
-            arrows.store.players = {};
         arrows.store.players[event.player.name] = event.number;
     };
     arrows.sign = signs.menu("Arrow", 
