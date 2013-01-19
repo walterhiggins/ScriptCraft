@@ -1,0 +1,12 @@
+plugin("homes", { 
+	 /*
+		basic functions
+	  */
+	 go: function(player){},
+	 set: function(player){},
+	 remove: function(player){},
+	 help: function(){},
+	 /*
+		social functions
+	  */
+}, true);
