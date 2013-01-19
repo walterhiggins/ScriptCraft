@@ -40,7 +40,7 @@
   </target>
 
   <target name="update-live-cb" depends="bukkit-dist" description="Copy the built plugin to the live craftbukkit folder for testing.">
-	 <delete dir="${craftbukkit}/js-plugins" />
+	 <!--delete dir="${craftbukkit}/js-plugins" /-->
 	 <delete>
 		<fileset dir="${craftbukkit}/plugins/" includes="scriptcraft*.*"/>
 	 </delete>
