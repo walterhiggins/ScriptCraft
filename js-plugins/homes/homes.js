@@ -1,23 +1,33 @@
+/*
+  The homes plugin lets players set a location as home and return to the location, invite
+  other players to their home and also visit other player's homes.
+*/
 plugin("homes", { 
-	 /* ========================================================================
-		 basic functions
-		 ======================================================================== */
 	 help: function(){
 		  return [
+				/* basic functions */
 				"/jsp home : Return to your own home",
 				"/jsp home <player> : Go to player's home",
 				"/jsp home set : Set your current location as home",
 				"/jsp home delete : Delete your home location",
+
+				/* social */
 				"/jsp home list : List homes you can visit",
 				"/jsp home ilist : List players who can visit your home",
 				"/jsp home invite <player> : Invite <player> to your home",
 				"/jsp home uninvite <player> : Uninvite <player> to your home",
 				"/jsp home public : Open your home to all players",
 				"/jsp home private : Make your home private",
+
+				/* administration */
 				"/jsp home listall : Show all houses (ops only)",
 				"/jsp home clear <player> : Clears player's home location (ops only)"
 		  ];
 	 },
+	 /* ========================================================================
+		 basic functions
+		 ======================================================================== */
+
 	 go: function(guest, host){
 		  if (typeof host == "undefined")
 				host = guest;
@@ -107,7 +117,7 @@ plugin("homes", {
 		  invitations.push(guest.name);
 		  this.store.invites[host.name] = invitations;
 		  guest.sendMessage(host.name + " has invited you to their home.");
-		  guest.sendMessage("type /jsp home go " + host.name + " to accept");
+		  guest.sendMessage("type '/jsp home " + host.name + "' to accept");
 	 },
 	 /*
 		Uninvite someone to the home
@@ -156,14 +166,13 @@ plugin("homes", {
 	 }
 	 
 }, true);
-/*
-  initialize the store
+/* 
+	private implementation
 */
-homes.store.houses = homes.store.houses || {};
-homes.store.openHouses = homes.store.openHouses || {};
-homes.store.invites = homes.store.invites || {};
-
-command("home", function(params){
+(function(){
+	 /*
+		define a set of command options that can be used by players
+	  */
 	 var options = {
 		  set: function(){homes.set();},
 		  'delete': function(){ homes.remove();},
@@ -174,7 +183,10 @@ command("home", function(params){
 					 __self.sendMessage("There are no homes to visit");
 					 return;
 				}else{
-					 __self.sendMessage(["You can visit any of these " + visitable.length + " homes"].concat(visitable));
+					 __self.sendMessage([
+						  "You can visit any of these " + visitable.length + " homes"
+						  ,visitable.join(", ")
+					 ]);
 				}
 		  },
 		  ilist: function(){
@@ -182,8 +194,9 @@ command("home", function(params){
 				if (potentialVisitors.length == 0)
 					 __self.sendMessage("No one can visit your home");
 				else
-					 __self.sendMessage("These " + potentialVisitors.length + "players can visit your home\n" +
-											  JSON.stringify(potentialVisitors));
+					 __self.sendMessage([
+						  "These " + potentialVisitors.length + "players can visit your home",
+						  potentialVisitors.join(", ")]);
 		  },
 		  invite: function(){
 				if (params.length == 1){
@@ -210,15 +223,18 @@ command("home", function(params){
 					 homes.uninvite(__self,guest);
 		  },
 		  'public': function(){ 		  
-				homes.open(__self,params[1]);
+				homes.open(__self,params.slice(1).join(' '));
 				__self.sendMessage("Your home is open to the public");
 		  },
-		  'private': function(){ homes.close(); },
+		  'private': function(){ 
+				homes.close(); 
+				__self.sendMessage("Your home is closed to the public");
+		  },
 		  listall: function(){
 				if (!__self.isOp())
 					 __self.sendMessage("Only operators can do this");
 				else
-					 __self.sendMessage(homes.listall());
+					 __self.sendMessage(homes.listall().join(", "));
 		  },
 		  clear: function(){
 				if (!__self.isOp())
@@ -227,18 +243,33 @@ command("home", function(params){
 					 homes.clear(params[1]);
 		  }
 	 };
-	 if (params.length == 0){
-		  homes.go();
-		  return;
-	 }
-	 var option = options[params[0]];
-	 if (option)
-		  option()
-	 else{
-		  var host = getPlayerObject(params[1]);
-		  if (!host)
-				__self.sendMessage(param[1] + " is not here");
-		  else
-				homes.go(__self,host);
-	 }
-});
+	 var optionList = [];
+	 for (var o in options)
+		  optionList.push(o);
+	 /*
+		Expose a set of commands that players can use at the in-game command prompt
+	 */
+	 command("home", function(params){
+		  if (params.length == 0){
+				homes.go();
+				return;
+		  }
+		  var option = options[params[0]];
+		  if (option)
+				option();
+		  else{
+		  var host = getPlayerObject(params[0]);
+				if (!host)
+					 __self.sendMessage(params[0] + " is not here");
+				else
+					 homes.go(__self,host);
+		  }
+	 },optionList);
+
+	 /*
+		initialize the store
+	 */
+	 homes.store.houses = homes.store.houses || {};
+	 homes.store.openHouses = homes.store.openHouses || {};
+	 homes.store.invites = homes.store.invites || {};
+}());

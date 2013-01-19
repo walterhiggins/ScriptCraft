@@ -41,7 +41,7 @@ var verbose = verbose || false;
     /*
       Load the contents of the file and evaluate as javascript
      */
-    var _load = function(filename)
+    var _load = function(filename,warnOnFileNotFound)
     {
         var result = null;
         var file = new java.io.File(filename);
@@ -58,7 +58,8 @@ var verbose = verbose || false;
             __engine.put("__folder",(parent?_canonize(parent):"")+"/");
             result = __engine.eval(reader);
         }else{
-            print("Error: " + canonizedFilename + " not found");
+				if (warnOnFileNotFound) 
+					 __plugin.logger.warning(canonizedFilename + " not found");
         }
         return result;
     };
@@ -112,7 +113,13 @@ var verbose = verbose || false;
     */
     var _save = function(object, filename){
         print(filename);
-        var objectToStr = JSON.stringify(object);
+		  var objectToStr = null;
+		  try{
+				objectToStr = JSON.stringify(object);
+		  }catch(e){
+				print("ERROR: " + e.getMessage() + " while saving " + filename);
+				return;
+		  }
         var f = new java.io.File(filename);
         var out = new java.io.PrintWriter(new java.io.FileWriter(f));
         out.println("__data = " + objectToStr);
@@ -147,30 +154,47 @@ var verbose = verbose || false;
     var _ready = function( func ){
         _deferred.push(func);
     };
+	 var _cmdInterceptors = [];
     /* 
        command management - allow for non-ops to execute approved javascript code.
      */
     var _commands = {};
-    var _command = function(name,func){
+    var _command = function(name,func,options,intercepts){
         if (typeof name == "undefined"){
             // it's an invocation from the Java Plugin!
             if (__cmdArgs.length === 0)
                 throw new Error("Usage: jsp command-name command-parameters");
             var name = __cmdArgs[0];
-            func = _commands[name]
-            if (typeof func === "undefined")
-                throw new Error("Command '" + name + "' does not exist.");
-            var params = [];
-            for (var i =1; i < __cmdArgs.length;i++){
-                params.push("" + __cmdArgs[i]);
-            }
+				var cmd = _commands[name];
+            if (typeof cmd === "undefined"){
+					 // it's not a global command - pass it on to interceptors
+					 var intercepted = false;
+					 for (var i = 0;i < _cmdInterceptors.length;i++){
+						  if (_cmdInterceptors[i](__cmdArgs))
+								intercepted = true;
+					 }
+					 if (!intercepted)
+						  __self.sendMessage("Command '" + name + "' is not recognised");
+				}else{
+					 func = cmd.callback;
+					 var params = [];
+					 for (var i =1; i < __cmdArgs.length;i++){
+						  params.push("" + __cmdArgs[i]);
+					 }
             return func(params);
+				}
         }else{
-            _commands[name] = func;
+				if (typeof options == "undefined")
+					 options = [];
+            _commands[name] = {callback: func, options: options};
+				if (intercepts)
+					 _cmdInterceptors.push(func);
             return func;
         }
     };
-
+	 var _rmCommand = function(name){
+		  delete _commands[name];
+	 };
     /*
       Tab Completion of the /js and /jsp commands
     */
@@ -225,8 +249,14 @@ var verbose = verbose || false;
     */
     var __onTabCompleteJSP = function() {
         var result = global.__onTC_result;
-        for (var i in _commands)
-            result.add(i);
+        var args = global.__onTC_args;
+		  var cmd = _commands[args[0]];
+		  if (cmd)
+				for (var i = 0;i < cmd.options.length; i++)
+					 result.add(cmd.options[i]);
+		  else
+				for (var i in _commands)
+					 result.add(i);
         return result;
     };
     /*
