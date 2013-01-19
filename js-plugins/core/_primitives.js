@@ -1,3 +1,4 @@
+var global = this;
 //
 // Define these primitive methods used by drone.js (and potentiall others)
 //
@@ -120,12 +121,12 @@
         __self.sendMessage(msg);
     };
 
-    getPlayerPos = _getPlayerPos;
-    getMousePos = _getMousePos;
-    putBlock = _putBlock;
-    getBlock = _getBlock;
-    putSign = _putSign;
-    notifyAdministrators = _notifyAdministrators;
-    echo = _echo;
+    global.getPlayerPos = _getPlayerPos;
+    global.getMousePos = _getMousePos;
+    global.putBlock = _putBlock;
+    global.getBlock = _getBlock;
+    global.putSign = _putSign;
+    global.notifyAdministrators = _notifyAdministrators;
+    global.echo = _echo;
     
 }());

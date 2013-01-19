@@ -1,5 +1,5 @@
-load(__folder + "../core/_primitives.js");
 var global = this;
+load(__folder + "../core/_primitives.js",true);
 //
 // Interface
 // =========

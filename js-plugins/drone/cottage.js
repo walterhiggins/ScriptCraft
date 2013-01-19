@@ -1,4 +1,3 @@
-load(__folder + "drone.js"); // assumes cottage.js and drone.js are in same directory
 //
 // need to use the drone module to create buildings easily
 // it can be done using calls to putBlock(), putSign(), getPlayerPos() and getMousePos()
