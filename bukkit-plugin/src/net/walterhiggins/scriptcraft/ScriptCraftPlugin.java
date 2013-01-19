@@ -38,37 +38,50 @@ public class ScriptCraftPlugin extends JavaPlugin
         {
             getLogger().finest("Directory " + JS_PLUGINS_DIR + " does not exist.");
             getLogger().finest("Initializing " + JS_PLUGINS_DIR + " directory with contents from plugin archive.");
-            
             jsPlugins.mkdir();
-            
-            ZipInputStream zis = new ZipInputStream(getResource(JS_PLUGINS_DIR + ".zip"));
-            ZipEntry entry;
-            try {
-                while ( ( entry = zis.getNextEntry() ) != null)
-                {
-                    String filename = entry.getName();
-                    getLogger().finest("Unzipping " + filename);
-                    File newFile = new File(jsPlugins.getName() + File.separator + filename);
- 
-                    //create all non exists folders
-                    //else you will hit FileNotFoundException for compressed folder
-                    if (entry.isDirectory()){
-                        newFile.mkdirs();
-                    }else{
+        }
+        
+        ZipInputStream zis = new ZipInputStream(getResource(JS_PLUGINS_DIR + ".zip"));
+        ZipEntry entry;
+        try {
+            while ( ( entry = zis.getNextEntry() ) != null)
+            {
+                String filename = entry.getName();
+                File newFile = new File(jsPlugins.getName() + File.separator + filename);
+                
+                //create all non exists folders
+                //else you will hit FileNotFoundException for compressed folder
+                if (entry.isDirectory()){
+                    newFile.mkdirs();
+                }else{
+                    //
+                    // only write out to file if zip entry is newer than file
+                    //
+                    long zTime = entry.getTime();
+                    boolean unzip = false;
+                    if (!newFile.exists())
+                        unzip = true;
+                    else{
+                        long fTime = newFile.lastModified();
+                        if (zTime > fTime)
+                            unzip = true;
+                    }
+                    if (unzip){
+                        getLogger().info("Unzipping " + filename);
                         FileOutputStream fout = new FileOutputStream(newFile);             
                         for (int c = zis.read(); c != -1; c = zis.read()) {
                             fout.write(c);
                         }
                         fout.close();
-
                     }
-                    zis.closeEntry();
+                    
                 }
-                zis.close();
-            }catch (IOException ioe){
-                getLogger().warning(ioe.getMessage());
-                ioe.printStackTrace();
+                zis.closeEntry();
             }
+            zis.close();
+        }catch (IOException ioe){
+            getLogger().warning(ioe.getMessage());
+            ioe.printStackTrace();
         }
     }
     
