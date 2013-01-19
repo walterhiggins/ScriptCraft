@@ -14,9 +14,8 @@ plugin("homes", {
 				"/jsp home uninvite <player> : Uninvite <player> to your home",
 				"/jsp home public : Open your home to all players",
 				"/jsp home private : Make your home private",
-				"--- Operator Commands ---",
-				"/jsp home listall : Show all houses",
-				"/jsp home clear <player> : Clears player's home location"
+				"/jsp home listall : Show all houses (ops only)",
+				"/jsp home clear <player> : Clears player's home location (ops only)"
 		  ];
 	 },
 	 go: function(guest, host){
