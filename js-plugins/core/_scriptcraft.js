@@ -312,6 +312,14 @@ var verbose = verbose || false;
     var _locToString = function(location){
         return JSON.stringify([""+location.world.name,location.x, location.y, location.z]);
     };
+
+	 var _getPlayerObject = function(player){
+		  if (typeof player == "undefined")
+				return __self;
+		  if (typeof player == "string")
+				return org.bukkit.Bukkit.getPlayer(player);
+		  return player;
+	 };
     global.load = _load;
     global.save = _save;
     global.reload = _reload;
@@ -320,7 +328,7 @@ var verbose = verbose || false;
     global.command = _command;
     global._onTabComplete = __onTabCompleteJS;
     global.locationToString = _locToString;
-
+	 global.getPlayerObject = _getPlayerObject;
     //
     // assumes this was loaded from js-plugins/core/
     // load all of the plugins.
