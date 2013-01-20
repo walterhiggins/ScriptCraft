@@ -39,16 +39,14 @@ var global = this;
     };
 
     var _putBlock = function(x,y,z,blockId,metadata){
-        
-        if (typeof metadata == "undefined"){
-            metadata = 0;
-        }
-        var world = _getWorld();
-        if (!world)
-            return;
-        
-        var block = world.getBlockAt(x,y,z);
 
+        if (typeof metadata == "undefined")
+            metadata = 0;
+
+        var world = (__self instanceof org.bukkit.entity.Player)?__self.location.world:(__self instanceof org.bukkit.command.BlockCommandSender)?__self.block.location.world:null;
+
+        var block = world.getBlockAt(x,y,z);
+/*
         if (blockId === 6){
             var treeType = null;
             switch (metadata){
@@ -67,9 +65,10 @@ var global = this;
             }
             return world.generateTree(block.location,treeType);
         }else{
-            block.setTypeId(blockId);
-            block.setData(metadata);
-        }
+*/
+		  if (block.typeId != blockId || block.data != metadata)
+				block.setTypeIdAndData(blockId,metadata,false);
+  //      }
     };
 
     var _putSign = function(texts, x, y, z, blockId, meta){
@@ -96,12 +95,12 @@ var global = this;
     };
 
     var _getWorld = function(){
+        if (__self instanceof org.bukkit.entity.Player)
+            return __self.location.world;
         if (typeof __self == "undefined")
             return;
         if (__self instanceof org.bukkit.command.BlockCommandSender)
             return __self.block.location.world;
-        if (__self instanceof org.bukkit.entity.Player)
-            return __self.location.world;
     };
     
     var _notifyAdministrators = function(msg){

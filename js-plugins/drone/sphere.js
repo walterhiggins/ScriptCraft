@@ -3,8 +3,9 @@ Drone.extend('sphere', function(block,radius)
 	 var lastRadius = radius;
 	 var slices = [[radius,0]];
 	 var diameter = radius*2;
+	 var r2 = radius*radius;
 	 for (var i = 0; i <= radius;i++){
-		  var newRadius = Math.round(Math.sqrt(radius*radius - i*i));
+		  var newRadius = Math.round(Math.sqrt(r2 - i*i));
 		  if (newRadius == lastRadius)
 				slices[slices.length-1][1]++;
 		  else
@@ -20,18 +21,22 @@ Drone.extend('sphere', function(block,radius)
 		  .down(radius-slices[0][1]);
 	 
 	 var yOffset = -1;
-	 for (var i = 1; i < slices.length;i++){
+	 for (var i = 1; i < slices.length;i++)
+	 {
 		  yOffset += slices[i-1][1];
 		  var sr = slices[i][0];
 		  var sh = slices[i][1];
+		  var v = radius + yOffset, h = radius-sr;
 		  // northern hemisphere
-		  this.up(radius + yOffset).fwd(radius-sr).right(radius-sr)
+		  this.up(v).fwd(h).right(h)
 				.cylinder(block,sr,sh)
-				.left(radius - sr).back( radius - sr). down(radius + yOffset);
+				.left(h).back(h).down(v);
+	
 		  // southern hemisphere
-		  this.up(radius - (yOffset+sh+1)).fwd(radius-sr).right(radius-sr)
+		  v = radius - (yOffset+sh+1);
+		  this.up(v).fwd(h).right(h)
 				.cylinder(block,sr,sh)
-				.left(radius - sr).back( radius - sr). down(radius - (yOffset+sh+1));
+				.left(h).back(h). down(v);
 	 }
 	 return this.move('sphere');
 });
@@ -41,40 +46,8 @@ Drone.extend('sphere', function(block,radius)
 //
 Drone.extend('sphere0', function(block,radius)
 {
-	 var lastRadius = radius;
-	 var slices = [[radius,0]];
-	 var diameter = radius*2;
-	 for (var i = 0; i <= radius;i++){
-		  var newRadius = Math.round(Math.sqrt(radius*radius - i*i));
-		  if (newRadius == lastRadius)
-				slices[slices.length-1][1]++;
-		  else
-				slices.push([newRadius,1]);
-		  lastRadius = newRadius;
-	 }
-	 this.chkpt('sphere0');
-	 //
-	 // mid section
-	 //
-	 this.up(radius - slices[0][1])
-		  .cylinder0(block,radius,(slices[0][1]*2)-1)
-		  .down(radius-slices[0][1]);
-	 
-	 var yOffset = -1;
-	 for (var i = 1; i < slices.length;i++){
-		  yOffset += slices[i-1][1];
-		  var sr = slices[i][0];
-		  var sh = slices[i][1];
-
-		  // northern hemisphere
-		  this.up(radius + yOffset).fwd(radius-sr).right(radius-sr)
-				.cylinder0(block,sr,sh)
-				.left(radius - sr).back( radius - sr). down(radius + yOffset);
-
-		  // southern hemisphere
-		  this.up(radius - (yOffset+sh+1)).fwd(radius-sr).right(radius-sr)
-				.cylinder0(block,sr,sh)
-				.left(radius - sr).back( radius - sr). down(radius - (yOffset+sh+1));
-	 }
-	 return this.move('sphere0');
+	 return this.sphere(block,radius)
+		  .fwd().right().up()
+		  .sphere(0,radius-1)
+		  .back().left().down();
 });

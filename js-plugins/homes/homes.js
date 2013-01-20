@@ -198,7 +198,7 @@ plugin("homes", {
 						  "These " + potentialVisitors.length + "players can visit your home",
 						  potentialVisitors.join(", ")]);
 		  },
-		  invite: function(){
+		  invite: function(params){
 				if (params.length == 1){
 					 __self.sendMessage("You must provide a player's name");
 					 return;
@@ -210,7 +210,7 @@ plugin("homes", {
 				else
 					 homes.invite(__self,guest);
 		  },
-		  uninvite: function(){
+		  uninvite: function(params){
 				if (params.length == 1){
 					 __self.sendMessage("You must provide a player's name");
 					 return;
@@ -222,7 +222,7 @@ plugin("homes", {
 				else
 					 homes.uninvite(__self,guest);
 		  },
-		  'public': function(){ 		  
+		  'public': function(params){ 		  
 				homes.open(__self,params.slice(1).join(' '));
 				__self.sendMessage("Your home is open to the public");
 		  },
@@ -236,7 +236,7 @@ plugin("homes", {
 				else
 					 __self.sendMessage(homes.listall().join(", "));
 		  },
-		  clear: function(){
+		  clear: function(params){
 				if (!__self.isOp())
 					 __self.sendMessage("Only operators can do this");
 				else
@@ -256,7 +256,7 @@ plugin("homes", {
 		  }
 		  var option = options[params[0]];
 		  if (option)
-				option();
+				option(params);
 		  else{
 		  var host = getPlayerObject(params[0]);
 				if (!host)
