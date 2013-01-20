@@ -108,8 +108,9 @@ ready(function()
                 break;
             case 2:
                 projectile.remove();
+                var teleportCause =org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
                 shooter.teleport(projectile.location,
-                                 org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.ENDER_PEARL);
+                                 teleportCause.PLUGIN);
                 break;
             case 3:
                 projectile.remove();

@@ -291,6 +291,8 @@ var Drone = Drone || {
         }else{
             this.dir = dir%4;
         }
+        // for debugging
+        //__self.sendMessage("New Drone " + this.toString());
         if (usePlayerCoords){
             this.fwd(3);
         }
@@ -575,13 +577,13 @@ var Drone = Drone || {
                 // wph 20130114 more efficient esp. for large cylinders/spheres
                 if (yo < 0){
                     drone
-								.fwd(yo).right(xo)
-								.box(block,1,height,Math.abs(yo*2)+1)
-								.back(yo).left(xo);
+                        .fwd(yo).right(xo)
+                        .box(block,1,height,Math.abs(yo*2)+1)
+                        .back(yo).left(xo);
                 }
             }else{
-					 gotoxy(xo,yo).box(block,1,height,1).move('center');
-				}
+                gotoxy(xo,yo).box(block,1,height,1).move('center');
+            }
         };
         //
         // credit: Following code is copied almost verbatim from
@@ -763,18 +765,18 @@ var Drone = Drone || {
         return this.box(randomized,w,h,d);
     };
     var _trees = {oak: org.bukkit.TreeType.BIG_TREE ,
-						spruce: org.bukkit.TreeType.REDWOOD ,
-						birch: org.bukkit.TreeType.BIRCH ,
-						jungle: org.bukkit.TreeType.JUNGLE };
+                  spruce: org.bukkit.TreeType.REDWOOD ,
+                  birch: org.bukkit.TreeType.BIRCH ,
+                  jungle: org.bukkit.TreeType.JUNGLE };
     for (var p in _trees)
-	 {
+    {
         Drone.prototype[p] = function(v){
-				return function(){ 
-					 var treeLoc = new org.bukkit.Location(__self.world,this.x,this.y,this.z);
-					 treeLoc.world.generateTree(treeLoc,v);
-					 return this;
-				};
-		  }(_trees[p]);
+            return function(){ 
+                var treeLoc = new org.bukkit.Location(__self.world,this.x,this.y,this.z);
+                treeLoc.world.generateTree(treeLoc,v);
+                return this;
+            };
+        }(_trees[p]);
     }
 
     Drone.prototype.garden = function(w,d)
