@@ -1,3 +1,5 @@
+load(__folder + "drone.js");
+
 Drone.extend('sphere', function(block,radius)
 {
     var lastRadius = radius;

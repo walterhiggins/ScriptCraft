@@ -8,11 +8,11 @@
   plugin (name, interface, isPersistent) 
   - defines a new plugin. If isPersistent is true then
     the plugin doesn't have to worry about loading and saving
-	 state - that will be done by the framework. Just make sure 
-	 that anything you want to save (and restore) is in the 'store'
-	 property - this will be created automatically if not already defined.
-	 (its type is object {} )
-	 
+    state - that will be done by the framework. Just make sure 
+    that anything you want to save (and restore) is in the 'store'
+    property - this will be created automatically if not already defined.
+    (its type is object {} )
+    
   ready (function) - specifies code to be executed only when all the plugins have loaded.
 
   command (name, function) - defines a command that can be used by non-operators.
@@ -58,8 +58,8 @@ var verbose = verbose || false;
             __engine.put("__folder",(parent?_canonize(parent):"")+"/");
             result = __engine.eval(reader);
         }else{
-				if (warnOnFileNotFound) 
-					 __plugin.logger.warning(canonizedFilename + " not found");
+            if (warnOnFileNotFound) 
+                __plugin.logger.warning(canonizedFilename + " not found");
         }
         return result;
     };
@@ -104,7 +104,7 @@ var verbose = verbose || false;
         // as dependencies by myMiniGame.js and do not need to be loaded via js reload
         //
         for (var i = 0;i < jsFiles.length; i++){
-            load(_canonize(jsFiles[i]));
+            load(_canonize(jsFiles[i]),true);
         }
     };
 
@@ -113,13 +113,13 @@ var verbose = verbose || false;
     */
     var _save = function(object, filename){
         print(filename);
-		  var objectToStr = null;
-		  try{
-				objectToStr = JSON.stringify(object);
-		  }catch(e){
-				print("ERROR: " + e.getMessage() + " while saving " + filename);
-				return;
-		  }
+        var objectToStr = null;
+        try{
+            objectToStr = JSON.stringify(object);
+        }catch(e){
+            print("ERROR: " + e.getMessage() + " while saving " + filename);
+            return;
+        }
         var f = new java.io.File(filename);
         var out = new java.io.PrintWriter(new java.io.FileWriter(f));
         out.println("__data = " + objectToStr);
@@ -154,7 +154,7 @@ var verbose = verbose || false;
     var _ready = function( func ){
         _deferred.push(func);
     };
-	 var _cmdInterceptors = [];
+    var _cmdInterceptors = [];
     /* 
        command management - allow for non-ops to execute approved javascript code.
      */
@@ -165,36 +165,36 @@ var verbose = verbose || false;
             if (__cmdArgs.length === 0)
                 throw new Error("Usage: jsp command-name command-parameters");
             var name = __cmdArgs[0];
-				var cmd = _commands[name];
+            var cmd = _commands[name];
             if (typeof cmd === "undefined"){
-					 // it's not a global command - pass it on to interceptors
-					 var intercepted = false;
-					 for (var i = 0;i < _cmdInterceptors.length;i++){
-						  if (_cmdInterceptors[i](__cmdArgs))
-								intercepted = true;
-					 }
-					 if (!intercepted)
-						  __self.sendMessage("Command '" + name + "' is not recognised");
-				}else{
-					 func = cmd.callback;
-					 var params = [];
-					 for (var i =1; i < __cmdArgs.length;i++){
-						  params.push("" + __cmdArgs[i]);
-					 }
+                // it's not a global command - pass it on to interceptors
+                var intercepted = false;
+                for (var i = 0;i < _cmdInterceptors.length;i++){
+                    if (_cmdInterceptors[i](__cmdArgs))
+                        intercepted = true;
+                }
+                if (!intercepted)
+                    __self.sendMessage("Command '" + name + "' is not recognised");
+            }else{
+                func = cmd.callback;
+                var params = [];
+                for (var i =1; i < __cmdArgs.length;i++){
+                    params.push("" + __cmdArgs[i]);
+                }
             return func(params);
-				}
+            }
         }else{
-				if (typeof options == "undefined")
-					 options = [];
+            if (typeof options == "undefined")
+                options = [];
             _commands[name] = {callback: func, options: options};
-				if (intercepts)
-					 _cmdInterceptors.push(func);
+            if (intercepts)
+                _cmdInterceptors.push(func);
             return func;
         }
     };
-	 var _rmCommand = function(name){
-		  delete _commands[name];
-	 };
+    var _rmCommand = function(name){
+        delete _commands[name];
+    };
     /*
       Tab Completion of the /js and /jsp commands
     */
@@ -250,13 +250,13 @@ var verbose = verbose || false;
     var __onTabCompleteJSP = function() {
         var result = global.__onTC_result;
         var args = global.__onTC_args;
-		  var cmd = _commands[args[0]];
-		  if (cmd)
-				for (var i = 0;i < cmd.options.length; i++)
-					 result.add(cmd.options[i]);
-		  else
-				for (var i in _commands)
-					 result.add(i);
+        var cmd = _commands[args[0]];
+        if (cmd)
+            for (var i = 0;i < cmd.options.length; i++)
+                result.add(cmd.options[i]);
+        else
+            for (var i in _commands)
+                result.add(i);
         return result;
     };
     /*
@@ -343,13 +343,13 @@ var verbose = verbose || false;
         return JSON.stringify([""+location.world.name,location.x, location.y, location.z]);
     };
 
-	 var _getPlayerObject = function(player){
-		  if (typeof player == "undefined")
-				return __self;
-		  if (typeof player == "string")
-				return org.bukkit.Bukkit.getPlayer(player);
-		  return player;
-	 };
+    var _getPlayerObject = function(player){
+        if (typeof player == "undefined")
+            return __self;
+        if (typeof player == "string")
+            return org.bukkit.Bukkit.getPlayer(player);
+        return player;
+    };
     global.load = _load;
     global.save = _save;
     global.reload = _reload;
@@ -358,7 +358,7 @@ var verbose = verbose || false;
     global.command = _command;
     global._onTabComplete = __onTabCompleteJS;
     global.locationToString = _locToString;
-	 global.getPlayerObject = _getPlayerObject;
+    global.getPlayerObject = _getPlayerObject;
     //
     // assumes this was loaded from js-plugins/core/
     // load all of the plugins.

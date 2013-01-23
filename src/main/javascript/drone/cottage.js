@@ -1,3 +1,4 @@
+load(__folder + "drone.js");
 //
 // need to use the drone module to create buildings easily
 // it can be done using calls to putBlock(), putSign(), getPlayerPos() and getMousePos()
