@@ -56,7 +56,11 @@ var verbose = verbose || false;
             var reader = new java.io.FileReader(file);
             __engine.put("__script",canonizedFilename);
             __engine.put("__folder",(parent?_canonize(parent):"")+"/");
-            result = __engine.eval(reader);
+            try{
+                result = __engine.eval(reader);
+            }catch (e){
+                __plugin.logger.severe("Error evaluating " + filename + ", " + e );
+            }
         }else{
             if (warnOnFileNotFound) 
                 __plugin.logger.warning(canonizedFilename + " not found");
