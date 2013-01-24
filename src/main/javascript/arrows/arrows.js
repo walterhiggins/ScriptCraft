@@ -62,7 +62,7 @@ arrows.store.players = arrows.store.players || {};
         arrows[type] = (function(n){
             return function(player){
                 if (typeof player == "undefined")
-                    player = __self;
+                    player = self;
                 var playerName = null;
                 if (typeof player == "string")
                     playerName = player;

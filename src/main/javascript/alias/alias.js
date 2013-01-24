@@ -36,26 +36,26 @@ command("alias",function(params){
 		this function also intercepts command options for /jsp
 	  */
 	 if (params[0] === "help"){
-		  __self.sendMessage(alias.help());
+		  self.sendMessage(alias.help());
 		  return;
 	 }
 	 if (params[0] === "set"){
 		  var aliasCmd = params[1];
 		  var cmdStr = params.slice(2).join(' ');
 		  var cmds = cmdStr.split(';');
-		  alias.set(__self,aliasCmd,cmds);
+		  alias.set(self,aliasCmd,cmds);
 		  return;
 	 }
 	 if (params[0] === "delete"){
-		  alias.remove(__self,params[1]);
+		  alias.remove(self,params[1]);
 		  return ;
 	 }
 	 if (params[0] === "list"){
-		  __self.sendMessage(alias.list(__self));
+		  self.sendMessage(alias.list(self));
 		  return;
 	 }
 	 
-	 var playerHasAliases = alias.store.players[__self.name];
+	 var playerHasAliases = alias.store.players[self.name];
 	 if (!playerHasAliases)
 		  return false;
 	 // is it an alias?
@@ -66,7 +66,7 @@ command("alias",function(params){
 		  // fill in template
 		  var cmd = commands[i];
 		  cmd = cmd.replace(/{([0-9]*)}/g,function(dummy,index){ return params[index];})
-		  __self.performCommand(cmd);
+		  self.performCommand(cmd);
 	 }
 	 return true;
 

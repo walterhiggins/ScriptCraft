@@ -38,15 +38,15 @@ ready(function()
         var colorNamesInColor = [];
         for (var i = 0;i < colors.length;i++)
             colorNamesInColor[i] = "§"+colorCodes[colors[i]] + colors[i];
-        __self.sendMessage("valid chat colors are " + colorNamesInColor.join(", "));
+        self.sendMessage("valid chat colors are " + colorNamesInColor.join(", "));
     };
     command("list_colors", listColors);
     command("chat_color",function(params){
         var color = params[0];
         if (colorCodes[color]){
-            chat.setColor(__self,color);
+            chat.setColor(self,color);
         }else{
-            __self.sendMessage(color + " is not a valid color");
+            self.sendMessage(color + " is not a valid color");
             listColors();
         }
     },colors);

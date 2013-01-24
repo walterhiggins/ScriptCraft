@@ -14,8 +14,7 @@ import java.util.ArrayList;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.*;
-
-
+import org.bukkit.Bukkit;
 
 public class ScriptCraftPlugin extends JavaPlugin
 {
@@ -96,7 +95,7 @@ public class ScriptCraftPlugin extends JavaPlugin
                 File boot = new File(JS_PLUGINS_DIR + "/core/_scriptcraft.js");
                 this.engine = factory.getEngineByName("JavaScript");
                 this.engine.put("__engine",engine);
-                this.engine.put("__plugin",this);
+                this.engine.put("plugin",this);
                 this.engine.put("__script",boot.getCanonicalPath().replaceAll("\\\\","/"));
                 this.engine.eval(new FileReader(boot));  
             }catch(Exception e){
@@ -142,7 +141,7 @@ public class ScriptCraftPlugin extends JavaPlugin
             result = true;
         }
         if (result){
-            this.engine.put("__self",sender);
+            this.engine.put("self",sender);
             try{
                 Object resultObj = this.engine.eval(javascriptCode);
                 if (resultObj != null){

@@ -1,99 +1,109 @@
 ScriptCraft
 ===========
-
-A Minecraft mod that lets you build using Javascript.
-
-(Update 2013/01/04 - I've created a Bukkit Plugin as this makes installing the mod much easier - assuming you're running a CraftBukkit server - which I recommend. See [Bukkit Support][buk] for details).
+A Minecraft mod that lets you create mods using Javascript.
 
 Description
 ===========
-The ScriptCraft mod lets you enter javascript commands at the in-game prompt. 
-To bring up the in-game prompt press the `/` key then type `js ` followed by any javascript statement. 
-E.g. `/js 1+1` will print 2.
-ScriptCraft uses Rhino (The built-in javascript interpreter that comes with current versions of Java).  
+ScriptCraft is a plugin for Minecraft Servers which lets
+operators/administrators/plug-in authors customize the game using
+Javascript.  ScriptCraft makes it easier to create your own mods. Mods
+can be written in Javscript and use the full Bukkit API.  The
+ScriptCraft mod also lets you enter javascript commands at the in-game
+prompt.  To bring up the in-game prompt press the `/` key then type
+`js ` followed by any javascript statement.  E.g. `/js 1+1` will print
+2.
 
-As of Dec 27 2012, the ScriptCraft mod includes just a few built-in objects and functions to make building easier.
+ScriptCraft also includes many objects and functions to make building and modding easier using Javascript.
 
- * echo( message ) - displays a message on the player's screen. e.g. `/js echo( 1 + 3 )` or `/js echo ("Hello World")`   
+ * echo( message ) - displays a message on the player's screen. e.g. `/js echo( 1 + 3 )` or `/js echo ("Hello World")`
  * getMousePos() - A function which returns the current position of the cross-hairs (if a block is targeted)
  * getPlayerPos() - A function which returns the current position of the player.
  * putBlock( x, y, z, blockId, metaData ) - A function which lets you place a block anywhere (if no coordinates are given the block the player is currently looking at is replaced).
  * getBlock( x, y, z ) - returns the blockId and metadata at the given location (if no coordinates are given the cross-hair location is used)
  * putSign( String[] texts, x, y, z, blockId, metaData ) - A function which lets you place a sign.
 
-The above primitives can be used to create buildings which would otherwise be time-consuming to create manually.
-It is highly recommended using the attached [drone][drone] javascript plugin which provides a fluent API for building. 
-The Javascript `Drone` class provides a much richer API which can be used to construct buildings. See the attached
-[cottage.js][cottage] file for an example of you can use the sample Drone plugin to create new buildings in Minecraft.
+The above primitives can be used to create buildings which would
+otherwise be time-consuming to create manually.  It is highly
+recommended using the attached [drone][drone] javascript plugin which
+provides a fluent API for building.  The Javascript `Drone` class
+provides a much richer API which can be used to construct
+buildings. See the attached [cottage.js][cottage] file for an example
+of you can use the sample Drone plugin to create new buildings in
+Minecraft.
 
-[drone]: https://github.com/walterhiggins/ScriptCraft/tree/master/js-plugins/drone
-[cottage]: https://github.com/walterhiggins/ScriptCraft/tree/master/js-plugins/drone/cottage.js
+[drone]: https://github.com/walterhiggins/ScriptCraft/tree/master/src/main/javascript/drone/drone.js
+[cottage]: https://github.com/walterhiggins/ScriptCraft/tree/master/src/main/javascript//drone/cottage.js
 
-Functions in MCP version of Scriptcraft (no longer supported).
-
- * help() - Brings up a short help message.
- * load('path-to-script.js') - lets you load and execute any javascript source file.  In the context of script files, the `__script` variable will refer to the current script filename and `__folder` refers to the directory in which the current script resides. In the MCP (Minecraft Coder Pack) version of ScriptCraft, calling `load()` with no parameters will bring up a File Chooser dialog. This feature was removed from the multi-player bukkit version of ScriptCraft.
-
-
-Prerequisites 
+Prerequisites
 =============
-(Minecraft Coder Pack Only - [Bukkit users go here][buk] )
+You will need to have Java version 6 or 7 installed on your
+machine. Check the version by typing `java -version` at a command
+prompt.  You will need to [install Bukkit][ib] on your machine. Bukkit
+is a version of Minecraft (server) that makes it easy to install
+plugins and customize Minecraft.  You can [download the CraftBukkit
+server here.][cbdl]
 
-You will need to install Rhino (A javascript implementation for java) if it is not already installed. Type...
+Installation
+============
+If you don't want to compile from source, you can [download the
+compiled plugin here][dl] and copy it the craftbukkit's plugins
+directory.
 
-    java org.mozilla.javascript.tools.shell.Main 
-    
-... at a command prompt to see if Rhino is already installed. If Rhino is installed you should see the following...
+Post Install
+============
+Once installed, a new js-plugins directory is automatically created in
+the same directory as the plugins folder.  All files in the js-plugins
+directory will be automatically loaded when CraftBukkit starts.  *Only
+players who are ops can use this plugin.* You can grant a player `op`
+privileges by typing 'op <username>' at the server console prompt or
+by adding the player's username to the ops.txt file in your
+craftbukkit directory.
 
-    js> 
-    
-If Rhino is not already installed you can [download it][1], unzip it and copy the js.jar file to ...
+Launch CraftBukkit, then launch the Minecraft client and create a new
+server connection. The IP address will be `localhost` . Once you've
+connected to your bukkit server and have entered the game, look at a
+ground-level block and type ...
 
- * Macintosh - /System/Library/Java/Extensions/
- * Windows - C:\jdk\jre\lib\ext (assuming the Java Dev Kit has been installed in c:\jdk)
- * Linux (Ubuntu) - /usr/lib/jvm/java-6-openjdk-i386/jre/lib/ext/ or /usr/lib/jvm/java-7-oracle/jre/lib/ext/ for Oracle Java
+    /js up().box('35:15', 4, 9, 1)
 
-[1]: https://developer.mozilla.org/en/RhinoDownload
+... This will create a black monolith structure 4 blocks wide by 9
+blocks high by 1 block long.  Take a look at the
+src/main/javascript/drone/drone.js file to see what ScriptCraft's
+drone can do.  If you're interested in customizing minecraft beyond
+just creating new buildings, take a look at [./homes/homes.js][homes]
+and [./chat/color.js][chatcolor] for examples of how to create a
+javascript plugin for Minecraft.
 
-You will also need to install the Minecraft Coder Pack (CraftBukkit Users - please skip this section and [go here instead][buk]) and be comfortable installing a Minecraft Mod.
-You can get the Minecraft Coder Pack here...
+[ho]: blob/master/src/main/javascript/homes/homes.js
+[ch]: blob/master/src/main/javascript/chat/color.js
+[ar]: blob/master/src/main/javascript/arrows/arrows.js
+[si]: blob/master/src/main/javascript/signs/menu.js
 
-http://mcp.ocean-labs.de/index.php/Main_Page
+A Javascript mod for minecraft is just a javascript source file (.js)
+located in the craftbukkit/js-plugins directory. All .js files in this
+directory will be automatically loaded when the craftbukkit server
+starts. To get started writing your own mod, first take a look at some
+of the existing mods in the [homes][ho], [chat][ch], [arrows][ar] and
+[signs][si] directories. The chat/color.js mod is probably the
+simplest mod to get started with.
 
-... You will need to follow MCP's instructions to decompile your minecraft.jar file.
+Additional information
+======================
+Because the Bukkit API is open, all of the Bukkit API is accessible
+via javascript once the ScriptCraft plugin is loaded. For example, in
+addition to the functions provided in the MCP version of ScriptCraft,
+there are a couple of useful Java objects exposed via javascript in
+the Bukkit ScriptCraft plugin...
 
-Installing
-==========
-(Minecraft Coder Pack only - [Bukkit users go here][buk]. )
+ * `plugin` - the ScriptCraft Plugin itself. This is a useful starting point for accessing other Bukkit objects. The `plugin` object is of type [org.bukkit.plugin.java.JavaPlugin][api] and all of its properties and methods are accessible. For example... `js plugin.getServer().getMotd()` returns the server's message of the day.
+ * `self` - The player/command-block or server console operator who invoked the js command. Again, this is a good jumping off point for diving into the Bukkit API.
+ * `bukkit` - The top-level Bukkit object. See the [Bukkit API docs][bukapi] for reference.
 
-Once you've installed Minecraft Coder Pack (MCP) and Rhino...
- 1. Copy the CommandScript.java file to the src/minecraft/net/minecraft/src/ located in the directory where you installed MCP.
- 2. Create a new directory called _ScriptCraft_ on your C:\ drive (Windows) or your home directory (Linux/Max), and copy all of the .js files provided.
- 3. If you are on a Windows computer ...
-    1. Launch Notepad (or your favourite text editor) and open file src/minecraft/net/minecraft/src/ServerCommandManager.java
-    2. Insert a new line after `this.registerCommand(new CommandTime());`
-    3. type `this.registerCommand(new CommandScript());` 
-    4. Save the file and close the editor.
- 4. If you are on a Linux or Mac OS X computer...
-    1. Copy ServerCommandManager.patch to the directory where you installed MCP.
-    2. Open a terminal window and `cd` to the directory where you installed MCP.
-    3. enter the following command `patch src/minecraft/net/minecraft/src/ServerCommandManager.java ServerCommandManager.patch` 
-
- 5. Open a Command Prompt (windows) or Terminal (Linux/Mac), go to the MCP directory and run `recompile.bat` (windows) or `./recompile.sh` (Linux/Mac)
- 6. Run `reobfuscate.bat` (windows) or `./reobfuscate.sh` (Linux/Mac).
- 7. Follow MCP's instructions for copying the obfuscated files and rebuilding the minecraft.jar file that is in %appdata%/minecraft/bin (windows), ~/Library/Application Support/Minecraft/bin (Mac) or ~/.minecraft/bin (Linux).
-
-Getting Started
-===============
-(Minecraft Coder pack version only - [Bukkit users go here][buk] )
-Once you've installed the mod, launch Minecraft and type `/js load()` and load the `cottage.js` file. Once the cottage.js file is loaded you can create a new cottage by typing `/js cottage()`.
-Take a look over the cottage.js file to see how the Drone module can be used to easily create buildings. You can even create a whole row of cottages using the following in-game command...
-
-    /js var d = new Drone(); for (i=0; i < 20; i++){ d.cottage().right(10); }
-
-The above code creates a new `Drone` object and uses a `for` loop to create multiple cottages. Keep a Minecraft Block reference handy - there's one here ...
-
-http://www.minecraftinfo.com/idlist.htm
+[dl]: http://walterhiggins.net/blog/files/scriptcraft/
+[api]: http://jd.bukkit.org/apidocs/org/bukkit/plugin/java/JavaPlugin.html
+[ib]: http://wiki.bukkit.org/Setting_up_a_server
+[cbdl]: http://dl.bukkit.org/downloads/craftbukkit/
+[bukapi]: http://jd.bukkit.org/apidocs/
 
 Further Reading
 ===============
