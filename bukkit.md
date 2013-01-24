@@ -8,6 +8,7 @@ Prerequisites
 =============
 You will need to have Java version 6 or 7 installed on your machine. Check the version by typing `java -version` at a command prompt.
 You will need to [install Bukkit][ib] on your machine. Bukkit is a version of Minecraft (server) that makes it easy to install plugins and customize Minecraft.
+You can [download the CraftBukkit server here.][cbdl]
 
 Installation
 ============
@@ -37,3 +38,4 @@ Because the Bukkit API is open, all of the Bukkit API is accessible via javascri
 [dl]: http://walterhiggins.net/blog/files/scriptcraft/
 [api]: http://jd.bukkit.org/apidocs/org/bukkit/plugin/java/JavaPlugin.html
 [ib]: http://wiki.bukkit.org/Setting_up_a_server
+[cbdl]: http://dl.bukkit.org/downloads/craftbukkit/
