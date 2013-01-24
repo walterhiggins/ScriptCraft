@@ -42,33 +42,13 @@ var global = this;
 
         if (typeof metadata == "undefined")
             metadata = 0;
-
-        var world = (__self instanceof org.bukkit.entity.Player)?__self.location.world:(__self instanceof org.bukkit.command.BlockCommandSender)?__self.block.location.world:null;
-
+        var pl = org.bukkit.entity.Player;
+        var cs = org.bukkit.command.BlockCommandSender;
+        var world = (__self instanceof pl)?__self.location.world:(__self instanceof cs)?__self.block.location.world:null;
         var block = world.getBlockAt(x,y,z);
-/*
-        if (blockId === 6){
-            var treeType = null;
-            switch (metadata){
-            case 0:
-                treeType = org.bukkit.TreeType.BIG_TREE;
-                break;
-            case 1:
-                treeType = org.bukkit.TreeType.REDWOOD;
-                break;
-            case 2:
-                treeType = org.bukkit.TreeType.BIRCH;
-                break;
-            case 3:
-                treeType = org.bukkit.TreeType.JUNGLE;
-                break;
-            }
-            return world.generateTree(block.location,treeType);
-        }else{
-*/
-		  if (block.typeId != blockId || block.data != metadata)
-				block.setTypeIdAndData(blockId,metadata,false);
-  //      }
+        if (block.typeId != blockId || block.data != metadata)
+            block.setTypeIdAndData(blockId,metadata,false);
+
     };
 
     var _putSign = function(texts, x, y, z, blockId, meta){

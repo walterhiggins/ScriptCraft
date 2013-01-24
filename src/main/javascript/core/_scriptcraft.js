@@ -38,6 +38,7 @@ var verbose = verbose || false;
     var jsPluginsRootDirName = _canonize(jsPluginsRootDir);
 
 
+    var _loaded = {};
     /*
       Load the contents of the file and evaluate as javascript
      */
@@ -45,8 +46,12 @@ var verbose = verbose || false;
     {
         var result = null;
         var file = new java.io.File(filename);
-
         var canonizedFilename = _canonize(file);
+        //
+        // wph 20130123 don't load the same file more than once.
+        //
+        if (_loaded[canonizedFilename])
+            return;
 
         if (verbose)
             print("loading " + canonizedFilename);
@@ -58,6 +63,7 @@ var verbose = verbose || false;
             __engine.put("__folder",(parent?_canonize(parent):"")+"/");
             try{
                 result = __engine.eval(reader);
+                _loaded[canonizedFilename] = true;
             }catch (e){
                 __plugin.logger.severe("Error evaluating " + filename + ", " + e );
             }
@@ -95,6 +101,7 @@ var verbose = verbose || false;
     */
     var _reload = function(pluginDir)
     {
+        _loaded = [];
         var jsFiles = [];
         _listJsFiles(jsFiles,pluginDir);
         //
@@ -107,9 +114,11 @@ var verbose = verbose || false;
         // then it's assumed that _myMiniGame_currency.js and _myMiniGame_events.js will be loaded
         // as dependencies by myMiniGame.js and do not need to be loaded via js reload
         //
-        for (var i = 0;i < jsFiles.length; i++){
+        var len = jsFiles.length;
+        for (var i = 0;i < len; i++){
             load(_canonize(jsFiles[i]),true);
         }
+        print("Loaded " + len + " javascript files");
     };
 
     /*
