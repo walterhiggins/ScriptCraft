@@ -182,14 +182,14 @@ plugin("homes", {
     var options = {
         set: function(){homes.set();},
         'delete': function(){ homes.remove();},
-        help: function(){ __self.sendMessage(homes.help());},
+        help: function(){ self.sendMessage(homes.help());},
         list: function(){
             var visitable = homes.list();
             if (visitable.length == 0){
-                __self.sendMessage("There are no homes to visit");
+                self.sendMessage("There are no homes to visit");
                 return;
             }else{
-                __self.sendMessage([
+                self.sendMessage([
                     "You can visit any of these " + visitable.length + " homes"
                     ,visitable.join(", ")
                 ]);
@@ -198,53 +198,53 @@ plugin("homes", {
         ilist: function(){
             var potentialVisitors = homes.ilist();
             if (potentialVisitors.length == 0)
-                __self.sendMessage("No one can visit your home");
+                self.sendMessage("No one can visit your home");
             else
-                __self.sendMessage([
+                self.sendMessage([
                     "These " + potentialVisitors.length + "players can visit your home",
                     potentialVisitors.join(", ")]);
         },
         invite: function(params){
             if (params.length == 1){
-                __self.sendMessage("You must provide a player's name");
+                self.sendMessage("You must provide a player's name");
                 return;
             }
             var playerName = params[1];
             var guest = getPlayerObject(playerName);
             if (!guest)
-                __self.sendMessage(playerName + " is not here");
+                self.sendMessage(playerName + " is not here");
             else
-                homes.invite(__self,guest);
+                homes.invite(self,guest);
         },
         uninvite: function(params){
             if (params.length == 1){
-                __self.sendMessage("You must provide a player's name");
+                self.sendMessage("You must provide a player's name");
                 return;
             }
             var playerName = params[1];
             var guest = getPlayerObject(playerName);
             if (!guest)
-                __self.sendMessage(playerName + " is not here");
+                self.sendMessage(playerName + " is not here");
             else
-                homes.uninvite(__self,guest);
+                homes.uninvite(self,guest);
         },
         'public': function(params){         
-            homes.open(__self,params.slice(1).join(' '));
-            __self.sendMessage("Your home is open to the public");
+            homes.open(self,params.slice(1).join(' '));
+            self.sendMessage("Your home is open to the public");
         },
         'private': function(){ 
             homes.close(); 
-            __self.sendMessage("Your home is closed to the public");
+            self.sendMessage("Your home is closed to the public");
         },
         listall: function(){
-            if (!__self.isOp())
-                __self.sendMessage("Only operators can do this");
+            if (!self.isOp())
+                self.sendMessage("Only operators can do this");
             else
-                __self.sendMessage(homes.listall().join(", "));
+                self.sendMessage(homes.listall().join(", "));
         },
         clear: function(params){
-            if (!__self.isOp())
-                __self.sendMessage("Only operators can do this");
+            if (!self.isOp())
+                self.sendMessage("Only operators can do this");
             else
                 homes.clear(params[1]);
         }
@@ -266,9 +266,9 @@ plugin("homes", {
         else{
         var host = getPlayerObject(params[0]);
             if (!host)
-                __self.sendMessage(params[0] + " is not here");
+                self.sendMessage(params[0] + " is not here");
             else
-                homes.go(__self,host);
+                homes.go(self,host);
         }
     },optionList);
 

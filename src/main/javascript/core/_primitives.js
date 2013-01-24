@@ -20,18 +20,18 @@ var global = this;
     }
 
     var _getPlayerPos = function(){
-        if (typeof __self == "undefined")
+        if (typeof self == "undefined")
             return;
-        return __self.location;
+        return self.location;
     };
 
     var _getMousePos = function(){
-        if (typeof __self == "undefined")
+        if (typeof self == "undefined")
             return;
-        // __self might be CONSOLE or a CommandBlock
-        if (!__self.getTargetBlock)
+        // self might be CONSOLE or a CommandBlock
+        if (!self.getTargetBlock)
             return;
-        var targetedBlock = __self.getTargetBlock(null,5);
+        var targetedBlock = self.getTargetBlock(null,5);
         if (targetedBlock == null || targetedBlock.isEmpty()){
             return null;
         }
@@ -44,7 +44,7 @@ var global = this;
             metadata = 0;
         var pl = org.bukkit.entity.Player;
         var cs = org.bukkit.command.BlockCommandSender;
-        var world = (__self instanceof pl)?__self.location.world:(__self instanceof cs)?__self.block.location.world:null;
+        var world = (self instanceof pl)?self.location.world:(self instanceof cs)?self.block.location.world:null;
         var block = world.getBlockAt(x,y,z);
         if (block.typeId != blockId || block.data != metadata)
             block.setTypeIdAndData(blockId,metadata,false);
@@ -75,12 +75,12 @@ var global = this;
     };
 
     var _getWorld = function(){
-        if (__self instanceof org.bukkit.entity.Player)
-            return __self.location.world;
-        if (typeof __self == "undefined")
+        if (self instanceof org.bukkit.entity.Player)
+            return self.location.world;
+        if (typeof self == "undefined")
             return;
-        if (__self instanceof org.bukkit.command.BlockCommandSender)
-            return __self.block.location.world;
+        if (self instanceof org.bukkit.command.BlockCommandSender)
+            return self.block.location.world;
     };
     
     var _notifyAdministrators = function(msg){
@@ -93,11 +93,11 @@ var global = this;
     };
     var _echo = function(msg){
         __plugin.logger.info(msg);
-        if (typeof __self == "undefined"){
+        if (typeof self == "undefined"){
             java.lang.System.out.println(msg);
             return;
         }
-        __self.sendMessage(msg);
+        self.sendMessage(msg);
     };
 
     global.getPlayerPos = _getPlayerPos;

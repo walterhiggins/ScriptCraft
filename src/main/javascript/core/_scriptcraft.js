@@ -20,6 +20,11 @@
 */
 var global = this;
 var verbose = verbose || false;
+/*
+  wph 20130124 - make self, plugin and bukkit public - these are far more useful now that tab-complete works.
+*/
+var bukkit = org.bukkit.Bukkit;
+var __plugin = plugin;
 //
 // private implementation
 //
@@ -186,7 +191,7 @@ var verbose = verbose || false;
                         intercepted = true;
                 }
                 if (!intercepted)
-                    __self.sendMessage("Command '" + name + "' is not recognised");
+                    self.sendMessage("Command '" + name + "' is not recognised");
             }else{
                 func = cmd.callback;
                 var params = [];
@@ -357,7 +362,7 @@ var verbose = verbose || false;
 
     var _getPlayerObject = function(player){
         if (typeof player == "undefined")
-            return __self;
+            return self;
         if (typeof player == "string")
             return org.bukkit.Bukkit.getPlayer(player);
         return player;

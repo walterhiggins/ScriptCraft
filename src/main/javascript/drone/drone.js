@@ -292,7 +292,7 @@ var Drone = Drone || {
             this.dir = dir%4;
         }
         // for debugging
-        //__self.sendMessage("New Drone " + this.toString());
+        //self.sendMessage("New Drone " + this.toString());
         if (usePlayerCoords){
             this.fwd(3);
         }
@@ -772,7 +772,7 @@ var Drone = Drone || {
     {
         Drone.prototype[p] = function(v){
             return function(){ 
-                var treeLoc = new org.bukkit.Location(__self.world,this.x,this.y,this.z);
+                var treeLoc = new org.bukkit.Location(self.world,this.x,this.y,this.z);
                 treeLoc.world.generateTree(treeLoc,v);
                 return this;
             };

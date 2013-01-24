@@ -1,3 +1,4 @@
+load(__folder + "../utils/text.js");
 /*
   Define the signs module - signs are persistent 
   (that is - a menu sign will still be a menu after th
@@ -33,7 +34,7 @@ var signs = signs || plugin("signs", {
             if (offset+i < optLen)
                 text = p_displayOptions[offset+i];
             if (offset+i == p_selectedIndex)
-                text = ("" + text).replace(/^ /,">");
+                text = ("" + text).replace(/^ /,">".white());
             p_sign.setLine(i+1,text);
         }
         p_sign.update(true);
@@ -92,7 +93,7 @@ var signs = signs || plugin("signs", {
             // per-sign variables go here
             //
             var cSelectedIndex = selectedIndex;
-            sign.setLine(0,paddedLabel);
+            sign.setLine(0,paddedLabel.bold());
             var _updateSign = function(p_player,p_sign) {
                 cSelectedIndex = (cSelectedIndex+1) % optLen;
                 _redrawMenuSign(p_sign,cSelectedIndex,displayOptions);
