@@ -118,7 +118,6 @@ var verbose = verbose || false;
         for (var i = 0;i < len; i++){
             load(_canonize(jsFiles[i]),true);
         }
-        print("Loaded " + len + " javascript files");
     };
 
     /*
@@ -365,7 +364,6 @@ var verbose = verbose || false;
     };
     global.load = _load;
     global.save = _save;
-    global.reload = _reload;
     global.plugin = _plugin;
     global.ready = _ready;
     global.command = _command;
@@ -376,7 +374,7 @@ var verbose = verbose || false;
     // assumes this was loaded from js-plugins/core/
     // load all of the plugins.
     //
-    reload(jsPluginsRootDir);
+    _reload(jsPluginsRootDir);
 
     // 
     // all modules have loaded
