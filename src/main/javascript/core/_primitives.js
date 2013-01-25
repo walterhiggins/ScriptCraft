@@ -66,12 +66,20 @@ var global = this;
         var block = _getBlockObject(x,y,z);
         if (block)
             return "" + block.typeId + ":" + block.data;
+        
     };
 
     var _getBlockObject = function(x,y,z){
         var world = _getWorld();
-        if (world)
-            return world.getBlockAt(x,y,z);
+        if (world){
+            if (typeof z == "undefined"){
+                var loc = _getMousePos()
+                if (loc)
+                    return world.getBlockAt(loc);
+            }else{
+                return world.getBlockAt(x,y,z);
+            }
+        }
     };
 
     var _getWorld = function(){
