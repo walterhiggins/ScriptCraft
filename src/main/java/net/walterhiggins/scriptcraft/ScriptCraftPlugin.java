@@ -95,7 +95,7 @@ public class ScriptCraftPlugin extends JavaPlugin
                 File boot = new File(JS_PLUGINS_DIR + "/core/_scriptcraft.js");
                 this.engine = factory.getEngineByName("JavaScript");
                 this.engine.put("__engine",engine);
-                this.engine.put("plugin",this);
+                this.engine.put("__plugin",this);
                 this.engine.put("__script",boot.getCanonicalPath().replaceAll("\\\\","/"));
                 this.engine.eval(new FileReader(boot));  
             }catch(Exception e){

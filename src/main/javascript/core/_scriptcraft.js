@@ -24,7 +24,6 @@ var verbose = verbose || false;
   wph 20130124 - make self, plugin and bukkit public - these are far more useful now that tab-complete works.
 */
 var bukkit = org.bukkit.Bukkit;
-var __plugin = plugin;
 //
 // private implementation
 //
