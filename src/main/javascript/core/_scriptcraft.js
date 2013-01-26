@@ -21,7 +21,7 @@
 var global = this;
 var verbose = verbose || false;
 /*
-  wph 20130124 - make self, plugin and bukkit public - these are far more useful now that tab-complete works.
+  wph 20130124 - make self, plugin and server public - these are far more useful now that tab-complete works.
 */
 var server = org.bukkit.Bukkit.server;
 //
@@ -128,7 +128,6 @@ var server = org.bukkit.Bukkit.server;
       Save a javascript object to a file (saves using JSON notation)
     */
     var _save = function(object, filename){
-        print(filename);
         var objectToStr = null;
         try{
             objectToStr = JSON.stringify(object);
@@ -175,7 +174,8 @@ var server = org.bukkit.Bukkit.server;
        command management - allow for non-ops to execute approved javascript code.
      */
     var _commands = {};
-    var _command = function(name,func,options,intercepts){
+    var _command = function(name,func,options,intercepts)
+    {
         if (typeof name == "undefined"){
             // it's an invocation from the Java Plugin!
             if (__cmdArgs.length === 0)
@@ -266,13 +266,37 @@ var server = org.bukkit.Bukkit.server;
     var __onTabCompleteJSP = function() {
         var result = global.__onTC_result;
         var args = global.__onTC_args;
-        var cmd = _commands[args[0]];
-        if (cmd)
-            for (var i = 0;i < cmd.options.length; i++)
-                result.add(cmd.options[i]);
-        else
-            for (var i in _commands)
-                result.add(i);
+        var cmdInput = args[0];
+        var cmd = _commands[cmdInput];
+        if (cmd){
+            var opts = cmd.options;
+            var len = opts.length;
+            if (args.length == 1){
+                for (var i = 0;i < len; i++)
+                    result.add(opts[i]);
+            }else{
+                // partial e.g. /jsp chat_color dar
+                for (var i = 0;i < len; i++){
+                    if (opts[i].indexOf(args[1]) == 0){
+                        result.add(opts[i]);
+                    }
+                }
+            }
+        }else{
+            if (args.length == 0){
+                for (var i in _commands)
+                    result.add(i);
+            }else{
+                // partial e.g. /jsp al 
+                // should tabcomplete to alias 
+                //
+                for (var c in _commands){
+                    if (c.indexOf(cmdInput) == 0){
+                        result.add(c);
+                    }
+                }
+            }
+        }
         return result;
     };
     /*
