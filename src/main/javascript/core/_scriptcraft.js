@@ -23,7 +23,7 @@ var verbose = verbose || false;
 /*
   wph 20130124 - make self, plugin and bukkit public - these are far more useful now that tab-complete works.
 */
-var bukkit = org.bukkit.Bukkit;
+var server = org.bukkit.Bukkit.server;
 //
 // private implementation
 //
@@ -241,7 +241,7 @@ var bukkit = org.bukkit.Bukkit;
                 for (var j = 0;j < _javaLangObjectMethods.length; j++)
                     if (_javaLangObjectMethods[j] == i)
                         continue propertyLoop;
-                if (typeof o[i] == "function")
+                if (typeof o[i] == "function" )
                     result.push(i+"()");
                 else
                     result.push(i);

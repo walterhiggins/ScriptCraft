@@ -97,7 +97,7 @@ the Bukkit ScriptCraft plugin...
 
  * `__plugin` - the ScriptCraft Plugin itself. This is a useful starting point for accessing other Bukkit objects. The `__plugin` object is of type [org.bukkit.plugin.java.JavaPlugin][api] and all of its properties and methods are accessible. For example... `js __plugin.server.motd` returns the server's message of the day (javascript is more concise than the equivalent java code: __plugin.getServer().getMotd() ).
  * `self` - The player/command-block or server console operator who invoked the js command. Again, this is a good jumping off point for diving into the Bukkit API.
- * `bukkit` - The top-level Bukkit object. See the [Bukkit API docs][bukapi] for reference.
+ * `server` - The top-level org.bukkit.Server object. See the [Bukkit API docs][bukapi] for reference.
 
 [dl]: http://walterhiggins.net/blog/files/scriptcraft/
 [api]: http://jd.bukkit.org/apidocs/org/bukkit/plugin/java/JavaPlugin.html
