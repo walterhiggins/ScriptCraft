@@ -178,6 +178,8 @@ Drone.extend('logojs', function(fg, bg) {
         .box(fg);
 
     this.move('logojs-start')
+
+    return this;
 });
 //
 // Makes a cube of JS logos!
@@ -211,4 +213,6 @@ Drone.extend('logojscube', function(fg, bg) {
         .right(100)
         .turn(3)
         .logojs(fg, bg);
+
+    return this;
 });
