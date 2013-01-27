@@ -9,8 +9,13 @@ load(__folder + "drone.js");
 //   the material that the square will be made of
 //
 Drone.extend('logojs', function(fg, bg) {
-    fg = '35:7';  // default to gray wool
-    bg = 41;      // default to gold blocks
+
+    // foreground defaults to gray wool
+    if (typeof fg == "undefined")
+        fg = '35:7';
+    // background defaults to gold blocks
+    if (typeof bg == "undefined")
+        bg = 41;
 
     // Draw the sqaure
     this.up()
