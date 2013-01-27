@@ -1,14 +1,27 @@
 var global = this;
 //
-// Define these primitive methods used by drone.js (and potentiall others)
+// Define these primitive methods used by drone.js (and potentially others)
 //
-//  getPlayerPos returns the player's x,y,z and yaw (direction)
-//  getMousePos returns the x,y,z of the current block being targeted.
-//  putBlock(x,y,z,blockId,metadata) puts a block at a location in current world
-//  getBlock(x,y,z) gets the block and metadata (returned as a string in form '35:15') 
-//  putSign(texts,x,y,z,blockId,metadata) puts a sign at the given location
-//  notifyAdministrators(msg) sends a message to all admins/ops.
-//  echo(msg) prints a message on screen to current user.
+//  getPlayerPos
+//    returns the player's x,y,z and yaw (direction)
+//
+//  getMousePos
+//    returns the x,y,z of the current block being targeted.
+//
+//  putBlock(x,y,z,blockId,metadata)
+//    puts a block at a location in current world
+//
+//  getBlock(x,y,z)
+//    gets the block and metadata (returned as a string in form '35:15')
+//
+//  putSign(texts,x,y,z,blockId,metadata)
+//    puts a sign at the given location
+//
+//  notifyAdministrators(msg)
+//    sends a message to all admins/ops.
+//
+//  echo(msg)
+//    prints a message on screen to current user.
 //
 (function(){
 
