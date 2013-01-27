@@ -61,14 +61,14 @@ Drone.extend('logojs', function(fg, bg) {
         .right().up(2)
         .box(fg, 1, 3, 1)
         .left(9).up(3)
-        .box(fg, 10, 30, 1);
+        .box(fg, 10, 31, 1)
 
     // Draw the S
     // It's drawn in three strokes from bottom to top. Look for when
     // it switches from .right() to .left() then back again
-    this.move('start')
+
         // move to starting point for S
-        .right(64).up(13)
+        .right(22).down(6)
         // stroke 1
         .box(fg)
         .right().down()
@@ -175,4 +175,36 @@ Drone.extend('logojs', function(fg, bg) {
         .box(fg, 1, 3, 1)
         .right().up()
         .box(fg);
+});
+//
+// Makes a cube of JS logos!
+// This is a wrapper for logojs() so look at its docs
+//
+// Until the drone can rotate on its Z axis we can't
+// use logojs() to create top/bottom sides of cube.
+//
+Drone.extend('logojscube', function(fg, bg) {
+
+    this.logojs(fg, bg);
+
+    this.move('start')
+        .right(100)
+        .turn(3)
+        .logojs(fg, bg);
+
+    this.move('start')
+        .right(100)
+        .turn(3)
+        .right(100)
+        .turn(3)
+        .logojs(fg, bg);
+
+    this.move('start')
+        .right(100)
+        .turn(3)
+        .right(100)
+        .turn(3)
+        .right(100)
+        .turn(3)
+        .logojs(fg, bg);
 });
