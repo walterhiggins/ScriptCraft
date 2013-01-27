@@ -177,7 +177,7 @@ Drone.extend('logojs', function(fg, bg) {
         .right().up()
         .box(fg);
 
-    this.move('logojs-start')
+    this.move('logojs-start');
 
     return this;
 });
