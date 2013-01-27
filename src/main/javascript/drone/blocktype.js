@@ -296,6 +296,16 @@ load(__folder + "drone.js");
             }
         }
     }
+    //
+    // Creates the text out of blocks
+    //
+    // message
+    //   string with text to be displayed
+    // fg
+    //   foreground material. The material the text will be in.
+    // bg
+    //   background material, optional. The negative space within the bounding box of the text.
+    //
     Drone.extend('blocktype', function(message,fg,bg){
 
         this.chkpt('blocktext');
