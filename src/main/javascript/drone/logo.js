@@ -185,21 +185,22 @@ Drone.extend('logojs', function(fg, bg) {
 //
 Drone.extend('logojscube', function(fg, bg) {
 
-    this.logojs(fg, bg);
+    this.chkpt('jscube-start')
+        .logojs(fg, bg);
 
-    this.move('start')
+    this.move('jscube-start')
         .right(100)
         .turn(3)
         .logojs(fg, bg);
 
-    this.move('start')
+    this.move('jscube-start')
         .right(100)
         .turn(3)
         .right(100)
         .turn(3)
         .logojs(fg, bg);
 
-    this.move('start')
+    this.move('jscube-start')
         .right(100)
         .turn(3)
         .right(100)
