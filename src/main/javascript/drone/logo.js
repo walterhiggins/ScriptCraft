@@ -18,7 +18,8 @@ Drone.extend('logojs', function(fg, bg) {
         bg = 41;
 
     // Draw the sqaure
-    this.up()
+    this.chkpt('logojs-start')
+        .up()
         .box(bg, 100, 100, 1);
 
     // Draw the J, starting with the hook
@@ -175,6 +176,8 @@ Drone.extend('logojs', function(fg, bg) {
         .box(fg, 1, 3, 1)
         .right().up()
         .box(fg);
+
+    this.move('logojs-start')
 });
 //
 // Makes a cube of JS logos!
