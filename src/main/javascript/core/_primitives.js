@@ -65,9 +65,11 @@ var global = this;
     };
 
     var _putSign = function(texts, x, y, z, blockId, meta){
+        if (blockId != 63 && blockId != 68)
+            throw new Error("Invalid Parameter: blockId must be 63 or 68");
         putBlock(x,y,z,blockId,meta);
         var block = _getBlockObject(x,y,z);
-        state = block.state;
+        var state = block.state;
         if (state instanceof org.bukkit.block.Sign){
             for (var i = 0;i < texts.length; i++)
                 state.setLine(i%4,texts[i]);

@@ -341,7 +341,7 @@ var Drone = Drone || {
         }
         var bm = _getBlockIdAndMeta(block);
         block = bm[0];
-        meta = bm[1];
+        var meta = bm[1];
         if (block != 63 && block != 68){
             print("ERROR: Invalid block id for use in signs");
             return;
@@ -653,7 +653,7 @@ var Drone = Drone || {
                 return [parseInt(bs),0];
             }
             b = parseInt(bs.substring(0,sp));
-            md = parseInt(bs.substring(sp+1,bs.length));
+            var md = parseInt(bs.substring(sp+1,bs.length));
             return [b,md];
         }else{
             return [b,0];
