@@ -108,8 +108,8 @@ the Bukkit ScriptCraft plugin...
 Further Reading
 ===============
 
- * If you want to get started using ScriptCraft to Learn Javascript I recommend [reading this][yp].
- * If you want to delve deeper into creating your own minecraft mod, I recommend [reading this][mm].
+ * To get started using ScriptCraft to Learn Javascript I recommend [reading this][yp].
+ * To delve deeper into creating your own minecraft mod, I recommend [reading this][mm].
 
 You can find more information about [ScriptCraft on my blog][blog].
 
