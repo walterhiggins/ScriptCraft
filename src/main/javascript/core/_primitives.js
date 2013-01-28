@@ -107,10 +107,11 @@ var global = this;
     };
     
     var _notifyAdministrators = function(msg){
-        var ops = __plugin.server.operators;
-        for (var i = 0; i < ops.size();i++){
-            if (ops[i].isOnline())
-                ops[i].player.chat(msg);
+        var ops = __plugin.server.operators.toArray();
+        for (var i = 0; i < ops.length;i++){
+            var op = ops[i];
+            if (op.isOnline())
+                op.chat(msg);
         }
         __plugin.logger.info(msg);
     };
