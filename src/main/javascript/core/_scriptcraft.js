@@ -248,8 +248,6 @@ var server = org.bukkit.Bukkit.server;
             }
         }else{
             for (var i in o){
-                if (!o.hasOwnProperty(i))
-                    continue;
                 if (i.match(/^[^_]/)){
                     if (typeof o[i] == "function")
                         result.push(i+"()");
