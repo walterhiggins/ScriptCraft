@@ -50,17 +50,16 @@ SnowBallFight.prototype.start = function(){};
         for (var i = 30;i < gameState.duration;i+=30)
             gameState.ammo.push(_snowBalls);
             
-        for (var teamName in gameState.teams){
+        for (var teamName in gameState.teams) {
             gameState.teamScores[teamName] = 0;
             var team = gameState.teams[teamName];
-            for (var i = 0;i < team.length;i++)
-            {
+            for (var i = 0;i < team.length;i++) {
                 var player = server.getPlayer(team[i]);
                 gameState.savedModes[player.name] = player.gameMode;
                 player.gameMode = org.bukkit.GameMode.SURVIVAL;
                 player.inventory.addItem(gameState.ammo);
             }
-            }
+        }
     };
     /*
       end the game

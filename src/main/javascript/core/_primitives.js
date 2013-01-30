@@ -104,7 +104,7 @@ var global = this;
             return;
         if (self instanceof org.bukkit.command.BlockCommandSender)
             return self.block.location.world;
-    };
+   };
     
     var _notifyAdministrators = function(msg){
         var ops = __plugin.server.operators.toArray();

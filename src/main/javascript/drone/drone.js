@@ -356,41 +356,79 @@ var Drone = Drone || {
         }
         return this;
     };
-
-    Drone.prototype.cuboid = function(block,w,h,d){
-        var md = 0;
-        if (typeof h == "undefined"){
+    Drone.prototype.cuboida = function(/* Array */ blocks,w,h,d){
+        var properBlocks = [];
+        var len = blocks.length;
+        for (var i = 0;i < len;i++){
+            var bm = _getBlockIdAndMeta(blocks[i]);
+            properBlocks.push([bm[0],bm[1]]);
+        }
+        if (typeof h == "undefined")
             h = 1;
-        }
-        if (typeof d == "undefined"){
+        if (typeof d == "undefined")
             d = 1;
-        }
-        if (typeof w == "undefined"){
+        if (typeof w == "undefined")
             w = 1;
-        }
-        var bi = 0;
         var that = this;
-        _traverse[this.dir].width(that,w,function(){
-            _traverseHeight(that,h,function(){
-                _traverse[that.dir].depth(that,d,function(){
-                    //
-                    // wph 20121229 - slower but supports random blocks
-                    //
-                    var cb = 0;
-                    if (block.constructor == Array){
-                        cb = block[bi%block.length];
-                    }else{
-                        cb = block;
-                    }
-                    var bm = _getBlockIdAndMeta(cb);
-                    cb = bm[0];
-                    md = bm[1];
-                    putBlock(that.x,that.y,that.z,cb,md);
-                    bi++;
-                });
-            });
-        });
+        var dir = this.dir;
+        var pl = org.bukkit.entity.Player;
+        var cs = org.bukkit.command.BlockCommandSender;
+        var world = (self instanceof pl)?self.location.world:(self instanceof cs)?self.block.location.world:null;
+        var bi = 0;
+        var depthFunc = function(){
+            var block = world.getBlockAt(that.x,that.y,that.z);
+            var properBlock = properBlocks[bi%len];
+            block.setTypeIdAndData(properBlock[0],properBlock[1],false);
+            bi++;
+        };
+        var heightFunc = function(){
+            _traverse[dir].depth(that,d,depthFunc);
+        };
+        var widthFunc = function(){
+            _traverseHeight(that,h,heightFunc);
+        };
+
+        _traverse[dir].width(that,w,widthFunc);
         return this;
+        
+    };
+    /*
+      faster cuboid because blockid and meta must be provided 
+     */
+    Drone.prototype.cuboidX = function(blockId, meta, w, h, d){
+
+        if (typeof h == "undefined")
+            h = 1;
+        if (typeof d == "undefined")
+            d = 1;
+        if (typeof w == "undefined")
+            w = 1;
+        var that = this;
+        var dir = this.dir;
+        var pl = org.bukkit.entity.Player;
+        var cs = org.bukkit.command.BlockCommandSender;
+        var world = (self instanceof pl)?self.location.world:(self instanceof cs)?self.block.location.world:null;
+
+        var depthFunc = function(){
+            var block = world.getBlockAt(that.x,that.y,that.z);
+            block.setTypeIdAndData(blockId,meta,false);
+        };
+        var heightFunc = function(){
+            _traverse[dir].depth(that,d,depthFunc);
+        };
+        var widthFunc = function(){
+            _traverseHeight(that,h,heightFunc);
+        };
+
+        _traverse[dir].width(that,w,widthFunc);
+        return this;
+        
+    };
+    Drone.prototype.cuboid = function(block,w,h,d){
+
+        var bm = _getBlockIdAndMeta(block);
+
+        return this.cuboidX(bm[0],bm[1],w,h,d);
     };
     Drone.prototype.cuboid0 = function(block,w,h,d){
         return this.cuboid(block,w,h,d).fwd().right().cuboid(0,w-2,h,d-2).back().left();
@@ -527,6 +565,7 @@ var Drone = Drone || {
 
     Drone.prototype.box = Drone.prototype.cuboid;
     Drone.prototype.box0 = Drone.prototype.cuboid0;
+    Drone.prototype.boxa = Drone.prototype.cuboida;
     //
     // show the Drone's position and direction 
     //
@@ -535,7 +574,7 @@ var Drone = Drone || {
         return "x: " + this.x + " y: "+this.y + " z: " + this.z + " dir: " + this.dir  + " "+dirs[this.dir];
     };
     Drone.prototype.debug = function(){
-        print(this);
+        print(this.toString());
         return this;
     };
 
@@ -632,18 +671,22 @@ var Drone = Drone || {
         return _cylinderX(block,radius,height,this,true);
     };
     var _getDirFromRotation = function(r){
-        var result = 1;
-        r = Math.abs(Math.ceil(r));
-        if (r >= 45 && r < 135){
-            result = 0;
-        }
-        if (r >= 135 && r < 225){
-            result = 3;
-            }
-        if (r >= 225 && r < 315){
-            result = 2;
-        }
-        return result;
+        // 0 = east, 1 = south, 2 = west, 3 = north
+        // 46 to 135 = west
+        // 136 to 225 = north
+        // 226 to 315 = east
+        // 316 to 45 = south
+
+        r = (r + 360) % 360; // east could be 270 or -90
+
+        if (r > 45 && r <= 135)
+            return 2; // west
+        if (r > 135 && r <= 225)
+            return 3; // north
+        if (r > 225 && r <= 315)
+            return 0; // east
+        if (r > 315 || r < 45)
+            return 1; // south
     };
     var _getBlockIdAndMeta = function(b){
         if (typeof b == 'string'){
@@ -762,7 +805,7 @@ var Drone = Drone || {
     };
     Drone.prototype.rand = function(dist,w,h,d){
         var randomized = _rand(dist);
-        return this.box(randomized,w,h,d);
+        return this.boxa(randomized,w,h,d);
     };
     var _trees = {oak: org.bukkit.TreeType.BIG_TREE ,
                   spruce: org.bukkit.TreeType.REDWOOD ,
@@ -911,7 +954,7 @@ var Drone = Drone || {
     //
     var ops = ['up','down','left','right','fwd','back','turn',
                'chkpt','move',
-               'box','box0','prism','prism0','cylinder','cylinder0',
+               'box','box0','boxa','prism','prism0','cylinder','cylinder0',
                'door','door2','sign','oak','spruce','birch','jungle',
                'rand','garden',
                'copy','paste'
@@ -925,5 +968,9 @@ var Drone = Drone || {
             };
         }(ops[i]);
     }
+    //
+    // wph 20130130 - make this a method - extensions can use it.
+    //
+    Drone.prototype._getBlockIdAndMeta = _getBlockIdAndMeta;
                
 }());
