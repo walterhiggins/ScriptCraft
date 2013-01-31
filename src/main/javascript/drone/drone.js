@@ -431,7 +431,18 @@ var Drone = Drone || {
         return this.cuboidX(bm[0],bm[1],w,h,d);
     };
     Drone.prototype.cuboid0 = function(block,w,h,d){
-        return this.cuboid(block,w,h,d).fwd().right().cuboid(0,w-2,h,d-2).back().left();
+        this.chkpt('start_point');
+        
+        // Front wall
+        this.cuboid(block, w, h, 1);
+        // Left wall
+        this.cuboid(block, 1, h, d);
+        // Right wall
+        this.right(w-1).cuboid(block, 1, h, d).left(w-1);
+        // Back wall
+        this.fwd(d-1).cuboid(block, w, h, 1);
+        
+        return this.move('start_point');
     };
     Drone.prototype.door = function(door){
         if (typeof door == "undefined"){
