@@ -393,9 +393,10 @@ var Drone = Drone || {
         
     };
     /*
-      faster cuboid because blockid and meta must be provided 
+      faster cuboid because blockid, meta and world must be provided 
+      use this method when you need to repeatedly place blocks
      */
-    Drone.prototype.cuboidX = function(blockId, meta, w, h, d){
+    Drone.prototype.cuboidX = function(blockId, meta, world, w, h, d){
 
         if (typeof h == "undefined")
             h = 1;
@@ -405,9 +406,6 @@ var Drone = Drone || {
             w = 1;
         var that = this;
         var dir = this.dir;
-        var pl = org.bukkit.entity.Player;
-        var cs = org.bukkit.command.BlockCommandSender;
-        var world = (self instanceof pl)?self.location.world:(self instanceof cs)?self.block.location.world:null;
 
         var depthFunc = function(){
             var block = world.getBlockAt(that.x,that.y,that.z);
@@ -424,11 +422,16 @@ var Drone = Drone || {
         return this;
         
     };
+    Drone.prototype._getWorld = function(){
+        var pl = org.bukkit.entity.Player;
+        var cs = org.bukkit.command.BlockCommandSender;
+        var world = (self instanceof pl)?self.location.world:(self instanceof cs)?self.block.location.world:null;
+        return world;
+    };
     Drone.prototype.cuboid = function(block,w,h,d){
 
         var bm = _getBlockIdAndMeta(block);
-
-        return this.cuboidX(bm[0],bm[1],w,h,d);
+        return this.cuboidX(bm[0],bm[1],this._getWorld(), w,h,d);
     };
     Drone.prototype.cuboid0 = function(block,w,h,d){
         this.chkpt('start_point');
@@ -592,9 +595,23 @@ var Drone = Drone || {
     // ========================================================================
     // Private variables and functions
     // ========================================================================
-    var _cylinderX = function(block,radius,height,drone,fill)
+    var _cylinderX = function(block,radius,height,drone,fill,exactParams)
     {
         drone.chkpt('cylinderX');
+        var world = null;
+        var blockType = null;
+        var meta = 0;
+        if (typeof exactParams == "undefined"){
+            world = drone._getWorld();
+            bm = drone._getBlockIdAndMeta(block);
+            blockType = bm[0];
+            meta = bm[1];
+        }else{
+            world = exactParams.world;
+            blockType = exactParams.blockType;
+            meta = exactParams.meta;
+        }
+
         var x0, y0, gotoxy;
         drone.right(radius).fwd(radius).chkpt('center');
         switch (drone.dir){
@@ -628,11 +645,11 @@ var Drone = Drone || {
                 if (yo < 0){
                     drone
                         .fwd(yo).right(xo)
-                        .box(block,1,height,Math.abs(yo*2)+1)
+                        .cuboidX(blockType,meta,world,1,height,Math.abs(yo*2)+1)
                         .back(yo).left(xo);
                 }
             }else{
-                gotoxy(xo,yo).box(block,1,height,1).move('center');
+                gotoxy(xo,yo).cuboidX(blockType,meta,world,1,height,1).move('center');
             }
         };
         //
@@ -675,11 +692,11 @@ var Drone = Drone || {
         }
         return drone.move('cylinderX');
     }
-    var _cylinder0 = function(block,radius,height){
-        return _cylinderX(block,radius,height,this,false);
+    var _cylinder0 = function(block,radius,height,exactParams){
+        return _cylinderX(block,radius,height,this,false,exactParams);
     };
-    var _cylinder1 = function(block,radius,height){
-        return _cylinderX(block,radius,height,this,true);
+    var _cylinder1 = function(block,radius,height,exactParams){
+        return _cylinderX(block,radius,height,this,true,exactParams);
     };
     var _getDirFromRotation = function(r){
         // 0 = east, 1 = south, 2 = west, 3 = north

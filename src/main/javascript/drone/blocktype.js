@@ -314,7 +314,7 @@ load(__folder + "drone.js");
         var bmbg = null;
         if (typeof bg != "undefined")
             bmbg = this._getBlockIdAndMeta(bg);
-        
+        var world = this._getWorld();
         var lines = message.split("\n");
         var lineCount = lines.length;    
         for (var h = 0;h < lineCount; h++) {
@@ -330,12 +330,12 @@ load(__folder + "drone.js");
                 }
                 var charWidth = bits.width;
                 if (typeof bg != "undefined")
-                    this.cuboidX(bmbg[0],bmbg[1],charWidth,7,1);
+                    this.cuboidX(bmbg[0],bmbg[1],world,charWidth,7,1);
                 for (var j = 0;j < bits.pixels.length;j++){
                     this.chkpt('btbl');
                     var x = bits.pixels[j][0];
                     var y = bits.pixels[j][1];
-                    this.up(6-y).right(x).cuboidX(bmfg[0],bmfg[1]);
+                    this.up(6-y).right(x).cuboidX(bmfg[0],bmfg[1],world);
                     this.move('btbl');
                 }
                 this.right(charWidth-1);

@@ -5,6 +5,9 @@ Drone.extend('sphere', function(block,radius)
     var lastRadius = radius;
     var slices = [[radius,0]];
     var diameter = radius*2;
+    var world = this._getWorld();
+    var bm = this._getBlockIdAndMeta(block);
+
     var r2 = radius*radius;
     for (var i = 0; i <= radius;i++){
         var newRadius = Math.round(Math.sqrt(r2 - i*i));
@@ -19,7 +22,7 @@ Drone.extend('sphere', function(block,radius)
     // mid section
     //
     this.up(radius - slices[0][1])
-        .cylinder(block,radius,(slices[0][1]*2)-1)
+        .cylinder(block,radius,(slices[0][1]*2)-1,{blockType: bm[0],meta: bm[1],world: world})
         .down(radius-slices[0][1]);
     
     var yOffset = -1;
@@ -31,13 +34,13 @@ Drone.extend('sphere', function(block,radius)
         var v = radius + yOffset, h = radius-sr;
         // northern hemisphere
         this.up(v).fwd(h).right(h)
-            .cylinder(block,sr,sh)
+            .cylinder(block,sr,sh,{blockType: bm[0],meta: bm[1],world: world})
             .left(h).back(h).down(v);
         
         // southern hemisphere
         v = radius - (yOffset+sh+1);
         this.up(v).fwd(h).right(h)
-            .cylinder(block,sr,sh)
+            .cylinder(block,sr,sh,{blockType: bm[0],meta: bm[1],world: world})
             .left(h).back(h). down(v);
     }
     return this.move('sphere');
