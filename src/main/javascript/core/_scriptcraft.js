@@ -315,7 +315,7 @@ var server = org.bukkit.Bukkit.server;
         if (statement.length == 0)
             propsOfLastArg = _globalSymbols;
         else{
-            var statementSyms = statement.split(/[^a-zA-Z0-9_\.]/);
+            var statementSyms = statement.split(/[^\$a-zA-Z0-9_\.]/);
             var lastSymbol = statementSyms[statementSyms.length-1];
             //
             // try to complete the object ala java IDEs.
@@ -359,8 +359,9 @@ var server = org.bukkit.Bukkit.server;
                     }
                 }else{
                     var objectProps = _getProperties(symbol);
-                    for (var i = 0; i < objectProps.length; i++)
-                        propsOfLastArg.push(statement + objectProps[i]);
+                    for (var i = 0; i < objectProps.length; i++){
+                        propsOfLastArg.push(statement + "." + objectProps[i]);
+                    }
                 }
             }else{
                 // loop thru globalSymbols looking for a good match
