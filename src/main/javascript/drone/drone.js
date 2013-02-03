@@ -254,9 +254,14 @@ var Drone = Drone || {
     if (Drone.constructor == Function)
         return;
 
-    //
-    // Drone Constructor
-    //
+    /**
+       Create a new Drone for building. 
+       @constructor
+       @param {number} x 
+       @param {number} y  
+       @param {number} z
+       @param {number} dir - The direction the drone faces : 0 is east, 1 is south, 2 is west, 3 is north.
+    */
     Drone = function(x,y,z,dir)
     {
         var usePlayerCoords = false;
@@ -461,7 +466,11 @@ var Drone = Drone || {
         }else{
             door = 71;
         }
-        return this.cuboid(door+':' + this.dir).up().cuboid(door+':8').right().cuboid(door+':9').down().cuboid(door+':' + this.dir).left();
+        return this
+            .box(door+':' + this.dir).up()
+            .box(door+':8').right()
+            .box(door+':9').down()
+            .box(door+':' + this.dir).left();
     };
     // player dirs: 0 = east, 1 = south, 2 = west,   3 = north
     // block dirs:  0 = east, 1 = west,  2 = south , 3 = north
@@ -670,6 +679,20 @@ var Drone = Drone || {
       }
      */
 
+    var _getStrokeDir = function(x,y){
+        var absY = Math.abs(y);
+        var absX = Math.abs(x);
+        var strokeDir = 0;
+        if (y > 0 && absY >= absX)
+            strokeDir = 0 ; //down
+        else if (y < 0 && absY >= absX)
+            strokeDir = 1 ; // up
+        else if (x > 0 && absX >= absY)
+            strokeDir = 2 ; // left
+        else if (x < 0 && absX >= absY)
+            strokeDir = 3 ; // right
+        return strokeDir;
+    };
     /*
       The daddy of all arc-related API calls - 
       if you're drawing anything that bends it ends up here.
@@ -717,73 +740,39 @@ var Drone = Drone || {
                             .back(y).left(x);
                     }
                 }else{
-                    if (strokeWidth == 1)
-                        gotoxy(x,y).cuboidX(params.blockType,
-                                            params.meta,
-                                            world,
-                                            1, // width
-                                            stack, // height
-                                            strokeWidth // depth
-                                           ).move('center');
-                    else{
-                        var strokeDir;
-                        var absY = Math.abs(y);
-                        var absX = Math.abs(x);
-                        if (y > 0 && absY >= absX)
-                            strokeDir = 0 ; //down
-                        else if (y < 0 && absY >= absX)
-                            strokeDir = 1 ; // up
-                        else if (x > 0 && absX >= absY)
-                            strokeDir = 2 ; // left
-                        else if (x < 0 && absX >= absY)
-                            strokeDir = 3 ; // right
-                        else
-                            throw new Error("can't get strokeDir");
-
+                    if (strokeWidth == 1){
+                        gotoxy(x,y)
+                        .cuboidX(params.blockType,
+                                 params.meta,
+                                 world,
+                                 1, // width
+                                 stack, // height
+                                 strokeWidth // depth
+                                )
+                        .move('center');
+                    } else {
+                        var strokeDir = _getStrokeDir(x,y);
+                        var width = 1, depth = 1;
                         switch (strokeDir){
                         case 0: // down
-                            gotoxy(x,y-(strokeWidth-1))
-                                .cuboidX(params.blockType,
-                                         params.meta,
-                                         world,
-                                         1, // width
-                                         stack, // height
-                                         strokeWidth // depth
-                                        ).move('center');
-                            
+                            y = y-(strokeWidth-1);
+                            depth = strokeWidth;
                             break;
                         case 1: // up
-                            gotoxy(x,y)
-                                .cuboidX(params.blockType,
-                                         params.meta,
-                                         world,
-                                         1, // width
-                                         stack, // height
-                                         strokeWidth // depth
-                                        ).move('center');
-                            
+                            depth = strokeWidth;
                             break;
                         case 2: // left
-                            gotoxy(x-(strokeWidth-1),y)
-                                .cuboidX(params.blockType,
-                                         params.meta,
-                                         world,
-                                         strokeWidth, // width
-                                         stack, // height
-                                         1 // depth
-                                        ).move('center');
+                            width = strokeWidth;
+                            x = x-(strokeWidth-1);
                             break;
                         case 3: // right
-                            gotoxy(x,y)
-                                .cuboidX(params.blockType,
-                                         params.meta,
-                                         world,
-                                         strokeWidth, // width
-                                         stack, // height
-                                         1 // depth
-                                        ).move('center');
+                            width = strokeWidth;
                             break;
                         }
+                        gotoxy(x,y)
+                            .cuboidX(params.blockType, params.meta, world, width, stack, depth)
+                            .move('center');
+
                     }
                 }
             };
@@ -814,7 +803,34 @@ var Drone = Drone || {
                             .down(y).left(x);
                     }
                 }else{
-                    gotoxy(x,y).cuboidX(params.blockType,params.meta,world,strokeWidth,1,stack).move('center');
+                    if (strokeWidth == 1){
+                        gotoxy(x,y)
+                            .cuboidX(params.blockType,params.meta,world,strokeWidth,1,stack)
+                            .move('center');
+                    }else{
+                        var strokeDir = _getStrokeDir(x,y);
+                        var width = 1, height = 1;
+                        switch (strokeDir){
+                        case 0: // down
+                            y = y-(strokeWidth-1);
+                            height = strokeWidth;
+                            break;
+                        case 1: // up
+                            height = strokeWidth;
+                            break;
+                        case 2: // left
+                            width = strokeWidth;
+                            x = x-(strokeWidth-1);
+                            break;
+                        case 3: // right
+                            width = strokeWidth;
+                            break;
+                        }
+                        gotoxy(x,y)
+                            .cuboidX(params.blockType, params.meta, world, width, height, stack)
+                            .move('center');
+                        
+                    }
                 }
             };
         }

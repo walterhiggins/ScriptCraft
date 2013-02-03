@@ -4,7 +4,7 @@ load(__folder + "drone.js");
 */
 Drone.extend('rainbow', function(radius){
     if (typeof radius == "undefined")
-        radius = 12;
+        radius = 18;
     
     this.chkpt('rainbow');
     this.down(radius);
@@ -13,7 +13,8 @@ Drone.extend('rainbow', function(radius){
                   blocks.wool.yellow,
                   blocks.wool.lime,
                   blocks.wool.blue,
-                  blocks.wool.purple];
+                  blocks.wool.purple,
+                  blocks.air];
 
     for (var i = 0;i < colors.length; i++) {
 
