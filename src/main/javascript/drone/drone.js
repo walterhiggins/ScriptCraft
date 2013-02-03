@@ -396,7 +396,7 @@ var Drone = Drone || {
       faster cuboid because blockid, meta and world must be provided 
       use this method when you need to repeatedly place blocks
      */
-    Drone.prototype.cuboidX = function(blockId, meta, world, w, h, d){
+    Drone.prototype.cuboidX = function(blockType, meta, world, w, h, d){
 
         if (typeof h == "undefined")
             h = 1;
@@ -409,7 +409,7 @@ var Drone = Drone || {
 
         var depthFunc = function(){
             var block = world.getBlockAt(that.x,that.y,that.z);
-            block.setTypeIdAndData(blockId,meta,false);
+            block.setTypeIdAndData(blockType,meta,false);
         };
         var heightFunc = function(){
             _traverse[dir].depth(that,d,depthFunc);
@@ -591,67 +591,10 @@ var Drone = Drone || {
         print(this.toString());
         return this;
     };
-
-    // ========================================================================
-    // Private variables and functions
-    // ========================================================================
-    var _cylinderX = function(block,radius,height,drone,fill,exactParams)
-    {
-        drone.chkpt('cylinderX');
-        var world = null;
-        var blockType = null;
-        var meta = 0;
-        if (typeof exactParams == "undefined"){
-            world = drone._getWorld();
-            bm = drone._getBlockIdAndMeta(block);
-            blockType = bm[0];
-            meta = bm[1];
-        }else{
-            world = exactParams.world;
-            blockType = exactParams.blockType;
-            meta = exactParams.meta;
-        }
-
-        var x0, y0, gotoxy;
-        drone.right(radius).fwd(radius).chkpt('center');
-        switch (drone.dir){
-        case 0: // east
-            x0 = drone.z;
-            y0 = drone.x;
-            gotoxy = function(xo,yo){ return drone.right(xo).fwd(yo);};
-            break;
-        case 1: // south
-            x0 = drone.x;
-            y0 = drone.z;
-            gotoxy = function(xo,yo){ return drone.right(xo).fwd(0-yo);};
-            break;
-        case 2: // west
-            x0 = drone.z;
-            y0 = drone.x;
-            gotoxy = function(xo,yo){ return drone.right(0-xo).fwd(0-yo);};
-            break;
-        case 3: // north
-            x0 = drone.x;
-            y0 = drone.z;
-            gotoxy = function(xo,yo){ return drone.right(xo).fwd(0-yo);};
-            break;
-        }
-        var points = [];
-        var setPixel = function(a,b){
-            var xo = (a-x0);
-            var yo = (b-y0);
-            if (fill){
-                // wph 20130114 more efficient esp. for large cylinders/spheres
-                if (yo < 0){
-                    drone
-                        .fwd(yo).right(xo)
-                        .cuboidX(blockType,meta,world,1,height,Math.abs(yo*2)+1)
-                        .back(yo).left(xo);
-                }
-            }else{
-                gotoxy(xo,yo).cuboidX(blockType,meta,world,1,height,1).move('center');
-            }
-        };
+    /*
+      do the bresenham thing
+     */
+    var _bresenham = function(x0,y0,radius, setPixel,quadrants){
         //
         // credit: Following code is copied almost verbatim from
         // http://en.wikipedia.org/wiki/Midpoint_circle_algorithm
@@ -662,10 +605,23 @@ var Drone = Drone || {
         var ddF_y = -2 * radius;
         var x = 0;
         var y = radius;
-        setPixel(x0, y0 + radius);
-        setPixel(x0, y0 - radius);
-        setPixel(x0 + radius, y0);
-        setPixel(x0 - radius, y0);
+        quadrants = quadrants || {topleft: true, 
+                                  topright: true,
+                                  bottomleft: true,
+                                  bottomright: true};
+        /*
+            II  | I
+          ------------
+            III | IV
+         */
+        if (quadrants.topleft || quadrants.topright)
+            setPixel(x0, y0 + radius); // quadrant I/II topmost
+        if (quadrants.bottomleft || quadrants.bottomright)
+            setPixel(x0, y0 - radius); // quadrant III/IV bottommost
+        if (quadrants.topright || quadrants.bottomright)
+            setPixel(x0 + radius, y0); // quadrant I/IV rightmost
+        if (quadrants.topleft || quadrants.bottomleft)
+            setPixel(x0 - radius, y0); // quadrant II/III leftmost
         
         while(x < y)
         {
@@ -681,22 +637,292 @@ var Drone = Drone || {
             x++;
             ddF_x += 2;
             f += ddF_x;    
-            setPixel(x0 + x, y0 + y);
-            setPixel(x0 - x, y0 + y);
-            setPixel(x0 + x, y0 - y);
-            setPixel(x0 - x, y0 - y);
-            setPixel(x0 + y, y0 + x);
-            setPixel(x0 - y, y0 + x);
-            setPixel(x0 + y, y0 - x);
-            setPixel(x0 - y, y0 - x);
+            if (quadrants.topright){
+                setPixel(x0 + x, y0 + y); // quadrant I
+                setPixel(x0 + y, y0 + x); // quadrant I
+            }
+            if (quadrants.topleft){
+                setPixel(x0 - x, y0 + y); // quadrant II
+                setPixel(x0 - y, y0 + x); // quadrant II
+            }
+            if (quadrants.bottomleft){
+                setPixel(x0 - x, y0 - y); // quadrant III
+                setPixel(x0 - y, y0 - x); // quadrant III
+            }
+            if (quadrants.bottomright){
+                setPixel(x0 + x, y0 - y); // quadrant IV
+                setPixel(x0 + y, y0 - x); // quadrant IV
+            }
         }
+    };
+    /*
+      ArcParams {
+      drone: 
+      orientation: horizontal || vertical
+      quadrants: [1,2,3,4]
+      blockType : 
+      meta:
+      xyCallback:
+      radius:
+      stack: 
+      fill: true || false
+      world:
+      }
+     */
+
+    /*
+      The daddy of all arc-related API calls - 
+      if you're drawing anything that bends it ends up here.
+    */
+    var _arc2 = function( params ) {
+
+        var drone = params.drone;
+        var orientation = params.orientation || "horizontal";
+        var quadrants = params.quadrants || {
+            topright:1,
+            topleft:2,
+            bottomleft:3,
+            bottomright:4
+        };
+        var stack = params.stack || 1;
+        var world = params.world || drone._getWorld();
+        var radius = params.radius;
+        var strokeWidth = params.strokeWidth || 1;
+        drone.chkpt('arc2');
+        var x0, y0, gotoxy,setPixel;
+        
+        if (orientation == "horizontal"){
+            gotoxy = function(x,y){ return drone.right(x).fwd(y);};
+            drone.right(radius).fwd(radius).chkpt('center');
+            switch (drone.dir) {
+            case 0: // east
+            case 2: // west
+                x0 = drone.z;
+                y0 = drone.x;
+                break;
+            case 1: // south
+            case 3: // north
+                x0 = drone.x;
+                y0 = drone.z;
+            }
+            setPixel = function(x,y) {
+                x = (x-x0);
+                y = (y-y0);
+                if (params.fill){
+                    // wph 20130114 more efficient esp. for large cylinders/spheres
+                    if (y < 0){
+                        drone
+                            .fwd(y).right(x)
+                            .cuboidX(params.blockType,params.meta,world,1,stack,Math.abs(y*2)+1)
+                            .back(y).left(x);
+                    }
+                }else{
+                    if (strokeWidth == 1)
+                        gotoxy(x,y).cuboidX(params.blockType,
+                                            params.meta,
+                                            world,
+                                            1, // width
+                                            stack, // height
+                                            strokeWidth // depth
+                                           ).move('center');
+                    else{
+                        var strokeDir;
+                        var absY = Math.abs(y);
+                        var absX = Math.abs(x);
+                        if (y > 0 && absY >= absX)
+                            strokeDir = 0 ; //down
+                        else if (y < 0 && absY >= absX)
+                            strokeDir = 1 ; // up
+                        else if (x > 0 && absX >= absY)
+                            strokeDir = 2 ; // left
+                        else if (x < 0 && absX >= absY)
+                            strokeDir = 3 ; // right
+                        else
+                            throw new Error("can't get strokeDir");
+
+                        switch (strokeDir){
+                        case 0: // down
+                            gotoxy(x,y-(strokeWidth-1))
+                                .cuboidX(params.blockType,
+                                         params.meta,
+                                         world,
+                                         1, // width
+                                         stack, // height
+                                         strokeWidth // depth
+                                        ).move('center');
+                            
+                            break;
+                        case 1: // up
+                            gotoxy(x,y)
+                                .cuboidX(params.blockType,
+                                         params.meta,
+                                         world,
+                                         1, // width
+                                         stack, // height
+                                         strokeWidth // depth
+                                        ).move('center');
+                            
+                            break;
+                        case 2: // left
+                            gotoxy(x-(strokeWidth-1),y)
+                                .cuboidX(params.blockType,
+                                         params.meta,
+                                         world,
+                                         strokeWidth, // width
+                                         stack, // height
+                                         1 // depth
+                                        ).move('center');
+                            break;
+                        case 3: // right
+                            gotoxy(x,y)
+                                .cuboidX(params.blockType,
+                                         params.meta,
+                                         world,
+                                         strokeWidth, // width
+                                         stack, // height
+                                         1 // depth
+                                        ).move('center');
+                            break;
+                        }
+                    }
+                }
+            };
+        }else{
+            // vertical
+            gotoxy = function(x,y){ return drone.right(x).up(y);};
+            drone.right(radius).up(radius).chkpt('center'); 
+            switch (drone.dir) {
+            case 0: // east
+            case 2: // west
+                x0 = drone.z;
+                y0 = drone.y;
+                break;
+            case 1: // south
+            case 3: // north
+                x0 = drone.x;
+                y0 = drone.y;
+            }
+            setPixel = function(x,y) {
+                x = (x-x0);
+                y = (y-y0);
+                if (params.fill){
+                    // wph 20130114 more efficient esp. for large cylinders/spheres
+                    if (y < 0){
+                        drone
+                            .up(y).right(x)
+                            .cuboidX(params.blockType,params.meta,world,1,Math.abs(y*2)+1,stack)
+                            .down(y).left(x);
+                    }
+                }else{
+                    gotoxy(x,y).cuboidX(params.blockType,params.meta,world,strokeWidth,1,stack).move('center');
+                }
+            };
+        }
+        /*
+          setPixel assumes a 2D plane - need to put a block along appropriate plane
+         */
+        _bresenham(x0,y0,radius,setPixel,quadrants);
+        
+        params.drone.move('arc2');
+    };
+
+
+    Drone.prototype.arc = function(params) {
+        params.drone = this;
+        _arc2(params);
+        return this;
+    }
+    // ========================================================================
+    // Private variables and functions
+    // ========================================================================
+    var _cylinderX = function(block,radius,height,drone,fill,exactParams) {
+        drone.chkpt('cylinderX');
+        var world = null;
+        var blockType = null;
+        var meta = 0;
+        if (typeof exactParams == "undefined"){
+            world = drone._getWorld();
+            bm = drone._getBlockIdAndMeta(block);
+            blockType = bm[0];
+            meta = bm[1];
+        }else{
+            world = exactParams.world;
+            blockType = exactParams.blockType;
+            meta = exactParams.meta;
+        }
+
+        var x0, y0;
+        var gotoxy = function(xo,yo){ return drone.right(xo).fwd(yo);};
+        drone.right(radius).fwd(radius).chkpt('center');
+        switch (drone.dir){
+        case 0: // east
+        case 2: // west
+            x0 = drone.z;
+            y0 = drone.x;
+            break;
+        case 1: // south
+        case 3: // north
+            x0 = drone.x;
+            y0 = drone.z;
+            break;
+        }
+        var setPixel = function(x,y){
+            x = (x-x0);
+            y = (y-y0);
+            if (fill){
+                // wph 20130114 more efficient esp. for large cylinders/spheres
+                if (yo < 0){
+                    drone
+                        .fwd(y).right(x)
+                        .cuboidX(blockType,meta,world,1,height,Math.abs(y*2)+1)
+                        .back(y).left(x);
+                }
+            }else{
+                gotoxy(x,y).cuboidX(blockType,meta,world,1,height,1).move('center');
+            }
+        };
+        _bresenham(x0,y0,radius,setPixel);
         return drone.move('cylinderX');
     }
     var _cylinder0 = function(block,radius,height,exactParams){
-        return _cylinderX(block,radius,height,this,false,exactParams);
+        var arcParams = {
+            radius: radius,
+            fill: false,
+            orientation: 'horizontal',
+            stack: height,
+        };
+
+        if (exactParams){
+            arcParams.blockType = exactParams.blockType;
+            arcParams.meta = exactParams.meta;
+            arcParams.world = exactParams.world;
+        }else{
+            var md = this._getBlockIdAndMeta(block);
+            arcParams.blockType = md[0];
+            arcParams.meta = md[1];
+            arcParams.world = this._getWorld();
+        }
+        return this.arc(arcParams);
     };
     var _cylinder1 = function(block,radius,height,exactParams){
-        return _cylinderX(block,radius,height,this,true,exactParams);
+        var arcParams = {
+            radius: radius,
+            fill: true,
+            orientation: 'horizontal',
+            stack: height,
+        };
+
+        if (exactParams){
+            arcParams.blockType = exactParams.blockType;
+            arcParams.meta = exactParams.meta;
+            arcParams.world = exactParams.world;
+        }else{
+            var md = this._getBlockIdAndMeta(block);
+            arcParams.blockType = md[0];
+            arcParams.meta = md[1];
+            arcParams.world = this._getWorld();
+        }
+        return this.arc(arcParams);
     };
     var _getDirFromRotation = function(r){
         // 0 = east, 1 = south, 2 = west, 3 = north

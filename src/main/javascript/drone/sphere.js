@@ -51,10 +51,86 @@ Drone.extend('sphere', function(block,radius)
 //
 Drone.extend('sphere0', function(block,radius)
 {
-    return this.sphere(block,radius)
+/*
+    this.sphere(block,radius)
         .fwd().right().up()
         .sphere(0,radius-1)
         .back().left().down();
+
+*/
+
+    var lastRadius = radius;
+    var slices = [[radius,0]];
+    var diameter = radius*2;
+    var world = this._getWorld();
+    var bm = this._getBlockIdAndMeta(block);
+
+    var r2 = radius*radius;
+    for (var i = 0; i <= radius;i++){
+        var newRadius = Math.round(Math.sqrt(r2 - i*i));
+        if (newRadius == lastRadius)
+            slices[slices.length-1][1]++;
+        else
+            slices.push([newRadius,1]);
+        lastRadius = newRadius;
+    }
+    this.chkpt('sphere0');
+    //
+    // mid section
+    //
+    //.cylinder(block,radius,(slices[0][1]*2)-1,{blockType: bm[0],meta: bm[1],world: world})
+    this.up(radius - slices[0][1])
+        .arc({blockType: bm[0], 
+              meta: bm[1], 
+              radius: radius, 
+              strokeWidth: 2,
+              stack: (slices[0][1]*2)-1,
+              world: world,
+              fill: false
+             })
+        .down(radius-slices[0][1]);
+    
+    var yOffset = -1;
+    var len = slices.length;
+    for (var i = 1; i < len;i++)
+    {
+        yOffset += slices[i-1][1];
+        var sr = slices[i][0];
+        var sh = slices[i][1];
+        var v = radius + yOffset, h = radius-sr;
+        // northern hemisphere
+        // .cylinder(block,sr,sh,{blockType: bm[0],meta: bm[1],world: world})
+        this.up(v).fwd(h).right(h)
+            .arc({
+                blockType: bm[0],
+                meta: bm[1],
+                world: world,
+                radius: sr,
+                stack: sh,
+                fill: false,
+                strokeWidth: i<len-1?1+(sr-slices[i+1][0]):1
+            })
+            .left(h).back(h).down(v);
+        
+        // southern hemisphere
+        v = radius - (yOffset+sh+1);
+        //.cylinder(block,sr,sh,{blockType: bm[0],meta: bm[1],world: world})
+        this.up(v).fwd(h).right(h)
+            .arc({
+                blockType: bm[0],
+                meta: bm[1],
+                world: world,
+                radius: sr,
+                stack: sh,
+                fill: false,
+                strokeWidth: i<len-1?1+(sr-slices[i+1][0]):1
+            })
+            .left(h).back(h). down(v);
+    }
+    this.move('sphere0');
+
+    return this;
+
 });
 Drone.extend('hemisphere', function(block,radius, northSouth){
     var lastRadius = radius;
