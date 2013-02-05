@@ -1,188 +1,214 @@
 var global = this;
 load(__folder + "../core/_primitives.js",true);
-//
-// Interface
-// =========
-//
-// Please read the following section to understand what a Minecraft Drone can do.
-//
-var Drone = Drone || {
-    //
-    // TLDNR; (Just read this if you're impatient)
-    // ======
-    // At the in-game command prompt type...
-    // 
-    // /js box(5)  
-    //
-    // ... creates a single wooden block at the cross-hairs or player location
-    //
-    // /js box(5).right(2).box('35:15',4,9,1)
-    //
-    // ... creates a single wooden block and a 2001 black obelisk that is 
-    // 4 wide x 9 tall x 1 long in size.
-    //
-    // If you want to see what else ScriptCraft's Drone can do, read on...
-    // 
-    // creating a new drone
-    // ====================
-    // 
-    // Drones can be created in 3 ways...
-    //
-    // [1] Calling any one of the methods listed below will return a Drone object. For example...
-    //     
-    //     /js var d = box(5)
-    //    
-    //     ... creates a 1x1x1 wooden block at the cross-hairs or player's location and returns a Drone
-    //    object. This might look odd (if you're familiar with Java's Object-dot-method syntax) but all 
-    //    of the Drone class's methods are also global functions that return new Drone objects. 
-    //    This is short-hand for creating drones and is useful for playing around with Drones at the in-game 
-    //    command prompt. It's shorter than typing ...
-    //
-    //    /js var d = new Drone().box(5) 
-    //    
-    //    ... All of the Drone's methods return `this` (self) so you can chain operations together like this...
-    //    
-    //    /js var d = box(5).up().box(5,3,1,3).down().fwd(2).box(5).turn().fwd(2).box(5).turn().fwd(2).box(5)
-    //
-    // [2] /js d = new Drone()
-    //
-    //     This will create a new Drone. If the cross-hairs are pointing 
-    //     at a block at the time then, that block's location becomes the drone's 
-    //     starting point.
-    //     If the cross-hairs are _not_ pointing at a block, then the drone's starting
-    //     location will be 2 blocks directly in front of the player.
-    // TIP: Building always happens right and front of the drone's position...
-    //
-    //      Plan View:
-    //
-    //      ^
-    //      |
-    //      |
-    //      D---->
-    //  
-    //      For convenience you can use a 'corner stone' to begin building. 
-    //      The corner stone should be located just above ground level.
-    //      If the cross-hair is point at or into ground level when you create a new Drone(),
-    //      then building begins at that point. You can get around this by pointing at a 
-    //      'corner stone' just above ground level or alternatively use the following statement...
-    //
-    //      /js d = new Drone().up()
-    //      
-    //      ... which will move the drone up one block as soon as it's created.
-    //
-    // [3] d = new Drone(x,y,z,direction)
-    //
-    //     This will create a new Drone at the location you specified using x, y, z
-    //     In minecraft, the X axis runs west to east and the Z axis runs north to south.
-    //     The direction parameter says what direction you want the drone to face:
-    //     0 = east, 1 = south, 2 = west, 3 = north.
-    //     If the direction parameter is omitted, the player's direction is used instead.
-    //
-    // When you load() the drone.js javascript file, a default `drone` Object is created at
-    // the cross-hair's or player's location.
-    //
-    // movement
-    // ========
-    // 
-    // Drones can move freely in minecraft's 3-D world. You control the Drone's movement using
-    // any of the following methods..
-    //
-    // move up - n is the number of blocks you want to move (default 1)
-    up: function(n){},
-    // move down - n is the number of blocks you want to move (default 1)
-    down: function(n){},
-    // move left - n is the number of blocks you want to move (default 1)
-    left: function(n){},
-    // move right - n is the number of blocks you want to move (default 1)
-    right: function(n){},
-    // move forward - n is the number of blocks you want to move (default 1)
-    fwd: function(n){},
-    // move backwards - n is the number of blocks you want to move (default 1)
-    back: function(n){},
+/************************************************************************
+SECTION: Drone Module
+=====================
+The Drone is a convenience class for building. It can be used for...
 
-    // to change direction - n is the number of turns right you want to make (default 1)
-    // turns are always clock-wise. If the drone is facing north, then drone.turn() will 
-    // make the turn face east. If the drone is facing east then drone.turn(2) will make the 
-    // drone turn twice so that it is facing west.
-    //
-    turn: function(n){},
+ 1. Building
+ 2. Copying and Pasting
 
-    // markers
-    // =======
-    // 
-    // Markers are useful when your Drone has to do a lot of work. You can set a check-point 
-    // and return to the check-point using the move() method.
-    // if your drone is about to undertake a lot of work - e.g. building a road, skyscraper or forest
-    // you should set a check-point before doing so if you want your drone to return to its current location.
-    // e.g:
-    // 
-    // drone.chkpt('town-square');
-    // for (i = 0; i< 100; i++){ 
-    //     drone.fwd(12).box(6); 
-    // }
-    // drone.move('town-square');
-    //
-    // A 'start' checkpoint is automatically created when the Drone is first created.
-    //
-    chkpt: function(checkpoint_name){},
-    move: function(checkpoint_name){},
+It uses a fluent interface which means all of the Drone's methods return `this` and can 
+be chained together like so...
 
-    // building 
-    // ======== 
-    // 
-    // the box() method is the main method for building things.
-    // parameters
-    // ----------
-    // b - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
-    //     An array of block ids can also be used in which case each block in the array
-    //     will be placed in turn.
-    // w - the width of the structure (optional - default value is 1)
-    // h - the height of the structure (optional - default value is 1)
-    // d - the depth of the structure - NB this is *not* how deep underground the structure lies - this is 
-    //     how far away (depth of field) from the drone the structure will extend.
-    //     (optional - default value is 1)
-    // e.g:
-    // To create a stone structure 5 blocks wide, 8 blocks tall and 15 blocks long...
-    //
-    // drone.box(48, 5, 8, 15);
-    //
-    // To create an oak tree...
-    // (we can't control the dimensions of a tree since it's a natural object in minecraft)
-    //
-    // drone.box(6);
-    //
-    box: function(block,width,height,depth){},
-    //
-    // like box but empties out the inside - ideal for buildings.
-    //
-    box0: function(block,width,height,depth){},
-    prism: function(block,width,depth){},
-    prism0: function(block,width,depth){},
-    //
-    // create a cylinder - building begins radius blocks to the right and forward.
-    //
-    cylinder: function(block,radius,height){},
-    //
-    // create an empty cylinder
-    //
-    cylinder0: function(block,radius,height){},
+    var theDrone = new Drone();
+    theDrone.up().left().box(blocks.oak).down().fwd(3).cylinder0(blocks.lava,8); 
+
+TLDNR; (Just read this if you're impatient)
+===========================================
+At the in-game command prompt type...
+     
+    /js box(5)  
     
-    // miscellaneous
-    // =============
+... creates a single wooden block at the cross-hairs or player location
+    
+    /js box(5).right(2).box('35:15',4,9,1)
+    
+... creates a single wooden block and a 2001 black obelisk that is 4
+wide x 9 tall x 1 long in size.  If you want to see what else
+ScriptCraft's Drone can do, read on...
 
-    // create a door - if a parameter is supplied an Iron door is created otherwise a wooden door is created.
-    door: function(b){},
-    // create double doors (left and right side)
-    door2: function(b){}, 
+Constructing a Drone Object
+===========================
+
+Drones can be created in 3 ways...
+    
+ 1. Calling any one of the methods listed below will return a Drone object. For example...
+         
+        var d = box(blocks.oak)
+
+   ... creates a 1x1x1 wooden block at the cross-hairs or player's location and returns a Drone
+   object. This might look odd (if you're familiar with Java's Object-dot-method syntax) but all 
+   of the Drone class's methods are also global functions that return new Drone objects. 
+   This is short-hand for creating drones and is useful for playing around with Drones at the in-game 
+   command prompt. It's shorter than typing ...
+    
+        var d = new Drone().box(5) 
+        
+   ... All of the Drone's methods return `this` (self) so you can chain operations together like this...
+        
+        var d = box(5).up().box(5,3,1,3).down().fwd(2).box(5).turn().fwd(2).box(5).turn().fwd(2).box(5)
+    
+ 2. Using the following form...
+
+        d = new Drone()
+    
+    ...will create a new Drone. If the cross-hairs are pointing at a
+    block at the time then, that block's location becomes the drone's
+    starting point.  If the cross-hairs are _not_ pointing at a block,
+    then the drone's starting location will be 2 blocks directly in
+    front of the player.  TIP: Building always happens right and front
+    of the drone's position...
+    
+    Plan View:
+
+        ^
+        |
+        |
+        D---->
+      
+    For convenience you can use a _corner stone_ to begin building.
+    The corner stone should be located just above ground level.  If
+    the cross-hair is point at or into ground level when you create a
+    new Drone(), then building begins at that point. You can get
+    around this by pointing at a 'corner stone' just above ground
+    level or alternatively use the following statement...
+    
+        d = new Drone().up()
+          
+    ... which will move the drone up one block as soon as it's created.
+    
+ 3. Or by using the following form...
+    
+        d = new Drone(x,y,z,direction)
+
+    This will create a new Drone at the location you specified using
+    x, y, z In minecraft, the X axis runs west to east and the Z axis runs
+    north to south.  The direction parameter says what direction you want
+    the drone to face: 0 = east, 1 = south, 2 = west, 3 = north.  If the
+    direction parameter is omitted, the player's direction is used
+    instead.
+
+Parameters
+----------
+ * x (optional) : The x coordinate of the Drone
+ * y (optional) : The y coordinate of the Drone
+ * z (optional) : The z coordinate of the Drone
+ * direction (optional) : The direction in which the Drone is
+   facing. Possible values are 0 (east), 1 (south), 2 (west) or 3 (north)
+
+***/
+var Drone = function(/* number */ x, /* number */ y, /* number */ z, /* number */ direction){};
+/************************************************************************
+Movement
+========
+Drones can move freely in minecraft's 3-D world. You control the
+Drone's movement using any of the following methods..
+
+ * up
+ * down
+ * left
+ * right
+ * fwd
+ * back
+
+... Each of these methods takes a single optional parameter
+`numBlocks` - the number of blocks to move in the given direction. If
+no parameter is given, the default is 1.
+
+to change direction use the `turn()` method which also takes a single
+optional parameter numTurns - the number of 90 degree turns to make.
+Turns are always clock-wise. If the drone is facing north, then
+drone.turn() will make the turn face east. If the drone is facing east
+then drone.turn(2) will make the drone turn twice so that it is facing
+west.
+
+***/
+Drone.prototype.up = function(numBlocks){};
+Drone.prototype.down = function(numBlocks){};
+Drone.prototype.left = function(numBlocks){};
+Drone.prototype.right = function(numBlocks){};
+Drone.prototype.fwd = function(numBlocks){};
+Drone.prototype.back = function(numBlocks){};
+Drone.prototype.turn = function(numTurns){};
+
+/************************************************************************
+Markers
+=======
+Markers are useful when your Drone has to do a lot of work. You can
+set a check-point and return to the check-point using the move()
+method.  If your drone is about to undertake a lot of work -
+e.g. building a road, skyscraper or forest you should set a
+check-point before doing so if you want your drone to return to its
+current location.  For example...
+
+    drone.chkpt('town-square');
+    for (i = 0; i< 100; i++){ 
+        drone.fwd(12).box(6); 
+    }
+    drone.move('town-square');
+
+A 'start' checkpoint is automatically created when the Drone is first created.
+***/
+
+Drone.prototype.chkpt = function(checkpoint_name){};
+Drone.prototype.move = function(checkpoint_name){};
+
+/************************************************************************
+building 
+======== 
+the box() method is the main method for building things.
+
+parameters
+----------
+ * b - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
+   An array of block ids can also be used in which case each block in the array
+   will be placed in turn.
+ * w (optional - default 1) - the width of the structure 
+ * h (optional - default 1) - the height of the structure 
+ * d (optional - default 1) - the depth of the structure - NB this is *not* how deep underground the structure lies - this is 
+   how far away (depth of field) from the drone the structure will extend.
+
+Example
+-------
+To create a stone structure 5 blocks wide, 8 blocks tall and 15 blocks long...
+    
+    drone.box(48, 5, 8, 15);
+    
+To create an oak tree...(we can't control the dimensions of a tree since it's a natural object in minecraft)
+
+    drone.box(6);
+
+***/
+Drone.prototype.box = function(block,width,height,depth){};
+/************************************************************************
+like box but empties out the inside - ideal for buildings.
+***/
+Drone.prototype.box0 = function(block,width,height,depth){};
+Drone.prototype.prism = function(block,width,depth){};
+Drone.prototype.prism0 = function(block,width,depth){};
+/************************************************************************
+create a cylinder - building begins radius blocks to the right and forward.
+***/
+Drone.prototype.cylinder = function(block,radius,height){};
+Drone.prototype.cylinder0 = function(block,radius,height){};
+/************************************************************************
+miscellaneous
+=============
+create a door - if a parameter is supplied an Iron door is created otherwise a wooden door is created.
+***/    
+Drone.prototype.door = function(b){};
+// create double doors (left and right side)
+Drone.prototype.door2 = function(b){};
     // signs must use block 63 (stand-alone signs) or 68 (signs on walls)
     // s can be a string or an array of strings. 
-    sign: function(s,b){},
+Drone.prototype.sign = function(s,b){};
 
     // create trees.
-    oak: function(){},
-    spruce: function(){},
-    birch: function(){},
-    jungle: function(){},
+Drone.prototype.oak= function(){};
+Drone.prototype.spruce = function(){};
+Drone.prototype.birch = function(){};
+Drone.prototype.jungle = function(){};
     //
     // rand takes either an array (if each blockid is the same weight)
     // or an object where each property is a blockid and the value is it's weight (an integer)
@@ -191,11 +217,11 @@ var Drone = Drone || {
     // rand({98: 5, '98:1': 3,'98:2': 2},w,d,h) will place random blocks stone has a 50% chance of being picked, 
     //                               mossy stone has a 30% chance and cracked stone has just a 20% chance of being picked.
     //
-    rand: function(distribution,w,h,d){},
+Drone.prototype.rand = function(distribution,w,h,d){};
     //
     // places random flowers and long grass (similar to the effect of placing bonemeal on grass)
     //
-    garden: function(w,d){},
+Drone.prototype.garden = function(w,d){};
 
     // Copy & Paste
     // ============
@@ -206,8 +232,8 @@ var Drone = Drone || {
     // the copied area can be referenced using the name 'somethingCool'. The drone moves 12 blocks right then
     // pastes the copy.
     //
-    copy: function(name,w,h,d){},
-    paste: function(name){}
+Drone.prototype.copy = function(name,w,h,d){};
+Drone.prototype.paste = function(name){};
 
     // Chaining
     // ========
@@ -226,6 +252,11 @@ var Drone = Drone || {
     //
     // var drone = new Drone().fwd(3).left(2).box(2).up().box(2).down();
     //
+    // ... since each Drone method is also a global function that constructs a drone if none is supplied, 
+    // you can shorten even further to just...
+    //
+    // fwd(3).left(2).box(2).up().box(2).down()
+    //
     // The Drone object uses a Fluent Interface ( http://en.wikipedia.org/wiki/Fluent_interface ) 
     // to make ScriptCraft scripts more concise and easier to write and read.
     // Minecraft's in-game command prompt is limited to about 80 characters so chaining drone commands together
@@ -240,7 +271,7 @@ var Drone = Drone || {
     // y - The Drone's position along the vertical axis (y increses as you move up)
     // z - The Drone's position along the north-south axis (z increases as you move south)
     // dir - The Drone's direction 0 is east, 1 is south , 2 is west and 3 is north.
-};
+
 //
 // Implementation
 // ==============
@@ -248,12 +279,6 @@ var Drone = Drone || {
 // There is no need to read any further unless you want to understand how the Drone object works.
 //
 (function(){
-    // 
-    // don't want to declare object more than once
-    //
-    if (Drone.constructor == Function)
-        return;
-
     /**
        Create a new Drone for building. 
        @constructor
@@ -302,7 +327,6 @@ var Drone = Drone || {
             this.fwd(3);
         }
         this.chkpt('start');
-
     };
     Drone.prototype.chkpt = function(name){
         this.checkpoints[name] = {x:this.x,y:this.y,z:this.z,dir:this.dir};
@@ -664,21 +688,6 @@ var Drone = Drone || {
             }
         }
     };
-    /*
-      ArcParams {
-      drone: 
-      orientation: horizontal || vertical
-      quadrants: [1,2,3,4]
-      blockType : 
-      meta:
-      xyCallback:
-      radius:
-      stack: 
-      fill: true || false
-      world:
-      }
-     */
-
     var _getStrokeDir = function(x,y){
         var absY = Math.abs(y);
         var absX = Math.abs(x);
@@ -851,55 +860,6 @@ var Drone = Drone || {
     // ========================================================================
     // Private variables and functions
     // ========================================================================
-    var _cylinderX = function(block,radius,height,drone,fill,exactParams) {
-        drone.chkpt('cylinderX');
-        var world = null;
-        var blockType = null;
-        var meta = 0;
-        if (typeof exactParams == "undefined"){
-            world = drone._getWorld();
-            bm = drone._getBlockIdAndMeta(block);
-            blockType = bm[0];
-            meta = bm[1];
-        }else{
-            world = exactParams.world;
-            blockType = exactParams.blockType;
-            meta = exactParams.meta;
-        }
-
-        var x0, y0;
-        var gotoxy = function(xo,yo){ return drone.right(xo).fwd(yo);};
-        drone.right(radius).fwd(radius).chkpt('center');
-        switch (drone.dir){
-        case 0: // east
-        case 2: // west
-            x0 = drone.z;
-            y0 = drone.x;
-            break;
-        case 1: // south
-        case 3: // north
-            x0 = drone.x;
-            y0 = drone.z;
-            break;
-        }
-        var setPixel = function(x,y){
-            x = (x-x0);
-            y = (y-y0);
-            if (fill){
-                // wph 20130114 more efficient esp. for large cylinders/spheres
-                if (yo < 0){
-                    drone
-                        .fwd(y).right(x)
-                        .cuboidX(blockType,meta,world,1,height,Math.abs(y*2)+1)
-                        .back(y).left(x);
-                }
-            }else{
-                gotoxy(x,y).cuboidX(blockType,meta,world,1,height,1).move('center');
-            }
-        };
-        _bresenham(x0,y0,radius,setPixel);
-        return drone.move('cylinderX');
-    }
     var _cylinder0 = function(block,radius,height,exactParams){
         var arcParams = {
             radius: radius,
