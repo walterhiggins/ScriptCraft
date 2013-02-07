@@ -12,14 +12,13 @@ Drone.extend('rainbow', function(radius){
                   blocks.wool.orange,
                   blocks.wool.yellow,
                   blocks.wool.lime,
+                  blocks.wool.lightblue,
                   blocks.wool.blue,
                   blocks.wool.purple,
                   blocks.air];
 
     for (var i = 0;i < colors.length; i++) {
-
         var bm = this._getBlockIdAndMeta(colors[i]);
-        
         this.arc({
             blockType: bm[0],
             meta: bm[1],
