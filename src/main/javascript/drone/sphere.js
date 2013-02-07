@@ -5,7 +5,6 @@ Drone.extend('sphere', function(block,radius)
     var lastRadius = radius;
     var slices = [[radius,0]];
     var diameter = radius*2;
-    var world = this._getWorld();
     var bm = this._getBlockIdAndMeta(block);
 
     var r2 = radius*radius;
@@ -22,7 +21,7 @@ Drone.extend('sphere', function(block,radius)
     // mid section
     //
     this.up(radius - slices[0][1])
-        .cylinder(block,radius,(slices[0][1]*2)-1,{blockType: bm[0],meta: bm[1],world: world})
+        .cylinder(block,radius,(slices[0][1]*2)-1,{blockType: bm[0],meta: bm[1]})
         .down(radius-slices[0][1]);
     
     var yOffset = -1;
@@ -34,13 +33,13 @@ Drone.extend('sphere', function(block,radius)
         var v = radius + yOffset, h = radius-sr;
         // northern hemisphere
         this.up(v).fwd(h).right(h)
-            .cylinder(block,sr,sh,{blockType: bm[0],meta: bm[1],world: world})
+            .cylinder(block,sr,sh,{blockType: bm[0],meta: bm[1]})
             .left(h).back(h).down(v);
         
         // southern hemisphere
         v = radius - (yOffset+sh+1);
         this.up(v).fwd(h).right(h)
-            .cylinder(block,sr,sh,{blockType: bm[0],meta: bm[1],world: world})
+            .cylinder(block,sr,sh,{blockType: bm[0],meta: bm[1]})
             .left(h).back(h). down(v);
     }
     return this.move('sphere');
@@ -62,7 +61,6 @@ Drone.extend('sphere0', function(block,radius)
     var lastRadius = radius;
     var slices = [[radius,0]];
     var diameter = radius*2;
-    var world = this._getWorld();
     var bm = this._getBlockIdAndMeta(block);
 
     var r2 = radius*radius;
@@ -78,14 +76,13 @@ Drone.extend('sphere0', function(block,radius)
     //
     // mid section
     //
-    //.cylinder(block,radius,(slices[0][1]*2)-1,{blockType: bm[0],meta: bm[1],world: world})
+    //.cylinder(block,radius,(slices[0][1]*2)-1,{blockType: bm[0],meta: bm[1]})
     this.up(radius - slices[0][1])
         .arc({blockType: bm[0], 
               meta: bm[1], 
               radius: radius, 
               strokeWidth: 2,
               stack: (slices[0][1]*2)-1,
-              world: world,
               fill: false
              })
         .down(radius-slices[0][1]);
@@ -99,12 +96,11 @@ Drone.extend('sphere0', function(block,radius)
         var sh = slices[i][1];
         var v = radius + yOffset, h = radius-sr;
         // northern hemisphere
-        // .cylinder(block,sr,sh,{blockType: bm[0],meta: bm[1],world: world})
+        // .cylinder(block,sr,sh,{blockType: bm[0],meta: bm[1]})
         this.up(v).fwd(h).right(h)
             .arc({
                 blockType: bm[0],
                 meta: bm[1],
-                world: world,
                 radius: sr,
                 stack: sh,
                 fill: false,
@@ -114,12 +110,11 @@ Drone.extend('sphere0', function(block,radius)
         
         // southern hemisphere
         v = radius - (yOffset+sh+1);
-        //.cylinder(block,sr,sh,{blockType: bm[0],meta: bm[1],world: world})
+        //.cylinder(block,sr,sh,{blockType: bm[0],meta: bm[1]})
         this.up(v).fwd(h).right(h)
             .arc({
                 blockType: bm[0],
                 meta: bm[1],
-                world: world,
                 radius: sr,
                 stack: sh,
                 fill: false,
@@ -136,7 +131,6 @@ Drone.extend('hemisphere', function(block,radius, northSouth){
     var lastRadius = radius;
     var slices = [[radius,0]];
     var diameter = radius*2;
-    var world = this._getWorld();
     var bm = this._getBlockIdAndMeta(block);
 
     var r2 = radius*radius;
@@ -153,10 +147,10 @@ Drone.extend('hemisphere', function(block,radius, northSouth){
     // mid section
     //
     if (northSouth == "north"){
-        this.cylinder(block,radius,slices[0][1],{blockType: bm[0],meta: bm[1],world: world});
+        this.cylinder(block,radius,slices[0][1],{blockType: bm[0],meta: bm[1]});
     } else {
         this.up(radius - slices[0][1])
-        .cylinder(block,radius,slices[0][1],{blockType: bm[0],meta: bm[1],world: world})
+        .cylinder(block,radius,slices[0][1],{blockType: bm[0],meta: bm[1]})
         .down(radius - slices[0][1]);
     }
     
@@ -170,13 +164,13 @@ Drone.extend('hemisphere', function(block,radius, northSouth){
         if (northSouth == "north") {
             // northern hemisphere
             this.up(v).fwd(h).right(h)
-            .cylinder(block,sr,sh,{blockType: bm[0],meta: bm[1],world: world})
+            .cylinder(block,sr,sh,{blockType: bm[0],meta: bm[1]})
             .left(h).back(h).down(v);
         }else{
             // southern hemisphere
             v = radius - (yOffset+sh+1);
             this.up(v).fwd(h).right(h)
-                .cylinder(block,sr,sh,{blockType: bm[0],meta: bm[1],world: world})
+                .cylinder(block,sr,sh,{blockType: bm[0],meta: bm[1]})
                 .left(h).back(h). down(v);
         }
     }
