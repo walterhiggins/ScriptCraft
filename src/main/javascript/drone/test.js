@@ -7,8 +7,7 @@ Drone.prototype.testHorizontalStrokeWidth = function(){
         radius: 8,
         orientation: 'horizontal',
         strokeWidth: 3,
-        quadrants: {topright:true,topleft:true,bottomleft:true,bottomright:true},
-        world: this._getWorld()
+        quadrants: {topright:true,topleft:true,bottomleft:true,bottomright:true}
     });
 };
 
@@ -19,7 +18,6 @@ Drone.prototype.testVerticalStrokeWidth = function(){
         radius: 8,
         orientation: 'vertical',
         strokeWidth: 3,
-        quadrants: {topright:true,topleft:true,bottomleft:true,bottomright:true},
-        world: this._getWorld()
+        quadrants: {topright:true,topleft:true,bottomleft:true,bottomright:true}
     });
 };
