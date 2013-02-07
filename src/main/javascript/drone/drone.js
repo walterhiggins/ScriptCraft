@@ -1,8 +1,9 @@
 var global = this;
 load(__folder + "../core/_primitives.js",true);
-/************************************************************************
-SECTION: Drone Module
-=====================
+
+/*********************************************************************
+Drone Module
+============
 The Drone is a convenience class for building. It can be used for...
 
  1. Building
@@ -100,24 +101,52 @@ Parameters
 ***/
 var Drone = function(/* number */ x, /* number */ y, /* number */ z, /* number */ direction){};
 /************************************************************************
-Movement
-========
+Drone.box() method
+==================
+the box() method is a convenience method for building things. (For the more performance-oriented method - see cuboid)
+
+parameters
+----------
+ * b - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
+   Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
+ * w (optional - default 1) - the width of the structure 
+ * h (optional - default 1) - the height of the structure 
+ * d (optional - default 1) - the depth of the structure - NB this is
+   not how deep underground the structure lies - this is how far
+   away (depth of field) from the drone the structure will extend.
+
+Example
+-------
+To create a stone structure 5 blocks wide, 8 blocks tall and 15 blocks long...
+    
+    drone.box(48, 5, 8, 15);
+    
+To create an oak tree...(we can't control the dimensions of a tree since it's a natural object in minecraft)
+
+    drone.box(6);
+
+***/
+Drone.prototype.box = function(block,width,height,depth){};
+/************************************************************************
+Drone Movement
+==============
 Drones can move freely in minecraft's 3-D world. You control the
 Drone's movement using any of the following methods..
 
- * up
- * down
- * left
- * right
- * fwd
- * back
+ * up()
+ * down()
+ * left()
+ * right()
+ * fwd()
+ * back()
+ * turn()
 
 ... Each of these methods takes a single optional parameter
 `numBlocks` - the number of blocks to move in the given direction. If
 no parameter is given, the default is 1.
 
 to change direction use the `turn()` method which also takes a single
-optional parameter numTurns - the number of 90 degree turns to make.
+optional parameter (numTurns) - the number of 90 degree turns to make.
 Turns are always clock-wise. If the drone is facing north, then
 drone.turn() will make the turn face east. If the drone is facing east
 then drone.turn(2) will make the drone turn twice so that it is facing
@@ -133,144 +162,291 @@ Drone.prototype.back = function(numBlocks){};
 Drone.prototype.turn = function(numTurns){};
 
 /************************************************************************
-Markers
-=======
+Drone Markers
+=============
 Markers are useful when your Drone has to do a lot of work. You can
 set a check-point and return to the check-point using the move()
 method.  If your drone is about to undertake a lot of work -
 e.g. building a road, skyscraper or forest you should set a
 check-point before doing so if you want your drone to return to its
-current location.  For example...
+current location.  
+
+
+A 'start' checkpoint is automatically created when the Drone is first created.
+
+Markers are created and returned to using the followng two methods...
+
+ * chkpt - Saves the drone's current location so it can be returned to later.
+ * move - moves the drone to a saved location.
+
+Parameters
+----------
+ * name - the name of the checkpoint to save or return to.
+
+Example
+-------
 
     drone.chkpt('town-square');
+    //
+    // the drone can now go off on a long excursion
+    //
     for (i = 0; i< 100; i++){ 
         drone.fwd(12).box(6); 
     }
+    //
+    // return to the point before the excursion
+    //
     drone.move('town-square');
 
-A 'start' checkpoint is automatically created when the Drone is first created.
 ***/
-
 Drone.prototype.chkpt = function(checkpoint_name){};
 Drone.prototype.move = function(checkpoint_name){};
 
 /************************************************************************
-building 
-======== 
-the box() method is the main method for building things.
+Drone.box0() method
+===================
+Another convenience method - this one creates 4 walls with no floor or ceiling.
 
-parameters
+Parameters
 ----------
- * b - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
-   An array of block ids can also be used in which case each block in the array
-   will be placed in turn.
- * w (optional - default 1) - the width of the structure 
- * h (optional - default 1) - the height of the structure 
- * d (optional - default 1) - the depth of the structure - NB this is *not* how deep underground the structure lies - this is 
-   how far away (depth of field) from the drone the structure will extend.
+ * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
+   Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
+ * width (optional - default 1) - the width of the structure 
+ * height (optional - default 1) - the height of the structure 
+ * length (optional - default 1) - the length of the structure - how far
+   away (depth of field) from the drone the structure will extend.
+
+Drone.boxa() method
+===================
+Construct a cuboid using an array of blocks.
+
+Parameters
+----------
+ * blocks - An array of blocks - each block in the array will be placed in turn.
+ * width
+ * height
+ * length
 
 Example
 -------
-To create a stone structure 5 blocks wide, 8 blocks tall and 15 blocks long...
-    
-    drone.box(48, 5, 8, 15);
-    
-To create an oak tree...(we can't control the dimensions of a tree since it's a natural object in minecraft)
-
-    drone.box(6);
-
+Construct a rainbow-colored road 100 blocks long...
+    var rainbowColors = [blocks.wool.red, blocks.wool.orange, blocks.wool.yellow, blocks.wool.lime,
+                   blocks.wool.lightblue, blocks.wool.blue, blocks.wool.purple];
+    boxa(rainbowColors,7,1,100);
 ***/
-Drone.prototype.box = function(block,width,height,depth){};
+Drone.prototype.box0 = function(block,width,height,length){};
+Drone.prototype.boxa = function(/* [string] */ width, height, length){};
 /************************************************************************
-like box but empties out the inside - ideal for buildings.
+Drone.prism() method
+====================
+Creates a prism. This is useful for roofs on houses.
+
+Parameters
+----------
+
+ * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
+   Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
+ * width - the width of the prism
+ * length - the length of the prism (also its height)
+
+Drone.prism0() method
+=====================
+A variation on `prism` which hollows out the inside of the prism. It uses the same parameters as `prism`.
+
 ***/
-Drone.prototype.box0 = function(block,width,height,depth){};
 Drone.prototype.prism = function(block,width,depth){};
 Drone.prototype.prism0 = function(block,width,depth){};
 /************************************************************************
-create a cylinder - building begins radius blocks to the right and forward.
+Drone.cylinder() method
+=======================
+A convenience method for building cylinders. Building begins radius blocks to the right and forward.
+
+Parameters
+----------
+
+ * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
+   Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
+ * radius 
+ * height
+
+Drone.cylinder0() method
+========================
+A version of cylinder that hollows out the middle.
 ***/
 Drone.prototype.cylinder = function(block,radius,height){};
 Drone.prototype.cylinder0 = function(block,radius,height){};
 /************************************************************************
-miscellaneous
-=============
+Drone.door() method
+===================
 create a door - if a parameter is supplied an Iron door is created otherwise a wooden door is created.
+
+Parameters
+----------
+ * doorType (optional - default wood) - If a parameter is provided then the door is Iron.
+
+Drone.door2() method
+====================
+Create double doors (left and right side)
+
+Parameters
+----------
+ * doorType (optional - default wood) - If a parameter is provided then the door is Iron.
+
 ***/    
 Drone.prototype.door = function(b){};
-// create double doors (left and right side)
 Drone.prototype.door2 = function(b){};
-    // signs must use block 63 (stand-alone signs) or 68 (signs on walls)
-    // s can be a string or an array of strings. 
-Drone.prototype.sign = function(s,b){};
+/************************************************************************
+Drone.sign method
+=================
+Signs must use block 63 (stand-alone signs) or 68 (signs on walls)
 
-    // create trees.
+Parameters
+----------
+ * message -  can be a string or an array of strings. 
+ * block - can be 63 or 68
+
+Example
+-------
+To create a free-standing sign...
+
+    drone.sign(["Hello","World"],63);
+
+... to create a wall mounted sign...
+
+    drone.sign(["Message","Goes","Here"], 68);
+
+***/
+Drone.prototype.sign = function(s,b){};
+/************************************************************************
+Drone Trees methods
+===================
+
+ * oak()
+ * spruce()
+ * birch()
+ * jungle()
+
+None of the tree methods require parameters. Tree methods will only be successful
+if the tree is placed on grass in a setting where trees can grow.
+***/
 Drone.prototype.oak= function(){};
 Drone.prototype.spruce = function(){};
 Drone.prototype.birch = function(){};
 Drone.prototype.jungle = function(){};
-    //
-    // rand takes either an array (if each blockid is the same weight)
-    // or an object where each property is a blockid and the value is it's weight (an integer)
-    // e.g.
-    // rand([98,'98:1','98:2'],w,d,h) will place random blocks stone, mossy stone and cracked stone (each block has the same chance of being picked)
-    // rand({98: 5, '98:1': 3,'98:2': 2},w,d,h) will place random blocks stone has a 50% chance of being picked, 
-    //                               mossy stone has a 30% chance and cracked stone has just a 20% chance of being picked.
-    //
-Drone.prototype.rand = function(distribution,w,h,d){};
-    //
-    // places random flowers and long grass (similar to the effect of placing bonemeal on grass)
-    //
-Drone.prototype.garden = function(w,d){};
+/************************************************************************
+Drone.rand() method
+===================
+rand takes either an array (if each blockid has the same chance of occurring)
+or an object where each property is a blockid and the value is it's weight (an integer)
 
-    // Copy & Paste
-    // ============
-    
-    // copy an area so it can be pasted elsewhere. The name can be used for pasting the copied area elsewhere...
-    // drone.copy('somethingCool',10,5,10).right(12).paste('somethingCool');
-    // ... copies a 10x5x10 area (using the drone's coordinates as the starting point) into memory.
-    // the copied area can be referenced using the name 'somethingCool'. The drone moves 12 blocks right then
-    // pastes the copy.
-    //
+Example
+-------
+place random blocks stone, mossy stone and cracked stone (each block has the same chance of being picked)
+
+    rand( [blocks.brick.stone, blocks.brick.mossy, blocks.brick.cracked ],w,d,h) 
+
+to place random blocks stone has a 50% chance of being picked, 
+
+    rand({blocks.brick.stone: 5, blocks.brick.mossy: 3, blocks.brick.cracked: 2},w,d,h) 
+
+regular stone has a 50% chance, mossy stone has a 30% chance and cracked stone has just a 20% chance of being picked.
+
+***/
+Drone.prototype.rand = function(distribution,w,h,d){};
+/************************************************************************
+Drone.garden() method
+=====================
+places random flowers and long grass (similar to the effect of placing bonemeal on grass)
+
+Parameters
+----------
+
+ * width - the width of the garden
+ * length - how far from the drone the garden extends
+
+***/
+Drone.prototype.garden = function(w,d){};
+/************************************************************************
+Copy & Paste using Drone
+========================
+A drone can be used to copy and paste areas of the game world.
+
+Drone.copy() method
+===================
+Copies an area so it can be pasted elsewhere. The name can be used for
+pasting the copied area elsewhere...
+
+Parameters
+----------
+
+ * name - the name to be given to the copied area (used by `paste`)
+ * width - the width of the area to copy
+ * height - the height of the area to copy
+ * length - the length of the area (extending away from the drone) to copy
+
+Example
+-------
+    drone.copy('somethingCool',10,5,10).right(12).paste('somethingCool');
+
+Drone.paste() method
+====================
+Pastes a copied area to the current location.
+
+Example
+-------
+To copy a 10x5x10 area (using the drone's coordinates as the starting
+point) into memory.  the copied area can be referenced using the name
+'somethingCool'. The drone moves 12 blocks right then pastes the copy.
+
+    drone.copy('somethingCool',10,5,10)
+         .right(12)
+         .paste('somethingCool');
+
+***/
 Drone.prototype.copy = function(name,w,h,d){};
 Drone.prototype.paste = function(name){};
+/************************************************************************
+Chaining
+========
 
-    // Chaining
-    // ========
-    // 
-    // All of the above methods return a Drone object, which means methods can be 'chained' together so instead of writing this...
-    //
-    // drone = new Drone(); 
-    // drone.fwd(3);
-    // drone.left(2);
-    // drone.box(2); // create a grass block
-    // drone.up();
-    // drone.box(2); // create another grass block
-    // drone.down();
-    // 
-    // ...you could simply write ...
-    //
-    // var drone = new Drone().fwd(3).left(2).box(2).up().box(2).down();
-    //
-    // ... since each Drone method is also a global function that constructs a drone if none is supplied, 
-    // you can shorten even further to just...
-    //
-    // fwd(3).left(2).box(2).up().box(2).down()
-    //
-    // The Drone object uses a Fluent Interface ( http://en.wikipedia.org/wiki/Fluent_interface ) 
-    // to make ScriptCraft scripts more concise and easier to write and read.
-    // Minecraft's in-game command prompt is limited to about 80 characters so chaining drone commands together
-    // means more can be done before hitting the command prompt limit. For complex building you should save your 
-    // commands in a new script file and load it using /js load()
-    //
+All of the Drone methods return a Drone object, which means methods
+can be 'chained' together so instead of writing this...
 
-    // Properties
-    // ==========
-    // 
-    // x - The Drone's position along the west-east axis (x increases as you move east)
-    // y - The Drone's position along the vertical axis (y increses as you move up)
-    // z - The Drone's position along the north-south axis (z increases as you move south)
-    // dir - The Drone's direction 0 is east, 1 is south , 2 is west and 3 is north.
+    drone = new Drone(); 
+    drone.fwd(3);
+    drone.left(2);
+    drone.box(2); // create a grass block
+    drone.up();
+    drone.box(2); // create another grass block
+    drone.down();
+
+...you could simply write ...
+    
+    var drone = new Drone().fwd(3).left(2).box(2).up().box(2).down();
+
+... since each Drone method is also a global function that constructs
+a drone if none is supplied, you can shorten even further to just...
+    
+    fwd(3).left(2).box(2).up().box(2).down()
+
+The Drone object uses a [Fluent Interface][fl] to make ScriptCraft
+scripts more concise and easier to write and read.  Minecraft's
+in-game command prompt is limited to about 80 characters so chaining
+drone commands together means more can be done before hitting the
+command prompt limit. For complex building you should save your
+commands in a new script file and load it using /js load()
+
+[fl]: http://en.wikipedia.org/wiki/Fluent_interface
+
+Drone Properties
+================
+
+ * x - The Drone's position along the west-east axis (x increases as you move east)
+ * y - The Drone's position along the vertical axis (y increses as you move up)
+ * z - The Drone's position along the north-south axis (z increases as you move south)
+ * dir - The Drone's direction 0 is east, 1 is south , 2 is west and 3 is north.
+
+***/
 
 //
 // Implementation
@@ -279,14 +455,6 @@ Drone.prototype.paste = function(name){};
 // There is no need to read any further unless you want to understand how the Drone object works.
 //
 (function(){
-    /**
-       Create a new Drone for building. 
-       @constructor
-       @param {number} x 
-       @param {number} y  
-       @param {number} z
-       @param {number} dir - The direction the drone faces : 0 is east, 1 is south, 2 is west, 3 is north.
-    */
     Drone = function(x,y,z,dir)
     {
         var usePlayerCoords = false;
@@ -297,6 +465,7 @@ Drone.prototype.paste = function(name){};
                 this.x = mp.x;
                 this.y = mp.y;
                 this.z = mp.z;
+                this.world = mp.world;
             }else{
                 // base it on the player's current location
                 usePlayerCoords = true;
@@ -310,11 +479,13 @@ Drone.prototype.paste = function(name){};
                 this.x = playerPos.x;
                 this.y = playerPos.y;
                 this.z = playerPos.z;
+                this.world = playerPos.world;
             }
         }else{
             this.x = x;
             this.y = y;
             this.z = z;
+            this.world = _getWorld();
         }
         if (typeof dir == "undefined"){
             this.dir = _getDirFromRotation(playerPos.yaw);
@@ -329,11 +500,11 @@ Drone.prototype.paste = function(name){};
         this.chkpt('start');
     };
     Drone.prototype.chkpt = function(name){
-        this.checkpoints[name] = {x:this.x,y:this.y,z:this.z,dir:this.dir};
+        this._checkpoints[name] = {x:this.x,y:this.y,z:this.z,dir:this.dir};
         return this;
     };
     Drone.prototype.move = function(name){
-        var coords = this.checkpoints[name];
+        var coords = this._checkpoints[name];
         if (coords){
             this.x = coords.x;
             this.y = coords.y;
@@ -342,24 +513,47 @@ Drone.prototype.paste = function(name){};
         }
         return this;
     };
-    Drone.prototype.checkpoints = {};
+    Drone.prototype._checkpoints = {};
 
-    Drone.prototype.turn = function(n)
-    {
-        if (typeof n == "undefined"){
-            this.dir++;
-        }else{
-            this.dir += n;
-        }
+    Drone.prototype.turn = function(n){
+        if (typeof n == "undefined")
+            n = 1;
+        this.dir += n;
         this.dir %=4;
         return this;
     };
-    Drone.prototype.right = function(n){ if (typeof n == "undefined"){ n = 1;} return _movements[this.dir].right(this,n);};
-    Drone.prototype.left = function(n){ if (typeof n == "undefined"){ n = 1;}  return _movements[this.dir].left(this,n);};
-    Drone.prototype.fwd = function(n){ if (typeof n == "undefined"){ n = 1;}  return _movements[this.dir].fwd(this,n);};
-    Drone.prototype.back = function(n){ if (typeof n == "undefined"){ n = 1;} return _movements[this.dir].back(this,n);};
-    Drone.prototype.up = function(n){ if (typeof n == "undefined"){ n = 1;}  this.y+=n; return this;};
-    Drone.prototype.down = function(n){ if (typeof n == "undefined"){ n = 1;}  this.y-=n; return this;};
+    Drone.prototype.right = function(n){ 
+        if (typeof n == "undefined")
+            n = 1;
+        return _movements[this.dir].right(this,n); 
+    };
+    Drone.prototype.left = function(n){ 
+        if (typeof n == "undefined")
+            n = 1;
+        return _movements[this.dir].left(this,n);
+    };
+    Drone.prototype.fwd = function(n){ 
+        if (typeof n == "undefined")
+            n = 1;
+        return _movements[this.dir].fwd(this,n);
+    };
+    Drone.prototype.back = function(n){ 
+        if (typeof n == "undefined")
+            n = 1;
+        return _movements[this.dir].back(this,n);
+    };
+    Drone.prototype.up = function(n){ 
+        if (typeof n == "undefined")
+            n = 1;
+        this.y+= n; 
+        return this;
+    };
+    Drone.prototype.down = function(n){ 
+        if (typeof n == "undefined")
+            n = 1;
+        this.y-= n; 
+        return this;
+    };
     //
     // building
     //
@@ -402,10 +596,9 @@ Drone.prototype.paste = function(name){};
         var dir = this.dir;
         var pl = org.bukkit.entity.Player;
         var cs = org.bukkit.command.BlockCommandSender;
-        var world = (self instanceof pl)?self.location.world:(self instanceof cs)?self.block.location.world:null;
         var bi = 0;
         var depthFunc = function(){
-            var block = world.getBlockAt(that.x,that.y,that.z);
+            var block = that.world.getBlockAt(that.x,that.y,that.z);
             var properBlock = properBlocks[bi%len];
             block.setTypeIdAndData(properBlock[0],properBlock[1],false);
             bi++;
@@ -425,7 +618,7 @@ Drone.prototype.paste = function(name){};
       faster cuboid because blockid, meta and world must be provided 
       use this method when you need to repeatedly place blocks
      */
-    Drone.prototype.cuboidX = function(blockType, meta, world, w, h, d){
+    Drone.prototype.cuboidX = function(blockType, meta, w, h, d){
 
         if (typeof h == "undefined")
             h = 1;
@@ -437,7 +630,7 @@ Drone.prototype.paste = function(name){};
         var dir = this.dir;
 
         var depthFunc = function(){
-            var block = world.getBlockAt(that.x,that.y,that.z);
+            var block = that.world.getBlockAt(that.x,that.y,that.z);
             block.setTypeIdAndData(blockType,meta,false);
         };
         var heightFunc = function(){
@@ -451,16 +644,11 @@ Drone.prototype.paste = function(name){};
         return this;
         
     };
-    Drone.prototype._getWorld = function(){
-        var pl = org.bukkit.entity.Player;
-        var cs = org.bukkit.command.BlockCommandSender;
-        var world = (self instanceof pl)?self.location.world:(self instanceof cs)?self.block.location.world:null;
-        return world;
-    };
+    
     Drone.prototype.cuboid = function(block,w,h,d){
 
         var bm = _getBlockIdAndMeta(block);
-        return this.cuboidX(bm[0],bm[1],this._getWorld(), w,h,d);
+        return this.cuboidX(bm[0],bm[1], w,h,d);
     };
     Drone.prototype.cuboid0 = function(block,w,h,d){
         this.chkpt('start_point');
@@ -516,16 +704,14 @@ Drone.prototype.paste = function(name){};
         };
     };
 
-    Drone.prototype.prism0 = function(block,w,d){
-        this.prism(block,w,d).fwd().right().prism(0,w-2,d-2).left().back();
-        var se = Drone.STAIRBLOCKS[block];
-        if (d % 2 == 1 && se){
-            // top of roof will be open - need repair
-            var f = Math.floor(d/2);
-            this.fwd(f).up(f).cuboid(se,w).down(f).back(f);
-        }
+    var _getWorld = function(){
+        var pl = org.bukkit.entity.Player;
+        var cs = org.bukkit.command.BlockCommandSender;
+        var world = (self instanceof pl)?self.location.world:(self instanceof cs)?self.block.location.world:null;
+        return world;
     };
-    Drone.STAIRBLOCKS = {53: '5:0'     // oak wood
+    
+    var _STAIRBLOCKS = {53: '5:0'     // oak wood
                          ,67: 4    // cobblestone
                          ,108: 45  // brick
                          ,109: 98  // stone brick
@@ -535,30 +721,12 @@ Drone.prototype.paste = function(name){};
                          ,135: '5:2'    // birch wood
                          ,136: '5:3'    // jungle wood
                         };
-    
-    //    /\
-    //   /##\
-    //  /####\
-    //  012345
-    //  d = 6, m = 3
-    //    
-    //   /#\
-    //  /###\
-    //  01234
-    //  d = 5, m = 2
     //
-    //   /\
-    //  /##\
-    //  0123
-    //  d = 4, m = 2  
-    //   
-    //  /#\
-    //  012
-    //  d = 3, m = 1
+    // prism private implementation
     //
-    Drone.prototype.prism = function(block,w,d)
+    var _prism = function(block,w,d)
     {
-        var stairEquiv = Drone.STAIRBLOCKS[block];
+        var stairEquiv = _STAIRBLOCKS[block];
         if (stairEquiv){
             this.fwd().prism(stairEquiv,w,d-2).back();
             var d2 = 0;
@@ -609,7 +777,23 @@ Drone.prototype.paste = function(name){};
         }
         return this;
     };
-
+    //
+    // prism0 private implementation
+    //
+    var _prism0 = function(block,w,d){
+        this.prism(block,w,d)
+            .fwd().right()
+            .prism(0,w-2,d-2)
+            .left().back();
+        var se = _STAIRBLOCKS[block];
+        if (d % 2 == 1 && se){
+            // top of roof will be open - need repair
+            var f = Math.floor(d/2);
+            this.fwd(f).up(f).cuboid(se,w).down(f).back(f);
+        }
+    };
+    Drone.prototype.prism0 = _prism0;
+    Drone.prototype.prism = _prism;
     Drone.prototype.box = Drone.prototype.cuboid;
     Drone.prototype.box0 = Drone.prototype.cuboid0;
     Drone.prototype.boxa = Drone.prototype.cuboida;
@@ -627,7 +811,7 @@ Drone.prototype.paste = function(name){};
     /*
       do the bresenham thing
      */
-    var _bresenham = function(x0,y0,radius, setPixel,quadrants){
+    var _bresenham = function(x0,y0,radius, setPixel, quadrants){
         //
         // credit: Following code is copied almost verbatim from
         // http://en.wikipedia.org/wiki/Midpoint_circle_algorithm
@@ -717,7 +901,6 @@ Drone.prototype.paste = function(name){};
             bottomright:4
         };
         var stack = params.stack || 1;
-        var world = params.world || drone._getWorld();
         var radius = params.radius;
         var strokeWidth = params.strokeWidth || 1;
         drone.chkpt('arc2');
@@ -745,7 +928,7 @@ Drone.prototype.paste = function(name){};
                     if (y < 0){
                         drone
                             .fwd(y).right(x)
-                            .cuboidX(params.blockType,params.meta,world,1,stack,Math.abs(y*2)+1)
+                            .cuboidX(params.blockType,params.meta,1,stack,Math.abs(y*2)+1)
                             .back(y).left(x);
                     }
                 }else{
@@ -753,7 +936,6 @@ Drone.prototype.paste = function(name){};
                         gotoxy(x,y)
                         .cuboidX(params.blockType,
                                  params.meta,
-                                 world,
                                  1, // width
                                  stack, // height
                                  strokeWidth // depth
@@ -779,7 +961,7 @@ Drone.prototype.paste = function(name){};
                             break;
                         }
                         gotoxy(x,y)
-                            .cuboidX(params.blockType, params.meta, world, width, stack, depth)
+                            .cuboidX(params.blockType, params.meta, width, stack, depth)
                             .move('center');
 
                     }
@@ -808,13 +990,13 @@ Drone.prototype.paste = function(name){};
                     if (y < 0){
                         drone
                             .up(y).right(x)
-                            .cuboidX(params.blockType,params.meta,world,1,Math.abs(y*2)+1,stack)
+                            .cuboidX(params.blockType,params.meta,1,Math.abs(y*2)+1,stack)
                             .down(y).left(x);
                     }
                 }else{
                     if (strokeWidth == 1){
                         gotoxy(x,y)
-                            .cuboidX(params.blockType,params.meta,world,strokeWidth,1,stack)
+                            .cuboidX(params.blockType,params.meta,strokeWidth,1,stack)
                             .move('center');
                     }else{
                         var strokeDir = _getStrokeDir(x,y);
@@ -836,7 +1018,7 @@ Drone.prototype.paste = function(name){};
                             break;
                         }
                         gotoxy(x,y)
-                            .cuboidX(params.blockType, params.meta, world, width, height, stack)
+                            .cuboidX(params.blockType, params.meta, width, height, stack)
                             .move('center');
                         
                     }
@@ -871,12 +1053,10 @@ Drone.prototype.paste = function(name){};
         if (exactParams){
             arcParams.blockType = exactParams.blockType;
             arcParams.meta = exactParams.meta;
-            arcParams.world = exactParams.world;
         }else{
             var md = this._getBlockIdAndMeta(block);
             arcParams.blockType = md[0];
             arcParams.meta = md[1];
-            arcParams.world = this._getWorld();
         }
         return this.arc(arcParams);
     };
@@ -891,12 +1071,10 @@ Drone.prototype.paste = function(name){};
         if (exactParams){
             arcParams.blockType = exactParams.blockType;
             arcParams.meta = exactParams.meta;
-            arcParams.world = exactParams.world;
         }else{
             var md = this._getBlockIdAndMeta(block);
             arcParams.blockType = md[0];
             arcParams.meta = md[1];
-            arcParams.world = this._getWorld();
         }
         return this.arc(arcParams);
     };
@@ -1045,7 +1223,7 @@ Drone.prototype.paste = function(name){};
     {
         Drone.prototype[p] = function(v){
             return function(){ 
-                var treeLoc = new org.bukkit.Location(self.world,this.x,this.y,this.z);
+                var treeLoc = new org.bukkit.Location(this.world,this.x,this.y,this.z);
                 treeLoc.world.generateTree(treeLoc,v);
                 return this;
             };
