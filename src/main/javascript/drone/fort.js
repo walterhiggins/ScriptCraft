@@ -29,7 +29,11 @@ Drone.extend('fort', function(side, height)
             .fwd(); 
         turret.push('109:'+ Drone.PLAYER_STAIRS_FACING[this.dir]);
         turret.push('109:'+ Drone.PLAYER_STAIRS_FACING[(this.dir+2)%4]);
-        this.box(turret,1,1,side-2).fwd(side-2).turn();
+        try{
+            this.boxa(turret,1,1,side-2).fwd(side-2).turn();
+        }catch(e){
+            self.sendMessage("ERROR: " + e.toString());
+        }
     }
     //
     // build battlement's floor
@@ -47,8 +51,10 @@ Drone.extend('fort', function(side, height)
     //
     var torch = '50:' + Drone.PLAYER_TORCH_FACING[this.dir];
     this.move('fort').right((side/2)-1).door2() // double doors
-        .back().left().up().box(torch) // left torch
-        .right(3).box(torch); // right torch
+        .back().left().up()
+        .box(torch) // left torch
+        .right(3)
+        .box(torch); // right torch
     //
     // add ladder up to battlements
     //
