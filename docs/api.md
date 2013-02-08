@@ -241,6 +241,36 @@ Parameters
 Drone.cylinder0() method
 ========================
 A version of cylinder that hollows out the middle.
+Drone.arc() method
+==================
+The arc() method can be used to create 1 or more 90 degree arcs in the horizontal or vertical planes.
+This method is called by cylinder() and cylinder0() and the sphere() and sphere0() methods.
+
+Parameters
+----------
+arc() takes a single parameter - an object with the following named properties...
+
+ * radius - The radius of the arc.
+ * blockType - The type of block to use - this is the block Id only (no meta). See [Data Values][dv].
+ * meta - The metadata value. See [Data Values][dv].
+ * orientation (default: 'horizontal') - the orientation of the arc - can be 'vertical' or 'horizontal'.
+ * stack (default: 1) - the height or length of the arc (depending on
+   the orientation - if orientation is horizontal then this parameter
+   refers to the height, if vertical then it refers to the length).
+ * strokeWidth (default: 1) - the width of the stroke (how many
+   blocks) - if drawing nested arcs it's usually a good idea to set
+   strokeWidth to at least 2 so that there are no gaps between each
+   arc. The arc method uses a [bresenham algorithm][bres] to plot
+   points along the circumference.
+ * fill - If true (or present) then the arc will be filled in.
+ * quadrants (default:
+   `{topleft:true,topright:true,bottomleft:true,bottomright:true}` - An
+   object with 4 properties indicating which of the 4 quadrants of a
+   circle to draw. If the quadrants property is absent then all 4
+   quadrants are drawn.
+
+[bres]: http://en.wikipedia.org/wiki/Midpoint_circle_algorithm
+[dv]: http://www.minecraftwiki.net/wiki/Data_values
 Drone.door() method
 ===================
 create a door - if a parameter is supplied an Iron door is created otherwise a wooden door is created.
@@ -257,8 +287,8 @@ Parameters
 ----------
  * doorType (optional - default wood) - If a parameter is provided then the door is Iron.
 
-Drone.sign method
-=================
+Drone.sign() method
+===================
 Signs must use block 63 (stand-alone signs) or 68 (signs on walls)
 
 Parameters
@@ -388,4 +418,62 @@ Drone Properties
  * y - The Drone's position along the vertical axis (y increses as you move up)
  * z - The Drone's position along the north-south axis (z increases as you move south)
  * dir - The Drone's direction 0 is east, 1 is south , 2 is west and 3 is north.
+
+Extending Drone
+===============
+The Drone object can be easily extended - new buidling recipes/blue-prints can be added and can
+become part of a Drone's chain using the *static* method `Drone.extend`. 
+
+Drone.extend() static method
+============================
+Use this method to add new methods (which also become chainable global functions) to the Drone object.
+
+Parameters
+----------
+ * name - The name of the new method e.g. 'pyramid'
+ * function - The method body.
+
+Example
+-------
+
+    // submitted by [edonaldson][edonaldson]
+    Drone.extend('pyramid', function(block,height){
+        this.chkpt('pyramid');
+        for (var i = height; i > 0; i -= 2) {
+            this.box(block, i, 1, i).up().right().fwd();
+        }
+        return this.move('pyramid');      
+    });
+
+Once the method is defined (it can be defined in a new pyramid.js file) it can be used like so...
+
+    var d = new Drone();
+    d.pyramid(blocks.brick.stone, 12);
+
+... or simply ...
+
+    pyramid(blocks.brick.stone, 12);
+
+[edonaldson]: https://github.com/edonaldson
+
+Drone.blocktype() method
+========================
+Creates the text out of blocks. Useful for large-scale in-game signs.
+
+Parameters
+----------
+ 
+ * message - The message to create - (use `\n` for newlines)
+ * foregroundBlock (default: black wool) - The block to use for the foreground
+ * backgroundBlock (default: none) - The block to use for the background
+
+Example
+-------
+To create a 2-line high message using glowstone...
+
+    blocktype("Hello\nWorld",blocks.glowstone);
+
+![blocktype example][imgbt1]
+
+[imgbt1]: img/blocktype1.png
 
