@@ -15,13 +15,22 @@
     </javac>
   </target>
     
-    
+  <target name="gendocs" description="Generate API documentation">
+    <javac srcdir="src/docs/java"/>
+    <java classname="jscript" failonerror="true" fork="true" output="docs/api.md">
+      <classpath>
+        <pathelement path="src/docs/java"/>      
+      </classpath>
+      <arg value="src/docs/javascript/generateApiDocs.js"/>
+      <arg value="src/main/javascript"/>
+    </java>
+  </target>
 
   <target name="zip_js">
     <zip zipfile="${build}/js-plugins.zip" basedir="./src/main/javascript"/>
   </target>
 
-  <target name="package" depends="zip_js,compile" 
+  <target name="package" depends="gendocs,zip_js,compile" 
           description="generate the distribution" >
     <copy file="src/main/resources/plugin.yml" todir="${build}"/>
     <replace file="${build}/plugin.yml" value="${bukkit-version}-${DSTAMP}">
