@@ -230,9 +230,11 @@ Parameters
 Example
 -------
 Construct a rainbow-colored road 100 blocks long...
+
     var rainbowColors = [blocks.wool.red, blocks.wool.orange, blocks.wool.yellow, blocks.wool.lime,
                    blocks.wool.lightblue, blocks.wool.blue, blocks.wool.purple];
     boxa(rainbowColors,7,1,100);
+
 ***/
 Drone.prototype.box0 = function(block,width,height,length){};
 Drone.prototype.boxa = function(/* [string] */ width, height, length){};
@@ -386,6 +388,7 @@ Parameters
 
 Example
 -------
+
     drone.copy('somethingCool',10,5,10).right(12).paste('somethingCool');
 
 Drone.paste() method

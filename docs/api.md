@@ -205,9 +205,11 @@ Parameters
 Example
 -------
 Construct a rainbow-colored road 100 blocks long...
+
     var rainbowColors = [blocks.wool.red, blocks.wool.orange, blocks.wool.yellow, blocks.wool.lime,
                    blocks.wool.lightblue, blocks.wool.blue, blocks.wool.purple];
     boxa(rainbowColors,7,1,100);
+
 Drone.prism() method
 ====================
 Creates a prism. This is useful for roofs on houses.
@@ -330,6 +332,7 @@ Parameters
 
 Example
 -------
+
     drone.copy('somethingCool',10,5,10).right(12).paste('somethingCool');
 
 Drone.paste() method
