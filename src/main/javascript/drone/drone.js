@@ -130,8 +130,53 @@ To create a black structure 4 blocks wide, 9 blocks tall and 1 block long...
 
 ![box example 1](img/boxex1.png)
     
+Drone.box0() method
+===================
+Another convenience method - this one creates 4 walls with no floor or ceiling.
+
+Parameters
+----------
+ * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
+   Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
+ * width (optional - default 1) - the width of the structure 
+ * height (optional - default 1) - the height of the structure 
+ * length (optional - default 1) - the length of the structure - how far
+   away (depth of field) from the drone the structure will extend.
+
+Example
+-------
+To create a stone building with the insided hollowed out 7 wide by 3 tall by 6 long...
+
+    box0( blocks.stone, 7, 3, 6);
+
+![example box0](img/box0ex1.png)
+   
+Drone.boxa() method
+===================
+Construct a cuboid using an array of blocks.
+
+Parameters
+----------
+ * blocks - An array of blocks - each block in the array will be placed in turn.
+ * width
+ * height
+ * length
+
+Example
+-------
+Construct a rainbow-colored road 100 blocks long...
+
+    var rainbowColors = [blocks.wool.red, blocks.wool.orange, blocks.wool.yellow, blocks.wool.lime,
+                   blocks.wool.lightblue, blocks.wool.blue, blocks.wool.purple];
+    boxa(rainbowColors,5,1,98);
+
+![boxa example](img/boxaex1.png)
+
 ***/
 Drone.prototype.box = function(block,width,height,depth){};
+Drone.prototype.box0 = function(block,width,height,length){};
+Drone.prototype.boxa = function(/* [string] */ width, height, length){};
+
 /************************************************************************
 Drone Movement
 ==============
@@ -176,7 +221,6 @@ e.g. building a road, skyscraper or forest you should set a
 check-point before doing so if you want your drone to return to its
 current location.  
 
-
 A 'start' checkpoint is automatically created when the Drone is first created.
 
 Markers are created and returned to using the followng two methods...
@@ -207,44 +251,6 @@ Example
 Drone.prototype.chkpt = function(checkpoint_name){};
 Drone.prototype.move = function(checkpoint_name){};
 
-/************************************************************************
-Drone.box0() method
-===================
-Another convenience method - this one creates 4 walls with no floor or ceiling.
-
-Parameters
-----------
- * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
-   Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
- * width (optional - default 1) - the width of the structure 
- * height (optional - default 1) - the height of the structure 
- * length (optional - default 1) - the length of the structure - how far
-   away (depth of field) from the drone the structure will extend.
-
-Drone.boxa() method
-===================
-Construct a cuboid using an array of blocks.
-
-Parameters
-----------
- * blocks - An array of blocks - each block in the array will be placed in turn.
- * width
- * height
- * length
-
-Example
--------
-Construct a rainbow-colored road 100 blocks long...
-
-    var rainbowColors = [blocks.wool.red, blocks.wool.orange, blocks.wool.yellow, blocks.wool.lime,
-                   blocks.wool.lightblue, blocks.wool.blue, blocks.wool.purple];
-    boxa(rainbowColors,5,1,98);
-
-![boxa example](img/boxaex1.png)
-
-***/
-Drone.prototype.box0 = function(block,width,height,length){};
-Drone.prototype.boxa = function(/* [string] */ width, height, length){};
 /************************************************************************
 Drone.prism() method
 ====================
@@ -295,6 +301,14 @@ Example
 Drone.cylinder0() method
 ========================
 A version of cylinder that hollows out the middle.
+
+Example
+-------
+
+    cylinder0(blocks.iron, 7, 1);
+
+![cylinder0 example](img/cylinder0ex1.png)
+
 ***/
 Drone.prototype.cylinder = function(block,radius,height){};
 Drone.prototype.cylinder0 = function(block,radius,height){};
@@ -327,6 +341,22 @@ arc() takes a single parameter - an object with the following named properties..
    circle to draw. If the quadrants property is absent then all 4
    quadrants are drawn.
 
+Examples
+--------
+To draw a 1/4 circle (top right quadrant only) with a radius of 10 and stroke width of 2 blocks ...
+
+    arc({blockType: blocks.iron, 
+         meta: 0, 
+         radius: 10,
+         strokeWidth: 2
+         quadrants: { topright: true },
+         orientation: 'vertical', 
+         stack: 1,
+         fill: false
+         });
+
+![arc example 1](img/arcex1.png)
+
 [bres]: http://en.wikipedia.org/wiki/Midpoint_circle_algorithm
 [dv]: http://www.minecraftwiki.net/wiki/Data_values
 ***/
@@ -341,6 +371,19 @@ Parameters
 ----------
  * doorType (optional - default wood) - If a parameter is provided then the door is Iron.
 
+Example
+-------
+To create a wooden door at the crosshairs/drone's location...
+
+    var drone = new Drone();
+    drone.door();
+
+To create an iron door...
+
+    drone.door( blocks.door_iron );
+
+![iron door](img/doorex1.png)
+    
 Drone.door2() method
 ====================
 Create double doors (left and right side)
@@ -348,6 +391,14 @@ Create double doors (left and right side)
 Parameters
 ----------
  * doorType (optional - default wood) - If a parameter is provided then the door is Iron.
+
+Example
+-------
+To create double-doors at the cross-hairs/drone's location...
+
+    drone.door2();
+
+![double doors](img/door2ex1.png)
 
 ***/    
 Drone.prototype.door = function(b){};
@@ -368,9 +419,13 @@ To create a free-standing sign...
 
     drone.sign(["Hello","World"],63);
 
+![ground sign](img/signex1.png)
+
 ... to create a wall mounted sign...
 
-    drone.sign(["Message","Goes","Here"], 68);
+    drone.sign(["Welcome","to","Scriptopia"], 68);
+
+![wall sign](img/signex2.png)
 
 ***/
 Drone.prototype.sign = function(s,b){};
@@ -383,6 +438,21 @@ Drone Trees methods
  * birch()
  * jungle()
 
+Example
+-------
+To create 4 trees in a row, point the cross-hairs at the ground then type `/js ` and ...
+
+    up().oak().right(8).spruce().right(8).birch().right(8).jungle();
+
+Trees won't always generate unless the conditions are right. You
+should use the tree methods when the drone is directly above the
+ground. Trees will usually grow if the drone's current location is
+occupied by Air and is directly above an area of grass (That is why
+the `up()` method is called first).
+
+![tree example](img/treeex1.png)
+
+    
 None of the tree methods require parameters. Tree methods will only be successful
 if the tree is placed on grass in a setting where trees can grow.
 ***/
@@ -390,6 +460,27 @@ Drone.prototype.oak= function(){};
 Drone.prototype.spruce = function(){};
 Drone.prototype.birch = function(){};
 Drone.prototype.jungle = function(){};
+/************************************************************************
+Drone.garden() method
+=====================
+places random flowers and long grass (similar to the effect of placing bonemeal on grass)
+
+Parameters
+----------
+
+ * width - the width of the garden
+ * length - how far from the drone the garden extends
+
+Example
+-------
+To create a garden 10 blocks wide by 5 blocks long...
+
+    garden(10,5);
+
+![garden example](img/gardenex1.png)
+
+***/
+Drone.prototype.garden = function(w,d){};
 /************************************************************************
 Drone.rand() method
 ===================
@@ -410,19 +501,6 @@ regular stone has a 50% chance, mossy stone has a 30% chance and cracked stone h
 
 ***/
 Drone.prototype.rand = function(distribution,w,h,d){};
-/************************************************************************
-Drone.garden() method
-=====================
-places random flowers and long grass (similar to the effect of placing bonemeal on grass)
-
-Parameters
-----------
-
- * width - the width of the garden
- * length - how far from the drone the garden extends
-
-***/
-Drone.prototype.garden = function(w,d){};
 /************************************************************************
 Copy & Paste using Drone
 ========================
@@ -688,6 +766,9 @@ Used when placing torches so that they face the same way as the drone.
         if (block == 68){
             meta = Drone.PLAYER_SIGN_FACING[this.dir%4];
             this.back();
+        }
+        if (block == 63){
+            meta = (12 + ((this.dir+2)*4)) % 16;
         }
         putSign(message,this.x,this.y,this.z,block,meta);
         if (block == 68){
@@ -1331,16 +1412,19 @@ Used when placing torches so that they face the same way as the drone.
         var randomized = _rand(dist);
         return this.boxa(randomized,w,h,d);
     };
-    var _trees = {oak: org.bukkit.TreeType.BIG_TREE ,
-                  spruce: org.bukkit.TreeType.REDWOOD ,
-                  birch: org.bukkit.TreeType.BIRCH ,
-                  jungle: org.bukkit.TreeType.JUNGLE };
+    var _trees = {
+        oak: org.bukkit.TreeType.BIG_TREE ,
+        birch: org.bukkit.TreeType.BIRCH ,
+        jungle: org.bukkit.TreeType.JUNGLE,
+        spruce: org.bukkit.TreeType.REDWOOD 
+    };
     for (var p in _trees)
     {
         Drone.prototype[p] = function(v){
             return function(){ 
                 var treeLoc = new org.bukkit.Location(this.world,this.x,this.y,this.z);
-                treeLoc.world.generateTree(treeLoc,v);
+                var successful = treeLoc.world.generateTree(treeLoc,v);
+                println("generateTree(" + v + ") returned " + successful);
                 return this;
             };
         }(_trees[p]);
