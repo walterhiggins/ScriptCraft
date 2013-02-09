@@ -15,7 +15,7 @@ TLDNR; (Just read this if you're impatient)
 ===========================================
 At the in-game command prompt type...
      
-    /js box(5)  
+    /js box(blocks.oak)  
     
 ... creates a single wooden block at the cross-hairs or player location
     
@@ -74,7 +74,9 @@ Drones can be created in 3 ways...
         d = new Drone().up()
           
     ... which will move the drone up one block as soon as it's created.
-    
+
+    ![corner stone](img/cornerstone1.png)
+
  3. Or by using the following form...
     
         d = new Drone(x,y,z,direction)
@@ -110,14 +112,12 @@ parameters
 
 Example
 -------
-To create a stone structure 5 blocks wide, 8 blocks tall and 15 blocks long...
+To create a black structure 4 blocks wide, 9 blocks tall and 1 block long...
     
-    drone.box(48, 5, 8, 15);
+    drone.box(blocks.black, 4, 9, 1);
+
+![box example 1](img/boxex1.png)
     
-To create an oak tree...(we can't control the dimensions of a tree since it's a natural object in minecraft)
-
-    drone.box(6);
-
 Drone Movement
 ==============
 Drones can move freely in minecraft's 3-D world. You control the
@@ -208,7 +208,9 @@ Construct a rainbow-colored road 100 blocks long...
 
     var rainbowColors = [blocks.wool.red, blocks.wool.orange, blocks.wool.yellow, blocks.wool.lime,
                    blocks.wool.lightblue, blocks.wool.blue, blocks.wool.purple];
-    boxa(rainbowColors,7,1,100);
+    boxa(rainbowColors,5,1,98);
+
+![boxa example](img/boxaex1.png)
 
 Drone.prism() method
 ====================
@@ -220,7 +222,14 @@ Parameters
  * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
    Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
  * width - the width of the prism
- * length - the length of the prism (also its height)
+ * length - the length of the prism (will be 2 time its height)
+
+Example
+-------
+
+    prism(blocks.oak,3,12);
+
+![prism example](img/prismex1.png)
 
 Drone.prism0() method
 =====================
@@ -237,6 +246,13 @@ Parameters
    Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
  * radius 
  * height
+
+Example
+-------
+
+    cylinder(blocks.iron, 7 , 1);
+
+![cylinder example](img/cylinderex1.png)
 
 Drone.cylinder0() method
 ========================
