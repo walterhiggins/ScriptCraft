@@ -1,5 +1,27 @@
 load(__folder + "drone.js");
+/************************************************************************
+Drone.sphere() method
+=====================
+Creates a sphere.
 
+Parameters
+----------
+ 
+ * block - The block the sphere will be made of.
+ * radius - The radius of the sphere.
+
+Example
+-------
+To create a sphere of Iron with a radius of 10 blocks...
+
+    sphere( blocks.iron, 10);
+
+![sphere example](img/sphereex1.png)
+
+Spheres are time-consuming to make. You *can* make large spheres (250 radius) but expect the
+server to be very busy for a couple of minutes while doing so.
+
+***/
 Drone.extend('sphere', function(block,radius)
 {
     var lastRadius = radius;
@@ -44,10 +66,27 @@ Drone.extend('sphere', function(block,radius)
     }
     return this.move('sphere');
 });
-//
-// sphere0 creates an empty sphere but the code needs work
-// - there are gaps in the sphere due to rasterization.
-//
+/************************************************************************
+Drone.sphere0() method
+======================
+Creates an empty sphere.
+
+Parameters
+----------
+ 
+ * block - The block the sphere will be made of.
+ * radius - The radius of the sphere.
+
+Example
+-------
+To create a sphere of Iron with a radius of 10 blocks...
+
+    sphere0( blocks.iron, 10);
+
+Spheres are time-consuming to make. You *can* make large spheres (250 radius) but expect the
+server to be very busy for a couple of minutes while doing so.
+
+***/
 Drone.extend('sphere0', function(block,radius)
 {
 /*
@@ -127,6 +166,27 @@ Drone.extend('sphere0', function(block,radius)
     return this;
 
 });
+/************************************************************************
+Drone.hemisphere() method
+=========================
+Creates a hemisphere. Hemispheres can be either north or south.
+
+Parameters
+----------
+
+ * block - the block the hemisphere will be made of.
+ * radius - the radius of the hemisphere
+ * northSouth - whether the hemisphere is 'north' or 'south'
+
+Example
+-------
+To create a wood 'north' hemisphere with a radius of 7 blocks...
+
+    hemisphere(blocks.oak, 7, 'north');
+
+![hemisphere example](img/hemipshereex1.png)
+
+***/
 Drone.extend('hemisphere', function(block,radius, northSouth){
     var lastRadius = radius;
     var slices = [[radius,0]];
@@ -177,6 +237,27 @@ Drone.extend('hemisphere', function(block,radius, northSouth){
     return this.move('hsphere');
     
 });
+/************************************************************************
+Drone.hemisphere0() method
+=========================
+Creates a hollow hemisphere. Hemispheres can be either north or south.
+
+Parameters
+----------
+
+ * block - the block the hemisphere will be made of.
+ * radius - the radius of the hemisphere
+ * northSouth - whether the hemisphere is 'north' or 'south'
+
+Example
+-------
+To create a glass 'north' hemisphere with a radius of 20 blocks...
+
+    hemisphere0(blocks.glass, 20, 'north');
+
+![hemisphere example](img/hemipshereex2.png)
+
+***/
 Drone.extend('hemisphere0', function(block,radius,northSouth){
     return this.hemisphere(block,radius,northSouth)
         .fwd().right().up(northSouth=="north"?0:1)

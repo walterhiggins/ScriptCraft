@@ -293,6 +293,7 @@ Parameters
 
 Example
 -------
+To create a cylinder of Iron 7 blocks in radius and 1 block high...
 
     cylinder(blocks.iron, 7 , 1);
 
@@ -304,6 +305,7 @@ A version of cylinder that hollows out the middle.
 
 Example
 -------
+To create a hollow cylinder of Iron 7 blocks in radius and 1 block high...
 
     cylinder0(blocks.iron, 7, 1);
 
