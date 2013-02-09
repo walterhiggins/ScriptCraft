@@ -1424,7 +1424,6 @@ Used when placing torches so that they face the same way as the drone.
             return function(){ 
                 var treeLoc = new org.bukkit.Location(this.world,this.x,this.y,this.z);
                 var successful = treeLoc.world.generateTree(treeLoc,v);
-                println("generateTree(" + v + ") returned " + successful);
                 return this;
             };
         }(_trees[p]);
