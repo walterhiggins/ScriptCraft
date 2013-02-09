@@ -261,6 +261,7 @@ Parameters
 
 Example
 -------
+To create a cylinder of Iron 7 blocks in radius and 1 block high...
 
     cylinder(blocks.iron, 7 , 1);
 
@@ -272,6 +273,7 @@ A version of cylinder that hollows out the middle.
 
 Example
 -------
+To create a hollow cylinder of Iron 7 blocks in radius and 1 block high...
 
     cylinder0(blocks.iron, 7, 1);
 
@@ -604,6 +606,84 @@ Example
 To construct a spiral staircase 5 floors high made of oak...
 
     spiral_stairs('oak', 5);
+
+Drone.sphere() method
+=====================
+Creates a sphere.
+
+Parameters
+----------
+ 
+ * block - The block the sphere will be made of.
+ * radius - The radius of the sphere.
+
+Example
+-------
+To create a sphere of Iron with a radius of 10 blocks...
+
+    sphere( blocks.iron, 10);
+
+![sphere example](img/sphereex1.png)
+
+Spheres are time-consuming to make. You *can* make large spheres (250 radius) but expect the
+server to be very busy for a couple of minutes while doing so.
+
+Drone.sphere0() method
+======================
+Creates an empty sphere.
+
+Parameters
+----------
+ 
+ * block - The block the sphere will be made of.
+ * radius - The radius of the sphere.
+
+Example
+-------
+To create a sphere of Iron with a radius of 10 blocks...
+
+    sphere0( blocks.iron, 10);
+
+Spheres are time-consuming to make. You *can* make large spheres (250 radius) but expect the
+server to be very busy for a couple of minutes while doing so.
+
+Drone.hemisphere() method
+=========================
+Creates a hemisphere. Hemispheres can be either north or south.
+
+Parameters
+----------
+
+ * block - the block the hemisphere will be made of.
+ * radius - the radius of the hemisphere
+ * northSouth - whether the hemisphere is 'north' or 'south'
+
+Example
+-------
+To create a wood 'north' hemisphere with a radius of 7 blocks...
+
+    hemisphere(blocks.oak, 7, 'north');
+
+![hemisphere example](img/hemipshereex1.png)
+
+Drone.hemisphere0() method
+=========================
+Creates a hollow hemisphere. Hemispheres can be either north or south.
+
+Parameters
+----------
+
+ * block - the block the hemisphere will be made of.
+ * radius - the radius of the hemisphere
+ * northSouth - whether the hemisphere is 'north' or 'south'
+
+Example
+-------
+To create a glass 'north' hemisphere with a radius of 20 blocks...
+
+    hemisphere0(blocks.glass, 20, 'north');
+
+![hemisphere example](img/hemipshereex2.png)
 
 Blocks Module
 =============
