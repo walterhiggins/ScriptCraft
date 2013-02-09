@@ -664,7 +664,7 @@ To create a wood 'north' hemisphere with a radius of 7 blocks...
 
     hemisphere(blocks.oak, 7, 'north');
 
-![hemisphere example](img/hemipshereex1.png)
+![hemisphere example](img/hemisphereex1.png)
 
 Drone.hemisphere0() method
 =========================
@@ -683,7 +683,7 @@ To create a glass 'north' hemisphere with a radius of 20 blocks...
 
     hemisphere0(blocks.glass, 20, 'north');
 
-![hemisphere example](img/hemipshereex2.png)
+![hemisphere example](img/hemisphereex2.png)
 
 Blocks Module
 =============
