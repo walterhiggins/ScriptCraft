@@ -456,6 +456,67 @@ Once the method is defined (it can be defined in a new pyramid.js file) it can b
 
 [edonaldson]: https://github.com/edonaldson
 
+Drone Constants
+===============
+
+Drone.PLAYER_STAIRS_FACING
+--------------------------
+An array which can be used when constructing stairs facing in the Drone's direction...
+
+    var d = new Drone();
+    d.box(blocks.stairs.oak + ':' + Drone.PLAYER_STAIRS_FACING[d.dir]);
+
+... will construct a single oak stair block facing the drone.
+
+Drone.PLAYER_SIGN_FACING
+------------------------
+An array which can be used when placing signs so they face in a given direction.
+This is used internally by the Drone.sign() method.
+
+Drone.PLAYER_TORCH_FACING
+-------------------------
+Used when placing torches so that they face the same way as the drone. 
+
+Drone.spiral_stairs() method
+============================
+Constructs a spiral staircase with slabs at each corner.
+
+Parameters
+----------
+
+ * stairBlock - The block to use for stairs, should be one of the following...
+   - 'oak'
+   - 'spruce'
+   - 'birch'
+   - 'jungle'
+   - 'cobblestone'
+   - 'brick'
+   - 'stone'
+   - 'nether'
+   - 'sandstone'
+   - 'quartz'
+ * flights - The number of flights of stairs to build.
+
+![Spiral Staircase](img/spiralstair1.png)
+
+Example
+-------
+To construct a spiral staircase 5 floors high made of oak...
+
+    spiral_stairs('oak', 5);
+
+Blocks Module
+=============
+You hate having to lookup [Data Values][dv] when you use ScriptCraft's Drone() functions. So do I.
+So I created this blocks object which is a helper object for use in construction.
+
+Examples
+--------
+
+    box( blocks.oak ); // creates a single oak wood block
+    box( blocks.sand, 3, 2, 1 ); // creates a block of sand 3 wide x 2 high x 1 long
+    box( blocks.wool.green, 2 ); // creates a block of green wool 2 blocks wide
+
 Drone.blocktype() method
 ========================
 Creates the text out of blocks. Useful for large-scale in-game signs.

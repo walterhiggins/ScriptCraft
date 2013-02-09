@@ -520,6 +520,27 @@ Once the method is defined (it can be defined in a new pyramid.js file) it can b
 
 [edonaldson]: https://github.com/edonaldson
 
+Drone Constants
+===============
+
+Drone.PLAYER_STAIRS_FACING
+--------------------------
+An array which can be used when constructing stairs facing in the Drone's direction...
+
+    var d = new Drone();
+    d.box(blocks.stairs.oak + ':' + Drone.PLAYER_STAIRS_FACING[d.dir]);
+
+... will construct a single oak stair block facing the drone.
+
+Drone.PLAYER_SIGN_FACING
+------------------------
+An array which can be used when placing signs so they face in a given direction.
+This is used internally by the Drone.sign() method.
+
+Drone.PLAYER_TORCH_FACING
+-------------------------
+Used when placing torches so that they face the same way as the drone. 
+
 ***/
 
 //

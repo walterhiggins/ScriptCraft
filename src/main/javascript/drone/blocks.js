@@ -1,3 +1,17 @@
+/************************************************************************
+Blocks Module
+=============
+You hate having to lookup [Data Values][dv] when you use ScriptCraft's Drone() functions. So do I.
+So I created this blocks object which is a helper object for use in construction.
+
+Examples
+--------
+
+    box( blocks.oak ); // creates a single oak wood block
+    box( blocks.sand, 3, 2, 1 ); // creates a block of sand 3 wide x 2 high x 1 long
+    box( blocks.wool.green, 2 ); // creates a block of green wool 2 blocks wide
+
+***/
 var blocks = {
     air: 0,
     stone: 1,
@@ -70,7 +84,6 @@ var blocks = {
     mushroom_red: 40,
     gold: 41,
     iron: 42,
-    slab: 44,
     tnt: 46,
     bookshelf: 47,
     moss_stone: 48,
@@ -113,7 +126,6 @@ var blocks = {
     torch_redstone: 75,
     torch_redstone_active: 76,
     stone_button: 77,
-    slab_snow: 78,
     ice: 79,
     snow: 80,
     cactus: 81,
@@ -163,7 +175,35 @@ var blocks = {
     dragon_egg: 122,
     redstone_lamp: 123,
     redstone_lamp_active: 124,
-    slab_wood: 126,
+    slab: {
+        snow: 78,
+        stone: 44,
+        sandstone: '44:1',
+        wooden: '44:2',
+        cobblestone: '44:3',
+        brick: '44:4',
+        stonebrick: '44:5',
+        netherbrick:'44:6',
+        quartz: '44:7',
+        oak: 126,
+        spruce: '126:1',
+        birch: '126:2',
+        jungle: '126:3',
+        upper: {
+            stone: '44:8',
+            sandstone: '44:9',
+            wooden: '44:10',
+            cobblestone: '44:11',
+            brick: '44:12',
+            stonebrick: '44:13',
+            netherbrick:'44:14',
+            quartz: '44:15',
+            oak: '126:8',
+            spruce: '126:9',
+            birch: '126:10',
+            jungle: '126:11',
+        }
+    },
     cocoa: 127,
     emerald_ore: 129,
     enderchest: 130,
