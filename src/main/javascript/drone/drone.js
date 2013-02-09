@@ -233,7 +233,7 @@ Construct a rainbow-colored road 100 blocks long...
 
     var rainbowColors = [blocks.wool.red, blocks.wool.orange, blocks.wool.yellow, blocks.wool.lime,
                    blocks.wool.lightblue, blocks.wool.blue, blocks.wool.purple];
-    boxa(rainbowColors,7,1,100);
+    boxa(rainbowColors,5,1,98);
 
 ![boxa example](img/boxaex1.png)
 
