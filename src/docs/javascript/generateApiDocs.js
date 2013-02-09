@@ -43,7 +43,7 @@ var sortByModule = function(a,b){
         return 1;
 };
 var store = [];
-find(new File(dir),store,/\.js$/);
+find(new File(dir),store,/\/[a-zA-Z0-9_\-]+\.js$/);
 store.sort(sortByModule);
 var contents = [];
 for (var i =0; i < store.length; i++){
