@@ -114,6 +114,11 @@ Example
 -------
 To create a black structure 4 blocks wide, 9 blocks tall and 1 block long...
     
+    box(blocks.black, 4, 9, 1);
+
+... or the following code does the same but creates a variable that can be used for further methods...
+
+    var drone = new Drone();
     drone.box(blocks.black, 4, 9, 1);
 
 ![box example 1](img/boxex1.png)
