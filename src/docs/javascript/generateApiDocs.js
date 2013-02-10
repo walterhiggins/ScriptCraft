@@ -34,7 +34,8 @@ var sortByModule = function(a,b){
     var afile = aparts[aparts.length-1];
     var bdir = bparts[bparts.length-2];
     var bfile = bparts[bparts.length-1];
-
+    if (afile == "_scriptcraft.js")
+        return -1;
     if(adir<bdir) return -1;
     if(adir>bdir) return 1;
     if (afile.indexOf(adir) == 0)
@@ -59,7 +60,7 @@ var writeComment = false;
 var startComment = /^\/\*{10}/;
 var endComment = /^\*{3}\//;
 
-for (var i = 0; i < len; i++){
+for (var i = 0; i < len; i++) {
     var line = contents[i];
     if (line.match(startComment)){
         writeComment = true;
