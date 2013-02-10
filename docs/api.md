@@ -7,6 +7,43 @@ Walter Higgins
 
 [email]: mailto:walter.higgins@gmail.com?subject=ScriptCraft_API_Reference
 
+Module Loading
+==============
+At server startup the ScriptCraft Java plugin is loaded and once
+loaded the Java plugin will in turn begin loading all of the
+javascript (.js) files it finds in the js-plugins directory (in the
+current working directory).  If this is the first time the ScriptCraft
+plugin is loaded, then the js-plugins directory will not yet exist, it
+will be created and all of the bundled javascript files will be
+unzipped into it from a bundled resource within the Java plugin.  The
+very first javascript file to load will always be
+js-plugins/core/_scriptcraft.js. Then all other javascript files are
+loaded.
+
+Directory structure
+-------------------
+The js-plugins directory is loosely organised into subdirectories -
+one for each module. Each subdirectory in turn can contain one or more
+javascript files. Within each directory, a javascript file with the
+same filename as the directory will always be loaded before all other
+files in the same directory. So for example, drone/drone.js will
+always load before any other files in the drone/ directory. Similarly
+utils/utils.js will always load before any other files in the utils/
+directory.
+
+Directories 
+-----------
+As of February 10 2013, the js-plugins directory has the following sub-directories...
+
+ * core - Contains javascript files containing Core functionality crucial to ScriptCraft and modules which use it.
+ * drone - Contains the drone module and drone extensions. Drone was the first scriptcraft module.
+ * ext - Contains external 3rd party javascript libraries (e.g. json2.js - the JSON lib)
+ * mini-games - Contains mini-games 
+ * arrows - The arrows module
+ * signs - The signs module
+ * chat - The chat plugin/module
+ * alias - The alias plugin/module
+
 Core Module
 ===========
 This module defines commonly used functions by all plugins...
@@ -26,11 +63,43 @@ This module defines commonly used functions by all plugins...
 
  * command (name, function) - defines a command that can be used by non-operators.
 
+load() function
+---------------
+The load() function is used by ScriptCraft at startup to load all of the javascript modules and data.
+
+Parameters
+----------
+
+ * filenames - An array of file names or a single file name.
+ * warnOnFileNotFound (optional - default: false) - warn if the file was not found.
+
+Return
+------
+load() will return the result of the last statement evaluated in the file.
+
+Example
+-------
+
+    load(__folder + "myFile.js"); // loads a javascript file and evaluates it.
+
+    var myData = load("myData.json"); // loads a javascript file and evaluates it - eval'd contents are returned.
+
+myData.json contents...
+
+    __data = {players:{
+                       walterh:{
+                                h: ["jsp home {1}"],
+                                sunny:["time set 0",
+                                       "weather clear"]
+                               }
+                      }
+             }
 
 Core Module - Special Variables
 ===============================
 There are a couple of special javascript variables available in ScriptCraft...
-
+ 
+ * __folder - The current working directory - this variable is only to be used within the main body of a .js file.
  * _plugin - The ScriptCraft JavaPlugin object.
  * server - The Minecraft Server object.
  * self - the current player.
