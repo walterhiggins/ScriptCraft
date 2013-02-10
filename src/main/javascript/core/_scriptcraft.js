@@ -1,9 +1,18 @@
 /************************************************************************
+ScriptCraft API Reference
+=========================
+
+Walter Higgins
+
+[walter.higgins@gmail.com][email]
+
+[email]: mailto:walter.higgins@gmail.com?subject=ScriptCraft_API_Reference
+
 Core Module
 ===========
 This module defines commonly used functions by all plugins...
   
- * load (filename) - loads and evaluates a javascript file, returning the evaluated object.
+ * load (filename,warnOnFileNotFound) - loads and evaluates a javascript file, returning the evaluated object.
   
  * save (object, filename) - saves an object to a file.
 
@@ -17,10 +26,6 @@ This module defines commonly used functions by all plugins...
  * ready (function) - specifies code to be executed only when all the plugins have loaded.
 
  * command (name, function) - defines a command that can be used by non-operators.
-
- * locationToString(Location) - returns a bukkit Location object in string form.
-  
- * getPlayerObject(playerName) - returns the Player object for a named player or `self` if no name is provided.
 
 Core Module - Special Variables
 ===============================
@@ -62,33 +67,44 @@ var server = org.bukkit.Bukkit.server;
      */
     var _load = function(filename,warnOnFileNotFound)
     {
+        var filenames = [];
+        if (filename.constructor == Array)
+            filenames = filename;
+        else
+            filenames = [filename];
+        
         var result = null;
-        var file = new java.io.File(filename);
-        var canonizedFilename = _canonize(file);
-        //
-        // wph 20130123 don't load the same file more than once.
-        //
-        if (_loaded[canonizedFilename])
-            return;
+        
+        for (var i =0;i < filenames.length; i++) {
 
-        if (verbose)
-            print("loading " + canonizedFilename);
+            var file = new java.io.File(filenames[0]);
+            var canonizedFilename = _canonize(file);
+            //
+            // wph 20130123 don't load the same file more than once.
+            //
+            if (_loaded[canonizedFilename])
+                continue;
 
-        if (file.exists()){
-            var parent = file.getParentFile();
-            var reader = new java.io.FileReader(file);
-            __engine.put("__script",canonizedFilename);
-            __engine.put("__folder",(parent?_canonize(parent):"")+"/");
-            try{
-                result = __engine.eval(reader);
-                _loaded[canonizedFilename] = true;
-            }catch (e){
-                __plugin.logger.severe("Error evaluating " + filename + ", " + e );
+            if (verbose)
+                print("loading " + canonizedFilename);
+            
+            if (file.exists()) {
+                var parent = file.getParentFile();
+                var reader = new java.io.FileReader(file);
+                __engine.put("__script",canonizedFilename);
+                __engine.put("__folder",(parent?_canonize(parent):"")+"/");
+                try{
+                    result = __engine.eval(reader);
+                    _loaded[canonizedFilename] = true;
+                }catch (e){
+                    __plugin.logger.severe("Error evaluating " + canonizedFilename + ", " + e );
+                }
+            }else{
+                if (warnOnFileNotFound) 
+                    __plugin.logger.warning(canonizedFilename + " not found");
             }
-        }else{
-            if (warnOnFileNotFound) 
-                __plugin.logger.warning(canonizedFilename + " not found");
         }
+        
         return result;
     };
     /*
@@ -115,6 +131,25 @@ var server = org.bukkit.Bukkit.server;
         }
     };
     /*
+      sort so that .js files with same name as parent directory appear before
+      other files in the same directory
+     */
+    var sortByModule = function(a,b){
+        var aparts = (""+a).split(/\//);
+        var bparts = (""+b).split(/\//);
+        var adir = aparts[aparts.length-2];
+        var afile = aparts[aparts.length-1];
+        var bdir = bparts[bparts.length-2];
+        var bfile = bparts[bparts.length-1];
+        
+        if(adir<bdir) return -1;
+        if(adir>bdir) return 1;
+        if (afile.indexOf(adir) == 0)
+            return -1;
+        else
+            return 1;
+    };
+    /*
       Reload all of the .js files in the given directory 
     */
     var _reload = function(pluginDir)
@@ -122,6 +157,9 @@ var server = org.bukkit.Bukkit.server;
         _loaded = [];
         var jsFiles = [];
         _listJsFiles(jsFiles,pluginDir);
+
+        jsFiles.sort(sortByModule);
+
         //
         // script files whose name begins with _ (underscore)
         // will not be loaded automatically at startup.
@@ -389,28 +427,13 @@ var server = org.bukkit.Bukkit.server;
             result.add(propsOfLastArg[i]);
     };
 
-    /* 
-       utility function - convert a Location to a string
-     */
-    var _locToString = function(location){
-        return JSON.stringify([""+location.world.name,location.x, location.y, location.z]);
-    };
 
-    var _getPlayerObject = function(player){
-        if (typeof player == "undefined")
-            return self;
-        if (typeof player == "string")
-            return org.bukkit.Bukkit.getPlayer(player);
-        return player;
-    };
     global.load = _load;
     global.save = _save;
     global.plugin = _plugin;
     global.ready = _ready;
     global.command = _command;
     global._onTabComplete = __onTabCompleteJS;
-    global.locationToString = _locToString;
-    global.getPlayerObject = _getPlayerObject;
     //
     // assumes this was loaded from js-plugins/core/
     // load all of the plugins.
