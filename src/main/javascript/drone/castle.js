@@ -1,4 +1,3 @@
-load(__folder + "drone.js");
 //
 // a castle is just a big wide fort with 4 taller forts at each corner
 //

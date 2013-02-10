@@ -1,7 +1,22 @@
-load(__folder + "drone.js");
-/*
-  Creates a Rainbow
-*/
+/************************************************************************
+Drone.rainbox() method
+======================
+Creates a Rainbow.
+
+Parameters
+----------
+
+ * radius (optional - default:18) - The radius of the rainbow
+
+Example
+-------
+    
+    var d = new Drone();
+    d.rainbow(30);
+
+![rainbow example](img/rainbowex1.png)
+
+***/
 Drone.extend('rainbow', function(radius){
     if (typeof radius == "undefined")
         radius = 18;

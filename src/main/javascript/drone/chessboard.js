@@ -7,8 +7,6 @@
 *  width - width of the chessboard
 *  height - height of the chessboard
 */
-load(__folder + "drone.js");
-
 Drone.extend("chessboard", function(whiteBlock, blackBlock, width, depth) {
     this.chkpt('chessboard-start');
     width = width || 8;

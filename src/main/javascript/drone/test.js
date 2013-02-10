@@ -1,5 +1,3 @@
-load (__folder + "drone.js");
-
 Drone.prototype.testHorizontalStrokeWidth = function(){
     this.arc({
         blockType: 42,

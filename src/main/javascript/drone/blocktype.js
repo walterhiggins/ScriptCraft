@@ -1,5 +1,26 @@
-load(__folder + "drone.js");
+/************************************************************************
+Drone.blocktype() method
+========================
+Creates the text out of blocks. Useful for large-scale in-game signs.
 
+Parameters
+----------
+ 
+ * message - The message to create - (use `\n` for newlines)
+ * foregroundBlock (default: black wool) - The block to use for the foreground
+ * backgroundBlock (default: none) - The block to use for the background
+
+Example
+-------
+To create a 2-line high message using glowstone...
+
+    blocktype("Hello\nWorld",blocks.glowstone);
+
+![blocktype example][imgbt1]
+
+[imgbt1]: img/blocktype1.png
+
+***/
 (function(){
  
     var bitmaps = {
@@ -296,29 +317,6 @@ load(__folder + "drone.js");
             }
         }
     }
-/************************************************************************
-Drone.blocktype() method
-========================
-Creates the text out of blocks. Useful for large-scale in-game signs.
-
-Parameters
-----------
- 
- * message - The message to create - (use `\n` for newlines)
- * foregroundBlock (default: black wool) - The block to use for the foreground
- * backgroundBlock (default: none) - The block to use for the background
-
-Example
--------
-To create a 2-line high message using glowstone...
-
-    blocktype("Hello\nWorld",blocks.glowstone);
-
-![blocktype example][imgbt1]
-
-[imgbt1]: img/blocktype1.png
-
-***/
 
 
     //

@@ -1,4 +1,3 @@
-load(__folder + "drone.js")
 //
 // constructs a mayan temple
 // 
