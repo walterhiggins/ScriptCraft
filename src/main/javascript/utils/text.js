@@ -1,6 +1,42 @@
-/*
-  Just a bunch of text-related extensions to the String class
-*/
+/************************************************************************
+String class extensions
+-----------------------
+The following chat-formatting methods are added to the javascript String class..
+
+ * black()
+ * darkblue()
+ * blue()
+ * darkgreen()
+ * darkaqua()
+ * darkred()
+ * purple()
+ * gold()
+ * gray()
+ * darkgray()
+ * indigo()
+ * brightgreen()
+ * green()
+ * aqua()
+ * red()
+ * pink()
+ * yellow()
+ * white()
+ * bold()
+ * random()
+ * strike()
+ * underline()
+ * italic()
+ * reset()
+
+Example
+-------
+
+    var boldGoldText = "Hello World".bold().gold();
+    self.sendMessage(boldGoldText);
+
+<p style="color:gold;font-weight:bold">Hello World</p>    
+
+***/
 (function(){
     var formattingCodes = {
         black: 0,

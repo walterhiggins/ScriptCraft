@@ -1,3 +1,4 @@
+
 load(__folder + "../utils/text.js");
 /*
   Define the signs module - signs are persistent 
@@ -207,14 +208,13 @@ var signs = signs || plugin("signs", {
             */
             if (! event.clickedBlock.state instanceof org.bukkit.block.Sign)
                 return;
-            var evtLocStr = locationToString(event.clickedBlock.location);
+            var evtLocStr = utils.locationToString(event.clickedBlock.location);
             var signUpdater = signs._updaters[evtLocStr]
             if (signUpdater)
                 signUpdater(event.player, event.clickedBlock.state);
         });
         
     });
-    
 }());
 
 
