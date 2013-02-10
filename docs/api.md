@@ -1,8 +1,17 @@
+ScriptCraft API Reference
+=========================
+
+Walter Higgins
+
+[walter.higgins@gmail.com][email]
+
+[email]: mailto:walter.higgins@gmail.com?subject=ScriptCraft_API_Reference
+
 Core Module
 ===========
 This module defines commonly used functions by all plugins...
   
- * load (filename) - loads and evaluates a javascript file, returning the evaluated object.
+ * load (filename,warnOnFileNotFound) - loads and evaluates a javascript file, returning the evaluated object.
   
  * save (object, filename) - saves an object to a file.
 
@@ -17,9 +26,6 @@ This module defines commonly used functions by all plugins...
 
  * command (name, function) - defines a command that can be used by non-operators.
 
- * locationToString(Location) - returns a bukkit Location object in string form.
-  
- * getPlayerObject(playerName) - returns the Player object for a named player or `self` if no name is provided.
 
 Core Module - Special Variables
 ===============================
@@ -761,6 +767,23 @@ To create a 2-line high message using glowstone...
 
 [imgbt1]: img/blocktype1.png
 
+Drone.rainbox() method
+======================
+Creates a Rainbow.
+
+Parameters
+----------
+
+ * radius (optional - default:18) - The radius of the rainbow
+
+Example
+-------
+    
+    var d = new Drone();
+    d.rainbow(30);
+
+![rainbow example](img/rainbowex1.png)
+
 events Module
 =============
 The Events module provides a thin wrapper around Bukkit's
@@ -827,4 +850,50 @@ To unregister a listener *outside* of the listener function...
 
 [buk2]: http://wiki.bukkit.org/Event_API_Reference
 [buk]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/event/Event.html
+
+Utilities Module
+================
+Miscellaneous utility functions and classes to help with programming.
+
+ * locationToString(Location) - returns a bukkit Location object in string form.
+  
+ * getPlayerObject(playerName) - returns the Player object for a named
+   player or `self` if no name is provided.
+
+String class extensions
+-----------------------
+The following chat-formatting methods are added to the javascript String class..
+
+ * black()
+ * darkblue()
+ * blue()
+ * darkgreen()
+ * darkaqua()
+ * darkred()
+ * purple()
+ * gold()
+ * gray()
+ * darkgray()
+ * indigo()
+ * brightgreen()
+ * green()
+ * aqua()
+ * red()
+ * pink()
+ * yellow()
+ * white()
+ * bold()
+ * random()
+ * strike()
+ * underline()
+ * italic()
+ * reset()
+
+Example
+-------
+
+    var boldGoldText = "Hello World".bold().gold();
+    self.sendMessage(boldGoldText);
+
+<p style="color:gold;font-weight:bold">Hello World</p>    
 
