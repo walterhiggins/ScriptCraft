@@ -1,3 +1,34 @@
+Core Module
+===========
+This module defines commonly used functions by all plugins...
+  
+ * load (filename) - loads and evaluates a javascript file, returning the evaluated object.
+  
+ * save (object, filename) - saves an object to a file.
+
+ * plugin (name, interface, isPersistent) - defines a new plugin. If
+   isPersistent is true then the plugin doesn't have to worry about
+   loading and saving state - that will be done by the framework. Just
+   make sure that anything you want to save (and restore) is in the
+   'store' property - this will be created automatically if not
+   already defined.  (its type is object {} )
+    
+ * ready (function) - specifies code to be executed only when all the plugins have loaded.
+
+ * command (name, function) - defines a command that can be used by non-operators.
+
+ * locationToString(Location) - returns a bukkit Location object in string form.
+  
+ * getPlayerObject(playerName) - returns the Player object for a named player or `self` if no name is provided.
+
+Core Module - Special Variables
+===============================
+There are a couple of special javascript variables available in ScriptCraft...
+
+ * _plugin - The ScriptCraft JavaPlugin object.
+ * server - The Minecraft Server object.
+ * self - the current player.
+
 Drone Module
 ============
 The Drone is a convenience class for building. It can be used for...
@@ -573,11 +604,23 @@ An array which can be used when constructing stairs facing in the Drone's direct
 Drone.PLAYER_SIGN_FACING
 ------------------------
 An array which can be used when placing signs so they face in a given direction.
-This is used internally by the Drone.sign() method.
+This is used internally by the Drone.sign() method. It should also be used for placing
+any of the following blocks...
+
+ * chest 
+ * ladder
+ * furnace
+ * dispenser
+
+To place a chest facing the Drone ...
+
+    drone.box( blocks.chest + ':' + Drone.PLAYER_SIGN_FACING[drone.dir]);
 
 Drone.PLAYER_TORCH_FACING
 -------------------------
-Used when placing torches so that they face the same way as the drone. 
+Used when placing torches so that they face towards the drone. 
+
+    drone.box( blocks.torch + ':' + Drone.PLAYER_TORCH_FACING[drone.dir]);
 
 Drone.spiral_stairs() method
 ============================
@@ -717,4 +760,71 @@ To create a 2-line high message using glowstone...
 ![blocktype example][imgbt1]
 
 [imgbt1]: img/blocktype1.png
+
+events Module
+=============
+The Events module provides a thin wrapper around Bukkit's
+Event-handling API.  Bukkit's Events API makes use of Java Annotations
+which are not available in Javascript, so this module provides a
+simple way to listen to minecraft events in javascript.
+
+events.on() static method
+=========================
+This method is used to register event listeners. 
+
+Parameters
+----------
+
+ * eventName - A string or java class. If a string is supplied it must
+   be part of the Bukkit event class name.  See [Bukkit API][buk] for
+   details of the many bukkit event types. When a string is supplied
+   there is no need to provide the full class name - you should omit
+   the 'org.bukkit.event' prefix. e.g. if the string
+   "block.BlockBreakEvent" is supplied then it's converted to the
+   org.bukkit.event.block.BlockBreakEvent class .
+ 
+   If a java class is provided (say in the case where you've defined
+   your own custom event) then provide the full class name (without
+   enclosing quotes).
+
+ * callback - A function which will be called whenever the event
+   fires. The callback should take 2 parameters, listener (the Bukkit
+   registered listener for this callback) and event (the event fired).
+
+ * priority (optional - default: "HIGHEST") - The priority the
+   listener/callback takes over other listeners to the same
+   event. Possible values are "HIGH", "HIGHEST", "LOW", "LOWEST",
+   "NORMAL", "MONITOR". For an explanation of what the different
+   priorities mean refer to bukkit's [Event API Reference][buk2].
+
+Returns
+-------
+An org.bukkit.plugin.RegisteredListener object which can be used to
+unregister the listener. This same object is passed to the callback
+function each time the event is fired.
+
+Example:
+------
+The following code will print a message on screen every time a block is broken in the game
+
+    events.on("block.BlockBreakEvent", function(listener, evt){ 
+        echo (evt.player.name + " broke a block!");
+    });
+
+To handle an event only once and unregister from further events...
+    
+    events.on("block.BlockBreakEvent", function(listener, evt){ 
+        print (evt.player.name + " broke a block!");
+        evt.handlers.unregister(listener);
+    });
+
+To unregister a listener *outside* of the listener function...
+
+    var myBlockBreakListener = events.on("block.BlockBreakEvent",function(l,e){ ... });
+    ...
+    var handlers = org.bukkit.event.block.BlockBreakEvent.getHandlerList();
+    handlers.unregister(myBlockBreakListener);
+
+[buk2]: http://wiki.bukkit.org/Event_API_Reference
+[buk]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/event/Event.html
 

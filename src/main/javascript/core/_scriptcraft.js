@@ -1,23 +1,37 @@
-/*
-  This file defines commonly used functions by all plugins...
+/************************************************************************
+Core Module
+===========
+This module defines commonly used functions by all plugins...
   
-  load (filename) - loads and evaluates a javascript file, returning the evaluated object.
+ * load (filename) - loads and evaluates a javascript file, returning the evaluated object.
   
-  save (object, filename) - saves an object to a file.
+ * save (object, filename) - saves an object to a file.
 
-  plugin (name, interface, isPersistent) 
-  - defines a new plugin. If isPersistent is true then
-    the plugin doesn't have to worry about loading and saving
-    state - that will be done by the framework. Just make sure 
-    that anything you want to save (and restore) is in the 'store'
-    property - this will be created automatically if not already defined.
-    (its type is object {} )
+ * plugin (name, interface, isPersistent) - defines a new plugin. If
+   isPersistent is true then the plugin doesn't have to worry about
+   loading and saving state - that will be done by the framework. Just
+   make sure that anything you want to save (and restore) is in the
+   'store' property - this will be created automatically if not
+   already defined.  (its type is object {} )
     
-  ready (function) - specifies code to be executed only when all the plugins have loaded.
+ * ready (function) - specifies code to be executed only when all the plugins have loaded.
 
-  command (name, function) - defines a command that can be used by non-operators.
+ * command (name, function) - defines a command that can be used by non-operators.
+
+ * locationToString(Location) - returns a bukkit Location object in string form.
   
-*/
+ * getPlayerObject(playerName) - returns the Player object for a named player or `self` if no name is provided.
+
+Core Module - Special Variables
+===============================
+There are a couple of special javascript variables available in ScriptCraft...
+
+ * _plugin - The ScriptCraft JavaPlugin object.
+ * server - The Minecraft Server object.
+ * self - the current player.
+
+***/
+
 var global = this;
 var verbose = verbose || false;
 /*

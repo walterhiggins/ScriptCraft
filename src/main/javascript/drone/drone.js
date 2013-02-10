@@ -636,11 +636,23 @@ An array which can be used when constructing stairs facing in the Drone's direct
 Drone.PLAYER_SIGN_FACING
 ------------------------
 An array which can be used when placing signs so they face in a given direction.
-This is used internally by the Drone.sign() method.
+This is used internally by the Drone.sign() method. It should also be used for placing
+any of the following blocks...
+
+ * chest 
+ * ladder
+ * furnace
+ * dispenser
+
+To place a chest facing the Drone ...
+
+    drone.box( blocks.chest + ':' + Drone.PLAYER_SIGN_FACING[drone.dir]);
 
 Drone.PLAYER_TORCH_FACING
 -------------------------
-Used when placing torches so that they face the same way as the drone. 
+Used when placing torches so that they face towards the drone. 
+
+    drone.box( blocks.torch + ':' + Drone.PLAYER_TORCH_FACING[drone.dir]);
 
 ***/
 
@@ -831,6 +843,10 @@ Used when placing torches so that they face the same way as the drone.
         var depthFunc = function(){
             var block = that.world.getBlockAt(that.x,that.y,that.z);
             block.setTypeIdAndData(blockType,meta,false);
+            // wph 20130210 - dont' know if this is a bug in bukkit but for chests, 
+            // the metadata is ignored (defaults to 2 - south facing)
+            // only way to change data is to set it using property/bean.
+            block.data = meta;
         };
         var heightFunc = function(){
             _traverse[dir].depth(that,d,depthFunc);

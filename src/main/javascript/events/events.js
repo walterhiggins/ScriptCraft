@@ -1,20 +1,74 @@
 var global = this;
-//
-// Usage:
-//
-//  The following code will print a message on screen every time a block is broken in the game
-//
-//    events.on("block.BlockBreakEvent", function(listener, evt){ 
-//        print (evt.player.name + " broke a block!");
-//    });
-//
-//  To handle an event only once and unregister from further events...
-//    
-//    events.on("block.BlockBreakEvent", function(listener, evt){ 
-//        print (evt.player.name + " broke a block!");
-//        evt.handlers.unregister(listener);
-//    });
-// 
+/************************************************************************
+events Module
+=============
+The Events module provides a thin wrapper around Bukkit's
+Event-handling API.  Bukkit's Events API makes use of Java Annotations
+which are not available in Javascript, so this module provides a
+simple way to listen to minecraft events in javascript.
+
+events.on() static method
+=========================
+This method is used to register event listeners. 
+
+Parameters
+----------
+
+ * eventName - A string or java class. If a string is supplied it must
+   be part of the Bukkit event class name.  See [Bukkit API][buk] for
+   details of the many bukkit event types. When a string is supplied
+   there is no need to provide the full class name - you should omit
+   the 'org.bukkit.event' prefix. e.g. if the string
+   "block.BlockBreakEvent" is supplied then it's converted to the
+   org.bukkit.event.block.BlockBreakEvent class .
+ 
+   If a java class is provided (say in the case where you've defined
+   your own custom event) then provide the full class name (without
+   enclosing quotes).
+
+ * callback - A function which will be called whenever the event
+   fires. The callback should take 2 parameters, listener (the Bukkit
+   registered listener for this callback) and event (the event fired).
+
+ * priority (optional - default: "HIGHEST") - The priority the
+   listener/callback takes over other listeners to the same
+   event. Possible values are "HIGH", "HIGHEST", "LOW", "LOWEST",
+   "NORMAL", "MONITOR". For an explanation of what the different
+   priorities mean refer to bukkit's [Event API Reference][buk2].
+
+Returns
+-------
+An org.bukkit.plugin.RegisteredListener object which can be used to
+unregister the listener. This same object is passed to the callback
+function each time the event is fired.
+
+Example:
+------
+The following code will print a message on screen every time a block is broken in the game
+
+    events.on("block.BlockBreakEvent", function(listener, evt){ 
+        echo (evt.player.name + " broke a block!");
+    });
+
+To handle an event only once and unregister from further events...
+    
+    events.on("block.BlockBreakEvent", function(listener, evt){ 
+        print (evt.player.name + " broke a block!");
+        evt.handlers.unregister(listener);
+    });
+
+To unregister a listener *outside* of the listener function...
+
+    var myBlockBreakListener = events.on("block.BlockBreakEvent",function(l,e){ ... });
+    ...
+    var handlers = org.bukkit.event.block.BlockBreakEvent.getHandlerList();
+    handlers.unregister(myBlockBreakListener);
+
+[buk2]: http://wiki.bukkit.org/Event_API_Reference
+[buk]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/event/Event.html
+
+***/
+ 
 var events = events || {
     //
     // handle events in Minecraft
