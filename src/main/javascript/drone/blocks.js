@@ -11,6 +11,9 @@ Examples
     box( blocks.sand, 3, 2, 1 ); // creates a block of sand 3 wide x 2 high x 1 long
     box( blocks.wool.green, 2 ); // creates a block of green wool 2 blocks wide
 
+In addition, each of the wool colors is also available as a block property so you can use either
+`blocks.wool.green` or the more concise `blocks.green`. There's also a convenience array `blocks.rainbow` which is an array of the 7 colors of the rainbow (or closest approximations). 
+
 ***/
 var blocks = {
     air: 0,
@@ -56,8 +59,6 @@ var blocks = {
     dead_bush: 32,
     piston: 33,
     piston_extn: 34,
-    white: 35, // white is white wool
-    black: '35:15',
     wool: {
         white: 35,
         orange: '35:1',
@@ -232,3 +233,17 @@ var blocks = {
     rail_activator: 157,
     dropper: 158
 };
+// make colors top level for convenience
+for (var c  in blocks.wool){
+    blocks[c] = blocks.wool[c];
+}
+/*
+  rainbow colors - a convenience
+*/
+blocks.rainbow = [blocks.red, 
+                  blocks.orange, 
+                  blocks.yellow, 
+                  blocks.lime, 
+                  blocks.lightblue, 
+                  blocks.blue, 
+                  blocks.purple];

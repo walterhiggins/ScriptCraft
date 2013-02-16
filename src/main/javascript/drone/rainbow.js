@@ -1,5 +1,5 @@
 /************************************************************************
-Drone.rainbox() method
+Drone.rainbow() method
 ======================
 Creates a Rainbow.
 
@@ -23,14 +23,8 @@ Drone.extend('rainbow', function(radius){
     
     this.chkpt('rainbow');
     this.down(radius);
-    var colors = [blocks.wool.red,
-                  blocks.wool.orange,
-                  blocks.wool.yellow,
-                  blocks.wool.lime,
-                  blocks.wool.lightblue,
-                  blocks.wool.blue,
-                  blocks.wool.purple,
-                  blocks.air];
+    // copy blocks.rainbow and add air at end (to compensate for strokewidth)
+    var colors = blocks.rainbow.slice(0).push(blocks.air);
 
     for (var i = 0;i < colors.length; i++) {
         var bm = this._getBlockIdAndMeta(colors[i]);

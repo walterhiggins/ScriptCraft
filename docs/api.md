@@ -201,6 +201,7 @@ Parameters
  * z (optional) : The z coordinate of the Drone
  * direction (optional) : The direction in which the Drone is
    facing. Possible values are 0 (east), 1 (south), 2 (west) or 3 (north)
+ * world (optional) : The world in which the drone is created.
 
 Drone.box() method
 ==================
@@ -252,7 +253,8 @@ To create a stone building with the insided hollowed out 7 wide by 3 tall by 6 l
    
 Drone.boxa() method
 ===================
-Construct a cuboid using an array of blocks.
+Construct a cuboid using an array of blocks. As the drone moves first along the width axis,
+then the height (y axis) then the length, each block is picked from the array and placed.
 
 Parameters
 ----------
@@ -265,9 +267,10 @@ Example
 -------
 Construct a rainbow-colored road 100 blocks long...
 
-    var rainbowColors = [blocks.wool.red, blocks.wool.orange, blocks.wool.yellow, blocks.wool.lime,
-                   blocks.wool.lightblue, blocks.wool.blue, blocks.wool.purple];
-    boxa(rainbowColors,5,1,98);
+    var rainbowColors = [blocks.red, blocks.orange, blocks.yellow, blocks.lime,
+                         blocks.lightblue, blocks.blue, blocks.purple];
+    
+    boxa(rainbowColors,7,1,30);
 
 ![boxa example](img/boxaex1.png)
 
@@ -815,6 +818,9 @@ Examples
     box( blocks.sand, 3, 2, 1 ); // creates a block of sand 3 wide x 2 high x 1 long
     box( blocks.wool.green, 2 ); // creates a block of green wool 2 blocks wide
 
+In addition, each of the wool colors is also available as a block property so you can use either
+`blocks.wool.green` or the more concise `blocks.green`. There's also a convenience array `blocks.rainbow` which is an array of the 7 colors of the rainbow (or closest approximations). 
+
 Drone.blocktype() method
 ========================
 Creates the text out of blocks. Useful for large-scale in-game signs.
@@ -836,7 +842,7 @@ To create a 2-line high message using glowstone...
 
 [imgbt1]: img/blocktype1.png
 
-Drone.rainbox() method
+Drone.rainbow() method
 ======================
 Creates a Rainbow.
 

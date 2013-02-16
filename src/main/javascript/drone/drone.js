@@ -99,6 +99,7 @@ Parameters
  * z (optional) : The z coordinate of the Drone
  * direction (optional) : The direction in which the Drone is
    facing. Possible values are 0 (east), 1 (south), 2 (west) or 3 (north)
+ * world (optional) : The world in which the drone is created.
 
 ***/
 var Drone = function(/* number */ x, /* number */ y, /* number */ z, /* number */ direction){};
@@ -153,7 +154,8 @@ To create a stone building with the insided hollowed out 7 wide by 3 tall by 6 l
    
 Drone.boxa() method
 ===================
-Construct a cuboid using an array of blocks.
+Construct a cuboid using an array of blocks. As the drone moves first along the width axis,
+then the height (y axis) then the length, each block is picked from the array and placed.
 
 Parameters
 ----------
@@ -166,9 +168,10 @@ Example
 -------
 Construct a rainbow-colored road 100 blocks long...
 
-    var rainbowColors = [blocks.wool.red, blocks.wool.orange, blocks.wool.yellow, blocks.wool.lime,
-                   blocks.wool.lightblue, blocks.wool.blue, blocks.wool.purple];
-    boxa(rainbowColors,5,1,98);
+    var rainbowColors = [blocks.red, blocks.orange, blocks.yellow, blocks.lime,
+                         blocks.lightblue, blocks.blue, blocks.purple];
+    
+    boxa(rainbowColors,7,1,30);
 
 ![boxa example](img/boxaex1.png)
 
@@ -663,7 +666,7 @@ Used when placing torches so that they face towards the drone.
 // There is no need to read any further unless you want to understand how the Drone object works.
 //
 (function(){
-    Drone = function(x,y,z,dir)
+    Drone = function(x,y,z,dir,world)
     {
         var usePlayerCoords = false;
         var playerPos = getPlayerPos();
@@ -700,6 +703,9 @@ Used when placing torches so that they face towards the drone.
         }else{
             this.dir = dir%4;
         }
+        if (typeof world !== "undefined")
+            this.world = world;
+
         // for debugging
         //self.sendMessage("New Drone " + this.toString());
         if (usePlayerCoords){
@@ -808,20 +814,19 @@ Used when placing torches so that they face towards the drone.
         var pl = org.bukkit.entity.Player;
         var cs = org.bukkit.command.BlockCommandSender;
         var bi = 0;
-        var depthFunc = function(){
-            var block = that.world.getBlockAt(that.x,that.y,that.z);
-            var properBlock = properBlocks[bi%len];
-            block.setTypeIdAndData(properBlock[0],properBlock[1],false);
-            bi++;
-        };
-        var heightFunc = function(){
-            _traverse[dir].depth(that,d,depthFunc);
-        };
-        var widthFunc = function(){
-            _traverseHeight(that,h,heightFunc);
-        };
-
-        _traverse[dir].width(that,w,widthFunc);
+        /*
+          
+         */
+        _traverse[dir].depth(that,d,function(){
+            _traverseHeight(that,h,function(){
+                _traverse[dir].width(that,w,function(){
+                    var block = that.world.getBlockAt(that.x,that.y,that.z);
+                    var properBlock = properBlocks[bi%len];
+                    block.setTypeIdAndData(properBlock[0],properBlock[1],false);
+                    bi++;
+                });
+            });
+        });
         return this;
         
     };
