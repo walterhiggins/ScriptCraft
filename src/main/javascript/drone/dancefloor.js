@@ -13,7 +13,7 @@ Drone.extend('dancefloor',function(width,length)
     //
     // create a separate Drone object to lay down disco tiles
     //
-    var disco = new Drone(this.x,this.y, this.z, this.dir);
+    var disco = new Drone(this.x, this.y, this.z, this.dir, this.world);
     //
     // under-floor lighting
     //
@@ -23,15 +23,14 @@ Drone.extend('dancefloor',function(width,length)
     // strobe gets called in a java thread - disco only lasts 30 seconds.
     //
     var discoTicks = 30;
-    var strobe = function()
-    {
-        while(discoTicks--)
-        {
-            disco.rand(floorTiles,width,1,length);
-            java.lang.Thread.sleep(1000);
-        }
+    var task = null;
+    var strobe = function() {
+        disco.rand(floorTiles,width,1,length);
+        if (!discoTicks--)
+            task.cancel();
     };
-    var thread = new java.lang.Thread(strobe);
-    thread.start();
+    var now = 0;
+    var everySecond = 20;
+    task = server.scheduler.runTaskTimer(__plugin,strobe,now,everySecond);
     return this;
 });

@@ -24,8 +24,8 @@ Drone.extend('rainbow', function(radius){
     this.chkpt('rainbow');
     this.down(radius);
     // copy blocks.rainbow and add air at end (to compensate for strokewidth)
-    var colors = blocks.rainbow.slice(0).push(blocks.air);
-
+    var colors = blocks.rainbow.slice(0);
+    colors.push(blocks.air);
     for (var i = 0;i < colors.length; i++) {
         var bm = this._getBlockIdAndMeta(colors[i]);
         this.arc({
