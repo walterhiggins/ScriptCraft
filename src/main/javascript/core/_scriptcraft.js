@@ -66,7 +66,14 @@ This module defines commonly used functions by all plugins...
 
 load() function
 ---------------
-The load() function is used by ScriptCraft at startup to load all of the javascript modules and data.
+The load() function is used by ScriptCraft at startup to load all of
+the javascript modules and data.  You normally wouldn't need to call
+this function directly. If you put a javascript file anywhere in the
+craftbukkit/js-plugins directory tree it will be loaded automatically
+when craftbukkit starts up. The exception is files whose name begins
+with an underscore `_` character. These files will not be
+automatically loaded at startup as they are assumed to be files
+managed / loaded by plugins.
 
 Parameters
 ----------
@@ -96,14 +103,122 @@ myData.json contents...
                       }
              }
 
+save() function
+---------------
+The save() function saves an in-memory javascript object to a
+specified file. Under the hood, save() uses JSON (specifically
+json2.js) to save the object. Again, there will usually be no need to
+call this function directly as all javascript plugins' state are saved
+automatically if they are declared using the `plugin()` function.  Any
+in-memory object saved using the `save()` function can later be
+restored using the `load()` function.
+
+Parameters
+----------
+
+ * objectToSave : The object you want to save.
+ * filename : The name of the file you want to save it to.
+
+Example
+-------
+
+    var myObject = { name: 'John Doe',
+                     aliases: ['John Ray', 'John Mee'],
+                     date_of_birth: '1982/01/31' };
+    save(myObject, 'johndoe.json');
+
+johndoe.json contents...
+
+    var __data = { "name": "John Doe", 
+                   "aliases": ["John Ray", "John Mee"], 
+                   "date_of_birth": "1982/01/31" };
+
+plugin() function
+-----------------
+The `plugin()` function should be used to declare a javascript module
+whose state you want to have managed by ScriptCraft - that is - a
+Module whose state will be loaded at start up and saved at shut down.
+A plugin is just a regular javascript object whose state is managed by
+ScriptCraft.  The only member of the plugin which whose persistence is
+managed by Scriptcraft is `state` - this special member will be
+automatically saved at shutdown and loaded at startup by
+ScriptCraft. This makes it easier to write plugins which need to
+persist data.
+
+Parameters
+----------
+ 
+ * pluginName (String) : The name of the plugin - this becomes a global variable.
+ * pluginDefinition (Object) : The various functions and members of the plugin object.
+ * isPersistent (boolean - optional) : Specifies whether or not the plugin/object state should be loaded and saved by ScriptCraft.
+
+Example
+-------
+See chat/color.js for an example of a simple plugin - one which lets
+players choose a default chat color. See also [Anatomy of a
+ScriptCraft Plugin][anatomy].
+ 
+[anatomy]: http://walterhiggins.net/blog/ScriptCraft-1-Month-later
+
+command() function
+------------------
+The `command()` function is used to expose javascript functions for
+use by non-operators (regular players). Only operators should be
+allowed use raw javascript using the `/js ` command because it is too
+powerful for use by regular players and can be easily abused. However,
+the `/jsp ` command lets you (the operator / server administrator /
+plugin author) safely expose javascript functions for use by players.
+
+Parameters
+----------
+ 
+ * commandName : The name to give your command - the command will be invoked like this by players `/jsp commandName`
+ * commandFunction: The javascript function which will be invoked when the command is invoked by a player.
+ * options (Array - optional) : An array of command options/parameters
+   which the player can supply (It's useful to supply an array so that
+   Tab-Completion works for the `/jsp ` commands.
+ * intercepts (boolean - optional) : Indicates whether this command
+   can intercept Tab-Completion of the `/jsp ` command - advanced
+   usage - see alias/alias.js for example.
+
+Example
+-------
+See chat/colors.js or alias/alias.js or homes/homes.js for examples of how to use the `command()` function.
+
+ready() function
+----------------
+The `ready()` function provides a way for plugins to do additional
+setup once all of the other plugins/modules have loaded.  For example,
+event listener registration can only be done after the
+events/events.js module has loaded. A plugin author could load the
+file explicilty like this...
+
+    load(__folder + "../events/events.js");
+
+    // event listener registration goes here 
+
+... or better still, just do event regristration using the `ready()`
+handler knowing that by the time the `ready()` callback is invoked,
+all of the scriptcraft modules have been loaded...
+
+    ready(function(){
+        // event listener registration goes here
+        // code that depends on other plugins/modules also goes here
+    });
+
+The execution of the function object passed to the `ready()` function
+is *deferred* until all of the plugins/modules have loaded. That way
+you are guaranteed that when the function is invoked, all of the
+plugins/modules have been loaded and evaluated and are ready to use.
+
 Core Module - Special Variables
 ===============================
 There are a couple of special javascript variables available in ScriptCraft...
  
  * __folder - The current working directory - this variable is only to be used within the main body of a .js file.
- * _plugin - The ScriptCraft JavaPlugin object.
+ * __plugin - The ScriptCraft JavaPlugin object.
  * server - The Minecraft Server object.
- * self - the current player.
+ * self - the current player. (Note - this value should not be used in multi-threaded scripts - it's not thread-safe)
 
 ***/
 
