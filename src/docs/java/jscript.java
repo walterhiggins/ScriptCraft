@@ -1,4 +1,6 @@
 import javax.script.*;
+import java.io.FileReader;
+
 public class jscript
 {
     public static void main(String[] args) throws Exception
@@ -8,6 +10,8 @@ public class jscript
         java.io.File file = new java.io.File(args[0]);
         engine.put("engine",engine);
         engine.put("args",args);
-        engine.eval(new java.io.FileReader(file));
+        FileReader fr = new java.io.FileReader(file);
+        engine.eval(fr);
+        fr.close();
     }
 }

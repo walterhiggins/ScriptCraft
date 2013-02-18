@@ -281,6 +281,7 @@ var server = org.bukkit.Bukkit.server;
                 try{
                     result = __engine.eval(reader);
                     _loaded[canonizedFilename] = true;
+                    reader.close();
                 }catch (e){
                     __plugin.logger.severe("Error evaluating " + canonizedFilename + ", " + e );
                 }
