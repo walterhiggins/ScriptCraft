@@ -321,6 +321,8 @@ var server = org.bukkit.Bukkit.server;
       other files in the same directory
      */
     var sortByModule = function(a,b){
+        a = _canonize(a);
+        b = _canonize(b);
         var aparts = (""+a).split(/\//);
         var bparts = (""+b).split(/\//);
         var adir = aparts[aparts.length-2];
