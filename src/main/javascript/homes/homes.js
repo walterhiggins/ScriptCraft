@@ -31,8 +31,8 @@ plugin("homes", {
     go: function(guest, host){
         if (typeof host == "undefined")
             host = guest;
-        guest = getPlayerObject(guest);
-        host = getPlayerObject(host);
+        guest = utils.getPlayerObject(guest);
+        host = utils.getPlayerObject(host);
         var loc = this.store.houses[host.name];
         if (!loc){
             guest.sendMessage(host.name + " has no home");
@@ -63,7 +63,7 @@ plugin("homes", {
         return false;
     },
     set: function(player){
-        player = getPlayerObject(player);
+        player = utils.getPlayerObject(player);
         var loc = player.location;
         this.store.houses[player.name] = [""+loc.world.name
                                           ,Math.floor(loc.x) 
@@ -73,7 +73,7 @@ plugin("homes", {
                                           ,Math.floor(loc.pitch)];
     },
     remove: function(player){
-        player = getPlayerObject(player);
+        player = utils.getPlayerObject(player);
         delete this.store.houses[player.name];
     },
     /* ========================================================================
@@ -87,7 +87,7 @@ plugin("homes", {
         var result = [];
         for (var ohp in this.store.openHouses)
             result.push(ohp);
-        player = getPlayerObject(player);
+        player = utils.getPlayerObject(player);
         for (var host in this.store.invites){
             var guests = this.store.invites[host];
             for (var i = 0;i < guests.length; i++)
@@ -100,7 +100,7 @@ plugin("homes", {
       list who can visit the player's home
      */
     ilist: function(player){
-        player = getPlayerObject(player);
+        player = utils.getPlayerObject(player);
         var result = [];
         // if home is public - all players
         if (this.store.openHouses[player.name]){
@@ -117,8 +117,8 @@ plugin("homes", {
       Invite a player to the home
     */
     invite: function(host, guest){
-        host = getPlayerObject(host);
-        guest = getPlayerObject(guest);
+        host = utils.getPlayerObject(host);
+        guest = utils.getPlayerObject(guest);
         var invitations = this.store.invites[host.name] || [];
         invitations.push(guest.name);
         this.store.invites[host.name] = invitations;
@@ -129,8 +129,8 @@ plugin("homes", {
       Uninvite someone to the home
      */
     uninvite: function(host, guest){
-        host = getPlayerObject(host);
-        guest = getPlayerObject(guest);
+        host = utils.getPlayerObject(host);
+        guest = utils.getPlayerObject(guest);
         var invitations = this.store.invites[host.name];
         if (!invitations)
             return;
@@ -144,7 +144,7 @@ plugin("homes", {
       make the player's house public
     */
     open: function(player, optionalMsg){
-        player = getPlayerObject(player);
+        player = utils.getPlayerObject(player);
         this.store.openHouses[player.name] = true;
         if (typeof optionalMsg != "undefined")
             __plugin.server.broadcastMessage(optionalMsg);
@@ -153,7 +153,7 @@ plugin("homes", {
       make the player's house private
     */
     close: function(player){
-        player = getPlayerObject(player);
+        player = utils.getPlayerObject(player);
         delete this.store.openHouses[player.name];
     },
     /* ========================================================================
@@ -166,7 +166,7 @@ plugin("homes", {
         return result;
     },
     clear: function(player){
-        player = getPlayerObject(player);
+        player = utils.getPlayerObject(player);
         delete this.store.houses[player.name];
         delete this.store.openHouses[player.name];
     }
@@ -210,7 +210,7 @@ plugin("homes", {
                 return;
             }
             var playerName = params[1];
-            var guest = getPlayerObject(playerName);
+            var guest = utils.getPlayerObject(playerName);
             if (!guest)
                 self.sendMessage(playerName + " is not here");
             else
@@ -222,7 +222,7 @@ plugin("homes", {
                 return;
             }
             var playerName = params[1];
-            var guest = getPlayerObject(playerName);
+            var guest = utils.getPlayerObject(playerName);
             if (!guest)
                 self.sendMessage(playerName + " is not here");
             else
@@ -264,7 +264,7 @@ plugin("homes", {
         if (option)
             option(params);
         else{
-        var host = getPlayerObject(params[0]);
+        var host = utils.getPlayerObject(params[0]);
             if (!host)
                 self.sendMessage(params[0] + " is not here");
             else
