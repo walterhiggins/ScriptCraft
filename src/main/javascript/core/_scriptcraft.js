@@ -615,6 +615,18 @@ var server = org.bukkit.Bukkit.server;
             result.add(propsOfLastArg[i]);
     };
 
+    /*
+	  Unload Handlers
+	  */
+	  var unloadHandlers = [];
+	  var _addUnloadHandler = function(f) {
+		  unloadHandlers.push(f);
+	  }
+	  var _runUnloadHandlers = function() {
+		  for (var i = 0; i < unloadHandlers.length; i++) {
+			  unloadHandlers[i]();
+		  }
+	  }
 
     global.load = _load;
     global.save = _save;
@@ -622,6 +634,8 @@ var server = org.bukkit.Bukkit.server;
     global.ready = _ready;
     global.command = _command;
     global._onTabComplete = __onTabCompleteJS;
+    global.addUnloadHandler = _addUnloadHandler;
+    
     //
     // assumes this was loaded from js-plugins/core/
     // load all of the plugins.
@@ -643,6 +657,8 @@ var server = org.bukkit.Bukkit.server;
             if (pluginData.persistent)
                 save(pluginData.module.store, jsPluginsRootDirName + "/" + moduleName + "-store.txt");
         }
+
+      	_runUnloadHandlers();
     });
     
 }());
