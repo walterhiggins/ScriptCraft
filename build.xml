@@ -6,7 +6,11 @@
   <property name="dist" location="target/" />
 
   <target name="init">
-    <tstamp/>
+    <tstamp>
+      <format property="DSTAMP"
+              pattern="yyyy-MM-dd"
+              locale="en,UK"/>
+    </tstamp>
     <mkdir dir="${build}"/>
   </target>
   
@@ -14,7 +18,7 @@
     <javac includeantruntime="false" srcdir="${src}" destdir="${build}" classpath="${bukkit-lib}" />
   </target>
     
-  <target name="gendocs" description="Generate API documentation">
+  <target name="gendocs" depends="init" description="Generate API documentation">
     <javac includeantruntime="false" srcdir="src/docs/java"/>
     <java classname="jscript" failonerror="true" fork="true" output="docs/api.md">
       <classpath>
@@ -25,7 +29,7 @@
     </java>
   </target>
 
-  <target name="zip_js">
+  <target name="zip_js" depends="init">
     <zip zipfile="${build}/js-plugins.zip" basedir="./src/main/javascript"/>
   </target>
 
@@ -39,7 +43,7 @@
     </replace>
     
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-    <jar jarfile="${dist}/scriptcraft-${bukkit-version}-${DSTAMP}.jar" basedir="${build}"/>
+    <jar jarfile="${dist}/${DSTAMP}/ScriptCraft.jar" basedir="${build}"/>
   </target>
 
   <target name="clean" description="clean up" >
@@ -50,6 +54,6 @@
     <delete>
       <fileset dir="${craftbukkit}/plugins/" includes="scriptcraft*.*"/>
     </delete>
-    <copy file="${dist}/scriptcraft-${bukkit-version}-${DSTAMP}.jar" todir="${craftbukkit}/plugins"/>
+    <copy file="${dist}/${DSTAMP}/ScriptCraft.jar" todir="${craftbukkit}/plugins"/>
   </target>
 </project>

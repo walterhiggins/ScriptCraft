@@ -5,9 +5,9 @@ A Minecraft mod that lets you create mods using Javascript.
 Description
 ===========
 ScriptCraft is a plugin for Minecraft Servers which lets
-operators/administrators/plug-in authors customize the game using
+operators, administrators and plug-in authors customize the game using
 Javascript.  ScriptCraft makes it easier to create your own mods. Mods
-can be written in Javscript and use the full Bukkit API.  The
+can be written in Javscript and can use the full Bukkit API.  The
 ScriptCraft mod also lets you enter javascript commands at the in-game
 prompt.  To bring up the in-game prompt press the `/` key then type
 `js ` followed by any javascript statement.  E.g. `/js 1+1` will print
@@ -99,7 +99,7 @@ the Bukkit ScriptCraft plugin...
  * `self` - The player/command-block or server console operator who invoked the js command. Again, this is a good jumping off point for diving into the Bukkit API.
  * `server` - The top-level org.bukkit.Server object. See the [Bukkit API docs][bukapi] for reference.
 
-[dl]: http://walterhiggins.net/blog/files/scriptcraft/
+[dl]: http://scriptcraftjs.org/download
 [api]: http://jd.bukkit.org/apidocs/org/bukkit/plugin/java/JavaPlugin.html
 [ib]: http://wiki.bukkit.org/Setting_up_a_server
 [cbdl]: http://dl.bukkit.org/downloads/craftbukkit/
@@ -107,6 +107,8 @@ the Bukkit ScriptCraft plugin...
 
 Further Reading
 ===============
+
+ScriptCraft has [its own website][website] with further information.
 
  * To get started using ScriptCraft to Learn Javascript I recommend [reading this][yp].
  * The ScriptCraft [API documentation][api].
@@ -119,3 +121,5 @@ You can find more information about [ScriptCraft on my blog][blog].
 [yp]: http://walterhiggins.net/blog/YoungPersonProgrammingMinecraft
 [mm]: http://walterhiggins.net/blog/ScriptCraft-1-Month-later
 [api]: https://github.com/walterhiggins/ScriptCraft/blob/master/docs/api.md
+[website]: http://scriptcraftjs.org/
+
