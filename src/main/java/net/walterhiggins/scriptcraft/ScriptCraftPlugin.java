@@ -15,8 +15,9 @@ import java.util.ArrayList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.*;
 import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
 
-public class ScriptCraftPlugin extends JavaPlugin
+public class ScriptCraftPlugin extends JavaPlugin implements Listener
 {
     // right now all ops share the same JS context/scope
     // need to look at possibly having context/scope per operator

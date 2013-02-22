@@ -94,10 +94,6 @@ var events = events || {
     }
     var _event = org.bukkit.event;
     var _plugin = org.bukkit.plugin;
-    // 
-    // can't have objects that implement multiple interface in javax.scripts.* 
-    //
-    var theListener = new _event.Listener(){};
 
     var _on = function(eventType, handler, priority)
     {
@@ -121,7 +117,19 @@ var events = events || {
             } 
         };
         listener.reg = new _plugin.RegisteredListener(
-            theListener,eventExecutor,priority,__plugin,true
+            /* 
+               wph 20130222 issue #64 bad interaction with Essentials plugin
+               if another plugin tries to unregister a Listener (not a Plugin or a RegisteredListener)
+               then BOOM! the other plugin will throw an error because Rhino can't coerce an
+               equals() method from an Interface.
+               The workaround is to make the ScriptCraftPlugin java class a Listener.
+               Should only unregister() registered plugins in ScriptCraft js code.
+            */
+            __plugin
+            ,eventExecutor
+            ,priority
+            ,__plugin
+            ,true
         )
         handlerList.register(listener.reg);
         return listener.reg;

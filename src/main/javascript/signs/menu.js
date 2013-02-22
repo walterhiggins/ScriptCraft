@@ -206,6 +206,7 @@ var signs = signs || plugin("signs", {
               look up our list of menu signs. If there's a matching location and there's
               a sign, then update it.
             */
+
             if (! event.clickedBlock.state instanceof org.bukkit.block.Sign)
                 return;
             var evtLocStr = utils.locationToString(event.clickedBlock.location);
@@ -213,7 +214,6 @@ var signs = signs || plugin("signs", {
             if (signUpdater)
                 signUpdater(event.player, event.clickedBlock.state);
         });
-        
     });
 }());
 
