@@ -1,5 +1,3 @@
-
-load(__folder + "../utils/text.js");
 /*
   Define the signs module - signs are persistent 
   (that is - a menu sign will still be a menu after th
@@ -35,7 +33,7 @@ var signs = signs || plugin("signs", {
             if (offset+i < optLen)
                 text = p_displayOptions[offset+i];
             if (offset+i == p_selectedIndex)
-                text = ("" + text).replace(/^ /,">".white());
+                text = ("" + text).replace(/^ /,">");
             p_sign.setLine(i+1,text);
         }
         p_sign.update(true);

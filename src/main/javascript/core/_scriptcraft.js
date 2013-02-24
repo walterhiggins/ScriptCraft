@@ -223,7 +223,7 @@ There are a couple of special javascript variables available in ScriptCraft...
 ***/
 
 var global = this;
-var verbose = verbose || false;
+var verbose = true; //verbose || false;
 /*
   wph 20130124 - make self, plugin and server public - these are far more useful now that tab-complete works.
 */
@@ -325,14 +325,19 @@ var server = org.bukkit.Bukkit.server;
         b = _canonize(b);
         var aparts = (""+a).split(/\//);
         var bparts = (""+b).split(/\//);
-        var adir = aparts[aparts.length-2];
+        //var adir = aparts[aparts.length-2];
+        var adir = aparts.slice(0,aparts.length-1).join("/");
         var afile = aparts[aparts.length-1];
-        var bdir = bparts[bparts.length-2];
+        //var bdir = bparts[bparts.length-2];
+        var bdir = bparts.slice(0,bparts.length-1).join("/");
         var bfile = bparts[bparts.length-1];
         
         if(adir<bdir) return -1;
         if(adir>bdir) return 1;
-        if (afile.indexOf(adir) == 0)
+
+        afile = afile.match(/[a-zA-Z0-9\-_]+/)[0];
+
+        if (adir.match(new RegExp(afile + "$")))
             return -1;
         else
             return 1;
@@ -616,17 +621,17 @@ var server = org.bukkit.Bukkit.server;
     };
 
     /*
-	  Unload Handlers
-	  */
-	  var unloadHandlers = [];
-	  var _addUnloadHandler = function(f) {
-		  unloadHandlers.push(f);
-	  }
-	  var _runUnloadHandlers = function() {
-		  for (var i = 0; i < unloadHandlers.length; i++) {
-			  unloadHandlers[i]();
-		  }
-	  }
+     Unload Handlers
+     */
+     var unloadHandlers = [];
+     var _addUnloadHandler = function(f) {
+        unloadHandlers.push(f);
+     }
+     var _runUnloadHandlers = function() {
+        for (var i = 0; i < unloadHandlers.length; i++) {
+           unloadHandlers[i]();
+        }
+     }
 
     global.load = _load;
     global.save = _save;
@@ -658,7 +663,7 @@ var server = org.bukkit.Bukkit.server;
                 save(pluginData.module.store, jsPluginsRootDirName + "/" + moduleName + "-store.txt");
         }
 
-      	_runUnloadHandlers();
+         _runUnloadHandlers();
     });
     
 }());

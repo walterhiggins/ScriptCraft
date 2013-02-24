@@ -219,6 +219,51 @@ There are a couple of special javascript variables available in ScriptCraft...
  * server - The Minecraft Server object.
  * self - the current player. (Note - this value should not be used in multi-threaded scripts - it's not thread-safe)
 
+Drone.spiral_stairs() method
+============================
+Constructs a spiral staircase with slabs at each corner.
+
+Parameters
+----------
+
+ * stairBlock - The block to use for stairs, should be one of the following...
+   - 'oak'
+   - 'spruce'
+   - 'birch'
+   - 'jungle'
+   - 'cobblestone'
+   - 'brick'
+   - 'stone'
+   - 'nether'
+   - 'sandstone'
+   - 'quartz'
+ * flights - The number of flights of stairs to build.
+
+![Spiral Staircase](img/spiralstair1.png)
+
+Example
+-------
+To construct a spiral staircase 5 floors high made of oak...
+
+    spiral_stairs('oak', 5);
+
+Drone.rainbow() method
+======================
+Creates a Rainbow.
+
+Parameters
+----------
+
+ * radius (optional - default:18) - The radius of the rainbow
+
+Example
+-------
+    
+    var d = new Drone();
+    d.rainbow(30);
+
+![rainbow example](img/rainbowex1.png)
+
 Drone Module
 ============
 The Drone is a convenience class for building. It can be used for...
@@ -815,34 +860,6 @@ Used when placing torches so that they face towards the drone.
 
     drone.box( blocks.torch + ':' + Drone.PLAYER_TORCH_FACING[drone.dir]);
 
-Drone.spiral_stairs() method
-============================
-Constructs a spiral staircase with slabs at each corner.
-
-Parameters
-----------
-
- * stairBlock - The block to use for stairs, should be one of the following...
-   - 'oak'
-   - 'spruce'
-   - 'birch'
-   - 'jungle'
-   - 'cobblestone'
-   - 'brick'
-   - 'stone'
-   - 'nether'
-   - 'sandstone'
-   - 'quartz'
- * flights - The number of flights of stairs to build.
-
-![Spiral Staircase](img/spiralstair1.png)
-
-Example
--------
-To construct a spiral staircase 5 floors high made of oak...
-
-    spiral_stairs('oak', 5);
-
 Drone.sphere() method
 =====================
 Creates a sphere.
@@ -956,23 +973,6 @@ To create a 2-line high message using glowstone...
 ![blocktype example][imgbt1]
 
 [imgbt1]: img/blocktype1.png
-
-Drone.rainbow() method
-======================
-Creates a Rainbow.
-
-Parameters
-----------
-
- * radius (optional - default:18) - The radius of the rainbow
-
-Example
--------
-    
-    var d = new Drone();
-    d.rainbow(30);
-
-![rainbow example](img/rainbowex1.png)
 
 events Module
 =============

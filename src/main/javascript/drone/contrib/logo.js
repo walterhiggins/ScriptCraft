@@ -1,4 +1,3 @@
-load(__folder + "drone.js");
 //
 // Constructs the JS logo
 // https://raw.github.com/voodootikigod/logo.js/master/js.png
