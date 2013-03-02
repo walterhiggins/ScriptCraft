@@ -223,7 +223,7 @@ There are a couple of special javascript variables available in ScriptCraft...
 ***/
 
 var global = this;
-var verbose = true; //verbose || false;
+var verbose = verbose || false;
 /*
   wph 20130124 - make self, plugin and server public - these are far more useful now that tab-complete works.
 */
@@ -492,6 +492,9 @@ var server = org.bukkit.Bukkit.server;
                     result.push(i);
             }
         }else{
+            if (o.constructor == Array)
+                return result;
+
             for (var i in o){
                 if (i.match(/^[^_]/)){
                     if (typeof o[i] == "function")
@@ -578,6 +581,7 @@ var server = org.bukkit.Bukkit.server;
                         break;
                     lastGoodSymbol = symbol;
                 }
+                //print("debug:name["+name+"]lastSymbol["+lastSymbol+"]symbol["+symbol+"]");
                 if (typeof symbol == "undefined"){
                     //
                     // look up partial matches against last good symbol
@@ -587,32 +591,47 @@ var server = org.bukkit.Bukkit.server;
                         // if the last symbol looks like this.. 
                         // ScriptCraft.
                         //
-                        for (var i =0;i < objectProps.length;i++)
-                            propsOfLastArg.push(statement+objectProps[i]);
+
+                        for (var i =0;i < objectProps.length;i++){
+                            var candidate = lastSymbol + objectProps[i];
+                            propsOfLastArg.push(candidate);
+                        }
                         
                     }else{
                         // it looks like this..
                         // ScriptCraft.co
                         //
+                        //print("debug:case Y: ScriptCraft.co");
+
                         var li = statement.lastIndexOf(name);
                         statement = statement.substring(0,li);
 
-                        for (var i = 0; i < objectProps.length;i++)
+                        for (var i = 0; i < objectProps.length;i++){
                             if (objectProps[i].indexOf(name) == 0)
-                                propsOfLastArg.push(statement + objectProps[i]);
+                            {
+                                var candidate = lastSymbol.substring(0,lastSymbol.lastIndexOf(name));
+                                candidate = candidate + objectProps[i];
+                                propsOfLastArg.push(candidate);
+                            }
+                        }
                         
                     }
                 }else{
+                    //print("debug:case Z:ScriptCraft");
                     var objectProps = _getProperties(symbol);
                     for (var i = 0; i < objectProps.length; i++){
-                        propsOfLastArg.push(statement + "." + objectProps[i]);
+                        propsOfLastArg.push(lastSymbol + "." + objectProps[i]);
                     }
                 }
             }else{
+                //print("debug:case AB:ScriptCr");
                 // loop thru globalSymbols looking for a good match
-                for (var i = 0;i < _globalSymbols.length; i++)
-                    if (_globalSymbols[i].indexOf(lastSymbol) == 0)
-                        propsOfLastArg.push(statement.replace(lastSymbol,_globalSymbols[i]));
+                for (var i = 0;i < _globalSymbols.length; i++){
+                    if (_globalSymbols[i].indexOf(lastSymbol) == 0){
+                        var possibleCompletion = _globalSymbols[i];
+                        propsOfLastArg.push(possibleCompletion);
+                    }
+                }
                 
             }
         }
