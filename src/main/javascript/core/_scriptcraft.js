@@ -665,11 +665,10 @@ The refresh() function will ...
 See [issue #69][issue69] for more information.
 
 [issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
-
 ***/
     global.refresh = function(){
         __plugin.pluginLoader.disablePlugin(__plugin);
-        forg.bukkit.event.HandlerList["unregisterAll(org.bukkit.plugin.Plugin)"](__plugin);
+        org.bukkit.event.HandlerList["unregisterAll(org.bukkit.plugin.Plugin)"](__plugin);
         __plugin.pluginLoader.enablePlugin(__plugin);
     };
 
