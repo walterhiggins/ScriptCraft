@@ -219,6 +219,19 @@ There are a couple of special javascript variables available in ScriptCraft...
  * server - The Minecraft Server object.
  * self - the current player. (Note - this value should not be used in multi-threaded scripts - it's not thread-safe)
 
+refresh() function
+------------------
+The refresh() function will ...
+
+1. Disable the ScriptCraft plugin.
+2. Unload all event listeners associated with the ScriptCraft plugin.
+3. Enable the ScriptCraft plugin.
+
+... refresh() can be used during development to reload only scriptcraft javascript files.
+See [issue #69][issue69] for more information.
+
+[issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
+
 Drone.spiral_stairs() method
 ============================
 Constructs a spiral staircase with slabs at each corner.

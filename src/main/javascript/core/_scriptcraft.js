@@ -640,17 +640,38 @@ var server = org.bukkit.Bukkit.server;
     };
 
     /*
-     Unload Handlers
-     */
-     var unloadHandlers = [];
-     var _addUnloadHandler = function(f) {
+      Unload Handlers
+    */
+    var unloadHandlers = [];
+    var _addUnloadHandler = function(f) {
         unloadHandlers.push(f);
-     }
-     var _runUnloadHandlers = function() {
+    };
+    var _runUnloadHandlers = function() {
         for (var i = 0; i < unloadHandlers.length; i++) {
-           unloadHandlers[i]();
+            unloadHandlers[i]();
         }
-     }
+    };
+
+/*************************************************************************
+refresh() function
+------------------
+The refresh() function will ...
+
+1. Disable the ScriptCraft plugin.
+2. Unload all event listeners associated with the ScriptCraft plugin.
+3. Enable the ScriptCraft plugin.
+
+... refresh() can be used during development to reload only scriptcraft javascript files.
+See [issue #69][issue69] for more information.
+
+[issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
+
+***/
+    global.refresh = function(){
+        __plugin.pluginLoader.disablePlugin(__plugin);
+        forg.bukkit.event.HandlerList["unregisterAll(org.bukkit.plugin.Plugin)"](__plugin);
+        __plugin.pluginLoader.enablePlugin(__plugin);
+    };
 
     global.load = _load;
     global.save = _save;
@@ -684,6 +705,7 @@ var server = org.bukkit.Bukkit.server;
 
          _runUnloadHandlers();
     });
+    
     
 }());
 

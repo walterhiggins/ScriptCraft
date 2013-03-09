@@ -89,27 +89,24 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
         public void onEnable()
     {
         unzipJS();
-        
-        if (this.engine == null){
-            FileReader reader = null;
-            try{
-                ScriptEngineManager factory = new ScriptEngineManager();
-                File boot = new File(JS_PLUGINS_DIR + "/core/_scriptcraft.js");
-                this.engine = factory.getEngineByName("JavaScript");
-                this.engine.put("__engine",engine);
-                this.engine.put("__plugin",this);
-                this.engine.put("__script",boot.getCanonicalPath().replaceAll("\\\\","/"));
-                reader = new FileReader(boot);
-                this.engine.eval(reader);  
-            }catch(Exception e){
-                e.printStackTrace();
-            }finally {
-                if (reader != null){
-                    try {
-                        reader.close();
-                    }catch(IOException ioe){
-                        // fail silently
-                    }
+        FileReader reader = null;
+        try{
+            ScriptEngineManager factory = new ScriptEngineManager();
+            File boot = new File(JS_PLUGINS_DIR + "/core/_scriptcraft.js");
+            this.engine = factory.getEngineByName("JavaScript");
+            this.engine.put("__engine",engine);
+            this.engine.put("__plugin",this);
+            this.engine.put("__script",boot.getCanonicalPath().replaceAll("\\\\","/"));
+            reader = new FileReader(boot);
+            this.engine.eval(reader);  
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            if (reader != null){
+                try {
+                    reader.close();
+                }catch(IOException ioe){
+                    // fail silently
                 }
             }
         }
