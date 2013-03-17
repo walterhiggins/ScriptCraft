@@ -1065,7 +1065,7 @@ Miscellaneous utility functions and classes to help with programming.
 utils.foreach() function
 ========================
 The utils.foreach() function is a utility function for iterating over
-an array of objects and processing each one in turn. Where
+an array of objects (or a java.util.Collection of objects) and processing each object in turn. Where
 utils.foreach() differs from other similar functions found in
 javascript libraries, is that utils.foreach can process the array
 immediately or can process it *nicely* by processing one item at a
@@ -1079,7 +1079,7 @@ package for scheduling processing of arrays.
 Parameters
 ----------
 
- * array : The array to be processed
+ * array : The array to be processed - It can be a javascript array, a java array or java.util.Collection
  * callback : The function to be called to process each item in the
    array. The callback function should have the following signature
    `callback(item, index, object, array)`. That is the callback will
