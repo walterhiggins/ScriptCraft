@@ -668,7 +668,6 @@ See [issue #69][issue69] for more information.
 ***/
     global.refresh = function(){
         __plugin.pluginLoader.disablePlugin(__plugin);
-        org.bukkit.event.HandlerList["unregisterAll(org.bukkit.plugin.Plugin)"](__plugin);
         __plugin.pluginLoader.enablePlugin(__plugin);
     };
 
@@ -701,8 +700,8 @@ See [issue #69][issue69] for more information.
             if (pluginData.persistent)
                 save(pluginData.module.store, jsPluginsRootDirName + "/" + moduleName + "-store.txt");
         }
-
          _runUnloadHandlers();
+        org.bukkit.event.HandlerList["unregisterAll(org.bukkit.plugin.Plugin)"](__plugin);
     });
     
     
