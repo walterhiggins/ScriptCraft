@@ -784,10 +784,10 @@ Used when placing torches so that they face towards the drone.
         return org.bukkit.Location(this.world, this.x, this.y, this.z);
     };
     Drone.prototype.setPosition = function(x,y,z,dir) {
-        if (x) this.x = x;
-        if (y) this.y = y;
-        if (z) this.z = z;
-        if (dir) this.dir = dir;
+        if (typeof x != "undefined") this.x = x;
+        if (typeof y != "undefined") this.y = y;
+        if (typeof z != "undefined") this.z = z;
+        if (typeof dir != "undefined") this.dir = dir;
     };
     //
     // building
