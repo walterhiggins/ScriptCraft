@@ -215,6 +215,15 @@ Drone.prototype.back = function(numBlocks){};
 Drone.prototype.turn = function(numTurns){};
 
 /************************************************************************
+Drone Positional Info
+=====================
+* getLocation - Returns a Bukkit Location object for the drone
+* setPosition - Sets a drones location and direction
+***/
+Drone.prototype.getLocation = function(){};
+Drone.prototype.setPosition = function(x,y,z,dir){};
+
+/************************************************************************
 Drone Markers
 =============
 Markers are useful when your Drone has to do a lot of work. You can
@@ -767,6 +776,18 @@ Used when placing torches so that they face towards the drone.
             n = 1;
         this.y-= n; 
         return this;
+    };
+    //
+    // position
+    //
+    Drone.prototype.getLocation = function() {
+        return org.bukkit.Location(this.world, this.x, this.y, this.z);
+    };
+    Drone.prototype.setPosition = function(x,y,z,dir) {
+        if (typeof x != "undefined") this.x = x;
+        if (typeof y != "undefined") this.y = y;
+        if (typeof z != "undefined") this.z = z;
+        if (typeof dir != "undefined") this.dir = dir;
     };
     //
     // building
