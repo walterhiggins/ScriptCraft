@@ -743,6 +743,25 @@ utils.foreach() function...
                    }
     );
 
+... Another example, this time each player will hear a Cat's Meow...
+
+    /*
+      Play a Cat's Meow sound for each player.
+    */
+    utils.foreach( server.onlinePlayers, 
+                   function (player) { 
+                       player.playSound(player.location, 
+                                        org.bukkit.Sound.CAT_MEOW,
+                                        1,
+                                        1);
+
+                   }
+    );
+
+#### Exercise
+Try changing the above function so that different sounds are played instead of a Cat's Meow.
+You'll need to lookup the [CraftBukkit API's Sound class][soundapi] to see all of the possible sounds that can be played. 
+
 Loops are a key part of programming in any language. Javascript
 provides `for` and `while` statements for looping and many javascript
 libraries also provide their own custom looping functions. You should
@@ -763,6 +782,7 @@ TODO
 [np]: http://notepad-plus-plus.org/
 [cbapi]: http://jd.bukkit.org/beta/apidocs/
 [boole]: http://en.wikipedia.org/wiki/George_Boole
+[soundapi]: http://jd.bukkit.org/beta/apidocs/org/bukkit/Sound.html
 
 [img_echo_date]: img/ypgpm_echo_date.png
 [img_3d_shapes]: img/ypgpm_3dshapes.jpg
