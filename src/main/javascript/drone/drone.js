@@ -217,11 +217,11 @@ Drone.prototype.turn = function(numTurns){};
 /************************************************************************
 Drone Positional Info
 =====================
-* getLocation - Returns a Bukkit Location object for the drone
-* setPosition - Sets a drones location and direction
+
+ * getLocation() - Returns a Bukkit Location object for the drone
+
 ***/
 Drone.prototype.getLocation = function(){};
-Drone.prototype.setPosition = function(x,y,z,dir){};
 
 /************************************************************************
 Drone Markers
@@ -238,7 +238,8 @@ A 'start' checkpoint is automatically created when the Drone is first created.
 Markers are created and returned to using the followng two methods...
 
  * chkpt - Saves the drone's current location so it can be returned to later.
- * move - moves the drone to a saved location.
+ * move - moves the drone to a saved location. Alternatively you can provide an 
+   org.bukkit.Location object or x,y,z and direction parameters.
 
 Parameters
 ----------
@@ -726,13 +727,35 @@ Used when placing torches so that they face towards the drone.
         this._checkpoints[name] = {x:this.x,y:this.y,z:this.z,dir:this.dir};
         return this;
     };
-    Drone.prototype.move = function(name){
-        var coords = this._checkpoints[name];
-        if (coords){
-            this.x = coords.x;
-            this.y = coords.y;
-            this.z = coords.z;
-            this.dir = coords.dir%4;
+
+    Drone.prototype.move = function()
+    {
+        if (arguments[0] instanceof org.bukkit.Location){
+            this.x = arguments[0].x;
+            this.y = arguments[0].y;
+            this.z = arguments[0].z;
+            this.dir = _getDirFromRotation(arguments[0].yaw);
+            this.world = arguments[0].world;
+        }else if (typeof arguments[0] === "string"){
+            var coords = this._checkpoints[arguments[0]];
+            if (coords){
+                this.x = coords.x;
+                this.y = coords.y;
+                this.z = coords.z;
+                this.dir = coords.dir%4;
+            }            
+        }else{
+            // expect x,y,z,dir
+            switch(arguments.length){
+            case 4:
+                this.dir = arguments[3];
+            case 3:
+                this.z = arguments[2];
+            case 2:
+                this.y = arguments[1];
+            case 1:
+                this.x = arguments[0];
+            }
         }
         return this;
     };
@@ -781,13 +804,7 @@ Used when placing torches so that they face towards the drone.
     // position
     //
     Drone.prototype.getLocation = function() {
-        return org.bukkit.Location(this.world, this.x, this.y, this.z);
-    };
-    Drone.prototype.setPosition = function(x,y,z,dir) {
-        if (typeof x != "undefined") this.x = x;
-        if (typeof y != "undefined") this.y = y;
-        if (typeof z != "undefined") this.z = z;
-        if (typeof dir != "undefined") this.dir = dir;
+        return new org.bukkit.Location(this.world, this.x, this.y, this.z);
     };
     //
     // building

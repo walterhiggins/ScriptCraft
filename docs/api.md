@@ -470,6 +470,11 @@ drone.turn() will make the turn face east. If the drone is facing east
 then drone.turn(2) will make the drone turn twice so that it is facing
 west.
 
+Drone Positional Info
+=====================
+
+ * getLocation() - Returns a Bukkit Location object for the drone
+
 Drone Markers
 =============
 Markers are useful when your Drone has to do a lot of work. You can
@@ -484,7 +489,8 @@ A 'start' checkpoint is automatically created when the Drone is first created.
 Markers are created and returned to using the followng two methods...
 
  * chkpt - Saves the drone's current location so it can be returned to later.
- * move - moves the drone to a saved location.
+ * move - moves the drone to a saved location. Alternatively you can provide an 
+   org.bukkit.Location object or x,y,z and direction parameters.
 
 Parameters
 ----------
