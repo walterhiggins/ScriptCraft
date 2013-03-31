@@ -1059,6 +1059,45 @@ To unregister a listener *outside* of the listener function...
 [buk2]: http://wiki.bukkit.org/Event_API_Reference
 [buk]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/event/Event.html
 
+http.request() function
+====================
+The http.request() function will fetch a web address asynchronously (on a
+separate thread)and pass the URL's response to a callback function
+which will be executed synchronously (on the main thread).  In this
+way, http.request() can be used to fetch web content without blocking the
+main thread of execution.
+
+Parameters
+----------
+
+ * request: The request details either a plain URL e.g. "http://scriptcraft.js/sample.json" or an object with the following properties...
+
+   - url: The URL of the request.
+   - method: Should be one of the standard HTTP methods, GET, POST, PUT, DELETE (defaults to GET).
+   - params: A Javascript object with name-value pairs. This is for supplying parameters to the server.
+
+ * callback: The function to be called when the Web request has completed. This function takes the following parameters...
+   - responseCode: The numeric response code from the server. If the server did not respond with 200 OK then the response parameter will be undefined.
+   - response: A string (if the response is of type text) or object containing the HTTP response body.
+
+Example
+-------
+The following example illustrates how to use http.request to make a request to a JSON web service and evaluate its response...
+
+    var jsResponse;
+    http.request("http://scriptcraftjs.org/sample.json",function(responseCode, responseBody){
+        jsResponse = eval("(" + responseBody +  ")");
+    });
+
+... The following example illustrates a more complex use-case POSTing parameters to a CGI process on a server...
+
+    http.request({ url: "http://pixenate.com/pixenate/pxn8.pl",
+                   method: "POST",
+                   params: {script: "[]"}
+                 }, function( responseCode, responseBody){
+          var jsObj = eval("(" + responseBody + ")");
+      });
+
 Utilities Module
 ================
 Miscellaneous utility functions and classes to help with programming.
