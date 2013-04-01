@@ -1,0 +1,4 @@
+# Copy this file to build.local.properties and modify appropriately
+
+# This setting will ensure the bukkit server will give you ops
+op.name=YOUR_USERID_HERE
