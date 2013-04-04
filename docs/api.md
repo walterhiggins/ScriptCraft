@@ -601,7 +601,7 @@ To draw a 1/4 circle (top right quadrant only) with a radius of 10 and stroke wi
     arc({blockType: blocks.iron, 
          meta: 0, 
          radius: 10,
-         strokeWidth: 2
+         strokeWidth: 2,
          quadrants: { topright: true },
          orientation: 'vertical', 
          stack: 1,
