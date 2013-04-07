@@ -556,15 +556,19 @@ var server = org.bukkit.Bukkit.server;
         var _globalSymbols = _getProperties(global)
         var result = global.__onTC_result;
         var args = global.__onTC_args;
+        var lastArg = args.length?args[args.length-1]+"":null;
         var propsOfLastArg = [];
         var statement = args.join(" ");
+
         statement = statement.replace(/^\s+/,"").replace(/\s+$/,"");
+
         
         if (statement.length == 0)
             propsOfLastArg = _globalSymbols;
         else{
             var statementSyms = statement.split(/[^\$a-zA-Z0-9_\.]/);
             var lastSymbol = statementSyms[statementSyms.length-1];
+            //print("DEBUG: lastSymbol=[" + lastSymbol + "]");
             //
             // try to complete the object ala java IDEs.
             //
@@ -594,7 +598,8 @@ var server = org.bukkit.Bukkit.server;
 
                         for (var i =0;i < objectProps.length;i++){
                             var candidate = lastSymbol + objectProps[i];
-                            propsOfLastArg.push(candidate);
+                            var re = new RegExp(lastSymbol + "$","g");
+                            propsOfLastArg.push(lastArg.replace(re,candidate));
                         }
                         
                     }else{
@@ -604,14 +609,14 @@ var server = org.bukkit.Bukkit.server;
                         //print("debug:case Y: ScriptCraft.co");
 
                         var li = statement.lastIndexOf(name);
-                        statement = statement.substring(0,li);
-
                         for (var i = 0; i < objectProps.length;i++){
                             if (objectProps[i].indexOf(name) == 0)
                             {
                                 var candidate = lastSymbol.substring(0,lastSymbol.lastIndexOf(name));
                                 candidate = candidate + objectProps[i];
-                                propsOfLastArg.push(candidate);
+                                var re = new RegExp(lastSymbol+ "$","g");
+                                //print("DEBUG: re=" + re + ",lastSymbol="+lastSymbol+",lastArg=" + lastArg + ",candidate=" + candidate);
+                                propsOfLastArg.push(lastArg.replace(re,candidate));
                             }
                         }
                         
@@ -620,7 +625,8 @@ var server = org.bukkit.Bukkit.server;
                     //print("debug:case Z:ScriptCraft");
                     var objectProps = _getProperties(symbol);
                     for (var i = 0; i < objectProps.length; i++){
-                        propsOfLastArg.push(lastSymbol + "." + objectProps[i]);
+                        var re = new RegExp(lastSymbol+ "$","g");
+                        propsOfLastArg.push(lastArg.replace(re,lastSymbol + "." + objectProps[i]));
                     }
                 }
             }else{
@@ -629,7 +635,8 @@ var server = org.bukkit.Bukkit.server;
                 for (var i = 0;i < _globalSymbols.length; i++){
                     if (_globalSymbols[i].indexOf(lastSymbol) == 0){
                         var possibleCompletion = _globalSymbols[i];
-                        propsOfLastArg.push(possibleCompletion);
+                        var re = new RegExp(lastSymbol+ "$","g");
+                        propsOfLastArg.push(lastArg.replace(re,possibleCompletion));
                     }
                 }
                 
