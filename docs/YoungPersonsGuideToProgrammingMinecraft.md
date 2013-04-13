@@ -759,13 +759,78 @@ utils.foreach() function...
     );
 
 #### Exercise
-Try changing the above function so that different sounds are played instead of a Cat's Meow.
-You'll need to lookup the [CraftBukkit API's Sound class][soundapi] to see all of the possible sounds that can be played. 
+Try changing the above function so that different sounds are played
+instead of a Cat's Meow.  You'll need to lookup the [CraftBukkit API's
+Sound class][soundapi] to see all of the possible sounds that can be
+played.
 
 Loops are a key part of programming in any language. Javascript
 provides `for` and `while` statements for looping and many javascript
 libraries also provide their own custom looping functions. You should
 use what you feel most comfortable with.
+
+#### Putting `for` loops to use - Building a Skyscraper
+
+For loops can be used to build enormous structures. In this next
+exercise I'm going to use a for loop to build a skyscraper.  This
+skyscraper will be made of Glass and Steel (just like most skyscrapers
+in real-life).  The first thing to do is see what a single floor of
+the skyscraper will look like. Place a block (of any type) where you
+want to eventually build the skyscraper, then while your cursor is
+pointing at the block, type the following into the in-game prompt...
+
+    /js var drone = box(blocks.iron,20,1,20).up().box0(blocks.glass_pane,20,3,20).up(3)
+
+... you should a large (20x20) iron floor with 3 block high glass all around.
+
+![skyscraper-floor.png][img_ssf]
+
+... A skyscraper with just a single floor isn't much of a skyscraper
+so the next step is to repeat this over and over. This is where `for`
+loops come in. Open your favorite text editor and create a new file in
+your js-plugins/{your-name} directory called `myskyscraper.js`, then
+type the following...
+
+    function skyscraper(floors)
+    {
+        floors = floors || 10; // default number of floors is 10
+        this.chkpt('skyscraper'); // saves the drone position so it can return there later
+        for (var i = 0; i < floors; i++)
+        {
+            this.box(blocks.iron,20,1,20).up().box0(blocks.glass_pane,20,3,20).up(3);
+        }
+        return this.move('skyscraper'); // return to where we started
+    };
+
+    load("../drone/drone.js");
+    Drone.extend('skyscraper',skyscraper);
+
+... so this takes a little explaining. First I create a new function
+called skyscraper that will take a single parameter `floors` so that
+when you eventually call the `skyscraper()` function you can tell it
+how many floors you want built. The first statement in the function
+`floors = floors || 10;` just sets floors to 10 if no parameter is
+supplied. The next statement `this.chkpt('myskyscraper')` just saves
+the position of the Drone so it can eventually return to where it
+started when finished building (I don't want the drone stranded atop
+the skyscraper when it's finished). Then comes the `for` loop. I loop
+from 0 to `floors` and each time through the loop I build a single
+floor. When the loop is done I return the drone to where it started.
+The last 2 lines load the drone module (it must be loaded before I can
+add new features to it) and the last line extends the 'Drone' object
+so that now it can build skyscrapers among other things.  Once you've
+typed in the above code and saved the file, type `reload` in your
+in-game prompt, then type ...
+
+     /js skyscraper(2);
+
+... A two-story skyscraper should appear. If you're feeling
+adventurous, try a 10 story skyscraper! Or a 20 story skyscraper!
+Minecraft has a height limit (256 blocks from bedrock) beyond which
+you can't build. If you try to build higher than this then building
+will stop at that height.
+
+![skyscraper][img_ss]
 
 TODO
 ### Making Decisions
@@ -792,6 +857,8 @@ TODO
 [img_2boxes]: img/ypgpm_2boxes.png
 [img_cr]: img/ypgpm_mc_cr.png
 [img_greet]: img/ypgpm_greet.png
+[img_ssf]: img/skyscraper_floor.png
+[img_ss]: img/skyscraper.png
 
 ## Categories
 Minecraft, Programming, ScriptCraft
