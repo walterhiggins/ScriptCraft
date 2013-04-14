@@ -1,4 +1,5 @@
 Drone.extend('skyscraper',function(floors){
+    floors = floors || 10;
     this.chkpt('skyscraper');
     for (var i = 0;i < floors; i++)
     {
@@ -7,5 +8,5 @@ Drone.extend('skyscraper',function(floors){
             .box0(blocks.glass_pane,20,3,20);
         this.up(3);
     }
-    this.move('skyscraper');
+    return this.move('skyscraper');
 });
