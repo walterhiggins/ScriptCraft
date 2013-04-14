@@ -832,6 +832,13 @@ will stop at that height.
 
 ![skyscraper][img_ss]
 
+I'll leave it as an exercise to the reader to create a city block of
+skyscrapers, 5 blocks apart using a for loop.  Once you've figured
+that out, creating an entire city of blocks of skyscrapers is the next
+logical step. Of course, Minecraft doesn't have the same constraints
+as real-world densely populated areas so let your imagination go wild.
+
+
 TODO
 ### Making Decisions
 TODO
