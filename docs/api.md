@@ -777,7 +777,7 @@ can be 'chained' together so instead of writing this...
     drone = new Drone(); 
     drone.fwd(3);
     drone.left(2);
-    drone.box(2); // create a grass block
+    drone.box(2); // create a grass block 
     drone.up();
     drone.box(2); // create another grass block
     drone.down();

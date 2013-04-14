@@ -566,7 +566,7 @@ can be 'chained' together so instead of writing this...
     drone = new Drone(); 
     drone.fwd(3);
     drone.left(2);
-    drone.box(2); // create a grass block
+    drone.box(2); // create a grass block 
     drone.up();
     drone.box(2); // create another grass block
     drone.down();
@@ -814,7 +814,7 @@ Used when placing torches so that they face towards the drone.
         }else{
             message = [message];
         }
-        var bm = _getBlockIdAndMeta(block);
+        var bm = this._getBlockIdAndMeta(block);
         block = bm[0];
         var meta = bm[1];
         if (block != 63 && block != 68){
@@ -838,7 +838,7 @@ Used when placing torches so that they face towards the drone.
         var properBlocks = [];
         var len = blocks.length;
         for (var i = 0;i < len;i++){
-            var bm = _getBlockIdAndMeta(blocks[i]);
+            var bm = this._getBlockIdAndMeta(blocks[i]);
             properBlocks.push([bm[0],bm[1]]);
         }
         if (typeof h == "undefined")
@@ -905,7 +905,7 @@ Used when placing torches so that they face towards the drone.
     
     Drone.prototype.cuboid = function(block,w,h,d){
 
-        var bm = _getBlockIdAndMeta(block);
+        var bm = this._getBlockIdAndMeta(block);
         return this.cuboidX(bm[0],bm[1], w,h,d);
     };
     Drone.prototype.cuboid0 = function(block,w,h,d){
@@ -1355,17 +1355,35 @@ Used when placing torches so that they face towards the drone.
             return 1; // south
     };
     var _getBlockIdAndMeta = function(b){
+        var defaultMeta = 0;
         if (typeof b == 'string'){
             var bs = b;
             var sp = bs.indexOf(':');
             if (sp == -1){
-                return [parseInt(bs),0];
+                b = parseInt(bs);
+                // wph 20130414 - use sensible defaults for certain blocks e.g. stairs
+                // should face the drone.
+                for (var i in blocks.stairs){
+                    if (blocks.stairs[i] === b){
+                        defaultMeta = Drone.PLAYER_STAIRS_FACING[this.dir];
+                        break;
+                    }
+                }
+                return [b,defaultMeta];
             }
             b = parseInt(bs.substring(0,sp));
             var md = parseInt(bs.substring(sp+1,bs.length));
             return [b,md];
         }else{
-            return [b,0];
+            // wph 20130414 - use sensible defaults for certain blocks e.g. stairs
+            // should face the drone.
+            for (var i in blocks.stairs){
+                if (blocks.stairs[i] === b){
+                    defaultMeta = Drone.PLAYER_STAIRS_FACING[this.dir];
+                    break;
+                }
+            }
+            return [b,defaultMeta];
         }
     };
     //
@@ -1539,7 +1557,7 @@ Used when placing torches so that they face towards the drone.
                 var d = srcBlocks[ww][hh].length;
                 _traverse[that.dir].depth(that,d,function(dd){
                     var b = srcBlocks[ww][hh][dd];
-                    var bm = _getBlockIdAndMeta(b);
+                    var bm = that._getBlockIdAndMeta(b);
                     var cb = bm[0];
                     var md = bm[1];
                     //
