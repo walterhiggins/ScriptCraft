@@ -878,6 +878,27 @@ Used when placing torches so that they face towards the drone.
 
     drone.box( blocks.torch + ':' + Drone.PLAYER_TORCH_FACING[drone.dir]);
 
+Drone.blocktype() method
+========================
+Creates the text out of blocks. Useful for large-scale in-game signs.
+
+Parameters
+----------
+ 
+ * message - The message to create - (use `\n` for newlines)
+ * foregroundBlock (default: black wool) - The block to use for the foreground
+ * backgroundBlock (default: none) - The block to use for the background
+
+Example
+-------
+To create a 2-line high message using glowstone...
+
+    blocktype("Hello\nWorld",blocks.glowstone);
+
+![blocktype example][imgbt1]
+
+[imgbt1]: img/blocktype1.png
+
 Drone.sphere() method
 =====================
 Creates a sphere.
@@ -970,27 +991,6 @@ Examples
 
 In addition, each of the wool colors is also available as a block property so you can use either
 `blocks.wool.green` or the more concise `blocks.green`. There's also a convenience array `blocks.rainbow` which is an array of the 7 colors of the rainbow (or closest approximations). 
-
-Drone.blocktype() method
-========================
-Creates the text out of blocks. Useful for large-scale in-game signs.
-
-Parameters
-----------
- 
- * message - The message to create - (use `\n` for newlines)
- * foregroundBlock (default: black wool) - The block to use for the foreground
- * backgroundBlock (default: none) - The block to use for the background
-
-Example
--------
-To create a 2-line high message using glowstone...
-
-    blocktype("Hello\nWorld",blocks.glowstone);
-
-![blocktype example][imgbt1]
-
-[imgbt1]: img/blocktype1.png
 
 events Module
 =============

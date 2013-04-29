@@ -4,18 +4,53 @@
   <property name="src" location="src/main/java"/>
   <property name="build" location="target/classes"/>
   <property name="dist" location="target/" />
+  <property name="minecraft.dir" location="${dist}/minecraft" />
 
   <target name="init">
+    <property file="build.local.properties"/>
     <tstamp>
       <format property="DSTAMP"
               pattern="yyyy-MM-dd"
               locale="en,UK"/>
     </tstamp>
     <mkdir dir="${build}"/>
+
+    <available file="${minecraft.dir}" property="minecraft.present"/>
+  </target>
+
+  <target name="server-setup" depends="init" description="Downloads the latest bukkit dev jar"
+          unless="minecraft.present">
+    <mkdir dir="${minecraft.dir}" />
+
+    <echo>Retrieving CraftBukkit artifact info</echo>
+    <get src="http://dl.bukkit.org/api/1.0/downloads/projects/CraftBukkit?_accept=application/xml"
+         dest="${minecraft.dir}/bukkit.xml" />
+
+    <xslt in="${minecraft.dir}/bukkit.xml"
+          out="${minecraft.dir}/ant.properties.xml"
+          style="build/bukkit-to-url.xsl"/>
+    <xmlproperty file="${minecraft.dir}/ant.properties.xml" keeproot="true"/>
+
+    <echo>Retrieving CraftBukkit jar</echo>
+    <get src="${bukkit.url}"
+         dest="${minecraft.dir}/craftbukkit.jar"
+         verbose="true"/>
+
+    <echo>Creating default ops.txt for your user</echo>
+    <echo message="${op.name}" file="${minecraft.dir}/ops.txt" />
+  </target>
+
+  <target name="run" depends="server-setup, package, update-live-cb" description="Starts Bukkit with ScriptCraft">
+    <echo>Starting Bukkit with ScriptCraft</echo>
+    <java jar="${minecraft.dir}/craftbukkit.jar"
+          maxmemory="1024m"
+          fork="true"
+          dir="${minecraft.dir}"
+        />
   </target>
   
-  <target name="compile" depends="init" description="compile bukkit plugin source">
-    <javac includeantruntime="false" srcdir="${src}" destdir="${build}" classpath="${bukkit-lib}" />
+  <target name="compile" depends="init, server-setup" description="compile bukkit plugin source">
+    <javac includeantruntime="false" srcdir="${src}" destdir="${build}" classpath="${minecraft.dir}/craftbukkit.jar" />
   </target>
     
   <target name="gendocs" depends="init" description="Generate API documentation">
@@ -43,6 +78,7 @@
     </replace>
     
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+    <mkdir dir="${dist}/${DSTAMP}" />
     <jar jarfile="${dist}/${DSTAMP}/ScriptCraft.jar" basedir="${build}"/>
   </target>
 
@@ -51,9 +87,11 @@
   </target>
 
   <target name="update-live-cb" depends="package" description="Copy the built plugin to the live craftbukkit folder for testing.">
+    <mkdir dir="${minecraft.dir}/plugins" />
     <delete>
-      <fileset dir="${craftbukkit}/plugins/" includes="scriptcraft*.*"/>
+      <fileset dir="${minecraft.dir}/plugins/" includes="scriptcraft*.*"/>
     </delete>
-    <copy file="${dist}/${DSTAMP}/ScriptCraft.jar" todir="${craftbukkit}/plugins"/>
+    <mkdir dir="${minecraft.dir}/plugins" />
+    <copy file="${dist}/${DSTAMP}/ScriptCraft.jar" todir="${minecraft.dir}/plugins"/>
   </target>
 </project>
