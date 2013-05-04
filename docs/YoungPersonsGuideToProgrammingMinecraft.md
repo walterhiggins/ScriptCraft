@@ -1,8 +1,6 @@
 # The Young Person's Guide to Programming in Minecraft
 ## 2013/01/08 17:26
 
-## Draft
-
 ### Introduction
 
 Minecraft is an open-ended 3D game where you can build and craft
@@ -839,12 +837,82 @@ logical step. Of course, Minecraft doesn't have the same constraints
 as real-world densely populated areas so let your imagination go wild.
 
 
-TODO
-### Making Decisions
-TODO
+### Making Decisions 
 
-#### if then else
-TODO
+All the programs we have seen so far have been fairly predictable - they went 
+straight through the statements, and then went back to the beginning again. This is 
+not very useful. In practice the computer would be expected to make decisions and 
+act accordingly. The javascript statement used for making decisions is `if`. 
+While standing on the ground in-game, type the following at the command prompt...
+
+    /js if ( self.flying ) { echo("Hey, You are flying!"); }
+
+... No message should appear on screen. That is - `Hey, You are
+flying!` should *not* appear on screen.  Now double-tap the `space`
+bar to start flying in-game (tap the space bar twice in rapid
+succession), then press and hold space to rise above the ground. Now
+enter the same statement again (If you don't want to type the same
+statement again, just press `/` then press the `UP` cursor key on your
+keyboard, the statement you entered previously should reappear.
+
+    /js if ( self.flying ) { echo("Hey, You are flying!"); }
+
+... this time the following message should have appeared on your screen...
+
+    Hey, You are flying!
+
+The `if` statement tests to see if something is `true` or `false` and
+if `true` then the block of code between the curly braces ( `{` and
+`}` ) is executed - but only if the condition is true.  The condition
+in the above example is `self.flying` which will be `true` if you are
+currently flying or `false` if you aren't.
+
+What if you wanted to display a message only if a condition is *not*
+true ? For example to only display a message if the player is *not*
+flying...
+
+    /js if ( ! self.flying ) { echo ("You are not flying."); }
+
+... This code differs in that now there's a `!` (the exclamation mark)
+before `self.flying`. The `!` symbol negates (returns the opposite of)
+whatever follows it.
+
+What if you want to display a message in both cases - whether you're
+flying or not? This is where the `if - else` construct comes in handy.
+Open your favorite editor and type the following code into a new file
+in your js-plugins directory...
+
+     function flightStatus()
+     {
+         if ( self.flying ) 
+         { 
+             echo( "Hey, You are flying!" );
+         } 
+         else 
+         {
+             echo( "You are not flying." );
+         }
+     }
+
+... now type `/reload` at the in-game prompt then type `/js
+flightStatus()` and an appropriate message will appear based on
+whether or not you're currently flying. Type the `/js flightStatus()`
+command while on the ground and while flying. The message displayed in
+each case should be different.
+
+### Next Steps
+
+This guide is meant as a gentle introduction to programming and
+modding Minecraft using the Javascript Programming Language.
+Javascript is a very powerful and widely-used programming language and
+there are many more aspects and features. If you want to dive deeper
+into programming and modding minecraft I recommend reading the source
+code to some of the existing scriptcraft add-ons, the *chat* module (
+`js-plugins/chat/chat.js` ) is a good place to start, followed by
+[Anatomy of a ScriptCraft Plug-in][ap].  The online [Craftbukkit API
+Reference][cbapi] provides lots of valuable information about the
+different objects and methods available for use by ScriptCraft.
+
 
 [buk]: http://wiki.bukkit.org/Setting_up_a_server
 [dlbuk]: http://dl.bukkit.org/
@@ -855,6 +923,7 @@ TODO
 [cbapi]: http://jd.bukkit.org/beta/apidocs/
 [boole]: http://en.wikipedia.org/wiki/George_Boole
 [soundapi]: http://jd.bukkit.org/beta/apidocs/org/bukkit/Sound.html
+[ap]: http://walterhiggins.net/blog/ScriptCraft-1-Month-later
 
 [img_echo_date]: img/ypgpm_echo_date.png
 [img_3d_shapes]: img/ypgpm_3dshapes.jpg
