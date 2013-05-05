@@ -905,9 +905,12 @@ each case should be different.
 This guide is meant as a gentle introduction to programming and
 modding Minecraft using the Javascript Programming Language.
 Javascript is a very powerful and widely-used programming language and
-there are many more aspects and features. If you want to dive deeper
-into programming and modding minecraft I recommend reading the source
-code to some of the existing scriptcraft add-ons, the *chat* module (
+there are many more aspects and features of the language which are not
+covered here. If you want to dive deeper into programming and modding
+minecraft, I recommend reading the accompanying [ScriptCraft API
+reference][api] which covers all of the ScriptCraft functions, objects
+and methods. I also recommend reading the source code to some of the
+existing scriptcraft add-ons, the *chat* module (
 `js-plugins/chat/chat.js` ) is a good place to start, followed by
 [Anatomy of a ScriptCraft Plug-in][ap].  The online [Craftbukkit API
 Reference][cbapi] provides lots of valuable information about the
@@ -924,6 +927,7 @@ different objects and methods available for use by ScriptCraft.
 [boole]: http://en.wikipedia.org/wiki/George_Boole
 [soundapi]: http://jd.bukkit.org/beta/apidocs/org/bukkit/Sound.html
 [ap]: http://walterhiggins.net/blog/ScriptCraft-1-Month-later
+[api]: api.md
 
 [img_echo_date]: img/ypgpm_echo_date.png
 [img_3d_shapes]: img/ypgpm_3dshapes.jpg
