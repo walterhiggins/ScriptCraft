@@ -34,23 +34,24 @@ SnowBallFight.prototype.start = function(){};
 
 (function(){
 
-    var _snowBalls = new org.bukkit.inventory.ItemStack(org.bukkit.Material.SNOW_BALL, 64);
     /*
       setup game 
     */
     var _startGame = function(gameState){
         // don't let game start if already in progress (wait for game to finish)
-        if (gameState.inProgress)
+        if (gameState.inProgress){
             return;
+        }
         gameState.inProgress = true;
         // reset timer
         gameState.duration = gameState.originalDuration;
         // put all players in survival mode and give them each 200 snowballs
         // 64 snowballs for every 30 seconds should be more than enough
-        for (var i = 30;i < gameState.duration;i+=30)
-            gameState.ammo.push(_snowBalls);
+        for (var i = 10;i < gameState.duration;i+=10)
+            gameState.ammo.push(gameState.ammo[0]);
             
-        for (var teamName in gameState.teams) {
+        for (var teamName in gameState.teams) 
+        {
             gameState.teamScores[teamName] = 0;
             var team = gameState.teams[teamName];
             for (var i = 0;i < team.length;i++) {
@@ -66,8 +67,16 @@ SnowBallFight.prototype.start = function(){};
     */
     var _endGame = function(gameState){
         var scores = [];
-        for (var tn in gameState.teamScores)
-            scores.push("Team " + tn + " scored " + gameState.teamScores[tn]);
+        
+        var leaderBoard  = [];
+        for (var tn in gameState.teamScores){
+            leaderBoard.push([tn,gameState.teamScores[tn]]);
+        }
+        leaderBoard.sort(function(a,b){ return b[1] - a[1];});
+        
+        for (var i = 0;i < leaderBoard.length; i++){
+            scores.push("Team " + leaderBoard[i][0] + " scored " + leaderBoard[i][1]);
+        }
         
         for (var teamName in gameState.teams) {
             var team = gameState.teams[teamName];
@@ -99,7 +108,9 @@ SnowBallFight.prototype.start = function(){};
     /*
       construct a new game 
     */
-    var _constructor = function(teams, duration) {
+    var _constructor = function(duration, teams) {
+
+        var _snowBalls = new org.bukkit.inventory.ItemStack(org.bukkit.Material.SNOW_BALL, 64);
 
         var _gameState = {
             teams: teams,
@@ -111,6 +122,19 @@ SnowBallFight.prototype.start = function(){};
             savedModes: {},
             ammo: [_snowBalls]
         };
+        if (typeof duration == "undefined"){
+            duration = 60;
+        }
+        if (typeof teams == "undefined"){
+            /*
+              wph 20130511 use all players
+            */
+            teams =  [];
+            var players = server.onlinePlayers;
+            for (var i = 0;i < players.length; i++){
+                teams.push(players[i].name);
+            }
+        }
         //
         // allow for teams param to be either {red:['player1','player2'],blue:['player3']} or
         // ['player1','player2','player3'] if all players are against each other (no teams)

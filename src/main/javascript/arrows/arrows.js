@@ -42,7 +42,10 @@ var arrows = arrows || plugin("arrows",{
     /*
       change player's arrows to strike lightning where they land
      */
-    lightning: function(player){}
+    lightning: function(player){},
+    
+    explosiveYield: 2.5
+
 },true);
 /*
   initialize data
@@ -104,7 +107,7 @@ ready(function()
             switch (arrowType){
             case 1:
                 projectile.remove();
-                world.createExplosion(projectile.location,2.5);
+                world.createExplosion(projectile.location,arrows.explosiveYield);
                 break;
             case 2:
                 projectile.remove();
