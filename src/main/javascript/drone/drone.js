@@ -751,8 +751,8 @@ Used when placing torches so that they face towards the drone.
         };
     };
 /**************************************************************************
-Drone times Method
-==================
+Drone.times() Method
+====================
 The times() method makes building multiple copies of buildings easy. It's possible to create rows or grids of buildings without resorting to `for` or `while` loops.
 
 Parameters
