@@ -27,7 +27,8 @@ var find = function(dir,store,re)
   (assuming the main module is in a file with the same name as the parent 
   directory) - e.g. drone/drone.js 
 */
-var sortByModule = function(a,b){
+var sortByModule = function(a,b)
+{
     var aparts = (""+a).split(/\//);
     var bparts = (""+b).split(/\//);
     var adir = aparts[aparts.length-2];
@@ -36,6 +37,8 @@ var sortByModule = function(a,b){
     var bfile = bparts[bparts.length-1];
     if (afile == "_scriptcraft.js")
         return -1;
+    if (bfile == "_scriptcraft.js")
+        return 1;
     if(adir<bdir) return -1;
     if(adir>bdir) return 1;
     if (afile.indexOf(adir) == 0)
@@ -45,9 +48,12 @@ var sortByModule = function(a,b){
 };
 var store = [];
 find(new File(dir),store,/\/[a-zA-Z0-9_\-]+\.js$/);
+
 store.sort(sortByModule);
+
 var contents = [];
-for (var i =0; i < store.length; i++){
+for (var i =0; i < store.length; i++)
+{
     var br = new BufferedReader(new FileReader(store[i]));
     var line ;
     while ( (line = br.readLine()) != null){
@@ -60,7 +66,8 @@ var writeComment = false;
 var startComment = /^\/\*{10}/;
 var endComment = /^\*{3}\//;
 
-for (var i = 0; i < len; i++) {
+for (var i = 0; i < len; i++) 
+{
     var line = contents[i];
     if (line.match(startComment)){
         writeComment = true;

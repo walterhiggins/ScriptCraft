@@ -672,6 +672,7 @@ The refresh() function will ...
 See [issue #69][issue69] for more information.
 
 [issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
+
 ***/
     global.refresh = function(){
         __plugin.pluginLoader.disablePlugin(__plugin);

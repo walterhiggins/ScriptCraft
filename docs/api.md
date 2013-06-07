@@ -1,34 +1,3 @@
-classroom Module
-================
-Utility functions for use in a classroom setting. The goal of these
-functions is to make it easier for tutors to facilitate ScriptCraft
-for use by students.
-  
-classroom.allowScripting() function
-===================================
-Allow or disallow anyone who connects to the server (or is already
-connected) to use ScriptCraft. This function is preferable to granting 'ops' privileges 
-to every student in a Minecraft classroom environment.
-
-Parameters
-----------
-
- * canScript : true or false
-
-Example
--------
-To allow all players (and any players who connect to the server) to
-use the `js` and `jsp` commands...
-
-    /js classroom.allowScripting(true)
-
-To disallow scripting (and prevent players who join the server from using the commands)...
-
-    /js classroom.allowScripting(false)
-
-Only ops users can run the classroom.allowScripting() function - this is so that students 
-don't try to bar themselves and each other from scripting.
-
 ScriptCraft API Reference
 =========================
 
@@ -262,6 +231,38 @@ The refresh() function will ...
 See [issue #69][issue69] for more information.
 
 [issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
+
+classroom Module
+================
+Utility functions for use in a classroom setting. The goal of these
+functions is to make it easier for tutors to facilitate ScriptCraft
+for use by students.
+  
+classroom.allowScripting() function
+===================================
+Allow or disallow anyone who connects to the server (or is already
+connected) to use ScriptCraft. This function is preferable to granting 'ops' privileges 
+to every student in a Minecraft classroom environment.
+
+Parameters
+----------
+
+ * canScript : true or false
+
+Example
+-------
+To allow all players (and any players who connect to the server) to
+use the `js` and `jsp` commands...
+
+    /js classroom.allowScripting(true)
+
+To disallow scripting (and prevent players who join the server from using the commands)...
+
+    /js classroom.allowScripting(false)
+
+Only ops users can run the classroom.allowScripting() function - this is so that students 
+don't try to bar themselves and each other from scripting.
+
 Drone.spiral_stairs() method
 ============================
 Constructs a spiral staircase with slabs at each corner.
