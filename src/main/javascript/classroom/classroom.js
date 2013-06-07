@@ -1,13 +1,20 @@
 /************************************************************************
-classroom Module
+Classroom Module
 ================
-Utility functions for use in a classroom setting. The goal of these
-functions is to make it easier for tutors to facilitate ScriptCraft
-for use by students.
-  
-***/
+The `classroom` object contains a couple of utility functions for use
+in a classroom setting. The goal of these functions is to make it
+easier for tutors to facilitate ScriptCraft for use by students in a
+classroom environment. Although granting ScriptCraft access to
+students on a shared server is potentially risky (Students can
+potentially abuse it), it is slighlty less risky than granting
+operator privileges to each student. (Enterprising students will
+quickly realise how to grant themselves and others operator privileges
+once they have access to ScriptCraft).
 
-/*************************************************************************
+The goal of this module is not so much to enforce restrictions
+(security or otherwise) but to make it easier for tutors to setup a shared server
+so students can learn Javascript.
+
 classroom.allowScripting() function
 ===================================
 Allow or disallow anyone who connects to the server (or is already
@@ -46,7 +53,6 @@ ready(function(){
          */
         if (!self.isOp())
             return;
-
         if (canScript){
             utils.foreach( server.onlinePlayers, function (player) {
                 player.addAttachment(__plugin, "scriptcraft.*", true);
@@ -65,7 +71,8 @@ ready(function(){
     };
     events.on("player.PlayerLoginEvent", function(listener, event) { 
         var player = event.player;
-        if (classroom.canScript)
+        if (classroom.canScript){
             player.addAttachment(__plugin, "scriptcraft.*", true);
+        }
     }, "HIGHEST");
 });
