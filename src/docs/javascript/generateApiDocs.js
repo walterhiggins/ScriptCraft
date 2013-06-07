@@ -117,7 +117,7 @@ for (var i = 0;i < contents.length; i++){
         writeComment = false;
     }
     if (writeComment){
-        println(line);
+        println(contents[i]);
     }
 }
 

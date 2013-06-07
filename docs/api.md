@@ -1,4 +1,4 @@
-/************************************************************************
+ScriptCraft API Reference
 =========================
 
 Walter Higgins
@@ -219,7 +219,7 @@ There are a couple of special javascript variables available in ScriptCraft...
  * server - The Minecraft Server object.
  * self - the current player. (Note - this value should not be used in multi-threaded scripts - it's not thread-safe)
 
-/*************************************************************************
+refresh() function
 ------------------
 The refresh() function will ...
 
@@ -232,7 +232,7 @@ See [issue #69][issue69] for more information.
 
 [issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
 
-/*********************************************************************
+Drone Module
 ============
 The Drone is a convenience class for building. It can be used for...
 
@@ -331,7 +331,7 @@ Parameters
    facing. Possible values are 0 (east), 1 (south), 2 (west) or 3 (north)
  * world (optional) : The world in which the drone is created.
 
-/************************************************************************
+Drone.box() method
 ==================
 the box() method is a convenience method for building things. (For the more performance-oriented method - see cuboid)
 
@@ -402,7 +402,7 @@ Construct a rainbow-colored road 100 blocks long...
 
 ![boxa example](img/boxaex1.png)
 
-/************************************************************************
+Drone Movement
 ==============
 Drones can move freely in minecraft's 3-D world. You control the
 Drone's movement using any of the following methods..
@@ -426,12 +426,12 @@ drone.turn() will make the turn face east. If the drone is facing east
 then drone.turn(2) will make the drone turn twice so that it is facing
 west.
 
-/************************************************************************
+Drone Positional Info
 =====================
 
  * getLocation() - Returns a Bukkit Location object for the drone
 
-/************************************************************************
+Drone Markers
 =============
 Markers are useful when your Drone has to do a lot of work. You can
 set a check-point and return to the check-point using the move()
@@ -467,7 +467,7 @@ Example
     //
     drone.move('town-square');
 
-/************************************************************************
+Drone.prism() method
 ====================
 Creates a prism. This is useful for roofs on houses.
 
@@ -490,7 +490,7 @@ Drone.prism0() method
 =====================
 A variation on `prism` which hollows out the inside of the prism. It uses the same parameters as `prism`.
 
-/************************************************************************
+Drone.cylinder() method
 =======================
 A convenience method for building cylinders. Building begins radius blocks to the right and forward.
 
@@ -522,7 +522,7 @@ To create a hollow cylinder of Iron 7 blocks in radius and 1 block high...
 
 ![cylinder0 example](img/cylinder0ex1.png)
 
-/************************************************************************
+Drone.arc() method
 ==================
 The arc() method can be used to create 1 or more 90 degree arcs in the horizontal or vertical planes.
 This method is called by cylinder() and cylinder0() and the sphere() and sphere0() methods.
@@ -568,7 +568,7 @@ To draw a 1/4 circle (top right quadrant only) with a radius of 10 and stroke wi
 
 [bres]: http://en.wikipedia.org/wiki/Midpoint_circle_algorithm
 [dv]: http://www.minecraftwiki.net/wiki/Data_values
-/************************************************************************
+Drone.door() method
 ===================
 create a door - if a parameter is supplied an Iron door is created otherwise a wooden door is created.
 
@@ -605,7 +605,7 @@ To create double-doors at the cross-hairs/drone's location...
 
 ![double doors](img/door2ex1.png)
 
-/************************************************************************
+Drone.sign() method
 ===================
 Signs must use block 63 (stand-alone signs) or 68 (signs on walls)
 
@@ -628,7 +628,7 @@ To create a free-standing sign...
 
 ![wall sign](img/signex2.png)
 
-/************************************************************************
+Drone Trees methods
 ===================
 
  * oak()
@@ -653,7 +653,7 @@ the `up()` method is called first).
     
 None of the tree methods require parameters. Tree methods will only be successful
 if the tree is placed on grass in a setting where trees can grow.
-/************************************************************************
+Drone.garden() method
 =====================
 places random flowers and long grass (similar to the effect of placing bonemeal on grass)
 
@@ -671,7 +671,7 @@ To create a garden 10 blocks wide by 5 blocks long...
 
 ![garden example](img/gardenex1.png)
 
-/************************************************************************
+Drone.rand() method
 ===================
 rand takes either an array (if each blockid has the same chance of occurring)
 or an object where each property is a blockid and the value is it's weight (an integer)
@@ -688,7 +688,7 @@ to place random blocks stone has a 50% chance of being picked,
 
 regular stone has a 50% chance, mossy stone has a 30% chance and cracked stone has just a 20% chance of being picked.
 
-/************************************************************************
+Copy & Paste using Drone
 ========================
 A drone can be used to copy and paste areas of the game world.
 
@@ -724,7 +724,7 @@ point) into memory.  the copied area can be referenced using the name
          .right(12)
          .paste('somethingCool');
 
-/************************************************************************
+Chaining
 ========
 
 All of the Drone methods return a Drone object, which means methods
@@ -834,7 +834,7 @@ Used when placing torches so that they face towards the drone.
 
     drone.box( blocks.torch + ':' + Drone.PLAYER_TORCH_FACING[drone.dir]);
 
-/**************************************************************************
+Drone.times() Method
 ====================
 The times() method makes building multiple copies of buildings easy. It's possible to create rows or grids of buildings without resorting to `for` or `while` loops.
 
@@ -899,7 +899,7 @@ Another example: This statement creates a row of trees 2 by 3 ...
 
 ![times example 1](img/times-trees.png)
 
-/************************************************************************
+Drone.blocktype() method
 ========================
 Creates the text out of blocks. Useful for large-scale in-game signs.
 
@@ -920,7 +920,7 @@ To create a 2-line high message using glowstone...
 
 [imgbt1]: img/blocktype1.png
 
-/************************************************************************
+Blocks Module
 =============
 You hate having to lookup [Data Values][dv] when you use ScriptCraft's Drone() functions. So do I.
 So I created this blocks object which is a helper object for use in construction.
@@ -935,7 +935,7 @@ Examples
 In addition, each of the wool colors is also available as a block property so you can use either
 `blocks.wool.green` or the more concise `blocks.green`. There's also a convenience array `blocks.rainbow` which is an array of the 7 colors of the rainbow (or closest approximations). 
 
-/************************************************************************
+Drone.sphere() method
 =====================
 Creates a sphere.
 
@@ -956,7 +956,7 @@ To create a sphere of Iron with a radius of 10 blocks...
 Spheres are time-consuming to make. You *can* make large spheres (250 radius) but expect the
 server to be very busy for a couple of minutes while doing so.
 
-/************************************************************************
+Drone.sphere0() method
 ======================
 Creates an empty sphere.
 
@@ -975,7 +975,7 @@ To create a sphere of Iron with a radius of 10 blocks...
 Spheres are time-consuming to make. You *can* make large spheres (250 radius) but expect the
 server to be very busy for a couple of minutes while doing so.
 
-/************************************************************************
+Drone.hemisphere() method
 =========================
 Creates a hemisphere. Hemispheres can be either north or south.
 
@@ -994,7 +994,7 @@ To create a wood 'north' hemisphere with a radius of 7 blocks...
 
 ![hemisphere example](img/hemisphereex1.png)
 
-/************************************************************************
+Drone.hemisphere0() method
 =========================
 Creates a hollow hemisphere. Hemispheres can be either north or south.
 
@@ -1013,7 +1013,7 @@ To create a glass 'north' hemisphere with a radius of 20 blocks...
 
 ![hemisphere example](img/hemisphereex2.png)
 
-/************************************************************************
+Drone.rainbow() method
 ======================
 Creates a Rainbow.
 
@@ -1030,7 +1030,7 @@ Example
 
 ![rainbow example](img/rainbowex1.png)
 
-/************************************************************************
+Drone.spiral_stairs() method
 ============================
 Constructs a spiral staircase with slabs at each corner.
 
@@ -1058,7 +1058,7 @@ To construct a spiral staircase 5 floors high made of oak...
 
     spiral_stairs('oak', 5);
 
-/************************************************************************
+Classroom Module
 ================
 The `classroom` object contains a couple of utility functions for use
 in a classroom setting. The goal of these functions is to make it
@@ -1099,7 +1099,7 @@ To disallow scripting (and prevent players who join the server from using the co
 Only ops users can run the classroom.allowScripting() function - this is so that students 
 don't try to bar themselves and each other from scripting.
 
-/************************************************************************
+events Module
 =============
 The Events module provides a thin wrapper around Bukkit's
 Event-handling API.  Bukkit's Events API makes use of Java Annotations
@@ -1166,7 +1166,7 @@ To unregister a listener *outside* of the listener function...
 [buk2]: http://wiki.bukkit.org/Event_API_Reference
 [buk]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/event/Event.html
 
-/*************************************************************************
+http.request() function
 ====================
 The http.request() function will fetch a web address asynchronously (on a
 separate thread)and pass the URL's response to a callback function
@@ -1205,7 +1205,7 @@ The following example illustrates how to use http.request to make a request to a
           var jsObj = eval("(" + responseBody + ")");
       });
 
-/************************************************************************
+Utilities Module
 ================
 Miscellaneous utility functions and classes to help with programming.
 
@@ -1214,7 +1214,7 @@ Miscellaneous utility functions and classes to help with programming.
  * getPlayerObject(playerName) - returns the Player object for a named
    player or `self` if no name is provided.
 
-/************************************************************************
+utils.foreach() function
 ========================
 The utils.foreach() function is a utility function for iterating over
 an array of objects (or a java.util.Collection of objects) and processing each object in turn. Where
@@ -1288,7 +1288,7 @@ without hogging CPU usage...
     };
     foreach (a, processItem, null, 10, onDone);
     
-/************************************************************************
+utils.nicely() function
 =======================
 The utils.nicely() function is for performing processing using the
 [org.bukkit.scheduler][sched] package/API. utils.nicely() lets you
@@ -1312,7 +1312,7 @@ Example
 -------
 See the source code to utils.foreach for an example of how utils.nicely is used.
 
-/************************************************************************
+String class extensions
 -----------------------
 The following chat-formatting methods are added to the javascript String class..
 
