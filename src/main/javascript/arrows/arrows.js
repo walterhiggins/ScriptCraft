@@ -10,7 +10,8 @@
   /js arrows.teleport() - makes player teleport to where arrow has landed.
   /js arrows.flourish() - makes a tree grow where the arrow lands.
   /js arrows.lightning() - lightning strikes where the arrow lands.
- 
+  /js arrows.firework() - A firework launches where the the arrow lands.
+
   All of the above functions can take an optional player object or name as 
   a parameter. E.g.
   
@@ -43,7 +44,10 @@ var arrows = arrows || plugin("arrows",{
       change player's arrows to strike lightning where they land
      */
     lightning: function(player){},
-    
+
+    /*
+      launch a firework where the arrow lands
+     */
     explosiveYield: 2.5
 
 },true);
@@ -59,7 +63,7 @@ arrows.store.players = arrows.store.players || {};
     //
     // setup functions for the arrow types
     //
-    var _types = {normal: 0, explosive: 1, teleport: 2, flourish: 3, lightning: 4};
+    var _types = {normal: 0, explosive: 1, teleport: 2, flourish: 3, lightning: 4, firework: 5};
     for (var type in _types)
     {
         arrows[type] = (function(n){
@@ -89,7 +93,7 @@ ready(function()
         arrows.store.players[event.player.name] = event.number;
     };
     arrows.sign = signs.menu("Arrow", 
-                             ["Normal","Explosive","Teleport","Flourish","Lightning"],
+                             ["Normal","Explosive","Teleport","Flourish","Lightning","Firework"],
                              _onMenuChoice );
 
     /*
@@ -122,6 +126,10 @@ ready(function()
             case 4: 
                 projectile.remove();
                 world.strikeLightning(projectile.location);
+                break;
+            case 5:
+                projectile.remove();
+                fireworks.firework(projectile.location);
                 break;
             }
         }
