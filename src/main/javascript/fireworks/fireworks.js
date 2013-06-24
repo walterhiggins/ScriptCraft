@@ -28,7 +28,7 @@ location. For example...
 
     /js fireworks.firework(self.location);
 
-![firework example][img/firework.png)
+![firework example](img/firework.png)
 
 ***/
 plugin("fireworks", { 
