@@ -11,8 +11,7 @@ Examples
     box( blocks.sand, 3, 2, 1 ); // creates a block of sand 3 wide x 2 high x 1 long
     box( blocks.wool.green, 2 ); // creates a block of green wool 2 blocks wide
 
-In addition, each of the wool colors is also available as a block property so you can use either
-`blocks.wool.green` or the more concise `blocks.green`. There's also a convenience array `blocks.rainbow` which is an array of the 7 colors of the rainbow (or closest approximations). 
+Color aliased properties that were a direct descendant of the blocks object are no longer used to avoid confusion with carpet and stained clay blocks. In addition, there's a convenience array `blocks.rainbow` which is an array of the 7 colors of the rainbow (or closest approximations).
 
 ***/
 var blocks = {
@@ -60,22 +59,7 @@ var blocks = {
     piston: 33,
     piston_extn: 34,
     wool: {
-        white: 35,
-        orange: '35:1',
-        magenta: '35:2',
-        lightblue: '35:3',
-        yellow: '35:4',
-        lime: '35:5',
-        pink: '35:6',
-        gray: '35:7',
-        lightgray: '35:8',
-        cyan: '35:9',
-        purple: '35:10',
-        blue: '35:11',
-        brown: '35:12',
-        green: '35:13',
-        red: '35:14',
-        black: '35:15'
+      white: 35 // All other colors added below
     },
     dandelion: 37,
     flower_yellow: 37,
@@ -165,7 +149,7 @@ var blocks = {
     mycelium: 110,
     lily_pad: 111,
     nether: 112,
-    neter_fence: 113,
+    nether_fence: 113,
     netherwart: 115,
     table_enchantment: 116,
     brewing_stand: 117,
@@ -231,19 +215,60 @@ var blocks = {
     hopper: 154,
     quartz: 155,
     rail_activator: 157,
-    dropper: 158
+    dropper: 158,
+    stained_clay: {
+      white: 159 // All other colors added below
+    },
+    hay: 170,
+    carpet: {
+      white: 171 // All other colors added below
+    },
+    hardened_clay: 172,
+    coal_block: 173
 };
-// make colors top level for convenience
-for (var c  in blocks.wool){
-    blocks[c] = blocks.wool[c];
-}
-/*
-  rainbow colors - a convenience
-*/
-blocks.rainbow = [blocks.red, 
-                  blocks.orange, 
-                  blocks.yellow, 
-                  blocks.lime, 
-                  blocks.lightblue, 
-                  blocks.blue, 
-                  blocks.purple];
+
+(function() {
+  // Add all available colors to colorized block collections
+
+  var colors = {
+    orange: ':1',
+    magenta: ':2',
+    lightblue: ':3',
+    yellow: ':4',
+    lime: ':5',
+    pink: ':6',
+    gray: ':7',
+    lightgray: ':8',
+    cyan: ':9',
+    purple: ':10',
+    blue: ':11',
+    brown: ':12',
+    green: ':13',
+    red: ':14',
+    black: ':15'
+  };
+  var colorized_blocks = ["wool", "stained_clay", "carpet"];
+
+  for (var i = 0, len = colorized_blocks.length; i < len; i++) {
+    var block = colorized_blocks[i],
+        data_value = blocks[block].white;
+
+    for (var color in colors) {
+      blocks[block][color] = data_value + colors[color];
+    }
+  };
+
+  /*
+    rainbow colors - a convenience
+    Color aliased properties that were a direct descendant of the blocks
+    object are no longer used to avoid confusion with carpet and stained
+    clay blocks.
+  */
+  blocks.rainbow = [blocks.wool.red,
+                    blocks.wool.orange,
+                    blocks.wool.yellow,
+                    blocks.wool.lime,
+                    blocks.wool.lightblue,
+                    blocks.wool.blue,
+                    blocks.wool.purple];
+})();
