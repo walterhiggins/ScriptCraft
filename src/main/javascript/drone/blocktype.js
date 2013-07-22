@@ -332,7 +332,7 @@ To create a 2-line high message using glowstone...
         this.chkpt('blocktext');
 
         if (typeof fg == "undefined")
-            fg = blocks.black;
+            fg = blocks.wool.black;
 
         var bmfg = this._getBlockIdAndMeta(fg);
         var bmbg = null;

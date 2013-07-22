@@ -349,12 +349,12 @@ Example
 -------
 To create a black structure 4 blocks wide, 9 blocks tall and 1 block long...
     
-    box(blocks.black, 4, 9, 1);
+    box(blocks.wool.black, 4, 9, 1);
 
 ... or the following code does the same but creates a variable that can be used for further methods...
 
     var drone = new Drone();
-    drone.box(blocks.black, 4, 9, 1);
+    drone.box(blocks.wool.black, 4, 9, 1);
 
 ![box example 1](img/boxex1.png)
     
@@ -395,8 +395,8 @@ Example
 -------
 Construct a rainbow-colored road 100 blocks long...
 
-    var rainbowColors = [blocks.red, blocks.orange, blocks.yellow, blocks.lime,
-                         blocks.lightblue, blocks.blue, blocks.purple];
+    var rainbowColors = [blocks.wool.red, blocks.wool.orange, blocks.wool.yellow, blocks.wool.lime,
+                         blocks.wool.lightblue, blocks.wool.blue, blocks.wool.purple];
     
     boxa(rainbowColors,7,1,30);
 
@@ -920,6 +920,23 @@ To create a 2-line high message using glowstone...
 
 [imgbt1]: img/blocktype1.png
 
+Drone.rainbow() method
+======================
+Creates a Rainbow.
+
+Parameters
+----------
+
+ * radius (optional - default:18) - The radius of the rainbow
+
+Example
+-------
+    
+    var d = new Drone();
+    d.rainbow(30);
+
+![rainbow example](img/rainbowex1.png)
+
 Blocks Module
 =============
 You hate having to lookup [Data Values][dv] when you use ScriptCraft's Drone() functions. So do I.
@@ -932,8 +949,35 @@ Examples
     box( blocks.sand, 3, 2, 1 ); // creates a block of sand 3 wide x 2 high x 1 long
     box( blocks.wool.green, 2 ); // creates a block of green wool 2 blocks wide
 
-In addition, each of the wool colors is also available as a block property so you can use either
-`blocks.wool.green` or the more concise `blocks.green`. There's also a convenience array `blocks.rainbow` which is an array of the 7 colors of the rainbow (or closest approximations). 
+In addition, there's a convenience array `blocks.rainbow` which is an array of the 7 colors of the rainbow (or closest approximations).
+
+Drone.spiral_stairs() method
+============================
+Constructs a spiral staircase with slabs at each corner.
+
+Parameters
+----------
+
+ * stairBlock - The block to use for stairs, should be one of the following...
+   - 'oak'
+   - 'spruce'
+   - 'birch'
+   - 'jungle'
+   - 'cobblestone'
+   - 'brick'
+   - 'stone'
+   - 'nether'
+   - 'sandstone'
+   - 'quartz'
+ * flights - The number of flights of stairs to build.
+
+![Spiral Staircase](img/spiralstair1.png)
+
+Example
+-------
+To construct a spiral staircase 5 floors high made of oak...
+
+    spiral_stairs('oak', 5);
 
 Drone.sphere() method
 =====================
@@ -1012,51 +1056,6 @@ To create a glass 'north' hemisphere with a radius of 20 blocks...
     hemisphere0(blocks.glass, 20, 'north');
 
 ![hemisphere example](img/hemisphereex2.png)
-
-Drone.rainbow() method
-======================
-Creates a Rainbow.
-
-Parameters
-----------
-
- * radius (optional - default:18) - The radius of the rainbow
-
-Example
--------
-    
-    var d = new Drone();
-    d.rainbow(30);
-
-![rainbow example](img/rainbowex1.png)
-
-Drone.spiral_stairs() method
-============================
-Constructs a spiral staircase with slabs at each corner.
-
-Parameters
-----------
-
- * stairBlock - The block to use for stairs, should be one of the following...
-   - 'oak'
-   - 'spruce'
-   - 'birch'
-   - 'jungle'
-   - 'cobblestone'
-   - 'brick'
-   - 'stone'
-   - 'nether'
-   - 'sandstone'
-   - 'quartz'
- * flights - The number of flights of stairs to build.
-
-![Spiral Staircase](img/spiralstair1.png)
-
-Example
--------
-To construct a spiral staircase 5 floors high made of oak...
-
-    spiral_stairs('oak', 5);
 
 Classroom Module
 ================
