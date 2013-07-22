@@ -122,12 +122,12 @@ Example
 -------
 To create a black structure 4 blocks wide, 9 blocks tall and 1 block long...
     
-    box(blocks.black, 4, 9, 1);
+    box(blocks.wool.black, 4, 9, 1);
 
 ... or the following code does the same but creates a variable that can be used for further methods...
 
     var drone = new Drone();
-    drone.box(blocks.black, 4, 9, 1);
+    drone.box(blocks.wool.black, 4, 9, 1);
 
 ![box example 1](img/boxex1.png)
     
@@ -168,8 +168,8 @@ Example
 -------
 Construct a rainbow-colored road 100 blocks long...
 
-    var rainbowColors = [blocks.red, blocks.orange, blocks.yellow, blocks.lime,
-                         blocks.lightblue, blocks.blue, blocks.purple];
+    var rainbowColors = [blocks.wool.red, blocks.wool.orange, blocks.wool.yellow, blocks.wool.lime,
+                         blocks.wool.lightblue, blocks.wool.blue, blocks.wool.purple];
     
     boxa(rainbowColors,7,1,30);
 
