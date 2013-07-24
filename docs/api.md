@@ -31,18 +31,25 @@ always load before any other files in the drone/ directory. Similarly
 utils/utils.js will always load before any other files in the utils/
 directory.
 
-Directories 
+Directories
 -----------
-As of February 10 2013, the js-plugins directory has the following sub-directories...
+As of July 24, 2013, the js-plugins directory has the following sub-directories...
 
+ * alias - The alias plugin/module
+ * arrows - Adds fancy arrows
+ * chat - The chat plugin/module
+ * classroom - Contains a couple of utility functions for use in a classroom setting.
  * core - Contains javascript files containing Core functionality crucial to ScriptCraft and modules which use it.
  * drone - Contains the drone module and drone extensions. Drone was the first scriptcraft module.
+ * events - A thin wrapper around Bukkit's event-handling API
  * ext - Contains external 3rd party javascript libraries (e.g. json2.js - the JSON lib)
- * mini-games - Contains mini-games 
- * arrows - The arrows module
+ * fireworks - Create fireworks at the given location
+ * homes - Players can set a home location, invite others to their home and visit others' homes
+ * http - Fetch a Web address asynchronously
+ * mini-games - Contains mini-games
  * signs - The signs module
- * chat - The chat plugin/module
- * alias - The alias plugin/module
+ * structures - Save and load sections in the same format as copy() and paste()
+ * utils - Miscellaneous utility functions and classes to help with programming.
 
 Core Module
 ===========
@@ -1234,6 +1241,23 @@ The following example illustrates how to use http.request to make a request to a
                  }, function( responseCode, responseBody){
           var jsObj = eval("(" + responseBody + ")");
       });
+
+Structures Module
+=================
+Creates four new methods as extensions off the Drone constructor,
+`listStructures`, `loadStructure`, `preloadStructures`, and `saveStructure`.
+Saved structures path and file extension defaults are stored in config.js.
+All of the common structures in Minecraft (villager houses, wells, shrines)
+are included as examples.
+
+ * listStructures(n) - Displays a list of the structures loaded. n is the page
+   number to display. Defaults to 1.
+ * loadStructure(name) - Takes a name in string format, with or without the
+   extension of the stored file.
+ * preloadStructures() - Reads in all files at the structures save path with
+   the configuration's file extension and stores them on the drone clipBoard.
+ * saveStructure(name, width, height, length) - Works identically to copy(),
+   but saves the area to a file as well as the clipBoard.
 
 Utilities Module
 ================
