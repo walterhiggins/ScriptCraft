@@ -32,7 +32,7 @@ ScriptCraft's Drone can do, read on...
 Constructing a Drone Object
 ===========================
 
-Drones can be created in 3 ways...
+Drones can be created in any of the following ways...
     
  1. Calling any one of the methods listed below will return a Drone object. For example...
          
@@ -75,7 +75,7 @@ Drones can be created in 3 ways...
     around this by pointing at a 'corner stone' just above ground
     level or alternatively use the following statement...
     
-        d = new Drone().up()
+        d = new Drone().up();
           
     ... which will move the drone up one block as soon as it's created.
 
@@ -83,7 +83,7 @@ Drones can be created in 3 ways...
 
  3. Or by using the following form...
     
-        d = new Drone(x,y,z,direction)
+        d = new Drone(x,y,z,direction,world);
 
     This will create a new Drone at the location you specified using
     x, y, z In minecraft, the X axis runs west to east and the Z axis runs
@@ -92,15 +92,34 @@ Drones can be created in 3 ways...
     direction parameter is omitted, the player's direction is used
     instead.
 
+    Both the `direction` and `world` parameters are optional.
+
+ 4. Create a new Drone based on a Bukkit Location object...
+
+        d = new Drone(location);
+
+    This is useful when you want to create a drone at a given
+    `org.bukkit.Location` . The `Location` class is used throughout
+    the bukkit API. For example, if you want to create a drone when a
+    block is broken at the block's location you would do so like
+    this...
+
+        events.on('block.BlockBreakEvent',function(listener,event){
+            var location = event.block.location;
+            var drone = new Drone(location);
+            // do more stuff with the drone here...
+        });
+
 Parameters
 ----------
+ * location (optional) : *NB* If an `org.bukkit.Location` object is provided as a parameter, then it should be the only parameter.
  * x (optional) : The x coordinate of the Drone
  * y (optional) : The y coordinate of the Drone
  * z (optional) : The z coordinate of the Drone
  * direction (optional) : The direction in which the Drone is
    facing. Possible values are 0 (east), 1 (south), 2 (west) or 3 (north)
  * world (optional) : The world in which the drone is created.
-
+  
 ***/
 var Drone = function(/* number */ x, /* number */ y, /* number */ z, /* number */ direction){};
 /************************************************************************
@@ -704,18 +723,28 @@ Used when placing torches so that they face towards the drone.
                 this.world = playerPos.world;
             }
         }else{
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.world = _getWorld();
+            if (arguments[0] instanceof org.bukkit.Location){
+                this.x = arguments[0].x;
+                this.y = arguments[0].y;
+                this.z = arguments[0].z;
+                this.dir = _getDirFromRotation(arguments[0].yaw);
+                this.world = arguments[0].world;
+            }else{
+                this.x = x;
+                this.y = y;
+                this.z = z;
+                if (typeof dir == "undefined"){
+                    this.dir = _getDirFromRotation(playerPos.yaw);
+                }else{
+                    this.dir = dir%4;
+                }
+                if (typeof world == "undefined"){
+                    this.world = _getWorld();
+                }else{
+                    this.world = world;
+                }
+            }
         }
-        if (typeof dir == "undefined"){
-            this.dir = _getDirFromRotation(playerPos.yaw);
-        }else{
-            this.dir = dir%4;
-        }
-        if (typeof world !== "undefined")
-            this.world = world;
 
         // for debugging
         //self.sendMessage("New Drone " + this.toString());

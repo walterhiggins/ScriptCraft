@@ -262,7 +262,7 @@ ScriptCraft's Drone can do, read on...
 Constructing a Drone Object
 ===========================
 
-Drones can be created in 3 ways...
+Drones can be created in any of the following ways...
     
  1. Calling any one of the methods listed below will return a Drone object. For example...
          
@@ -305,7 +305,7 @@ Drones can be created in 3 ways...
     around this by pointing at a 'corner stone' just above ground
     level or alternatively use the following statement...
     
-        d = new Drone().up()
+        d = new Drone().up();
           
     ... which will move the drone up one block as soon as it's created.
 
@@ -313,7 +313,7 @@ Drones can be created in 3 ways...
 
  3. Or by using the following form...
     
-        d = new Drone(x,y,z,direction)
+        d = new Drone(x,y,z,direction,world);
 
     This will create a new Drone at the location you specified using
     x, y, z In minecraft, the X axis runs west to east and the Z axis runs
@@ -322,15 +322,34 @@ Drones can be created in 3 ways...
     direction parameter is omitted, the player's direction is used
     instead.
 
+    Both the `direction` and `world` parameters are optional.
+
+ 4. Create a new Drone based on a Bukkit Location object...
+
+        d = new Drone(location);
+
+    This is useful when you want to create a drone at a given
+    `org.bukkit.Location` . The `Location` class is used throughout
+    the bukkit API. For example, if you want to create a drone when a
+    block is broken at the block's location you would do so like
+    this...
+
+        events.on('block.BlockBreakEvent',function(listener,event){
+            var location = event.block.location;
+            var drone = new Drone(location);
+            // do more stuff with the drone here...
+        });
+
 Parameters
 ----------
+ * location (optional) : *NB* If an `org.bukkit.Location` object is provided as a parameter, then it should be the only parameter.
  * x (optional) : The x coordinate of the Drone
  * y (optional) : The y coordinate of the Drone
  * z (optional) : The z coordinate of the Drone
  * direction (optional) : The direction in which the Drone is
    facing. Possible values are 0 (east), 1 (south), 2 (west) or 3 (north)
  * world (optional) : The world in which the drone is created.
-
+  
 Drone.box() method
 ==================
 the box() method is a convenience method for building things. (For the more performance-oriented method - see cuboid)
@@ -920,23 +939,6 @@ To create a 2-line high message using glowstone...
 
 [imgbt1]: img/blocktype1.png
 
-Drone.rainbow() method
-======================
-Creates a Rainbow.
-
-Parameters
-----------
-
- * radius (optional - default:18) - The radius of the rainbow
-
-Example
--------
-    
-    var d = new Drone();
-    d.rainbow(30);
-
-![rainbow example](img/rainbowex1.png)
-
 Blocks Module
 =============
 You hate having to lookup [Data Values][dv] when you use ScriptCraft's Drone() functions. So do I.
@@ -949,35 +951,7 @@ Examples
     box( blocks.sand, 3, 2, 1 ); // creates a block of sand 3 wide x 2 high x 1 long
     box( blocks.wool.green, 2 ); // creates a block of green wool 2 blocks wide
 
-In addition, there's a convenience array `blocks.rainbow` which is an array of the 7 colors of the rainbow (or closest approximations).
-
-Drone.spiral_stairs() method
-============================
-Constructs a spiral staircase with slabs at each corner.
-
-Parameters
-----------
-
- * stairBlock - The block to use for stairs, should be one of the following...
-   - 'oak'
-   - 'spruce'
-   - 'birch'
-   - 'jungle'
-   - 'cobblestone'
-   - 'brick'
-   - 'stone'
-   - 'nether'
-   - 'sandstone'
-   - 'quartz'
- * flights - The number of flights of stairs to build.
-
-![Spiral Staircase](img/spiralstair1.png)
-
-Example
--------
-To construct a spiral staircase 5 floors high made of oak...
-
-    spiral_stairs('oak', 5);
+Color aliased properties that were a direct descendant of the blocks object are no longer used to avoid confusion with carpet and stained clay blocks. In addition, there's a convenience array `blocks.rainbow` which is an array of the 7 colors of the rainbow (or closest approximations).
 
 Drone.sphere() method
 =====================
@@ -1056,6 +1030,51 @@ To create a glass 'north' hemisphere with a radius of 20 blocks...
     hemisphere0(blocks.glass, 20, 'north');
 
 ![hemisphere example](img/hemisphereex2.png)
+
+Drone.rainbow() method
+======================
+Creates a Rainbow.
+
+Parameters
+----------
+
+ * radius (optional - default:18) - The radius of the rainbow
+
+Example
+-------
+    
+    var d = new Drone();
+    d.rainbow(30);
+
+![rainbow example](img/rainbowex1.png)
+
+Drone.spiral_stairs() method
+============================
+Constructs a spiral staircase with slabs at each corner.
+
+Parameters
+----------
+
+ * stairBlock - The block to use for stairs, should be one of the following...
+   - 'oak'
+   - 'spruce'
+   - 'birch'
+   - 'jungle'
+   - 'cobblestone'
+   - 'brick'
+   - 'stone'
+   - 'nether'
+   - 'sandstone'
+   - 'quartz'
+ * flights - The number of flights of stairs to build.
+
+![Spiral Staircase](img/spiralstair1.png)
+
+Example
+-------
+To construct a spiral staircase 5 floors high made of oak...
+
+    spiral_stairs('oak', 5);
 
 Classroom Module
 ================
