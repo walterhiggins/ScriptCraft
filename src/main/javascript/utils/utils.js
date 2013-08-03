@@ -71,10 +71,19 @@ Example
 The following example illustrates how to use foreach for immediate processing of an array...
 
     var players = ["moe", "larry", "curly"];
-    foreach (players, function(item){ 
+    utils.foreach (players, function(item){ 
         server.getPlayer(item).sendMessage("Hi " + item);
     });
-    
+
+... The `utils.foreach()` function can work with Arrays or any Java-style collection. This is important
+because many objects in the Bukkit API use Java-style collections...
+
+    utils.foreach( server.onlinePlayers, function(player){
+         player.chat("Hello!");
+    }); 
+
+... the above code sends a "Hello!" to every online player.
+
 The following example is a more complex use case - The need to build an enormous structure
 without hogging CPU usage...
 
@@ -94,7 +103,7 @@ without hogging CPU usage...
     var onDone = function(){ 
         player.sendMessage("Job Done!");
     };
-    foreach (a, processItem, null, 10, onDone);
+    utils.foreach (a, processItem, null, 10, onDone);
     
 ***/
     foreach: function(array, callback, object, delay, onCompletion) {
