@@ -148,5 +148,52 @@ See the source code to utils.foreach for an example of how utils.nicely is used.
             if (onDone)
                 onDone();
         }
-    }
+    },
+/************************************************************************
+utils.at() function
+===================
+The utils.at() function will perform a given task at a given time every 
+(minecraft) day.
+
+Parameters
+----------
+
+ * time24hr : The time in 24hr form - e.g. 9:30 in the morning is "09:30" while
+   9:30 pm is "21:30", midnight is "00:00" and midday is "12:00"
+ * callback : A javascript function which will be invoked at the given time.
+ * world : (optional) Each world has its own clock. If no world is specified, the server's first world is used.
+
+Example
+-------
+
+To warn players when night is approaching...
+
+    utils.at( "19:00", function() {
+        /* it's 7 in the evening so warn all players that night is coming ! */
+        utils.foreach( server.onlinePlayers, function(player){
+            player.chat("The night is dark and full of terrors!");            
+        });
+    }, self.world);
+  
+***/
+    at: function(time24hr, callback, world){
+        var forever = function(){ return true;};
+        var timeParts = time24hr.split(":");
+        var hrs = ((timeParts[0] * 1000) + 18000) % 24000;
+        var mins;
+        if (timeParts.length > 1)
+            mins = (timeParts[1] / 60) * 1000;
+        
+        var timeMc = hrs + mins;
+        if (typeof world == "undefined"){
+            world = server.worlds.get(0);
+        }
+        utils.nicely(function(){
+            var time = world.getTime();
+            var diff = timeMc - time;
+            if (diff > 0 && diff < 100){
+                callback();
+            }
+        },forever, null, 100);
+    },
 };
