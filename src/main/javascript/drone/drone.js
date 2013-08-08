@@ -700,12 +700,15 @@ Used when placing torches so that they face towards the drone.
         this.record = false;
         var usePlayerCoords = false;
         var playerPos = getPlayerPos();
-        if (typeof x == "undefined"){
+        if (typeof x == "undefined")
+        {
             var mp = getMousePos();
             if (mp){
                 this.x = mp.x;
                 this.y = mp.y;
                 this.z = mp.z;
+                if (playerPos)
+                    this.dir = _getDirFromRotation(playerPos.yaw);
                 this.world = mp.world;
             }else{
                 // base it on the player's current location
@@ -720,6 +723,7 @@ Used when placing torches so that they face towards the drone.
                 this.x = playerPos.x;
                 this.y = playerPos.y;
                 this.z = playerPos.z;
+                this.dir = _getDirFromRotation(playerPos.yaw);
                 this.world = playerPos.world;
             }
         }else{
@@ -746,14 +750,14 @@ Used when placing torches so that they face towards the drone.
             }
         }
 
-        // for debugging
-        //self.sendMessage("New Drone " + this.toString());
         if (usePlayerCoords){
             this.fwd(3);
         }
         this.chkpt('start');
         this.record = true;
         this.history = [];
+        // for debugging
+        // self.sendMessage("New Drone " + this.toString());
         return this;
     };
     //

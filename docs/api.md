@@ -1389,10 +1389,11 @@ Example
 To warn players when night is approaching...
 
     utils.at( "19:00", function() {
-        /* it's 7 in the evening so warn all players that night is coming ! */
+
         utils.foreach( server.onlinePlayers, function(player){
             player.chat("The night is dark and full of terrors!");            
         });
+
     }, self.world);
   
 String class extensions
