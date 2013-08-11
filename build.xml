@@ -1,6 +1,7 @@
 <project name="scriptcraft" default="package" basedir=".">
   <property file="build.properties"/>
-  <description>Builds the scriptcraft.jar file - a plugin for bukkit</description>
+  <description>Builds the scriptcraft.jar file - a plugin for bukkit
+  </description>
   <property name="src" location="src/main/java"/>
   <property name="build" location="target/classes"/>
   <property name="dist" location="target/" />
@@ -21,8 +22,9 @@
   <target name="server-setup" depends="init" description="Downloads the latest bukkit dev jar"
           unless="minecraft.present">
     <mkdir dir="${minecraft.dir}" />
-
-    <echo>Retrieving CraftBukkit artifact info</echo>
+    
+    <echo>Retrieving CraftBukkit artifact info
+    </echo>
     <get src="http://dl.bukkit.org/api/1.0/downloads/projects/CraftBukkit?_accept=application/xml"
          dest="${minecraft.dir}/bukkit.xml" />
 
@@ -31,22 +33,22 @@
           style="build/bukkit-to-url.xsl"/>
     <xmlproperty file="${minecraft.dir}/ant.properties.xml" keeproot="true"/>
 
-    <echo>Retrieving CraftBukkit jar</echo>
+    <echo>Retrieving CraftBukkit jar
+    </echo>
     <get src="${bukkit.url}"
          dest="${minecraft.dir}/craftbukkit.jar"
          verbose="true"/>
 
-    <echo>Creating default ops.txt for your user</echo>
+    <echo>Creating default ops.txt for your user
+    </echo>
     <echo message="${op.name}" file="${minecraft.dir}/ops.txt" />
-  	
-    <echo>Retrieving Coffeescript compiler</echo>
-  	<mkdir dir="${minecraft.dir}/js-plugins/core" />
-    <get src="https://raw.github.com/jashkenas/coffee-script/master/extras/coffee-script.js"
-         dest="${minecraft.dir}/js-plugins/core/_coffeescript.js"/>  	
+   
   </target>
 
+
   <target name="run" depends="server-setup, package, update-live-cb" description="Starts Bukkit with ScriptCraft">
-    <echo>Starting Bukkit with ScriptCraft</echo>
+    <echo>Starting Bukkit with ScriptCraft
+    </echo>
     <java jar="${minecraft.dir}/craftbukkit.jar"
           maxmemory="1024m"
           fork="true"
@@ -69,8 +71,19 @@
     </java>
   </target>
 
-  <target name="zip_js" depends="init">
-    <zip zipfile="${build}/js-plugins.zip" basedir="./src/main/javascript"/>
+  <target name="coffeescript_setup" depends="init" description="Gets latest coffeescript compiler">
+    <echo>Retrieving Coffeescript compiler
+    </echo>
+    <mkdir dir="${build}/coffeescript/core" />
+    <get src="https://raw.github.com/jashkenas/coffee-script/master/extras/coffee-script.js"
+         dest="${build}/coffeescript/core/_coffeescript.js"/>     
+  </target>
+
+  <target name="zip_js" depends="coffeescript_setup">
+    <zip destfile="${build}/js-plugins.zip">
+      <zipfileset dir="./src/main/javascript" />
+      <zipfileset dir="${build}/coffeescript" />
+    </zip>
   </target>
 
   <target name="package" depends="gendocs,zip_js,compile" 
@@ -79,7 +92,8 @@
     <delete file="${build}/plugin.yml" />
     <copy file="src/main/resources/plugin.yml" todir="${build}"/>
     <replace file="${build}/plugin.yml" value="${bukkit-version}-${DSTAMP}">
-      <replacetoken>[[version]]</replacetoken>
+      <replacetoken>[[version]]
+      </replacetoken>
     </replace>
     
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
