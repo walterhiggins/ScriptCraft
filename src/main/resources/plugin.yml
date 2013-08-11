@@ -11,7 +11,12 @@ commands:
       description: run a javascript plugin command.
       usage: /<command> command-name command-parameters
       permission: scriptcraft.proxy
-      permission-message: You don't have <permission> permission. 
+      permission-message: You don't have <permission> permission.
+   coffee:
+      description: Evaluate coffeescript.
+      usage: /<command> Coffeescript code
+      permission: scriptcraft.evaluate
+      permission-message: You don't have <permission> permission.
 
 permissions:
    scriptcraft.*:

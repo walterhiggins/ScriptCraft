@@ -38,6 +38,11 @@
 
     <echo>Creating default ops.txt for your user</echo>
     <echo message="${op.name}" file="${minecraft.dir}/ops.txt" />
+  	
+    <echo>Retrieving Coffeescript compiler</echo>
+  	<mkdir dir="${minecraft.dir}/js-plugins/core" />
+    <get src="https://raw.github.com/jashkenas/coffee-script/master/extras/coffee-script.js"
+         dest="${minecraft.dir}/js-plugins/core/_coffeescript.js"/>  	
   </target>
 
   <target name="run" depends="server-setup, package, update-live-cb" description="Starts Bukkit with ScriptCraft">

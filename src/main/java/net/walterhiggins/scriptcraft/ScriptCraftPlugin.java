@@ -98,7 +98,12 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
             this.engine.put("__plugin",this);
             this.engine.put("__script",boot.getCanonicalPath().replaceAll("\\\\","/"));
             reader = new FileReader(boot);
-            this.engine.eval(reader);  
+            this.engine.eval(reader);
+            
+            // Load the CoffeeScript compiler
+            File coffeescript = new File(JS_PLUGINS_DIR + "/core/_coffeescript.js");
+            this.engine.eval(new FileReader(coffeescript));
+            
         }catch(Exception e){
             e.printStackTrace();
         }finally {
@@ -147,7 +152,13 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
             javascriptCode = "command()";
             this.engine.put("__cmdArgs",args);
             result = true;
+        } else if (cmd.getName().equalsIgnoreCase("coffee")) {
+        	for (int i = 0;i < args.length; i++)
+                javascriptCode += args[i] + " ";
+        	javascriptCode = "eval(CoffeeScript.compile(\""+javascriptCode+"\", {bare: true}))";
+        	result = true;
         }
+        
         if (result){
             this.engine.put("self",sender);
             try{

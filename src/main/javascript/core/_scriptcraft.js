@@ -276,10 +276,22 @@ var server = org.bukkit.Bukkit.server;
             if (file.exists()) {
                 var parent = file.getParentFile();
                 var reader = new java.io.FileReader(file);
+                var br = new java.io.BufferedReader(reader);
                 __engine.put("__script",canonizedFilename);
                 __engine.put("__folder",(parent?_canonize(parent):"")+"/");
+
+                var code = "";
                 try{
-                    result = __engine.eval(reader);
+                    if (file.getCanonicalPath().endsWith(".coffee")) {
+                        var r = undefined;
+                        while ((r = br.readLine()) !== null) code += "\"" + r + "\" +\n";
+                        code += "\"\"";
+                        var code = "load(__folder + \"../core/_coffeescript.js\"); var ___code = "+code+"; eval(CoffeeScript.compile(___code, {bare: true}))";
+                    } else {
+                        while ((r = br.readLine()) !== null) code += r + "\n";
+                    }
+
+                    result = __engine.eval(code);
                     _loaded[canonizedFilename] = true;
                     reader.close();
                 }catch (e){
@@ -296,7 +308,7 @@ var server = org.bukkit.Bukkit.server;
     /*
       recursively walk the given directory and return a list of all .js files 
      */
-    var _listJsFiles = function(store,dir)
+    var _listSourceFiles = function(store,dir)
     {
         if (typeof dir == "undefined"){
             dir = new java.io.File(_originalScript).getParentFile().getParentFile();
@@ -305,9 +317,9 @@ var server = org.bukkit.Bukkit.server;
         for (var i = 0;i < files.length; i++){
             var file = files[i];
             if (file.isDirectory()){
-                _listJsFiles(store,file);
+                _listSourceFiles(store,file);
             }else{
-                if (file.getCanonicalPath().endsWith(".js") &&
+                if ((file.getCanonicalPath().endsWith(".js") || file.getCanonicalPath().endsWith(".coffee")) &&
                    !(file.getName().startsWith("_")) &&
                     file.exists())
                 {
@@ -348,10 +360,10 @@ var server = org.bukkit.Bukkit.server;
     var _reload = function(pluginDir)
     {
         _loaded = [];
-        var jsFiles = [];
-        _listJsFiles(jsFiles,pluginDir);
+        var sourceFiles = [];
+        _listSourceFiles(sourceFiles,pluginDir);
 
-        jsFiles.sort(sortByModule);
+        sourceFiles.sort(sortByModule);
 
         //
         // script files whose name begins with _ (underscore)
@@ -363,9 +375,9 @@ var server = org.bukkit.Bukkit.server;
         // then it's assumed that _myMiniGame_currency.js and _myMiniGame_events.js will be loaded
         // as dependencies by myMiniGame.js and do not need to be loaded via js reload
         //
-        var len = jsFiles.length;
+        var len = sourceFiles.length;
         for (var i = 0;i < len; i++){
-            load(_canonize(jsFiles[i]),true);
+            load(_canonize(sourceFiles[i]),true);
         }
     };
 
