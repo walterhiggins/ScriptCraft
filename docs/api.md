@@ -209,29 +209,6 @@ The execution of the function object passed to the `ready()` function
 is *deferred* until all of the plugins/modules have loaded. That way
 you are guaranteed that when the function is invoked, all of the
 plugins/modules have been loaded and evaluated and are ready to use.
-
-Core Module - Special Variables
-===============================
-There are a couple of special javascript variables available in ScriptCraft...
- 
- * __folder - The current working directory - this variable is only to be used within the main body of a .js file.
- * __plugin - The ScriptCraft JavaPlugin object.
- * server - The Minecraft Server object.
- * self - the current player. (Note - this value should not be used in multi-threaded scripts - it's not thread-safe)
-
-refresh() function
-------------------
-The refresh() function will ...
-
-1. Disable the ScriptCraft plugin.
-2. Unload all event listeners associated with the ScriptCraft plugin.
-3. Enable the ScriptCraft plugin.
-
-... refresh() can be used during development to reload only scriptcraft javascript files.
-See [issue #69][issue69] for more information.
-
-[issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
-
 setTimeout() function
 ---------------------
 
@@ -263,6 +240,28 @@ If Node.js supports setInterval() then it's probably good for ScriptCraft to sup
 clearInterval() function
 ---------------------
 A scriptcraft implementation of clearInterval().
+
+Core Module - Special Variables
+===============================
+There are a couple of special javascript variables available in ScriptCraft...
+ 
+ * __folder - The current working directory - this variable is only to be used within the main body of a .js file.
+ * __plugin - The ScriptCraft JavaPlugin object.
+ * server - The Minecraft Server object.
+ * self - the current player. (Note - this value should not be used in multi-threaded scripts - it's not thread-safe)
+
+refresh() function
+------------------
+The refresh() function will ...
+
+1. Disable the ScriptCraft plugin.
+2. Unload all event listeners associated with the ScriptCraft plugin.
+3. Enable the ScriptCraft plugin.
+
+... refresh() can be used during development to reload only scriptcraft javascript files.
+See [issue #69][issue69] for more information.
+
+[issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
 
 Drone Module
 ============

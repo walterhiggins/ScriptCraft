@@ -210,7 +210,74 @@ The execution of the function object passed to the `ready()` function
 is *deferred* until all of the plugins/modules have loaded. That way
 you are guaranteed that when the function is invoked, all of the
 plugins/modules have been loaded and evaluated and are ready to use.
+***/
 
+var global = this;
+
+/*************************************************************************
+setTimeout() function
+---------------------
+
+This function mimics the setTimeout() function used in browser-based javascript.
+However, the function will only accept a function reference, not a string of javascript code.
+Where setTimeout() in the browser returns a numeric value which can be subsequently passed to 
+clearTimeout(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearTimeout() implementation.
+
+If Node.js supports setTimeout() then it's probably good for ScriptCraft to support it too.
+
+[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
+
+***/
+    global.setTimeout = function( callback, delayInMillis){
+        //
+        // javascript programmers familiar with setTimeout know that it expects
+        // a delay in milliseconds. However, bukkit's scheduler expects a delay in ticks 
+        // (where 1 tick = 1/20th second)
+        //
+        var bukkitTask = server.scheduler.runTaskLater(__plugin, callback, delayInMillis/50);
+        return bukkitTask;
+    };
+    
+/*************************************************************************
+clearTimeout() function
+---------------------
+A scriptcraft implementation of clearTimeout().
+
+***/
+    global.clearTimeout = function(bukkitTask){
+        bukkitTask.cancel();
+    };
+
+/*************************************************************************
+setInterval() function
+---------------------
+
+This function mimics the setInterval() function used in browser-based javascript.
+However, the function will only accept a function reference, not a string of javascript code.
+Where setInterval() in the browser returns a numeric value which can be subsequently passed to 
+clearInterval(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearInterval() implementation.
+
+If Node.js supports setInterval() then it's probably good for ScriptCraft to support it too.
+
+[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
+
+***/
+    global.setInterval = function(callback, intervalInMillis){
+        var delay = intervalInMillis/ 50;
+        var bukkitTask = server.scheduler.runTaskTimer(__plugin, callback, delay, delay);
+        return bukkitTask;
+    };
+/*************************************************************************
+clearInterval() function
+---------------------
+A scriptcraft implementation of clearInterval().
+
+***/
+    global.clearInterval = function(bukkitTask){
+        bukkitTask.cancel();
+    };
+
+/*************************************************************************
 Core Module - Special Variables
 ===============================
 There are a couple of special javascript variables available in ScriptCraft...
@@ -221,8 +288,6 @@ There are a couple of special javascript variables available in ScriptCraft...
  * self - the current player. (Note - this value should not be used in multi-threaded scripts - it's not thread-safe)
 
 ***/
-
-var global = this;
 var verbose = verbose || false;
 /*
   wph 20130124 - make self, plugin and server public - these are far more useful now that tab-complete works.
@@ -691,6 +756,7 @@ See [issue #69][issue69] for more information.
         __plugin.pluginLoader.enablePlugin(__plugin);
     };
 
+
     global.load = _load;
     global.save = _save;
     global.plugin = _plugin;
@@ -699,68 +765,6 @@ See [issue #69][issue69] for more information.
     global._onTabComplete = __onTabCompleteJS;
     global.addUnloadHandler = _addUnloadHandler;
 
-/*************************************************************************
-setTimeout() function
----------------------
-
-This function mimics the setTimeout() function used in browser-based javascript.
-However, the function will only accept a function reference, not a string of javascript code.
-Where setTimeout() in the browser returns a numeric value which can be subsequently passed to 
-clearTimeout(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearTimeout() implementation.
-
-If Node.js supports setTimeout() then it's probably good for ScriptCraft to support it too.
-
-[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
-
-***/
-    global.setTimeout = function( callback, delayInMillis){
-        //
-        // javascript programmers familiar with setTimeout know that it expects
-        // a delay in milliseconds. However, bukkit's scheduler expects a delay in ticks 
-        // (where 1 tick = 1/20th second)
-        //
-        var bukkitTask = server.scheduler.runTaskLater(__plugin, callback, delayInMillis/50);
-        return bukkitTask;
-    };
-    
-/*************************************************************************
-clearTimeout() function
----------------------
-A scriptcraft implementation of clearTimeout().
-
-***/
-    global.clearTimeout = function(bukkitTask){
-        bukkitTask.cancel();
-    };
-
-/*************************************************************************
-setInterval() function
----------------------
-
-This function mimics the setInterval() function used in browser-based javascript.
-However, the function will only accept a function reference, not a string of javascript code.
-Where setInterval() in the browser returns a numeric value which can be subsequently passed to 
-clearInterval(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearInterval() implementation.
-
-If Node.js supports setInterval() then it's probably good for ScriptCraft to support it too.
-
-[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
-
-***/
-    global.setInterval = function(callback, intervalInMillis){
-        var delay = intervalInMillis/ 50;
-        var bukkitTask = server.scheduler.runTaskTimer(__plugin, callback, delay, delay);
-        return bukkitTask;
-    };
-/*************************************************************************
-clearInterval() function
----------------------
-A scriptcraft implementation of clearInterval().
-
-***/
-    global.clearInterval = function(bukkitTask){
-        bukkitTask.cancel();
-    };
 
     //
     // assumes this was loaded from js-plugins/core/
