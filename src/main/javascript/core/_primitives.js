@@ -131,5 +131,9 @@ var global = this;
     global.putSign = _putSign;
     global.notifyAdministrators = _notifyAdministrators;
     global.echo = _echo;
-    
+    /*
+      wph 20131020 - add 'alert' - behaves just like echo. For programmers familiar with browser-based js
+     */
+    global.alert = _echo;
+
 }());

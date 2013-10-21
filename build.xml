@@ -1,12 +1,18 @@
 <project name="scriptcraft" default="package" basedir=".">
   <property file="build.properties"/>
-  <description>Builds the scriptcraft.jar file - a plugin for bukkit
-  </description>
+  <description>Builds the scriptcraft.jar file - a plugin for bukkit</description>
   <property name="src" location="src/main/java"/>
   <property name="build" location="target/classes"/>
   <property name="dist" location="target/" />
   <property name="minecraft.dir" location="${dist}/minecraft" />
-
+  <property name="http.agent" value="'Walter'" />
+  <target name="testy">
+    <echo message="${http.agent}"/>
+    <get src="http://dl.bukkit.org/api/1.0/downloads/projects/CraftBukkit/?_accept=application/xml"
+         verbose="true"
+         httpusecaches="false"
+         dest="${minecraft.dir}/waltbukkit.xml" />
+  </target>
   <target name="init">
     <property file="build.local.properties"/>
     <tstamp>
@@ -23,9 +29,10 @@
           unless="minecraft.present">
     <mkdir dir="${minecraft.dir}" />
     
-    <echo>Retrieving CraftBukkit artifact info
-    </echo>
-    <get src="http://dl.bukkit.org/api/1.0/downloads/projects/CraftBukkit?_accept=application/xml"
+    <echo>Retrieving CraftBukkit artifact info</echo>
+    <get src="http://dl.bukkit.org/api/1.0/downloads/projects/CraftBukkit/?_accept=application/xml"
+         verbose="true"
+         httpusecaches="false"
          dest="${minecraft.dir}/bukkit.xml" />
 
     <xslt in="${minecraft.dir}/bukkit.xml"
@@ -33,27 +40,20 @@
           style="build/bukkit-to-url.xsl"/>
     <xmlproperty file="${minecraft.dir}/ant.properties.xml" keeproot="true"/>
 
-    <echo>Retrieving CraftBukkit jar
-    </echo>
+    <echo>Retrieving CraftBukkit jar</echo>
     <get src="${bukkit.url}"
          dest="${minecraft.dir}/craftbukkit.jar"
          verbose="true"/>
 
-    <echo>Creating default ops.txt for your user
-    </echo>
+    <echo>Creating default ops.txt for your user</echo>
     <echo message="${op.name}" file="${minecraft.dir}/ops.txt" />
    
   </target>
 
 
   <target name="run" depends="server-setup, package, update-live-cb" description="Starts Bukkit with ScriptCraft">
-    <echo>Starting Bukkit with ScriptCraft
-    </echo>
-    <java jar="${minecraft.dir}/craftbukkit.jar"
-          maxmemory="1024m"
-          fork="true"
-          dir="${minecraft.dir}"
-        />
+    <echo>Starting Bukkit with ScriptCraft</echo>
+    <java jar="${minecraft.dir}/craftbukkit.jar" maxmemory="1024m" fork="true" dir="${minecraft.dir}" />
   </target>
   
   <target name="compile" depends="init, server-setup" description="compile bukkit plugin source">
@@ -72,8 +72,7 @@
   </target>
 
   <target name="coffeescript_setup" depends="init" description="Gets latest coffeescript compiler">
-    <echo>Retrieving Coffeescript compiler
-    </echo>
+    <echo>Retrieving Coffeescript compiler</echo>
     <mkdir dir="${build}/coffeescript/core" />
     <get src="https://raw.github.com/jashkenas/coffee-script/master/extras/coffee-script.js"
          dest="${build}/coffeescript/core/_coffeescript.js"/>     
@@ -86,14 +85,12 @@
     </zip>
   </target>
 
-  <target name="package" depends="gendocs,zip_js,compile" 
-          description="generate the distribution" >
+  <target name="package" depends="gendocs,zip_js,compile" description="generate the distribution" >
     <!-- ensure plugin.yml is always copied -->
     <delete file="${build}/plugin.yml" />
     <copy file="src/main/resources/plugin.yml" todir="${build}"/>
     <replace file="${build}/plugin.yml" value="${bukkit-version}-${DSTAMP}">
-      <replacetoken>[[version]]
-      </replacetoken>
+      <replacetoken>[[version]]</replacetoken>
     </replace>
     
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->

@@ -548,6 +548,7 @@ var server = org.bukkit.Bukkit.server;
         return result;
     };
     var _javaLangObjectMethods = ["equals","getClass","class","getClass","hashCode","notify","notifyAll","toString","wait","clone","finalize"];
+    
     var _getProperties = function(o)
     {
         var result = [];
@@ -563,7 +564,17 @@ var server = org.bukkit.Bukkit.server;
                 for (var j = 0;j < _javaLangObjectMethods.length; j++)
                     if (_javaLangObjectMethods[j] == i)
                         continue propertyLoop;
-                if (typeof o[i] == "function" )
+                var typeofProperty = null;
+                try { 
+                    typeofProperty = typeof o[i];
+                }catch( e ){
+                    if (e.message == "java.lang.IllegalStateException: Entity not leashed"){
+                        // wph 20131020 fail silently for Entity leashing in craftbukkit
+                    }else{
+                        throw e;
+                    }
+                }
+                if (typeofProperty == "function" )
                     result.push(i+"()");
                 else
                     result.push(i);

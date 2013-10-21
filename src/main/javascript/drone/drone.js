@@ -783,6 +783,7 @@ Used when placing torches so that they face towards the drone.
             return result;
         };
     };
+
 /**************************************************************************
 Drone.times() Method
 ====================
