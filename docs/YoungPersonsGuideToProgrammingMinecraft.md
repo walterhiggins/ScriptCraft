@@ -30,7 +30,7 @@ Install ScriptCraft on your computer...
 
 1. [Download and install CraftBukkit][dlbuk].
 
-2. [Download the ScriptCraft Mod][sc-plugin]. Then copy it to the
+2. [Download the latest version of the ScriptCraft Mod][sc-plugin]. Then copy the ScriptCraft.jar file to the
 `craftbukkit/plugins` folder you created in step 1.
 
 3. Start the CraftBukkit server.
