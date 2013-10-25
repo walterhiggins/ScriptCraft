@@ -919,7 +919,7 @@ different objects and methods available for use by ScriptCraft.
 
 [buk]: http://wiki.bukkit.org/Setting_up_a_server
 [dlbuk]: http://dl.bukkit.org/
-[sc-plugin]: http://scriptcraftjs.org/downloads/
+[sc-plugin]: http://scriptcraftjs.org/download/
 [ce]: http://www.codecademy.com/
 [mcdv]: http://www.minecraftwiki.net/wiki/Data_values
 [np]: http://notepad-plus-plus.org/
