@@ -28,19 +28,27 @@ easy addition of 'Mods' and extensions to Minecraft. ScriptCraft is a
 difficult but CraftBukkit makes it easy.  Follow these steps to
 Install ScriptCraft on your computer...
 
-1. [Download and install CraftBukkit][dlbuk].
+1. [Download and install CraftBukkit][dlbuk]. Then follow the [Bukkit Installation Instructions][bii]. 
+[bii]: http://wiki.bukkit.org/Setting_up_a_server
 
-2. [Download the latest version of the ScriptCraft Mod][sc-plugin]. Then copy the ScriptCraft.jar file to the
-`craftbukkit/plugins` folder you created in step 1.
+2. Start the CraftBukkit server, then once it has started up, stop it
+   by typing 'stop'. If you go to the craftbukkit folder (see step 1) you
+   should see some new files and subfolders.
 
-3. Start the CraftBukkit server.
+3. [Download the latest version of the ScriptCraft Mod][sc-plugin]. Then copy the ScriptCraft.jar file to the
+   `craftbukkit/plugins` folder (This folder won't be created until you run Bukkit for the first time (see previous step).
 
 4. In the CraftBukkit command window type `op {your_username}` and hit
-enter, replacing {your_username} with your own minecraft
-username. This will give you `operator` access meaning you can perform
-more commands than are normally available in Minecraft.
+   enter, replacing {your_username} with your own minecraft
+   username. This will give you `operator` access meaning you can perform
+   more commands than are normally available in Minecraft.  You should
+   make yourself a server operator (Server operators have full privileges
+   for the server) permanently by editing the craftbukkit/ops.txt file
+   and adding your username (one username per line).
 
-5. In the CraftBukkit command window type `js 1 + 1` and hit enter. You should see `> 2` .
+5. Start up the craftbukkit server again (see [instructions for starting the server][bii]).
+
+6. In the CraftBukkit command window type `js 1 + 1` and hit enter. You should see `> 2` .
 
 ... Congratulations! You just installed your own Minecraft Server with 
 the ScriptCraft Mod and are now ready to begin programming in Minecraft.
