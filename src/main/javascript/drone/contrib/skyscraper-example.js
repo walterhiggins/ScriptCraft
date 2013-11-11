@@ -1,5 +1,6 @@
 Drone.extend('skyscraper',function(floors){
-    floors = floors || 10;
+    if (typeof floors == "undefined")
+        floors = 10;
     this.chkpt('skyscraper');
     for (var i = 0;i < floors; i++)
     {
