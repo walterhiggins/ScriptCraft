@@ -12,7 +12,8 @@ plugin("alias", {
     set: function(player, alias, commands){
         var aliases = this.store.players;
         var name = player.name;
-        aliases[name] = aliases[name] || {};
+        if (typeof aliases[name] == "undefined")
+            aliases[name] = {};
         aliases[name][alias] = commands;
     },
     remove: function(player, alias){
@@ -29,7 +30,8 @@ plugin("alias", {
     }
 },true);
 
-alias.store.players = alias.store.players || {};
+if (typeof alias.store.players == "undefined")
+    alias.store.players = {};
 
 command("alias",function(params){
     /*
@@ -67,7 +69,7 @@ command("alias",function(params){
     for (var i = 0;i < commands.length; i++){
         // fill in template
         var cmd = commands[i];
-        cmd = cmd.replace(/{([0-9]*)}/g,function(dummy,index){ return params[index] || "";})
+        cmd = cmd.replace(/{([0-9]*)}/g,function(dummy,index){ return params[index] ? params[index] : "";})
         self.performCommand(cmd);
     }
     return true;

@@ -1213,10 +1213,8 @@ Another example: This statement creates a row of trees 2 by 3 ...
         var ddF_y = -2 * radius;
         var x = 0;
         var y = radius;
-        quadrants = quadrants || {topleft: true, 
-                                  topright: true,
-                                  bottomleft: true,
-                                  bottomright: true};
+        var defaultQuadrants = {topleft: true, topright: true, bottomleft: true, bottomright: true};
+        quadrants = quadrants?quadrants:defaultQuadrants;
         /*
             II  | I
           ------------
@@ -1284,16 +1282,16 @@ Another example: This statement creates a row of trees 2 by 3 ...
     var _arc2 = function( params ) {
 
         var drone = params.drone;
-        var orientation = params.orientation || "horizontal";
-        var quadrants = params.quadrants || {
+        var orientation = params.orientation?params.orientation:"horizontal";
+        var quadrants = params.quadrants?params.quadrants:{
             topright:1,
             topleft:2,
             bottomleft:3,
             bottomright:4
         };
-        var stack = params.stack || 1;
+        var stack = params.stack?params.stack:1;
         var radius = params.radius;
-        var strokeWidth = params.strokeWidth || 1;
+        var strokeWidth = params.strokeWidth?params.strokeWidth:1;
         drone.chkpt('arc2');
         var x0, y0, gotoxy,setPixel;
         

@@ -39,7 +39,7 @@ The following example illustrates how to use http.request to make a request to a
       });
 
 ***/
-var http = http || {};
+var http = http ? http : {};
 
 http.request = function( request, callback)
 {
@@ -65,7 +65,11 @@ http.request = function( request, callback)
             requestMethod = "GET";
         }else{
             paramsAsString = paramsToString(request.params);
-            requestMethod = request.method || "GET";
+            if (request.method)
+                requestMethod = request.method
+            else
+                requestMethod = "GET";
+
             if (requestMethod == "GET" && request.params){
                 // append each parameter to the URL
                 url = request.url + "?" + paramsAsString;

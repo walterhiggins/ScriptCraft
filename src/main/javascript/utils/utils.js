@@ -9,7 +9,7 @@ Miscellaneous utility functions and classes to help with programming.
    player or `self` if no name is provided.
 
 ***/
-var utils = utils || {
+var utils = utils ? utils : {
     locationToString: function(location){
         return JSON.stringify([""+location.world.name,location.x, location.y, location.z]);
     },

@@ -109,7 +109,10 @@ plugin("homes", {
                 if (online[i].name != player.name)
                     result.push(online[i].name);
         }else{
-            result = this.store.invites[player.name] || [];
+            if (this.store.invites[player.name])
+                result = this.store.invites[player.name];
+            else
+                result = [];
         }
         return result;
     },
@@ -119,7 +122,9 @@ plugin("homes", {
     invite: function(host, guest){
         host = utils.getPlayerObject(host);
         guest = utils.getPlayerObject(guest);
-        var invitations = this.store.invites[host.name] || [];
+        var invitations = [];
+        if (this.store.invites[host.name])
+            invitations = this.store.invites[host.name];
         invitations.push(guest.name);
         this.store.invites[host.name] = invitations;
         guest.sendMessage(host.name + " has invited you to their home.");
@@ -275,7 +280,11 @@ plugin("homes", {
     /*
       initialize the store
     */
-    homes.store.houses = homes.store.houses || {};
-    homes.store.openHouses = homes.store.openHouses || {};
-    homes.store.invites = homes.store.invites || {};
+    if (typeof homes.store.houses == "undefined")
+        homes.store.houses = {};
+    if (typeof homes.store.openHouses == "undefined")
+        homes.store.openHouses = {};
+    if (typeof homes.store.invites == "undefined")
+        homes.store.invites = {};
+
 }());

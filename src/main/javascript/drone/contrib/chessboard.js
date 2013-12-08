@@ -9,10 +9,14 @@
 */
 Drone.extend("chessboard", function(whiteBlock, blackBlock, width, depth) {
     this.chkpt('chessboard-start');
-    width = width || 8;
-    depth = depth || width;
-    blackBlock = blackBlock || blocks.wool.black;
-    whiteBlock = whiteBlock || blocks.wool.white;
+    if (typeof whiteBlock == "undefined")
+        whiteBlock = blocks.wool.white;
+    if (typeof blackBlock == "undefined")
+        blackBlock = blocks.wool.black;
+    if (typeof width == "undefined")
+        width = 8;
+    if (typeof depth == "undefined")
+        depth = width;
 
     for(var i = 0; i < width; ++i) {
         for(var j = 0; j < depth; ++j) {
@@ -25,6 +29,5 @@ Drone.extend("chessboard", function(whiteBlock, blackBlock, width, depth) {
         }
         this.move('chessboard-start').fwd(i+1);
     }
-    
     return this.move('chessboard-start');
 });
