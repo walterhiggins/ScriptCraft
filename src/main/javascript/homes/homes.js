@@ -185,10 +185,10 @@ plugin("homes", {
       define a set of command options that can be used by players
      */
     var options = {
-        set: function(){homes.set();},
+        'set': function(){homes.set();},
         'delete': function(){ homes.remove();},
-        help: function(){ self.sendMessage(homes.help());},
-        list: function(){
+        'help': function(){ self.sendMessage(homes.help());},
+        'list': function(){
             var visitable = homes.list();
             if (visitable.length == 0){
                 self.sendMessage("There are no homes to visit");
@@ -200,7 +200,7 @@ plugin("homes", {
                 ]);
             }
         },
-        ilist: function(){
+        'ilist': function(){
             var potentialVisitors = homes.ilist();
             if (potentialVisitors.length == 0)
                 self.sendMessage("No one can visit your home");
@@ -209,7 +209,7 @@ plugin("homes", {
                     "These " + potentialVisitors.length + "players can visit your home",
                     potentialVisitors.join(", ")]);
         },
-        invite: function(params){
+        'invite': function(params){
             if (params.length == 1){
                 self.sendMessage("You must provide a player's name");
                 return;
@@ -221,7 +221,7 @@ plugin("homes", {
             else
                 homes.invite(self,guest);
         },
-        uninvite: function(params){
+        'uninvite': function(params){
             if (params.length == 1){
                 self.sendMessage("You must provide a player's name");
                 return;
@@ -241,13 +241,13 @@ plugin("homes", {
             homes.close(); 
             self.sendMessage("Your home is closed to the public");
         },
-        listall: function(){
+        'listall': function(){
             if (!self.isOp())
                 self.sendMessage("Only operators can do this");
             else
                 self.sendMessage(homes.listall().join(", "));
         },
-        clear: function(params){
+        'clear': function(params){
             if (!self.isOp())
                 self.sendMessage("Only operators can do this");
             else
@@ -269,7 +269,7 @@ plugin("homes", {
         if (option)
             option(params);
         else{
-        var host = utils.getPlayerObject(params[0]);
+            var host = utils.getPlayerObject(params[0]);
             if (!host)
                 self.sendMessage(params[0] + " is not here");
             else
