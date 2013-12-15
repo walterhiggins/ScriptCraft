@@ -1,4 +1,3 @@
-var global = this;
 /************************************************************************
 events Module
 =============
@@ -88,52 +87,47 @@ var events = events || {
 //
 // private implementation from here on in...
 //
-(function(){
+(function(events){
     if (events._eventsLoaded){
         return;
     }
-    var _event = org.bukkit.event;
-    var _plugin = org.bukkit.plugin;
+    var bkEvent = org.bukkit.event;
+    var bkEvtExecutor = org.bukkit.plugin.EventExecutor;
+    var bkRegListener = org.bukkit.plugin.RegisteredListener;
 
     var _on = function(eventType, handler, priority)
     {
         if (typeof priority == "undefined"){
-            priority = _event.EventPriority.HIGHEST;
+            priority = bkEvent.EventPriority.HIGHEST;
         }else{
-            priority = _event.EventPriority[priority];
+            priority = bkEvent.EventPriority[priority];
         }
         if (typeof eventType == "string"){
             var subPkgs = eventType.split('.');
-            eventType = _event[subPkgs[0]];
+            eventType = bkEvent[subPkgs[0]];
             for (var i = 1;i < subPkgs.length; i++){
                 eventType = eventType[subPkgs[i]];
             }
         }
         var handlerList = eventType.getHandlerList();
         var listener = {};
-        var eventExecutor = new _plugin.EventExecutor(){
+        var eventExecutor = new bkEvtExecutor(){
             execute: function(l,e){
                 handler(listener.reg,e);
             } 
         };
-        listener.reg = new _plugin.RegisteredListener(
-            /* 
-               wph 20130222 issue #64 bad interaction with Essentials plugin
-               if another plugin tries to unregister a Listener (not a Plugin or a RegisteredListener)
-               then BOOM! the other plugin will throw an error because Rhino can't coerce an
-               equals() method from an Interface.
-               The workaround is to make the ScriptCraftPlugin java class a Listener.
-               Should only unregister() registered plugins in ScriptCraft js code.
-            */
-            __plugin
-            ,eventExecutor
-            ,priority
-            ,__plugin
-            ,true
-        )
+        /* 
+           wph 20130222 issue #64 bad interaction with Essentials plugin
+           if another plugin tries to unregister a Listener (not a Plugin or a RegisteredListener)
+           then BOOM! the other plugin will throw an error because Rhino can't coerce an
+           equals() method from an Interface.
+           The workaround is to make the ScriptCraftPlugin java class a Listener.
+           Should only unregister() registered plugins in ScriptCraft js code.
+        */
+        listener.reg = new bkRegListener( __plugin, eventExecutor, priority, __plugin, true);
         handlerList.register(listener.reg);
         return listener.reg;
     };
     events.on = _on;
     events._eventsLoaded = true;
-}());
+}(events));
