@@ -310,6 +310,31 @@ var server = org.bukkit.Bukkit.server;
     var jsPluginsRootDir = parentFileObj.getParentFile();
     var jsPluginsRootDirName = _canonize(jsPluginsRootDir);
 
+    /*
+      wph 20131215 Experimental 
+     */
+    var _loadedModules = {};
+    var _require = function(path)
+    {
+        var file = new java.io.File(path);
+        var canonizedFilename = _canonize(file);
+        if (_loadedModules[canonizedFilename]){
+            return _loadedModules[canonizedFilename];
+        }
+        if (verbose){
+            print("loading module " + canonizedFilename);
+        }
+        var reader = new java.io.FileReader(file);
+        var br = new java.io.BufferedReader(reader);
+        var code = "";
+        while ((r = br.readLine()) !== null) code += r + "\n";
+        code = "var result = {};(function(exports){ " + code + "; return exports;}(result))";
+        _loadedModules[canonizedFilename] = __engine.eval(code);
+        return _loadedModules[canonizedFilename];
+    };
+    global.loadedModules = _loadedModules;
+    global.require = _require;
+
 
     var _loaded = {};
     /*
@@ -317,57 +342,53 @@ var server = org.bukkit.Bukkit.server;
      */
     var _load = function(filename,warnOnFileNotFound)
     {
-        var filenames = [];
-        if (filename.constructor == Array)
-            filenames = filename;
-        else
-            filenames = [filename];
-        
         var result = null;
         
-        for (var i =0;i < filenames.length; i++) {
-
-            var file = new java.io.File(filenames[0]);
-            var canonizedFilename = _canonize(file);
-            //
-            // wph 20130123 don't load the same file more than once.
-            //
-            if (_loaded[canonizedFilename])
-                continue;
-
-            if (verbose)
-                print("loading " + canonizedFilename);
-            
-            if (file.exists()) {
-                var parent = file.getParentFile();
-                var reader = new java.io.FileReader(file);
-                var br = new java.io.BufferedReader(reader);
-                __engine.put("__script",canonizedFilename);
-                __engine.put("__folder",(parent?_canonize(parent):"")+"/");
-
-                var code = "";
-                try{
-                    if (file.getCanonicalPath().endsWith(".coffee")) {
-                        var r = undefined;
-                        while ((r = br.readLine()) !== null) code += "\"" + r + "\" +\n";
-                        code += "\"\"";
-                        var code = "load(__folder + \"../core/_coffeescript.js\"); var ___code = "+code+"; eval(CoffeeScript.compile(___code, {bare: true}))";
-                    } else {
-                        while ((r = br.readLine()) !== null) code += r + "\n";
-                    }
-
-                    result = __engine.eval(code);
-                    _loaded[canonizedFilename] = true;
-                    reader.close();
-                }catch (e){
-                    __plugin.logger.severe("Error evaluating " + canonizedFilename + ", " + e );
-                }
-            }else{
-                if (warnOnFileNotFound) 
-                    __plugin.logger.warning(canonizedFilename + " not found");
-            }
-        }
+        var file = new java.io.File(filename);
+        var canonizedFilename = _canonize(file);
+        //
+        // wph 20130123 don't load the same file more than once.
+        //
+        if (_loaded[canonizedFilename])
+            return _loaded[canonizedFilename];
         
+        if (verbose)
+            print("loading " + canonizedFilename);
+        
+        if (file.exists()) {
+            var parent = file.getParentFile();
+            var reader = new java.io.FileReader(file);
+            var br = new java.io.BufferedReader(reader);
+            __engine.put("__script",canonizedFilename);
+            __engine.put("__folder",(parent?_canonize(parent):"")+"/");
+            
+            var code = "";
+            try{
+                if (file.getCanonicalPath().endsWith(".coffee")) {
+                    var r = undefined;
+                    while ((r = br.readLine()) !== null) code += "\"" + r + "\" +\n";
+                    code += "\"\"";
+                    var code = "load(__folder + \"../core/_coffeescript.js\"); var ___code = "+code+"; eval(CoffeeScript.compile(___code, {bare: true}))";
+                } else {
+                    while ((r = br.readLine()) !== null) code += r + "\n";
+                }
+                
+                result = __engine.eval(code);
+                _loaded[canonizedFilename] = result || true;
+            }catch (e){
+                __plugin.logger.severe("Error evaluating " + canonizedFilename + ", " + e );
+            }
+            finally {
+                try {
+                    reader.close();
+                }catch (re){
+                    // fail silently on reader close error
+                }
+            }
+        }else{
+            if (warnOnFileNotFound) 
+                __plugin.logger.warning(canonizedFilename + " not found");
+        }
         return result;
     };
     /*
@@ -472,7 +493,7 @@ var server = org.bukkit.Bukkit.server;
         // don't load plugin more than once
         //
         if (typeof _plugins[moduleName] != "undefined")
-            return;
+            return _plugins[moduleName].module;
 
         var pluginData = {persistent: isPersistent, module: moduleObject};
         moduleObject.store = moduleObject.store || {};
