@@ -17,7 +17,7 @@ will be created and all of the bundled javascript files will be
 unzipped into it from a bundled resource within the Java plugin.  The
 very first javascript file to load will always be
 js-plugins/core/_scriptcraft.js. Then all other javascript files are
-loaded except for filenames begin with `_` (underscore), such files
+loaded except for filenames which begin with `_` (underscore), such files
 are considered to be private modules and will not be automatically
 loaded at startup.
 
