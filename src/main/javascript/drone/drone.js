@@ -19,11 +19,11 @@ TLDNR; (Just read this if you're impatient)
 ===========================================
 At the in-game command prompt type...
      
-    /js box(blocks.oak)  
+    /js box( blocks.oak )  
     
 ... creates a single wooden block at the cross-hairs or player location
     
-    /js box(5).right(2).box('35:15',4,9,1)
+    /js box( blocks.oak ).right(2).box( blocks.wool.black, 4, 9, 1)
     
 ... creates a single wooden block and a 2001 black obelisk that is 4
 wide x 9 tall x 1 long in size.  If you want to see what else
@@ -36,7 +36,7 @@ Drones can be created in any of the following ways...
     
  1. Calling any one of the methods listed below will return a Drone object. For example...
          
-        var d = box(blocks.oak)
+        var d = box( blocks.oak )
 
    ... creates a 1x1x1 wooden block at the cross-hairs or player's location and returns a Drone
    object. This might look odd (if you're familiar with Java's Object-dot-method syntax) but all 
@@ -44,11 +44,22 @@ Drones can be created in any of the following ways...
    This is short-hand for creating drones and is useful for playing around with Drones at the in-game 
    command prompt. It's shorter than typing ...
     
-        var d = new Drone().box(5) 
+        var d = new Drone().box( blocks.oak ) 
         
    ... All of the Drone's methods return `this` (self) so you can chain operations together like this...
         
-        var d = box(5).up().box(5,3,1,3).down().fwd(2).box(5).turn().fwd(2).box(5).turn().fwd(2).box(5)
+        var d = box( blocks.oak )
+                  .up()
+                  .box( blocks.oak ,3,1,3)
+                  .down()
+                  .fwd(2)
+                  .box( blocks.oak )
+                  .turn()
+                  .fwd(2)
+                  .box( blocks.oak )
+                  .turn()
+                  .fwd(2)
+                  .box( blocks.oak );
     
  2. Using the following form...
 
@@ -1768,7 +1779,7 @@ Another example: This statement creates a row of trees 2 by 3 ...
     // which return a drone object
     // this way drones can be created and used as follows...
     //
-    // /js box(5,7,3,4)
+    // /js box( blocks.oak, 7, 3, 4)
     // 
     // ... which is a short-hand way to create a wooden building 7x3x4
     //

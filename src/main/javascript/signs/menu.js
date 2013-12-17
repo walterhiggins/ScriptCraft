@@ -137,7 +137,7 @@ var signs = signs || plugin("signs", {
 
         /*
           a new sign definition - need to store (in-memory only)
-          it's behaviour and bring back to life other signs of the 
+          its behaviour and bring back to life other signs of the 
           same type in the world. Look for other static signs in the 
           world with this same label and make dynamic again.
          */

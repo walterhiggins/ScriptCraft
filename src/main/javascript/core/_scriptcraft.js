@@ -1,6 +1,5 @@
 /************************************************************************
-ScriptCraft API Reference
-=========================
+# ScriptCraft API Reference
 
 Walter Higgins
 
@@ -8,8 +7,8 @@ Walter Higgins
 
 [email]: mailto:walter.higgins@gmail.com?subject=ScriptCraft_API_Reference
 
-Module Loading
-==============
+## Module Loading
+
 At server startup the ScriptCraft Java plugin is loaded and once
 loaded the Java plugin will in turn begin loading all of the
 javascript (.js) files it finds in the js-plugins directory (in the
@@ -19,10 +18,12 @@ will be created and all of the bundled javascript files will be
 unzipped into it from a bundled resource within the Java plugin.  The
 very first javascript file to load will always be
 js-plugins/core/_scriptcraft.js. Then all other javascript files are
-loaded.
+loaded except for filenames begin with `_` (underscore), such files
+are considered to be private modules and will not be automatically
+loaded at startup.
 
-Directory structure
--------------------
+### Directory structure
+
 The js-plugins directory is loosely organised into subdirectories -
 one for each module. Each subdirectory in turn can contain one or more
 javascript files. Within each directory, a javascript file with the
@@ -32,8 +33,8 @@ always load before any other files in the drone/ directory. Similarly
 utils/utils.js will always load before any other files in the utils/
 directory.
 
-Directories 
------------
+### Directories 
+
 As of February 10 2013, the js-plugins directory has the following sub-directories...
 
  * core - Contains javascript files containing Core functionality crucial to ScriptCraft and modules which use it.
@@ -45,8 +46,8 @@ As of February 10 2013, the js-plugins directory has the following sub-directori
  * chat - The chat plugin/module
  * alias - The alias plugin/module
 
-Core Module
-===========
+## Core Module
+
 This module defines commonly used functions by all plugins...
   
  * load (filename,warnOnFileNotFound) - loads and evaluates a javascript file, returning the evaluated object.
@@ -56,16 +57,18 @@ This module defines commonly used functions by all plugins...
  * plugin (name, interface, isPersistent) - defines a new plugin. If
    isPersistent is true then the plugin doesn't have to worry about
    loading and saving state - that will be done by the framework. Just
-   make sure that anything you want to save (and restore) is in the
+   make sure that anything you want to save (and restore) is in the plugin's
    'store' property - this will be created automatically if not
-   already defined.  (its type is object {} )
+   already defined.  (its type is object {} ) . More on plugins below.
     
  * ready (function) - specifies code to be executed only when all the plugins have loaded.
 
- * command (name, function) - defines a command that can be used by non-operators.
+ * command (name, function) - defines a command that can be used by
+   non-operators. The `command` function provides a way for plugin
+   developers to provide new commands for use by players.
 
-load() function
----------------
+### load() function
+
 The load() function is used by ScriptCraft at startup to load all of
 the javascript modules and data.  You normally wouldn't need to call
 this function directly. If you put a javascript file anywhere in the
@@ -75,18 +78,16 @@ with an underscore `_` character. These files will not be
 automatically loaded at startup as they are assumed to be files
 managed / loaded by plugins.
 
-Parameters
-----------
+#### Parameters
 
- * filenames - An array of file names or a single file name.
+ * filename - The name of the file to load.
  * warnOnFileNotFound (optional - default: false) - warn if the file was not found.
 
-Return
-------
+#### Return
+
 load() will return the result of the last statement evaluated in the file.
 
-Example
--------
+#### Example
 
     load(__folder + "myFile.js"); // loads a javascript file and evaluates it.
 
@@ -94,17 +95,18 @@ Example
 
 myData.json contents...
 
-    __data = {players:{
-                       walterh:{
-                                h: ["jsp home {1}"],
-                                sunny:["time set 0",
-                                       "weather clear"]
-                               }
-                      }
-             }
+    __data = { 
+        players: {
+            walterh: {
+                h: ["jsp home {1}"],
+                sunny:["time set 0",
+                       "weather clear"]
+                     }
+                 }
+            }
 
-save() function
----------------
+### save() function
+
 The save() function saves an in-memory javascript object to a
 specified file. Under the hood, save() uses JSON (specifically
 json2.js) to save the object. Again, there will usually be no need to
@@ -113,14 +115,12 @@ automatically if they are declared using the `plugin()` function.  Any
 in-memory object saved using the `save()` function can later be
 restored using the `load()` function.
 
-Parameters
-----------
+#### Parameters
 
  * objectToSave : The object you want to save.
  * filename : The name of the file you want to save it to.
 
-Example
--------
+#### Example
 
     var myObject = { name: 'John Doe',
                      aliases: ['John Ray', 'John Mee'],
@@ -133,8 +133,8 @@ johndoe.json contents...
                    "aliases": ["John Ray", "John Mee"], 
                    "date_of_birth": "1982/01/31" };
 
-plugin() function
------------------
+### plugin() function
+
 The `plugin()` function should be used to declare a javascript module
 whose state you want to have managed by ScriptCraft - that is - a
 Module whose state will be loaded at start up and saved at shut down.
@@ -145,23 +145,22 @@ automatically saved at shutdown and loaded at startup by
 ScriptCraft. This makes it easier to write plugins which need to
 persist data.
 
-Parameters
-----------
+#### Parameters
  
  * pluginName (String) : The name of the plugin - this becomes a global variable.
  * pluginDefinition (Object) : The various functions and members of the plugin object.
  * isPersistent (boolean - optional) : Specifies whether or not the plugin/object state should be loaded and saved by ScriptCraft.
 
-Example
--------
+#### Example
+
 See chat/color.js for an example of a simple plugin - one which lets
 players choose a default chat color. See also [Anatomy of a
 ScriptCraft Plugin][anatomy].
  
 [anatomy]: http://walterhiggins.net/blog/ScriptCraft-1-Month-later
 
-command() function
-------------------
+### command() function
+
 The `command()` function is used to expose javascript functions for
 use by non-operators (regular players). Only operators should be
 allowed use raw javascript using the `/js ` command because it is too
@@ -169,8 +168,7 @@ powerful for use by regular players and can be easily abused. However,
 the `/jsp ` command lets you (the operator / server administrator /
 plugin author) safely expose javascript functions for use by players.
 
-Parameters
-----------
+#### Parameters
  
  * commandName : The name to give your command - the command will be invoked like this by players `/jsp commandName`
  * commandFunction: The javascript function which will be invoked when the command is invoked by a player.
@@ -181,12 +179,12 @@ Parameters
    can intercept Tab-Completion of the `/jsp ` command - advanced
    usage - see alias/alias.js for example.
 
-Example
--------
+#### Example
+
 See chat/colors.js or alias/alias.js or homes/homes.js for examples of how to use the `command()` function.
 
-ready() function
-----------------
+### ready() function
+
 The `ready()` function provides a way for plugins to do additional
 setup once all of the other plugins/modules have loaded.  For example,
 event listener registration can only be done after the
@@ -210,72 +208,11 @@ The execution of the function object passed to the `ready()` function
 is *deferred* until all of the plugins/modules have loaded. That way
 you are guaranteed that when the function is invoked, all of the
 plugins/modules have been loaded and evaluated and are ready to use.
+
 ***/
 
 var global = this;
 
-/*************************************************************************
-setTimeout() function
----------------------
-
-This function mimics the setTimeout() function used in browser-based javascript.
-However, the function will only accept a function reference, not a string of javascript code.
-Where setTimeout() in the browser returns a numeric value which can be subsequently passed to 
-clearTimeout(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearTimeout() implementation.
-
-If Node.js supports setTimeout() then it's probably good for ScriptCraft to support it too.
-
-[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
-
-***/
-    global.setTimeout = function( callback, delayInMillis){
-        //
-        // javascript programmers familiar with setTimeout know that it expects
-        // a delay in milliseconds. However, bukkit's scheduler expects a delay in ticks 
-        // (where 1 tick = 1/20th second)
-        //
-        var bukkitTask = server.scheduler.runTaskLater(__plugin, callback, delayInMillis/50);
-        return bukkitTask;
-    };
-    
-/*************************************************************************
-clearTimeout() function
----------------------
-A scriptcraft implementation of clearTimeout().
-
-***/
-    global.clearTimeout = function(bukkitTask){
-        bukkitTask.cancel();
-    };
-
-/*************************************************************************
-setInterval() function
----------------------
-
-This function mimics the setInterval() function used in browser-based javascript.
-However, the function will only accept a function reference, not a string of javascript code.
-Where setInterval() in the browser returns a numeric value which can be subsequently passed to 
-clearInterval(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearInterval() implementation.
-
-If Node.js supports setInterval() then it's probably good for ScriptCraft to support it too.
-
-[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
-
-***/
-    global.setInterval = function(callback, intervalInMillis){
-        var delay = intervalInMillis/ 50;
-        var bukkitTask = server.scheduler.runTaskTimer(__plugin, callback, delay, delay);
-        return bukkitTask;
-    };
-/*************************************************************************
-clearInterval() function
----------------------
-A scriptcraft implementation of clearInterval().
-
-***/
-    global.clearInterval = function(bukkitTask){
-        bukkitTask.cancel();
-    };
 
 /*************************************************************************
 Core Module - Special Variables
@@ -317,6 +254,23 @@ var server = org.bukkit.Bukkit.server;
     var _require = function(path)
     {
         var file = new java.io.File(path);
+        if (!file.exists()){
+            if (path.match(/\.js$/i)){
+                __plugin.logger.warning('require("' + path + '") failed. File not found');
+                return;
+            }else{
+                path = path + '.js';
+                file = new java.io.File(path);
+                if (!file.exists()){
+                    __plugin.logger.warning('require("' + path + '") failed. File not found');
+                    return;
+                }
+            }
+        }
+        if (file.isDirectory()){
+            __plugin.logger.warning('require("' + path + '") directories not yet supported.');
+            return;
+        }
         var canonizedFilename = _canonize(file);
         if (_loadedModules[canonizedFilename]){
             return _loadedModules[canonizedFilename];
@@ -327,12 +281,17 @@ var server = org.bukkit.Bukkit.server;
         var reader = new java.io.FileReader(file);
         var br = new java.io.BufferedReader(reader);
         var code = "";
+        var module = {id: canonizedFilename};
         while ((r = br.readLine()) !== null) code += r + "\n";
-        code = "var result = {};(function(exports){ " + code + "; return exports;}(result))";
+
+        var head = "var result = {};(function(exports,module){ ";
+        var tail = "; return exports;}(result," + JSON.stringify(module) + "))";
+        code = head + code + tail;
+
         _loadedModules[canonizedFilename] = __engine.eval(code);
+
         return _loadedModules[canonizedFilename];
     };
-    global.loadedModules = _loadedModules;
     global.require = _require;
 
 
@@ -769,8 +728,81 @@ var server = org.bukkit.Bukkit.server;
     };
 
 /*************************************************************************
-refresh() function
-------------------
+## Miscellaneous Core Functions
+
+### setTimeout() function
+
+This function mimics the setTimeout() function used in browser-based javascript.
+However, the function will only accept a function reference, not a string of javascript code.
+Where setTimeout() in the browser returns a numeric value which can be subsequently passed to 
+clearTimeout(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearTimeout() implementation.
+
+If Node.js supports setTimeout() then it's probably good for ScriptCraft to support it too.
+
+[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
+
+#### Example
+
+    //
+    // start a storm in 5 seconds
+    //    
+    setTimeout( function() {
+        var world = server.worlds.get(0);
+        world.setStorm(true);
+    }, 5000);
+
+***/
+    global.setTimeout = function( callback, delayInMillis){
+        //
+        // javascript programmers familiar with setTimeout know that it expects
+        // a delay in milliseconds. However, bukkit's scheduler expects a delay in ticks 
+        // (where 1 tick = 1/20th second)
+        //
+        var bukkitTask = server.scheduler.runTaskLater(__plugin, callback, delayInMillis/50);
+        return bukkitTask;
+    };
+    
+/*************************************************************************
+### clearTimeout() function
+
+A scriptcraft implementation of clearTimeout().
+
+***/
+    global.clearTimeout = function(bukkitTask){
+        bukkitTask.cancel();
+    };
+
+/*************************************************************************
+### setInterval() function
+
+This function mimics the setInterval() function used in browser-based javascript.
+However, the function will only accept a function reference, not a string of javascript code.
+Where setInterval() in the browser returns a numeric value which can be subsequently passed to 
+clearInterval(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearInterval() implementation.
+
+If Node.js supports setInterval() then it's probably good for ScriptCraft to support it too.
+
+[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
+
+***/
+    global.setInterval = function(callback, intervalInMillis){
+        var delay = intervalInMillis/ 50;
+        var bukkitTask = server.scheduler.runTaskTimer(__plugin, callback, delay, delay);
+        return bukkitTask;
+    };
+/*************************************************************************
+### clearInterval() function
+
+A scriptcraft implementation of clearInterval().
+
+***/
+    global.clearInterval = function(bukkitTask){
+        bukkitTask.cancel();
+    };
+
+/*************************************************************************
+### refresh() function
+
 The refresh() function will ...
 
 1. Disable the ScriptCraft plugin.
@@ -822,8 +854,6 @@ See [issue #69][issue69] for more information.
          _runUnloadHandlers();
         org.bukkit.event.HandlerList["unregisterAll(org.bukkit.plugin.Plugin)"](__plugin);
     });
-    
-    
 }());
 
 
