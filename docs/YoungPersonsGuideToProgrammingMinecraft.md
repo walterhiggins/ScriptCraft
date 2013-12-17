@@ -136,8 +136,8 @@ execute this command...
 
 Variables can be created and changed easily in Javascript. Along with 
 the variables you'll create in your in-game commands and scripts, there 
-are handy variables created for you by ScriptCraft. One such variable is 
-`self`, it contains information about the current player...
+are handy "free" variables created for you by ScriptCraft. One such variable is 
+`self`, it contains information about the current player (that's you)...
 
     /js echo ( self )
     
@@ -224,7 +224,7 @@ called. You'll notice the above statement didn't actually do anything
 
 ... The current time is displayed. Congrats! You've just written your
 first Javascript function - you're well on your way to becoming a
-Minecraft Modder :-) There are many functions for working with Text,
+Minecraft Modder. There are many functions for working with Text,
 numbers and dates in Javascript...
 
     /js Math.random()
@@ -255,13 +255,19 @@ function. You must tell the function what material you want the shape to
 be made of. For example, in the game, point the cross hairs at the 
 ground, then type the following and hit enter...
 
-    /js box("5")
+    /js box( blocks.oak )
 
-... This will change the targeted block to wood. What's happened here is 
-the `box()` function has created a single new wooden block. The text 
-`"5"` is taken by Minecraft to mean Wood. You can see many more 
-materials and the number Minecraft uses for them by visiting the 
-[Minecraft Data Values][mcdv] site.  
+... This will change the targeted block to wood. What's happened here
+is the `box()` function has created a single new wooden
+block. `blocks` is another one of those "free" variables you get in
+ScriptCraft, you can see a list of block materials by typing ...
+
+    /js blocks.
+
+... then pressing the `TAB` key. Repeatedly pressing the `TAB` key
+will cycle through all of the block materials. Alternatively, you can
+see many more current materials and the numbers Minecraft uses for
+them by visiting the [Minecraft Data Values][mcdv] site.
 
 ### Common Block Materials
 
@@ -273,16 +279,25 @@ wood so the text "5:1" means Spruce, "5:2" means Birch and "5:3" means
 Jungle wood. There are many different materials in the Minecraft world, the most
 commonly used materials for building are:
 
- * "4" - Cobblestone 
- * "5" - Wooden Planks
- * "5:2" - Birch wood Planks (light wood)
- * "98" - Stone bricks
- * "45" - Red bricks
- * "68" - Doors
- * "102" - Glass panes (for windows)
-   
-For reference, here is a chart of all of the blocks (not items) in the Minecraft
-world...
+ * "4" - Cobblestone or `blocks.cobblestone`
+ * "5" - Wooden Planks or `blocks.oak`
+ * "5:2" - Birch wood Planks (light wood) or `blocks.birch`
+ * "98" - Stone bricks or `blocks.brick.stone`
+ * "45" - Red bricks or `blocks.brick.red`
+ * "68" - Sign or `blocks.sign`
+ * "102" - Glass panes (for windows) or `blocks.glass_pane` 
+
+You can create a single wooden block using the numeric values or the `blocks` variable. For example...
+
+    /js box( "5" )
+
+... and ...
+
+    /js box( blocks.oak ) 
+
+... both do exactly the same thing but I personally prefer `/js box(
+blocks.oak )` because it's easier to remember. For reference, here is
+a chart of all of the blocks (not items) in the Minecraft world...
 
 ![Minecraft Data Values][img_dv]
 
@@ -350,7 +365,7 @@ You can make a Drone move around before and after building by
 *daisy-chaining* the building and movement functions together. In the
 game, point at the ground then type the following...
 
-    /js up(1).box(5).fwd(3).box(5)
+    /js up(1).box( blocks.oak ).fwd(3).box( blocks.oak )
    
 A series of 2 boxes is created 3 blocks apart.
 
@@ -414,7 +429,9 @@ again when you quit the game and start it up again.
 installed on every Windows machine) that is well suited for writing
 code. If you don't already have it on your machine, you can [install
 Notepad++ here][np]. I recommend using NotePad++ rather than plain old
-Notepad because it understands Javascript.
+Notepad because it understands Javascript. If you prefer coding on a
+Macintosh, then [TextWrangler][twl] is a good programming editor which
+also understands Javascript code.
 
 ### Your First Minecraft Mod!
 
@@ -436,7 +453,8 @@ type...
 
     /reload
 
-... to reload all of the server plugins. Your mod has just been loaded. Try it out by typing this command...
+... to reload all of the server plugins. Your mod has just been
+loaded. Try it out by typing this command...
 
     /js greet()
 
@@ -936,6 +954,7 @@ different objects and methods available for use by ScriptCraft.
 [soundapi]: http://jd.bukkit.org/beta/apidocs/org/bukkit/Sound.html
 [ap]: http://walterhiggins.net/blog/ScriptCraft-1-Month-later
 [api]: api.md
+[twl]: http://www.barebones.com/products/textwrangler/
 
 [img_echo_date]: img/ypgpm_echo_date.png
 [img_3d_shapes]: img/ypgpm_3dshapes.jpg

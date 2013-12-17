@@ -62,7 +62,7 @@
     
   <target name="gendocs" depends="init" description="Generate API documentation">
     <javac includeantruntime="false" srcdir="src/docs/java"/>
-    <java classname="jscript" failonerror="true" fork="true" output="docs/api.md">
+    <java classname="jscript" failonerror="true" fork="true" output="docs/API-Reference.md">
       <classpath>
         <pathelement path="src/docs/java"/>      
       </classpath>
