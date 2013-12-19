@@ -122,11 +122,11 @@ You can find more information about [ScriptCraft on my blog][blog].
 
 [blog]: http://walterhiggins.net/blog/cat-index-scriptcraft.html
 [buk]: https://github.com/walterhiggins/ScriptCraft/blob/master/bukkit.md
-[yp]: YoungPersonsGuideToProgrammingMinecraft.md
+[yp]: docs/YoungPersonsGuideToProgrammingMinecraft.md
 [mm]: http://walterhiggins.net/blog/ScriptCraft-1-Month-later
 [api]: https://github.com/walterhiggins/ScriptCraft/blob/master/docs/api.md
 [website]: http://scriptcraftjs.org/
-[ypgpm]: YoungPersonsGuideToProgrammingMinecraft.md
+[ypgpm]: docs/YoungPersonsGuideToProgrammingMinecraft.md
 [cd]: http://coderdojo.com/
 [scr]: http://scratch.mit.edu/
 [cda]: http://cdathenry.wordpress.com/category/modderdojo/
