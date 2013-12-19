@@ -2,6 +2,13 @@ ScriptCraft
 ===========
 A Minecraft mod that lets you create mods using Javascript.
 
+# Let's begin...
+
+I created ScriptCraft to make it easier for children (and anyone curious about programming) to create their own Minecraft Mods. ScriptCraft makes it easier for new programmers to create Minecraft mods. Mods are written using the Javascript programming language and once the ScriptCraft mod is installed, you can add your own new Mods by adding Javascript (.js) files in a directory.
+
+ * If you're new to programming and want to start modding Minecraft, then [Start Here][ypgpm].
+ * If you've already used [Scratch][scr], have attended a few [CoderDojo][cd] sessions, or have already dabbled with Javascript, then [Start Here][cda].
+
 Description
 ===========
 ScriptCraft is a plugin for Minecraft Servers which lets
@@ -118,8 +125,12 @@ You can find more information about [ScriptCraft on my blog][blog].
 
 [blog]: http://walterhiggins.net/blog/cat-index-scriptcraft.html
 [buk]: https://github.com/walterhiggins/ScriptCraft/blob/master/bukkit.md
-[yp]: http://walterhiggins.net/blog/YoungPersonProgrammingMinecraft
+[yp]: YoungPersonsGuideToProgrammingMinecraft.md
 [mm]: http://walterhiggins.net/blog/ScriptCraft-1-Month-later
 [api]: https://github.com/walterhiggins/ScriptCraft/blob/master/docs/api.md
 [website]: http://scriptcraftjs.org/
+[ypgpm]: YoungPersonsGuideToProgrammingMinecraft.md
+[cd]: http://coderdojo.com/
+[scr]: http://scratch.mit.edu/
+[cda]: http://cdathenry.wordpress.com/category/modderdojo/
 
