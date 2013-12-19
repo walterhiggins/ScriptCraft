@@ -1,7 +1,6 @@
 # The Young Person's Guide to Programming in Minecraft
-## 2013/01/08 17:26
 
-### Introduction
+## Introduction
 
 Minecraft is an open-ended 3D game where you can build and craft
 anything you like. Minecraft can be extended and enhanced using 'Mods'
@@ -20,7 +19,7 @@ players connect to a Minecraft Server on the internet or locally
 
 ![Cottages created using ScriptCraft in MineCraft][img_cr]
 
-### Installation
+## Installation
 
 CraftBukkit is a version of the Minecraft server software which allows
 easy addition of 'Mods' and extensions to Minecraft. ScriptCraft is a
@@ -61,7 +60,7 @@ Minecraft your way using Javascript. Javascript is easier to learn than
 Java but it's also more flexible and powerful and is used for creating 
 interactive web sites and many other applications.
 
-### Learning Javascript
+## Learning Javascript
 
 To begin creating cool stuff in Minecraft using ScriptCraft, you don't 
 *have* to know much JavaScript. ScriptCraft comes with lots of functions 
@@ -73,7 +72,7 @@ your friends. If you want to get started learning JavaScript, check out
 this [fun Javascript Tutorial][ce]. If you want to dive right in to 
 ScriptCraft, read on...
 
-### First Steps
+## First Steps
 
 If you don't already know Javascript, don't worry, you'll learn a little 
 about Programming and Javascript along the way. You've set up a 
@@ -93,7 +92,7 @@ press enter: `js 1 + 1` The number 2 should be displayed.
 ... Well Done! You've just confirmed you can run Javascript code from
 within the Minecraft Console. 
 
-### Variables
+## Variables
 
 A variable is how you name something for the computer (and you the 
 programmer) to remember. You create a new variable in Javascript using 
@@ -147,7 +146,7 @@ are handy "free" variables created for you by ScriptCraft. One such variable is
 
 ... for me but the message displayed will be different for every player.
 
-### Functions
+## Functions
 
 ScriptCraft comes with a couple of extra functions not normally found in 
 Javascript. These functions will help you build new structures and 
@@ -235,7 +234,7 @@ in-game console. You'll see the number displayed is different each
 time. Think of Math.random() as a Dice with many many sides. You can
 rely on it to never return the same value twice.
 
-### Building stuff in Minecraft
+## Building stuff in Minecraft
 
 Now we get to the fun stuff - creating structures and buildings in 
 Minecraft. Building by hand is fun but tedious when you want to build 
@@ -269,7 +268,7 @@ will cycle through all of the block materials. Alternatively, you can
 see many more current materials and the numbers Minecraft uses for
 them by visiting the [Minecraft Data Values][mcdv] site.
 
-### Common Block Materials
+## Common Block Materials
 
 In Minecraft Programming, Materials aren't known by their name,
 instead numbers (sometimes 2 numbers) are used to indicate which
@@ -301,7 +300,7 @@ a chart of all of the blocks (not items) in the Minecraft world...
 
 ![Minecraft Data Values][img_dv]
 
-### Dimensions
+## Dimensions
 
 `box()` can do more than just
 create single blocks - it can create cubes and cuboids of any
@@ -316,7 +315,7 @@ away you want something to extend.
 
 ![Width, Height and Depth][img_whd]
 
-### More shapes
+## More shapes
 
  * `box0( block, width, height, depth )` - creates an empty box (with the
  insides hollowed out - perfect for dwellings. `box0` will remove both
@@ -329,7 +328,7 @@ away you want something to extend.
  * `prism( block, width, depth )` - creates a Prism - good for roofs.
  * `prism0( block, width, depth )` - creates an empty prism.
 
-### The Drone Object
+## The Drone Object
 
 ScriptCraft is a Minecraft Mod that lets you execute Javascript code
 in the game. It also lets you write your own Mod in Javacript. One
@@ -359,7 +358,7 @@ Drone is easy...
    make the Drone turn twice so that it is facing in the opposite
    direction.
 
-#### Chaining - combining bulding and movement.
+### Chaining - combining bulding and movement.
 
 You can make a Drone move around before and after building by
 *daisy-chaining* the building and movement functions together. In the
@@ -418,7 +417,7 @@ Both `chkpt()` and `mark()` are useful for when you want to build
 complex things that require your Drone to move about a lot ( for
 example, Castles, mansions, palaces, etc).
 
-### Saving your work
+## Saving your work
 
 You can build cool things using the in-game command-prompt and the
 `/js` command but sooner or later you'll probably want to build
@@ -433,7 +432,7 @@ Notepad because it understands Javascript. If you prefer coding on a
 Macintosh, then [TextWrangler][twl] is a good programming editor which
 also understands Javascript code.
 
-### Your First Minecraft Mod!
+## Your First Minecraft Mod!
 
 So, You've learnt a little bit about Javascript and what the Drone()
 object can do, let's use that knowledge to create a Minecraft Mod!
@@ -469,7 +468,7 @@ Mods is as simple as writing a new javascript function and saving it
 in a file in the js-plugins directory. This function will now be
 avaible every time you launch minecraft.
 
-#### Parameters
+### Parameters
 If you want to change the `greet()` function so that it displays a
 greeting other than "Hi " you can change the code in the `greet()`
 function, or better still, you can use *Parameters*. Parameters are
@@ -546,7 +545,7 @@ things...
 ... try comparing some more numbers yourself - say for example,
 compare the ages of your friends or siblings to your own age.
 
-#### More fun with `true` or `false`
+### More fun with `true` or `false`
 You can find out if you can Fly in minecraft by typing the following statement...
 
     /js self.allowFlight 
@@ -688,7 +687,7 @@ loop and arrays. Arrays and `for` loops are used heavily in all types
 of software, in fact there probably isn't any software that doesn't
 use `for` loops and Arrays to get things done.
 
-#### While Loops
+### While Loops
 
 Another way to repeat things over and over is to use a `while`
 loop. The following `while` loop counts to 100...
@@ -731,7 +730,7 @@ a matter of personal taste, `for` loops are more commonly used with
 Arrays but as you see from the example above, `while` loops can also
 loop over Arrays.
 
-#### `utils.foreach()` - Yet another way to process Arrays
+### `utils.foreach()` - Yet another way to process Arrays
 
 Both the `for` statement and `while` statement are standard commonly
 used javascript statements used for looping. ScriptCraft also comes
@@ -793,7 +792,7 @@ provides `for` and `while` statements for looping and many javascript
 libraries also provide their own custom looping functions. You should
 use what you feel most comfortable with.
 
-#### Putting `for` loops to use - Building a Skyscraper
+### Putting `for` loops to use - Building a Skyscraper
 
 For loops can be used to build enormous structures. In this next
 exercise I'm going to use a for loop to build a skyscraper.  This
@@ -861,7 +860,6 @@ skyscrapers, 5 blocks apart using a for loop.  Once you've figured
 that out, creating an entire city of blocks of skyscrapers is the next
 logical step. Of course, Minecraft doesn't have the same constraints
 as real-world densely populated areas so let your imagination go wild.
-
 
 ### Making Decisions 
 
