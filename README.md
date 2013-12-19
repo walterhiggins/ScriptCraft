@@ -114,9 +114,9 @@ Further Reading
 
 ScriptCraft has [its own website][website] with further information.
 
- * To get started using ScriptCraft to Learn Javascript I recommend [reading this][yp].
+ * To get started using ScriptCraft to Learn Javascript, read [The Young Person's Guide to Programming in Minecraft][yp].
  * The ScriptCraft [API documentation][api].
- * To delve deeper into creating your own minecraft mod, I recommend [reading this][mm].
+ * To delve deeper into creating your own minecraft mod for use by others, read [Creating a complete Minecraft Mod in  Javascript][mm].
 
 You can find more information about [ScriptCraft on my blog][blog].
 
