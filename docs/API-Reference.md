@@ -272,6 +272,53 @@ See [issue #69][issue69] for more information.
 
 [issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
 
+# Require - Node.js-style module loading in ScriptCraft
+
+### (Experimental as of 2013-12-21)
+
+Node.js is a server-side javascript environment with an excellent
+module loading system based on CommonJS. Modules in Node.js are really
+simple. Each module is in its own javascript file and all variables
+and functions within the file are private to that file/module only.  There is a very concise explanation of CommonJS modules at
+http://wiki.commonjs.org/wiki/Modules/1.1.1.
+
+If you want to export a variable or function you use the module.export
+property.
+
+For example imagine you have 3 files program.js, inc.js  and math.js ...
+
+## math.js
+
+    exports.add = function(a,b){
+        return a + b;
+    }
+
+## inc.js
+
+    var math = require('./math');
+    exports.increment = function(n){
+        return math.add(n, 1);
+    }
+
+## program.js
+
+    var inc = require('./inc').increment;
+    var a = 7;
+    a = inc(a);
+    print(a);
+
+You can see from the above sample code that programs can use modules
+and modules themeselves can use other modules. Modules have full
+control over what functions and properties they want to provide to
+others.
+
+## Important
+
+Although ScriptCraft now supports Node.js style modules, it does not
+support node modules. Node.js and Rhino are two very different
+Javascript environments. ScriptCraft uses Rhino Javascript, not
+Node.js.
+
 Drone Module
 ============
 The Drone is a convenience class for building. It can be used for...
@@ -1451,30 +1498,34 @@ String class extensions
 -----------------------
 The following chat-formatting methods are added to the javascript String class..
 
- * black()
- * darkblue()
- * blue()
- * darkgreen()
- * darkaqua()
- * darkred()
- * purple()
- * gold()
- * gray()
- * darkgray()
- * indigo()
- * brightgreen()
- * green()
- * aqua()
- * red()
- * pink()
- * yellow()
- * white()
- * bold()
- * random()
- * strike()
- * underline()
- * italic()
- * reset()
+    * aqua()
+    * black()
+    * blue()
+    * bold()
+    * brightgreen()
+    * darkaqua()
+    * darkblue()
+    * darkgray()
+    * darkgreen()
+    * purple()
+    * darkpurple()
+    * darkred()
+    * gold()
+    * gray()
+    * green()
+    * italic()
+    * lightpurple()
+    * indigo()
+    * green()
+    * red()
+    * pink()
+    * yellow()
+    * white()
+    * strike()
+    * random()
+    * magic()
+    * underline()
+    * reset()
 
 Example
 -------

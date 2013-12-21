@@ -240,59 +240,15 @@ var server = org.bukkit.Bukkit.server;
     if (typeof load == "function")
         return ;
 
-    var _canonize = function(file){ return file.getCanonicalPath().replaceAll("\\\\","/"); };
+    var _canonize = function(file){ 
+        return "" + file.getCanonicalPath().replaceAll("\\\\","/"); 
+    };
     
     var _originalScript = __script;
     var parentFileObj = new java.io.File(__script).getParentFile();
     var jsPluginsRootDir = parentFileObj.getParentFile();
     var jsPluginsRootDirName = _canonize(jsPluginsRootDir);
 
-    /*
-      wph 20131215 Experimental 
-     */
-    var _loadedModules = {};
-    var _require = function(path)
-    {
-        var file = new java.io.File(path);
-        if (!file.exists()){
-            if (path.match(/\.js$/i)){
-                __plugin.logger.warning('require("' + path + '") failed. File not found');
-                return;
-            }else{
-                path = path + '.js';
-                file = new java.io.File(path);
-                if (!file.exists()){
-                    __plugin.logger.warning('require("' + path + '") failed. File not found');
-                    return;
-                }
-            }
-        }
-        if (file.isDirectory()){
-            __plugin.logger.warning('require("' + path + '") directories not yet supported.');
-            return;
-        }
-        var canonizedFilename = _canonize(file);
-        if (_loadedModules[canonizedFilename]){
-            return _loadedModules[canonizedFilename];
-        }
-        if (verbose){
-            print("loading module " + canonizedFilename);
-        }
-        var reader = new java.io.FileReader(file);
-        var br = new java.io.BufferedReader(reader);
-        var code = "";
-        var module = {id: canonizedFilename};
-        while ((r = br.readLine()) !== null) code += r + "\n";
-
-        var head = "var result = {};(function(exports,module){ ";
-        var tail = "; return exports;}(result," + JSON.stringify(module) + "))";
-        code = head + code + tail;
-
-        _loadedModules[canonizedFilename] = __engine.eval(code);
-
-        return _loadedModules[canonizedFilename];
-    };
-    global.require = _require;
 
 
     var _loaded = {};
@@ -331,7 +287,6 @@ var server = org.bukkit.Bukkit.server;
                 } else {
                     while ((r = br.readLine()) !== null) code += r + "\n";
                 }
-                
                 result = __engine.eval(code);
                 _loaded[canonizedFilename] = result || true;
             }catch (e){
@@ -829,7 +784,8 @@ See [issue #69][issue69] for more information.
     global._onTabComplete = __onTabCompleteJS;
     global.addUnloadHandler = _addUnloadHandler;
 
-
+    var fnRequire = load(jsPluginsRootDirName + '/core/_require.js',true);
+    global.require = fnRequire(__plugin, __engine, verbose);
     //
     // assumes this was loaded from js-plugins/core/
     // load all of the plugins.
