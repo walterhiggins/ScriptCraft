@@ -7,55 +7,139 @@ Walter Higgins
 
 [email]: mailto:walter.higgins@gmail.com?subject=ScriptCraft_API_Reference
 
+## Modules in Scriptcraft
+
+ScriptCraft has a simple module loading system. In ScriptCraft, files
+and modules are in one-to-one correspondence. As an example, foo.js
+loads the module circle.js in the same directory. 
+*ScriptCraft now uses the same module system as Node.js - see [Node.js Modules][njsmod] for more details.*
+
+[njsmod]: http://nodejs.org/api/modules.html
+
+The contents of foo.js:
+
+    var circle = require('./circle.js');
+    echo( 'The area of a circle of radius 4 is '
+               + circle.area(4));
+
+The contents of circle.js:
+
+    var PI = Math.PI;
+    
+    exports.area = function (r) {
+      return PI * r * r;
+    };
+
+    exports.circumference = function (r) {
+      return 2 * PI * r;
+    };
+
+The module circle.js has exported the functions area() and
+circumference(). To add functions and objects to the root of your
+module, you can add them to the special exports object.
+
+Variables local to the module will be private, as though the module
+was wrapped in a function. In this example the variable PI is private
+to circle.js.
+
+If you want the root of your module's export to be a function (such as
+a constructor) or if you want to export a complete object in one
+assignment instead of building it one property at a time, assign it to
+module.exports instead of exports.
+
 ## Module Loading
 
-At server startup the ScriptCraft Java plugin is loaded and once
-loaded the Java plugin will in turn begin loading all of the
-javascript (.js) files it finds in the js-plugins directory (in the
-current working directory).  If this is the first time the ScriptCraft
-plugin is loaded, then the js-plugins directory will not yet exist, it
-will be created and all of the bundled javascript files will be
-unzipped into it from a bundled resource within the Java plugin.  The
-very first javascript file to load will always be
-js-plugins/core/_scriptcraft.js. Then all other javascript files are
-loaded except for filenames which begin with `_` (underscore), such files
-are considered to be private modules and will not be automatically
-loaded at startup.
+When the ScriptCraft Java plugin is first installed, a new
+subdirectory is created in the craftbukkit directory. If your
+craftbukkit directory is called 'craftbukkit' then the new
+subdirectories will be ...
 
-### Directory structure
+ * craftbukkit/scriptcraft/
+ * craftbukkit/scriptcraft/plugins
+ * craftbukkit/scriptcraft/modules
+ * craftbukkit/scriptcraft/lib
 
-The js-plugins directory is loosely organised into subdirectories -
-one for each module. Each subdirectory in turn can contain one or more
-javascript files. Within each directory, a javascript file with the
-same filename as the directory will always be loaded before all other
-files in the same directory. So for example, drone/drone.js will
-always load before any other files in the drone/ directory. Similarly
-utils/utils.js will always load before any other files in the utils/
-directory.
+... The `plugins`, `modules` and `lib` directories each serve a different purpose.
+
+### The `plugins` directory
+
+At server startup the ScriptCraft Java plugin is loaded and begins
+automatically loading and executing all of the modules (javascript
+files with the extension `.js`) it finds in the `scriptcraft/plugins`
+directory. All modules in the plugins directory are automatically
+loaded into the `global` namespace. What this means is that anything a
+module in the `plugins` directory exports becomes a global
+variable. For example, if you have a module greeting.js in the plugins
+directory....
+
+    exports.greet = function() {
+        echo('Hello ' + self.name);
+    };
+
+... then `greet` becomes a global function and can be used at the
+in-game (or server) command prompt like so...
+
+    /js greet()
+
+... This differs from how modules (in NodeJS and commonJS
+environments) normally work. If you want your module to be exported
+globally, put it in the `plugins` directory. If you don't want your
+module to be exported globally but only want it to be used by other
+modules, then put it in the `modules` directory instead. If you've
+used previous versions of ScriptCraft and have put your custom
+javascript modules in the `js-plugins` directory, then put them in the
+`scriptcraft/plugins` directory. To summarise, modules in this directory are ...
+
+ * Automatically loaded and run at server startup.
+ * Anything exported by modules becomes a global variable.
+
+### The `modules` directory
+
+The module directory is where you should place your modules if you
+don't want to export globally. In javascript, it's considered best
+practice not to have too many global variables, so if you want to
+develop modules for others to use, or want to develop more complex
+mods then your modules should be placed in the `modules` directory.
+*Modules in the `modules` directory are not automatically loaded at
+startup*, instead, they are loaded and used by other modules/plugins
+using the standard `require()` function.  This is the key difference
+between modules in the `plugins` directory and modules in the
+`modules` directory. Modules in the `plugins` directory are
+automatically loaded and exported in to the global namespace at server
+startup, modules in the `modules` directory are not.
+
+### The `lib` directory
+
+Modules in the `lib` directory are for use by ScriptCraft and some
+core functions for use by module and plugin developers are also
+provided. The `lib` directory is for internal use by ScriptCraft.
+Modules in this directory are not automatically loaded nor are they
+globally exported.
 
 ### Directories 
 
-As of February 10 2013, the js-plugins directory has the following sub-directories...
+As of December 24 2013, the `scriptcraft/plugins` directory has the following sub-directories...
 
- * core - Contains javascript files containing Core functionality crucial to ScriptCraft and modules which use it.
  * drone - Contains the drone module and drone extensions. Drone was the first scriptcraft module.
- * ext - Contains external 3rd party javascript libraries (e.g. json2.js - the JSON lib)
  * mini-games - Contains mini-games 
  * arrows - The arrows module
- * signs - The signs module
+ * signs - The signs module (includes example signs)
  * chat - The chat plugin/module
  * alias - The alias plugin/module
+ * home - The home module - for setting homes and visiting other homes.
 
-## Core Module
+## Free Variables
 
-This module defines commonly used functions by all plugins...
+ScripCraft provides some functions which can be used by all plugins/modules...
 
  * echo (message) - Displays a message on the screen. 
    For example: `/js echo('Hello World')` will print Hello World on the in-game chat window.  
    For programmers familiar with Javascript web programming, an `alert` function is also provided. 
    `alert` works exactly the same as `echo` e.g. `alert('Hello World')` 
 
- * load (filename,warnOnFileNotFound) - loads and evaluates a javascript file, returning the evaluated object.
+ * require (modulename) - Will load modules. See [Node.js modules][njsmod]
+
+ * load (filename,warnOnFileNotFound) - loads and evaluates a javascript file, returning the evaluated object. (Note: Prefer `require()` to `load()`)
   
  * save (object, filename) - saves an object to a file.
 
@@ -66,22 +150,34 @@ This module defines commonly used functions by all plugins...
    'store' property - this will be created automatically if not
    already defined.  (its type is object {} ) . More on plugins below.
     
- * ready (function) - specifies code to be executed only when all the plugins have loaded.
-
  * command (name, function) - defines a command that can be used by
    non-operators. The `command` function provides a way for plugin
    developers to provide new commands for use by players.
 
-### load() function
+### require() function
 
-The load() function is used by ScriptCraft at startup to load all of
-the javascript modules and data.  You normally wouldn't need to call
-this function directly. If you put a javascript file anywhere in the
-craftbukkit/js-plugins directory tree it will be loaded automatically
-when craftbukkit starts up. The exception is files whose name begins
-with an underscore `_` character. These files will not be
-automatically loaded at startup as they are assumed to be files
-managed / loaded by plugins.
+ScriptCraft's `require()` function is used to load modules. The `require()` function takes a 
+module name as a parameter and will try to load the named module.
+
+#### Parameters
+
+ * modulename - The name of the module to be loaded. Can be one of the following...
+
+   - A relative file path (with or without `.js` suffix)
+   - An absolute file path (with or without `.js` suffix)
+   - A relative directory path (uses node.js rules for directories)
+   - An absolute directory path (uses node.js rules for directories)
+   - A name of the form `'events'` - in which case the `lib` directory and `modules` directories are searched for the module.
+
+#### Return
+
+require() will return the loaded module's exports.
+
+### load() function 
+
+#### No longer recommended for use by Plugin/Module developers (deprecated)
+
+load() should only be used to load .json data.
 
 #### Parameters
 
