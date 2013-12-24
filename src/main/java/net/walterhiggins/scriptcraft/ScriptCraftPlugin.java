@@ -23,7 +23,7 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
     // need to look at possibly having context/scope per operator
     //protected Map<CommandSender,ScriptCraftEvaluator> playerContexts = new HashMap<CommandSender,ScriptCraftEvaluator>();
     protected ScriptEngine engine = null;
-    private static final String JS_PLUGINS_DIR = "js-plugins";
+    private static final String JS_PLUGINS_DIR = "scriptcraft";
 
     /** 
      * Unzips bundled javascript code.
@@ -92,7 +92,7 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
         FileReader reader = null;
         try{
             ScriptEngineManager factory = new ScriptEngineManager();
-            File boot = new File(JS_PLUGINS_DIR + "/core/_scriptcraft.js");
+            File boot = new File(JS_PLUGINS_DIR + "/lib/scriptcraft.js");
             this.engine = factory.getEngineByName("JavaScript");
             this.engine.put("__engine",engine);
             this.engine.put("__plugin",this);
@@ -103,7 +103,7 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
               wph 20130811 Need to disable coffeescript support until issues loading and evaluating it are resolved.
               See issue #92
             // Load the CoffeeScript compiler
-            File coffeescript = new File(JS_PLUGINS_DIR + "/core/_coffeescript.js");
+            File coffeescript = new File(JS_PLUGINS_DIR + "/lib/coffeescript.js");
             this.engine.eval(new FileReader(coffeescript));
             */
             
