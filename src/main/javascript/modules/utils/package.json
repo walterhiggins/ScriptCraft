@@ -1,0 +1,4 @@
+{
+    "name": 'utils',
+    "main": './utils.js'
+}       
