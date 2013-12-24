@@ -45,18 +45,24 @@ Example:
 ------
 The following code will print a message on screen every time a block is broken in the game
 
+    var events = require('./events/events');
+
     events.on("block.BlockBreakEvent", function(listener, evt){ 
         echo (evt.player.name + " broke a block!");
     });
 
 To handle an event only once and unregister from further events...
     
+    var events = require('./events/events');
+
     events.on("block.BlockBreakEvent", function(listener, evt){ 
         print (evt.player.name + " broke a block!");
         evt.handlers.unregister(listener);
     });
 
 To unregister a listener *outside* of the listener function...
+
+    var events = require('./events/events');
 
     var myBlockBreakListener = events.on("block.BlockBreakEvent",function(l,e){ ... });
     ...
@@ -67,67 +73,56 @@ To unregister a listener *outside* of the listener function...
 [buk]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/event/Event.html
 
 ***/
- 
-var events = events || {
-    //
-    // handle events in Minecraft
-    // --------------------------
-    // eventType can be a string (assumed to be a sub package of org.bukkit.event - e.g. 
-    // if the string "block.BlockBreakEvent" is supplied then it's converted to the 
-    // org.bukkit.event.block.BlockBreakEvent class . For custom event classes, just 
-    // supply the custom event class e.g.
-    // events.on(net.yourdomain.events.YourCustomEvent,function(l,e){ ... });
-    //
-    on: function(
-        /* String or java Class */ eventType, 
-        /* function( registeredListener, event) */ handler, 
-        /* (optional) String (HIGH, HIGHEST, LOW, LOWEST, NORMAL, MONITOR), */ priority
-    ){}
-};
-//
-// private implementation from here on in...
-//
-(function(events){
-    if (events._eventsLoaded){
-        return;
-    }
-    var bkEvent = org.bukkit.event;
-    var bkEvtExecutor = org.bukkit.plugin.EventExecutor;
-    var bkRegListener = org.bukkit.plugin.RegisteredListener;
 
-    var _on = function(eventType, handler, priority)
-    {
-        if (typeof priority == "undefined"){
-            priority = bkEvent.EventPriority.HIGHEST;
-        }else{
-            priority = bkEvent.EventPriority[priority];
+//
+// handle events in Minecraft
+// --------------------------
+// eventType can be a string (assumed to be a sub package of org.bukkit.event - e.g. 
+// if the string "block.BlockBreakEvent" is supplied then it's converted to the 
+// org.bukkit.event.block.BlockBreakEvent class . For custom event classes, just 
+// supply the custom event class e.g.
+// events.on(net.yourdomain.events.YourCustomEvent,function(l,e){ ... });
+//
+var bkEvent = org.bukkit.event;
+var bkEvtExecutor = org.bukkit.plugin.EventExecutor;
+var bkRegListener = org.bukkit.plugin.RegisteredListener;
+
+exports.on = function( 
+    /* String or java Class */
+    eventType, 
+    /* function( registeredListener, event) */ 
+    handler,   
+    /* (optional) String (HIGH, HIGHEST, LOW, LOWEST, NORMAL, MONITOR), */
+    priority   ) {
+
+    if (typeof priority == "undefined"){
+        priority = bkEvent.EventPriority.HIGHEST;
+    }else{
+        priority = bkEvent.EventPriority[priority];
+    }
+    if (typeof eventType == "string"){
+        var subPkgs = eventType.split('.');
+        eventType = bkEvent[subPkgs[0]];
+        for (var i = 1;i < subPkgs.length; i++){
+            eventType = eventType[subPkgs[i]];
         }
-        if (typeof eventType == "string"){
-            var subPkgs = eventType.split('.');
-            eventType = bkEvent[subPkgs[0]];
-            for (var i = 1;i < subPkgs.length; i++){
-                eventType = eventType[subPkgs[i]];
-            }
-        }
-        var handlerList = eventType.getHandlerList();
-        var listener = {};
-        var eventExecutor = new bkEvtExecutor(){
-            execute: function(l,e){
-                handler(listener.reg,e);
-            } 
-        };
-        /* 
-           wph 20130222 issue #64 bad interaction with Essentials plugin
-           if another plugin tries to unregister a Listener (not a Plugin or a RegisteredListener)
-           then BOOM! the other plugin will throw an error because Rhino can't coerce an
-           equals() method from an Interface.
-           The workaround is to make the ScriptCraftPlugin java class a Listener.
-           Should only unregister() registered plugins in ScriptCraft js code.
-        */
-        listener.reg = new bkRegListener( __plugin, eventExecutor, priority, __plugin, true);
-        handlerList.register(listener.reg);
-        return listener.reg;
+    }
+    var handlerList = eventType.getHandlerList();
+    var listener = {};
+    var eventExecutor = new bkEvtExecutor(){
+        execute: function(l,e){
+            handler(listener.reg,e);
+        } 
     };
-    events.on = _on;
-    events._eventsLoaded = true;
-}(events));
+    /* 
+       wph 20130222 issue #64 bad interaction with Essentials plugin
+       if another plugin tries to unregister a Listener (not a Plugin or a RegisteredListener)
+       then BOOM! the other plugin will throw an error because Rhino can't coerce an
+       equals() method from an Interface.
+       The workaround is to make the ScriptCraftPlugin java class a Listener.
+       Should only unregister() registered plugins in ScriptCraft js code.
+    */
+    listener.reg = new bkRegListener( __plugin, eventExecutor, priority, __plugin, true);
+    handlerList.register(listener.reg);
+    return listener.reg;
+};
