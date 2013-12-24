@@ -86,8 +86,12 @@ var store = [];
 find(new File(dir),store,/\/[a-zA-Z0-9_\-]+\.js$/);
 
 store.sort(sorter([ 
-        /_scriptcraft\.js$/, 
-        /core/, 
+        /scriptcraft\.js$/, 
+        /require\.js$/,
+        /plugin\.js$/,
+        /events\.js$/,
+        /lib/, 
+        /modules/,
         /drone\.js/, 
         /drone/
 ]));

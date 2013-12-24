@@ -44,9 +44,8 @@ Only ops users can run the classroom.allowScripting() function - this is so that
 don't try to bar themselves and each other from scripting.
 
 ***/
-var _canScript = false;
-
-exports.classroom = {
+var _store = {enableScripting: false};
+var classroom = plugin("classroom", {
     allowScripting: function (/* boolean: true or false */ canScript) {
         /*
           only operators should be allowed run this function
@@ -67,12 +66,16 @@ exports.classroom = {
                 });
             });
         }
-        _canScript = canScript;
-    }
-};
+        _store.enableScripting = canScript;
+    },
+    store: _store
+}, true);
+
+exports.classroom = classroom;
+
 events.on('player.PlayerLoginEvent', function(listener, event) { 
     var player = event.player;
-    if (classroom.canScript){
+    if (classroom.store.enableScripting){
         player.addAttachment(__plugin, "scriptcraft.*", true);
     }
 }, "HIGHEST");

@@ -439,18 +439,18 @@ object can do, let's use that knowledge to create a Minecraft Mod!
 
 Once you've installed Notepad++, Launch it, create a new file and type the following...
 
-    function greet(){
+    exports.greet = function(){
         echo("Hi " + self.name);
     }
 
 ... then save the file in a new directory
-`craftbukkit/js-plugins/{your_name}` (replace {your_name} with your
+`craftbukkit/scriptcraft/plugins/{your_name}` (replace {your_name} with your
 own name) and call the file `greet.js` (be sure to change the file-type
 option to '*.* All Files' when saving or NotePad++ will add a '.txt'
 extension to the filename. Now switch back to the Minecraft game and
 type...
 
-    /reload
+    /js refresh()
 
 ... to reload all of the server plugins. Your mod has just been
 loaded. Try it out by typing this command...
@@ -465,8 +465,30 @@ loaded. Try it out by typing this command...
 minecraft username. Congratulations - You've just written your very
 first Minecraft Mod! With ScriptCraft installed, writing Minecraft
 Mods is as simple as writing a new javascript function and saving it
-in a file in the js-plugins directory. This function will now be
-avaible every time you launch minecraft.
+in a file in the craftbukkit/scriptcraft/plugins directory. This
+function will now be avaible every time you launch minecraft. This is
+a deliberately trivial minecraft mod but the principles are the same
+when creating more complex mods.
+
+The `exports` variable is a special variable you can use in your mod
+to provide functions, objects and variables for others to use. If you
+want to provide something for other programmers to use, you should
+"export" it using the special `exports` variable. The syntax is
+straightforward and you can use the same `exports` variable to export
+one or more functions, objects or variables. For example...
+
+#### thrower.js
+
+    exports.egg = function(){
+        self.throwEgg();
+    }
+    exports.snowball = function(){
+        self.throwSnowball();
+    }
+
+... is a plugin which provides 2 javascript functions called `egg()`
+and `snowball()` which can be invoked from the in-game prompt like
+this `/js egg()` or `/js snowball()`.
 
 ### Parameters
 If you want to change the `greet()` function so that it displays a
@@ -479,11 +501,11 @@ differently each time it is called.
 
 Change the `greet()` function so that it looks like this...
 
-    function greet( greeting ) {
+    exports.greet = function ( greeting ) {
         echo( greeting + self.name );
     }
 
-... Save your greet.js file and issue the /reload command in
+... Save your greet.js file and issue the `/js refresh()` command in
 minecraft. Now enter the following command in Minecraft...
 
     greet("Hello ");
@@ -672,7 +694,7 @@ function. Open the `hi.js` file you created earlier (using NotePad++ ,
 TextWrangler or your editor of choice) and add the following code at
 the bottom of the file...
 
-    function hiAll(){
+    exports.hiAll = function (){
         var players = server.onlinePlayers;
         for (var i = 0; i < players.length; i++) {
             var player = players[i];
@@ -760,6 +782,7 @@ utils.foreach() function...
     /*
       give every player the ability to fly.
     */
+    var utils = require('utils');
     utils.foreach( server.onlinePlayers, 
                    function (player) { 
                        player.setAllowFlight(true); 
@@ -771,6 +794,7 @@ utils.foreach() function...
     /*
       Play a Cat's Meow sound for each player.
     */
+    var utils = require('utils');
     utils.foreach( server.onlinePlayers, 
                    function (player) { 
                        player.playSound(player.location, 
@@ -811,26 +835,26 @@ pointing at the block, type the following into the in-game prompt...
 ... A skyscraper with just a single floor isn't much of a skyscraper
 so the next step is to repeat this over and over. This is where `for`
 loops come in. Open your favorite text editor and create a new file in
-your js-plugins/{your-name} directory called `myskyscraper.js`, then
+your scriptcraft/plugins/{your-name} directory, name the file `myskyscraper.js`, then
 type the following...
 
-    function skyscraper(floors)
+    exports.myskyscraper = function(floors)
     {
         floors = floors || 10; // default number of floors is 10
-        this.chkpt('skyscraper'); // saves the drone position so it can return there later
+        this.chkpt('myskyscraper'); // saves the drone position so it can return there later
         for (var i = 0; i < floors; i++)
         {
             this.box(blocks.iron,20,1,20).up().box0(blocks.glass_pane,20,3,20).up(3);
         }
-        return this.move('skyscraper'); // return to where we started
+        return this.move('myskyscraper'); // return to where we started
     };
 
     load("../drone/drone.js");
-    Drone.extend('skyscraper',skyscraper);
+    Drone.extend('myskyscraper',myskyscraper);
 
 ... so this takes a little explaining. First I create a new function
-called skyscraper that will take a single parameter `floors` so that
-when you eventually call the `skyscraper()` function you can tell it
+called myskyscraper that will take a single parameter `floors` so that
+when you eventually call the `myskyscraper()` function you can tell it
 how many floors you want built. The first statement in the function
 `floors = floors || 10;` just sets floors to 10 if no parameter is
 supplied. The next statement `this.chkpt('myskyscraper')` just saves
@@ -845,7 +869,7 @@ so that now it can build skyscrapers among other things.  Once you've
 typed in the above code and saved the file, type `reload` in your
 in-game prompt, then type ...
 
-     /js skyscraper(2);
+     /js myskyscraper(2);
 
 ... A two-story skyscraper should appear. If you're feeling
 adventurous, try a 10 story skyscraper! Or a 20 story skyscraper!
@@ -904,7 +928,7 @@ whatever follows it.
 What if you want to display a message in both cases - whether you're
 flying or not? This is where the `if - else` construct comes in handy.
 Open your favorite editor and type the following code into a new file
-in your js-plugins directory...
+in your scriptcraft/plugins directory...
 
      function flightStatus()
      {
@@ -935,7 +959,7 @@ minecraft, I recommend reading the accompanying [ScriptCraft API
 reference][api] which covers all of the ScriptCraft functions, objects
 and methods. I also recommend reading the source code to some of the
 existing scriptcraft add-ons, the *chat* module (
-`js-plugins/chat/chat.js` ) is a good place to start, followed by
+`scriptcraft/plugins/chat/color.js` ) is a good place to start, followed by
 [Anatomy of a ScriptCraft Plug-in][ap].  The online [Craftbukkit API
 Reference][cbapi] provides lots of valuable information about the
 different objects and methods available for use by ScriptCraft.

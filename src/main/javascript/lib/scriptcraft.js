@@ -61,7 +61,7 @@ subdirectories will be ...
 
 ... The `plugins`, `modules` and `lib` directories each serve a different purpose.
 
-### The `plugins` directory
+### The plugins directory
 
 At server startup the ScriptCraft Java plugin is loaded and begins
 automatically loading and executing all of the modules (javascript
@@ -93,7 +93,7 @@ javascript modules in the `js-plugins` directory, then put them in the
  * Automatically loaded and run at server startup.
  * Anything exported by modules becomes a global variable.
 
-### The `modules` directory
+### The modules directory
 
 The module directory is where you should place your modules if you
 don't want to export globally. In javascript, it's considered best
@@ -108,7 +108,7 @@ between modules in the `plugins` directory and modules in the
 automatically loaded and exported in to the global namespace at server
 startup, modules in the `modules` directory are not.
 
-### The `lib` directory
+### The lib directory
 
 Modules in the `lib` directory are for use by ScriptCraft and some
 core functions for use by module and plugin developers are also
@@ -128,7 +128,7 @@ As of December 24 2013, the `scriptcraft/plugins` directory has the following su
  * alias - The alias plugin/module
  * home - The home module - for setting homes and visiting other homes.
 
-## Free Variables
+## Core Module: functions
 
 ScripCraft provides some functions which can be used by all plugins/modules...
 

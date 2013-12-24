@@ -1,8 +1,6 @@
 /*************************************************************************
 ## Require - Node.js-style module loading in ScriptCraft
 
-#### (Experimental as of 2013-12-21)
-
 Node.js is a server-side javascript environment with an excellent
 module loading system based on CommonJS. Modules in Node.js are really
 simple. Each module is in its own javascript file and all variables
@@ -10,6 +8,8 @@ and functions within the file are private to that file/module only.
 There is a very concise explanation of CommonJS modules at...
 
 [http://wiki.commonjs.org/wiki/Modules/1.1.1.][cjsmodules]
+
+Node.js also has good documentation on [Modules][njsmod].
 
 If you want to export a variable or function you use the module.export
 property.
@@ -48,7 +48,6 @@ support node modules. Node.js and Rhino are two very different
 Javascript environments. ScriptCraft uses Rhino Javascript, not
 Node.js.
 
-Right now, the base directory is for relative modules is 'js-plugins'.
 Modules can be loaded using relative or absolute paths. Per the CommonJS
 module specification, the '.js' suffix is optional.
 

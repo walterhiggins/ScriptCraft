@@ -1,3 +1,801 @@
+# ScriptCraft API Reference
+
+Walter Higgins
+
+[walter.higgins@gmail.com][email]
+
+[email]: mailto:walter.higgins@gmail.com?subject=ScriptCraft_API_Reference
+
+## Modules in Scriptcraft
+
+ScriptCraft has a simple module loading system. In ScriptCraft, files
+and modules are in one-to-one correspondence. As an example, foo.js
+loads the module circle.js in the same directory. 
+*ScriptCraft now uses the same module system as Node.js - see [Node.js Modules][njsmod] for more details.*
+
+[njsmod]: http://nodejs.org/api/modules.html
+
+The contents of foo.js:
+
+    var circle = require('./circle.js');
+    echo( 'The area of a circle of radius 4 is '
+               + circle.area(4));
+
+The contents of circle.js:
+
+    var PI = Math.PI;
+    
+    exports.area = function (r) {
+      return PI * r * r;
+    };
+
+    exports.circumference = function (r) {
+      return 2 * PI * r;
+    };
+
+The module circle.js has exported the functions area() and
+circumference(). To add functions and objects to the root of your
+module, you can add them to the special exports object.
+
+Variables local to the module will be private, as though the module
+was wrapped in a function. In this example the variable PI is private
+to circle.js.
+
+If you want the root of your module's export to be a function (such as
+a constructor) or if you want to export a complete object in one
+assignment instead of building it one property at a time, assign it to
+module.exports instead of exports.
+
+## Module Loading
+
+When the ScriptCraft Java plugin is first installed, a new
+subdirectory is created in the craftbukkit directory. If your
+craftbukkit directory is called 'craftbukkit' then the new
+subdirectories will be ...
+
+ * craftbukkit/scriptcraft/
+ * craftbukkit/scriptcraft/plugins
+ * craftbukkit/scriptcraft/modules
+ * craftbukkit/scriptcraft/lib
+
+... The `plugins`, `modules` and `lib` directories each serve a different purpose.
+
+### The plugins directory
+
+At server startup the ScriptCraft Java plugin is loaded and begins
+automatically loading and executing all of the modules (javascript
+files with the extension `.js`) it finds in the `scriptcraft/plugins`
+directory. All modules in the plugins directory are automatically
+loaded into the `global` namespace. What this means is that anything a
+module in the `plugins` directory exports becomes a global
+variable. For example, if you have a module greeting.js in the plugins
+directory....
+
+    exports.greet = function() {
+        echo('Hello ' + self.name);
+    };
+
+... then `greet` becomes a global function and can be used at the
+in-game (or server) command prompt like so...
+
+    /js greet()
+
+... This differs from how modules (in NodeJS and commonJS
+environments) normally work. If you want your module to be exported
+globally, put it in the `plugins` directory. If you don't want your
+module to be exported globally but only want it to be used by other
+modules, then put it in the `modules` directory instead. If you've
+used previous versions of ScriptCraft and have put your custom
+javascript modules in the `js-plugins` directory, then put them in the
+`scriptcraft/plugins` directory. To summarise, modules in this directory are ...
+
+ * Automatically loaded and run at server startup.
+ * Anything exported by modules becomes a global variable.
+
+### The modules directory
+
+The module directory is where you should place your modules if you
+don't want to export globally. In javascript, it's considered best
+practice not to have too many global variables, so if you want to
+develop modules for others to use, or want to develop more complex
+mods then your modules should be placed in the `modules` directory.
+*Modules in the `modules` directory are not automatically loaded at
+startup*, instead, they are loaded and used by other modules/plugins
+using the standard `require()` function.  This is the key difference
+between modules in the `plugins` directory and modules in the
+`modules` directory. Modules in the `plugins` directory are
+automatically loaded and exported in to the global namespace at server
+startup, modules in the `modules` directory are not.
+
+### The lib directory
+
+Modules in the `lib` directory are for use by ScriptCraft and some
+core functions for use by module and plugin developers are also
+provided. The `lib` directory is for internal use by ScriptCraft.
+Modules in this directory are not automatically loaded nor are they
+globally exported.
+
+### Directories 
+
+As of December 24 2013, the `scriptcraft/plugins` directory has the following sub-directories...
+
+ * drone - Contains the drone module and drone extensions. Drone was the first scriptcraft module.
+ * mini-games - Contains mini-games 
+ * arrows - The arrows module
+ * signs - The signs module (includes example signs)
+ * chat - The chat plugin/module
+ * alias - The alias plugin/module
+ * home - The home module - for setting homes and visiting other homes.
+
+## Core Module: functions
+
+ScripCraft provides some functions which can be used by all plugins/modules...
+
+ * echo (message) - Displays a message on the screen. 
+   For example: `/js echo('Hello World')` will print Hello World on the in-game chat window.  
+   For programmers familiar with Javascript web programming, an `alert` function is also provided. 
+   `alert` works exactly the same as `echo` e.g. `alert('Hello World')` 
+
+ * require (modulename) - Will load modules. See [Node.js modules][njsmod]
+
+ * load (filename,warnOnFileNotFound) - loads and evaluates a javascript file, returning the evaluated object. (Note: Prefer `require()` to `load()`)
+  
+ * save (object, filename) - saves an object to a file.
+
+ * plugin (name, interface, isPersistent) - defines a new plugin. If
+   isPersistent is true then the plugin doesn't have to worry about
+   loading and saving state - that will be done by the framework. Just
+   make sure that anything you want to save (and restore) is in the plugin's
+   'store' property - this will be created automatically if not
+   already defined.  (its type is object {} ) . More on plugins below.
+    
+ * command (name, function) - defines a command that can be used by
+   non-operators. The `command` function provides a way for plugin
+   developers to provide new commands for use by players.
+
+### require() function
+
+ScriptCraft's `require()` function is used to load modules. The `require()` function takes a 
+module name as a parameter and will try to load the named module.
+
+#### Parameters
+
+ * modulename - The name of the module to be loaded. Can be one of the following...
+
+   - A relative file path (with or without `.js` suffix)
+   - An absolute file path (with or without `.js` suffix)
+   - A relative directory path (uses node.js rules for directories)
+   - An absolute directory path (uses node.js rules for directories)
+   - A name of the form `'events'` - in which case the `lib` directory and `modules` directories are searched for the module.
+
+#### Return
+
+require() will return the loaded module's exports.
+
+### load() function 
+
+#### No longer recommended for use by Plugin/Module developers (deprecated)
+
+load() should only be used to load .json data.
+
+#### Parameters
+
+ * filename - The name of the file to load.
+ * warnOnFileNotFound (optional - default: false) - warn if the file was not found.
+
+#### Return
+
+load() will return the result of the last statement evaluated in the file.
+
+#### Example
+
+    load(__folder + "myFile.js"); // loads a javascript file and evaluates it.
+
+    var myData = load("myData.json"); // loads a javascript file and evaluates it - eval'd contents are returned.
+
+myData.json contents...
+
+    __data = { 
+        players: {
+            walterh: {
+                h: ["jsp home {1}"],
+                sunny:["time set 0",
+                       "weather clear"]
+                     }
+                 }
+            }
+
+### save() function
+
+The save() function saves an in-memory javascript object to a
+specified file. Under the hood, save() uses JSON (specifically
+json2.js) to save the object. Again, there will usually be no need to
+call this function directly as all javascript plugins' state are saved
+automatically if they are declared using the `plugin()` function.  Any
+in-memory object saved using the `save()` function can later be
+restored using the `load()` function.
+
+#### Parameters
+
+ * objectToSave : The object you want to save.
+ * filename : The name of the file you want to save it to.
+
+#### Example
+
+    var myObject = { name: 'John Doe',
+                     aliases: ['John Ray', 'John Mee'],
+                     date_of_birth: '1982/01/31' };
+    save(myObject, 'johndoe.json');
+
+johndoe.json contents...
+
+    var __data = { "name": "John Doe", 
+                   "aliases": ["John Ray", "John Mee"], 
+                   "date_of_birth": "1982/01/31" };
+
+### plugin() function
+
+The `plugin()` function should be used to declare a javascript module
+whose state you want to have managed by ScriptCraft - that is - a
+Module whose state will be loaded at start up and saved at shut down.
+A plugin is just a regular javascript object whose state is managed by
+ScriptCraft.  The only member of the plugin which whose persistence is
+managed by Scriptcraft is `store` - this special member will be
+automatically saved at shutdown and loaded at startup by
+ScriptCraft. This makes it easier to write plugins which need to
+persist data.
+
+#### Parameters
+ 
+ * pluginName (String) : The name of the plugin - this becomes a global variable.
+ * pluginDefinition (Object) : The various functions and members of the plugin object.
+ * isPersistent (boolean - optional) : Specifies whether or not the plugin/object state should be loaded and saved by ScriptCraft.
+
+#### Example
+
+See chat/color.js for an example of a simple plugin - one which lets
+players choose a default chat color. See also [Anatomy of a
+ScriptCraft Plugin][anatomy].
+ 
+[anatomy]: http://walterhiggins.net/blog/ScriptCraft-1-Month-later
+
+### command() function
+
+The `command()` function is used to expose javascript functions for
+use by non-operators (regular players). Only operators should be
+allowed use raw javascript using the `/js ` command because it is too
+powerful for use by regular players and can be easily abused. However,
+the `/jsp ` command lets you (the operator / server administrator /
+plugin author) safely expose javascript functions for use by players.
+
+#### Parameters
+ 
+ * commandName : The name to give your command - the command will be invoked like this by players `/jsp commandName`
+ * commandFunction: The javascript function which will be invoked when the command is invoked by a player.
+ * options (Array - optional) : An array of command options/parameters
+   which the player can supply (It's useful to supply an array so that
+   Tab-Completion works for the `/jsp ` commands.
+ * intercepts (boolean - optional) : Indicates whether this command
+   can intercept Tab-Completion of the `/jsp ` command - advanced
+   usage - see alias/alias.js for example.
+
+#### Example
+
+See chat/colors.js or alias/alias.js or homes/homes.js for examples of how to use the `command()` function.
+
+### ready() function
+
+The `ready()` function provides a way for plugins to do additional
+setup once all of the other plugins/modules have loaded.  For example,
+event listener registration can only be done after the
+events/events.js module has loaded. A plugin author could load the
+file explicilty like this...
+
+    load(__folder + "../events/events.js");
+
+    // event listener registration goes here 
+
+... or better still, just do event regristration using the `ready()`
+handler knowing that by the time the `ready()` callback is invoked,
+all of the scriptcraft modules have been loaded...
+
+    ready(function(){
+        // event listener registration goes here
+        // code that depends on other plugins/modules also goes here
+    });
+
+The execution of the function object passed to the `ready()` function
+is *deferred* until all of the plugins/modules have loaded. That way
+you are guaranteed that when the function is invoked, all of the
+plugins/modules have been loaded and evaluated and are ready to use.
+
+Core Module - Special Variables
+===============================
+There are a couple of special javascript variables available in ScriptCraft...
+ 
+ * __folder - The current working directory - this variable is only to be used within the main body of a .js file.
+ * __plugin - The ScriptCraft JavaPlugin object.
+ * server - The Minecraft Server object.
+ * self - the current player. (Note - this value should not be used in multi-threaded scripts - it's not thread-safe)
+
+## Miscellaneous Core Functions
+
+### setTimeout() function
+
+This function mimics the setTimeout() function used in browser-based javascript.
+However, the function will only accept a function reference, not a string of javascript code.
+Where setTimeout() in the browser returns a numeric value which can be subsequently passed to 
+clearTimeout(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearTimeout() implementation.
+
+If Node.js supports setTimeout() then it's probably good for ScriptCraft to support it too.
+
+[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
+
+#### Example
+
+    //
+    // start a storm in 5 seconds
+    //    
+    setTimeout( function() {
+        var world = server.worlds.get(0);
+        world.setStorm(true);
+    }, 5000);
+
+### clearTimeout() function
+
+A scriptcraft implementation of clearTimeout().
+
+### setInterval() function
+
+This function mimics the setInterval() function used in browser-based javascript.
+However, the function will only accept a function reference, not a string of javascript code.
+Where setInterval() in the browser returns a numeric value which can be subsequently passed to 
+clearInterval(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearInterval() implementation.
+
+If Node.js supports setInterval() then it's probably good for ScriptCraft to support it too.
+
+[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
+
+### clearInterval() function
+
+A scriptcraft implementation of clearInterval().
+
+### refresh() function
+
+The refresh() function will ...
+
+1. Disable the ScriptCraft plugin.
+2. Unload all event listeners associated with the ScriptCraft plugin.
+3. Enable the ScriptCraft plugin.
+
+... refresh() can be used during development to reload only scriptcraft javascript files.
+See [issue #69][issue69] for more information.
+
+[issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
+
+## Require - Node.js-style module loading in ScriptCraft
+
+Node.js is a server-side javascript environment with an excellent
+module loading system based on CommonJS. Modules in Node.js are really
+simple. Each module is in its own javascript file and all variables
+and functions within the file are private to that file/module only.
+There is a very concise explanation of CommonJS modules at...
+
+[http://wiki.commonjs.org/wiki/Modules/1.1.1.][cjsmodules]
+
+Node.js also has good documentation on [Modules][njsmod].
+
+If you want to export a variable or function you use the module.export
+property.
+
+For example imagine you have 3 files program.js, inc.js  and math.js ...
+
+### math.js
+
+    exports.add = function(a,b){
+        return a + b;
+    }
+
+### inc.js
+
+    var math = require('./math');
+    exports.increment = function(n){
+        return math.add(n, 1);
+    }
+
+### program.js
+
+    var inc = require('./inc').increment;
+    var a = 7;
+    a = inc(a);
+    print(a);
+
+You can see from the above sample code that programs can use modules
+and modules themeselves can use other modules. Modules have full
+control over what functions and properties they want to provide to
+others.
+
+## Important
+
+Although ScriptCraft now supports Node.js style modules, it does not
+support node modules. Node.js and Rhino are two very different
+Javascript environments. ScriptCraft uses Rhino Javascript, not
+Node.js.
+
+Modules can be loaded using relative or absolute paths. Per the CommonJS
+module specification, the '.js' suffix is optional.
+
+[cjsmodules]: http://wiki.commonjs.org/wiki/Modules/1.1.1.
+
+## When resolving module names to file paths, ScriptCraft uses the following rules...
+
+ 1. if the module does not begin with './' or '/' then ...
+
+    1.1 Look in the 'scriptcraft/lib' directory. If it's not there then...
+    1.2 Look in the 'scriptcraft/modules' directory. If it's not there then 
+        Throw an Error.
+
+ 2. If the module begins with './' or '/' then ...
+    
+    2.1 if the module begins with './' then it's treated as a file path. File paths are 
+        always relative to the module from which the require() call is being made.
+
+    2.2 If the module begins with '/' then it's treated as an absolute path.
+
+    If the module does not have a '.js' suffix, and a file with the same name and a .js sufix exists, 
+    then the file will be loaded.
+
+ 3. If the module name resolves to a directory then...
+    
+    3.1 look for a package.json file in the directory and load the `main` property e.g.
+    
+    // package.json located in './some-library/'
+    {
+      "main": './some-lib.js',
+      "name": 'some-library'
+    }
+    
+    3.2 if no package.json file exists then look for an index.js file in the directory
+
+events Module
+=============
+The Events module provides a thin wrapper around Bukkit's
+Event-handling API.  Bukkit's Events API makes use of Java Annotations
+which are not available in Javascript, so this module provides a
+simple way to listen to minecraft events in javascript.
+
+events.on() static method
+=========================
+This method is used to register event listeners. 
+
+Parameters
+----------
+
+ * eventName - A string or java class. If a string is supplied it must
+   be part of the Bukkit event class name.  See [Bukkit API][buk] for
+   details of the many bukkit event types. When a string is supplied
+   there is no need to provide the full class name - you should omit
+   the 'org.bukkit.event' prefix. e.g. if the string
+   "block.BlockBreakEvent" is supplied then it's converted to the
+   org.bukkit.event.block.BlockBreakEvent class .
+ 
+   If a java class is provided (say in the case where you've defined
+   your own custom event) then provide the full class name (without
+   enclosing quotes).
+
+ * callback - A function which will be called whenever the event
+   fires. The callback should take 2 parameters, listener (the Bukkit
+   registered listener for this callback) and event (the event fired).
+
+ * priority (optional - default: "HIGHEST") - The priority the
+   listener/callback takes over other listeners to the same
+   event. Possible values are "HIGH", "HIGHEST", "LOW", "LOWEST",
+   "NORMAL", "MONITOR". For an explanation of what the different
+   priorities mean refer to bukkit's [Event API Reference][buk2].
+
+Returns
+-------
+An org.bukkit.plugin.RegisteredListener object which can be used to
+unregister the listener. This same object is passed to the callback
+function each time the event is fired.
+
+Example:
+------
+The following code will print a message on screen every time a block is broken in the game
+
+    var events = require('./events/events');
+
+    events.on("block.BlockBreakEvent", function(listener, evt){ 
+        echo (evt.player.name + " broke a block!");
+    });
+
+To handle an event only once and unregister from further events...
+    
+    var events = require('./events/events');
+
+    events.on("block.BlockBreakEvent", function(listener, evt){ 
+        print (evt.player.name + " broke a block!");
+        evt.handlers.unregister(listener);
+    });
+
+To unregister a listener *outside* of the listener function...
+
+    var events = require('./events/events');
+
+    var myBlockBreakListener = events.on("block.BlockBreakEvent",function(l,e){ ... });
+    ...
+    var handlers = org.bukkit.event.block.BlockBreakEvent.getHandlerList();
+    handlers.unregister(myBlockBreakListener);
+
+[buk2]: http://wiki.bukkit.org/Event_API_Reference
+[buk]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/event/Event.html
+
+http.request() function
+====================
+The http.request() function will fetch a web address asynchronously (on a
+separate thread)and pass the URL's response to a callback function
+which will be executed synchronously (on the main thread).  In this
+way, http.request() can be used to fetch web content without blocking the
+main thread of execution.
+
+Parameters
+----------
+
+ * request: The request details either a plain URL e.g. "http://scriptcraft.js/sample.json" or an object with the following properties...
+
+   - url: The URL of the request.
+   - method: Should be one of the standard HTTP methods, GET, POST, PUT, DELETE (defaults to GET).
+   - params: A Javascript object with name-value pairs. This is for supplying parameters to the server.
+
+ * callback: The function to be called when the Web request has completed. This function takes the following parameters...
+   - responseCode: The numeric response code from the server. If the server did not respond with 200 OK then the response parameter will be undefined.
+   - response: A string (if the response is of type text) or object containing the HTTP response body.
+
+Example
+-------
+The following example illustrates how to use http.request to make a request to a JSON web service and evaluate its response...
+
+    var jsResponse;
+    var http = require('./http/request');
+    http.request("http://scriptcraftjs.org/sample.json",function(responseCode, responseBody){
+        jsResponse = eval("(" + responseBody +  ")");
+    });
+
+... The following example illustrates a more complex use-case POSTing parameters to a CGI process on a server...
+
+    var http = require('./http/request');
+    http.request({ url: "http://pixenate.com/pixenate/pxn8.pl",
+                   method: "POST",
+                   params: {script: "[]"}
+                 }, function( responseCode, responseBody){
+          var jsObj = eval("(" + responseBody + ")");
+      });
+
+Utilities Module
+================
+Miscellaneous utility functions and classes to help with programming.
+
+ * locationToString(Location) - returns a bukkit Location object in string form.
+  
+ * getPlayerObject(playerName) - returns the Player object for a named
+   player or `self` if no name is provided.
+
+ * getPlayerPos(playerName) - returns the player's x,y,z and yaw (direction) for a named player
+   or player or `self` if no parameter is provided.
+ 
+ * getMousePos(playerName) - returns the x,y,z of the current block being targeted by the named player
+   or player or `self` if no paramter is provided.
+
+foreach() function
+========================
+The utils.foreach() function is a utility function for iterating over
+an array of objects (or a java.util.Collection of objects) and processing each object in turn. Where
+utils.foreach() differs from other similar functions found in
+javascript libraries, is that utils.foreach can process the array
+immediately or can process it *nicely* by processing one item at a
+time then delaying processing of the next item for a given number of
+server ticks (there are 20 ticks per second on the minecraft main
+thread).  This method relies on Bukkit's [org.bukkit.scheduler][sched]
+package for scheduling processing of arrays.
+
+[sched]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/package-summary.html
+
+Parameters
+----------
+
+ * array : The array to be processed - It can be a javascript array, a java array or java.util.Collection
+ * callback : The function to be called to process each item in the
+   array. The callback function should have the following signature
+   `callback(item, index, object, array)`. That is the callback will
+   be called with the following parameters....
+
+   - item : The item in the array
+   - index : The index at which the item can be found in the array.
+   - object : Additional (optional) information passed into the foreach method.
+   - array : The entire array.
+
+ * object (optional) : An object which may be used by the callback.
+ * delay (optional, numeric) : If a delay is specified (in ticks - 20
+   ticks = 1 second), then the processing will be scheduled so that
+   each item will be processed in turn with a delay between the completion of each
+   item and the start of the next. This is recommended for big builds (say 200 x 200 x 200
+   blocks) or any CPU-intensive process.
+ * onDone (optional, function) : A function to be executed when all processing 
+   is complete. This parameter is only used when the processing is delayed. (It's optional even if a 
+   delay parameter is supplied).
+
+If called with a delay parameter then foreach() will return
+immediately after processing just the first item in the array (all
+subsequent items are processed later). If your code relies on the
+completion of the array processing, then provide an `onDone` parameter
+and put the code there.
+
+Example
+-------
+The following example illustrates how to use foreach for immediate processing of an array...
+
+    var utils = require('./utils/_utils');
+    var players = ["moe", "larry", "curly"];
+    utils.foreach (players, function(item){ 
+        server.getPlayer(item).sendMessage("Hi " + item);
+    });
+
+... The `utils.foreach()` function can work with Arrays or any Java-style collection. This is important
+because many objects in the Bukkit API use Java-style collections...
+
+    utils.foreach( server.onlinePlayers, function(player){
+         player.chat("Hello!");
+    }); 
+
+... the above code sends a "Hello!" to every online player.
+
+The following example is a more complex use case - The need to build an enormous structure
+without hogging CPU usage...
+
+    // build a structure 200 wide x 200 tall x 200 long
+    // (That's 8 Million Blocks - enough to tax any machine!)
+    var utils = require('./utils/_utils');
+
+    var a = []; 
+    a.length = 200; 
+    var drone = new Drone();
+    var processItem = function(item, index, object, array){
+        // build a box 200 wide by 200 long then move up
+        drone.box(blocks.wood, 200, 1, 200).up();
+    };
+    // by the time the job's done 'self' might be someone else 
+    // assume this code is within a function/closure
+    var player = self;
+    var onDone = function(){ 
+        player.sendMessage("Job Done!");
+    };
+    utils.foreach (a, processItem, null, 10, onDone);
+    
+utils.nicely() function
+=======================
+The utils.nicely() function is for performing processing using the
+[org.bukkit.scheduler][sched] package/API. utils.nicely() lets you
+process with a specified delay between the completion of each `next()`
+function and the start of the next `next()` function.
+`utils.nicely()` is a recursive function - that is - it calls itself
+(schedules itself actually) repeatedly until `hasNext` returns false.
+
+Parameters
+----------
+
+ * next : A function which will be called if processing is to be done. 
+ * hasNext : A function which is called to determine if the `next`
+   callback should be invoked. This should return a boolean value -
+   true if the `next` function should be called (processing is not
+   complete), false otherwise.
+ * onDone : A function which is to be called when all processing is complete (hasNext returned false).
+ * delay : The delay (in server ticks - 20 per second) between each call.
+
+Example
+-------
+See the source code to utils.foreach for an example of how utils.nicely is used.
+
+utils.at() function
+===================
+The utils.at() function will perform a given task at a given time every 
+(minecraft) day.
+
+Parameters
+----------
+
+ * time24hr : The time in 24hr form - e.g. 9:30 in the morning is "09:30" while
+   9:30 pm is "21:30", midnight is "00:00" and midday is "12:00"
+ * callback : A javascript function which will be invoked at the given time.
+ * world : (optional) Each world has its own clock. If no world is specified, the server's first world is used.
+
+Example
+-------
+
+To warn players when night is approaching...
+
+    var utils = require('./utils/_utils');
+
+    utils.at( "19:00", function() {
+
+        utils.foreach( server.onlinePlayers, function(player){
+            player.chat("The night is dark and full of terrors!");            
+        });
+
+    }, self.world);
+  
+String class extensions
+-----------------------
+The following chat-formatting methods are added to the javascript String class..
+
+    * aqua()
+    * black()
+    * blue()
+    * bold()
+    * brightgreen()
+    * darkaqua()
+    * darkblue()
+    * darkgray()
+    * darkgreen()
+    * purple()
+    * darkpurple()
+    * darkred()
+    * gold()
+    * gray()
+    * green()
+    * italic()
+    * lightpurple()
+    * indigo()
+    * green()
+    * red()
+    * pink()
+    * yellow()
+    * white()
+    * strike()
+    * random()
+    * magic()
+    * underline()
+    * reset()
+
+Example
+-------
+
+    var boldGoldText = "Hello World".bold().gold();
+    self.sendMessage(boldGoldText);
+
+<p style="color:gold;font-weight:bold">Hello World</p>    
+
+Fireworks Module
+================
+The fireworks module makes it easy to create fireworks using
+ScriptCraft.  The module has a single function `firework` which takes
+a `org.bukkit.Location` as its 1 and only parameter.
+
+Examples
+--------
+The module also extends the `Drone` object adding a `firework` method
+so that fireworks can be created as a part of a Drone chain. For
+Example....
+
+    /js firework()
+
+... creates a single firework, while ....
+
+    /js firework().fwd(3).times(5) 
+
+... creates 5 fireworks in a row. Fireworks have also been added as a
+possible option for the `arrow` module. To have a firework launch
+where an arrow strikes...
+
+    /js arrows.firework()
+
+To call the fireworks.firework() function directly, you must provide a
+location. For example...
+
+    /js var fireworks = require('fireworks');
+    /js fireworks.firework(self.location);
+
+![firework example](img/firework.png)
+
 Drone Module
 ============
 The Drone is a convenience class for building. It can be used for...
@@ -855,709 +1653,6 @@ To construct a spiral staircase 5 floors high made of oak...
 
     spiral_stairs('oak', 5);
 
-## Require - Node.js-style module loading in ScriptCraft
-
-#### (Experimental as of 2013-12-21)
-
-Node.js is a server-side javascript environment with an excellent
-module loading system based on CommonJS. Modules in Node.js are really
-simple. Each module is in its own javascript file and all variables
-and functions within the file are private to that file/module only.
-There is a very concise explanation of CommonJS modules at...
-
-[http://wiki.commonjs.org/wiki/Modules/1.1.1.][cjsmodules]
-
-If you want to export a variable or function you use the module.export
-property.
-
-For example imagine you have 3 files program.js, inc.js  and math.js ...
-
-### math.js
-
-    exports.add = function(a,b){
-        return a + b;
-    }
-
-### inc.js
-
-    var math = require('./math');
-    exports.increment = function(n){
-        return math.add(n, 1);
-    }
-
-### program.js
-
-    var inc = require('./inc').increment;
-    var a = 7;
-    a = inc(a);
-    print(a);
-
-You can see from the above sample code that programs can use modules
-and modules themeselves can use other modules. Modules have full
-control over what functions and properties they want to provide to
-others.
-
-## Important
-
-Although ScriptCraft now supports Node.js style modules, it does not
-support node modules. Node.js and Rhino are two very different
-Javascript environments. ScriptCraft uses Rhino Javascript, not
-Node.js.
-
-Right now, the base directory is for relative modules is 'js-plugins'.
-Modules can be loaded using relative or absolute paths. Per the CommonJS
-module specification, the '.js' suffix is optional.
-
-[cjsmodules]: http://wiki.commonjs.org/wiki/Modules/1.1.1.
-
-## When resolving module names to file paths, ScriptCraft uses the following rules...
-
- 1. if the module does not begin with './' or '/' then ...
-
-    1.1 Look in the 'scriptcraft/lib' directory. If it's not there then...
-    1.2 Look in the 'scriptcraft/modules' directory. If it's not there then 
-        Throw an Error.
-
- 2. If the module begins with './' or '/' then ...
-    
-    2.1 if the module begins with './' then it's treated as a file path. File paths are 
-        always relative to the module from which the require() call is being made.
-
-    2.2 If the module begins with '/' then it's treated as an absolute path.
-
-    If the module does not have a '.js' suffix, and a file with the same name and a .js sufix exists, 
-    then the file will be loaded.
-
- 3. If the module name resolves to a directory then...
-    
-    3.1 look for a package.json file in the directory and load the `main` property e.g.
-    
-    // package.json located in './some-library/'
-    {
-      "main": './some-lib.js',
-      "name": 'some-library'
-    }
-    
-    3.2 if no package.json file exists then look for an index.js file in the directory
-
-# ScriptCraft API Reference
-
-Walter Higgins
-
-[walter.higgins@gmail.com][email]
-
-[email]: mailto:walter.higgins@gmail.com?subject=ScriptCraft_API_Reference
-
-## Module Loading
-
-At server startup the ScriptCraft Java plugin is loaded and once
-loaded the Java plugin will in turn begin loading all of the
-javascript (.js) files it finds in the js-plugins directory (in the
-current working directory).  If this is the first time the ScriptCraft
-plugin is loaded, then the js-plugins directory will not yet exist, it
-will be created and all of the bundled javascript files will be
-unzipped into it from a bundled resource within the Java plugin.  The
-very first javascript file to load will always be
-js-plugins/core/_scriptcraft.js. Then all other javascript files are
-loaded except for filenames which begin with `_` (underscore), such files
-are considered to be private modules and will not be automatically
-loaded at startup.
-
-### Directory structure
-
-The js-plugins directory is loosely organised into subdirectories -
-one for each module. Each subdirectory in turn can contain one or more
-javascript files. Within each directory, a javascript file with the
-same filename as the directory will always be loaded before all other
-files in the same directory. So for example, drone/drone.js will
-always load before any other files in the drone/ directory. Similarly
-utils/utils.js will always load before any other files in the utils/
-directory.
-
-### Directories 
-
-As of February 10 2013, the js-plugins directory has the following sub-directories...
-
- * core - Contains javascript files containing Core functionality crucial to ScriptCraft and modules which use it.
- * drone - Contains the drone module and drone extensions. Drone was the first scriptcraft module.
- * ext - Contains external 3rd party javascript libraries (e.g. json2.js - the JSON lib)
- * mini-games - Contains mini-games 
- * arrows - The arrows module
- * signs - The signs module
- * chat - The chat plugin/module
- * alias - The alias plugin/module
-
-## Core Module
-
-This module defines commonly used functions by all plugins...
-
- * echo (message) - Displays a message on the screen. 
-   For example: `/js echo('Hello World')` will print Hello World on the in-game chat window.  
-   For programmers familiar with Javascript web programming, an `alert` function is also provided. 
-   `alert` works exactly the same as `echo` e.g. `alert('Hello World')` 
-
- * load (filename,warnOnFileNotFound) - loads and evaluates a javascript file, returning the evaluated object.
-  
- * save (object, filename) - saves an object to a file.
-
- * plugin (name, interface, isPersistent) - defines a new plugin. If
-   isPersistent is true then the plugin doesn't have to worry about
-   loading and saving state - that will be done by the framework. Just
-   make sure that anything you want to save (and restore) is in the plugin's
-   'store' property - this will be created automatically if not
-   already defined.  (its type is object {} ) . More on plugins below.
-    
- * ready (function) - specifies code to be executed only when all the plugins have loaded.
-
- * command (name, function) - defines a command that can be used by
-   non-operators. The `command` function provides a way for plugin
-   developers to provide new commands for use by players.
-
-### load() function
-
-The load() function is used by ScriptCraft at startup to load all of
-the javascript modules and data.  You normally wouldn't need to call
-this function directly. If you put a javascript file anywhere in the
-craftbukkit/js-plugins directory tree it will be loaded automatically
-when craftbukkit starts up. The exception is files whose name begins
-with an underscore `_` character. These files will not be
-automatically loaded at startup as they are assumed to be files
-managed / loaded by plugins.
-
-#### Parameters
-
- * filename - The name of the file to load.
- * warnOnFileNotFound (optional - default: false) - warn if the file was not found.
-
-#### Return
-
-load() will return the result of the last statement evaluated in the file.
-
-#### Example
-
-    load(__folder + "myFile.js"); // loads a javascript file and evaluates it.
-
-    var myData = load("myData.json"); // loads a javascript file and evaluates it - eval'd contents are returned.
-
-myData.json contents...
-
-    __data = { 
-        players: {
-            walterh: {
-                h: ["jsp home {1}"],
-                sunny:["time set 0",
-                       "weather clear"]
-                     }
-                 }
-            }
-
-### save() function
-
-The save() function saves an in-memory javascript object to a
-specified file. Under the hood, save() uses JSON (specifically
-json2.js) to save the object. Again, there will usually be no need to
-call this function directly as all javascript plugins' state are saved
-automatically if they are declared using the `plugin()` function.  Any
-in-memory object saved using the `save()` function can later be
-restored using the `load()` function.
-
-#### Parameters
-
- * objectToSave : The object you want to save.
- * filename : The name of the file you want to save it to.
-
-#### Example
-
-    var myObject = { name: 'John Doe',
-                     aliases: ['John Ray', 'John Mee'],
-                     date_of_birth: '1982/01/31' };
-    save(myObject, 'johndoe.json');
-
-johndoe.json contents...
-
-    var __data = { "name": "John Doe", 
-                   "aliases": ["John Ray", "John Mee"], 
-                   "date_of_birth": "1982/01/31" };
-
-### plugin() function
-
-The `plugin()` function should be used to declare a javascript module
-whose state you want to have managed by ScriptCraft - that is - a
-Module whose state will be loaded at start up and saved at shut down.
-A plugin is just a regular javascript object whose state is managed by
-ScriptCraft.  The only member of the plugin which whose persistence is
-managed by Scriptcraft is `store` - this special member will be
-automatically saved at shutdown and loaded at startup by
-ScriptCraft. This makes it easier to write plugins which need to
-persist data.
-
-#### Parameters
- 
- * pluginName (String) : The name of the plugin - this becomes a global variable.
- * pluginDefinition (Object) : The various functions and members of the plugin object.
- * isPersistent (boolean - optional) : Specifies whether or not the plugin/object state should be loaded and saved by ScriptCraft.
-
-#### Example
-
-See chat/color.js for an example of a simple plugin - one which lets
-players choose a default chat color. See also [Anatomy of a
-ScriptCraft Plugin][anatomy].
- 
-[anatomy]: http://walterhiggins.net/blog/ScriptCraft-1-Month-later
-
-### command() function
-
-The `command()` function is used to expose javascript functions for
-use by non-operators (regular players). Only operators should be
-allowed use raw javascript using the `/js ` command because it is too
-powerful for use by regular players and can be easily abused. However,
-the `/jsp ` command lets you (the operator / server administrator /
-plugin author) safely expose javascript functions for use by players.
-
-#### Parameters
- 
- * commandName : The name to give your command - the command will be invoked like this by players `/jsp commandName`
- * commandFunction: The javascript function which will be invoked when the command is invoked by a player.
- * options (Array - optional) : An array of command options/parameters
-   which the player can supply (It's useful to supply an array so that
-   Tab-Completion works for the `/jsp ` commands.
- * intercepts (boolean - optional) : Indicates whether this command
-   can intercept Tab-Completion of the `/jsp ` command - advanced
-   usage - see alias/alias.js for example.
-
-#### Example
-
-See chat/colors.js or alias/alias.js or homes/homes.js for examples of how to use the `command()` function.
-
-### ready() function
-
-The `ready()` function provides a way for plugins to do additional
-setup once all of the other plugins/modules have loaded.  For example,
-event listener registration can only be done after the
-events/events.js module has loaded. A plugin author could load the
-file explicilty like this...
-
-    load(__folder + "../events/events.js");
-
-    // event listener registration goes here 
-
-... or better still, just do event regristration using the `ready()`
-handler knowing that by the time the `ready()` callback is invoked,
-all of the scriptcraft modules have been loaded...
-
-    ready(function(){
-        // event listener registration goes here
-        // code that depends on other plugins/modules also goes here
-    });
-
-The execution of the function object passed to the `ready()` function
-is *deferred* until all of the plugins/modules have loaded. That way
-you are guaranteed that when the function is invoked, all of the
-plugins/modules have been loaded and evaluated and are ready to use.
-
-Core Module - Special Variables
-===============================
-There are a couple of special javascript variables available in ScriptCraft...
- 
- * __folder - The current working directory - this variable is only to be used within the main body of a .js file.
- * __plugin - The ScriptCraft JavaPlugin object.
- * server - The Minecraft Server object.
- * self - the current player. (Note - this value should not be used in multi-threaded scripts - it's not thread-safe)
-
-## Miscellaneous Core Functions
-
-### setTimeout() function
-
-This function mimics the setTimeout() function used in browser-based javascript.
-However, the function will only accept a function reference, not a string of javascript code.
-Where setTimeout() in the browser returns a numeric value which can be subsequently passed to 
-clearTimeout(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearTimeout() implementation.
-
-If Node.js supports setTimeout() then it's probably good for ScriptCraft to support it too.
-
-[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
-
-#### Example
-
-    //
-    // start a storm in 5 seconds
-    //    
-    setTimeout( function() {
-        var world = server.worlds.get(0);
-        world.setStorm(true);
-    }, 5000);
-
-### clearTimeout() function
-
-A scriptcraft implementation of clearTimeout().
-
-### setInterval() function
-
-This function mimics the setInterval() function used in browser-based javascript.
-However, the function will only accept a function reference, not a string of javascript code.
-Where setInterval() in the browser returns a numeric value which can be subsequently passed to 
-clearInterval(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearInterval() implementation.
-
-If Node.js supports setInterval() then it's probably good for ScriptCraft to support it too.
-
-[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
-
-### clearInterval() function
-
-A scriptcraft implementation of clearInterval().
-
-### refresh() function
-
-The refresh() function will ...
-
-1. Disable the ScriptCraft plugin.
-2. Unload all event listeners associated with the ScriptCraft plugin.
-3. Enable the ScriptCraft plugin.
-
-... refresh() can be used during development to reload only scriptcraft javascript files.
-See [issue #69][issue69] for more information.
-
-[issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
-
-events Module
-=============
-The Events module provides a thin wrapper around Bukkit's
-Event-handling API.  Bukkit's Events API makes use of Java Annotations
-which are not available in Javascript, so this module provides a
-simple way to listen to minecraft events in javascript.
-
-events.on() static method
-=========================
-This method is used to register event listeners. 
-
-Parameters
-----------
-
- * eventName - A string or java class. If a string is supplied it must
-   be part of the Bukkit event class name.  See [Bukkit API][buk] for
-   details of the many bukkit event types. When a string is supplied
-   there is no need to provide the full class name - you should omit
-   the 'org.bukkit.event' prefix. e.g. if the string
-   "block.BlockBreakEvent" is supplied then it's converted to the
-   org.bukkit.event.block.BlockBreakEvent class .
- 
-   If a java class is provided (say in the case where you've defined
-   your own custom event) then provide the full class name (without
-   enclosing quotes).
-
- * callback - A function which will be called whenever the event
-   fires. The callback should take 2 parameters, listener (the Bukkit
-   registered listener for this callback) and event (the event fired).
-
- * priority (optional - default: "HIGHEST") - The priority the
-   listener/callback takes over other listeners to the same
-   event. Possible values are "HIGH", "HIGHEST", "LOW", "LOWEST",
-   "NORMAL", "MONITOR". For an explanation of what the different
-   priorities mean refer to bukkit's [Event API Reference][buk2].
-
-Returns
--------
-An org.bukkit.plugin.RegisteredListener object which can be used to
-unregister the listener. This same object is passed to the callback
-function each time the event is fired.
-
-Example:
-------
-The following code will print a message on screen every time a block is broken in the game
-
-    var events = require('./events/events');
-
-    events.on("block.BlockBreakEvent", function(listener, evt){ 
-        echo (evt.player.name + " broke a block!");
-    });
-
-To handle an event only once and unregister from further events...
-    
-    var events = require('./events/events');
-
-    events.on("block.BlockBreakEvent", function(listener, evt){ 
-        print (evt.player.name + " broke a block!");
-        evt.handlers.unregister(listener);
-    });
-
-To unregister a listener *outside* of the listener function...
-
-    var events = require('./events/events');
-
-    var myBlockBreakListener = events.on("block.BlockBreakEvent",function(l,e){ ... });
-    ...
-    var handlers = org.bukkit.event.block.BlockBreakEvent.getHandlerList();
-    handlers.unregister(myBlockBreakListener);
-
-[buk2]: http://wiki.bukkit.org/Event_API_Reference
-[buk]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/event/Event.html
-
-Fireworks Module
-================
-The fireworks module makes it easy to create fireworks using
-ScriptCraft.  The module has a single function `firework` which takes
-a `org.bukkit.Location` as its 1 and only parameter.
-
-Examples
---------
-The module also extends the `Drone` object adding a `firework` method
-so that fireworks can be created as a part of a Drone chain. For
-Example....
-
-    /js firework()
-
-... creates a single firework, while ....
-
-    /js firework().fwd(3).times(5) 
-
-... creates 5 fireworks in a row. Fireworks have also been added as a
-possible option for the `arrow` module. To have a firework launch
-where an arrow strikes...
-
-    /js arrows.firework()
-
-To call the fireworks.firework() function directly, you must provide a
-location. For example...
-
-    /js var fireworks = require('fireworks');
-    /js fireworks.firework(self.location);
-
-![firework example](img/firework.png)
-
-http.request() function
-====================
-The http.request() function will fetch a web address asynchronously (on a
-separate thread)and pass the URL's response to a callback function
-which will be executed synchronously (on the main thread).  In this
-way, http.request() can be used to fetch web content without blocking the
-main thread of execution.
-
-Parameters
-----------
-
- * request: The request details either a plain URL e.g. "http://scriptcraft.js/sample.json" or an object with the following properties...
-
-   - url: The URL of the request.
-   - method: Should be one of the standard HTTP methods, GET, POST, PUT, DELETE (defaults to GET).
-   - params: A Javascript object with name-value pairs. This is for supplying parameters to the server.
-
- * callback: The function to be called when the Web request has completed. This function takes the following parameters...
-   - responseCode: The numeric response code from the server. If the server did not respond with 200 OK then the response parameter will be undefined.
-   - response: A string (if the response is of type text) or object containing the HTTP response body.
-
-Example
--------
-The following example illustrates how to use http.request to make a request to a JSON web service and evaluate its response...
-
-    var jsResponse;
-    var http = require('./http/request');
-    http.request("http://scriptcraftjs.org/sample.json",function(responseCode, responseBody){
-        jsResponse = eval("(" + responseBody +  ")");
-    });
-
-... The following example illustrates a more complex use-case POSTing parameters to a CGI process on a server...
-
-    var http = require('./http/request');
-    http.request({ url: "http://pixenate.com/pixenate/pxn8.pl",
-                   method: "POST",
-                   params: {script: "[]"}
-                 }, function( responseCode, responseBody){
-          var jsObj = eval("(" + responseBody + ")");
-      });
-
-String class extensions
------------------------
-The following chat-formatting methods are added to the javascript String class..
-
-    * aqua()
-    * black()
-    * blue()
-    * bold()
-    * brightgreen()
-    * darkaqua()
-    * darkblue()
-    * darkgray()
-    * darkgreen()
-    * purple()
-    * darkpurple()
-    * darkred()
-    * gold()
-    * gray()
-    * green()
-    * italic()
-    * lightpurple()
-    * indigo()
-    * green()
-    * red()
-    * pink()
-    * yellow()
-    * white()
-    * strike()
-    * random()
-    * magic()
-    * underline()
-    * reset()
-
-Example
--------
-
-    var boldGoldText = "Hello World".bold().gold();
-    self.sendMessage(boldGoldText);
-
-<p style="color:gold;font-weight:bold">Hello World</p>    
-
-Utilities Module
-================
-Miscellaneous utility functions and classes to help with programming.
-
- * locationToString(Location) - returns a bukkit Location object in string form.
-  
- * getPlayerObject(playerName) - returns the Player object for a named
-   player or `self` if no name is provided.
-
- * getPlayerPos(playerName) - returns the player's x,y,z and yaw (direction) for a named player
-   or player or `self` if no parameter is provided.
- 
- * getMousePos(playerName) - returns the x,y,z of the current block being targeted by the named player
-   or player or `self` if no paramter is provided.
-
-foreach() function
-========================
-The utils.foreach() function is a utility function for iterating over
-an array of objects (or a java.util.Collection of objects) and processing each object in turn. Where
-utils.foreach() differs from other similar functions found in
-javascript libraries, is that utils.foreach can process the array
-immediately or can process it *nicely* by processing one item at a
-time then delaying processing of the next item for a given number of
-server ticks (there are 20 ticks per second on the minecraft main
-thread).  This method relies on Bukkit's [org.bukkit.scheduler][sched]
-package for scheduling processing of arrays.
-
-[sched]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/package-summary.html
-
-Parameters
-----------
-
- * array : The array to be processed - It can be a javascript array, a java array or java.util.Collection
- * callback : The function to be called to process each item in the
-   array. The callback function should have the following signature
-   `callback(item, index, object, array)`. That is the callback will
-   be called with the following parameters....
-
-   - item : The item in the array
-   - index : The index at which the item can be found in the array.
-   - object : Additional (optional) information passed into the foreach method.
-   - array : The entire array.
-
- * object (optional) : An object which may be used by the callback.
- * delay (optional, numeric) : If a delay is specified (in ticks - 20
-   ticks = 1 second), then the processing will be scheduled so that
-   each item will be processed in turn with a delay between the completion of each
-   item and the start of the next. This is recommended for big builds (say 200 x 200 x 200
-   blocks) or any CPU-intensive process.
- * onDone (optional, function) : A function to be executed when all processing 
-   is complete. This parameter is only used when the processing is delayed. (It's optional even if a 
-   delay parameter is supplied).
-
-If called with a delay parameter then foreach() will return
-immediately after processing just the first item in the array (all
-subsequent items are processed later). If your code relies on the
-completion of the array processing, then provide an `onDone` parameter
-and put the code there.
-
-Example
--------
-The following example illustrates how to use foreach for immediate processing of an array...
-
-    var utils = require('./utils/_utils');
-    var players = ["moe", "larry", "curly"];
-    utils.foreach (players, function(item){ 
-        server.getPlayer(item).sendMessage("Hi " + item);
-    });
-
-... The `utils.foreach()` function can work with Arrays or any Java-style collection. This is important
-because many objects in the Bukkit API use Java-style collections...
-
-    utils.foreach( server.onlinePlayers, function(player){
-         player.chat("Hello!");
-    }); 
-
-... the above code sends a "Hello!" to every online player.
-
-The following example is a more complex use case - The need to build an enormous structure
-without hogging CPU usage...
-
-    // build a structure 200 wide x 200 tall x 200 long
-    // (That's 8 Million Blocks - enough to tax any machine!)
-    var utils = require('./utils/_utils');
-
-    var a = []; 
-    a.length = 200; 
-    var drone = new Drone();
-    var processItem = function(item, index, object, array){
-        // build a box 200 wide by 200 long then move up
-        drone.box(blocks.wood, 200, 1, 200).up();
-    };
-    // by the time the job's done 'self' might be someone else 
-    // assume this code is within a function/closure
-    var player = self;
-    var onDone = function(){ 
-        player.sendMessage("Job Done!");
-    };
-    utils.foreach (a, processItem, null, 10, onDone);
-    
-utils.nicely() function
-=======================
-The utils.nicely() function is for performing processing using the
-[org.bukkit.scheduler][sched] package/API. utils.nicely() lets you
-process with a specified delay between the completion of each `next()`
-function and the start of the next `next()` function.
-`utils.nicely()` is a recursive function - that is - it calls itself
-(schedules itself actually) repeatedly until `hasNext` returns false.
-
-Parameters
-----------
-
- * next : A function which will be called if processing is to be done. 
- * hasNext : A function which is called to determine if the `next`
-   callback should be invoked. This should return a boolean value -
-   true if the `next` function should be called (processing is not
-   complete), false otherwise.
- * onDone : A function which is to be called when all processing is complete (hasNext returned false).
- * delay : The delay (in server ticks - 20 per second) between each call.
-
-Example
--------
-See the source code to utils.foreach for an example of how utils.nicely is used.
-
-utils.at() function
-===================
-The utils.at() function will perform a given task at a given time every 
-(minecraft) day.
-
-Parameters
-----------
-
- * time24hr : The time in 24hr form - e.g. 9:30 in the morning is "09:30" while
-   9:30 pm is "21:30", midnight is "00:00" and midday is "12:00"
- * callback : A javascript function which will be invoked at the given time.
- * world : (optional) Each world has its own clock. If no world is specified, the server's first world is used.
-
-Example
--------
-
-To warn players when night is approaching...
-
-    var utils = require('./utils/_utils');
-
-    utils.at( "19:00", function() {
-
-        utils.foreach( server.onlinePlayers, function(player){
-            player.chat("The night is dark and full of terrors!");            
-        });
-
-    }, self.world);
-  
  
 ## The arrows mod adds fancy arrows to the game.
   
