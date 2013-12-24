@@ -1,7 +1,6 @@
-var Drone = require('../drone');
-var blocks = require('../blocks');
+var Drone = require('../drone').Drone;
+var blocks = require('../blocks').blocks;
 
-module.exports = Drone;
 /************************************************************************
 Drone.spiral_stairs() method
 ============================

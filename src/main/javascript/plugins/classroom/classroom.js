@@ -1,3 +1,6 @@
+var utils = require('utils');
+var events = require('events');
+
 /************************************************************************
 Classroom Module
 ================
@@ -41,22 +44,19 @@ Only ops users can run the classroom.allowScripting() function - this is so that
 don't try to bar themselves and each other from scripting.
 
 ***/
-var classroom = {
-    allowScripting: function(/* boolean: true or false */ canScript){}
-};
+var _canScript = false;
 
-ready(function(){
-    classroom.allowScripting = function(canScript)
-    {
+exports.classroom = {
+    allowScripting: function (/* boolean: true or false */ canScript) {
         /*
           only operators should be allowed run this function
-         */
+        */
         if (!self.isOp())
             return;
         if (canScript){
-            utils.foreach( server.onlinePlayers, function (player) {
-                player.addAttachment(__plugin, "scriptcraft.*", true);
-            });
+        utils.foreach( server.onlinePlayers, function (player) {
+            player.addAttachment(__plugin, "scriptcraft.*", true);
+        });
         }else{
             utils.foreach( server.onlinePlayers, function(player) {
                 utils.foreach(player.getEffectivePermissions(), function(perm) {
@@ -67,12 +67,13 @@ ready(function(){
                 });
             });
         }
-        classroom.canScript = canScript;
-    };
-    events.on("player.PlayerLoginEvent", function(listener, event) { 
-        var player = event.player;
-        if (classroom.canScript){
-            player.addAttachment(__plugin, "scriptcraft.*", true);
-        }
-    }, "HIGHEST");
-});
+        _canScript = canScript;
+    }
+};
+events.on('player.PlayerLoginEvent', function(listener, event) { 
+    var player = event.player;
+    if (classroom.canScript){
+        player.addAttachment(__plugin, "scriptcraft.*", true);
+    }
+}, "HIGHEST");
+

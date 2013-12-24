@@ -1,5 +1,5 @@
-var Drone = require('../drone');
-module.exports = Drone;
+var Drone = require('../drone').Drone;
+
 //
 // a castle is just a big wide fort with 4 taller forts at each corner
 //

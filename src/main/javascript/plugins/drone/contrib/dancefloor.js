@@ -1,5 +1,5 @@
-var Drone = require('../drone');
-module.exports = Drone;
+var Drone = require('../drone').Drone;
+
 //
 // Create a floor of colored tiles some of which emit light.
 // The tiles change color every second creating a strobe-lit dance-floor.

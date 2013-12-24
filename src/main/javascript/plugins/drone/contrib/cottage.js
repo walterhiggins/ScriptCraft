@@ -1,5 +1,5 @@
-var Drone = require('../drone');
-module.exports = Drone;
+var Drone = require('../drone').Drone;
+
 //
 // usage: 
 // [1] to build a cottage at the player's current location or the cross-hairs location...

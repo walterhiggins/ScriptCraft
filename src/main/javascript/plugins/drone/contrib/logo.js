@@ -1,5 +1,5 @@
-var Drone = require('../drone');
-module.exports = Drone;
+var Drone = require('../drone').Drone;
+
 //
 // Constructs the JS logo
 // https://raw.github.com/voodootikigod/logo.js/master/js.png

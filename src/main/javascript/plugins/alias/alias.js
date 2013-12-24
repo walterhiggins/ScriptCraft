@@ -1,4 +1,7 @@
-plugin("alias", {
+
+var _store = {players: {}};
+
+var alias = plugin("alias", {
     help: function(){
         return [
             "/jsp alias set <alias> <commands> : Set a shortcut/alias for one or more commands (separated by ';')\n" + 
@@ -10,30 +13,30 @@ plugin("alias", {
         ];
     },
     set: function(player, alias, commands){
-        var aliases = this.store.players;
+        var aliases = _store.players;
         var name = player.name;
         if (typeof aliases[name] == "undefined")
             aliases[name] = {};
         aliases[name][alias] = commands;
     },
     remove: function(player, alias){
-        var aliases = this.store.players;
+        var aliases = _store.players;
         if (aliases[player.name])
             delete aliases[player.name][alias];
     },
     list: function(player){
         var result = [];
-        var aliases = this.store.players[player.name];
+        var aliases = _store.players[player.name];
         for (var a in aliases)
             result.push(a + " = " + aliases[a].join(";"));
         return result;
-    }
+    },
+    store: _store
 },true);
 
-if (typeof alias.store.players == "undefined")
-    alias.store.players = {};
+exports.alias = alias;
 
-command("alias",function(params){
+command("alias", function ( params ) {
     /*
       this function also intercepts command options for /jsp
     */
@@ -59,7 +62,7 @@ command("alias",function(params){
     if (params.length == 0)
         return self.sendMessage(alias.help());
     
-    var playerHasAliases = alias.store.players[self.name];
+    var playerHasAliases = _store.players[self.name];
     if (!playerHasAliases)
         return false;
     // is it an alias?

@@ -1,14 +1,20 @@
-/*
-  A basic number-guessing game that uses the Bukkit Conversation API.
- */
-ready(function(){
+/*************************************************************************
+## Minigame: Guess the number
+
+### Example
     
-    global.GuessTheNumber = function()
-    {
+    /js Game_NumberGuess.start()
+
+... Begins a number-guessing game where you must guess the number (between 1 and 10) chosen by the computer.  
+   
+ A basic number-guessing game that uses the Bukkit Conversation API.
+***/
+exports.Game_NumberGuess = {
+    start: function() {
         importPackage(org.bukkit.conversations);
-
+        
         var number = Math.ceil(Math.random() * 10);
-
+        
         var prompt = new Prompt()
         {
             getPromptText: function(ctx){
@@ -44,5 +50,5 @@ ready(function(){
             .withPrefix(new ConversationPrefix(){ getPrefix: function(ctx){ return "[1-10] ";} })
             .buildConversation(self);
         conv.begin();
-    };
-});
+    }
+};

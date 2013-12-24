@@ -1,5 +1,5 @@
-var _utils = require('../utils/utils');
-var blocks = require('./blocks');
+var _utils = require('utils');
+var blocks = require('./blocks').blocks;
 
 /*********************************************************************
 Drone Module
@@ -732,7 +732,7 @@ Drone = function(x,y,z,dir,world)
     return this;
 };
 
-module.exports = Drone;
+exports.Drone = Drone;
 
 //
 // add custom methods to the Drone object using this function

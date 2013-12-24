@@ -272,4 +272,4 @@ blocks.rainbow = [blocks.wool.red,
                   blocks.wool.purple];
 
 
-module.exports = blocks;
+exports.blocks = blocks;

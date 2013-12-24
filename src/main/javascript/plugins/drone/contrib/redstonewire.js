@@ -1,6 +1,6 @@
-var Drone = require('../drone');
-var blocks = require('../blocks');
-module.exports = Drone;
+var Drone = require('../drone').Drone;
+var blocks = require('../blocks').blocks;
+
 //
 // usage: 
 // [1] to place a new block with redstone wire on it (block on bottom, redstone on top)

@@ -1,5 +1,5 @@
-var Drone = require('../drone');
-module.exports = Drone;
+var Drone = require('../drone').Drone;
+
 /**
 * Iterates over each cube in a cubic region. For each cube has a chance to callback your 
 * function and provide a new drone to it.

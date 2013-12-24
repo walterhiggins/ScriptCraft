@@ -1,6 +1,6 @@
-var Drone = require('../drone');
-var blocks = require('../blocks');
-module.exports = Drone;
+var Drone = require('../drone').Drone;
+var blocks = require('../blocks').blocks;
+
 /************************************************************************
 Drone.rainbow() method
 ======================

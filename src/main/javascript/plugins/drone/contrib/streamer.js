@@ -1,5 +1,4 @@
-var Drone = require('../drone');
-module.exports = Drone;
+var Drone = require('../drone').Drone;
 /**
 * Creates a stream of blocks in a given direction until it hits something other than air
 * 

@@ -1,5 +1,4 @@
-var Drone = require('../drone');
-module.exports = Drone;
+var Drone = require('../drone').Drone;
 //
 // constructs a mayan temple
 // 

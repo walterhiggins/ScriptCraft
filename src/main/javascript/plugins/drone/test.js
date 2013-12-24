@@ -1,4 +1,4 @@
-var Drone = require('./drone');
+var Drone = require('./drone').Drone;
 
 Drone.prototype.testHorizontalStrokeWidth = function(){
     this.arc({
