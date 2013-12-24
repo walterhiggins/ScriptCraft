@@ -41,41 +41,39 @@ Example
 <p style="color:gold;font-weight:bold">Hello World</p>    
 
 ***/
-(function(){
-    var c = org.bukkit.ChatColor;
-    var formattingCodes = {
-        aqua: c.AQUA,
-        black: c.BLACK,
-        blue: c.BLUE,
-        bold: c.BOLD,
-        brightgreen: c.GREEN,
-        darkaqua: c.DARK_AQUA,
-        darkblue: c.DARK_BLUE,
-        darkgray: c.DARK_GRAY,
-        darkgreen: c.DARK_GREEN,
-        purple: c.LIGHT_PURPLE,
-        darkpurple: c.DARK_PURPLE,
-        darkred: c.DARK_RED,
-        gold: c.GOLD,
-        gray: c.GRAY,
-        green: c.GREEN,
-        italic: c.ITALIC,
-        lightpurple: c.LIGHT_PURPLE,
-        indigo: c.BLUE,
-        green: c.GREEN,
-        red: c.RED,
-        pink: c.LIGHT_PURPLE,
-        yellow: c.YELLOW,
-        white: c.WHITE,
-        strike: c.STRIKETHROUGH,
-        random: c.MAGIC,
-        magic: c.MAGIC,
-        underline: c.UNDERLINE,
-        reset: c.RESET
-    };
-    for (var method in formattingCodes){
-        String.prototype[method] = function(c){
-            return function(){return c+this;};
-        }(formattingCodes[method]);
-    }
-}());
+var c = org.bukkit.ChatColor;
+var formattingCodes = {
+    aqua: c.AQUA,
+    black: c.BLACK,
+    blue: c.BLUE,
+    bold: c.BOLD,
+    brightgreen: c.GREEN,
+    darkaqua: c.DARK_AQUA,
+    darkblue: c.DARK_BLUE,
+    darkgray: c.DARK_GRAY,
+    darkgreen: c.DARK_GREEN,
+    purple: c.LIGHT_PURPLE,
+    darkpurple: c.DARK_PURPLE,
+    darkred: c.DARK_RED,
+    gold: c.GOLD,
+    gray: c.GRAY,
+    green: c.GREEN,
+    italic: c.ITALIC,
+    lightpurple: c.LIGHT_PURPLE,
+    indigo: c.BLUE,
+    green: c.GREEN,
+    red: c.RED,
+    pink: c.LIGHT_PURPLE,
+    yellow: c.YELLOW,
+    white: c.WHITE,
+    strike: c.STRIKETHROUGH,
+    random: c.MAGIC,
+    magic: c.MAGIC,
+    underline: c.UNDERLINE,
+    reset: c.RESET
+};
+for (var method in formattingCodes){
+    String.prototype[method] = function(c){
+        return function(){return c+this;};
+    }(formattingCodes[method]);
+}

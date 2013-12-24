@@ -25,12 +25,14 @@ Example
 The following example illustrates how to use http.request to make a request to a JSON web service and evaluate its response...
 
     var jsResponse;
+    var http = require('./http/request');
     http.request("http://scriptcraftjs.org/sample.json",function(responseCode, responseBody){
         jsResponse = eval("(" + responseBody +  ")");
     });
 
 ... The following example illustrates a more complex use-case POSTing parameters to a CGI process on a server...
 
+    var http = require('./http/request');
     http.request({ url: "http://pixenate.com/pixenate/pxn8.pl",
                    method: "POST",
                    params: {script: "[]"}
@@ -39,9 +41,7 @@ The following example illustrates how to use http.request to make a request to a
       });
 
 ***/
-var http = http ? http : {};
-
-http.request = function( request, callback)
+exports.request = function( request, callback)
 {
     var paramsToString = function(params){
         var result = "";

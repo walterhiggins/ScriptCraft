@@ -8,21 +8,55 @@ Miscellaneous utility functions and classes to help with programming.
  * getPlayerObject(playerName) - returns the Player object for a named
    player or `self` if no name is provided.
 
-***/
-var utils = utils ? utils : {
-    locationToString: function(location){
-        return JSON.stringify([""+location.world.name,location.x, location.y, location.z]);
-    },
+ * getPlayerPos(playerName) - returns the player's x,y,z and yaw (direction) for a named player
+   or player or `self` if no parameter is provided.
+ 
+ * getMousePos(playerName) - returns the x,y,z of the current block being targeted by the named player
+   or player or `self` if no paramter is provided.
 
-    getPlayerObject: function(playerName){
-        if (typeof playerName == "undefined")
+***/
+var _getPlayerObject = function ( playerName ) {
+    if (typeof playerName == "undefined"){
+        if (typeof self == "undefined"){
+            return null;
+        } else { 
             return self;
+        }
+    } else {
         if (typeof playerName == "string")
             return org.bukkit.Bukkit.getPlayer(playerName);
-        return player;
-    },
+        else
+            return playerName; // assumes it's a player object
+    }
+};
+
+exports.locationToString = function(location){
+    return JSON.stringify([""+location.world.name,location.x, location.y, location.z]);
+};
+
+exports.getPlayerObject = _getPlayerObject;
+
+exports.getPlayerPos = function( player ) {
+    player = _getPlayerObject(player);
+    return player.location;
+};
+
+exports.getMousePos = function (player) {
+    
+    player = _getPlayerObject(player);
+    if (!player)
+        return null;
+    // player might be CONSOLE or a CommandBlock
+    if (!player.getTargetBlock)
+        return null;
+    var targetedBlock = player.getTargetBlock(null,5);
+    if (targetedBlock == null || targetedBlock.isEmpty()){
+        return null;
+    }
+    return targetedBlock.location;
+};
 /************************************************************************
-utils.foreach() function
+foreach() function
 ========================
 The utils.foreach() function is a utility function for iterating over
 an array of objects (or a java.util.Collection of objects) and processing each object in turn. Where
@@ -70,6 +104,7 @@ Example
 -------
 The following example illustrates how to use foreach for immediate processing of an array...
 
+    var utils = require('./utils/_utils');
     var players = ["moe", "larry", "curly"];
     utils.foreach (players, function(item){ 
         server.getPlayer(item).sendMessage("Hi " + item);
@@ -89,6 +124,7 @@ without hogging CPU usage...
 
     // build a structure 200 wide x 200 tall x 200 long
     // (That's 8 Million Blocks - enough to tax any machine!)
+    var utils = require('./utils/_utils');
 
     var a = []; 
     a.length = 200; 
@@ -106,21 +142,22 @@ without hogging CPU usage...
     utils.foreach (a, processItem, null, 10, onDone);
     
 ***/
-    foreach: function(array, callback, object, delay, onCompletion) {
-        if (array instanceof java.util.Collection)
-            array = array.toArray();
-        var i = 0;
-        var len = array.length;
-        if (delay){
-            var next = function(){ callback(array[i],i,object,array); i++;};
-            var hasNext = function(){return i < len;};
-            utils.nicely(next,hasNext,onCompletion,delay);
-        }else{
-            for (;i < len; i++){
-                callback(array[i],i,object,array);
-            }
+var _foreach = function(array, callback, object, delay, onCompletion) {
+    if (array instanceof java.util.Collection)
+        array = array.toArray();
+    var i = 0;
+    var len = array.length;
+    if (delay){
+        var next = function(){ callback(array[i],i,object,array); i++;};
+        var hasNext = function(){return i < len;};
+        utils.nicely(next,hasNext,onCompletion,delay);
+    }else{
+        for (;i < len; i++){
+            callback(array[i],i,object,array);
         }
-    },
+    }
+};
+exports.foreach = _foreach;
 /************************************************************************
 utils.nicely() function
 =======================
@@ -147,17 +184,17 @@ Example
 See the source code to utils.foreach for an example of how utils.nicely is used.
 
 ***/
-    nicely: function(next, hasNext, onDone, delay){
-        if (hasNext()){
-            next();
-            server.scheduler.runTaskLater(__plugin,function(){
-                utils.nicely(next,hasNext,onDone,delay);
-            },delay);
-        }else{
-            if (onDone)
-                onDone();
-        }
-    },
+exports.nicely = function(next, hasNext, onDone, delay){
+    if (hasNext()){
+        next();
+        server.scheduler.runTaskLater(__plugin,function(){
+            utils.nicely(next,hasNext,onDone,delay);
+        },delay);
+    }else{
+        if (onDone)
+            onDone();
+    }
+};
 /************************************************************************
 utils.at() function
 ===================
@@ -177,6 +214,8 @@ Example
 
 To warn players when night is approaching...
 
+    var utils = require('./utils/_utils');
+
     utils.at( "19:00", function() {
 
         utils.foreach( server.onlinePlayers, function(player){
@@ -186,24 +225,46 @@ To warn players when night is approaching...
     }, self.world);
   
 ***/
-    at: function(time24hr, callback, world){
-        var forever = function(){ return true;};
-        var timeParts = time24hr.split(":");
-        var hrs = ((timeParts[0] * 1000) + 18000) % 24000;
-        var mins;
-        if (timeParts.length > 1)
-            mins = (timeParts[1] / 60) * 1000;
-        
-        var timeMc = hrs + mins;
-        if (typeof world == "undefined"){
-            world = server.worlds.get(0);
+exports.at = function(time24hr, callback, world) {
+    var forever = function(){ return true;};
+    var timeParts = time24hr.split(":");
+    var hrs = ((timeParts[0] * 1000) + 18000) % 24000;
+    var mins;
+    if (timeParts.length > 1)
+        mins = (timeParts[1] / 60) * 1000;
+    
+    var timeMc = hrs + mins;
+    if (typeof world == "undefined"){
+        world = server.worlds.get(0);
+    }
+    utils.nicely(function(){
+        var time = world.getTime();
+        var diff = timeMc - time;
+        if (diff > 0 && diff < 100){
+            callback();
         }
-        utils.nicely(function(){
-            var time = world.getTime();
-            var diff = timeMc - time;
-            if (diff > 0 && diff < 100){
-                callback();
-            }
-        },forever, null, 100);
-    },
+    },forever, null, 100);
 };
+
+exports.find = function( dir , filter){
+    var result = [];
+    var recurse = function(dir, store){
+        var files, dirfile = new java.io.File(dir);
+        
+        if (typeof filter == "undefined")
+            files = dirfile.list();
+        else
+            files = dirfile.list(filter);
+
+        _foreach(files, function (file){
+            file = new java.io.File(dir + '/' + file);
+            if (file.isDirectory()){
+                recurse(file.canonicalPath, store);
+            }else{
+                store.push(file.canonicalPath);
+            }
+        });
+    }
+    recurse(dir,result);
+    return result;
+}
