@@ -5,7 +5,11 @@
 
 ### Modules in ScriptCraft
 
-ScriptCraft now has a simple module loading system. ScriptCraft now uses the [CommonJS module contract][cjsmod] - that is - the same module system used by Node.js. All of the javascript code which comes bundled with ScriptCraft has been modified so that it conforms to the CommonJS module system. 
+ScriptCraft now has a simple module loading system. ScriptCraft now
+uses the [CommonJS module contract][cjsmod] - that is - the same
+module system used by Node.js. All of the javascript code which comes
+bundled with ScriptCraft has been modified so that it conforms to the
+CommonJS module system.
 
 ### What this means for plugins you've developed using ScriptCraft
 
@@ -17,16 +21,24 @@ If you have written plugins using a previous version of ScriptCraft then you hav
 ... Option 2 should be relatively straightforward if you follow these steps...
 
  1. Copy your own custom plugins from the `js-plugins` directory to the new `scriptcraft/plugins` directory.
- 2. In your javascript code any functions, objects or variables which you want to expose for use by others should be exposed using the special `exports` variable. All other code within your .js files will now be private by default. See below for details on how CommonJS/Node.js modules work.
+ 2. In your javascript code any functions, objects or variables which
+    you want to expose for use by others should be exposed using the
+    special `exports` variable. All other code within your .js files will
+    now be private by default. See below for details on how
+    CommonJS/Node.js modules work.
 
-If you have any questions or concerns or need help converting your existing javascript plugin, contact please post questions on the [ScriptCraft forum][scforum] or open an issue on the [Github project][github]
+If you have any questions or concerns or need help converting your
+existing javascript plugin, contact please post questions on the
+[ScriptCraft forum][scforum] or open an issue on the [Github
+project][github]
 
 [github]: http://github.com/walterhiggins/ScriptCraft
 [scforum]: https://groups.google.com/forum/?fromgroups=#!forum/scriptcraft---scripting-minecraft 
 
-In ScriptCraft, files and modules are in one-to-one correspondence. As an example, foo.js
-loads the module circle.js in the same directory. 
-*ScriptCraft now uses the same module system as Node.js - see [Node.js Modules][njsmod] for more details.*
+In ScriptCraft, files and modules are in one-to-one correspondence. As
+an example, foo.js loads the module circle.js in the same directory.
+*ScriptCraft now uses the same module system as Node.js - see [Node.js
+Modules][njsmod] for more details.*
 
 [njsmod]: http://nodejs.org/api/modules.html
 [cjsmod]: http://wiki.commonjs.org/wiki/Modules/1.1.1
