@@ -75,7 +75,7 @@ exports.classroom = classroom;
 
 events.on('player.PlayerLoginEvent', function(listener, event) { 
     var player = event.player;
-    if (classroom.store.enableScripting){
+    if (_store.enableScripting){
         player.addAttachment(__plugin, "scriptcraft.*", true);
     }
 }, "HIGHEST");

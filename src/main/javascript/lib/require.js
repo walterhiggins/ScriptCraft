@@ -54,10 +54,12 @@ module specification, the '.js' suffix is optional.
 [cjsmodules]: http://wiki.commonjs.org/wiki/Modules/1.1.1.
 
 ***/
-( function (logger, evaluator, verbose, rootDir) {
+( function (logger, evaluator, verbose, rootDir, modulePaths) {
 
-    if (verbose)
+    if (verbose){
         logger.info("Setting up 'require' module system. Root Directory: " + rootDir);
+        logger.info("Module paths: " + JSON.stringify(modulePaths));
+    }
 
     var File = java.io.File;
     
@@ -83,9 +85,6 @@ module specification, the '.js' suffix is optional.
             }
         }
     };
-
-    var LIB_DIR = rootDir + '/lib/';
-    var MODULE_DIR = rootDir + '/modules/';
 
     var resolveModuleToFile = function(moduleName, parentDir) {
 /**********************************************************************
@@ -120,6 +119,7 @@ module specification, the '.js' suffix is optional.
     3.2 if no package.json file exists then look for an index.js file in the directory
 
 ***/
+
         var file = new File(moduleName);
 
         var fileExists = function(file) {
@@ -137,41 +137,19 @@ module specification, the '.js' suffix is optional.
         if (moduleName.match(/^[^\.\/]/)){
             // it's a module named like so ... 'events' , 'net/http'
             //
-            
-            var resolvedFile = new File(LIB_DIR + moduleName);
-            if (resolvedFile.exists()){
-
-                return fileExists(resolvedFile);
-            } else{
-
-                // try appending a .js to the end
-                resolvedFile = new File(LIB_DIR + moduleName + '.js');
+            var resolvedFile;
+            for (var i = 0;i < modulePaths.length; i++){
+                resolvedFile = new File(modulePaths[i] + moduleName);
                 if (resolvedFile.exists()){
-
-                    return resolvedFile;
+                    return fileExists(resolvedFile);
                 }else{
-                    
-                    if (verbose){
-                        logger.info("File not found in " + LIB_DIR + ': ' + resolvedFile.canonicalPath);
-                    }
-
-                    resolvedFile = new File(MODULE_DIR + moduleName);
-                    if (resolvedFile.exists()){
-                        return fileExists(resolvedFile);
-                    }else {
-                        if (verbose){
-                            logger.info("File not found in " + MODULE_DIR + ': ' + resolvedFile.canonicalPath);
-                        }
-                        resolvedFile = new File(MODULE_DIR + moduleName + '.js');
-                        if (resolvedFile.exists())
-                            return resolvedFile;
-                        else{
-                            
-                            if (verbose){
-                                logger.info("File not found in " + MODULE_DIR + ': ' + resolvedFile.canonicalPath);
-                            }
-                        }
-                    }
+                    // try appending a .js to the end
+                    resolvedFile = new File(modulePaths[i] + moduleName + '.js');
+                    if (resolvedFile.exists())
+                        return resolvedFile;
+                }
+                if (verbose){
+                    logger.info("Module " + moduleName + " not found in " + modulePaths[i]);
                 }
             }
         } else {

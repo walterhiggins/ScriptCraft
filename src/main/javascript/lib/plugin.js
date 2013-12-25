@@ -36,12 +36,13 @@ var _plugin = function(/* String */ moduleName, /* Object */ moduleObject, isPer
     _plugins[moduleName] = pluginData;
 
     if (isPersistent){
+        if (!moduleObject.store){
+            moduleObject.store = {};
+        }
         var loadedStore = load(dataDir.canonicalPath + "/" + moduleName + "-store.json");
         if (loadedStore){
-            moduleObject.store = loadedStore;
-        }else{
-            if (!moduleObject.store){
-                moduleObject.store = {};
+            for (var i in loadedStore){
+                moduleObject.store[i] = loadedStore[i];
             }
         }
     }

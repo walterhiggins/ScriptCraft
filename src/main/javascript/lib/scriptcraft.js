@@ -740,7 +740,16 @@ See [issue #69][issue69] for more information.
     global.addUnloadHandler = _addUnloadHandler;
 
     var fnRequire = load(jsPluginsRootDirName + '/lib/require.js',true);
-    global.require = fnRequire(__plugin.logger, __engine, config.verbose, jsPluginsRootDirName);
+    /*
+      setup paths to search for modules
+     */
+    var modulePaths = [jsPluginsRootDirName + '/lib/',
+                       jsPluginsRootDirName + '/modules/'];
+    global.require = fnRequire(__plugin.logger, 
+                               __engine, 
+                               config.verbose, 
+                               jsPluginsRootDirName,
+                               modulePaths);
 
 
     var plugins = require('plugin');

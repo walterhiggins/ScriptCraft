@@ -90,7 +90,7 @@
     <!-- ensure plugin.yml is always copied -->
     <delete file="${build}/plugin.yml" />
     <copy file="src/main/resources/plugin.yml" todir="${build}"/>
-    <replace file="${build}/plugin.yml" value="${bukkit-version}-${DSTAMP}">
+    <replace file="${build}/plugin.yml" value="${scriptcraft-version}-${DSTAMP}">
       <replacetoken>[[version]]</replacetoken>
     </replace>
     
