@@ -1,3 +1,6 @@
+# 2013 12 25
+
+Added the 'commando' module.
 
 # 2013 12 24
 
