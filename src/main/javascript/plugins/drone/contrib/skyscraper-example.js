@@ -1,5 +1,5 @@
 var Drone = require('../drone').Drone;
-var blocks = require('../blocks').blocks;
+var blocks = require('blocks');
 
 Drone.extend('skyscraper',function(floors){
 

@@ -1,5 +1,5 @@
 var _utils = require('utils');
-var blocks = require('./blocks').blocks;
+var blocks = require('blocks');
 
 /*********************************************************************
 Drone Module
@@ -733,6 +733,12 @@ Drone = function(x,y,z,dir,world)
 };
 
 exports.Drone = Drone;
+/* 
+   because this is a plugin, any of its exports will be exported globally.
+   Since 'blocks' is a module not a plugin it is convenient to export it via 
+   the Drone module.
+*/
+exports.blocks = blocks;
 
 //
 // add custom methods to the Drone object using this function
