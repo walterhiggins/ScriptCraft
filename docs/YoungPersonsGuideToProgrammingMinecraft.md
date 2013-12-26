@@ -975,7 +975,7 @@ different objects and methods available for use by ScriptCraft.
 [boole]: http://en.wikipedia.org/wiki/George_Boole
 [soundapi]: http://jd.bukkit.org/beta/apidocs/org/bukkit/Sound.html
 [ap]: http://walterhiggins.net/blog/ScriptCraft-1-Month-later
-[api]: api.md
+[api]: API-Reference.md
 [twl]: http://www.barebones.com/products/textwrangler/
 
 [img_echo_date]: img/ypgpm_echo_date.png
