@@ -1,3 +1,10 @@
+# 2013 12 26
+
+Made the `events` variable global because it is use by modules and
+plugins. This means there is no longer any need to explicitly
+`require('events')` since `events` is now a free variable in the
+global namespace.
+
 # 2013 12 25
 
 Added the 'commando' module.

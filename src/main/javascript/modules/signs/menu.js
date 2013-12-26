@@ -1,6 +1,6 @@
 var _utils = require('utils');
 var stringExt = require('utils/string-exts');
-var events = require('events');
+var _store = {};
 /*
   Define the signs module - signs are persistent 
   (that is - a menu sign will still be a menu after the
@@ -14,7 +14,8 @@ var signs = plugin("signs", {
         /* String */ label, 
         /* Array */ options, 
         /* Function */ onInteract, 
-        /* Number */ defaultSelection ){}
+        /* Number */ defaultSelection ){},
+    store: _store
 },true);
 
 module.exports = signs;
@@ -37,9 +38,8 @@ var _redrawMenuSign = function(p_sign,p_selectedIndex,p_displayOptions)
     }
     p_sign.update(true);
 };
+
 var _updaters = {};
-var _store = {};
-signs.store = _store;
 /*
   construct an interactive menu to be subsequently attached to 
   one or more Signs.
@@ -169,7 +169,7 @@ signs.menu = function(
 //
 // update it every time player interacts with it.
 //
-events.on("player.PlayerInteractEvent",function(listener, event) {
+events.on('player.PlayerInteractEvent',function(listener, event) {
     /*
       look up our list of menu signs. If there's a matching location and there's
       a sign, then update it.

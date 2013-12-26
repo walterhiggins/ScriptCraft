@@ -1,13 +1,19 @@
 /*************************************************************************
-## Minigame: Guess the number
+# NumberGuess mini-game: 
 
-### Example
+## Description
+This is a very simple number guessing game. Minecraft will ask you to
+guess a number between 1 and 10 and you will tell you if you're too
+hight or too low when you guess wrong. The purpose of this mini-game
+code is to demonstrate use of Bukkit's Conversation API.
+
+## Example
     
     /js Game_NumberGuess.start()
 
-... Begins a number-guessing game where you must guess the number (between 1 and 10) chosen by the computer.  
-   
- A basic number-guessing game that uses the Bukkit Conversation API.
+Once the game begins, guess a number by typing the `/` character
+followed by a number between 1 and 10.
+
 ***/
 exports.Game_NumberGuess = {
     start: function() {

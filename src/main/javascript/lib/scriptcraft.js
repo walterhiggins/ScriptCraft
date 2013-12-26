@@ -757,7 +757,6 @@ See [issue #69][issue69] for more information.
     global.plugin = plugins.plugin;
     global.command = plugins.command;
     global.save = plugins.save;
-    plugins.autoload(jsPluginsRootDir);
 
     var events = require('events');
     events.on('server.PluginDisableEvent',function(l,e){
@@ -767,6 +766,11 @@ See [issue #69][issue69] for more information.
         _runUnloadHandlers();
         org.bukkit.event.HandlerList["unregisterAll(org.bukkit.plugin.Plugin)"](__plugin);
     });
+    // wph 20131226 - make events global as it is used by many plugins/modules
+    global.events = events;
+
+    plugins.autoload(jsPluginsRootDir);
+
 
 }());
 

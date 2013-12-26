@@ -77,7 +77,7 @@ global commands for a plugin, please let me know.
 [pcppevt]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/player/PlayerCommandPreprocessEvent.html
 
 ***/
-var events = require('events');
+
 var commands = {};
 exports.commando = function(name, func, options, intercepts){
     var result = command(name, func, options, intercepts);

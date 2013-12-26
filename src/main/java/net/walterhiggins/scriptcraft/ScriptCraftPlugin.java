@@ -156,10 +156,10 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
             this.engine.put("__cmdArgs",args);
             result = true;
         } else if (cmd.getName().equalsIgnoreCase("coffee")) {
-         for (int i = 0;i < args.length; i++)
+            for (int i = 0;i < args.length; i++)
                 javascriptCode += args[i] + " ";
-         javascriptCode = "eval(CoffeeScript.compile(\""+javascriptCode+"\", {bare: true}))";
-         result = true;
+            javascriptCode = "eval(CoffeeScript.compile(\""+javascriptCode+"\", {bare: true}))";
+            result = true;
         }
         
         if (result){
@@ -181,5 +181,4 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
         }
         return result; 
     }
-
 }

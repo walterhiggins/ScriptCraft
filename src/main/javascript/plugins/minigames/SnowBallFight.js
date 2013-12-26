@@ -1,38 +1,47 @@
-var events = require('events');
+/*************************************************************************
+# SnowballFight mini-game
 
-/*
-  OK - this is a rough and ready prototype of a simple multi-player shoot-em-up.
-  Get a bunch of players in close proximity and issue the following commands...
+## Description
 
-  /js var redTeam = ['<player1>','<player2>',...etc]
-  /js var blueTeam = ['<player3>','<player4>,...etc]
-  /js var greenTeam = ['<player5>','<player6>,...etc]
-  /js new Game_SnowBallFight({red: redTeam,blue: blueTeam,green: greenTeam},60).start();
+This is a rough and ready prototype of a simple multi-player
+shoot-em-up. To start a game with all players playing against one another...
 
-  Alternatively you can just have all players play against each other...
+    /js new Game_SnowballFight(60).start();
 
-  /js new SnowBallFight(['player1','player2','player3'],60).start();
+... this obviously works best if all of the players are in close
+proximity within the same game world. Alternatively you can have team
+matches...
 
-  (where <player1> etc are the names of actual players)
+
+    /js var redTeam = ['<player1>','<player2>',...etc]
+    /js var blueTeam = ['<player3>','<player4>,...etc]
+    /js var greenTeam = ['<player5>','<player6>,...etc]
+    /js new Game_SnowballFight(60, {red: redTeam,blue: blueTeam,green: greenTeam}).start();
+
+Or you can just have specific players play against each other...
+
+    /js new Game_SnowballFight(60, ['player1','player2','player3']).start();
+
+(where 'player1' etc are the names of actual players)
   
-  You specify the teams in the game as an object where each property's name is a team name and 
-  each property's value is the list of players on that team.
-  You specify the duration of the game (in seconds)
-  You kick off the game with the start() method.
-  I need to work on a better in-game mechanism for players to choose teams and start the game
-  but this will do for now.
+You specify the teams in the game as an object where each property's
+name is a team name and each property's value is the list of players
+on that team.  You specify the duration of the game (in seconds) You
+kick off the game with the start() method.  I need to work on a
+better in-game mechanism for players to choose teams and start the
+game but this will do for now.
 
-  When the game starts, each player is put in survival mode and given snowballs. The aim of the 
-  game is to hit players on opposing teams. If you hit a player on your own team, you lose a point.
+When the game starts, each player is put in survival mode and given
+snowballs. The aim of the game is to hit players on opposing teams. If
+you hit a player on your own team, you lose a point.
   
-  At the end of the game the scores for each team are broadcast. Create a small arena
-  with a couple of small buildings for cover to make the game more fun :-)
+At the end of the game the scores for each team are broadcast and each
+player returns to their previous mode of play (creative or
+survival). Create a small arena with a couple of small buildings for
+cover to make the game more fun.
   
-*/
+***/
 
-/*
-  setup game 
-*/
 var _startGame = function(gameState){
     // don't let game start if already in progress (wait for game to finish)
     if (gameState.inProgress){
@@ -104,7 +113,7 @@ var _getTeam = function(player,pteams) {
 /*
   construct a new game 
 */
-var _constructor = function(duration, teams) {
+var createGame = function(duration, teams) {
     
     var _snowBalls = new org.bukkit.inventory.ItemStack(org.bukkit.Material.SNOW_BALL, 64);
 
@@ -160,7 +169,7 @@ var _constructor = function(duration, teams) {
     return { 
         start: function() {
             _startGame(_gameState);
-            _gameState.listener = events.on("entity.EntityDamageByEntityEvent",_onSnowballHit);
+            _gameState.listener = events.on('entity.EntityDamageByEntityEvent',_onSnowballHit);
             new java.lang.Thread(function(){
                 while (_gameState.duration--)
                     java.lang.Thread.sleep(1000); // sleep 1,000 millisecs (1 second)
@@ -169,8 +178,6 @@ var _constructor = function(duration, teams) {
         }
     };
 };
-var SnowBallFight = _constructor;
-
-exports.Game_SnowBallFight = SnowBallFight;
+exports.Game_SnowballFight = createGame;
 
 

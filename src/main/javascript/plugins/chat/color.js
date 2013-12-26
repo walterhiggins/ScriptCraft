@@ -1,8 +1,6 @@
 /*
   TODO: Document this module
 */
-var events = require('events');
-
 var _store = {players: {}};
 /*
   declare a new javascript plugin for changing chat text color

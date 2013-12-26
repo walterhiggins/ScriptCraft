@@ -1653,26 +1653,147 @@ To construct a spiral staircase 5 floors high made of oak...
 
     spiral_stairs('oak', 5);
 
- 
-## The arrows mod adds fancy arrows to the game.
-  
-### Usage: 
+# Arrows Module 
 
-    /js var arrows = require('./arrows/arrows')
+## Description
+The arrows mod adds fancy arrows to the game. Arrows which... 
 
-  * `/js arrows.sign()` turns a targeted sign into a Arrows menu
-  * `/js arrows.normal()` sets arrow type to normal.
-  * `/js arrows.explosive()` - makes arrows explode.
+ * Launch fireworks.
+ * Explode on impact. 
+ * Force Lightning to strike where they land.
+ * Teleport the player to the landing spot.
+ * Spawn Trees at the landing spot.
+
+## Usage: 
+
+  * `/js arrows.firework()` - A firework launches where the the arrow lands.
+  * `/js arrows.lightning()` - lightning strikes where the arrow lands.
   * `/js arrows.teleport()` - makes player teleport to where arrow has landed.
   * `/js arrows.flourish()` - makes a tree grow where the arrow lands.
-  * `/js arrows.lightning()` - lightning strikes where the arrow lands.
-  * `/js arrows.firework()` - A firework launches where the the arrow lands.
+  * `/js arrows.explosive()` - makes arrows explode.
+  * `/js arrows.normal()` sets arrow type to normal.
+  * `/js arrows.sign()` turns a targeted sign into a Arrows menu
 
-  All of the above functions can take an optional player object or name as 
-  a parameter. E.g.
-  
-  `/js arrows.explosive('player23')` makes player23's arrows explosive.
+All of the above functions can take an optional player object or name as 
+a parameter. For example: `/js arrows.explosive('player23')` makes player23's arrows explosive.
  
+# Commando Plugin
+
+## Description
+
+commando is a plugin which can be used to add completely new commands
+to Minecraft.  Normally ScriptCraft only allows for provision of new
+commands as extensions to the jsp command. For example, to create a
+new simple command for use by all players...
+
+    /js command('hi', function(){ echo('Hi ' + self.name); });
+  
+... then players can use this command by typing...
+
+    /jsp hi
+
+... A couple of ScriptCraft users have asked for the ability to take
+this a step further and allow the global command namespace to be
+populated so that when a developer creates a new command using the
+'command' function, then the command is added to the global command
+namespace so that players can use it simply like this...
+
+    /hi
+
+... There are good reasons why ScriptCraft's core `command()` function
+does not do this. Polluting the global namespace with commands would
+make ScriptCraft a bad citizen in that Plugins should be able to work
+together in the same server and - as much as possible - not step on
+each others' toes. The CraftBukkit team have very good reasons for
+forcing Plugins to declare their commands in the plugin.yml
+configuration file. It makes approving plugins easier and ensures that
+craftbukkit plugins behave well together. While it is possible to
+override other plugins' commands, the CraftBukkit team do not
+recommend this. However, as ScriptCraft users have suggested, it
+should be at the discretion of server administrators as to when
+overriding or adding new commands to the global namespace is good.
+
+So this is where `commando()` comes in. It uses the exact same
+signature as the core `command()` function but will also make the
+command accessible without the `jsp` prefix so instead of having to
+type `/jsp hi` for the above command example, players simply type
+`/hi` . This functionality is provided as a plugin rather than as part
+of the ScriptCraft core.
+
+## Example hi-command.js
+
+    var commando = require('../commando');
+    commando('hi', function(){
+       echo('Hi ' + self.name);
+    });
+
+...Displays a greeting to any player who issues the `/hi` command.
+
+## Example - timeofday-command.js 
+
+    var times = {Dawn: 0, Midday: 6000, Dusk: 12000, Midnight:18000};
+    commando('timeofday', function(params){
+           self.location.world.setTime(times[params[0]]);
+       },
+       ['Dawn','Midday','Dusk','Midnight']);
+
+... changes the time of day using a new `/timeofday` command (options are Dawn, Midday, Dusk, Midnight)
+
+## Caveats
+
+Since commands registered using commando are really just appendages to
+the `/jsp` command and are not actually registered globally (it just
+looks like that to the player), you won't be able to avail of tab
+completion for the command itself or its parameters (unless you go the
+traditional route of adding the `jsp` prefix). This plugin uses the
+[PlayerCommandPreprocessEvent][pcppevt] which allows plugins to
+intercepts all commands and inject their own commands instead. If
+anyone reading this knows of a better way to programmatically add new
+global commands for a plugin, please let me know.
+
+[pcppevt]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/player/PlayerCommandPreprocessEvent.html
+
+Classroom Module
+================
+The `classroom` object contains a couple of utility functions for use
+in a classroom setting. The goal of these functions is to make it
+easier for tutors to facilitate ScriptCraft for use by students in a
+classroom environment. Although granting ScriptCraft access to
+students on a shared server is potentially risky (Students can
+potentially abuse it), it is slighlty less risky than granting
+operator privileges to each student. (Enterprising students will
+quickly realise how to grant themselves and others operator privileges
+once they have access to ScriptCraft).
+
+The goal of this module is not so much to enforce restrictions
+(security or otherwise) but to make it easier for tutors to setup a shared server
+so students can learn Javascript.
+
+classroom.allowScripting() function
+===================================
+Allow or disallow anyone who connects to the server (or is already
+connected) to use ScriptCraft. This function is preferable to granting 'ops' privileges 
+to every student in a Minecraft classroom environment.
+
+Parameters
+----------
+
+ * canScript : true or false
+
+Example
+-------
+To allow all players (and any players who connect to the server) to
+use the `js` and `jsp` commands...
+
+    /js classroom.allowScripting(true)
+
+To disallow scripting (and prevent players who join the server from using the commands)...
+
+    /js classroom.allowScripting(false)
+
+Only ops users can run the classroom.allowScripting() function - this is so that students 
+don't try to bar themselves and each other from scripting.
+
 ### Commando Plugin
 
 #### Description
@@ -1750,53 +1871,59 @@ global commands for a plugin, please let me know.
 
 [pcppevt]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/player/PlayerCommandPreprocessEvent.html
 
-Classroom Module
-================
-The `classroom` object contains a couple of utility functions for use
-in a classroom setting. The goal of these functions is to make it
-easier for tutors to facilitate ScriptCraft for use by students in a
-classroom environment. Although granting ScriptCraft access to
-students on a shared server is potentially risky (Students can
-potentially abuse it), it is slighlty less risky than granting
-operator privileges to each student. (Enterprising students will
-quickly realise how to grant themselves and others operator privileges
-once they have access to ScriptCraft).
+# SnowballFight mini-game
 
-The goal of this module is not so much to enforce restrictions
-(security or otherwise) but to make it easier for tutors to setup a shared server
-so students can learn Javascript.
+## Description
 
-classroom.allowScripting() function
-===================================
-Allow or disallow anyone who connects to the server (or is already
-connected) to use ScriptCraft. This function is preferable to granting 'ops' privileges 
-to every student in a Minecraft classroom environment.
+This is a rough and ready prototype of a simple multi-player
+shoot-em-up. To start a game with all players playing against one another...
 
-Parameters
-----------
+    /js new Game_SnowballFight(60).start();
 
- * canScript : true or false
+... this obviously works best if all of the players are in close
+proximity within the same game world. Alternatively you can have team
+matches...
 
-Example
--------
-To allow all players (and any players who connect to the server) to
-use the `js` and `jsp` commands...
 
-    /js classroom.allowScripting(true)
+    /js var redTeam = ['<player1>','<player2>',...etc]
+    /js var blueTeam = ['<player3>','<player4>,...etc]
+    /js var greenTeam = ['<player5>','<player6>,...etc]
+    /js new Game_SnowballFight(60, {red: redTeam,blue: blueTeam,green: greenTeam}).start();
 
-To disallow scripting (and prevent players who join the server from using the commands)...
+Or you can just have specific players play against each other...
 
-    /js classroom.allowScripting(false)
+    /js new Game_SnowballFight(60, ['player1','player2','player3']).start();
 
-Only ops users can run the classroom.allowScripting() function - this is so that students 
-don't try to bar themselves and each other from scripting.
+(where 'player1' etc are the names of actual players)
+  
+You specify the teams in the game as an object where each property's
+name is a team name and each property's value is the list of players
+on that team.  You specify the duration of the game (in seconds) You
+kick off the game with the start() method.  I need to work on a
+better in-game mechanism for players to choose teams and start the
+game but this will do for now.
 
-## Minigame: Guess the number
+When the game starts, each player is put in survival mode and given
+snowballs. The aim of the game is to hit players on opposing teams. If
+you hit a player on your own team, you lose a point.
+  
+At the end of the game the scores for each team are broadcast and each
+player returns to their previous mode of play (creative or
+survival). Create a small arena with a couple of small buildings for
+cover to make the game more fun.
+  
+# NumberGuess mini-game: 
 
-### Example
+## Description
+This is a very simple number guessing game. Minecraft will ask you to
+guess a number between 1 and 10 and you will tell you if you're too
+hight or too low when you guess wrong. The purpose of this mini-game
+code is to demonstrate use of Bukkit's Conversation API.
+
+## Example
     
     /js Game_NumberGuess.start()
 
-... Begins a number-guessing game where you must guess the number (between 1 and 10) chosen by the computer.  
-   
- A basic number-guessing game that uses the Bukkit Conversation API.
+Once the game begins, guess a number by typing the `/` character
+followed by a number between 1 and 10.
+

@@ -1,28 +1,31 @@
 /*************************************************************************
- 
-## The arrows mod adds fancy arrows to the game.
-  
-### Usage: 
+# Arrows Module 
 
-    /js var arrows = require('./arrows/arrows')
+## Description
+The arrows mod adds fancy arrows to the game. Arrows which... 
 
-  * `/js arrows.sign()` turns a targeted sign into a Arrows menu
-  * `/js arrows.normal()` sets arrow type to normal.
-  * `/js arrows.explosive()` - makes arrows explode.
+ * Launch fireworks.
+ * Explode on impact. 
+ * Force Lightning to strike where they land.
+ * Teleport the player to the landing spot.
+ * Spawn Trees at the landing spot.
+
+## Usage: 
+
+  * `/js arrows.firework()` - A firework launches where the the arrow lands.
+  * `/js arrows.lightning()` - lightning strikes where the arrow lands.
   * `/js arrows.teleport()` - makes player teleport to where arrow has landed.
   * `/js arrows.flourish()` - makes a tree grow where the arrow lands.
-  * `/js arrows.lightning()` - lightning strikes where the arrow lands.
-  * `/js arrows.firework()` - A firework launches where the the arrow lands.
+  * `/js arrows.explosive()` - makes arrows explode.
+  * `/js arrows.normal()` sets arrow type to normal.
+  * `/js arrows.sign()` turns a targeted sign into a Arrows menu
 
-  All of the above functions can take an optional player object or name as 
-  a parameter. E.g.
-  
-  `/js arrows.explosive('player23')` makes player23's arrows explosive.
+All of the above functions can take an optional player object or name as 
+a parameter. For example: `/js arrows.explosive('player23')` makes player23's arrows explosive.
  
 ***/
 
 var signs = require('signs');
-var events = require('events');
 var fireworks = require('fireworks');
 
 var _store = {players: {}};

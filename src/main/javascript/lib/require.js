@@ -86,6 +86,18 @@ module specification, the '.js' suffix is optional.
         }
     };
 
+    var fileExists = function(file) {
+        if (file.isDirectory()){
+            return readModuleFromDirectory(file);
+        }else {
+            return file;
+        }
+    };
+
+    var _canonize = function(file){ 
+        return "" + file.canonicalPath.replaceAll("\\\\","/"); 
+    };
+
     var resolveModuleToFile = function(moduleName, parentDir) {
 /**********************************************************************
 ## When resolving module names to file paths, ScriptCraft uses the following rules...
@@ -119,17 +131,7 @@ module specification, the '.js' suffix is optional.
     3.2 if no package.json file exists then look for an index.js file in the directory
 
 ***/
-
         var file = new File(moduleName);
-
-        var fileExists = function(file) {
-
-            if (file.isDirectory()){
-                return readModuleFromDirectory(file);
-            }else {
-                return file;
-            }
-        };
 
         if (file.exists()){
             return fileExists(file);
@@ -156,11 +158,7 @@ module specification, the '.js' suffix is optional.
             // it's of the form ./path
             file = new File(parentDir, moduleName);
             if (file.exists()){
-                if (file.isDirectory()){
-                    return readModuleFromDirectory(file);
-                }else {
-                    return file;
-                }
+                return fileExists(file);
             }else { 
 
                 // try appending a .js to the end
@@ -169,7 +167,6 @@ module specification, the '.js' suffix is optional.
                 if (file.exists())
                     return file;
                 else{
-
                     file = new File(pathWithJSExt);
                     if (file.exists())
                         return file;
@@ -186,10 +183,6 @@ module specification, the '.js' suffix is optional.
     
     var _require = function(parentFile, path)
     {
-        var _canonize = function(file){ 
-            return "" + file.canonicalPath.replaceAll("\\\\","/"); 
-        };
-
         var file = resolveModuleToFile(path, parentFile);
         if (!file){
             throw new Error("require('" + path + "'," + parentFile.canonicalPath + ") failed");
@@ -215,7 +208,8 @@ module specification, the '.js' suffix is optional.
         moduleInfo = {
             loaded: false,
             id: canonizedFilename,
-            exports: {}
+            exports: {},
+            require: _requireClosure(file.parentFile)
         };
         var tail = "})";
         code = head + code + tail;
@@ -228,14 +222,18 @@ module specification, the '.js' suffix is optional.
             logger.severe("Error:" + e + " while evaluating module " + canonizedFilename);
             throw e;
         }
-        var __dirname = file.parentFile.canonicalPath;
+        var __dirname = "" + file.parentFile.canonicalPath;
+        var parameters = [
+            moduleInfo.exports, /* exports */
+            moduleInfo,         /* module */
+            moduleInfo.require, /* require */
+            canonizedFilename,  /* __filename */
+            __dirname           /* __dirname */
+        ];
         try {
-            compiledWrapper.apply(moduleInfo.exports, 
-                                  [moduleInfo.exports, 
-                                   moduleInfo, 
-                                   _requireClosure(file.parentFile), 
-                                   canonizedFilename, 
-                                   "" + __dirname]);
+            compiledWrapper
+                .apply(moduleInfo.exports,  /* this */
+                       parameters);   
         } catch (e){
             logger.severe("Error:" + e + " while executing module " + canonizedFilename);
             throw e;
