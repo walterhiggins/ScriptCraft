@@ -2,12 +2,44 @@
 
 ## Updated 'jsp alias' command.
 
-The 'jsp alias' command now lets players define their own shortcuts which don't require the 'jsp ' prefix.
+The 'jsp alias' command now lets players define their own shortcuts
+which don't require the 'jsp ' prefix.
 
+### Example
+
+At the in-game prompt use the following command to create a new alias
+`cw` (short for change Clock & Weather) which will change the time and
+weather using a single statement.
+
+    /jsp alias set cw = time set {1} ; weather {2}
+
+This creates a new cw alias which takes 2 parameters, time and weather
+and passes them to the 'time set' and 'weather' commands. You use the
+alias like this...
+
+    /cw 4000 sun
+
+... which in turn gets converted into these 2 commands...
+
+    /time set 4000
+    /weather sun
+
+Aliases can be set on a per-player basis or can be set globally (for
+all players). Aliases are automatically saved and restore on server
+shutdown/startup.
+    
 ## Added console global variable.
 
-ScriptCraft now has a `console` global variable which can be used for logging (to the server console).
-The `console` variable uses the ScriptCraft plugin Logger object.
+ScriptCraft now has a `console` global variable which can be used for
+logging (to the server console). The `console` variable uses the
+ScriptCraft plugin Logger object. You use the console object in your
+javascript modules like this...
+
+    console.info('Hello %s, %s', 'World', 'Universe');
+
+... or simply...
+
+    console.warn('Hello World');
 
 # 2013 12 26
 
