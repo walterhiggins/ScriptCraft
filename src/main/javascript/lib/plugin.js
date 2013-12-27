@@ -84,7 +84,14 @@ var _command = function(name,func,options,intercepts)
             for (var i =1; i < __cmdArgs.length;i++){
                 params.push("" + __cmdArgs[i]);
             }
-            return func(params);
+            var result = null;
+            try { 
+                result =  func(params);
+            }catch (e){
+                logger.severe("Error while trying to execute command: " + JSON.stringify(params));
+                throw e;
+            }
+            return result;
         }
     }else{
         if (typeof options == "undefined")

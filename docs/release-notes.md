@@ -1,3 +1,14 @@
+# 2013 12 27
+
+## Updated 'jsp alias' command.
+
+The 'jsp alias' command now lets players define their own shortcuts which don't require the 'jsp ' prefix.
+
+## Added console global variable.
+
+ScriptCraft now has a `console` global variable which can be used for logging (to the server console).
+The `console` variable uses the ScriptCraft plugin Logger object.
+
 # 2013 12 26
 
 Made the `events` variable global because it is use by modules and

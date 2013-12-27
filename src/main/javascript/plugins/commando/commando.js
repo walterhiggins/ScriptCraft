@@ -1,7 +1,7 @@
 /*************************************************************************
-### Commando Plugin
+# Commando Plugin
 
-#### Description
+## Description
 
 commando is a plugin which can be used to add completely new commands
 to Minecraft.  Normally ScriptCraft only allows for provision of new
@@ -32,9 +32,8 @@ configuration file. It makes approving plugins easier and ensures that
 craftbukkit plugins behave well together. While it is possible to
 override other plugins' commands, the CraftBukkit team do not
 recommend this. However, as ScriptCraft users have suggested, it
-should be at the discretion of server administrators and plugin
-authors as to when overriding or adding new commands to the global
-namespace is good.
+should be at the discretion of server administrators as to when
+overriding or adding new commands to the global namespace is good.
 
 So this is where `commando()` comes in. It uses the exact same
 signature as the core `command()` function but will also make the
@@ -43,7 +42,7 @@ type `/jsp hi` for the above command example, players simply type
 `/hi` . This functionality is provided as a plugin rather than as part
 of the ScriptCraft core.
 
-#### Example hi-command.js
+## Example hi-command.js
 
     var commando = require('../commando');
     commando('hi', function(){
@@ -52,17 +51,17 @@ of the ScriptCraft core.
 
 ...Displays a greeting to any player who issues the `/hi` command.
 
-#### Example - timeofday-command.js 
+## Example - timeofday-command.js 
 
     var times = {Dawn: 0, Midday: 6000, Dusk: 12000, Midnight:18000};
     commando('timeofday', function(params){
            self.location.world.setTime(times[params[0]]);
-       }
+       },
        ['Dawn','Midday','Dusk','Midnight']);
 
 ... changes the time of day using a new `/timeofday` command (options are Dawn, Midday, Dusk, Midnight)
 
-#### Caveats
+## Caveats
 
 Since commands registered using commando are really just appendages to
 the `/jsp` command and are not actually registered globally (it just
@@ -77,8 +76,8 @@ global commands for a plugin, please let me know.
 [pcppevt]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/player/PlayerCommandPreprocessEvent.html
 
 ***/
-
 var commands = {};
+
 exports.commando = function(name, func, options, intercepts){
     var result = command(name, func, options, intercepts);
     commands[name] = result;
@@ -90,5 +89,12 @@ events.on('player.PlayerCommandPreprocessEvent', function(l,e){
     var command = msg.match(/^\/([^\s]+)/)[1];
     if (commands[command]){
         e.message = "/jsp " + msg.substring(1);
+    }
+});
+events.on('server.ServerCommandEvent', function(l,e){
+    var msg = "" + e.command;
+    var command = msg.match(/^\/*([^\s]+)/)[1];
+    if (commands[command]){
+        e.command = "/jsp " + msg.substring(1);
     }
 });

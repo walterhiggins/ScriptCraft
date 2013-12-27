@@ -530,6 +530,30 @@ To unregister a listener *outside* of the listener function...
 [buk2]: http://wiki.bukkit.org/Event_API_Reference
 [buk]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/event/Event.html
 
+## console global variable
+
+ScriptCraft provides a `console` global variable with the followng methods...
+
+ * log()  
+ * info() 
+ * warn()
+ * error()
+
+The ScriptCraft console methods work like the Web API implementation.
+
+### Example 
+
+    console.log('Hello %s', 'world');
+
+Basic variable substitution is supported (ScriptCraft's implementation
+of console uses the Bukkit Plugin [Logger][lgr] under the hood and
+uses [java.lang.String.format()][strfmt] for variable
+substitution. All output will be sent to the server console (not
+in-game).
+
+[lgr]: http://jd.bukkit.org/beta/apidocs/org/bukkit/plugin/PluginLogger.html
+[strfmt]: http://docs.oracle.com/javase/6/docs/api/java/lang/String.html#format(java.lang.String, java.lang.Object...)
+
 http.request() function
 ====================
 The http.request() function will fetch a web address asynchronously (on a
@@ -1677,6 +1701,56 @@ The arrows mod adds fancy arrows to the game. Arrows which...
 All of the above functions can take an optional player object or name as 
 a parameter. For example: `/js arrows.explosive('player23')` makes player23's arrows explosive.
  
+## alias Module
+
+The alias module lets players and server admins create their own
+per-player or global custom in-game command aliases.
+
+### Examples
+
+To set a command alias which is only visible to the current player
+(per-player alias)...
+
+    /jsp alias set cw = time set {1} ; weather {2}
+
+... Creates a new custom command only usable by the player who set
+it called `cw` (short for set Clock and Weather) which when invoked...
+
+    /cw 4000 sun
+
+... will perform the following commands...
+
+    /time set 4000
+    /weather sun
+
+Aliases can use paramters as above. On the right hand side of the `=`, the 
+`{1}` refers to the first parameter provided with the `cw` alias, `{2}`
+refers to the second parameter and so on. So `cw 4000 sun` is converted to 
+`time set 4000` and `weather sun`. 
+
+To set a global command alias usable by all (only operators can create
+such an alias)...
+
+    /jsp alias global stormy = time 18000; weather storm
+
+To delete an alias ...
+
+    /jsp alias delete cw
+
+... deletes the 'cw' alias from the appropriate alias map.
+
+To get a list of aliases currently defined...
+
+    /jsp alias list
+
+To get help on the `jsp alias` command:
+
+    /jsp alias help
+
+Aliases can be used at the in-game prompt by players or in the server
+console.  Aliases will not be able to avail of command autocompletion
+(pressing the TAB key will have no effect).
+
 Classroom Module
 ================
 The `classroom` object contains a couple of utility functions for use
@@ -1718,9 +1792,9 @@ To disallow scripting (and prevent players who join the server from using the co
 Only ops users can run the classroom.allowScripting() function - this is so that students 
 don't try to bar themselves and each other from scripting.
 
-### Commando Plugin
+# Commando Plugin
 
-#### Description
+## Description
 
 commando is a plugin which can be used to add completely new commands
 to Minecraft.  Normally ScriptCraft only allows for provision of new
@@ -1751,9 +1825,8 @@ configuration file. It makes approving plugins easier and ensures that
 craftbukkit plugins behave well together. While it is possible to
 override other plugins' commands, the CraftBukkit team do not
 recommend this. However, as ScriptCraft users have suggested, it
-should be at the discretion of server administrators and plugin
-authors as to when overriding or adding new commands to the global
-namespace is good.
+should be at the discretion of server administrators as to when
+overriding or adding new commands to the global namespace is good.
 
 So this is where `commando()` comes in. It uses the exact same
 signature as the core `command()` function but will also make the
@@ -1762,7 +1835,7 @@ type `/jsp hi` for the above command example, players simply type
 `/hi` . This functionality is provided as a plugin rather than as part
 of the ScriptCraft core.
 
-#### Example hi-command.js
+## Example hi-command.js
 
     var commando = require('../commando');
     commando('hi', function(){
@@ -1771,17 +1844,17 @@ of the ScriptCraft core.
 
 ...Displays a greeting to any player who issues the `/hi` command.
 
-#### Example - timeofday-command.js 
+## Example - timeofday-command.js 
 
     var times = {Dawn: 0, Midday: 6000, Dusk: 12000, Midnight:18000};
     commando('timeofday', function(params){
            self.location.world.setTime(times[params[0]]);
-       }
+       },
        ['Dawn','Midday','Dusk','Midnight']);
 
 ... changes the time of day using a new `/timeofday` command (options are Dawn, Midday, Dusk, Midnight)
 
-#### Caveats
+## Caveats
 
 Since commands registered using commando are really just appendages to
 the `/jsp` command and are not actually registered globally (it just
