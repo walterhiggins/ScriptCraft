@@ -1,7 +1,7 @@
 /*************************************************************************
-# SnowballFight mini-game
+## SnowballFight mini-game
 
-## Description
+### Description
 
 This is a rough and ready prototype of a simple multi-player
 shoot-em-up. To start a game with all players playing against one another...

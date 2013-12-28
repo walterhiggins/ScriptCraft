@@ -34,6 +34,7 @@ ScriptCraft uses Java's [String.format()][strfmt] so any string substitution ide
 [webcons]: https://developer.mozilla.org/en-US/docs/Web/API/console
 
 ***/
+var logger = __plugin.logger;
 var argsToArray = function(args){
     var result = [];
     for (var i =0;i < args.length; i++)

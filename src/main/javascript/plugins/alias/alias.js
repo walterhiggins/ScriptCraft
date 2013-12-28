@@ -135,7 +135,7 @@ var _list = function(player){
             player.sendMessage(alias + " = " + JSON.stringify(_store.global[alias]) );
         }
     }catch(e){
-        logger.severe("Error in list function: " + e.message);
+        console.error("Error in list function: " + e.message);
         throw e;
     }
 };
@@ -173,7 +173,7 @@ var _intercept = function( msg, invoker, exec)
         isAlias = true;
     }else{
         if (config.verbose){
-            logger.info("No global alias found for command: " + command);
+            console.info("No global alias found for command: " + command);
         }
     }
     /*
@@ -186,7 +186,7 @@ var _intercept = function( msg, invoker, exec)
         isAlias = true;
     }else{
         if (config.verbose){
-            logger.info("No player alias found for command: " + command);
+            console.info("No player alias found for command: " + command);
         }
     }
     for (var i = 0;i < template.length; i++)

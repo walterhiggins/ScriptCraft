@@ -1,3 +1,4 @@
+var console = require('./console');
 var File = java.io.File;
 var FileWriter = java.io.FileWriter;
 var PrintWriter = java.io.PrintWriter;
@@ -88,7 +89,7 @@ var _command = function(name,func,options,intercepts)
             try { 
                 result =  func(params);
             }catch (e){
-                logger.severe("Error while trying to execute command: " + JSON.stringify(params));
+                console.error("Error while trying to execute command: " + JSON.stringify(params));
                 throw e;
             }
             return result;
@@ -150,17 +151,22 @@ exports.autoload = function(dir) {
 
         var len = sourceFiles.length;
         if (config.verbose)
-            logger.info(len + " scriptcraft plugins found.");
+            console.info(len + " scriptcraft plugins found.");
         for (var i = 0;i < len; i++){
             var pluginPath = _canonize(sourceFiles[i]);
             if (config.verbose)
-                logger.info("Loading plugin: " + pluginPath);
-            var module = require(pluginPath);
-            for (var property in module){
-                /*
-                  all exports in plugins become global
-                 */
-                global[property] = module[property];
+                console.info("Loading plugin: " + pluginPath);
+            var module = {};
+            try {
+                module = require(pluginPath);
+                for (var property in module){
+                    /*
+                      all exports in plugins become global
+                    */
+                    global[property] = module[property];
+                }
+            }catch (e){
+                
             }
         }
     };

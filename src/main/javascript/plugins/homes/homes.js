@@ -1,15 +1,71 @@
+/*************************************************************************
+## homes Module
+
+The homes plugin lets players set a location as home and return to the
+location, invite other players to their home and also visit other
+player's homes.
+
+This module is a good example of how to create a javascript-based
+minecraft mod which provides...
+
+ * A programmatic interface (API) and 
+ * A command extension which uses that API to provide new functionality for players.
+
+The module uses the `plugin()` function to specify an object and
+methods, and the `command()` function to expose functionality to
+players through a new `jsp home` command. This module also
+demonstrates how to enable autocompletion for custom commands (to see
+this in action, at the in-game prompt or server console prompt type
+`jsp home ` then press the TAB key - you should see a list of further
+possible options).
+
+The `jsp home` command has the following options...
+
+### Basic options
+
+ * `/jsp home set` Will set your current location as your
+   'home' location to which you can return at any time using the ...
+
+ * `/jsp home` ..command will return you to your home, if you have set one.
+
+ * `/jsp home <player>` Will take you to the home of <player> (where 
+   <player> is the name of the player whose home you wish to visit.
+
+ * `/jsp home delete` Deletes your home location from the location
+   database. This does not actually remove the home from the world or
+   change the world in any way. This command is completely
+   non-destructive and cannot be used for griefing. No blocks will be
+   destroyed by this command.
+
+### Social options
+The following options allow players to open their homes to all or some
+players, invite players to their home and see a list of homes they can
+visit.
+
+ * `/jsp home list` Lists home which you can visit.
+ * `/jsp home ilist` Lists players who can visit your home.
+ * `/jsp home invite <player>` Invites the named player to your home.
+ * `/jsp home uninvite <player>` Uninvites (revokes invitation) the named player to your home.
+ * `/jsp home public` Opens your home to all players (all players can visit your home).
+ * `/jsp home private` Makes your home private (no longer visitable by all).
+
+### Administration options
+The following administration options can only be used by server operators...
+
+ * `/jsp home listall` List all of the homes
+ * `/jsp home clear <player>` Removes the player's home
+   location. Again, this command does not destroy any structures in
+   the world, it simply removes the location from the database. No
+   blocks are destroyed by this command.
+
+***/
 var utils = require('utils');
-/*
-  TODO: Document this plugin!
-*/
 var _store = {
     houses: {},
     openHouses: {},
     invites: {}
 };
 /*
-  The homes plugin lets players set a location as home and return to the location, invite
-  other players to their home and also visit other player's homes.
 */
 var homes =  plugin("homes", { 
     help: function(){

@@ -127,27 +127,67 @@ As of December 24 2013, the `scriptcraft/plugins` directory has the following su
  * alias - The alias plugin/module - for creating custom aliases for commonly used commands.
  * home - The home module - for setting homes and visiting other homes.
 
+## Global variables
+
+There are a couple of special javascript variables available in ScriptCraft...
+ 
+### __plugin variable
+The ScriptCraft JavaPlugin object.
+
+### server variable
+The Minecraft Server object
+
+### self variable
+The current player. (Note - this value should not be used in multi-threaded scripts or event-handling code - it's not thread-safe)
+
+### config variable
+ScriptCraft configuration - this object is loaded and saved at startup/shutdown.
+
+### events variable
+The events object is used to add new event handlers to Minecraft.
+
+## Module variables
+The following variables are available only within the context of Modules. (not available at in-game prompt).
+
+### __filename variable
+The current file - this variable is only relevant from within the context of a Javascript module.
+
+### __dirname variable
+The current directory - this variable is only relevant from within the context of a Javascript module.
+
 ## Global functions
 
 ScripCraft provides some global functions which can be used by all plugins/modules...
 
 ### echo function
 
-The `echo()` function displays a message on the in-game screen. The message is displayed to the `self` player (this is usually the player who issued the `/js` or `/jsp` command).
+The `echo()` function displays a message on the in-game screen. The
+message is displayed to the `self` player (this is usually the player
+who issued the `/js` or `/jsp` command).
 
 ### Example
 
     /js echo('Hello World')
 
+For programmers familiar with Javascript web programming, an `alert`
+function is also provided.  `alert` works exactly the same as `echo`
+e.g. `alert('Hello World')`.
 
-* echo (message) - Displays a message on the screen. 
-   For example: `/js echo('Hello World')` will print Hello World on the in-game chat window.  
-   For programmers familiar with Javascript web programming, an `alert` function is also provided. 
-   `alert` works exactly the same as `echo` e.g. `alert('Hello World')`. 
+### Notes
+
+The `echo` and `alert` functions are provided as convenience functions
+for beginning programmers. The use of these 2 functions is not
+recommended in event-handling code or multi-threaded code. In such
+cases, if you want to send a message to a given player then use the
+Bukkit API's [Player.sendMessage()][plsm] function instead.
+
+[plsm]: 
 
  * require (modulename) - Will load modules. See [Node.js modules][njsmod]
 
- * load (filename,warnOnFileNotFound) - loads and evaluates a javascript file, returning the evaluated object. (Note: Prefer `require()` to `load()`)
+ * load (filename,warnOnFileNotFound) - loads and evaluates a
+   javascript file, returning the evaluated object. (Note: Prefer
+   `require()` to `load()`)
   
  * save (object, filename) - saves an object to a file.
 
@@ -164,8 +204,9 @@ The `echo()` function displays a message on the in-game screen. The message is d
 
 ### require() function
 
-ScriptCraft's `require()` function is used to load modules. The `require()` function takes a 
-module name as a parameter and will try to load the named module.
+ScriptCraft's `require()` function is used to load modules. The
+`require()` function takes a module name as a parameter and will try
+to load the named module.
 
 #### Parameters
 
@@ -258,7 +299,8 @@ persist data.
  
  * pluginName (String) : The name of the plugin - this becomes a global variable.
  * pluginDefinition (Object) : The various functions and members of the plugin object.
- * isPersistent (boolean - optional) : Specifies whether or not the plugin/object state should be loaded and saved by ScriptCraft.
+ * isPersistent (boolean - optional) : Specifies whether or not the
+   plugin/object state should be loaded and saved by ScriptCraft.
 
 #### Example
 
@@ -290,25 +332,18 @@ plugin author) safely expose javascript functions for use by players.
 
 #### Example
 
-See chat/colors.js or alias/alias.js or homes/homes.js for examples of how to use the `command()` function.
-
-## global variables
-
-There are a couple of special javascript variables available in ScriptCraft...
- 
- * __folder - The current working directory - this variable is only to be used within the main body of a .js file.
- * __plugin - The ScriptCraft JavaPlugin object.
- * server - The Minecraft Server object.
- * self - the current player. (Note - this value should not be used in multi-threaded scripts - it's not thread-safe)
-
-## Miscellaneous Core Functions
+See chat/colors.js or alias/alias.js or homes/homes.js for examples of
+how to use the `command()` function.
 
 ### setTimeout() function
 
-This function mimics the setTimeout() function used in browser-based javascript.
-However, the function will only accept a function reference, not a string of javascript code.
-Where setTimeout() in the browser returns a numeric value which can be subsequently passed to 
-clearTimeout(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearTimeout() implementation.
+This function mimics the setTimeout() function used in browser-based
+javascript.  However, the function will only accept a function
+reference, not a string of javascript code.  Where setTimeout() in the
+browser returns a numeric value which can be subsequently passed to
+clearTimeout(), This implementation returns a [BukkitTask][btdoc]
+object which can be subsequently passed to ScriptCraft's own
+clearTimeout() implementation.
 
 If Node.js supports setTimeout() then it's probably good for ScriptCraft to support it too.
 
@@ -330,12 +365,16 @@ A scriptcraft implementation of clearTimeout().
 
 ### setInterval() function
 
-This function mimics the setInterval() function used in browser-based javascript.
-However, the function will only accept a function reference, not a string of javascript code.
-Where setInterval() in the browser returns a numeric value which can be subsequently passed to 
-clearInterval(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearInterval() implementation.
+This function mimics the setInterval() function used in browser-based
+javascript.  However, the function will only accept a function
+reference, not a string of javascript code.  Where setInterval() in
+the browser returns a numeric value which can be subsequently passed
+to clearInterval(), This implementation returns a [BukkitTask][btdoc]
+object which can be subsequently passed to ScriptCraft's own
+clearInterval() implementation.
 
-If Node.js supports setInterval() then it's probably good for ScriptCraft to support it too.
+If Node.js supports setInterval() then it's probably good for
+ScriptCraft to support it too.
 
 [btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
 
@@ -355,6 +394,13 @@ The refresh() function will ...
 See [issue #69][issue69] for more information.
 
 [issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
+
+### addUnloadHandler() function
+
+The addUnloadHandler() function takes a callback function as a
+parameter. The callback will be called when the ScriptCraft plugin is
+unloaded (usually as a result of a a `reload` command or server
+shutdown).
 
 ## require - Node.js-style module loading in ScriptCraft
 
@@ -1874,9 +1920,68 @@ global commands for a plugin, please let me know.
 
 [pcppevt]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/player/PlayerCommandPreprocessEvent.html
 
-# SnowballFight mini-game
+## homes Module
 
-## Description
+The homes plugin lets players set a location as home and return to the
+location, invite other players to their home and also visit other
+player's homes.
+
+This module is a good example of how to create a javascript-based
+minecraft mod which provides...
+
+ * A programmatic interface (API) and 
+ * A command extension which uses that API to provide new functionality for players.
+
+The module uses the `plugin()` function to specify an object and
+methods, and the `command()` function to expose functionality to
+players through a new `jsp home` command. This module also
+demonstrates how to enable autocompletion for custom commands (to see
+this in action, at the in-game prompt or server console prompt type
+`jsp home ` then press the TAB key - you should see a list of further
+possible options).
+
+The `jsp home` command has the following options...
+
+### Basic options
+
+ * `/jsp home set` Will set your current location as your
+   'home' location to which you can return at any time using the ...
+
+ * `/jsp home` ..command will return you to your home, if you have set one.
+
+ * `/jsp home <player>` Will take you to the home of <player> (where 
+   <player> is the name of the player whose home you wish to visit.
+
+ * `/jsp home delete` Deletes your home location from the location
+   database. This does not actually remove the home from the world or
+   change the world in any way. This command is completely
+   non-destructive and cannot be used for griefing. No blocks will be
+   destroyed by this command.
+
+### Social options
+The following options allow players to open their homes to all or some
+players, invite players to their home and see a list of homes they can
+visit.
+
+ * `/jsp home list` Lists home which you can visit.
+ * `/jsp home ilist` Lists players who can visit your home.
+ * `/jsp home invite <player>` Invites the named player to your home.
+ * `/jsp home uninvite <player>` Uninvites (revokes invitation) the named player to your home.
+ * `/jsp home public` Opens your home to all players (all players can visit your home).
+ * `/jsp home private` Makes your home private (no longer visitable by all).
+
+### Administration options
+The following administration options can only be used by server operators...
+
+ * `/jsp home listall` List all of the homes
+ * `/jsp home clear <player>` Removes the player's home
+   location. Again, this command does not destroy any structures in
+   the world, it simply removes the location from the database. No
+   blocks are destroyed by this command.
+
+## SnowballFight mini-game
+
+### Description
 
 This is a rough and ready prototype of a simple multi-player
 shoot-em-up. To start a game with all players playing against one another...
@@ -1915,15 +2020,15 @@ player returns to their previous mode of play (creative or
 survival). Create a small arena with a couple of small buildings for
 cover to make the game more fun.
   
-# NumberGuess mini-game: 
+## NumberGuess mini-game: 
 
-## Description
+### Description
 This is a very simple number guessing game. Minecraft will ask you to
 guess a number between 1 and 10 and you will tell you if you're too
 hight or too low when you guess wrong. The purpose of this mini-game
 code is to demonstrate use of Bukkit's Conversation API.
 
-## Example
+### Example
     
     /js Game_NumberGuess.start()
 

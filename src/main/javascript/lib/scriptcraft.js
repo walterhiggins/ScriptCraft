@@ -1,4 +1,3 @@
-var global = this;
 /************************************************************************
 # ScriptCraft API Reference
 
@@ -129,27 +128,67 @@ As of December 24 2013, the `scriptcraft/plugins` directory has the following su
  * alias - The alias plugin/module - for creating custom aliases for commonly used commands.
  * home - The home module - for setting homes and visiting other homes.
 
+## Global variables
+
+There are a couple of special javascript variables available in ScriptCraft...
+ 
+### __plugin variable
+The ScriptCraft JavaPlugin object.
+
+### server variable
+The Minecraft Server object
+
+### self variable
+The current player. (Note - this value should not be used in multi-threaded scripts or event-handling code - it's not thread-safe)
+
+### config variable
+ScriptCraft configuration - this object is loaded and saved at startup/shutdown.
+
+### events variable
+The events object is used to add new event handlers to Minecraft.
+
+## Module variables
+The following variables are available only within the context of Modules. (not available at in-game prompt).
+
+### __filename variable
+The current file - this variable is only relevant from within the context of a Javascript module.
+
+### __dirname variable
+The current directory - this variable is only relevant from within the context of a Javascript module.
+
 ## Global functions
 
 ScripCraft provides some global functions which can be used by all plugins/modules...
 
 ### echo function
 
-The `echo()` function displays a message on the in-game screen. The message is displayed to the `self` player (this is usually the player who issued the `/js` or `/jsp` command).
+The `echo()` function displays a message on the in-game screen. The
+message is displayed to the `self` player (this is usually the player
+who issued the `/js` or `/jsp` command).
 
 ### Example
 
     /js echo('Hello World')
 
+For programmers familiar with Javascript web programming, an `alert`
+function is also provided.  `alert` works exactly the same as `echo`
+e.g. `alert('Hello World')`.
 
-* echo (message) - Displays a message on the screen. 
-   For example: `/js echo('Hello World')` will print Hello World on the in-game chat window.  
-   For programmers familiar with Javascript web programming, an `alert` function is also provided. 
-   `alert` works exactly the same as `echo` e.g. `alert('Hello World')`. 
+### Notes
+
+The `echo` and `alert` functions are provided as convenience functions
+for beginning programmers. The use of these 2 functions is not
+recommended in event-handling code or multi-threaded code. In such
+cases, if you want to send a message to a given player then use the
+Bukkit API's [Player.sendMessage()][plsm] function instead.
+
+[plsm]: 
 
  * require (modulename) - Will load modules. See [Node.js modules][njsmod]
 
- * load (filename,warnOnFileNotFound) - loads and evaluates a javascript file, returning the evaluated object. (Note: Prefer `require()` to `load()`)
+ * load (filename,warnOnFileNotFound) - loads and evaluates a
+   javascript file, returning the evaluated object. (Note: Prefer
+   `require()` to `load()`)
   
  * save (object, filename) - saves an object to a file.
 
@@ -166,8 +205,9 @@ The `echo()` function displays a message on the in-game screen. The message is d
 
 ### require() function
 
-ScriptCraft's `require()` function is used to load modules. The `require()` function takes a 
-module name as a parameter and will try to load the named module.
+ScriptCraft's `require()` function is used to load modules. The
+`require()` function takes a module name as a parameter and will try
+to load the named module.
 
 #### Parameters
 
@@ -260,7 +300,8 @@ persist data.
  
  * pluginName (String) : The name of the plugin - this becomes a global variable.
  * pluginDefinition (Object) : The various functions and members of the plugin object.
- * isPersistent (boolean - optional) : Specifies whether or not the plugin/object state should be loaded and saved by ScriptCraft.
+ * isPersistent (boolean - optional) : Specifies whether or not the
+   plugin/object state should be loaded and saved by ScriptCraft.
 
 #### Example
 
@@ -292,34 +333,90 @@ plugin author) safely expose javascript functions for use by players.
 
 #### Example
 
-See chat/colors.js or alias/alias.js or homes/homes.js for examples of how to use the `command()` function.
+See chat/colors.js or alias/alias.js or homes/homes.js for examples of
+how to use the `command()` function.
+
+### setTimeout() function
+
+This function mimics the setTimeout() function used in browser-based
+javascript.  However, the function will only accept a function
+reference, not a string of javascript code.  Where setTimeout() in the
+browser returns a numeric value which can be subsequently passed to
+clearTimeout(), This implementation returns a [BukkitTask][btdoc]
+object which can be subsequently passed to ScriptCraft's own
+clearTimeout() implementation.
+
+If Node.js supports setTimeout() then it's probably good for ScriptCraft to support it too.
+
+[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
+
+#### Example
+
+    //
+    // start a storm in 5 seconds
+    //    
+    setTimeout( function() {
+        var world = server.worlds.get(0);
+        world.setStorm(true);
+    }, 5000);
+
+### clearTimeout() function
+
+A scriptcraft implementation of clearTimeout().
+
+### setInterval() function
+
+This function mimics the setInterval() function used in browser-based
+javascript.  However, the function will only accept a function
+reference, not a string of javascript code.  Where setInterval() in
+the browser returns a numeric value which can be subsequently passed
+to clearInterval(), This implementation returns a [BukkitTask][btdoc]
+object which can be subsequently passed to ScriptCraft's own
+clearInterval() implementation.
+
+If Node.js supports setInterval() then it's probably good for
+ScriptCraft to support it too.
+
+[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
+
+### clearInterval() function
+
+A scriptcraft implementation of clearInterval().
+
+### refresh() function
+
+The refresh() function will ...
+
+1. Disable the ScriptCraft plugin.
+2. Unload all event listeners associated with the ScriptCraft plugin.
+3. Enable the ScriptCraft plugin.
+
+... refresh() can be used during development to reload only scriptcraft javascript files.
+See [issue #69][issue69] for more information.
+
+[issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
+
+### addUnloadHandler() function
+
+The addUnloadHandler() function takes a callback function as a
+parameter. The callback will be called when the ScriptCraft plugin is
+unloaded (usually as a result of a a `reload` command or server
+shutdown).
 
 ***/
 
-
-
-/*************************************************************************
-## global variables
-
-There are a couple of special javascript variables available in ScriptCraft...
- 
- * __folder - The current working directory - this variable is only to be used within the main body of a .js file.
- * __plugin - The ScriptCraft JavaPlugin object.
- * server - The Minecraft Server object.
- * self - the current player. (Note - this value should not be used in multi-threaded scripts - it's not thread-safe)
-
-***/
 /*
   wph 20130124 - make self, plugin and server public - these are far more useful now that tab-complete works.
 */
+var global = this;
 var server = org.bukkit.Bukkit.server;
-//
-// private implementation
-//
+/*
+  private implementation
+*/
 (function(){
-    //
-    // don't execute this more than once
-    //
+    /*
+      don't execute this more than once
+    */
     if (typeof load == "function")
         return ;
     var File = java.io.File;
@@ -332,8 +429,6 @@ var server = org.bukkit.Bukkit.server;
     var parentFileObj = new File(__script).getParentFile();
     var jsPluginsRootDir = parentFileObj.getParentFile();
     var jsPluginsRootDirName = _canonize(jsPluginsRootDir);
-
-
 
     var _loaded = {};
     /*
@@ -351,9 +446,9 @@ var server = org.bukkit.Bukkit.server;
             file = new File(filename);
 
         var canonizedFilename = _canonize(file);
-        //
-        // wph 20130123 don't load the same file more than once.
-        //
+        /*
+          wph 20130123 don't load the same file more than once.
+        */
         if (_loaded[canonizedFilename])
             return _loaded[canonizedFilename];
         
@@ -399,8 +494,6 @@ var server = org.bukkit.Bukkit.server;
     if (!config)
         config = {verbose: false};
     global.config = config;
-
-
     /*
       Unload Handlers
     */
@@ -414,99 +507,32 @@ var server = org.bukkit.Bukkit.server;
         }
     };
 
-/*************************************************************************
-## Miscellaneous Core Functions
-
-### setTimeout() function
-
-This function mimics the setTimeout() function used in browser-based javascript.
-However, the function will only accept a function reference, not a string of javascript code.
-Where setTimeout() in the browser returns a numeric value which can be subsequently passed to 
-clearTimeout(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearTimeout() implementation.
-
-If Node.js supports setTimeout() then it's probably good for ScriptCraft to support it too.
-
-[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
-
-#### Example
-
-    //
-    // start a storm in 5 seconds
-    //    
-    setTimeout( function() {
-        var world = server.worlds.get(0);
-        world.setStorm(true);
-    }, 5000);
-
-***/
     global.setTimeout = function( callback, delayInMillis){
-        //
-        // javascript programmers familiar with setTimeout know that it expects
-        // a delay in milliseconds. However, bukkit's scheduler expects a delay in ticks 
-        // (where 1 tick = 1/20th second)
-        //
+        /*
+          javascript programmers familiar with setTimeout know that it expects
+          a delay in milliseconds. However, bukkit's scheduler expects a delay in ticks 
+          (where 1 tick = 1/20th second)
+        */
         var bukkitTask = server.scheduler.runTaskLater(__plugin, callback, delayInMillis/50);
         return bukkitTask;
     };
-    
-/*************************************************************************
-### clearTimeout() function
-
-A scriptcraft implementation of clearTimeout().
-
-***/
     global.clearTimeout = function(bukkitTask){
         bukkitTask.cancel();
     };
 
-/*************************************************************************
-### setInterval() function
-
-This function mimics the setInterval() function used in browser-based javascript.
-However, the function will only accept a function reference, not a string of javascript code.
-Where setInterval() in the browser returns a numeric value which can be subsequently passed to 
-clearInterval(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearInterval() implementation.
-
-If Node.js supports setInterval() then it's probably good for ScriptCraft to support it too.
-
-[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
-
-***/
     global.setInterval = function(callback, intervalInMillis){
         var delay = intervalInMillis/ 50;
         var bukkitTask = server.scheduler.runTaskTimer(__plugin, callback, delay, delay);
         return bukkitTask;
     };
-/*************************************************************************
-### clearInterval() function
-
-A scriptcraft implementation of clearInterval().
-
-***/
     global.clearInterval = function(bukkitTask){
         bukkitTask.cancel();
     };
-
-/*************************************************************************
-### refresh() function
-
-The refresh() function will ...
-
-1. Disable the ScriptCraft plugin.
-2. Unload all event listeners associated with the ScriptCraft plugin.
-3. Enable the ScriptCraft plugin.
-
-... refresh() can be used during development to reload only scriptcraft javascript files.
-See [issue #69][issue69] for more information.
-
-[issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
-
-***/
     global.refresh = function(){
         __plugin.pluginLoader.disablePlugin(__plugin);
         __plugin.pluginLoader.enablePlugin(__plugin);
     };
-
+    
     var _echo = function (msg) {
         __plugin.logger.info( msg );
         if (typeof self == "undefined"){
@@ -518,7 +544,6 @@ See [issue #69][issue69] for more information.
     global.echo = _echo;
     global.alert = _echo;
     global.load = _load;
-    global.logger = __plugin.logger;
     
     global.addUnloadHandler = _addUnloadHandler;
 
@@ -530,13 +555,13 @@ See [issue #69][issue69] for more information.
                        jsPluginsRootDirName + '/modules/'];
     global.require = fnRequire(__plugin.logger, __engine, config.verbose, jsPluginsRootDirName, modulePaths);
 
+    global.console = require('console');
     var plugins = require('plugin');
     global._onTabComplete = require('tabcomplete');
 
     global.plugin = plugins.plugin;
     global.command = plugins.command;
     global.save = plugins.save;
-    global.console = require('console');
 
     var events = require('events');
     events.on('server.PluginDisableEvent',function(l,e){
@@ -551,6 +576,3 @@ See [issue #69][issue69] for more information.
 
     plugins.autoload(jsPluginsRootDir);
 }());
-
-
-
