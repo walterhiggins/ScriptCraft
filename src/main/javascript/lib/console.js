@@ -8,7 +8,7 @@ ScriptCraft provides a `console` global variable with the followng methods...
  * warn()
  * error()
 
-The ScriptCraft console methods work like the Web API implementation.
+The ScriptCraft console methods work like the [Web API implementation][webcons].
 
 ### Example 
 
@@ -20,8 +20,18 @@ uses [java.lang.String.format()][strfmt] for variable
 substitution. All output will be sent to the server console (not
 in-game).
 
+### Using string substitutions
+
+ScriptCraft uses Java's [String.format()][strfmt] so any string substitution identifiers supported by 
+`java.lang.String.format()` are supported (e.g. %s , %d etc).
+
+    for (var i=0; i<5; i++) {
+      console.log("Hello, %s. You've called me %d times.", "Bob", i+1);
+    }
+
 [lgr]: http://jd.bukkit.org/beta/apidocs/org/bukkit/plugin/PluginLogger.html
 [strfmt]: http://docs.oracle.com/javase/6/docs/api/java/lang/String.html#format(java.lang.String, java.lang.Object...)
+[webcons]: https://developer.mozilla.org/en-US/docs/Web/API/console
 
 ***/
 var argsToArray = function(args){
