@@ -1,4 +1,7 @@
 var utils = require('utils');
+/*
+  TODO: Document this plugin!
+*/
 var _store = {
     houses: {},
     openHouses: {},

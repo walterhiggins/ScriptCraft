@@ -2,12 +2,11 @@ var Drone = require('../drone').Drone;
 var blocks = require('blocks');
 
 /************************************************************************
-Drone.spiral_stairs() method
-============================
+## Drone.spiral_stairs() method
+
 Constructs a spiral staircase with slabs at each corner.
 
-Parameters
-----------
+### Parameters
 
  * stairBlock - The block to use for stairs, should be one of the following...
    - 'oak'
@@ -24,8 +23,8 @@ Parameters
 
 ![Spiral Staircase](img/spiralstair1.png)
 
-Example
--------
+### Example
+
 To construct a spiral staircase 5 floors high made of oak...
 
     spiral_stairs('oak', 5);

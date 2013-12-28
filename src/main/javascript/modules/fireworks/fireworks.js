@@ -1,12 +1,12 @@
 /************************************************************************
-Fireworks Module
-================
+## Fireworks Module
+
 The fireworks module makes it easy to create fireworks using
 ScriptCraft.  The module has a single function `firework` which takes
 a `org.bukkit.Location` as its 1 and only parameter.
 
-Examples
---------
+### Examples
+
 The module also extends the `Drone` object adding a `firework` method
 so that fireworks can be created as a part of a Drone chain. For
 Example....

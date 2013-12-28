@@ -1,14 +1,13 @@
 /*************************************************************************
-http.request() function
-====================
+## http.request() function
+
 The http.request() function will fetch a web address asynchronously (on a
 separate thread)and pass the URL's response to a callback function
 which will be executed synchronously (on the main thread).  In this
 way, http.request() can be used to fetch web content without blocking the
 main thread of execution.
 
-Parameters
-----------
+### Parameters
 
  * request: The request details either a plain URL e.g. "http://scriptcraft.js/sample.json" or an object with the following properties...
 
@@ -20,8 +19,8 @@ Parameters
    - responseCode: The numeric response code from the server. If the server did not respond with 200 OK then the response parameter will be undefined.
    - response: A string (if the response is of type text) or object containing the HTTP response body.
 
-Example
--------
+### Example
+
 The following example illustrates how to use http.request to make a request to a JSON web service and evaluate its response...
 
     var jsResponse;

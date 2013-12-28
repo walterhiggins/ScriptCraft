@@ -1,17 +1,17 @@
 /************************************************************************
-events Module
-=============
+## events Module
+
 The Events module provides a thin wrapper around Bukkit's
 Event-handling API.  Bukkit's Events API makes use of Java Annotations
 which are not available in Javascript, so this module provides a
 simple way to listen to minecraft events in javascript.
 
-events.on() static method
-=========================
+### events.on() static method
+
 This method is used to register event listeners. 
 
-Parameters
-----------
+#### Parameters
+
 
  * eventName - A string or java class. If a string is supplied it must
    be part of the Bukkit event class name.  See [Bukkit API][buk] for
@@ -35,54 +35,45 @@ Parameters
    "NORMAL", "MONITOR". For an explanation of what the different
    priorities mean refer to bukkit's [Event API Reference][buk2].
 
-Returns
--------
+#### Returns
+
 An org.bukkit.plugin.RegisteredListener object which can be used to
 unregister the listener. This same object is passed to the callback
 function each time the event is fired.
 
-Example:
-------
+#### Example:
+
 The following code will print a message on screen every time a block is broken in the game
 
-    var events = require('./events/events');
-
-    events.on("block.BlockBreakEvent", function(listener, evt){ 
-        echo (evt.player.name + " broke a block!");
+    events.on('block.BlockBreakEvent', function(listener, evt){ 
+        evt.player.sendMessage( evt.player.name + ' broke a block!');
     });
 
 To handle an event only once and unregister from further events...
     
-    var events = require('./events/events');
-
-    events.on("block.BlockBreakEvent", function(listener, evt){ 
-        print (evt.player.name + " broke a block!");
+    events.on('block.BlockBreakEvent', function(listener, evt){ 
+        evt.player.sendMessage( evt.player.name + ' broke a block!');
         evt.handlers.unregister(listener);
     });
 
 To unregister a listener *outside* of the listener function...
 
-    var events = require('./events/events');
-
-    var myBlockBreakListener = events.on("block.BlockBreakEvent",function(l,e){ ... });
+    var myBlockBreakListener = events.on('block.BlockBreakEvent',function(l,e){ ... });
     ...
     var handlers = org.bukkit.event.block.BlockBreakEvent.getHandlerList();
     handlers.unregister(myBlockBreakListener);
+
+To listen for events using a full class name as the `eventName` parameter...
+
+    events.on(org.bukkit.event.block.BlockBreakEvent, function(listener, evt){ 
+        evt.player.sendMessage( evt.player.name + ' broke a block!');
+    });
 
 [buk2]: http://wiki.bukkit.org/Event_API_Reference
 [buk]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/event/Event.html
 
 ***/
 
-//
-// handle events in Minecraft
-// --------------------------
-// eventType can be a string (assumed to be a sub package of org.bukkit.event - e.g. 
-// if the string "block.BlockBreakEvent" is supplied then it's converted to the 
-// org.bukkit.event.block.BlockBreakEvent class . For custom event classes, just 
-// supply the custom event class e.g.
-// events.on(net.yourdomain.events.YourCustomEvent,function(l,e){ ... });
-//
 var bkEvent = org.bukkit.event;
 var bkEvtExecutor = org.bukkit.plugin.EventExecutor;
 var bkRegListener = org.bukkit.plugin.RegisteredListener;

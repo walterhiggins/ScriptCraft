@@ -1,3 +1,4 @@
+var global = this;
 /************************************************************************
 # ScriptCraft API Reference
 
@@ -116,26 +117,35 @@ provided. The `lib` directory is for internal use by ScriptCraft.
 Modules in this directory are not automatically loaded nor are they
 globally exported.
 
-### Directories 
+### plugins sub-directories
 
 As of December 24 2013, the `scriptcraft/plugins` directory has the following sub-directories...
 
  * drone - Contains the drone module and drone extensions. Drone was the first scriptcraft module.
  * mini-games - Contains mini-games 
- * arrows - The arrows module
- * signs - The signs module (includes example signs)
- * chat - The chat plugin/module
- * alias - The alias plugin/module
+ * arrows - The arrows module - Changes the behaviour of Arrows: Explosive, Fireworks, Teleportation etc.
+ * signs - The signs module (includes example signs) - create interactive signs.
+ * chat - The chat plugin/module 
+ * alias - The alias plugin/module - for creating custom aliases for commonly used commands.
  * home - The home module - for setting homes and visiting other homes.
 
-## Core Module: functions
+## Global functions
 
-ScripCraft provides some functions which can be used by all plugins/modules...
+ScripCraft provides some global functions which can be used by all plugins/modules...
 
- * echo (message) - Displays a message on the screen. 
+### echo function
+
+The `echo()` function displays a message on the in-game screen. The message is displayed to the `self` player (this is usually the player who issued the `/js` or `/jsp` command).
+
+### Example
+
+    /js echo('Hello World')
+
+
+* echo (message) - Displays a message on the screen. 
    For example: `/js echo('Hello World')` will print Hello World on the in-game chat window.  
    For programmers familiar with Javascript web programming, an `alert` function is also provided. 
-   `alert` works exactly the same as `echo` e.g. `alert('Hello World')` 
+   `alert` works exactly the same as `echo` e.g. `alert('Hello World')`. 
 
  * require (modulename) - Will load modules. See [Node.js modules][njsmod]
 
@@ -184,7 +194,7 @@ load() should only be used to load .json data.
  * filename - The name of the file to load.
  * warnOnFileNotFound (optional - default: false) - warn if the file was not found.
 
-#### Return
+#### Returns
 
 load() will return the result of the last statement evaluated in the file.
 
@@ -284,40 +294,13 @@ plugin author) safely expose javascript functions for use by players.
 
 See chat/colors.js or alias/alias.js or homes/homes.js for examples of how to use the `command()` function.
 
-### ready() function
-
-The `ready()` function provides a way for plugins to do additional
-setup once all of the other plugins/modules have loaded.  For example,
-event listener registration can only be done after the
-events/events.js module has loaded. A plugin author could load the
-file explicilty like this...
-
-    load(__folder + "../events/events.js");
-
-    // event listener registration goes here 
-
-... or better still, just do event regristration using the `ready()`
-handler knowing that by the time the `ready()` callback is invoked,
-all of the scriptcraft modules have been loaded...
-
-    ready(function(){
-        // event listener registration goes here
-        // code that depends on other plugins/modules also goes here
-    });
-
-The execution of the function object passed to the `ready()` function
-is *deferred* until all of the plugins/modules have loaded. That way
-you are guaranteed that when the function is invoked, all of the
-plugins/modules have been loaded and evaluated and are ready to use.
-
 ***/
 
-var global = this;
 
 
 /*************************************************************************
-Core Module - Special Variables
-===============================
+## global variables
+
 There are a couple of special javascript variables available in ScriptCraft...
  
  * __folder - The current working directory - this variable is only to be used within the main body of a .js file.
@@ -545,13 +528,7 @@ See [issue #69][issue69] for more information.
      */
     var modulePaths = [jsPluginsRootDirName + '/lib/',
                        jsPluginsRootDirName + '/modules/'];
-    global.require = fnRequire(__plugin.logger, 
-                               __engine, 
-                               config.verbose, 
-                               jsPluginsRootDirName,
-                               modulePaths);
-
-    
+    global.require = fnRequire(__plugin.logger, __engine, config.verbose, jsPluginsRootDirName, modulePaths);
 
     var plugins = require('plugin');
     global._onTabComplete = require('tabcomplete');
@@ -573,8 +550,6 @@ See [issue #69][issue69] for more information.
     global.events = events;
 
     plugins.autoload(jsPluginsRootDir);
-
-
 }());
 
 

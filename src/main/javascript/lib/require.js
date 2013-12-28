@@ -1,5 +1,5 @@
 /*************************************************************************
-## Require - Node.js-style module loading in ScriptCraft
+## require - Node.js-style module loading in ScriptCraft
 
 Node.js is a server-side javascript environment with an excellent
 module loading system based on CommonJS. Modules in Node.js are really
@@ -41,12 +41,12 @@ and modules themeselves can use other modules. Modules have full
 control over what functions and properties they want to provide to
 others.
 
-## Important
+### Important
 
 Although ScriptCraft now supports Node.js style modules, it does not
 support node modules. Node.js and Rhino are two very different
 Javascript environments. ScriptCraft uses Rhino Javascript, not
-Node.js.
+Node.js. Standard Node.js modules such as `'fs'` are not available in ScriptCraft.
 
 Modules can be loaded using relative or absolute paths. Per the CommonJS
 module specification, the '.js' suffix is optional.
@@ -100,7 +100,9 @@ module specification, the '.js' suffix is optional.
 
     var resolveModuleToFile = function(moduleName, parentDir) {
 /**********************************************************************
-## When resolving module names to file paths, ScriptCraft uses the following rules...
+### module name resolution
+
+When resolving module names to file paths, ScriptCraft uses the following rules...
 
  1. if the module does not begin with './' or '/' then ...
 

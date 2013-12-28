@@ -1,8 +1,8 @@
 var utils = require('utils');
 
 /************************************************************************
-Classroom Module
-================
+## Classroom Module
+
 The `classroom` object contains a couple of utility functions for use
 in a classroom setting. The goal of these functions is to make it
 easier for tutors to facilitate ScriptCraft for use by students in a
@@ -17,19 +17,18 @@ The goal of this module is not so much to enforce restrictions
 (security or otherwise) but to make it easier for tutors to setup a shared server
 so students can learn Javascript.
 
-classroom.allowScripting() function
-===================================
+### classroom.allowScripting() function
+
 Allow or disallow anyone who connects to the server (or is already
 connected) to use ScriptCraft. This function is preferable to granting 'ops' privileges 
 to every student in a Minecraft classroom environment.
 
-Parameters
-----------
+#### Parameters
 
  * canScript : true or false
 
-Example
--------
+#### Example
+
 To allow all players (and any players who connect to the server) to
 use the `js` and `jsp` commands...
 
@@ -77,5 +76,5 @@ events.on('player.PlayerLoginEvent', function(listener, event) {
     if (_store.enableScripting){
         player.addAttachment(__plugin, "scriptcraft.*", true);
     }
-}, "HIGHEST");
+}, 'HIGHEST');
 

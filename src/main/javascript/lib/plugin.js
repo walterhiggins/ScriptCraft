@@ -140,32 +140,6 @@ exports.autoload = function(dir) {
         }
     };
     /*
-      sort so that .js files with same name as parent directory appear before
-      other files in the same directory
-     */
-    var sortByModule = function(a,b){
-        a = _canonize(a);
-        b = _canonize(b);
-        var aparts = (""+a).split(/\//);
-        var bparts = (""+b).split(/\//);
-        //var adir = aparts[aparts.length-2];
-        var adir = aparts.slice(0,aparts.length-1).join("/");
-        var afile = aparts[aparts.length-1];
-        //var bdir = bparts[bparts.length-2];
-        var bdir = bparts.slice(0,bparts.length-1).join("/");
-        var bfile = bparts[bparts.length-1];
-        
-        if(adir<bdir) return -1;
-        if(adir>bdir) return 1;
-
-        afile = afile.match(/[a-zA-Z0-9\-_]+/)[0];
-
-        if (adir.match(new RegExp(afile + "$")))
-            return -1;
-        else
-            return 1;
-    };
-    /*
       Reload all of the .js files in the given directory 
     */
     var _reload = function(pluginDir)
@@ -174,18 +148,6 @@ exports.autoload = function(dir) {
         var sourceFiles = [];
         _listSourceFiles(sourceFiles,pluginDir);
 
-        //sourceFiles.sort(sortByModule);
-
-        //
-        // script files whose name begins with _ (underscore)
-        // will not be loaded automatically at startup.
-        // These files are assumed to be dependencies/private to plugins
-        // 
-        // E.g. If you have a plugin called myMiniGame.js in the myMiniGame directory
-        // and which in addition to myMiniGame.js also includes _myMiniGame_currency.js _myMiniGame_events.js etc.
-        // then it's assumed that _myMiniGame_currency.js and _myMiniGame_events.js will be loaded
-        // as dependencies by myMiniGame.js and do not need to be loaded via js reload
-        //
         var len = sourceFiles.length;
         if (config.verbose)
             logger.info(len + " scriptcraft plugins found.");

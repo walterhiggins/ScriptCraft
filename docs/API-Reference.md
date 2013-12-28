@@ -115,26 +115,35 @@ provided. The `lib` directory is for internal use by ScriptCraft.
 Modules in this directory are not automatically loaded nor are they
 globally exported.
 
-### Directories 
+### plugins sub-directories
 
 As of December 24 2013, the `scriptcraft/plugins` directory has the following sub-directories...
 
  * drone - Contains the drone module and drone extensions. Drone was the first scriptcraft module.
  * mini-games - Contains mini-games 
- * arrows - The arrows module
- * signs - The signs module (includes example signs)
- * chat - The chat plugin/module
- * alias - The alias plugin/module
+ * arrows - The arrows module - Changes the behaviour of Arrows: Explosive, Fireworks, Teleportation etc.
+ * signs - The signs module (includes example signs) - create interactive signs.
+ * chat - The chat plugin/module 
+ * alias - The alias plugin/module - for creating custom aliases for commonly used commands.
  * home - The home module - for setting homes and visiting other homes.
 
-## Core Module: functions
+## Global functions
 
-ScripCraft provides some functions which can be used by all plugins/modules...
+ScripCraft provides some global functions which can be used by all plugins/modules...
 
- * echo (message) - Displays a message on the screen. 
+### echo function
+
+The `echo()` function displays a message on the in-game screen. The message is displayed to the `self` player (this is usually the player who issued the `/js` or `/jsp` command).
+
+### Example
+
+    /js echo('Hello World')
+
+
+* echo (message) - Displays a message on the screen. 
    For example: `/js echo('Hello World')` will print Hello World on the in-game chat window.  
    For programmers familiar with Javascript web programming, an `alert` function is also provided. 
-   `alert` works exactly the same as `echo` e.g. `alert('Hello World')` 
+   `alert` works exactly the same as `echo` e.g. `alert('Hello World')`. 
 
  * require (modulename) - Will load modules. See [Node.js modules][njsmod]
 
@@ -183,7 +192,7 @@ load() should only be used to load .json data.
  * filename - The name of the file to load.
  * warnOnFileNotFound (optional - default: false) - warn if the file was not found.
 
-#### Return
+#### Returns
 
 load() will return the result of the last statement evaluated in the file.
 
@@ -283,34 +292,8 @@ plugin author) safely expose javascript functions for use by players.
 
 See chat/colors.js or alias/alias.js or homes/homes.js for examples of how to use the `command()` function.
 
-### ready() function
+## global variables
 
-The `ready()` function provides a way for plugins to do additional
-setup once all of the other plugins/modules have loaded.  For example,
-event listener registration can only be done after the
-events/events.js module has loaded. A plugin author could load the
-file explicilty like this...
-
-    load(__folder + "../events/events.js");
-
-    // event listener registration goes here 
-
-... or better still, just do event regristration using the `ready()`
-handler knowing that by the time the `ready()` callback is invoked,
-all of the scriptcraft modules have been loaded...
-
-    ready(function(){
-        // event listener registration goes here
-        // code that depends on other plugins/modules also goes here
-    });
-
-The execution of the function object passed to the `ready()` function
-is *deferred* until all of the plugins/modules have loaded. That way
-you are guaranteed that when the function is invoked, all of the
-plugins/modules have been loaded and evaluated and are ready to use.
-
-Core Module - Special Variables
-===============================
 There are a couple of special javascript variables available in ScriptCraft...
  
  * __folder - The current working directory - this variable is only to be used within the main body of a .js file.
@@ -373,7 +356,7 @@ See [issue #69][issue69] for more information.
 
 [issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
 
-## Require - Node.js-style module loading in ScriptCraft
+## require - Node.js-style module loading in ScriptCraft
 
 Node.js is a server-side javascript environment with an excellent
 module loading system based on CommonJS. Modules in Node.js are really
@@ -415,19 +398,21 @@ and modules themeselves can use other modules. Modules have full
 control over what functions and properties they want to provide to
 others.
 
-## Important
+### Important
 
 Although ScriptCraft now supports Node.js style modules, it does not
 support node modules. Node.js and Rhino are two very different
 Javascript environments. ScriptCraft uses Rhino Javascript, not
-Node.js.
+Node.js. Standard Node.js modules such as `'fs'` are not available in ScriptCraft.
 
 Modules can be loaded using relative or absolute paths. Per the CommonJS
 module specification, the '.js' suffix is optional.
 
 [cjsmodules]: http://wiki.commonjs.org/wiki/Modules/1.1.1.
 
-## When resolving module names to file paths, ScriptCraft uses the following rules...
+### module name resolution
+
+When resolving module names to file paths, ScriptCraft uses the following rules...
 
  1. if the module does not begin with './' or '/' then ...
 
@@ -457,19 +442,19 @@ module specification, the '.js' suffix is optional.
     
     3.2 if no package.json file exists then look for an index.js file in the directory
 
-events Module
-=============
+## events Module
+
 The Events module provides a thin wrapper around Bukkit's
 Event-handling API.  Bukkit's Events API makes use of Java Annotations
 which are not available in Javascript, so this module provides a
 simple way to listen to minecraft events in javascript.
 
-events.on() static method
-=========================
+### events.on() static method
+
 This method is used to register event listeners. 
 
-Parameters
-----------
+#### Parameters
+
 
  * eventName - A string or java class. If a string is supplied it must
    be part of the Bukkit event class name.  See [Bukkit API][buk] for
@@ -493,39 +478,39 @@ Parameters
    "NORMAL", "MONITOR". For an explanation of what the different
    priorities mean refer to bukkit's [Event API Reference][buk2].
 
-Returns
--------
+#### Returns
+
 An org.bukkit.plugin.RegisteredListener object which can be used to
 unregister the listener. This same object is passed to the callback
 function each time the event is fired.
 
-Example:
-------
+#### Example:
+
 The following code will print a message on screen every time a block is broken in the game
 
-    var events = require('./events/events');
-
-    events.on("block.BlockBreakEvent", function(listener, evt){ 
-        echo (evt.player.name + " broke a block!");
+    events.on('block.BlockBreakEvent', function(listener, evt){ 
+        evt.player.sendMessage( evt.player.name + ' broke a block!');
     });
 
 To handle an event only once and unregister from further events...
     
-    var events = require('./events/events');
-
-    events.on("block.BlockBreakEvent", function(listener, evt){ 
-        print (evt.player.name + " broke a block!");
+    events.on('block.BlockBreakEvent', function(listener, evt){ 
+        evt.player.sendMessage( evt.player.name + ' broke a block!');
         evt.handlers.unregister(listener);
     });
 
 To unregister a listener *outside* of the listener function...
 
-    var events = require('./events/events');
-
-    var myBlockBreakListener = events.on("block.BlockBreakEvent",function(l,e){ ... });
+    var myBlockBreakListener = events.on('block.BlockBreakEvent',function(l,e){ ... });
     ...
     var handlers = org.bukkit.event.block.BlockBreakEvent.getHandlerList();
     handlers.unregister(myBlockBreakListener);
+
+To listen for events using a full class name as the `eventName` parameter...
+
+    events.on(org.bukkit.event.block.BlockBreakEvent, function(listener, evt){ 
+        evt.player.sendMessage( evt.player.name + ' broke a block!');
+    });
 
 [buk2]: http://wiki.bukkit.org/Event_API_Reference
 [buk]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/event/Event.html
@@ -554,16 +539,15 @@ in-game).
 [lgr]: http://jd.bukkit.org/beta/apidocs/org/bukkit/plugin/PluginLogger.html
 [strfmt]: http://docs.oracle.com/javase/6/docs/api/java/lang/String.html#format(java.lang.String, java.lang.Object...)
 
-http.request() function
-====================
+## http.request() function
+
 The http.request() function will fetch a web address asynchronously (on a
 separate thread)and pass the URL's response to a callback function
 which will be executed synchronously (on the main thread).  In this
 way, http.request() can be used to fetch web content without blocking the
 main thread of execution.
 
-Parameters
-----------
+### Parameters
 
  * request: The request details either a plain URL e.g. "http://scriptcraft.js/sample.json" or an object with the following properties...
 
@@ -575,8 +559,8 @@ Parameters
    - responseCode: The numeric response code from the server. If the server did not respond with 200 OK then the response parameter will be undefined.
    - response: A string (if the response is of type text) or object containing the HTTP response body.
 
-Example
--------
+### Example
+
 The following example illustrates how to use http.request to make a request to a JSON web service and evaluate its response...
 
     var jsResponse;
@@ -595,8 +579,8 @@ The following example illustrates how to use http.request to make a request to a
           var jsObj = eval("(" + responseBody + ")");
       });
 
-Utilities Module
-================
+## Utilities Module
+
 Miscellaneous utility functions and classes to help with programming.
 
  * locationToString(Location) - returns a bukkit Location object in string form.
@@ -610,8 +594,8 @@ Miscellaneous utility functions and classes to help with programming.
  * getMousePos(playerName) - returns the x,y,z of the current block being targeted by the named player
    or player or `self` if no paramter is provided.
 
-foreach() function
-========================
+### foreach() function
+
 The utils.foreach() function is a utility function for iterating over
 an array of objects (or a java.util.Collection of objects) and processing each object in turn. Where
 utils.foreach() differs from other similar functions found in
@@ -624,8 +608,7 @@ package for scheduling processing of arrays.
 
 [sched]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/package-summary.html
 
-Parameters
-----------
+#### Parameters
 
  * array : The array to be processed - It can be a javascript array, a java array or java.util.Collection
  * callback : The function to be called to process each item in the
@@ -654,11 +637,11 @@ subsequent items are processed later). If your code relies on the
 completion of the array processing, then provide an `onDone` parameter
 and put the code there.
 
-Example
--------
+#### Example
+
 The following example illustrates how to use foreach for immediate processing of an array...
 
-    var utils = require('./utils/_utils');
+    var utils = require('utils');
     var players = ["moe", "larry", "curly"];
     utils.foreach (players, function(item){ 
         server.getPlayer(item).sendMessage("Hi " + item);
@@ -678,7 +661,7 @@ without hogging CPU usage...
 
     // build a structure 200 wide x 200 tall x 200 long
     // (That's 8 Million Blocks - enough to tax any machine!)
-    var utils = require('./utils/_utils');
+    var utils = require('utils');
 
     var a = []; 
     a.length = 200; 
@@ -695,8 +678,8 @@ without hogging CPU usage...
     };
     utils.foreach (a, processItem, null, 10, onDone);
     
-utils.nicely() function
-=======================
+### utils.nicely() function
+
 The utils.nicely() function is for performing processing using the
 [org.bukkit.scheduler][sched] package/API. utils.nicely() lets you
 process with a specified delay between the completion of each `next()`
@@ -704,8 +687,7 @@ function and the start of the next `next()` function.
 `utils.nicely()` is a recursive function - that is - it calls itself
 (schedules itself actually) repeatedly until `hasNext` returns false.
 
-Parameters
-----------
+#### Parameters
 
  * next : A function which will be called if processing is to be done. 
  * hasNext : A function which is called to determine if the `next`
@@ -715,29 +697,27 @@ Parameters
  * onDone : A function which is to be called when all processing is complete (hasNext returned false).
  * delay : The delay (in server ticks - 20 per second) between each call.
 
-Example
--------
+#### Example
+
 See the source code to utils.foreach for an example of how utils.nicely is used.
 
-utils.at() function
-===================
+### utils.at() function
+
 The utils.at() function will perform a given task at a given time every 
 (minecraft) day.
 
-Parameters
-----------
+#### Parameters
 
  * time24hr : The time in 24hr form - e.g. 9:30 in the morning is "09:30" while
    9:30 pm is "21:30", midnight is "00:00" and midday is "12:00"
  * callback : A javascript function which will be invoked at the given time.
  * world : (optional) Each world has its own clock. If no world is specified, the server's first world is used.
 
-Example
--------
+#### Example
 
 To warn players when night is approaching...
 
-    var utils = require('./utils/_utils');
+    var utils = require('utils');
 
     utils.at( "19:00", function() {
 
@@ -747,6 +727,25 @@ To warn players when night is approaching...
 
     }, self.world);
   
+### utils.find() function
+
+The utils.find() function will return a list of all files starting at
+a given directory and recursiving trawling all sub-directories.
+
+#### Parameters
+
+ * dir : The starting path. Must be a string.
+ * filter : (optional) A [FilenameFilter][fnfltr] object to return only files matching a given pattern.
+
+[fnfltr]: http://docs.oracle.com/javase/6/docs/api/java/io/FilenameFilter.html
+
+#### Example
+
+    var utils = require('utils');
+    var jsFiles = utils.find('./', function(dir,name){
+        return name.match(/\.js$/);
+    });  
+
 String class extensions
 -----------------------
 The following chat-formatting methods are added to the javascript String class..
@@ -788,28 +787,34 @@ Example
 
 <p style="color:gold;font-weight:bold">Hello World</p>    
 
-Blocks Module
-=============
-You hate having to lookup [Data Values][dv] when you use ScriptCraft's Drone() functions. So do I.
-So I created this blocks object which is a helper object for use in construction.
+## Blocks Module
 
-Examples
---------
+You hate having to lookup [Data Values][dv] when you use ScriptCraft's
+Drone() functions. So do I.  So I created this blocks object which is
+a helper object for use in construction.
+
+### Examples
 
     box( blocks.oak ); // creates a single oak wood block
     box( blocks.sand, 3, 2, 1 ); // creates a block of sand 3 wide x 2 high x 1 long
     box( blocks.wool.green, 2 ); // creates a block of green wool 2 blocks wide
 
-Color aliased properties that were a direct descendant of the blocks object are no longer used to avoid confusion with carpet and stained clay blocks. In addition, there's a convenience array `blocks.rainbow` which is an array of the 7 colors of the rainbow (or closest approximations).
+Color aliased properties that were a direct descendant of the blocks
+object are no longer used to avoid confusion with carpet and stained
+clay blocks. In addition, there's a convenience array `blocks.rainbow`
+which is an array of the 7 colors of the rainbow (or closest
+approximations).
 
-Fireworks Module
-================
+The blocks module is globally exported by the Drone module.
+
+## Fireworks Module
+
 The fireworks module makes it easy to create fireworks using
 ScriptCraft.  The module has a single function `firework` which takes
 a `org.bukkit.Location` as its 1 and only parameter.
 
-Examples
---------
+### Examples
+
 The module also extends the `Drone` object adding a `firework` method
 so that fireworks can be created as a part of a Drone chain. For
 Example....
@@ -1533,19 +1538,18 @@ Another example: This statement creates a row of trees 2 by 3 ...
 
 ![times example 1](img/times-trees.png)
 
-Drone.blocktype() method
-========================
+## Drone.blocktype() method
+
 Creates the text out of blocks. Useful for large-scale in-game signs.
 
-Parameters
-----------
+### Parameters
  
  * message - The message to create - (use `\n` for newlines)
  * foregroundBlock (default: black wool) - The block to use for the foreground
  * backgroundBlock (default: none) - The block to use for the background
 
-Example
--------
+### Example
+
 To create a 2-line high message using glowstone...
 
     blocktype("Hello\nWorld",blocks.glowstone);
@@ -1554,18 +1558,17 @@ To create a 2-line high message using glowstone...
 
 [imgbt1]: img/blocktype1.png
 
-Drone.sphere() method
-=====================
+## Drone.sphere() method
+
 Creates a sphere.
 
-Parameters
-----------
+### Parameters
  
  * block - The block the sphere will be made of.
  * radius - The radius of the sphere.
 
-Example
--------
+### Example
+
 To create a sphere of Iron with a radius of 10 blocks...
 
     sphere( blocks.iron, 10);
@@ -1575,18 +1578,17 @@ To create a sphere of Iron with a radius of 10 blocks...
 Spheres are time-consuming to make. You *can* make large spheres (250 radius) but expect the
 server to be very busy for a couple of minutes while doing so.
 
-Drone.sphere0() method
-======================
+## Drone.sphere0() method
+
 Creates an empty sphere.
 
-Parameters
-----------
+### Parameters
  
  * block - The block the sphere will be made of.
  * radius - The radius of the sphere.
 
-Example
--------
+### Example
+
 To create a sphere of Iron with a radius of 10 blocks...
 
     sphere0( blocks.iron, 10);
@@ -1594,67 +1596,62 @@ To create a sphere of Iron with a radius of 10 blocks...
 Spheres are time-consuming to make. You *can* make large spheres (250 radius) but expect the
 server to be very busy for a couple of minutes while doing so.
 
-Drone.hemisphere() method
-=========================
+## Drone.hemisphere() method
+
 Creates a hemisphere. Hemispheres can be either north or south.
 
-Parameters
-----------
+### Parameters
 
  * block - the block the hemisphere will be made of.
  * radius - the radius of the hemisphere
  * northSouth - whether the hemisphere is 'north' or 'south'
 
-Example
--------
+### Example
+
 To create a wood 'north' hemisphere with a radius of 7 blocks...
 
     hemisphere(blocks.oak, 7, 'north');
 
 ![hemisphere example](img/hemisphereex1.png)
 
-Drone.hemisphere0() method
-=========================
+## Drone.hemisphere0() method
+
 Creates a hollow hemisphere. Hemispheres can be either north or south.
 
-Parameters
-----------
+### Parameters
 
  * block - the block the hemisphere will be made of.
  * radius - the radius of the hemisphere
  * northSouth - whether the hemisphere is 'north' or 'south'
 
-Example
--------
+### Example
+
 To create a glass 'north' hemisphere with a radius of 20 blocks...
 
     hemisphere0(blocks.glass, 20, 'north');
 
 ![hemisphere example](img/hemisphereex2.png)
 
-Drone.rainbow() method
-======================
+## Drone.rainbow() method
+
 Creates a Rainbow.
 
-Parameters
-----------
+### Parameters
 
  * radius (optional - default:18) - The radius of the rainbow
 
-Example
--------
+### Example
     
     var d = new Drone();
     d.rainbow(30);
 
 ![rainbow example](img/rainbowex1.png)
 
-Drone.spiral_stairs() method
-============================
+## Drone.spiral_stairs() method
+
 Constructs a spiral staircase with slabs at each corner.
 
-Parameters
-----------
+### Parameters
 
  * stairBlock - The block to use for stairs, should be one of the following...
    - 'oak'
@@ -1671,8 +1668,8 @@ Parameters
 
 ![Spiral Staircase](img/spiralstair1.png)
 
-Example
--------
+### Example
+
 To construct a spiral staircase 5 floors high made of oak...
 
     spiral_stairs('oak', 5);
@@ -1751,8 +1748,8 @@ Aliases can be used at the in-game prompt by players or in the server
 console.  Aliases will not be able to avail of command autocompletion
 (pressing the TAB key will have no effect).
 
-Classroom Module
-================
+## Classroom Module
+
 The `classroom` object contains a couple of utility functions for use
 in a classroom setting. The goal of these functions is to make it
 easier for tutors to facilitate ScriptCraft for use by students in a
@@ -1767,19 +1764,18 @@ The goal of this module is not so much to enforce restrictions
 (security or otherwise) but to make it easier for tutors to setup a shared server
 so students can learn Javascript.
 
-classroom.allowScripting() function
-===================================
+### classroom.allowScripting() function
+
 Allow or disallow anyone who connects to the server (or is already
 connected) to use ScriptCraft. This function is preferable to granting 'ops' privileges 
 to every student in a Minecraft classroom environment.
 
-Parameters
-----------
+#### Parameters
 
  * canScript : true or false
 
-Example
--------
+#### Example
+
 To allow all players (and any players who connect to the server) to
 use the `js` and `jsp` commands...
 

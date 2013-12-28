@@ -1,6 +1,6 @@
 /************************************************************************
-Utilities Module
-================
+## Utilities Module
+
 Miscellaneous utility functions and classes to help with programming.
 
  * locationToString(Location) - returns a bukkit Location object in string form.
@@ -56,8 +56,8 @@ exports.getMousePos = function (player) {
     return targetedBlock.location;
 };
 /************************************************************************
-foreach() function
-========================
+### foreach() function
+
 The utils.foreach() function is a utility function for iterating over
 an array of objects (or a java.util.Collection of objects) and processing each object in turn. Where
 utils.foreach() differs from other similar functions found in
@@ -70,8 +70,7 @@ package for scheduling processing of arrays.
 
 [sched]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/package-summary.html
 
-Parameters
-----------
+#### Parameters
 
  * array : The array to be processed - It can be a javascript array, a java array or java.util.Collection
  * callback : The function to be called to process each item in the
@@ -100,11 +99,11 @@ subsequent items are processed later). If your code relies on the
 completion of the array processing, then provide an `onDone` parameter
 and put the code there.
 
-Example
--------
+#### Example
+
 The following example illustrates how to use foreach for immediate processing of an array...
 
-    var utils = require('./utils/_utils');
+    var utils = require('utils');
     var players = ["moe", "larry", "curly"];
     utils.foreach (players, function(item){ 
         server.getPlayer(item).sendMessage("Hi " + item);
@@ -124,7 +123,7 @@ without hogging CPU usage...
 
     // build a structure 200 wide x 200 tall x 200 long
     // (That's 8 Million Blocks - enough to tax any machine!)
-    var utils = require('./utils/_utils');
+    var utils = require('utils');
 
     var a = []; 
     a.length = 200; 
@@ -159,8 +158,8 @@ var _foreach = function(array, callback, object, delay, onCompletion) {
 };
 exports.foreach = _foreach;
 /************************************************************************
-utils.nicely() function
-=======================
+### utils.nicely() function
+
 The utils.nicely() function is for performing processing using the
 [org.bukkit.scheduler][sched] package/API. utils.nicely() lets you
 process with a specified delay between the completion of each `next()`
@@ -168,8 +167,7 @@ function and the start of the next `next()` function.
 `utils.nicely()` is a recursive function - that is - it calls itself
 (schedules itself actually) repeatedly until `hasNext` returns false.
 
-Parameters
-----------
+#### Parameters
 
  * next : A function which will be called if processing is to be done. 
  * hasNext : A function which is called to determine if the `next`
@@ -179,8 +177,8 @@ Parameters
  * onDone : A function which is to be called when all processing is complete (hasNext returned false).
  * delay : The delay (in server ticks - 20 per second) between each call.
 
-Example
--------
+#### Example
+
 See the source code to utils.foreach for an example of how utils.nicely is used.
 
 ***/
@@ -196,25 +194,23 @@ exports.nicely = function(next, hasNext, onDone, delay){
     }
 };
 /************************************************************************
-utils.at() function
-===================
+### utils.at() function
+
 The utils.at() function will perform a given task at a given time every 
 (minecraft) day.
 
-Parameters
-----------
+#### Parameters
 
  * time24hr : The time in 24hr form - e.g. 9:30 in the morning is "09:30" while
    9:30 pm is "21:30", midnight is "00:00" and midday is "12:00"
  * callback : A javascript function which will be invoked at the given time.
  * world : (optional) Each world has its own clock. If no world is specified, the server's first world is used.
 
-Example
--------
+#### Example
 
 To warn players when night is approaching...
 
-    var utils = require('./utils/_utils');
+    var utils = require('utils');
 
     utils.at( "19:00", function() {
 
@@ -246,6 +242,27 @@ exports.at = function(time24hr, callback, world) {
     },forever, null, 100);
 };
 
+/************************************************************************
+### utils.find() function
+
+The utils.find() function will return a list of all files starting at
+a given directory and recursiving trawling all sub-directories.
+
+#### Parameters
+
+ * dir : The starting path. Must be a string.
+ * filter : (optional) A [FilenameFilter][fnfltr] object to return only files matching a given pattern.
+
+[fnfltr]: http://docs.oracle.com/javase/6/docs/api/java/io/FilenameFilter.html
+
+#### Example
+
+    var utils = require('utils');
+    var jsFiles = utils.find('./', function(dir,name){
+        return name.match(/\.js$/);
+    });  
+
+***/
 exports.find = function( dir , filter){
     var result = [];
     var recurse = function(dir, store){

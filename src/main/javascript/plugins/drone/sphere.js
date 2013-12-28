@@ -1,18 +1,17 @@
 var Drone = require('./drone').Drone;
 
 /************************************************************************
-Drone.sphere() method
-=====================
+## Drone.sphere() method
+
 Creates a sphere.
 
-Parameters
-----------
+### Parameters
  
  * block - The block the sphere will be made of.
  * radius - The radius of the sphere.
 
-Example
--------
+### Example
+
 To create a sphere of Iron with a radius of 10 blocks...
 
     sphere( blocks.iron, 10);
@@ -68,18 +67,17 @@ Drone.extend('sphere', function(block,radius)
     return this.move('sphere');
 });
 /************************************************************************
-Drone.sphere0() method
-======================
+## Drone.sphere0() method
+
 Creates an empty sphere.
 
-Parameters
-----------
+### Parameters
  
  * block - The block the sphere will be made of.
  * radius - The radius of the sphere.
 
-Example
--------
+### Example
+
 To create a sphere of Iron with a radius of 10 blocks...
 
     sphere0( blocks.iron, 10);
@@ -168,19 +166,18 @@ Drone.extend('sphere0', function(block,radius)
 
 });
 /************************************************************************
-Drone.hemisphere() method
-=========================
+## Drone.hemisphere() method
+
 Creates a hemisphere. Hemispheres can be either north or south.
 
-Parameters
-----------
+### Parameters
 
  * block - the block the hemisphere will be made of.
  * radius - the radius of the hemisphere
  * northSouth - whether the hemisphere is 'north' or 'south'
 
-Example
--------
+### Example
+
 To create a wood 'north' hemisphere with a radius of 7 blocks...
 
     hemisphere(blocks.oak, 7, 'north');
@@ -239,19 +236,18 @@ Drone.extend('hemisphere', function(block,radius, northSouth){
     
 });
 /************************************************************************
-Drone.hemisphere0() method
-=========================
+## Drone.hemisphere0() method
+
 Creates a hollow hemisphere. Hemispheres can be either north or south.
 
-Parameters
-----------
+### Parameters
 
  * block - the block the hemisphere will be made of.
  * radius - the radius of the hemisphere
  * northSouth - whether the hemisphere is 'north' or 'south'
 
-Example
--------
+### Example
+
 To create a glass 'north' hemisphere with a radius of 20 blocks...
 
     hemisphere0(blocks.glass, 20, 'north');
