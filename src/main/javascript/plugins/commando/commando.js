@@ -1,7 +1,7 @@
 /*************************************************************************
-# Commando Plugin
+## Commando Plugin
 
-## Description
+### Description
 
 commando is a plugin which can be used to add completely new commands
 to Minecraft.  Normally ScriptCraft only allows for provision of new
@@ -42,7 +42,7 @@ type `/jsp hi` for the above command example, players simply type
 `/hi` . This functionality is provided as a plugin rather than as part
 of the ScriptCraft core.
 
-## Example hi-command.js
+### Example hi-command.js
 
     var commando = require('../commando');
     commando('hi', function(){
@@ -51,7 +51,7 @@ of the ScriptCraft core.
 
 ...Displays a greeting to any player who issues the `/hi` command.
 
-## Example - timeofday-command.js 
+### Example - timeofday-command.js 
 
     var times = {Dawn: 0, Midday: 6000, Dusk: 12000, Midnight:18000};
     commando('timeofday', function(params){
@@ -61,7 +61,7 @@ of the ScriptCraft core.
 
 ... changes the time of day using a new `/timeofday` command (options are Dawn, Midday, Dusk, Midnight)
 
-## Caveats
+### Caveats
 
 Since commands registered using commando are really just appendages to
 the `/jsp` command and are not actually registered globally (it just

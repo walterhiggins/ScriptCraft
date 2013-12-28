@@ -1,7 +1,7 @@
 /*************************************************************************
-# Arrows Module 
+## Arrows Module 
 
-## Description
+### Description
 The arrows mod adds fancy arrows to the game. Arrows which... 
 
  * Launch fireworks.
@@ -10,7 +10,7 @@ The arrows mod adds fancy arrows to the game. Arrows which...
  * Teleport the player to the landing spot.
  * Spawn Trees at the landing spot.
 
-## Usage: 
+### Usage: 
 
   * `/js arrows.firework()` - A firework launches where the the arrow lands.
   * `/js arrows.lightning()` - lightning strikes where the arrow lands.
