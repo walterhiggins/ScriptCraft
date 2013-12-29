@@ -414,12 +414,15 @@ var server = org.bukkit.Bukkit.server;
   private implementation
 */
 (function(){
+
     /*
       don't execute this more than once
     */
     if (typeof load == "function")
         return ;
-    var File = java.io.File;
+    var File = java.io.File
+    ,FileReader = java.io.FileReader
+    ,BufferedReader = java.io.BufferedReader;
 
     var _canonize = function(file){ 
         return "" + file.getCanonicalPath().replaceAll("\\\\","/"); 
@@ -436,9 +439,7 @@ var server = org.bukkit.Bukkit.server;
      */
     var _load = function(filename,warnOnFileNotFound)
     {
-        var FileReader = java.io.FileReader
-        ,BufferedReader = java.io.BufferedReader
-        ,result = null
+        var result = null
         ,file = filename
         ,r = undefined;
         
@@ -470,7 +471,10 @@ var server = org.bukkit.Bukkit.server;
                         code += r + "\n";
                 }
                 result = __engine.eval("(" + code + ")");
-                _loaded[canonizedFilename] = result || true;
+                // issue #103 avoid side-effects of || operator on Mac Rhino
+                _loaded[canonizedFilename] = result ;
+                if (!_loaded[canonizedFilename])
+                    _loaded[canonizedFilename]= true;
             }catch (e){
                 __plugin.logger.severe("Error evaluating " + canonizedFilename + ", " + e );
             }
@@ -494,6 +498,11 @@ var server = org.bukkit.Bukkit.server;
     if (!config)
         config = {verbose: false};
     global.config = config;
+    /*
+      wph 20131229 Issue #103 JSON is not bundled with javax.scripting / Rhino on Mac.
+     */
+    var jsonLoaded = __engine["eval(java.io.Reader)"](new FileReader(new File(jsPluginsRootDirName + '/lib/json2.js')));
+
     /*
       Unload Handlers
     */

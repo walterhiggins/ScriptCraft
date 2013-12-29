@@ -1,3 +1,7 @@
+# 2013 12 28
+
+Documented the 'homes' module other tweaks to documentation.
+
 # 2013 12 27
 
 ## Updated 'jsp alias' command.

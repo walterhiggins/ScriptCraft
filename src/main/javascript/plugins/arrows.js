@@ -1,7 +1,6 @@
 /*************************************************************************
 ## Arrows Module 
 
-### Description
 The arrows mod adds fancy arrows to the game. Arrows which... 
 
  * Launch fireworks.
@@ -20,8 +19,9 @@ The arrows mod adds fancy arrows to the game. Arrows which...
   * `/js arrows.normal()` sets arrow type to normal.
   * `/js arrows.sign()` turns a targeted sign into a Arrows menu
 
-All of the above functions can take an optional player object or name as 
-a parameter. For example: `/js arrows.explosive('player23')` makes player23's arrows explosive.
+All of the above functions can take an optional player object or name
+as a parameter. For example: `/js arrows.explosive('player23')` makes
+player23's arrows explosive.
  
 ***/
 
