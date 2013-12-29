@@ -88,13 +88,13 @@ events.on('player.PlayerCommandPreprocessEvent', function(l,e){
     var msg = "" + e.message;
     var command = msg.match(/^\/([^\s]+)/)[1];
     if (commands[command]){
-        e.message = "/jsp " + msg.substring(1);
+        e.message = "/jsp " + msg.replace(/^\//,"");
     }
 });
 events.on('server.ServerCommandEvent', function(l,e){
     var msg = "" + e.command;
     var command = msg.match(/^\/*([^\s]+)/)[1];
     if (commands[command]){
-        e.command = "/jsp " + msg.substring(1);
+        e.command = "jsp " + msg.replace(/^\//,"");
     }
 });
