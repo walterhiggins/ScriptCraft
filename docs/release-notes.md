@@ -1,3 +1,9 @@
+# 2013 12 29
+
+Bug Fix: [Can't get Scriptcraft core libraries working][bug103].
+
+[bug103]: https://github.com/walterhiggins/ScriptCraft/issues/103
+
 # 2013 12 28
 
 Documented the 'homes' module other tweaks to documentation.
