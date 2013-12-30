@@ -72,17 +72,10 @@
     </java>
   </target>
 
-  <target name="coffeescript_setup" depends="init" description="Gets latest coffeescript compiler">
-    <echo>Retrieving Coffeescript compiler</echo>
-    <mkdir dir="${build}/coffeescript/lib" />
-    <get src="https://raw.github.com/jashkenas/coffee-script/master/extras/coffee-script.js"
-         dest="${build}/coffeescript/lib/coffeescript.js"/>     
-  </target>
 
-  <target name="zip_js" depends="coffeescript_setup">
+  <target name="zip_js" depends="init">
     <zip destfile="${build}/${js-plugins-dir}.zip">
       <zipfileset dir="./src/main/javascript" />
-      <zipfileset dir="${build}/coffeescript" />
     </zip>
   </target>
 
