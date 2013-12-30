@@ -175,7 +175,9 @@ var _intercept = function( msg, invoker, exec)
         isAlias = true;
     }else{
         if (config.verbose){
-            console.info("No global alias found for command: " + command);
+            var commandObj = server.commandMap.getCommand(command);
+            if (!commandObj)
+                console.info("No global alias found for command: " + command);
         }
     }
     /*
@@ -188,7 +190,9 @@ var _intercept = function( msg, invoker, exec)
         isAlias = true;
     }else{
         if (config.verbose){
-            console.info("No player alias found for command: " + command);
+            var commandObj = server.commandMap.getCommand(command);
+            if (!commandObj)
+                console.info("No player alias found for command: " + command);
         }
     }
     for (var i = 0;i < template.length; i++)

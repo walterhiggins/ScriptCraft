@@ -251,71 +251,71 @@ exports.homes = homes;
 var options = {
     'set': function(){homes.set();},
     'delete': function(){ homes.remove();},
-    'help': function(){ self.sendMessage(homes.help());},
-    'list': function(){
+    'help': function(params, sender){ sender.sendMessage(homes.help());},
+    'list': function(params, sender){
         var visitable = homes.list();
         if (visitable.length == 0){
-            self.sendMessage("There are no homes to visit");
+            sender.sendMessage("There are no homes to visit");
             return;
         }else{
-            self.sendMessage([
+            sender.sendMessage([
                 "You can visit any of these " + visitable.length + " homes"
                 ,visitable.join(", ")
             ]);
         }
     },
-    'ilist': function(){
+    'ilist': function(params, sender){
         var potentialVisitors = homes.ilist();
         if (potentialVisitors.length == 0)
-            self.sendMessage("No one can visit your home");
+            sender.sendMessage("No one can visit your home");
         else
-            self.sendMessage([
+            sender.sendMessage([
                 "These " + potentialVisitors.length + "players can visit your home",
                 potentialVisitors.join(", ")]);
     },
-    'invite': function(params){
+    'invite': function(params,sender){
         if (params.length == 1){
-            self.sendMessage("You must provide a player's name");
+            sender.sendMessage("You must provide a player's name");
             return;
         }
         var playerName = params[1];
         var guest = utils.getPlayerObject(playerName);
         if (!guest)
-            self.sendMessage(playerName + " is not here");
+            sender.sendMessage(playerName + " is not here");
         else
-            homes.invite(self,guest);
+            homes.invite(sender,guest);
     },
-    'uninvite': function(params){
+    'uninvite': function(params,sender){
         if (params.length == 1){
-            self.sendMessage("You must provide a player's name");
+            sender.sendMessage("You must provide a player's name");
             return;
         }
         var playerName = params[1];
         var guest = utils.getPlayerObject(playerName);
         if (!guest)
-            self.sendMessage(playerName + " is not here");
+            sender.sendMessage(playerName + " is not here");
         else
-            homes.uninvite(self,guest);
+            homes.uninvite(sender,guest);
     },
-    'public': function(params){         
-        homes.open(self,params.slice(1).join(' '));
-        self.sendMessage("Your home is open to the public");
+    'public': function(params,sender){         
+        homes.open(sender,params.slice(1).join(' '));
+        sender.sendMessage("Your home is open to the public");
     },
-    'private': function(){ 
-        homes.close(); 
-        self.sendMessage("Your home is closed to the public");
+    'private': function(params, sender){ 
+        homes.close(sender); 
+        sender.sendMessage("Your home is closed to the public");
     },
-    'listall': function(){
-        if (!self.isOp())
-            self.sendMessage("Only operators can do this");
+    'listall': function(params, sender){
+        if (!sender.isOp())
+            sender.sendMessage("Only operators can do this");
         else
-            self.sendMessage(homes.listall().join(", "));
+            sender.sendMessage(homes.listall().join(", "));
     },
-    'clear': function(params){
-        if (!self.isOp())
-            self.sendMessage("Only operators can do this");
+    'clear': function(params,sender){
+        if (!sender.isOp())
+            sender.sendMessage("Only operators can do this");
         else
-            homes.clear(params[1]);
+            homes.clear(params[1], sender);
     }
 };
 var optionList = [];
@@ -324,20 +324,20 @@ for (var o in options)
 /*
   Expose a set of commands that players can use at the in-game command prompt
 */
-command("home", function ( params ) {
+command("home", function ( params , sender) {
     if (params.length == 0){
-        homes.go();
+        homes.go(sender,sender);
         return;
     }
     var option = options[params[0]];
     if (option)
-        option(params);
+        option(params,sender);
     else{
         var host = utils.getPlayerObject(params[0]);
         if (!host)
-            self.sendMessage(params[0] + " is not here");
+            sender.sendMessage(params[0] + " is not here");
         else
-            homes.go(self,host);
+            homes.go(sender,host);
     }
 },optionList);
 

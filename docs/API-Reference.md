@@ -18,7 +18,7 @@ loads the module circle.js in the same directory.
 The contents of foo.js:
 
     var circle = require('./circle.js');
-    echo( 'The area of a circle of radius 4 is '
+    console.log( 'The area of a circle of radius 4 is '
                + circle.area(4));
 
 The contents of circle.js:
@@ -71,14 +71,14 @@ module in the `plugins` directory exports becomes a global
 variable. For example, if you have a module greeting.js in the plugins
 directory....
 
-    exports.greet = function() {
-        echo('Hello ' + self.name);
+    exports.greet = function(player) {
+        player.sendMessage('Hello ' + player.name);
     };
 
 ... then `greet` becomes a global function and can be used at the
 in-game (or server) command prompt like so...
 
-    /js greet()
+    /js greet(self)
 
 ... This differs from how modules (in NodeJS and commonJS
 environments) normally work. If you want your module to be exported
@@ -138,7 +138,16 @@ The ScriptCraft JavaPlugin object.
 The Minecraft Server object
 
 ### self variable
-The current player. (Note - this value should not be used in multi-threaded scripts or event-handling code - it's not thread-safe)
+The current player. (Note - this value should not be used in
+multi-threaded scripts or event-handling code - it's not
+thread-safe). This variable is only safe to use at the in-game prompt
+and should *never* be used in modules. For example you can use it here...
+
+    /js console.log(self.name)
+
+... but not in any javascript module you create yourself or in any
+event handling code. `self` is a temporary short-lived variable which
+only exists in the context of the in-game or server command prompts.
 
 ### config variable
 ScriptCraft configuration - this object is loaded and saved at startup/shutdown.
@@ -239,7 +248,7 @@ load() will return the result of the last statement evaluated in the file.
 
 #### Example
 
-    load(__folder + "myFile.js"); // loads a javascript file and evaluates it.
+    load("myFile.js"); // loads a javascript file and evaluates it.
 
     var myData = load("myData.json"); // loads a javascript file and evaluates it - eval'd contents are returned.
 
@@ -939,7 +948,7 @@ Drones can be created in any of the following ways...
     
         var d = new Drone().box( blocks.oak ) 
         
-   ... All of the Drone's methods return `this` (self) so you can chain operations together like this...
+   ... All of the Drone's methods return `this` so you can chain operations together like this...
         
         var d = box( blocks.oak )
                   .up()
@@ -1742,13 +1751,13 @@ The arrows mod adds fancy arrows to the game. Arrows which...
 
 ### Usage: 
 
-  * `/js arrows.firework()` - A firework launches where the the arrow lands.
-  * `/js arrows.lightning()` - lightning strikes where the arrow lands.
-  * `/js arrows.teleport()` - makes player teleport to where arrow has landed.
-  * `/js arrows.flourish()` - makes a tree grow where the arrow lands.
-  * `/js arrows.explosive()` - makes arrows explode.
-  * `/js arrows.normal()` sets arrow type to normal.
-  * `/js arrows.sign()` turns a targeted sign into a Arrows menu
+  * `/js arrows.firework(self)` - A firework launches where the the arrow lands.
+  * `/js arrows.lightning(self)` - lightning strikes where the arrow lands.
+  * `/js arrows.teleport(self)` - makes player teleport to where arrow has landed.
+  * `/js arrows.flourish(self)` - makes a tree grow where the arrow lands.
+  * `/js arrows.explosive(self)` - makes arrows explode.
+  * `/js arrows.normal(self)` sets arrow type to normal.
+  * `/js arrows.sign(self)` turns a targeted sign into a Arrows menu
 
 All of the above functions can take an optional player object or name
 as a parameter. For example: `/js arrows.explosive('player23')` makes
@@ -1835,11 +1844,11 @@ to every student in a Minecraft classroom environment.
 To allow all players (and any players who connect to the server) to
 use the `js` and `jsp` commands...
 
-    /js classroom.allowScripting(true)
+    /js classroom.allowScripting(true,self)
 
 To disallow scripting (and prevent players who join the server from using the commands)...
 
-    /js classroom.allowScripting(false)
+    /js classroom.allowScripting(false,self)
 
 Only ops users can run the classroom.allowScripting() function - this is so that students 
 don't try to bar themselves and each other from scripting.
@@ -1853,7 +1862,7 @@ to Minecraft.  Normally ScriptCraft only allows for provision of new
 commands as extensions to the jsp command. For example, to create a
 new simple command for use by all players...
 
-    /js command('hi', function(){ echo('Hi ' + self.name); });
+    /js command('hi', function(args,player){ player.sendMessage('Hi ' + player.name); });
   
 ... then players can use this command by typing...
 
@@ -1890,8 +1899,8 @@ of the ScriptCraft core.
 ### Example hi-command.js
 
     var commando = require('../commando');
-    commando('hi', function(){
-       echo('Hi ' + self.name);
+    commando('hi', function(args,player){
+       player.sendMessage('Hi ' + player.name);
     });
 
 ...Displays a greeting to any player who issues the `/hi` command.
@@ -1899,8 +1908,8 @@ of the ScriptCraft core.
 ### Example - timeofday-command.js 
 
     var times = {Dawn: 0, Midday: 6000, Dusk: 12000, Midnight:18000};
-    commando('timeofday', function(params){
-           self.location.world.setTime(times[params[0]]);
+    commando('timeofday', function(params,player){
+           player.location.world.setTime(times[params[0]]);
        },
        ['Dawn','Midday','Dusk','Midnight']);
 
@@ -2030,7 +2039,7 @@ code is to demonstrate use of Bukkit's Conversation API.
 
 ### Example
     
-    /js Game_NumberGuess.start()
+    /js Game_NumberGuess.start(self)
 
 Once the game begins, guess a number by typing the `/` character
 followed by a number between 1 and 10.

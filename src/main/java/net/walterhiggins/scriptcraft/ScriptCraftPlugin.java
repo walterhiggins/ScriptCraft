@@ -92,20 +92,12 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
         FileReader reader = null;
         try{
             ScriptEngineManager factory = new ScriptEngineManager();
-            File boot = new File(JS_PLUGINS_DIR + "/lib/scriptcraft.js");
+            File bootScript = new File(JS_PLUGINS_DIR + "/lib/scriptcraft.js");
             this.engine = factory.getEngineByName("JavaScript");
-            this.engine.put("__engine",engine);
-            this.engine.put("__plugin",this);
-            this.engine.put("__script",boot.getCanonicalPath().replaceAll("\\\\","/"));
-            reader = new FileReader(boot);
+            reader = new FileReader(bootScript);
             this.engine.eval(reader);
-            /*
-              wph 20130811 Need to disable coffeescript support until issues loading and evaluating it are resolved.
-              See issue #92
-            // Load the CoffeeScript compiler
-            File coffeescript = new File(JS_PLUGINS_DIR + "/lib/coffeescript.js");
-            this.engine.eval(new FileReader(coffeescript));
-            */
+            Invocable inv = (Invocable)this.engine;
+            inv.invokeFunction("__onEnable", engine, this, bootScript);
             
         }catch(Exception e){
             e.printStackTrace();
@@ -128,12 +120,8 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
         //
         List<String> result = new ArrayList<String>();
         try {
-            this.engine.put("__onTC_result",result);
-            this.engine.put("__onTC_sender",sender);
-            this.engine.put("__onTC_cmd",cmd);
-            this.engine.put("__onTC_alias",alias);
-            this.engine.put("__onTC_args",args);
-            this.engine.eval("_onTabComplete()");
+            Invocable inv = (Invocable)this.engine;
+            inv.invokeFunction("__onTabComplete", result, sender, cmd, alias, args);
         }catch (Exception e){
             sender.sendMessage(e.getMessage());
             e.printStackTrace();
@@ -145,40 +133,17 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
     {
         boolean result = false;
         String javascriptCode = "";
-        
-        if(cmd.getName().equalsIgnoreCase("js")){ 
-            for (int i = 0;i < args.length; i++){
-                javascriptCode = javascriptCode + args[i] + " ";
-            }
-            result = true;
-        } else if (cmd.getName().equalsIgnoreCase("jsp")){
-            javascriptCode = "command()";
-            this.engine.put("__cmdArgs",args);
-            result = true;
-        } else if (cmd.getName().equalsIgnoreCase("coffee")) {
-            for (int i = 0;i < args.length; i++)
-                javascriptCode += args[i] + " ";
-            javascriptCode = "eval(CoffeeScript.compile(\""+javascriptCode+"\", {bare: true}))";
-            result = true;
+        Object jsResult = null;
+        try { 
+            jsResult = ((Invocable)this.engine).invokeFunction("__onCommand", sender, cmd, label, args);
+        }catch (Exception se){
+            this.getLogger().severe(se.toString());
+            se.printStackTrace();
+            sender.sendMessage(se.getMessage());
         }
-        
-        if (result){
-            this.engine.put("self",sender);
-            try{
-                Object resultObj = this.engine.eval(javascriptCode);
-                if (resultObj != null){
-                    if (resultObj instanceof java.util.Collection){
-                        java.util.Collection collection = (java.util.Collection)resultObj;
-                        sender.sendMessage(Arrays.toString(collection.toArray()));
-                    }else{
-                        sender.sendMessage(resultObj.toString());
-                    }
-                }
-            }catch (Exception e){
-                sender.sendMessage(e.getMessage());
-                e.printStackTrace();
-            }
+        if (jsResult != null){
+            return ((Boolean)jsResult).booleanValue();
         }
-        return result; 
+        return result;
     }
 }

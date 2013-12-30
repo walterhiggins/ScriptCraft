@@ -19,7 +19,7 @@ loads the module circle.js in the same directory.
 The contents of foo.js:
 
     var circle = require('./circle.js');
-    echo( 'The area of a circle of radius 4 is '
+    console.log( 'The area of a circle of radius 4 is '
                + circle.area(4));
 
 The contents of circle.js:
@@ -72,14 +72,14 @@ module in the `plugins` directory exports becomes a global
 variable. For example, if you have a module greeting.js in the plugins
 directory....
 
-    exports.greet = function() {
-        echo('Hello ' + self.name);
+    exports.greet = function(player) {
+        player.sendMessage('Hello ' + player.name);
     };
 
 ... then `greet` becomes a global function and can be used at the
 in-game (or server) command prompt like so...
 
-    /js greet()
+    /js greet(self)
 
 ... This differs from how modules (in NodeJS and commonJS
 environments) normally work. If you want your module to be exported
@@ -139,7 +139,16 @@ The ScriptCraft JavaPlugin object.
 The Minecraft Server object
 
 ### self variable
-The current player. (Note - this value should not be used in multi-threaded scripts or event-handling code - it's not thread-safe)
+The current player. (Note - this value should not be used in
+multi-threaded scripts or event-handling code - it's not
+thread-safe). This variable is only safe to use at the in-game prompt
+and should *never* be used in modules. For example you can use it here...
+
+    /js console.log(self.name)
+
+... but not in any javascript module you create yourself or in any
+event handling code. `self` is a temporary short-lived variable which
+only exists in the context of the in-game or server command prompts.
 
 ### config variable
 ScriptCraft configuration - this object is loaded and saved at startup/shutdown.
@@ -240,7 +249,7 @@ load() will return the result of the last statement evaluated in the file.
 
 #### Example
 
-    load(__folder + "myFile.js"); // loads a javascript file and evaluates it.
+    load("myFile.js"); // loads a javascript file and evaluates it.
 
     var myData = load("myData.json"); // loads a javascript file and evaluates it - eval'd contents are returned.
 
@@ -413,8 +422,8 @@ var server = org.bukkit.Bukkit.server;
 /*
   private implementation
 */
-(function(){
-
+function __onEnable (__engine, __plugin, __script)
+{
     /*
       don't execute this more than once
     */
@@ -428,9 +437,8 @@ var server = org.bukkit.Bukkit.server;
         return "" + file.getCanonicalPath().replaceAll("\\\\","/"); 
     };
     
-    var _originalScript = __script;
-    var parentFileObj = new File(__script).getParentFile();
-    var jsPluginsRootDir = parentFileObj.getParentFile();
+    var parentFileObj = __script.parentFile;
+    var jsPluginsRootDir = parentFileObj.parentFile;
     var jsPluginsRootDirName = _canonize(jsPluginsRootDir);
 
     var _loaded = {};
@@ -457,19 +465,11 @@ var server = org.bukkit.Bukkit.server;
             var parent = file.getParentFile();
             var reader = new FileReader(file);
             var br = new BufferedReader(reader);
-            __engine.put("__script",canonizedFilename);
-            __engine.put("__folder",(parent?_canonize(parent):"")+"/");
-            
             var code = "";
             try{
-                if (file.getCanonicalPath().endsWith(".coffee")) {
-                    while ((r = br.readLine()) !== null) code += "\"" + r + "\" +\n";
-                    code += "\"\"";
-                    var code = "load(__folder + \"../core/_coffeescript.js\"); var ___code = "+code+"; eval(CoffeeScript.compile(___code, {bare: true}))";
-                } else {
-                    while ((r = br.readLine()) !== null) 
-                        code += r + "\n";
-                }
+                while ((r = br.readLine()) !== null) 
+                    code += r + "\n";
+                
                 result = __engine.eval("(" + code + ")");
                 // issue #103 avoid side-effects of || operator on Mac Rhino
                 _loaded[canonizedFilename] = result ;
@@ -498,6 +498,7 @@ var server = org.bukkit.Bukkit.server;
     if (!config)
         config = {verbose: false};
     global.config = config;
+    global.__plugin = __plugin;
     /*
       wph 20131229 Issue #103 JSON is not bundled with javax.scripting / Rhino on Mac.
      */
@@ -567,7 +568,8 @@ var server = org.bukkit.Bukkit.server;
     global.console = require('console');
     global.command = require('command').command;
     var plugins = require('plugin');
-    global._onTabComplete = require('tabcomplete');
+
+    global.__onTabComplete = require('tabcomplete');
     
     global.plugin = plugins.plugin;
     global.save = plugins.save;
@@ -584,4 +586,37 @@ var server = org.bukkit.Bukkit.server;
     global.events = events;
 
     plugins.autoload(jsPluginsRootDir);
-}());
+
+    global.__onCommand = function( sender, cmd, label, args) {
+        var jsArgs = [];
+        var i = 0;
+        for (;i < args.length; i++) jsArgs.push('' + args[i]);
+ 
+        var result = false;
+        var cmdName = ('' + cmd.name).toLowerCase();
+        if (cmdName == 'js')
+        {
+            result = true;
+            var fnBody = jsArgs.join(' ');
+            global.self = sender;
+            global.__engine = __engine;
+            try { 
+                //var jsResult = __engine["eval(java.lang.String,javax.script.Bindings)"]( fnBody, bindings );
+                var jsResult = __engine.eval(fnBody);
+                if (jsResult)
+                    sender.sendMessage(jsResult);
+            }catch (e){
+                __plugin.logger.severe("Error while trying to evaluate javascript: " + fnBody + ", Error: "+ e);
+                throw e;
+            }finally{
+                delete global.self;
+                delete global.__engine;
+            }
+        }
+        if (cmdName == 'jsp'){
+            command.exec(jsArgs, sender);
+            result = true;
+        }
+        return result;
+    };
+}

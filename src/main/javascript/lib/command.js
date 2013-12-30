@@ -22,15 +22,11 @@ var executeCmd = function(args, player){
             console.warn('Command %s is not recognised',name);
     }else{
         func = cmd.callback;
-        var params = [];
-        for (var i =1; i < args.length;i++){
-            params.push("" + args[i]);
-        }
         var result = null;
         try { 
-            result = func(params,player);
+            result = func(args.slice(1),player);
         }catch (e){
-            console.error("Error while trying to execute command: " + JSON.stringify(params));
+            console.error("Error while trying to execute command: " + JSON.stringify(args));
             throw e;
         }
         return result;
@@ -48,12 +44,8 @@ var defineCmd = function(name, func, options, intercepts) {
     return func;
 };
 var _command = function(name, func, options, intercepts) {
-    if (typeof name == "undefined"){
-        // it's an invocation from the Java Plugin!
-        return executeCmd(__cmdArgs, self);
-    }else{
-        return defineCmd(name, func, options, intercepts);
-    }
+    return defineCmd(name, func, options, intercepts);
 };
+_command.exec = executeCmd;
 exports.command = _command;
 exports.commands = _commands;

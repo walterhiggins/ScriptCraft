@@ -73,12 +73,13 @@ var _getProperties = function(o)
     return result.sort();
 };
 
-var onTabCompleteJS = function() {
+var onTabCompleteJS = function( __onTC_result, __onTC_sender, __onTC_cmd, __onTC_alias, __onTC_args) {
     if (__onTC_cmd.name == 'jsp')
-        return tabCompleteJSP()
+        return tabCompleteJSP( __onTC_result, __onTC_sender, __onTC_cmd, __onTC_alias, __onTC_args );
+
     var _globalSymbols = _getProperties(global)
-    var result = global.__onTC_result;
-    var args = global.__onTC_args;
+    var result = __onTC_result;
+    var args = __onTC_args;
     var lastArg = args.length?args[args.length-1]+'':null;
     var propsOfLastArg = [];
     var statement = args.join(' ');

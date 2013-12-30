@@ -2,9 +2,9 @@ var _commands = require('command').commands;
 /*
   Tab completion for the /jsp commmand
 */
-var __onTabCompleteJSP = function() {
-    var result = global.__onTC_result;
-    var args = global.__onTC_args;
+var __onTabCompleteJSP = function( __onTC_result, __onTC_sender, __onTC_cmd, __onTC_alias, __onTC_args) {
+    var result = __onTC_result;
+    var args = __onTC_args;
     var cmdInput = args[0];
     var cmd = _commands[cmdInput];
     if (cmd){

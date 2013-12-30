@@ -8,7 +8,7 @@ to Minecraft.  Normally ScriptCraft only allows for provision of new
 commands as extensions to the jsp command. For example, to create a
 new simple command for use by all players...
 
-    /js command('hi', function(){ echo('Hi ' + self.name); });
+    /js command('hi', function(args,player){ player.sendMessage('Hi ' + player.name); });
   
 ... then players can use this command by typing...
 
@@ -45,8 +45,8 @@ of the ScriptCraft core.
 ### Example hi-command.js
 
     var commando = require('../commando');
-    commando('hi', function(){
-       echo('Hi ' + self.name);
+    commando('hi', function(args,player){
+       player.sendMessage('Hi ' + player.name);
     });
 
 ...Displays a greeting to any player who issues the `/hi` command.
@@ -54,8 +54,8 @@ of the ScriptCraft core.
 ### Example - timeofday-command.js 
 
     var times = {Dawn: 0, Midday: 6000, Dusk: 12000, Midnight:18000};
-    commando('timeofday', function(params){
-           self.location.world.setTime(times[params[0]]);
+    commando('timeofday', function(params,player){
+           player.location.world.setTime(times[params[0]]);
        },
        ['Dawn','Midday','Dusk','Midnight']);
 
@@ -85,7 +85,7 @@ exports.commando = function(name, func, options, intercepts){
 };
 
 events.on('player.PlayerCommandPreprocessEvent', function(l,e){
-    var msg = "" + e.message;
+    var msg = '' + e.message;
     var parts = msg.match(/^\/([^\s]+)/);
     if (!parts)
         return;
@@ -97,7 +97,7 @@ events.on('player.PlayerCommandPreprocessEvent', function(l,e){
     }
 });
 events.on('server.ServerCommandEvent', function(l,e){
-    var msg = "" + e.command;
+    var msg = '' + e.command;
     var parts = msg.match(/^\/*([^\s]+)/);
     if (!parts)
         return;
@@ -105,6 +105,10 @@ events.on('server.ServerCommandEvent', function(l,e){
         return;
     var command = parts[1];
     if (commands[command]){
-        e.command = "jsp " + msg.replace(/^\//,"");
+        var newCmd = "jsp " + msg.replace(/^\//,"");
+        if (config.verbose){
+            console.log('Redirecting to : %s',newCmd);
+        }
+        e.command = newCmd;
     }
 });

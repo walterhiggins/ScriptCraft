@@ -9,14 +9,14 @@ code is to demonstrate use of Bukkit's Conversation API.
 
 ### Example
     
-    /js Game_NumberGuess.start()
+    /js Game_NumberGuess.start(self)
 
 Once the game begins, guess a number by typing the `/` character
 followed by a number between 1 and 10.
 
 ***/
 exports.Game_NumberGuess = {
-    start: function() {
+    start: function(sender) {
         importPackage(org.bukkit.conversations);
         
         var number = Math.ceil(Math.random() * 10);
@@ -54,7 +54,7 @@ exports.Game_NumberGuess = {
         var conv = cf.withModality(true)
             .withFirstPrompt(prompt)
             .withPrefix(new ConversationPrefix(){ getPrefix: function(ctx){ return "[1-10] ";} })
-            .buildConversation(self);
+            .buildConversation(sender);
         conv.begin();
     }
 };

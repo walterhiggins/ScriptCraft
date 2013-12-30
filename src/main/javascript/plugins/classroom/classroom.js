@@ -32,11 +32,11 @@ to every student in a Minecraft classroom environment.
 To allow all players (and any players who connect to the server) to
 use the `js` and `jsp` commands...
 
-    /js classroom.allowScripting(true)
+    /js classroom.allowScripting(true,self)
 
 To disallow scripting (and prevent players who join the server from using the commands)...
 
-    /js classroom.allowScripting(false)
+    /js classroom.allowScripting(false,self)
 
 Only ops users can run the classroom.allowScripting() function - this is so that students 
 don't try to bar themselves and each other from scripting.
@@ -44,16 +44,25 @@ don't try to bar themselves and each other from scripting.
 ***/
 var _store = {enableScripting: false};
 var classroom = plugin("classroom", {
-    allowScripting: function (/* boolean: true or false */ canScript) {
+    allowScripting: function (/* boolean: true or false */ canScript, sender) {
+        if (typeof sender == 'undefined'){
+            console.log("Attempt to set classroom scripting without credentials");
+            return;
+        }
+        if (!sender.op){
+            console.log("Attempt to set classroom scripting without credentials: " + sender.name);
+            return;
+        }
+            
         /*
           only operators should be allowed run this function
         */
-        if (!self.isOp())
+        if (!sender.isOp())
             return;
         if (canScript){
-        utils.foreach( server.onlinePlayers, function (player) {
-            player.addAttachment(__plugin, "scriptcraft.*", true);
-        });
+            utils.foreach( server.onlinePlayers, function (player) {
+                player.addAttachment(__plugin, "scriptcraft.*", true);
+            });
         }else{
             utils.foreach( server.onlinePlayers, function(player) {
                 utils.foreach(player.getEffectivePermissions(), function(perm) {

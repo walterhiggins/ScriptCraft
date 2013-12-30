@@ -439,8 +439,8 @@ object can do, let's use that knowledge to create a Minecraft Mod!
 
 Once you've installed Notepad++, Launch it, create a new file and type the following...
 
-    exports.greet = function(){
-        echo("Hi " + self.name);
+    exports.greet = function(player){
+        player.sendMessage("Hi " + player.name);
     }
 
 ... then save the file in a new directory
@@ -479,16 +479,16 @@ one or more functions, objects or variables. For example...
 
 #### thrower.js
 
-    exports.egg = function(){
-        self.throwEgg();
+    exports.egg = function(player){
+        player.throwEgg();
     }
-    exports.snowball = function(){
-        self.throwSnowball();
+    exports.snowball = function(player){
+        player.throwSnowball();
     }
 
 ... is a plugin which provides 2 javascript functions called `egg()`
 and `snowball()` which can be invoked from the in-game prompt like
-this `/js egg()` or `/js snowball()`.
+this `/js egg(self)` or `/js snowball(self)`.
 
 ### Parameters
 If you want to change the `greet()` function so that it displays a
@@ -501,18 +501,18 @@ differently each time it is called.
 
 Change the `greet()` function so that it looks like this...
 
-    exports.greet = function ( greeting ) {
-        echo( greeting + self.name );
+    exports.greet = function ( greeting , player) {
+        player.sendMessage( greeting + player.name );
     }
 
 ... Save your greet.js file and issue the `/js refresh()` command in
 minecraft. Now enter the following command in Minecraft...
 
-    greet("Hello ");
+    greet("Hello ",self);
 
 ... Now try ...
 
-    greet("Dia Dhuit ");
+    greet("Dia Dhuit ",self);
 
 ... you should see the following messages in your chat window...
 
@@ -716,7 +716,7 @@ loop. The following `while` loop counts to 100...
 
     var i = 1;
     while (i <= 100){
-        echo( i );
+        console.log( i );
         i = i + 1;
     } 
 
@@ -743,7 +743,7 @@ the server...
     var players = server.onlinePlayers;
     var i = 0;
     while ( i < players.length ) {
-        echo( players[i] );
+        console.log( players[i] );
         i = i + 1;
     }
 
@@ -765,17 +765,17 @@ loops. utils.foreach() takes two parameters...
  2. A function which will be called for each item in the array. 
 
 ...that's right, you can pass functions as parameters in javascript!
-Let's see it in action, the following code will `echo()` (print) the
-name of each online player...
+Let's see it in action, the following code will `console.log()` (print) the
+name of each online player in the server console window...
 
-    utils.foreach( server.onlinePlayers, echo );
+    utils.foreach( server.onlinePlayers, console.log );
 
 ... in the above example, the list of online players is processed one
-at a time and each item (player) is passed to the `echo`
-function. Note here that I used `echo` not `echo()`. The round braces
+at a time and each item (player) is passed to the `console.log`
+function. Note here that I used `console.log` not `console.log()`. The round braces
 () are used to call the function. If I want to pass the function as a
 parameter, I just use the function name without the round braces. The
-above example uses a named function which already exists ( `echo` ),
+above example uses a named function which already exists ( `console.log` ),
 you can also create new functions on-the-fly and pass them to the
 utils.foreach() function...
 
@@ -930,20 +930,20 @@ flying or not? This is where the `if - else` construct comes in handy.
 Open your favorite editor and type the following code into a new file
 in your scriptcraft/plugins directory...
 
-     function flightStatus()
+     function flightStatus(player)
      {
-         if ( self.flying ) 
+         if ( player.flying ) 
          { 
-             echo( "Hey, You are flying!" );
+             player.sendMessage( 'Hey, You are flying!' );
          } 
          else 
          {
-             echo( "You are not flying." );
+             player.sendMessage( 'You are not flying.' );
          }
      }
 
 ... now type `/reload` at the in-game prompt then type `/js
-flightStatus()` and an appropriate message will appear based on
+flightStatus(self)` and an appropriate message will appear based on
 whether or not you're currently flying. Type the `/js flightStatus()`
 command while on the ground and while flying. The message displayed in
 each case should be different.

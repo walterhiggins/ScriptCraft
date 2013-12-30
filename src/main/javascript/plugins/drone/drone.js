@@ -46,7 +46,7 @@ Drones can be created in any of the following ways...
     
         var d = new Drone().box( blocks.oak ) 
         
-   ... All of the Drone's methods return `this` (self) so you can chain operations together like this...
+   ... All of the Drone's methods return `this` so you can chain operations together like this...
         
         var d = box( blocks.oak )
                   .up()
@@ -727,8 +727,6 @@ Drone = function(x,y,z,dir,world)
     this.chkpt('start');
     this.record = true;
     this.history = [];
-    // for debugging
-    // self.sendMessage("New Drone " + this.toString());
     return this;
 };
 

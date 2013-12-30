@@ -33,7 +33,7 @@ Drone.extend('fort', function(side, height)
         try{
             this.boxa(turret,1,1,side-2).fwd(side-2).turn();
         }catch(e){
-            self.sendMessage("ERROR: " + e.toString());
+            console.log("ERROR: " + e.toString());
         }
     }
     //

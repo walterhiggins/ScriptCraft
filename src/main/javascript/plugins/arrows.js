@@ -11,13 +11,13 @@ The arrows mod adds fancy arrows to the game. Arrows which...
 
 ### Usage: 
 
-  * `/js arrows.firework()` - A firework launches where the the arrow lands.
-  * `/js arrows.lightning()` - lightning strikes where the arrow lands.
-  * `/js arrows.teleport()` - makes player teleport to where arrow has landed.
-  * `/js arrows.flourish()` - makes a tree grow where the arrow lands.
-  * `/js arrows.explosive()` - makes arrows explode.
-  * `/js arrows.normal()` sets arrow type to normal.
-  * `/js arrows.sign()` turns a targeted sign into a Arrows menu
+  * `/js arrows.firework(self)` - A firework launches where the the arrow lands.
+  * `/js arrows.lightning(self)` - lightning strikes where the arrow lands.
+  * `/js arrows.teleport(self)` - makes player teleport to where arrow has landed.
+  * `/js arrows.flourish(self)` - makes a tree grow where the arrow lands.
+  * `/js arrows.explosive(self)` - makes arrows explode.
+  * `/js arrows.normal(self)` sets arrow type to normal.
+  * `/js arrows.sign(self)` turns a targeted sign into a Arrows menu
 
 All of the above functions can take an optional player object or name
 as a parameter. For example: `/js arrows.explosive('player23')` makes
@@ -27,6 +27,7 @@ player23's arrows explosive.
 
 var signs = require('signs');
 var fireworks = require('fireworks');
+var utils = require('utils');
 
 var _store = {players: {}};
 
@@ -75,14 +76,8 @@ for (var type in _types)
 {
     arrows[type] = (function(n){
         return function(player){
-            if (typeof player == "undefined")
-                player = self;
-            var playerName = null;
-            if (typeof player == "string")
-                playerName = player;
-            else
-                playerName = player.name;
-            arrows.store.players[playerName] = n;
+            player = utils.getPlayerObject(player);
+            arrows.store.players[player.name] = n;
         };
     })(_types[type]);
 }

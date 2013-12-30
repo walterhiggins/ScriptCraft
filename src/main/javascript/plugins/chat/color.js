@@ -35,19 +35,19 @@ events.on("player.AsyncPlayerChatEvent",function(l,e){
         e.message = "§" + colorCodes[playerChatColor] + e.message;
     }
 });
-var listColors = function(params){
+var listColors = function(params,sender){
     var colorNamesInColor = [];
     for (var i = 0;i < colors.length;i++)
         colorNamesInColor[i] = "§"+colorCodes[colors[i]] + colors[i];
-    self.sendMessage("valid chat colors are " + colorNamesInColor.join(", "));
+    sender.sendMessage("valid chat colors are " + colorNamesInColor.join(", "));
 };
 command("list_colors", listColors);
-command("chat_color",function(params){
+command("chat_color",function(params,sender){
     var color = params[0];
     if (colorCodes[color]){
-        chat.setColor(self,color);
+        chat.setColor(sender,color);
     }else{
-        self.sendMessage(color + " is not a valid color");
+        sender.sendMessage(color + " is not a valid color");
         listColors();
     }
 },colors);
