@@ -35,8 +35,8 @@ The following chat-formatting methods are added to the javascript String class..
 Example
 -------
 
-    var boldGoldText = "Hello World".bold().gold();
-    self.sendMessage(boldGoldText);
+    /js var boldGoldText = "Hello World".bold().gold();
+    /js self.sendMessage(boldGoldText);
 
 <p style="color:gold;font-weight:bold">Hello World</p>    
 

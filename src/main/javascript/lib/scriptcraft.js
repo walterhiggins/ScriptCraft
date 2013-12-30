@@ -565,11 +565,11 @@ var server = org.bukkit.Bukkit.server;
     global.require = fnRequire(__plugin.logger, __engine, config.verbose, jsPluginsRootDirName, modulePaths);
 
     global.console = require('console');
+    global.command = require('command').command;
     var plugins = require('plugin');
     global._onTabComplete = require('tabcomplete');
-
+    
     global.plugin = plugins.plugin;
-    global.command = plugins.command;
     global.save = plugins.save;
 
     var events = require('events');

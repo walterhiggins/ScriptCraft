@@ -149,7 +149,7 @@ var _foreach = function(array, callback, object, delay, onCompletion) {
     if (delay){
         var next = function(){ callback(array[i],i,object,array); i++;};
         var hasNext = function(){return i < len;};
-        utils.nicely(next,hasNext,onCompletion,delay);
+        _nicely(next,hasNext,onCompletion,delay);
     }else{
         for (;i < len; i++){
             callback(array[i],i,object,array);
@@ -182,17 +182,18 @@ function and the start of the next `next()` function.
 See the source code to utils.foreach for an example of how utils.nicely is used.
 
 ***/
-exports.nicely = function(next, hasNext, onDone, delay){
+var _nicely = function(next, hasNext, onDone, delay){
     if (hasNext()){
         next();
         server.scheduler.runTaskLater(__plugin,function(){
-            utils.nicely(next,hasNext,onDone,delay);
+            _nicely(next,hasNext,onDone,delay);
         },delay);
     }else{
         if (onDone)
             onDone();
     }
 };
+exports.nicely = _nicely;
 /************************************************************************
 ### utils.at() function
 
@@ -204,7 +205,7 @@ The utils.at() function will perform a given task at a given time every
  * time24hr : The time in 24hr form - e.g. 9:30 in the morning is "09:30" while
    9:30 pm is "21:30", midnight is "00:00" and midday is "12:00"
  * callback : A javascript function which will be invoked at the given time.
- * world : (optional) Each world has its own clock. If no world is specified, the server's first world is used.
+ * worlds : (optional) An array of worlds. Each world has its own clock. If no array of worlds is specified, all the server's worlds are used.
 
 #### Example
 
@@ -218,10 +219,10 @@ To warn players when night is approaching...
             player.chat("The night is dark and full of terrors!");            
         });
 
-    }, self.world);
+    });
   
 ***/
-exports.at = function(time24hr, callback, world) {
+exports.at = function(time24hr, callback, worlds) {
     var forever = function(){ return true;};
     var timeParts = time24hr.split(":");
     var hrs = ((timeParts[0] * 1000) + 18000) % 24000;
@@ -230,15 +231,17 @@ exports.at = function(time24hr, callback, world) {
         mins = (timeParts[1] / 60) * 1000;
     
     var timeMc = hrs + mins;
-    if (typeof world == "undefined"){
-        world = server.worlds.get(0);
+    if (typeof worlds == "undefined"){
+        worlds = server.worlds;
     }
-    utils.nicely(function(){
-        var time = world.getTime();
-        var diff = timeMc - time;
-        if (diff > 0 && diff < 100){
-            callback();
-        }
+    _nicely(function(){
+        _foreach (worlds, function (world){
+            var time = world.getTime();
+            var diff = timeMc - time;
+            if (diff > 0 && diff < 100){
+                callback();
+            }
+        });
     },forever, null, 100);
 };
 

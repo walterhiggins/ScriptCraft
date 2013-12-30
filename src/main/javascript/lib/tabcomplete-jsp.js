@@ -1,4 +1,4 @@
-var _commands = require('plugin').commands;
+var _commands = require('command').commands;
 /*
   Tab completion for the /jsp commmand
 */

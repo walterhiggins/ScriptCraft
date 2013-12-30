@@ -49,63 +49,8 @@ var _plugin = function(/* String */ moduleName, /* Object */ moduleObject, isPer
     }
     return moduleObject;
 };
-/*
-  allow for deferred execution (once all modules have loaded)
-*/
-var _deferred = [];
-var _ready = function( func ){
-    _deferred.push(func);
-};
-var _cmdInterceptors = [];
-/* 
-   command management - allow for non-ops to execute approved javascript code.
-*/
-var _commands = {};
-exports.commands = _commands;
-var _command = function(name,func,options,intercepts)
-{
-    if (typeof name == "undefined"){
-        // it's an invocation from the Java Plugin!
-        if (__cmdArgs.length === 0)
-            throw new Error("Usage: jsp command-name command-parameters");
-        var name = __cmdArgs[0];
-        var cmd = _commands[name];
-        if (typeof cmd === "undefined"){
-            // it's not a global command - pass it on to interceptors
-            var intercepted = false;
-            for (var i = 0;i < _cmdInterceptors.length;i++){
-                if (_cmdInterceptors[i](__cmdArgs))
-                    intercepted = true;
-            }
-            if (!intercepted)
-                self.sendMessage("Command '" + name + "' is not recognised");
-        }else{
-            func = cmd.callback;
-            var params = [];
-            for (var i =1; i < __cmdArgs.length;i++){
-                params.push("" + __cmdArgs[i]);
-            }
-            var result = null;
-            try { 
-                result =  func(params);
-            }catch (e){
-                console.error("Error while trying to execute command: " + JSON.stringify(params));
-                throw e;
-            }
-            return result;
-        }
-    }else{
-        if (typeof options == "undefined")
-            options = [];
-        _commands[name] = {callback: func, options: options};
-        if (intercepts)
-            _cmdInterceptors.push(func);
-        return func;
-    }
-};
 
 exports.plugin = _plugin;
-exports.command = _command;
 exports.save = _save;
 
 var scriptCraftDir = null;
@@ -172,6 +117,7 @@ exports.autoload = function(dir) {
     };
     _reload(pluginDir);
 };
+
 addUnloadHandler(function(){
     //
     // save all plugins which have persistent data

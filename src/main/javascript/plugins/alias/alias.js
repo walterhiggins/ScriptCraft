@@ -149,20 +149,22 @@ var alias = plugin('alias', {
 }, true );
 
 
-var aliasCmd = command('alias', function(params){
+var aliasCmd = command('alias', function(params,invoker){
     var operation = params[0];
     if (!operation){
-        self.sendMessage("Usage:\n" + _usage);
+        invoker.sendMessage("Usage:\n" + _usage);
         return;
     }
     if (alias[operation])
-        alias[operation](self, params.slice(1));
+        alias[operation](invoker, params.slice(1));
     else
-        self.sendMessage("Usage:\n" + _usage);
+        invoker.sendMessage("Usage:\n" + _usage);
 });
 
 var _intercept = function( msg, invoker, exec)
 {
+    if (msg.trim().length == 0)
+        return false;
     var msgParts = msg.split(' ');
     var command = msg.match(/^\/*([^\s]+)/)[1];
 

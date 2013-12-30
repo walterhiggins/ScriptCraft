@@ -86,14 +86,24 @@ exports.commando = function(name, func, options, intercepts){
 
 events.on('player.PlayerCommandPreprocessEvent', function(l,e){
     var msg = "" + e.message;
-    var command = msg.match(/^\/([^\s]+)/)[1];
+    var parts = msg.match(/^\/([^\s]+)/);
+    if (!parts)
+        return;
+    if (parts.length < 2)
+        return;
+    var command = parts[1];
     if (commands[command]){
         e.message = "/jsp " + msg.replace(/^\//,"");
     }
 });
 events.on('server.ServerCommandEvent', function(l,e){
     var msg = "" + e.command;
-    var command = msg.match(/^\/*([^\s]+)/)[1];
+    var parts = msg.match(/^\/*([^\s]+)/);
+    if (!parts)
+        return;
+    if (parts.length < 2)
+        return;
+    var command = parts[1];
     if (commands[command]){
         e.command = "jsp " + msg.replace(/^\//,"");
     }

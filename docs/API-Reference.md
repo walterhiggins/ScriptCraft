@@ -767,7 +767,7 @@ The utils.at() function will perform a given task at a given time every
  * time24hr : The time in 24hr form - e.g. 9:30 in the morning is "09:30" while
    9:30 pm is "21:30", midnight is "00:00" and midday is "12:00"
  * callback : A javascript function which will be invoked at the given time.
- * world : (optional) Each world has its own clock. If no world is specified, the server's first world is used.
+ * worlds : (optional) An array of worlds. Each world has its own clock. If no array of worlds is specified, all the server's worlds are used.
 
 #### Example
 
@@ -781,7 +781,7 @@ To warn players when night is approaching...
             player.chat("The night is dark and full of terrors!");            
         });
 
-    }, self.world);
+    });
   
 ### utils.find() function
 
@@ -838,8 +838,8 @@ The following chat-formatting methods are added to the javascript String class..
 Example
 -------
 
-    var boldGoldText = "Hello World".bold().gold();
-    self.sendMessage(boldGoldText);
+    /js var boldGoldText = "Hello World".bold().gold();
+    /js self.sendMessage(boldGoldText);
 
 <p style="color:gold;font-weight:bold">Hello World</p>    
 
