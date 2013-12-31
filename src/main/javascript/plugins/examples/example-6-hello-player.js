@@ -19,13 +19,15 @@ any one plugin or set of plugins but which can be used by all
 plugins. Shared modules should be placed in the
 `scriptcraft/modules` directory.
   
-  * The utils module is used. Because the 'utils' module is
-    located in the modules folder we don't need to specify an exact
-    path, just 'utils' will do. 
+ * The utils module is used. Because the 'utils' module is
+   located in the modules folder we don't need to specify an exact
+   path, just 'utils' will do. 
  
-  * The `utils.player()` function is used to obtain a player object
-    matching the player name. Once a player object is obtained, a
-    message is sent to that player.
+ * The `utils.player()` function is used to obtain a player object
+   matching the player name. Once a player object is obtained, a
+   message is sent to that player.
+
+Source Code ...
 
     var utils = require('utils');
     var greetings = require('./example-1-hello-module');
@@ -38,6 +40,7 @@ plugins. Shared modules should be placed in the
         else
             sender.sendMessage('Player ' + playerName + ' not found.');
     });
+
 ***/
 
 var utils = require('utils');

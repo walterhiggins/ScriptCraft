@@ -1,6 +1,8 @@
 /*
   This script is run at build time to generate api.md - a single Markdown document containing documentation for ScriptCraft's API
 */
+var err = java.lang.System.err;
+
 args = args.slice(1);
 var dir = args[0];
 var foreach = function(array, func){
@@ -38,17 +40,23 @@ var sorter = function( precedence ){
     return function(a,b)
     {
         // convert from Java string to JS string
-        a = "" + a; 
-        b = "" + b;
+        a = '' + a; 
+        b = '' + b;
         var aparts = a.split(/\//);
         var bparts = b.split(/\//);
-        var adir = aparts.slice(3,aparts.length-1).join("/");
+        var adir = aparts.slice(3,aparts.length-1).join('/');
         var afile = aparts[aparts.length-1];
-        var bdir = bparts.slice(3,bparts.length-1).join("/");
+        var bdir = bparts.slice(3,bparts.length-1).join('/');
         var bfile = bparts[bparts.length-1];
 
         for (var i = 0;i < precedence.length; i++){
             var re = precedence[i];
+            if (a.match(re) && b.match(re)){
+                if (afile < bfile)
+                    return -1;
+                if (afile > bfile)
+                    return 1;
+            }
             if (a.match(re))
                 return -1;
             if (b.match(re))
@@ -56,24 +64,35 @@ var sorter = function( precedence ){
         }
         if(adir<bdir) return -1;
         if(adir>bdir) return 1;
-        afile = afile.replace(/\.js$/,"");
-        if (afile == adir)
+        afile = afile.replace(/\.js$/,'');
+        if (afile == adir){
             return -1;
-        else
-            return 1;
+        }
+        else {
+            var result = 0;
+            if (afile < bfile){
+                result =  -1;
+            }
+            if (afile > bfile){
+                result = 1;
+            }
+            //err.println("afile: " + afile + ", bfile:" + bfile + ",result=" + result);
+            
+            return result;
+        }
     };
 };
 var sortByModule = function(a,b)
 {
-    var aparts = (""+a).split(/\//);
-    var bparts = (""+b).split(/\//);
+    var aparts = (''+a).split(/\//);
+    var bparts = (''+b).split(/\//);
     var adir = aparts[aparts.length-2];
     var afile = aparts[aparts.length-1];
     var bdir = bparts[bparts.length-2];
     var bfile = bparts[bparts.length-1];
-    if (afile == "_scriptcraft.js")
+    if (afile == '_scriptcraft.js')
         return -1;
-    if (bfile == "_scriptcraft.js")
+    if (bfile == '_scriptcraft.js')
         return 1;
     if(adir<bdir) return -1;
     if(adir>bdir) return 1;
@@ -86,15 +105,17 @@ var store = [];
 find(new File(dir),store,/\/[a-zA-Z0-9_\-]+\.js$/);
 
 store.sort(sorter([ 
-        /scriptcraft\.js$/, 
-        /require\.js$/,
-        /plugin\.js$/,
-        /events\.js$/,
-        /lib/, 
-        /modules/,
+        /lib\/scriptcraft\.js$/, 
+        /lib\/require\.js$/,
+        /lib\/plugin\.js$/,
+        /lib\/events\.js$/,
+        /lib\//, 
+        /modules\//,
         /drone\.js/, 
-        /drone/
+        /drone\//,
+        /examples\//
 ]));
+//err.println("store=" + JSON.stringify(store));
 
 var contents = [];
 foreach(store, function(filename){
