@@ -8,13 +8,15 @@ installed, you can add your own new Mods by adding Javascript (.js)
 files in a directory.
 
  * If you're new to programming and want to start modding Minecraft, then [Start Here][ypgpm].
- * If you've already used [Scratch][scr], have attended a few [CoderDojo][cd] sessions, or have already dabbled with Javascript, then [Start Here][cda].
+ * If you've already used [Scratch][scr], have attended a few
+   [CoderDojo][cd] sessions, or have already dabbled with Javascript,
+   then [Start Here][cda].
  * Watch some [demos][ytpl] of what you can do with ScriptCraft.
 
 # Description
 
-ScriptCraft is a plugin for Minecraft Servers which lets
-operators, administrators and plug-in authors customize the game using
+ScriptCraft is a plugin for Minecraft Servers which lets operators,
+administrators and plug-in authors customize the game using
 Javascript.  ScriptCraft makes it easier to create your own mods. Mods
 can be written in Javscript and can use the full Bukkit API.  The
 ScriptCraft mod also lets you enter javascript commands at the in-game
@@ -88,10 +90,9 @@ simplest mod to get started with.
 Additional information
 ======================
 Because the Bukkit API is open, all of the Bukkit API is accessible
-via javascript once the ScriptCraft plugin is loaded. For example, in
-addition to the functions provided in the MCP version of ScriptCraft,
-there are a couple of useful Java objects exposed via javascript in
-the Bukkit ScriptCraft plugin...
+via javascript once the ScriptCraft plugin is loaded. There are a
+couple of useful Java objects exposed via javascript in the Bukkit
+ScriptCraft plugin...
 
  * `__plugin` - the ScriptCraft Plugin itself. This is a useful
    starting point for accessing other Bukkit objects. The `__plugin`
@@ -100,10 +101,12 @@ the Bukkit ScriptCraft plugin...
    __plugin.server.motd` returns the server's message of the day
    (javascript is more concise than the equivalent java code:
    __plugin.getServer().getMotd() ).
- * `self` - The player/command-block or server console operator who
-   invoked the js command. Again, this is a good jumping off point for
-   diving into the Bukkit API.
+
  * `server` - The top-level org.bukkit.Server object. See the [Bukkit API docs][bukapi] for reference.
+
+ * `self` - The player/command-block or server console operator who
+   invoked the `/js` command. Again, this is a good jumping off point for
+   diving into the Bukkit API.
 
 [dl]: http://scriptcraftjs.org/download
 [api]: http://jd.bukkit.org/apidocs/org/bukkit/plugin/java/JavaPlugin.html
@@ -126,7 +129,7 @@ You can find more information about [ScriptCraft on my blog][blog].
 [buk]: https://github.com/walterhiggins/ScriptCraft/blob/master/bukkit.md
 [yp]: docs/YoungPersonsGuideToProgrammingMinecraft.md
 [mm]: http://walterhiggins.net/blog/ScriptCraft-1-Month-later
-[api]: https://github.com/walterhiggins/ScriptCraft/blob/master/docs/api.md
+[api]: https://github.com/walterhiggins/ScriptCraft/blob/master/docs/API-Reference.md
 [website]: http://scriptcraftjs.org/
 [ypgpm]: docs/YoungPersonsGuideToProgrammingMinecraft.md
 [cd]: http://coderdojo.com/
