@@ -10,7 +10,7 @@ exports.chat = plugin("chat", {
       set the color of text for a given player
     */
     setColor: function(player, color){
-        this.store.players[player.name] = color;
+        _store.players[player.name] = color;
     },
 
     store: _store
@@ -30,7 +30,7 @@ for (var i =0;i < colors.length;i++) {
 
 events.on("player.AsyncPlayerChatEvent",function(l,e){
     var player = e.player;
-    var playerChatColor = chat.store.players[player.name];
+    var playerChatColor = _store.players[player.name];
     if (playerChatColor){
         e.message = "§" + colorCodes[playerChatColor] + e.message;
     }

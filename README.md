@@ -122,13 +122,14 @@ ScriptCraft has [its own website][website] with further information.
  * To get started using ScriptCraft to Learn Javascript, read [The Young Person's Guide to Programming in Minecraft][yp].
  * The ScriptCraft [API documentation][api].
  * To delve deeper into creating your own minecraft mod for use by others, read [Creating a complete Minecraft Mod in  Javascript][mm].
+ * Take a look at some [examples][ex]
 
 You can find more information about [ScriptCraft on my blog][blog].
 
 [blog]: http://walterhiggins.net/blog/cat-index-scriptcraft.html
 [buk]: https://github.com/walterhiggins/ScriptCraft/blob/master/bukkit.md
 [yp]: docs/YoungPersonsGuideToProgrammingMinecraft.md
-[mm]: http://walterhiggins.net/blog/ScriptCraft-1-Month-later
+[mm]: docs/Anatomy-of-a-Plugin.md
 [api]: https://github.com/walterhiggins/ScriptCraft/blob/master/docs/API-Reference.md
 [website]: http://scriptcraftjs.org/
 [ypgpm]: docs/YoungPersonsGuideToProgrammingMinecraft.md
@@ -136,3 +137,4 @@ You can find more information about [ScriptCraft on my blog][blog].
 [scr]: http://scratch.mit.edu/
 [cda]: http://cdathenry.wordpress.com/category/modderdojo/
 [ytpl]: http://www.youtube.com/watch?v=DDp20SKm43Y&list=PL4Tw0AgXQZH5BiFHqD2hXyXQi0-qFbGp_
+[ex]: ./src/main/javscript/plugins/examples/
