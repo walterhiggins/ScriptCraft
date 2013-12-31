@@ -137,4 +137,4 @@ You can find more information about [ScriptCraft on my blog][blog].
 [scr]: http://scratch.mit.edu/
 [cda]: http://cdathenry.wordpress.com/category/modderdojo/
 [ytpl]: http://www.youtube.com/watch?v=DDp20SKm43Y&list=PL4Tw0AgXQZH5BiFHqD2hXyXQi0-qFbGp_
-[ex]: ./src/main/javscript/plugins/examples/
+[ex]: ./tree/master/src/main/javascript/plugins/examples
