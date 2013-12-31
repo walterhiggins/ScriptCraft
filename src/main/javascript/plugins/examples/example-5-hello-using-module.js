@@ -1,15 +1,20 @@
-/*
-  A simple minecraft plugin.
-  Usage: At the in-game prompt type ...
-  
-  /jsp hello-module
+/*************************************************************************
+## Example Plugin #5
 
-  ... and a message `Hello {player-name}` will appear (where {player-name} is 
-  replaced by your own name).
+A simple minecraft plugin. Using Modules.
+
+### Usage: 
+
+At the in-game prompt type ...
   
-  This example demonstrates the use of modules. In
-  example-1-hello-module.js we created a new javascript module. In
-  this example, we use that module...
+    /jsp hello-module
+
+... and a message `Hello {player-name}` will appear (where {player-name} is 
+replaced by your own name).
+  
+This example demonstrates the use of modules. In
+example-1-hello-module.js we created a new javascript module. In
+this example, we use that module...
 
   * We load the module using the `require()` function. Because this
     module and the module we require are n the same directory, we
@@ -21,7 +26,13 @@
   * We assign the loaded module to a variable (`greetings`) and then
     use the module's `hello` method to display the message. 
 
-*/
+
+    var greetings = require('./example-1-hello-module');
+    command('hello-module', function( parameters, player ){
+        greetings.hello(player);
+    });
+
+***/
 var greetings = require('./example-1-hello-module');
 
 command('hello-module', function( parameters, player ){

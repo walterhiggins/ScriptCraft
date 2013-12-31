@@ -1,19 +1,29 @@
-/*
-  A simple minecraft plugin.
-  Usage: At the in-game prompt type ...
-  
-  /jsp hello-params Hi
-  /jsp hello-params Saludos 
-  /jsp hello-params Greetings
+/*************************************************************************
+## Example Plugin #4
+A simple minecraft plugin. Handling parameters.
 
-  ... and a message `Hi {player-name}` or `Saludos {player-name}` etc
-  will appear (where {player-name} is replaced by your own name).
+### Usage: 
+
+At the in-game prompt type ...
   
-  This example demonstrates adding and using parameters in commands.
+    /jsp hello-params Hi
+    /jsp hello-params Saludos 
+    /jsp hello-params Greetings
+
+... and a message `Hi {player-name}` or `Saludos {player-name}` etc
+will appear (where {player-name} is replaced by your own name).
   
-  This differs from example 3 in that the greeting can be changed from
-  a fixed 'Hello ' to anything you like by passing a parameter.
-*/
+This example demonstrates adding and using parameters in commands.
+  
+This differs from example 3 in that the greeting can be changed from
+a fixed 'Hello ' to anything you like by passing a parameter.
+
+    command('hello-params', function (parameters, player) {
+        var salutation = parameters[0] ;
+        player.sendMessage( salutation + ' ' + player.name);
+    });
+
+***/
 
 command('hello-params', function (parameters, player) {
     /*

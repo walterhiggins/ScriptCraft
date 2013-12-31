@@ -1,10 +1,13 @@
-/*
-  A simple event-driven minecraft plugin.
+/*************************************************************************
+## Example Plugin #7
 
-  This example demonstrates event-driven programming. The code below
-  will display the version of ScriptCraft every time an operator joins
-  the game. This module is notable from previous modules for the
-  following reasons...
+A simple event-driven minecraft plugin. How to handle Events.
+
+
+This example demonstrates event-driven programming. The code below
+will display the version of ScriptCraft every time an operator joins
+the game. This module is notable from previous modules for the
+following reasons...
 
  1. It does not export any functions or variables. That's fine. Not
     all modules need export stuff. Code in this module will be
@@ -75,7 +78,14 @@ cleaner and more readable. Similarly where you see a method like
 [bkgaf]: http://jd.bukkit.org/dev/apidocs/org/bukkit/entity/Player.html#getAllowFlight()
 [bksaf]: http://jd.bukkit.org/dev/apidocs/org/bukkit/entity/Player.html#setAllowFlight()
 [bkapi]: http://jd.bukkit.org/dev/apidocs/
-*/
+
+    events.on('player.PlayerJoinEvent', function (listener, event){
+        if (event.player.op) {
+            event.player.sendMessage('Welcome to ' + __plugin);
+        }
+    });
+
+***/
 events.on('player.PlayerJoinEvent', function (listener, event){
     if (event.player.op) {
         event.player.sendMessage('Welcome to ' + __plugin);

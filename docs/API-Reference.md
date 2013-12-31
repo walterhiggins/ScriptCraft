@@ -570,6 +570,92 @@ To listen for events using a full class name as the `eventName` parameter...
 [buk2]: http://wiki.bukkit.org/Event_API_Reference
 [buk]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/event/Event.html
 
+## Example Plugin #7
+
+A simple event-driven minecraft plugin. How to handle Events.
+
+
+This example demonstrates event-driven programming. The code below
+will display the version of ScriptCraft every time an operator joins
+the game. This module is notable from previous modules for the
+following reasons...
+
+ 1. It does not export any functions or variables. That's fine. Not
+    all modules need export stuff. Code in this module will be
+    executed when the module is first loaded. Because it is in the
+    `/scriptcraft/plugins` directory, it will be loaded automatically
+    when the server starts up.
+
+ 2. It uses ScriptCraft's `events.on()` function to add a new *Event
+    Handler*. An *Event Handler* is a just a function which gets
+    called whenever a particular *event* happens in the game. The
+    function defined below will only be executed whenever a player
+    joins the game. This style of program is sometimes refered to as
+    *Event-Driven Programming*.
+
+Adding new *Event Handlers* in ScriptCraft is relatively easy. Use the
+`events.on()` function to add a new event handler. It takes 2
+parameters...
+
+ 1. The Event Name, in this case `'player.PlayerJoinEvent'`. You can
+    browse [all possible Bukkit events][bkevts] (click the 'Next
+    Package' and 'Previous Package' links to browse).
+
+ 2. The event handling function (also sometimes refered to as a
+    'callback'). In ScriptCraft, this function takes 2 parameters, a
+    listener object and an event object. All of the information about
+    the event is in the event object.
+
+In the example below, if a player joins the server and is an operator,
+then the ScriptCraft plugin information will be displayed to that
+player.
+
+What's also notable about this example is how it uses the [Bukkit
+API][bkapi]. The code...
+
+    if (event.player.op)
+
+... is a succinct way of accessing object properties which in Java
+would have to be written as ...
+
+    if (event.getPlayer().isOp())
+
+... ScriptCraft uses a special version of JavaScript which comes
+bundled with Java (Minecraft is written in Java) and JavaScript in
+Java can access properties of Java objects more succinctly than in
+Java itself. What this means in practice is that when you're perusing
+the [Bukkit API Reference][bkapi] and come across a method like
+[Player.getAllowFlight()][bkgaf], you can write code like this...
+
+    var allowFlight = player.getAllowFlight(); // java style
+
+... or the more succinct ...
+
+    var allowFlight = player.allowFlight; // javascript style
+
+... Which style you choose is up to you but `player.allowFlight` is
+cleaner and more readable. Similarly where you see a method like
+[Player.setAllowFlight()][bksaf], you can write ...
+
+    player.setAllowFlight(true); // java style
+
+... or the more readable...
+
+    player.allowFlight = true; // javascript style
+
+... Which style you choose is up to you.
+
+[bkevts]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/package-summary.html
+[bkgaf]: http://jd.bukkit.org/dev/apidocs/org/bukkit/entity/Player.html#getAllowFlight()
+[bksaf]: http://jd.bukkit.org/dev/apidocs/org/bukkit/entity/Player.html#setAllowFlight()
+[bkapi]: http://jd.bukkit.org/dev/apidocs/
+
+    events.on('player.PlayerJoinEvent', function (listener, event){
+        if (event.player.op) {
+            event.player.sendMessage('Welcome to ' + __plugin);
+        }
+    });
+
 ## console global variable
 
 ScriptCraft provides a `console` global variable with the followng methods...
@@ -2032,6 +2118,182 @@ anyone reading this knows of a better way to programmatically add new
 global commands for a plugin, please let me know.
 
 [pcppevt]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/player/PlayerCommandPreprocessEvent.html
+
+## Example Plugin #5
+
+A simple minecraft plugin. Using Modules.
+
+### Usage: 
+
+At the in-game prompt type ...
+  
+    /jsp hello-module
+
+... and a message `Hello {player-name}` will appear (where {player-name} is 
+replaced by your own name).
+  
+This example demonstrates the use of modules. In
+example-1-hello-module.js we created a new javascript module. In
+this example, we use that module...
+
+  * We load the module using the `require()` function. Because this
+    module and the module we require are n the same directory, we
+    specify `'./example-1-hello-module'` as the path (when loading a
+    module from the same directory, `./` at the start of the path
+    indicates that the file should be searched for in the same
+    directory.
+
+  * We assign the loaded module to a variable (`greetings`) and then
+    use the module's `hello` method to display the message. 
+
+
+    var greetings = require('./example-1-hello-module');
+    command('hello-module', function( parameters, player ){
+        greetings.hello(player);
+    });
+
+## Example Plugin #3
+
+A simple minecraft plugin. Commands for operators only.
+
+### Usage: 
+
+At the in-game prompt type ...
+  
+    /jsp op-hello
+
+... and a message `Hello {player-name}` will appear (where {player-name} is 
+replaced by your own name).
+  
+This example demonstrates the basics of adding new functionality
+which is usable all players or those with the scriptcraft.proxy
+permission. By default, all players are granted this permission. In
+this command though, the function checks to see if the player is an
+operator and if they aren't will return immediately.
+ 
+This differs from example 2 in that the function will only print a
+message for operators.
+
+    command('op-hello', function (parameters, player) {
+        if (!player.op){
+            player.sendMessage('Only operators can do this.');
+            return;
+        }
+        player.sendMessage('Hello ' + player.name);
+    });
+## Example Plugin #1
+
+A simple minecraft plugin. The most basic module.
+
+### Usage: 
+
+At the in-game prompt type ...
+  
+    /js hello(self)
+
+... and a message `Hello {player-name}` will appear (where
+  {player-name} is replaced by your own name).
+  
+This example demonstrates the basics of adding new functionality which
+is only usable by server operators or users with the
+scriptcraft.evaluate permission. By default, only ops are granted this
+permission.
+  
+The `hello` function below is only usable by players with the scriptcraft.evaluate 
+permission since it relies on the `/js` command to execute.
+
+    exports.hello = function(player){
+        player.sendMessage('Hello ' + player.name);
+    };
+
+## Example Plugin #6
+
+A simple minecraft plugin. Finding players by name.
+
+### Usage: 
+
+At the in-game prompt type ...
+  
+    /jsp hello-byname {player-name}
+
+... substituting {player-name} with the name of a player currently
+online and a message `Hello ...` will be sent to the named
+player.
+  
+This example builds on example-5 and also introduces a new concept -
+use of shared modules. That is : modules which are not specific to
+any one plugin or set of plugins but which can be used by all
+plugins. Shared modules should be placed in the
+`scriptcraft/modules` directory.
+  
+  * The utils module is used. Because the 'utils' module is
+    located in the modules folder we don't need to specify an exact
+    path, just 'utils' will do. 
+ 
+  * The `utils.player()` function is used to obtain a player object
+    matching the player name. Once a player object is obtained, a
+    message is sent to that player.
+
+    var utils = require('utils');
+    var greetings = require('./example-1-hello-module');
+
+    command('hello-byname', function( parameters, sender ) {
+        var playerName = parameters[0];
+        var recipient = utils.player(playerName);
+        if (recipient)
+            greetings.hello(recipient);
+        else
+            sender.sendMessage('Player ' + playerName + ' not found.');
+    });
+## Example Plugin #2
+
+A simple minecraft plugin. Commands for other players.
+
+### Usage: 
+
+At the in-game prompt type ...
+  
+    /jsp hello
+
+... and a message `Hello {player-name}` will appear (where {player-name} is 
+replaced by your own name).
+  
+This example demonstrates the basics of adding new functionality
+which is usable all players or those with the scriptcraft.proxy
+permission.  By default, all players are granted this permission.
+  
+This differs from example 1 in that a new 'jsp ' command extension
+is defined. Since all players can use the `jsp` command, all players
+can use the new extension. Unlike the previous example, the `jsp hello` 
+command does not evaluate javascript code so this command is much more secure.
+
+    command('hello', function (parameters, player) {
+        player.sendMessage('Hello ' + player.name);
+    });
+
+## Example Plugin #4
+A simple minecraft plugin. Handling parameters.
+
+### Usage: 
+
+At the in-game prompt type ...
+  
+    /jsp hello-params Hi
+    /jsp hello-params Saludos 
+    /jsp hello-params Greetings
+
+... and a message `Hi {player-name}` or `Saludos {player-name}` etc
+will appear (where {player-name} is replaced by your own name).
+  
+This example demonstrates adding and using parameters in commands.
+  
+This differs from example 3 in that the greeting can be changed from
+a fixed 'Hello ' to anything you like by passing a parameter.
+
+    command('hello-params', function (parameters, player) {
+        var salutation = parameters[0] ;
+        player.sendMessage( salutation + ' ' + player.name);
+    });
 
 ## homes Module
 
