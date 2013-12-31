@@ -1,4 +1,4 @@
-var _utils = require('utils');
+var utils = require('utils');
 var stringExt = require('utils/string-exts');
 var _store = {};
 /*
@@ -78,7 +78,7 @@ signs.menu = function(
             save = true;
 
         if (typeof sign == "undefined"){
-            var mouseLoc = _utils.getMousePos();
+            var mouseLoc = utils.getMousePos();
             if (mouseLoc){
                 sign = mouseLoc.block.state;
             }else{
@@ -105,7 +105,7 @@ signs.menu = function(
            get a unique ID for this particular sign instance
         */
         var signLoc = sign.block.location;
-        var menuSignSaveData = [""+signLoc.world.name, signLoc.x,signLoc.y,signLoc.z];
+        var menuSignSaveData = utils.locationToJSON(signLoc);
         var menuSignUID = JSON.stringify(menuSignSaveData);
         /*
           keep a reference to the update function for use by the event handler
@@ -177,7 +177,7 @@ events.on('player.PlayerInteractEvent',function(listener, event) {
 
     if (! event.clickedBlock.state instanceof org.bukkit.block.Sign)
         return;
-    var evtLocStr = _utils.locationToString(event.clickedBlock.location);
+    var evtLocStr = utils.locationToString(event.clickedBlock.location);
     var signUpdater = _updaters[evtLocStr]
     if (signUpdater)
         signUpdater(event.player, event.clickedBlock.state);

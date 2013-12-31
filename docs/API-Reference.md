@@ -646,21 +646,11 @@ The following example illustrates how to use http.request to make a request to a
 
 ## Utilities Module
 
-Miscellaneous utility functions and classes to help with programming.
+The `utils` module is a storehouse for various useful utility
+functions which can be used by plugin and module authors. It contains
+miscellaneous utility functions and classes to help with programming.
 
- * locationToString(Location) - returns a [bukkit Location][bkloc] object in string form.
-  
- * player(playerName) - returns the Player object for a named player or `self` if no name is provided.
-
- * getPlayerPos(playerName) - returns the player's x,y,z and yaw (direction) for a named player
-   or player or `self` if no parameter is provided.
- 
- * getMousePos(playerName) - returns the x,y,z of the current block being targeted by the named player
-   or player or `self` if no paramter is provided.
-
-[bkloc]: http://jd.bukkit.org/dev/apidocs/org/bukkit/Location.html
-
-### player() function
+### utils.player() function
 
 The utils.player() function will return a [bukkit Player][bkpl] object
 with the given name. This function takes a single parameter
@@ -670,17 +660,110 @@ String, then it tries to find the player with that name.
 
 #### Parameters
 
- * playerName : A String or Player object. If no parameter is provided then player() will try to return the `self` variable . It is strongly recommended to provide a parameter.
+ * playerName : A String or Player object. If no parameter is provided
+   then player() will try to return the `self` variable . It is 
+   strongly recommended to provide a parameter.
 
 #### Example
 
     var utils = require('utils');
-    var player = utils.player('walterh');
-    player.sendMessage('Got you!');
+    var name = 'walterh';
+    var player = utils.player(name);
+    if (player) {
+        player.sendMessage('Got ' + name);
+    }else{
+        console.log('No player named ' + name);
+    }
 
 [bkpl]: http://jd.bukkit.org/dev/apidocs/org/bukkit/entity/Player.html
+[bkloc]: http://jd.bukkit.org/dev/apidocs/org/bukkit/Location.html
 
-### foreach() function
+### utils.locationToJSON() function
+
+utils.locationToJSON() returns a [org.bukkit.Location][bkloc] object in JSON form...
+
+    { world: 'world5',
+      x: 56.9324,
+      y: 103.9954,
+      z: 43.1323,
+      yaw: 0.0,
+      pitch: 0.0
+    }
+
+This can be useful if you write a plugin that needs to store location data since bukkit's Location object is a Java object which cannot be serialized to JSON by default.
+
+#### Parameters
+ 
+ * location: An object of type [org.bukkit.Location][bkloc]
+
+#### Returns
+
+A JSON object in the above form.
+ 
+### utils.locationToString() function
+
+The utils.locationToString() function returns a
+[org.bukkit.Location][bkloc] object in string form...
+
+    '{"world":"world5",x:56.9324,y:103.9954,z:43.1323,yaw:0.0,pitch:0.0}'
+
+... which can be useful if you write a plugin which uses Locations as
+keys in a lookup table.
+
+#### Example
+    
+    var utils = require('utils');
+    ...
+    var key = utils.locationToString(player.location);
+    lookupTable[key] = player.name;
+
+### utils.locationFromJSON() function
+
+This function reconstructs an [org.bukkit.Location][bkloc] object from
+a JSON representation. This is the counterpart to the
+`locationToJSON()` function. It takes a JSON object of the form
+returned by locationToJSON() and reconstructs and returns a bukkit
+Location object.
+
+### utils.getPlayerPos() function
+
+This function returns the player's [Location][bkloc] (x, y, z, pitch
+and yaw) for a named player.  If the "player" is in fact a
+[org.bukkit.command.BlockCommandSender][bkbcs] then the attached
+Block's location is returned.
+
+#### Parameters
+
+ * player : A [org.bukkit.command.CommandSender][bkbcs] (Player or BlockCommandSender) or player name (String).
+
+#### Returns
+
+An [org.bukkit.Location][bkloc] object.
+
+[bkbcs]: http://jd.bukkit.org/dev/apidocs/org/bukkit/command/BlockCommandSender.html
+[bksndr]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/command/CommandSender.html
+### utils.getMousePos() function
+
+This function returns a [org.bukkit.Location][bkloc] object (the
+x,y,z) of the current block being targeted by the named player. This
+is the location of the block the player is looking at (targeting).
+
+#### Parameters
+
+ * player : The player whose targeted location you wish to get.
+
+#### Example
+
+The following code will strike lightning at the location the player is looking at...
+
+    var utils = require('utils');
+    var playerName = 'walterh';
+    var targetPos = utils.getMousePos(playerName);
+    if (targetPos){
+       targetPos.world.strikeLightning(targetPos);
+    }
+
+### utils.foreach() function
 
 The utils.foreach() function is a utility function for iterating over
 an array of objects (or a java.util.Collection of objects) and processing each object in turn. Where
