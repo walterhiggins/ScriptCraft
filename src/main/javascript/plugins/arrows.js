@@ -76,8 +76,11 @@ for (var type in _types)
 {
     arrows[type] = (function(n){
         return function(player){
-            player = utils.getPlayerObject(player);
-            arrows.store.players[player.name] = n;
+            player = utils.player(player);
+            if (player)
+                arrows.store.players[player.name] = n;
+            else
+                console.warn('arrows.' + n + ' No player ' + player);
         };
     })(_types[type]);
 }

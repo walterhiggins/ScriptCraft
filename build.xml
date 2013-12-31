@@ -74,6 +74,7 @@
 
 
   <target name="zip_js" depends="init">
+    <delete file="${build}/${js-plugins-dir}.zip"/>
     <zip destfile="${build}/${js-plugins-dir}.zip">
       <zipfileset dir="./src/main/javascript" />
     </zip>

@@ -3,10 +3,9 @@
 
 Miscellaneous utility functions and classes to help with programming.
 
- * locationToString(Location) - returns a bukkit Location object in string form.
+ * locationToString(Location) - returns a [bukkit Location][bkloc] object in string form.
   
- * getPlayerObject(playerName) - returns the Player object for a named
-   player or `self` if no name is provided.
+ * player(playerName) - returns the Player object for a named player or `self` if no name is provided.
 
  * getPlayerPos(playerName) - returns the player's x,y,z and yaw (direction) for a named player
    or player or `self` if no parameter is provided.
@@ -14,36 +13,87 @@ Miscellaneous utility functions and classes to help with programming.
  * getMousePos(playerName) - returns the x,y,z of the current block being targeted by the named player
    or player or `self` if no paramter is provided.
 
+[bkloc]: http://jd.bukkit.org/dev/apidocs/org/bukkit/Location.html
+
 ***/
-var _getPlayerObject = function ( playerName ) {
-    if (typeof playerName == "undefined"){
-        if (typeof self == "undefined"){
+/************************************************************************
+### player() function
+
+The utils.player() function will return a [bukkit Player][bkpl] object
+with the given name. This function takes a single parameter
+`playerName` which can be either a String or a [Player][bkpl] object -
+if it's a Player object, then the same object is returned. If it's a
+String, then it tries to find the player with that name.
+
+#### Parameters
+
+ * playerName : A String or Player object. If no parameter is provided then player() will try to return the `self` variable . It is strongly recommended to provide a parameter.
+
+#### Example
+
+    var utils = require('utils');
+    var player = utils.player('walterh');
+    player.sendMessage('Got you!');
+
+[bkpl]: http://jd.bukkit.org/dev/apidocs/org/bukkit/entity/Player.html
+
+***/
+var _player = function ( playerName ) {
+    if (typeof playerName == 'undefined'){
+        if (typeof self == 'undefined'){
             return null;
         } else { 
             return self;
         }
     } else {
-        if (typeof playerName == "string")
+        if (typeof playerName == 'string')
             return org.bukkit.Bukkit.getPlayer(playerName);
         else
             return playerName; // assumes it's a player object
     }
 };
 
+var _locationToJSON = function(location){
+    return { 
+        world: ''+location.world.name, 
+        x: location.x, 
+        y: location.y, 
+        z: location.z, 
+        yaw: location.yaw,
+        pitch: location.pitch
+    };
+};
 exports.locationToString = function(location){
-    return JSON.stringify([""+location.world.name,location.x, location.y, location.z]);
+    return JSON.stringify(_locationToJSON(location));
+};
+exports.locationToJSON = _locationToJSON;
+
+exports.locationFromJSON = function(json){
+    var world = org.bukkit.Bukkit.getWorld(json.world);
+    return new org.bukkit.Location(world, json.x, json.y , json.z, json.yaw, json.pitch);
 };
 
-exports.getPlayerObject = _getPlayerObject;
+exports.player = _player;
+exports.getPlayerObject = function(player){
+    console.warn('utils.getPlayerObject() is deprecated. Use utils.player() instead.');
+    return _player(player);
+};
 
 exports.getPlayerPos = function( player ) {
-    player = _getPlayerObject(player);
-    return player.location;
+    player = _player(player);
+    if (player){
+        if (player instanceof org.bukkit.command.BlockCommandSender)
+            return player.block.location;
+        else
+            return player.location;
+    }
+    else
+        return null;
 };
 
 exports.getMousePos = function (player) {
     
-    player = _getPlayerObject(player);
+    player = _player(player);
     if (!player)
         return null;
     // player might be CONSOLE or a CommandBlock
@@ -104,19 +154,19 @@ and put the code there.
 The following example illustrates how to use foreach for immediate processing of an array...
 
     var utils = require('utils');
-    var players = ["moe", "larry", "curly"];
+    var players = ['moe', 'larry', 'curly'];
     utils.foreach (players, function(item){ 
-        server.getPlayer(item).sendMessage("Hi " + item);
+        server.getPlayer(item).sendMessage('Hi ' + item);
     });
 
 ... The `utils.foreach()` function can work with Arrays or any Java-style collection. This is important
 because many objects in the Bukkit API use Java-style collections...
 
     utils.foreach( server.onlinePlayers, function(player){
-         player.chat("Hello!");
+         player.chat('Hello!');
     }); 
 
-... the above code sends a "Hello!" to every online player.
+... the above code sends a 'Hello!' to every online player.
 
 The following example is a more complex use case - The need to build an enormous structure
 without hogging CPU usage...
@@ -136,7 +186,7 @@ without hogging CPU usage...
     // assume this code is within a function/closure
     var player = self;
     var onDone = function(){ 
-        player.sendMessage("Job Done!");
+        player.sendMessage('Job Done!');
     };
     utils.foreach (a, processItem, null, 10, onDone);
     
@@ -202,8 +252,8 @@ The utils.at() function will perform a given task at a given time every
 
 #### Parameters
 
- * time24hr : The time in 24hr form - e.g. 9:30 in the morning is "09:30" while
-   9:30 pm is "21:30", midnight is "00:00" and midday is "12:00"
+ * time24hr : The time in 24hr form - e.g. 9:30 in the morning is '09:30' while
+   9:30 pm is '21:30', midnight is '00:00' and midday is '12:00'
  * callback : A javascript function which will be invoked at the given time.
  * worlds : (optional) An array of worlds. Each world has its own clock. If no array of worlds is specified, all the server's worlds are used.
 
@@ -213,10 +263,10 @@ To warn players when night is approaching...
 
     var utils = require('utils');
 
-    utils.at( "19:00", function() {
+    utils.at( '19:00', function() {
 
         utils.foreach( server.onlinePlayers, function(player){
-            player.chat("The night is dark and full of terrors!");            
+            player.chat('The night is dark and full of terrors!');            
         });
 
     });
@@ -224,14 +274,14 @@ To warn players when night is approaching...
 ***/
 exports.at = function(time24hr, callback, worlds) {
     var forever = function(){ return true;};
-    var timeParts = time24hr.split(":");
+    var timeParts = time24hr.split(':');
     var hrs = ((timeParts[0] * 1000) + 18000) % 24000;
     var mins;
     if (timeParts.length > 1)
         mins = (timeParts[1] / 60) * 1000;
     
     var timeMc = hrs + mins;
-    if (typeof worlds == "undefined"){
+    if (typeof worlds == 'undefined'){
         worlds = server.worlds;
     }
     _nicely(function(){
@@ -271,7 +321,7 @@ exports.find = function( dir , filter){
     var recurse = function(dir, store){
         var files, dirfile = new java.io.File(dir);
         
-        if (typeof filter == "undefined")
+        if (typeof filter == 'undefined')
             files = dirfile.list();
         else
             files = dirfile.list(filter);

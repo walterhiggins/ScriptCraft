@@ -1,4 +1,4 @@
-var _utils = require('utils');
+var utils = require('utils');
 var blocks = require('blocks');
 
 /*********************************************************************
@@ -670,17 +670,26 @@ Drone = function(x,y,z,dir,world)
 {
     this.record = false;
     var usePlayerCoords = false;
-    var playerPos = _utils.getPlayerPos();
-    if (typeof x == "undefined")
+    var player = self;
+    if (x instanceof org.bukkit.entity.Player){
+        player = x;
+    }
+    var playerPos = utils.getPlayerPos(player);
+    var that = this;
+    var populateFromLocation = function(loc){
+        that.x = loc.x;
+        that.y = loc.y;
+        that.z = loc.z;
+        that.dir = _getDirFromRotation(loc.yaw);
+        that.world = loc.world;
+    };
+    var mp = utils.getMousePos(player);
+    if (typeof x == "undefined" || x instanceof org.bukkit.entity.Player)
     {
-        var mp = _utils.getMousePos();
         if (mp){
-            this.x = mp.x;
-            this.y = mp.y;
-            this.z = mp.z;
+            populateFromLocation(mp);
             if (playerPos)
                 this.dir = _getDirFromRotation(playerPos.yaw);
-            this.world = mp.world;
         }else{
             // base it on the player's current location
             usePlayerCoords = true;
@@ -691,19 +700,11 @@ Drone = function(x,y,z,dir,world)
             if (!playerPos){
                 return null;
             }
-            this.x = playerPos.x;
-            this.y = playerPos.y;
-            this.z = playerPos.z;
-            this.dir = _getDirFromRotation(playerPos.yaw);
-            this.world = playerPos.world;
+            populateFromLocation(playerPos);
         }
     }else{
         if (arguments[0] instanceof org.bukkit.Location){
-            this.x = arguments[0].x;
-            this.y = arguments[0].y;
-            this.z = arguments[0].z;
-            this.dir = _getDirFromRotation(arguments[0].yaw);
-            this.world = arguments[0].world;
+            populateFromLocation(arguments[0]);
         }else{
             this.x = x;
             this.y = y;
@@ -714,7 +715,7 @@ Drone = function(x,y,z,dir,world)
                 this.dir = dir%4;
             }
             if (typeof world == "undefined"){
-                this.world = _getWorld();
+                this.world = playerPos.world;
             }else{
                 this.world = world;
             }
@@ -755,7 +756,7 @@ Drone.extend = function(name, func)
     };
     
     global[name] = function(){
-        var result = new Drone();
+        var result = new Drone(self);
         result[name].apply(result,arguments);
         return result;
     };
@@ -1070,13 +1071,6 @@ Drone.PLAYER_STAIRS_FACING = [0,2,1,3];
 // for blocks 68 (wall signs) 65 (ladders) 61,62 (furnaces) 23 (dispenser) and 54 (chest)
 Drone.PLAYER_SIGN_FACING = [4,2,5,3]; 
 Drone.PLAYER_TORCH_FACING = [2,4,1,3];
-
-var _getWorld = function(){
-    var pl = org.bukkit.entity.Player;
-    var cs = org.bukkit.command.BlockCommandSender;
-    var world = (self instanceof pl)?self.location.world:(self instanceof cs)?self.block.location.world:null;
-    return world;
-};
 
 var _STAIRBLOCKS = {53: '5:0'     // oak wood
                     ,67: 4    // cobblestone
