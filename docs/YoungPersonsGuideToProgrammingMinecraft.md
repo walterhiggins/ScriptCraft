@@ -1,5 +1,40 @@
 # The Young Person's Guide to Programming in Minecraft
 
+## Table of Contents
+
+ * [Introduction](#introduction)
+ * [Installation](#installation)
+ * [Learning Javascript](#learning-javascript)
+ * [First Steps](#first-steps)
+ * [Variables](#variables)
+ * [Functions](#functions)
+ * [Building stuff in Minecraft](#building-stuff-in-minecraft)
+ * [Common Block Materials](#common-block-materials)
+ * [Dimensions](#dimensions)
+ * [More Shapes](#more-shapes)
+ * [The Drone Object](#the-drone-object)
+   * [Movement](#movement)
+   * [Chaining - Combining Building and Movement](#chaining---combining-building-and-movement)
+   * [Exercise - Build a simple dwelling](#exercise---build-a-simple-dwelling)
+   * [Remembering where you started](#remembering-where-you-started)
+ * [Saving your work](#saving-your-work)
+ * [Your first Minecraft Mod!](#your-first-minecraft-mod)
+ * [Parameters](#parameters)
+ * [true or false](#true-or-false)
+ * [More fun with `true` or `false`](#more-fun-with-true-or-false)
+ * [...and Again, and Again, and Again,...](#and-again-and-again-and-again)
+   * [Counting to 100](#counting-to-100)
+   * [Saying "Hi!" to every player](#saying-hi-to-every-player)
+ * [While Loops](#while-loops)
+ * [`utils.foreach()` - Yet another way to process Arrays](#utilsforeach---yet-another-way-to-process-arrays)
+   * [Exercise](#exercise)
+ * [Putting `for` loops to use - Building a Skyscraper](#putting-for-loops-to-use---building-a-skyscraper)
+ * [Making Decisions](#making-decisions)
+ * [Event-Driven programming](#event-driven-programming)
+   * [Stop listening to events](#stop-listening-to-events)
+ * [Keeping Score - Lookup tables in Javascript](#keeping-score---lookup-tables-in-javascript)
+ * [Next Steps](#next-steps)
+
 ## Introduction
 
 Minecraft is an open-ended 3D game where you can build and craft
@@ -98,7 +133,7 @@ A variable is how you name something for the computer (and you the
 programmer) to remember. You create a new variable in Javascript using 
 the `var` keyword...
 
-    /js var location = "Blackrock Castle"
+    /js var location = 'Blackrock Castle'
 
 ... creates a new variable called `location` and stores the text 
 `Blackrock Castle` in it. Now the computer has a new item in its memory 
@@ -110,8 +145,8 @@ called `location`. We can use that name like this...
 
     Blackrock Castle
 
-...You might be wondering where the `""` (called double-quotes) went. 
-When telling the computer to store some text, you have to put `"` 
+...You might be wondering where the `''` (called double-quotes) went. 
+When telling the computer to store some text, you have to put `'` 
 (that's the double-quote character - press Shift+2) at the start and end 
 of the text. The computer doesn't store these quote characters, only the 
 text between them. The computer will store the variables while the 
@@ -121,7 +156,7 @@ pressing enter. You can repeat that statement as many times as you like
 and the computer will always display the same value. You can change the 
 value like this...
 
-    /js location = "Mahon Point"
+    /js location = 'Mahon Point'
 
 ...notice this time I didn't use the `var` keyword. I didn't need to. 
 The `var` keyword is only needed when you first create the variable. Now 
@@ -135,7 +170,7 @@ execute this command...
 
 Variables can be created and changed easily in Javascript. Along with 
 the variables you'll create in your in-game commands and scripts, there 
-are handy "free" variables created for you by ScriptCraft. One such variable is 
+are handy *free* variables created for you by ScriptCraft. One such variable is 
 `self`, it contains information about the current player (that's you)...
 
     /js echo ( self )
@@ -258,7 +293,7 @@ ground, then type the following and hit enter...
 
 ... This will change the targeted block to wood. What's happened here
 is the `box()` function has created a single new wooden
-block. `blocks` is another one of those "free" variables you get in
+block. `blocks` is another one of those *free* variables you get in
 ScriptCraft, you can see a list of block materials by typing ...
 
     /js blocks.
@@ -274,21 +309,21 @@ In Minecraft Programming, Materials aren't known by their name,
 instead numbers (sometimes 2 numbers) are used to indicate which
 material should be used. For example the number 2 is grass, 1 is
 cobblestone etc, while 5 is wood (oak). There are different types of
-wood so the text "5:1" means Spruce, "5:2" means Birch and "5:3" means
+wood so the text '5:1' means Spruce, '5:2' means Birch and '5:3' means
 Jungle wood. There are many different materials in the Minecraft world, the most
 commonly used materials for building are:
 
- * "4" - Cobblestone or `blocks.cobblestone`
- * "5" - Wooden Planks or `blocks.oak`
- * "5:2" - Birch wood Planks (light wood) or `blocks.birch`
- * "98" - Stone bricks or `blocks.brick.stone`
- * "45" - Red bricks or `blocks.brick.red`
- * "68" - Sign or `blocks.sign`
- * "102" - Glass panes (for windows) or `blocks.glass_pane` 
+ * '4' - Cobblestone or `blocks.cobblestone`
+ * '5' - Wooden Planks or `blocks.oak`
+ * '5:2' - Birch wood Planks (light wood) or `blocks.birch`
+ * '98' - Stone bricks or `blocks.brick.stone`
+ * '45' - Red bricks or `blocks.brick.red`
+ * '68' - Sign or `blocks.sign`
+ * '102' - Glass panes (for windows) or `blocks.glass_pane` 
 
 You can create a single wooden block using the numeric values or the `blocks` variable. For example...
 
-    /js box( "5" )
+    /js box( '5' )
 
 ... and ...
 
@@ -375,7 +410,7 @@ A series of 2 boxes is created 3 blocks apart.
 OK. You know enough now about the `Drone` functions to be able to
 build a simple dwelling. The dwelling should be a hollow building with
 a sloped roof. *Don't worry about doors or windows for now*. The walls
-should be made of Cobblestone ("4") and the roof made of wood ("5"). You can use
+should be made of Cobblestone ('4') and the roof made of wood ('5'). You can use
 the following `Drone` functions to create a dwelling 7 blocks wide by
 3 blocks high by 6 blocks long with a wooden sloped roof. It's up
 to you to figure out how. 
@@ -393,14 +428,14 @@ Your dwelling should end up looking something like this...
 Sometimes when you're building something big that requires lots of
 manoeuvering by your Drone, you need to leave breadcrumbs as you go so
 your `Drone` can return to where it started. Every new Drone has a
-`"start"` checkpoint that it can return to by executing
-`move("start")` ...
+`'start'` checkpoint that it can return to by executing
+`move('start')` ...
 
-    /js box("5").up(3).left(4).box("1").turn(3).fwd(5).right().box("1").move("start")
+    /js box('5').up(3).left(4).box('1').turn(3).fwd(5).right().box('1').move('start')
 
 ... A genius would have trouble figuring out how to get back
 to where they started. Fortunately, they don't have to - the
-`move("start")` function will take the Drone back to its starting
+`move('start')` function will take the Drone back to its starting
 point. 
 
  * `chkpt( breadCrumb )` - Leaves a mark at your Drone's current
@@ -440,7 +475,7 @@ object can do, let's use that knowledge to create a Minecraft Mod!
 Once you've installed Notepad++, Launch it, create a new file and type the following...
 
     exports.greet = function(player){
-        player.sendMessage("Hi " + player.name);
+        player.sendMessage('Hi ' + player.name);
     }
 
 ... then save the file in a new directory
@@ -455,7 +490,7 @@ type...
 ... to reload all of the server plugins. Your mod has just been
 loaded. Try it out by typing this command...
 
-    /js greet()
+    /js greet(self)
 
 ... it should display ...
 
@@ -473,7 +508,7 @@ when creating more complex mods.
 The `exports` variable is a special variable you can use in your mod
 to provide functions, objects and variables for others to use. If you
 want to provide something for other programmers to use, you should
-"export" it using the special `exports` variable. The syntax is
+*export* it using the special `exports` variable. The syntax is
 straightforward and you can use the same `exports` variable to export
 one or more functions, objects or variables. For example...
 
@@ -490,9 +525,9 @@ one or more functions, objects or variables. For example...
 and `snowball()` which can be invoked from the in-game prompt like
 this `/js egg(self)` or `/js snowball(self)`.
 
-### Parameters
+## Parameters
 If you want to change the `greet()` function so that it displays a
-greeting other than "Hi " you can change the code in the `greet()`
+greeting other than 'Hi ' you can change the code in the `greet()`
 function, or better still, you can use *Parameters*. Parameters are
 values you provide to a function so that the function behaves
 differently each time it is called. 
@@ -508,11 +543,11 @@ Change the `greet()` function so that it looks like this...
 ... Save your greet.js file and issue the `/js refresh()` command in
 minecraft. Now enter the following command in Minecraft...
 
-    greet("Hello ",self);
+    greet('Hello ',self);
 
 ... Now try ...
 
-    greet("Dia Dhuit ",self);
+    greet('Dia Dhuit ',self);
 
 ... you should see the following messages in your chat window...
 
@@ -523,7 +558,7 @@ minecraft. Now enter the following command in Minecraft...
 they're called. As you'll see later, Parameters are very useful when
 changing the behaviour of MineCraft.
 
-### true or false
+## true or false
 
 Try entering each of the following statements and make a note of the
 answers given by minecraft...
@@ -567,7 +602,7 @@ things...
 ... try comparing some more numbers yourself - say for example,
 compare the ages of your friends or siblings to your own age.
 
-### More fun with `true` or `false`
+## More fun with `true` or `false`
 You can find out if you can Fly in minecraft by typing the following statement...
 
     /js self.allowFlight 
@@ -616,14 +651,14 @@ called `API` calls - these are calls to functions and methods in
 Minecraft - you can read more about these on the [CraftBukkit API
 Reference][cbapi].)
 
-### ...and Again, and Again, and Again,...
+## ...and Again, and Again, and Again,...
 
 One of the things Computers are really good at is
 repetition. Computers don't get tired or bored of doing the same thing
 over and over again.  Loops are handy, if you want to run the same
 code over and over again, each time with a different value.  
 
-#### Counting to 100
+### Counting to 100
 
 At the in-game command prompt (hint: press 't') type the following then hit Enter...
 
@@ -651,11 +686,11 @@ The `for` statement is useful when you want to repeat something over and over. I
 remember, an Array is just a list of things, for example - the players
 connnected to a server, the worlds of a server and so on.
 
-#### Saying "Hi!" to every player
+### Saying "Hi!" to every player
 
 At the in-game command prompt type the following then hit Enter...
 
-    /js for (var i = 0;i < server.onlinePlayers.length; i++){ server.onlinePlayers[i].sendMessage("Hi!"); }
+    /js for (var i = 0;i < server.onlinePlayers.length; i++){ server.onlinePlayers[i].sendMessage('Hi!'); }
 
 ... Lets look at these statements in more detail. We had to enter the
 statements on a single line at the in-game command prompt but the
@@ -664,7 +699,7 @@ statements could be written like this...
     var players = server.onlinePlayers;
     for (var i = 0; i < players.length; i++) {
         var player = players[i];
-        player.sendMessage("Hi!");
+        player.sendMessage('Hi!');
     }
 
 ... On the first line, a new variable `players` is created from the
@@ -698,7 +733,7 @@ the bottom of the file...
         var players = server.onlinePlayers;
         for (var i = 0; i < players.length; i++) {
             var player = players[i];
-            player.sendMessage("Hi!");
+            player.sendMessage('Hi!');
         }
     }
 
@@ -709,7 +744,7 @@ loop and arrays. Arrays and `for` loops are used heavily in all types
 of software, in fact there probably isn't any software that doesn't
 use `for` loops and Arrays to get things done.
 
-### While Loops
+## While Loops
 
 Another way to repeat things over and over is to use a `while`
 loop. The following `while` loop counts to 100...
@@ -752,7 +787,7 @@ a matter of personal taste, `for` loops are more commonly used with
 Arrays but as you see from the example above, `while` loops can also
 loop over Arrays.
 
-### `utils.foreach()` - Yet another way to process Arrays
+## `utils.foreach()` - Yet another way to process Arrays
 
 Both the `for` statement and `while` statement are standard commonly
 used javascript statements used for looping. ScriptCraft also comes
@@ -805,7 +840,7 @@ utils.foreach() function...
                    }
     );
 
-#### Exercise
+### Exercise
 Try changing the above function so that different sounds are played
 instead of a Cat's Meow.  You'll need to lookup the [CraftBukkit API's
 Sound class][soundapi] to see all of the possible sounds that can be
@@ -816,7 +851,7 @@ provides `for` and `while` statements for looping and many javascript
 libraries also provide their own custom looping functions. You should
 use what you feel most comfortable with.
 
-### Putting `for` loops to use - Building a Skyscraper
+## Putting `for` loops to use - Building a Skyscraper
 
 For loops can be used to build enormous structures. In this next
 exercise I'm going to use a for loop to build a skyscraper.  This
@@ -849,7 +884,7 @@ type the following...
         return this.move('myskyscraper'); // return to where we started
     };
 
-    load("../drone/drone.js");
+    load('../drone/drone.js');
     Drone.extend('myskyscraper',myskyscraper);
 
 ... so this takes a little explaining. First I create a new function
@@ -885,7 +920,7 @@ that out, creating an entire city of blocks of skyscrapers is the next
 logical step. Of course, Minecraft doesn't have the same constraints
 as real-world densely populated areas so let your imagination go wild.
 
-### Making Decisions 
+## Making Decisions 
 
 All the programs we have seen so far have been fairly predictable - they went 
 straight through the statements, and then went back to the beginning again. This is 
@@ -893,7 +928,7 @@ not very useful. In practice the computer would be expected to make decisions an
 act accordingly. The javascript statement used for making decisions is `if`. 
 While standing on the ground in-game, type the following at the command prompt...
 
-    /js if ( self.flying ) { echo("Hey, You are flying!"); }
+    /js if ( self.flying ) { echo('Hey, You are flying!'); }
 
 ... No message should appear on screen. That is - `Hey, You are
 flying!` should *not* appear on screen.  Now double-tap the `space`
@@ -903,7 +938,7 @@ enter the same statement again (If you don't want to type the same
 statement again, just press `/` then press the `UP` cursor key on your
 keyboard, the statement you entered previously should reappear.
 
-    /js if ( self.flying ) { echo("Hey, You are flying!"); }
+    /js if ( self.flying ) { echo('Hey, You are flying!'); }
 
 ... this time the following message should have appeared on your screen...
 
@@ -919,7 +954,7 @@ What if you wanted to display a message only if a condition is *not*
 true ? For example to only display a message if the player is *not*
 flying...
 
-    /js if ( ! self.flying ) { echo ("You are not flying."); }
+    /js if ( ! self.flying ) { echo ('You are not flying.'); }
 
 ... This code differs in that now there's a `!` (the exclamation mark)
 before `self.flying`. The `!` symbol negates (returns the opposite of)
@@ -948,7 +983,183 @@ whether or not you're currently flying. Type the `/js flightStatus()`
 command while on the ground and while flying. The message displayed in
 each case should be different.
 
-### Next Steps
+## Event-Driven programming
+
+So far we've written code which executes when you invoke the `/js `
+command. What if - for example - you want to have some special
+behaviour which occurs when a player joins the game? What if you
+wanted to display a custom welcome message (in addition to the MotD -
+message-of-the-day which is configurable in your server.properties
+file) ? This is where *Event-Driven Programming* comes
+in. Event-Driven Programming is just a fancy way of saying 'Do this
+when that happens' where 'this' is a function you define, and 'that'
+is some event which occurs. There are hundreds of events in the
+minecraft game...
+
+ * Every time someone joins the server - that's an event!
+ * Every time someone breaks a block - that's an event!
+ * Every time someone shoots an arrow - that's an event! and so on...
+
+You can write a function which will be called whenever a specific type
+of event occurs, it's probably best to illustrate this by example. The
+following code sends a message to any player who breaks a block in the
+game...
+
+    events.on('block.BlockBreakEvent', function (listener, event) { 
+        var breaker = event.player;
+        breaker.sendMessage('You broke a block');    
+    });
+
+The `events.on()` function is how you *register* a function which you
+want to be called whenever a particular type of event occurs. In the
+above code the first parameter `'block.BlockBreakEvent'` is the type
+of event I want to listen for and the second parameter is the function
+I want to be called when that event occurs. The function I want called
+in turn takes 2 parameters. The `event` object has all the information
+about the event which just occurred. I can tell who broke the block
+and send a message to the player. The important thing to note is that
+the function defined above will not be called until a player breaks a
+block. Try it - save the above code in a new file in the
+`scriptcraft/plugins` directory then type `/js refresh()` to reload
+scriptcraft. Then break a block in the game and you should see the
+message 'You broke a block'.
+
+There are many types of events you can listen for in Minecraft. You can
+browse [all possible Bukkit events][bkevts] (click the 'Next
+Package' and 'Previous Package' links to browse). 
+
+It's important to note that when browsing the Bukkit API's
+[org.bukkit.event][bkevts] package, if you see a class called
+'org.bukkit.events.entity.EntityShootBowEvent', then when calling
+`events.on()` you can listen to such an event using either the fully
+qualified Class name...
+
+    events.on(org.bukkit.events.entity.EntityShootBowEvent, function( listener, event) { 
+       ...
+    });
+
+or an abbreviated name in string form...
+
+    events.on('entity.EntityShootBowEvent', function( listener, event) { 
+       ...
+    });
+
+If the `events.on()` function gets a String (text) as its first
+parameter it automatically converts it to the appropriate Class by
+prepending the 'org.bukkit.events' package.
+
+For custom events (events which aren't in the org.bukkit.event tree)
+just specify the fully qualified class name instead. E.g. ...
+
+    events.on ( net.yourdomain.events.YourEvent, function(listener, event ) {
+        ...
+    });
+
+### Stop listening to events.
+
+If you want an event handler to only execute once, you can remove the handler like this...
+
+    events.on('block.BlockBreakEvent', function(listener, evt) { 
+        var breaker = evt.player;
+        breaker.sendMessage('You broke a block');
+        evt.handlers.unregister( listener );
+    });
+
+The `evt.handlers.unregister( listener );` statement will remove this
+function from the list of listeners for this event.
+
+## Keeping Score - Lookup tables in Javascript
+
+In the *Event-Driven Programming* section, I defined a function which
+displayed a message to players every time they broke a block. Imagine
+if I wanted to keep a count of how many blocks each player has broken?
+This is where Javascript's Objecct literals come in handy. An object
+literal in javascript is simply a way of creating a new Object
+on-the-fly in your code. This is an example...
+
+    var myNewObject = { name: 'walter', country: 'Ireland' };
+
+... I created a new object with two properties 'name' and
+'country'. The notation used to create this object is called JSON
+which is short for JavaScript Object Notation. If I want to find out
+the 'country' property of the myNewObject variable there are a few
+ways I can do it...
+
+    var playerCountry = myNewObject.country;
+
+... or ...
+
+    var playerCountry = myNewObject['country']
+
+... JavaScript lets you access any object property using either
+dot-notation ( `object.property` ) or by index ( `object['property']`
+). The result in both cases is the same - playerCountry will be
+'Ireland'. When accessing the object by indexing, the property doesn't
+even have to be a string literal - it can be a variable like this...
+
+    var propertyName = 'country';
+    var propertyValue = myNewObject[propertyName];
+
+... in the above example, the propertyName variable is used when
+indexing. What this means is that every object in JavaScript can act
+like a lookup table? What's a lookup table? A table you 'look up' of
+course. This is a table of names and scores...
+
+    Name            Score
+    --------        -----
+    walter          5
+    tom             6
+    jane            8
+    bart            7
+
+... If I want to find Jane's score, I look *down* the list of names in
+the name column until I find 'jane' then look *across* to get her
+score. In Javascript, an object which stored such a table would look
+like this...
+
+    var scoreboard = {
+       walter: 5,
+       tom:    6,
+       jane:   8,
+       bart:   7
+    };
+
+... and if I wanted to write a function which took a player name as a
+parameter and returned their score, I'd do it like this...
+
+    function getScore(player){
+        return scoreboard[ player ];
+    }
+
+... I might call such a function like this...
+
+    var janesScore = getScore('jane'); // returns 8
+    
+... putting it all together, a hypothetical scoreboard.js mdoule might
+look something like this...
+
+    var utils = require('utils');
+    var scores = {};
+
+    exports.initialise = function(names){
+        scores = {};
+        utils.foreach(names, function(name){ 
+            scores[name] = 0;
+        });
+    };
+
+    /* changes score by diff e.g. to add 6 to the player's current score
+       updateScore('walter',6); // walter's new score = 5 + 6 = 11.
+    */
+    exports.updateScore = function(name, diff){
+        scores[name] += diff; 
+    };
+
+    exports.getScore = function(name){
+        return scores[name];
+    };
+
+## Next Steps
 
 This guide is meant as a gentle introduction to programming and
 modding Minecraft using the Javascript Programming Language.
@@ -974,10 +1185,10 @@ different objects and methods available for use by ScriptCraft.
 [cbapi]: http://jd.bukkit.org/beta/apidocs/
 [boole]: http://en.wikipedia.org/wiki/George_Boole
 [soundapi]: http://jd.bukkit.org/beta/apidocs/org/bukkit/Sound.html
-[ap]: http://walterhiggins.net/blog/ScriptCraft-1-Month-later
+[ap]: Anatomy-of-a-Plugin.md
 [api]: API-Reference.md
 [twl]: http://www.barebones.com/products/textwrangler/
-
+[bkevts]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/package-summary.html
 [img_echo_date]: img/ypgpm_echo_date.png
 [img_3d_shapes]: img/ypgpm_3dshapes.jpg
 [img_whd]: img/ypgpm_whd.jpg
