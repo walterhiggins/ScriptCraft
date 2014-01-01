@@ -33,6 +33,7 @@
  * [Event-Driven programming](#event-driven-programming)
    * [Stop listening to events](#stop-listening-to-events)
  * [Keeping Score - Lookup tables in Javascript](#keeping-score---lookup-tables-in-javascript)
+ * [Counting block break events for each player](#counting-block-break-events-for-each-player)
  * [Next Steps](#next-steps)
 
 ## Introduction
@@ -1102,7 +1103,7 @@ even have to be a string literal - it can be a variable like this...
 
 ... in the above example, the propertyName variable is used when
 indexing. What this means is that every object in JavaScript can act
-like a lookup table? What's a lookup table? A table you 'look up' of
+like a lookup table. What's a lookup table? A table you 'look up' of
 course. This is a table of names and scores...
 
     Name            Score
@@ -1158,6 +1159,32 @@ look something like this...
     exports.getScore = function(name){
         return scores[name];
     };
+
+## Counting block break events for each player
+
+I can use a Javascript lookup table (a plain old Javascript object) to
+keep a count of how many blocks each player has broken ...
+
+#### block-break-counter.js
+
+    var breaks = {};
+    // every time a player joins the game reset their block-break-count to 0
+    events.on('player.PlayerJoinEvent', function(listener, event){
+        breaks[event.player] = 0;
+    });
+    events.on('block.BlockBreakEvent', function(listener, event){
+        var breaker = event.player;
+        var breakCount = breaks[breaker.name];
+        breakCount++; // increment the count.
+        breaks[breaker.name] = breakCount;
+         
+        breaker.sendMessage('You broke ' + breakCount + ' blocks');
+  
+    });
+
+With a little more work, you could turn this into a game where players
+compete against each other to break as many blocks as possible within
+a given time period.
 
 ## Next Steps
 
