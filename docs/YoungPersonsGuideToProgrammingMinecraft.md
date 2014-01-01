@@ -393,7 +393,7 @@ Drone is easy...
    make the Drone turn twice so that it is facing in the opposite
    direction.
 
-### Chaining - combining bulding and movement.
+### Chaining - combining building and movement.
 
 You can make a Drone move around before and after building by
 *daisy-chaining* the building and movement functions together. In the
@@ -405,7 +405,7 @@ A series of 2 boxes is created 3 blocks apart.
 
 ![Two Boxes 3 blocks apart][img_2boxes]
 
-### Excercise - Build a simple dwelling
+### Exercise - Build a simple dwelling
 
 OK. You know enough now about the `Drone` functions to be able to
 build a simple dwelling. The dwelling should be a hollow building with
@@ -421,7 +421,7 @@ to you to figure out how.
 
 Your dwelling should end up looking something like this...
 
-![Excercise Dwelling][img_ed]
+![Exercise Dwelling][img_ed]
 
 ### Remembering where you started.
 
