@@ -23,8 +23,9 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
     // need to look at possibly having context/scope per operator
     //protected Map<CommandSender,ScriptCraftEvaluator> playerContexts = new HashMap<CommandSender,ScriptCraftEvaluator>();
     protected ScriptEngine engine = null;
-    private static final String JS_PLUGINS_DIR = "scriptcraft";
-
+    private static final String JS_PLUGINS_DIR = "plugins/scriptcraft";
+    private static final String JS_PLUGINS_ZIP = "scriptcraft.zip";
+    
     /** 
      * Unzips bundled javascript code.
      */
@@ -41,13 +42,14 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
             jsPlugins.mkdir();
         }
         
-        ZipInputStream zis = new ZipInputStream(getResource(JS_PLUGINS_DIR + ".zip"));
+        ZipInputStream zis = new ZipInputStream(getResource(JS_PLUGINS_ZIP));
         ZipEntry entry;
         try {
             while ( ( entry = zis.getNextEntry() ) != null)
             {
                 String filename = entry.getName();
-                File newFile = new File(jsPlugins.getName() + File.separator + filename);
+                //File newFile = new File(jsPlugins.getName() + File.separator + filename);
+                File newFile = new File(jsPlugins, filename);
                 
                 //create all non exists folders
                 //else you will hit FileNotFoundException for compressed folder
@@ -67,7 +69,7 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
                             unzip = true;
                     }
                     if (unzip){
-                        getLogger().info("Unzipping " + filename);
+                        getLogger().info("Unzipping " + newFile.getCanonicalPath());
                         FileOutputStream fout = new FileOutputStream(newFile);             
                         for (int c = zis.read(); c != -1; c = zis.read()) {
                             fout.write(c);

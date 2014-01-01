@@ -1,3 +1,17 @@
+# 2014 01 01
+
+'Buddha' Release - towards a total elimination of the 'self' variable.
+The 'self' variable should only be used at the in-game or server
+console command prompts and should not be used in modules or in
+multi-threaded code.
+
+Moved scriptcraft directory from {craftbukkit-root}/scriptcraft to
+{craftbukkit-root}/plugins/scriptcraft because this seems to be where
+other plugins create plugin-specific directories on the filesystem.
+
+Documentation updates. Added new sections to the Young Persons Guide
+to Modding Minecraft.
+
 # 2013 12 30
 
 Removing coffeescript support because coffeescript.js will not
