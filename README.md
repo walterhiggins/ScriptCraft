@@ -12,6 +12,18 @@ files in a directory.
    then [Start Here][cda].
  * Watch some [demos][ytpl] of what you can do with ScriptCraft.
 
+This is a simple mod in a file called greet.js in the scriptcraft/plugins directory...
+
+    exports.greet = function( player ) {
+        player.sendMessage('Hello ' + player.name );
+    };
+
+At the in-game prompt, type...
+
+    /js greet(self)
+    
+... to see the greeting. Anything you can do using CraftBukkit's API in Java, you can do using ScriptCraft in Javascript.
+
 # Description
 
 ScriptCraft is a plugin for Minecraft Servers which lets operators,
