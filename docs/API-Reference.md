@@ -49,14 +49,14 @@ module.exports instead of exports.
 ## Module Loading
 
 When the ScriptCraft Java plugin is first installed, a new
-subdirectory is created in the craftbukkit directory. If your
+subdirectory is created in the craftbukkit/plugins directory. If your
 craftbukkit directory is called 'craftbukkit' then the new
 subdirectories will be ...
 
- * craftbukkit/scriptcraft/
- * craftbukkit/scriptcraft/plugins
- * craftbukkit/scriptcraft/modules
- * craftbukkit/scriptcraft/lib
+ * craftbukkit/plugins/scriptcraft/
+ * craftbukkit/plugins/scriptcraft/plugins
+ * craftbukkit/plugins/scriptcraft/modules
+ * craftbukkit/plugins/scriptcraft/lib
 
 ... The `plugins`, `modules` and `lib` directories each serve a different purpose.
 
@@ -317,7 +317,7 @@ See chat/color.js for an example of a simple plugin - one which lets
 players choose a default chat color. See also [Anatomy of a
 ScriptCraft Plugin][anatomy].
  
-[anatomy]: http://walterhiggins.net/blog/ScriptCraft-1-Month-later
+[anatomy]: ./Anatomy-of-a-Plugin.md
 
 ### command() function
 
@@ -330,8 +330,18 @@ plugin author) safely expose javascript functions for use by players.
 
 #### Parameters
  
- * commandName : The name to give your command - the command will be invoked like this by players `/jsp commandName`
- * commandFunction: The javascript function which will be invoked when the command is invoked by a player.
+ * commandName : The name to give your command - the command will 
+   be invoked like this by players `/jsp commandName`
+ * commandFunction: The javascript function which will be invoked when
+   the command is invoked by a player. The callback function in turn
+   takes 2 parameters...
+
+   * params : An Array of type String - the list of parameters 
+     passed to the command.
+   * sender : The [CommandSender][bukcs] object that invoked the
+     command (this is usually a Player object but can be a Block
+     ([BlockCommandSender][bukbcs]).
+
  * options (Array - optional) : An array of command options/parameters
    which the player can supply (It's useful to supply an array so that
    Tab-Completion works for the `/jsp ` commands.
@@ -393,7 +403,9 @@ A scriptcraft implementation of clearInterval().
 
 ### refresh() function
 
-The refresh() function will ...
+The refresh() function can be used to only reload the ScriptCraft
+plugin (it's like the `reload` command except it only reloads
+ScriptCraft). The refresh() function will ...
 
 1. Disable the ScriptCraft plugin.
 2. Unload all event listeners associated with the ScriptCraft plugin.
@@ -410,6 +422,10 @@ The addUnloadHandler() function takes a callback function as a
 parameter. The callback will be called when the ScriptCraft plugin is
 unloaded (usually as a result of a a `reload` command or server
 shutdown).
+
+This function provides a way for ScriptCraft modules to do any
+required cleanup/housekeeping just prior to the ScriptCraft Plugin
+unloading.
 
 ## require - Node.js-style module loading in ScriptCraft
 

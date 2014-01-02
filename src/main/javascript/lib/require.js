@@ -54,7 +54,7 @@ module specification, the '.js' suffix is optional.
 [cjsmodules]: http://wiki.commonjs.org/wiki/Modules/1.1.1.
 
 ***/
-( function (logger, evaluator, verbose, rootDir, modulePaths) {
+(function (logger, evaluator, verbose, rootDir, modulePaths) {
 
     if (verbose){
         logger.info("Setting up 'require' module system. Root Directory: " + rootDir);
@@ -260,3 +260,4 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     };
     return _requireClosure(new java.io.File(rootDir));
 })
+

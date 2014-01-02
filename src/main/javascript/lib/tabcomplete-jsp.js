@@ -1,3 +1,4 @@
+'use strict';
 var _commands = require('command').commands;
 /*
   Tab completion for the /jsp commmand

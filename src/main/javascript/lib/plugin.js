@@ -1,3 +1,4 @@
+'use strict';
 var console = require('./console');
 var File = java.io.File;
 var FileWriter = java.io.FileWriter;

@@ -1,3 +1,4 @@
+'use strict';
 /************************************************************************
 # ScriptCraft API Reference
 
@@ -50,14 +51,14 @@ module.exports instead of exports.
 ## Module Loading
 
 When the ScriptCraft Java plugin is first installed, a new
-subdirectory is created in the craftbukkit directory. If your
+subdirectory is created in the craftbukkit/plugins directory. If your
 craftbukkit directory is called 'craftbukkit' then the new
 subdirectories will be ...
 
- * craftbukkit/scriptcraft/
- * craftbukkit/scriptcraft/plugins
- * craftbukkit/scriptcraft/modules
- * craftbukkit/scriptcraft/lib
+ * craftbukkit/plugins/scriptcraft/
+ * craftbukkit/plugins/scriptcraft/plugins
+ * craftbukkit/plugins/scriptcraft/modules
+ * craftbukkit/plugins/scriptcraft/lib
 
 ... The `plugins`, `modules` and `lib` directories each serve a different purpose.
 
@@ -318,7 +319,7 @@ See chat/color.js for an example of a simple plugin - one which lets
 players choose a default chat color. See also [Anatomy of a
 ScriptCraft Plugin][anatomy].
  
-[anatomy]: http://walterhiggins.net/blog/ScriptCraft-1-Month-later
+[anatomy]: ./Anatomy-of-a-Plugin.md
 
 ### command() function
 
@@ -331,8 +332,18 @@ plugin author) safely expose javascript functions for use by players.
 
 #### Parameters
  
- * commandName : The name to give your command - the command will be invoked like this by players `/jsp commandName`
- * commandFunction: The javascript function which will be invoked when the command is invoked by a player.
+ * commandName : The name to give your command - the command will 
+   be invoked like this by players `/jsp commandName`
+ * commandFunction: The javascript function which will be invoked when
+   the command is invoked by a player. The callback function in turn
+   takes 2 parameters...
+
+   * params : An Array of type String - the list of parameters 
+     passed to the command.
+   * sender : The [CommandSender][bukcs] object that invoked the
+     command (this is usually a Player object but can be a Block
+     ([BlockCommandSender][bukbcs]).
+
  * options (Array - optional) : An array of command options/parameters
    which the player can supply (It's useful to supply an array so that
    Tab-Completion works for the `/jsp ` commands.
@@ -394,7 +405,9 @@ A scriptcraft implementation of clearInterval().
 
 ### refresh() function
 
-The refresh() function will ...
+The refresh() function can be used to only reload the ScriptCraft
+plugin (it's like the `reload` command except it only reloads
+ScriptCraft). The refresh() function will ...
 
 1. Disable the ScriptCraft plugin.
 2. Unload all event listeners associated with the ScriptCraft plugin.
@@ -411,6 +424,10 @@ The addUnloadHandler() function takes a callback function as a
 parameter. The callback will be called when the ScriptCraft plugin is
 unloaded (usually as a result of a a `reload` command or server
 shutdown).
+
+This function provides a way for ScriptCraft modules to do any
+required cleanup/housekeeping just prior to the ScriptCraft Plugin
+unloading.
 
 ***/
 
@@ -437,8 +454,8 @@ function __onEnable (__engine, __plugin, __script)
         return "" + file.getCanonicalPath().replaceAll("\\\\","/"); 
     };
     
-    var parentFileObj = __script.parentFile;
-    var jsPluginsRootDir = parentFileObj.parentFile;
+    var libDir = __script.parentFile; // lib (assumes scriptcraft.js is in craftbukkit/plugins/scriptcraft/lib directory
+    var jsPluginsRootDir = libDir.parentFile; // scriptcraft
     var jsPluginsRootDirName = _canonize(jsPluginsRootDir);
 
     var _loaded = {};
@@ -466,11 +483,13 @@ function __onEnable (__engine, __plugin, __script)
             var reader = new FileReader(file);
             var br = new BufferedReader(reader);
             var code = "";
+            var wrappedCode;
             try{
                 while ((r = br.readLine()) !== null) 
                     code += r + "\n";
-                
-                result = __engine.eval("(" + code + ")");
+
+                wrappedCode = "(" + code + ")";
+                result = __engine.eval(wrappedCode);
                 // issue #103 avoid side-effects of || operator on Mac Rhino
                 _loaded[canonizedFilename] = result ;
                 if (!_loaded[canonizedFilename])
@@ -619,4 +638,23 @@ function __onEnable (__engine, __plugin, __script)
         }
         return result;
     };
+    /*
+      wph 20140102 - warn if legacy 'craftbukkit/js-plugins' or 'craftbukkit/scriptcraft' directories are present
+     */
+    var cbPluginsDir = jsPluginsRootDir.parentFile;
+    var cbDir = new File(cbPluginsDir.canonicalPath).parentFile;
+    var legacyDirs = [
+        new File(cbDir, 'js-plugins'), 
+        new File(cbDir, 'scriptcraft')
+    ];
+    var legacyExists = false;
+    for (var i = 0; i < legacyDirs.length; i++){
+        if (legacyDirs[i].exists() && legacyDirs[i].isDirectory()){
+            legacyExists = true;
+            console.warn('Legacy ScriptCraft directory ' + legacyDirs[i].canonicalPath + ' was found. This directory is no longer used.');
+        }
+    }
+    if (legacyExists){
+        console.info('Please note that the working directory for ' + __plugin + ' is ' + jsPluginsRootDir.canonicalPath);
+    }
 }

@@ -1,3 +1,4 @@
+'use strict';
 /************************************************************************
 String class extensions
 -----------------------
@@ -61,7 +62,6 @@ var formattingCodes = {
     italic: c.ITALIC,
     lightpurple: c.LIGHT_PURPLE,
     indigo: c.BLUE,
-    green: c.GREEN,
     red: c.RED,
     pink: c.LIGHT_PURPLE,
     yellow: c.YELLOW,

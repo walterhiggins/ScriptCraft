@@ -480,11 +480,11 @@ Once you've installed Notepad++, Launch it, create a new file and type the follo
     }
 
 ... then save the file in a new directory
-`craftbukkit/scriptcraft/plugins/{your_name}` (replace {your_name} with your
-own name) and call the file `greet.js` (be sure to change the file-type
-option to '*.* All Files' when saving or NotePad++ will add a '.txt'
-extension to the filename. Now switch back to the Minecraft game and
-type...
+`craftbukkit/plugins/scriptcraft/plugins/{your_name}` (replace
+{your_name} with your own name) and call the file `greet.js` (be sure
+to change the file-type option to '*.* All Files' when saving or
+NotePad++ will add a '.txt' extension to the filename. Now switch back
+to the Minecraft game and type...
 
     /js refresh()
 
@@ -501,10 +501,10 @@ loaded. Try it out by typing this command...
 minecraft username. Congratulations - You've just written your very
 first Minecraft Mod! With ScriptCraft installed, writing Minecraft
 Mods is as simple as writing a new javascript function and saving it
-in a file in the craftbukkit/scriptcraft/plugins directory. This
-function will now be avaible every time you launch minecraft. This is
-a deliberately trivial minecraft mod but the principles are the same
-when creating more complex mods.
+in a file in the craftbukkit/plugins/scriptcraft/plugins
+directory. This function will now be avaible every time you launch
+minecraft. This is a deliberately trivial minecraft mod but the
+principles are the same when creating more complex mods.
 
 The `exports` variable is a special variable you can use in your mod
 to provide functions, objects and variables for others to use. If you

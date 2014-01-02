@@ -1,3 +1,4 @@
+'use strict';
 var tabCompleteJSP = require('tabcomplete-jsp');
 /*
   Tab Completion of the /js and /jsp commands

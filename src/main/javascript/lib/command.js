@@ -1,3 +1,4 @@
+'use strict';
 /* 
    command management - allow for non-ops to execute approved javascript code.
 */
