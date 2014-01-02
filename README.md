@@ -1,9 +1,8 @@
 # Let's begin...
 
 I created ScriptCraft to make it easier for younger programmers to
-create their own Minecraft Mods. ScriptCraft makes it easier for new
-programmers to create Minecraft mods. Mods are written using the
-Javascript programming language and once the ScriptCraft mod is
+create their own Minecraft Mods. Mods are written using the
+Javascript programming language. Once the ScriptCraft mod is
 installed, you can add your own new Mods by adding Javascript (.js)
 files in a directory.
 
@@ -18,7 +17,7 @@ files in a directory.
 ScriptCraft is a plugin for Minecraft Servers which lets operators,
 administrators and plug-in authors customize the game using
 Javascript.  ScriptCraft makes it easier to create your own mods. Mods
-can be written in Javscript and can use the full Bukkit API.  The
+can be written in Javscript and can use the full [Bukkit API][bukkit].  The
 ScriptCraft mod also lets you enter javascript commands at the in-game
 prompt.  To bring up the in-game prompt press the `/` key then type
 `js ` followed by any javascript statement.  E.g. `/js 1+1` will print
@@ -33,6 +32,7 @@ Minecraft.
 
 [drone]: https://github.com/walterhiggins/ScriptCraft/tree/master/src/main/javascript/drone/drone.js
 [cottage]: https://github.com/walterhiggins/ScriptCraft/tree/master/src/main/javascript//drone/cottage.js
+[bukkit]: http://dl.bukkit.org/
 
 Prerequisites
 =============
