@@ -147,10 +147,10 @@ signs.menu = function(
         for (var i = 0; i < len ; i++)
         {
             var loc = signsOfSameLabel[i];
-            var world = org.bukkit.Bukkit.getWorld(loc[0]);
+            var world = org.bukkit.Bukkit.getWorld(loc.world);
             if (!world)
                 continue;
-            var block = world.getBlockAt(loc[1],loc[2],loc[3]);
+            var block = world.getBlockAt(loc.x,loc.y,loc.z);
             if (block.state instanceof org.bukkit.block.Sign){
                 convertToMenuSign(block.state,false);
                 defragged.push(loc);

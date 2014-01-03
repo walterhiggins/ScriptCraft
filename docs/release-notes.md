@@ -1,6 +1,12 @@
+# 2014 01 02
+
+Added a warning in console at start-up if legacy directories are detected.
+Added 'use strict' to core modules.
+Bug Fix; Signs were not being saved. (introduced with recent change to JSONifying Location)
+
 # 2014 01 01
 
-'Buddha' Release - towards a total elimination of the 'self' variable.
+'Buddha' Release - towards a total annihilation of the 'self' variable.
 The 'self' variable should only be used at the in-game or server
 console command prompts and should not be used in modules or in
 multi-threaded code.
