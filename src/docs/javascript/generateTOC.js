@@ -13,24 +13,24 @@ while ( (line = br.readLine()) != null){
 }
 br.close();
 
+var createLink = function(text){
+    var result = text.replace(/&#95;/g,'_');
+    result = result.replace(/[^a-zA-Z0-9 _\-]/g,'');
+    result = result.replace(/ /g,'-');
+    return result.toLowerCase();
+};
 println('## Table of Contents');
 
 for (var i = 0; i < contents.length; i++){
     line = contents[i];
     if (line.match(/^##\s+/)){
         var h2 = line.match(/^##\s+(.*)/)[1].trim();
-        var link = h2.replace(/&#95;/g,'');
-        link = link.replace(/[^a-zA-Z0-9 \-]/g,'');
-        link = link.replace(/ /g,'-');
-        link = link.toLowerCase();
+        var link = createLink(h2);
         println (' * [' + h2 + '](#' + link + ')');
     }
     if (line.match(/^###\s+/)){
         var h3 = line.match(/^###\s+(.*)/)[1].trim();
-        var link = h3.replace(/&#95;/g,'');
-        link = link.replace(/[^a-zA-Z0-9 \-]/g,'');
-        var link = link.replace(/ /g,'-');
-        link = link.toLowerCase();
+        var link = createLink(h3);
         println ('   * [' + h3 + '](#' + link + ')');
     }
 }
