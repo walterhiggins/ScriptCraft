@@ -19,7 +19,7 @@ for (var i = 0; i < contents.length; i++){
     line = contents[i];
     if (line.match(/^##\s+/)){
         var h2 = line.match(/^##\s+(.*)/)[1].trim();
-        var link = '' + java.net.URLDecoder.decode(h2,"UTF-8");
+        var link = h2.replace(/&#95;/g,'');
         link = link.replace(/[^a-zA-Z0-9 \-]/g,'');
         link = link.replace(/ /g,'-');
         link = link.toLowerCase();
@@ -27,7 +27,7 @@ for (var i = 0; i < contents.length; i++){
     }
     if (line.match(/^###\s+/)){
         var h3 = line.match(/^###\s+(.*)/)[1].trim();
-        var link = '' + java.net.URLDecoder.decode(h3,"UTF-8");
+        var link = h3.replace(/&#95;/g,'');
         link = link.replace(/[^a-zA-Z0-9 \-]/g,'');
         var link = link.replace(/ /g,'-');
         link = link.toLowerCase();
