@@ -1,5 +1,5 @@
 /*************************************************************************
-## Example Plugin #7
+## Example Plugin #7 - Listening for events, Greet players when they join the game.
 
 A simple event-driven minecraft plugin. How to handle Events.
 

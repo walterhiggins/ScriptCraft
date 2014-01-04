@@ -1,5 +1,5 @@
 /*************************************************************************
-## Arrows Module 
+## Arrows Plugin
 
 The arrows mod adds fancy arrows to the game. Arrows which... 
 

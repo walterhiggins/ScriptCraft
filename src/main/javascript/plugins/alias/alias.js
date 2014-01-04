@@ -1,5 +1,5 @@
 /*************************************************************************
-## alias Module
+## alias Plugin
 
 The alias module lets players and server admins create their own
 per-player or global custom in-game command aliases.

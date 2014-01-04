@@ -1,5 +1,5 @@
 /*************************************************************************
-## Example Plugin #5
+## Example Plugin #5 - Re-use - Using your own and others modules.
 
 A simple minecraft plugin. Using Modules.
 

@@ -1,5 +1,5 @@
 /*************************************************************************
-## Example Plugin #3
+## Example Plugin #3 - Limiting use of commands to operators only.
 
 A simple minecraft plugin. Commands for operators only.
 

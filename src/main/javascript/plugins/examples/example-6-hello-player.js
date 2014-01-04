@@ -1,5 +1,5 @@
 /*************************************************************************
-## Example Plugin #6
+## Example Plugin #6 - Re-use - Using 'utils' to get Player objects.
 
 A simple minecraft plugin. Finding players by name.
 

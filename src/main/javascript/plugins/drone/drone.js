@@ -2,8 +2,8 @@ var utils = require('utils');
 var blocks = require('blocks');
 
 /*********************************************************************
-Drone Module
-============
+## Drone Plugin
+
 The Drone is a convenience class for building. It can be used for...
 
  1. Building
@@ -15,8 +15,8 @@ be chained together like so...
     var theDrone = new Drone();
     theDrone.up().left().box(blocks.oak).down().fwd(3).cylinder0(blocks.lava,8); 
 
-TLDNR; (Just read this if you're impatient)
-===========================================
+### TLDNR; (Just read this if you're impatient)
+
 At the in-game command prompt type...
      
     /js box( blocks.oak )  
@@ -29,8 +29,7 @@ At the in-game command prompt type...
 wide x 9 tall x 1 long in size.  If you want to see what else
 ScriptCraft's Drone can do, read on...
 
-Constructing a Drone Object
-===========================
+### Constructing a Drone Object
 
 Drones can be created in any of the following ways...
     
@@ -121,8 +120,8 @@ Drones can be created in any of the following ways...
             // do more stuff with the drone here...
         });
 
-Parameters
-----------
+#### Parameters
+
  * location (optional) : *NB* If an `org.bukkit.Location` object is provided as a parameter, then it should be the only parameter.
  * x (optional) : The x coordinate of the Drone
  * y (optional) : The y coordinate of the Drone
@@ -131,12 +130,12 @@ Parameters
    facing. Possible values are 0 (east), 1 (south), 2 (west) or 3 (north)
  * world (optional) : The world in which the drone is created.
   
-Drone.box() method
-==================
+### Drone.box() method
+
 the box() method is a convenience method for building things. (For the more performance-oriented method - see cuboid)
 
-parameters
-----------
+#### parameters
+
  * b - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
    Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
  * w (optional - default 1) - the width of the structure 
@@ -145,8 +144,8 @@ parameters
    not how deep underground the structure lies - this is how far
    away (depth of field) from the drone the structure will extend.
 
-Example
--------
+#### Example
+
 To create a black structure 4 blocks wide, 9 blocks tall and 1 block long...
     
     box(blocks.wool.black, 4, 9, 1);
@@ -158,12 +157,12 @@ To create a black structure 4 blocks wide, 9 blocks tall and 1 block long...
 
 ![box example 1](img/boxex1.png)
     
-Drone.box0() method
-===================
+### Drone.box0() method
+
 Another convenience method - this one creates 4 walls with no floor or ceiling.
 
-Parameters
-----------
+#### Parameters
+
  * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
    Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
  * width (optional - default 1) - the width of the structure 
@@ -171,28 +170,28 @@ Parameters
  * length (optional - default 1) - the length of the structure - how far
    away (depth of field) from the drone the structure will extend.
 
-Example
--------
+#### Example
+
 To create a stone building with the insided hollowed out 7 wide by 3 tall by 6 long...
 
     box0( blocks.stone, 7, 3, 6);
 
 ![example box0](img/box0ex1.png)
    
-Drone.boxa() method
-===================
+### Drone.boxa() method
+
 Construct a cuboid using an array of blocks. As the drone moves first along the width axis,
 then the height (y axis) then the length, each block is picked from the array and placed.
 
-Parameters
-----------
+#### Parameters
+
  * blocks - An array of blocks - each block in the array will be placed in turn.
  * width
  * height
  * length
 
-Example
--------
+#### Example
+
 Construct a rainbow-colored road 100 blocks long...
 
     var rainbowColors = [blocks.wool.red, blocks.wool.orange, blocks.wool.yellow, blocks.wool.lime,
@@ -202,8 +201,8 @@ Construct a rainbow-colored road 100 blocks long...
 
 ![boxa example](img/boxaex1.png)
 
-Drone Movement
-==============
+### Drone Movement
+
 Drones can move freely in minecraft's 3-D world. You control the
 Drone's movement using any of the following methods..
 
@@ -226,13 +225,12 @@ drone.turn() will make the turn face east. If the drone is facing east
 then drone.turn(2) will make the drone turn twice so that it is facing
 west.
 
-Drone Positional Info
-=====================
+### Drone Positional Info
 
  * getLocation() - Returns a Bukkit Location object for the drone
 
-Drone Markers
-=============
+### Drone Markers
+
 Markers are useful when your Drone has to do a lot of work. You can
 set a check-point and return to the check-point using the move()
 method.  If your drone is about to undertake a lot of work -
@@ -248,12 +246,11 @@ Markers are created and returned to using the followng two methods...
  * move - moves the drone to a saved location. Alternatively you can provide an 
    org.bukkit.Location object or x,y,z and direction parameters.
 
-Parameters
-----------
+#### Parameters
+
  * name - the name of the checkpoint to save or return to.
 
-Example
--------
+#### Example
 
     drone.chkpt('town-square');
     //
@@ -267,68 +264,65 @@ Example
     //
     drone.move('town-square');
 
-Drone.prism() method
-====================
+### Drone.prism() method
+
 Creates a prism. This is useful for roofs on houses.
 
-Parameters
-----------
+#### Parameters
 
  * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
    Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
  * width - the width of the prism
  * length - the length of the prism (will be 2 time its height)
 
-Example
--------
+#### Example
 
     prism(blocks.oak,3,12);
 
 ![prism example](img/prismex1.png)
 
-Drone.prism0() method
-=====================
+### Drone.prism0() method
+
 A variation on `prism` which hollows out the inside of the prism. It uses the same parameters as `prism`.
 
-Drone.cylinder() method
-=======================
+### Drone.cylinder() method
+
 A convenience method for building cylinders. Building begins radius blocks to the right and forward.
 
-Parameters
-----------
+#### Parameters
 
  * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
    Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
  * radius 
  * height
 
-Example
--------
+#### Example
+
 To create a cylinder of Iron 7 blocks in radius and 1 block high...
 
     cylinder(blocks.iron, 7 , 1);
 
 ![cylinder example](img/cylinderex1.png)
 
-Drone.cylinder0() method
-========================
+### Drone.cylinder0() method
+
 A version of cylinder that hollows out the middle.
 
-Example
--------
+#### Example
+
 To create a hollow cylinder of Iron 7 blocks in radius and 1 block high...
 
     cylinder0(blocks.iron, 7, 1);
 
 ![cylinder0 example](img/cylinder0ex1.png)
 
-Drone.arc() method
-==================
+### Drone.arc() method
+
 The arc() method can be used to create 1 or more 90 degree arcs in the horizontal or vertical planes.
 This method is called by cylinder() and cylinder0() and the sphere() and sphere0() methods.
 
-Parameters
-----------
+#### Parameters
+
 arc() takes a single parameter - an object with the following named properties...
 
  * radius - The radius of the arc.
@@ -350,8 +344,8 @@ arc() takes a single parameter - an object with the following named properties..
    circle to draw. If the quadrants property is absent then all 4
    quadrants are drawn.
 
-Examples
---------
+#### Examples
+
 To draw a 1/4 circle (top right quadrant only) with a radius of 10 and stroke width of 2 blocks ...
 
     arc({blockType: blocks.iron, 
@@ -369,16 +363,16 @@ To draw a 1/4 circle (top right quadrant only) with a radius of 10 and stroke wi
 [bres]: http://en.wikipedia.org/wiki/Midpoint_circle_algorithm
 [dv]: http://www.minecraftwiki.net/wiki/Data_values
 
-Drone.door() method
-===================
+### Drone.door() method
+
 create a door - if a parameter is supplied an Iron door is created otherwise a wooden door is created.
 
-Parameters
-----------
+#### Parameters
+
  * doorType (optional - default wood) - If a parameter is provided then the door is Iron.
 
-Example
--------
+#### Example
+
 To create a wooden door at the crosshairs/drone's location...
 
     var drone = new Drone();
@@ -390,33 +384,33 @@ To create an iron door...
 
 ![iron door](img/doorex1.png)
     
-Drone.door2() method
-====================
+### Drone.door2() method
+
 Create double doors (left and right side)
 
-Parameters
-----------
+#### Parameters
+
  * doorType (optional - default wood) - If a parameter is provided then the door is Iron.
 
-Example
--------
+#### Example
+
 To create double-doors at the cross-hairs/drone's location...
 
     drone.door2();
 
 ![double doors](img/door2ex1.png)
 
-Drone.sign() method
-===================
+### Drone.sign() method
+
 Signs must use block 63 (stand-alone signs) or 68 (signs on walls)
 
-Parameters
-----------
+#### Parameters
+
  * message -  can be a string or an array of strings. 
  * block - can be 63 or 68
 
-Example
--------
+#### Example
+
 To create a free-standing sign...
 
     drone.sign(["Hello","World"],63);
@@ -429,16 +423,15 @@ To create a free-standing sign...
 
 ![wall sign](img/signex2.png)
 
-Drone Trees methods
-===================
+### Drone Trees methods
 
  * oak()
  * spruce()
  * birch()
  * jungle()
 
-Example
--------
+#### Example
+
 To create 4 trees in a row, point the cross-hairs at the ground then type `/js ` and ...
 
     up().oak().right(8).spruce().right(8).birch().right(8).jungle();
@@ -451,35 +444,33 @@ the `up()` method is called first).
 
 ![tree example](img/treeex1.png)
 
-    
 None of the tree methods require parameters. Tree methods will only be successful
 if the tree is placed on grass in a setting where trees can grow.
 
-Drone.garden() method
-=====================
+### Drone.garden() method
+
 places random flowers and long grass (similar to the effect of placing bonemeal on grass)
 
-Parameters
-----------
+#### Parameters
 
  * width - the width of the garden
  * length - how far from the drone the garden extends
 
-Example
--------
+#### Example
+
 To create a garden 10 blocks wide by 5 blocks long...
 
     garden(10,5);
 
 ![garden example](img/gardenex1.png)
 
-Drone.rand() method
-===================
+### Drone.rand() method
+
 rand takes either an array (if each blockid has the same chance of occurring)
 or an object where each property is a blockid and the value is it's weight (an integer)
 
-Example
--------
+#### Example
+
 place random blocks stone, mossy stone and cracked stone (each block has the same chance of being picked)
 
     rand( [blocks.brick.stone, blocks.brick.mossy, blocks.brick.cracked ],w,d,h) 
@@ -490,34 +481,32 @@ to place random blocks stone has a 50% chance of being picked,
 
 regular stone has a 50% chance, mossy stone has a 30% chance and cracked stone has just a 20% chance of being picked.
 
-Copy & Paste using Drone
-========================
+### Copy & Paste using Drone
+
 A drone can be used to copy and paste areas of the game world.
 
-Drone.copy() method
-===================
+### Drone.copy() method
+
 Copies an area so it can be pasted elsewhere. The name can be used for
 pasting the copied area elsewhere...
 
-Parameters
-----------
+#### Parameters
 
  * name - the name to be given to the copied area (used by `paste`)
  * width - the width of the area to copy
  * height - the height of the area to copy
  * length - the length of the area (extending away from the drone) to copy
 
-Example
--------
+#### Example
 
     drone.copy('somethingCool',10,5,10).right(12).paste('somethingCool');
 
-Drone.paste() method
-====================
+### Drone.paste() method
+
 Pastes a copied area to the current location.
 
-Example
--------
+#### Example
+
 To copy a 10x5x10 area (using the drone's coordinates as the starting
 point) into memory.  the copied area can be referenced using the name
 'somethingCool'. The drone moves 12 blocks right then pastes the copy.
@@ -526,8 +515,7 @@ point) into memory.  the copied area can be referenced using the name
          .right(12)
          .paste('somethingCool');
 
-Chaining
-========
+### Chaining
 
 All of the Drone methods return a Drone object, which means methods
 can be 'chained' together so instead of writing this...
@@ -558,30 +546,28 @@ commands in a new script file and load it using /js load()
 
 [fl]: http://en.wikipedia.org/wiki/Fluent_interface
 
-Drone Properties
-================
+### Drone Properties
 
  * x - The Drone's position along the west-east axis (x increases as you move east)
  * y - The Drone's position along the vertical axis (y increses as you move up)
  * z - The Drone's position along the north-south axis (z increases as you move south)
  * dir - The Drone's direction 0 is east, 1 is south , 2 is west and 3 is north.
 
-Extending Drone
-===============
+### Extending Drone
+
 The Drone object can be easily extended - new buidling recipes/blue-prints can be added and can
 become part of a Drone's chain using the *static* method `Drone.extend`. 
 
-Drone.extend() static method
-============================
+### Drone.extend() static method
+
 Use this method to add new methods (which also become chainable global functions) to the Drone object.
 
-Parameters
-----------
+#### Parameters
+
  * name - The name of the new method e.g. 'pyramid'
  * function - The method body.
 
-Example
--------
+#### Example
 
     // submitted by [edonaldson][edonaldson]
     Drone.extend('pyramid', function(block,height){
@@ -603,11 +589,10 @@ Once the method is defined (it can be defined in a new pyramid.js file) it can b
 
 [edonaldson]: https://github.com/edonaldson
 
-Drone Constants
-===============
+### Drone Constants
 
-Drone.PLAYER_STAIRS_FACING
---------------------------
+#### Drone.PLAYER_STAIRS_FACING
+
 An array which can be used when constructing stairs facing in the Drone's direction...
 
     var d = new Drone();
@@ -615,8 +600,8 @@ An array which can be used when constructing stairs facing in the Drone's direct
 
 ... will construct a single oak stair block facing the drone.
 
-Drone.PLAYER_SIGN_FACING
-------------------------
+#### Drone.PLAYER_SIGN_FACING
+
 An array which can be used when placing signs so they face in a given direction.
 This is used internally by the Drone.sign() method. It should also be used for placing
 any of the following blocks...
@@ -630,8 +615,8 @@ To place a chest facing the Drone ...
 
     drone.box( blocks.chest + ':' + Drone.PLAYER_SIGN_FACING[drone.dir]);
 
-Drone.PLAYER_TORCH_FACING
--------------------------
+#### Drone.PLAYER_TORCH_FACING
+
 Used when placing torches so that they face towards the drone. 
 
     drone.box( blocks.torch + ':' + Drone.PLAYER_TORCH_FACING[drone.dir]);
@@ -763,16 +748,16 @@ Drone.extend = function(name, func)
 };
 
 /**************************************************************************
-Drone.times() Method
-====================
+### Drone.times() Method
+
 The times() method makes building multiple copies of buildings easy. It's possible to create rows or grids of buildings without resorting to `for` or `while` loops.
 
-Parameters
-----------
+#### Parameters
+
  * numTimes (optional - default 2) : The number of times you want to repeat the preceding statements.
 
-Example
--------
+#### Example
+
 Say you want to do the same thing over and over. You have a couple of options...
 
  * You can use a for loop...

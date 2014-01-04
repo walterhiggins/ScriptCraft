@@ -61,20 +61,53 @@
     <javac includeantruntime="false" srcdir="${src}" destdir="${build}" classpath="${minecraft.dir}/craftbukkit.jar" />
   </target>
     
-  <target name="gendocs" depends="construct-ypgpm, init" description="Generate API documentation">
+  <target name="gendocs" depends="construct-ypgpm, construct-api-ref" description="Generate API documentation">
+  </target>
+
+  <target name="generate-api-ref-entries" depends="init">
     <javac includeantruntime="false" srcdir="src/docs/java"/>
-    <java classname="jscript" failonerror="true" fork="true" output="docs/API-Reference.md">
+
+    <java classname="jscript" failonerror="true" fork="true" output="${dist}/apiref.md">
       <classpath>
         <pathelement path="src/docs/java"/>      
       </classpath>
       <arg value="src/docs/javascript/generateApiDocs.js"/>
       <arg value="src/main/javascript"/>
     </java>
+
   </target>
 
-  <target name="gen-toc" depends="init" description="Generate Table of Contents for Young Programmers Guide">
+  <target name="construct-api-ref" depends="gen-toc-apiref,init">
+
+    <concat destfile="docs/API-Reference.md">
+      <header filtering="no" trimleading="yes"># ScriptCraft API Reference
+
+Walter Higgins
+
+[walter.higgins@gmail.com][email]
+
+[email]: mailto:walter.higgins@gmail.com?subject=ScriptCraft_API_Reference
+
+      </header>
+      <fileset file="${dist}/toc-apiref.md" />
+      <fileset file="${dist}/apiref.md" />
+   </concat>      
+  </target>
+
+  <target name="gen-toc-apiref" depends="generate-api-ref-entries, init" description="Generate Table of Contents for API Reference">
     <javac includeantruntime="false" srcdir="src/docs/java"/>
-    <java classname="jscript" failonerror="true" fork="true" output="${dist}/toc.md">
+    <java classname="jscript" failonerror="true" fork="true" output="${dist}/toc-apiref.md">
+      <classpath>
+        <pathelement path="src/docs/java"/>      
+      </classpath>
+      <arg value="src/docs/javascript/generateTOC.js"/>
+      <arg value="${dist}/apiref.md"/>
+    </java>
+  </target>
+
+  <target name="gen-toc-ypgpm" depends="init" description="Generate Table of Contents for Young Programmers Guide">
+    <javac includeantruntime="false" srcdir="src/docs/java"/>
+    <java classname="jscript" failonerror="true" fork="true" output="${dist}/toc-ypgpm.md">
       <classpath>
         <pathelement path="src/docs/java"/>      
       </classpath>
@@ -84,12 +117,12 @@
   </target>
 
   <!-- Piece together the Young persons' guide from template and generated table of contents -->
-  <target name="construct-ypgpm" depends="gen-toc,init">
+  <target name="construct-ypgpm" depends="gen-toc-ypgpm,init">
     <concat destfile="docs/YoungPersonsGuideToProgrammingMinecraft.md">
       <header filtering="no" trimleading="yes"># The Young Person's Guide to Programming in Minecraft
 
       </header>
-      <fileset file="${dist}/toc.md" />
+      <fileset file="${dist}/toc-ypgpm.md" />
       <fileset file="src/docs/templates/ypgpm.mdt" />
    </concat>      
   </target>

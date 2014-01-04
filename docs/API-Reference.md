@@ -6,6 +6,134 @@ Walter Higgins
 
 [email]: mailto:walter.higgins@gmail.com?subject=ScriptCraft_API_Reference
 
+## Table of Contents
+ * [Modules in Scriptcraft](#modules-in-scriptcraft)
+ * [Module Loading](#module-loading)
+   * [The plugins directory](#the-plugins-directory)
+   * [The modules directory](#the-modules-directory)
+   * [The lib directory](#the-lib-directory)
+   * [plugins sub-directories](#plugins-sub-directories)
+ * [Global variables](#global-variables)
+   * [__plugin variable](#plugin-variable)
+   * [server variable](#server-variable)
+   * [self variable](#self-variable)
+   * [config variable](#config-variable)
+   * [events variable](#events-variable)
+ * [Module variables](#module-variables)
+   * [&#95;&#95;filename variable](#9595filename-variable)
+   * [&#95;&#95;dirname variable](#9595dirname-variable)
+ * [Global functions](#global-functions)
+   * [echo function](#echo-function)
+   * [require() function](#require-function)
+   * [load() function](#load-function)
+   * [save() function](#save-function)
+   * [plugin() function](#plugin-function)
+   * [command() function](#command-function)
+   * [setTimeout() function](#settimeout-function)
+   * [clearTimeout() function](#cleartimeout-function)
+   * [setInterval() function](#setinterval-function)
+   * [clearInterval() function](#clearinterval-function)
+   * [refresh() function](#refresh-function)
+   * [addUnloadHandler() function](#addunloadhandler-function)
+ * [require - Node.js-style module loading in ScriptCraft](#require---nodejs-style-module-loading-in-scriptcraft)
+   * [math.js](#mathjs)
+   * [inc.js](#incjs)
+   * [program.js](#programjs)
+   * [Important](#important)
+   * [module name resolution](#module-name-resolution)
+ * [events Module](#events-module)
+   * [events.on() static method](#eventson-static-method)
+ * [console global variable](#console-global-variable)
+   * [Example](#example)
+   * [Using string substitutions](#using-string-substitutions)
+ * [Blocks Module](#blocks-module)
+   * [Examples](#examples)
+ * [Fireworks Module](#fireworks-module)
+   * [Examples](#examples)
+ * [http.request() function](#httprequest-function)
+   * [Parameters](#parameters)
+   * [Example](#example)
+ * [Utilities Module](#utilities-module)
+   * [utils.player() function](#utilsplayer-function)
+   * [utils.locationToJSON() function](#utilslocationtojson-function)
+   * [utils.locationToString() function](#utilslocationtostring-function)
+   * [utils.locationFromJSON() function](#utilslocationfromjson-function)
+   * [utils.getPlayerPos() function](#utilsgetplayerpos-function)
+   * [utils.getMousePos() function](#utilsgetmousepos-function)
+   * [utils.foreach() function](#utilsforeach-function)
+   * [utils.nicely() function](#utilsnicely-function)
+   * [utils.at() function](#utilsat-function)
+   * [utils.find() function](#utilsfind-function)
+ * [Drone Plugin](#drone-plugin)
+   * [TLDNR; (Just read this if you're impatient)](#tldnr-just-read-this-if-youre-impatient)
+   * [Constructing a Drone Object](#constructing-a-drone-object)
+   * [Drone.box() method](#dronebox-method)
+   * [Drone.box0() method](#dronebox0-method)
+   * [Drone.boxa() method](#droneboxa-method)
+   * [Drone Movement](#drone-movement)
+   * [Drone Positional Info](#drone-positional-info)
+   * [Drone Markers](#drone-markers)
+   * [Drone.prism() method](#droneprism-method)
+   * [Drone.prism0() method](#droneprism0-method)
+   * [Drone.cylinder() method](#dronecylinder-method)
+   * [Drone.cylinder0() method](#dronecylinder0-method)
+   * [Drone.arc() method](#dronearc-method)
+   * [Drone.door() method](#dronedoor-method)
+   * [Drone.door2() method](#dronedoor2-method)
+   * [Drone.sign() method](#dronesign-method)
+   * [Drone Trees methods](#drone-trees-methods)
+   * [Drone.garden() method](#dronegarden-method)
+   * [Drone.rand() method](#dronerand-method)
+   * [Copy & Paste using Drone](#copy--paste-using-drone)
+   * [Drone.copy() method](#dronecopy-method)
+   * [Drone.paste() method](#dronepaste-method)
+   * [Chaining](#chaining)
+   * [Drone Properties](#drone-properties)
+   * [Extending Drone](#extending-drone)
+   * [Drone.extend() static method](#droneextend-static-method)
+   * [Drone Constants](#drone-constants)
+   * [Drone.times() Method](#dronetimes-method)
+   * [Drone.blocktype() method](#droneblocktype-method)
+   * [Drone.rainbow() method](#dronerainbow-method)
+   * [Drone.sphere() method](#dronesphere-method)
+   * [Drone.sphere0() method](#dronesphere0-method)
+   * [Drone.hemisphere() method](#dronehemisphere-method)
+   * [Drone.hemisphere0() method](#dronehemisphere0-method)
+   * [Drone.spiral_stairs() method](#dronespiralstairs-method)
+ * [Example Plugin #1 - A simple extension to Minecraft.](#example-plugin-1---a-simple-extension-to-minecraft)
+   * [Usage:](#usage)
+ * [Example Plugin #2 - Making extensions available for all players.](#example-plugin-2---making-extensions-available-for-all-players)
+   * [Usage:](#usage)
+ * [Example Plugin #3 - Limiting use of commands to operators only.](#example-plugin-3---limiting-use-of-commands-to-operators-only)
+   * [Usage:](#usage)
+ * [Example Plugin #4 - Using parameters in commands.](#example-plugin-4---using-parameters-in-commands)
+   * [Usage:](#usage)
+ * [Example Plugin #5 - Re-use - Using your own and others modules.](#example-plugin-5---re-use---using-your-own-and-others-modules)
+   * [Usage:](#usage)
+ * [Example Plugin #6 - Re-use - Using 'utils' to get Player objects.](#example-plugin-6---re-use---using-utils-to-get-player-objects)
+   * [Usage:](#usage)
+ * [Example Plugin #7 - Listening for events, Greet players when they join the game.](#example-plugin-7---listening-for-events-greet-players-when-they-join-the-game)
+ * [Arrows Plugin](#arrows-plugin)
+   * [Usage:](#usage)
+ * [alias Plugin](#alias-plugin)
+   * [Examples](#examples)
+ * [Classroom Plugin](#classroom-plugin)
+   * [classroom.allowScripting() function](#classroomallowscripting-function)
+ * [Commando Plugin](#commando-plugin)
+   * [Description](#description)
+   * [Example hi-command.js](#example-hi-commandjs)
+   * [Example - timeofday-command.js](#example---timeofday-commandjs)
+   * [Caveats](#caveats)
+ * [homes Plugin](#homes-plugin)
+   * [Basic options](#basic-options)
+   * [Social options](#social-options)
+   * [Administration options](#administration-options)
+ * [NumberGuess mini-game:](#numberguess-mini-game)
+   * [Description](#description)
+   * [Example](#example)
+ * [SnowballFight mini-game](#snowballfight-mini-game)
+   * [Description](#description)
+
 ## Modules in Scriptcraft
 
 ScriptCraft has a simple module loading system. In ScriptCraft, files
@@ -158,10 +286,10 @@ The events object is used to add new event handlers to Minecraft.
 ## Module variables
 The following variables are available only within the context of Modules. (not available at in-game prompt).
 
-### __filename variable
+### &#95;&#95;filename variable
 The current file - this variable is only relevant from within the context of a Javascript module.
 
-### __dirname variable
+### &#95;&#95;dirname variable
 The current directory - this variable is only relevant from within the context of a Javascript module.
 
 ## Global functions
@@ -174,7 +302,7 @@ The `echo()` function displays a message on the in-game screen. The
 message is displayed to the `self` player (this is usually the player
 who issued the `/js` or `/jsp` command).
 
-### Example
+#### Example
 
     /js echo('Hello World')
 
@@ -182,7 +310,7 @@ For programmers familiar with Javascript web programming, an `alert`
 function is also provided.  `alert` works exactly the same as `echo`
 e.g. `alert('Hello World')`.
 
-### Notes
+#### Notes
 
 The `echo` and `alert` functions are provided as convenience functions
 for beginning programmers. The use of these 2 functions is not
@@ -190,26 +318,7 @@ recommended in event-handling code or multi-threaded code. In such
 cases, if you want to send a message to a given player then use the
 Bukkit API's [Player.sendMessage()][plsm] function instead.
 
-[plsm]: 
-
- * require (modulename) - Will load modules. See [Node.js modules][njsmod]
-
- * load (filename,warnOnFileNotFound) - loads and evaluates a
-   javascript file, returning the evaluated object. (Note: Prefer
-   `require()` to `load()`)
-  
- * save (object, filename) - saves an object to a file.
-
- * plugin (name, interface, isPersistent) - defines a new plugin. If
-   isPersistent is true then the plugin doesn't have to worry about
-   loading and saving state - that will be done by the framework. Just
-   make sure that anything you want to save (and restore) is in the plugin's
-   'store' property - this will be created automatically if not
-   already defined.  (its type is object {} ) . More on plugins below.
-    
- * command (name, function) - defines a command that can be used by
-   non-operators. The `command` function provides a way for plugin
-   developers to provide new commands for use by players.
+[plsm]: http://jd.bukkit.org/dev/apidocs/org/bukkit/command/CommandSender.html#sendMessage(java.lang.String)
 
 ### require() function
 
@@ -252,17 +361,16 @@ load() will return the result of the last statement evaluated in the file.
 
     var myData = load("myData.json"); // loads a javascript file and evaluates it - eval'd contents are returned.
 
-myData.json contents...
+##### myData.json contents...
 
-    __data = { 
-        players: {
-            walterh: {
-                h: ["jsp home {1}"],
-                sunny:["time set 0",
-                       "weather clear"]
-                     }
-                 }
-            }
+    { players: {
+        walterh: {
+          h: ["jsp home {1}"],
+          sunny:["time set 0",
+                 "weather clear"]
+        }
+      }
+    }
 
 ### save() function
 
@@ -286,11 +394,12 @@ restored using the `load()` function.
                      date_of_birth: '1982/01/31' };
     save(myObject, 'johndoe.json');
 
-johndoe.json contents...
+##### johndoe.json contents...
 
-    var __data = { "name": "John Doe", 
-                   "aliases": ["John Ray", "John Mee"], 
-                   "date_of_birth": "1982/01/31" };
+    { "name": "John Doe", 
+      "aliases": ["John Ray", "John Mee"], 
+      "date_of_birth": "1982/01/31" 
+    };
 
 ### plugin() function
 
@@ -1024,8 +1133,8 @@ a given directory and recursiving trawling all sub-directories.
         return name.match(/\.js$/);
     });  
 
-Drone Module
-============
+## Drone Plugin
+
 The Drone is a convenience class for building. It can be used for...
 
  1. Building
@@ -1037,8 +1146,8 @@ be chained together like so...
     var theDrone = new Drone();
     theDrone.up().left().box(blocks.oak).down().fwd(3).cylinder0(blocks.lava,8); 
 
-TLDNR; (Just read this if you're impatient)
-===========================================
+### TLDNR; (Just read this if you're impatient)
+
 At the in-game command prompt type...
      
     /js box( blocks.oak )  
@@ -1051,8 +1160,7 @@ At the in-game command prompt type...
 wide x 9 tall x 1 long in size.  If you want to see what else
 ScriptCraft's Drone can do, read on...
 
-Constructing a Drone Object
-===========================
+### Constructing a Drone Object
 
 Drones can be created in any of the following ways...
     
@@ -1143,8 +1251,8 @@ Drones can be created in any of the following ways...
             // do more stuff with the drone here...
         });
 
-Parameters
-----------
+#### Parameters
+
  * location (optional) : *NB* If an `org.bukkit.Location` object is provided as a parameter, then it should be the only parameter.
  * x (optional) : The x coordinate of the Drone
  * y (optional) : The y coordinate of the Drone
@@ -1153,12 +1261,12 @@ Parameters
    facing. Possible values are 0 (east), 1 (south), 2 (west) or 3 (north)
  * world (optional) : The world in which the drone is created.
   
-Drone.box() method
-==================
+### Drone.box() method
+
 the box() method is a convenience method for building things. (For the more performance-oriented method - see cuboid)
 
-parameters
-----------
+#### parameters
+
  * b - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
    Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
  * w (optional - default 1) - the width of the structure 
@@ -1167,8 +1275,8 @@ parameters
    not how deep underground the structure lies - this is how far
    away (depth of field) from the drone the structure will extend.
 
-Example
--------
+#### Example
+
 To create a black structure 4 blocks wide, 9 blocks tall and 1 block long...
     
     box(blocks.wool.black, 4, 9, 1);
@@ -1180,12 +1288,12 @@ To create a black structure 4 blocks wide, 9 blocks tall and 1 block long...
 
 ![box example 1](img/boxex1.png)
     
-Drone.box0() method
-===================
+### Drone.box0() method
+
 Another convenience method - this one creates 4 walls with no floor or ceiling.
 
-Parameters
-----------
+#### Parameters
+
  * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
    Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
  * width (optional - default 1) - the width of the structure 
@@ -1193,28 +1301,28 @@ Parameters
  * length (optional - default 1) - the length of the structure - how far
    away (depth of field) from the drone the structure will extend.
 
-Example
--------
+#### Example
+
 To create a stone building with the insided hollowed out 7 wide by 3 tall by 6 long...
 
     box0( blocks.stone, 7, 3, 6);
 
 ![example box0](img/box0ex1.png)
    
-Drone.boxa() method
-===================
+### Drone.boxa() method
+
 Construct a cuboid using an array of blocks. As the drone moves first along the width axis,
 then the height (y axis) then the length, each block is picked from the array and placed.
 
-Parameters
-----------
+#### Parameters
+
  * blocks - An array of blocks - each block in the array will be placed in turn.
  * width
  * height
  * length
 
-Example
--------
+#### Example
+
 Construct a rainbow-colored road 100 blocks long...
 
     var rainbowColors = [blocks.wool.red, blocks.wool.orange, blocks.wool.yellow, blocks.wool.lime,
@@ -1224,8 +1332,8 @@ Construct a rainbow-colored road 100 blocks long...
 
 ![boxa example](img/boxaex1.png)
 
-Drone Movement
-==============
+### Drone Movement
+
 Drones can move freely in minecraft's 3-D world. You control the
 Drone's movement using any of the following methods..
 
@@ -1248,13 +1356,12 @@ drone.turn() will make the turn face east. If the drone is facing east
 then drone.turn(2) will make the drone turn twice so that it is facing
 west.
 
-Drone Positional Info
-=====================
+### Drone Positional Info
 
  * getLocation() - Returns a Bukkit Location object for the drone
 
-Drone Markers
-=============
+### Drone Markers
+
 Markers are useful when your Drone has to do a lot of work. You can
 set a check-point and return to the check-point using the move()
 method.  If your drone is about to undertake a lot of work -
@@ -1270,12 +1377,11 @@ Markers are created and returned to using the followng two methods...
  * move - moves the drone to a saved location. Alternatively you can provide an 
    org.bukkit.Location object or x,y,z and direction parameters.
 
-Parameters
-----------
+#### Parameters
+
  * name - the name of the checkpoint to save or return to.
 
-Example
--------
+#### Example
 
     drone.chkpt('town-square');
     //
@@ -1289,68 +1395,65 @@ Example
     //
     drone.move('town-square');
 
-Drone.prism() method
-====================
+### Drone.prism() method
+
 Creates a prism. This is useful for roofs on houses.
 
-Parameters
-----------
+#### Parameters
 
  * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
    Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
  * width - the width of the prism
  * length - the length of the prism (will be 2 time its height)
 
-Example
--------
+#### Example
 
     prism(blocks.oak,3,12);
 
 ![prism example](img/prismex1.png)
 
-Drone.prism0() method
-=====================
+### Drone.prism0() method
+
 A variation on `prism` which hollows out the inside of the prism. It uses the same parameters as `prism`.
 
-Drone.cylinder() method
-=======================
+### Drone.cylinder() method
+
 A convenience method for building cylinders. Building begins radius blocks to the right and forward.
 
-Parameters
-----------
+#### Parameters
 
  * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
    Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
  * radius 
  * height
 
-Example
--------
+#### Example
+
 To create a cylinder of Iron 7 blocks in radius and 1 block high...
 
     cylinder(blocks.iron, 7 , 1);
 
 ![cylinder example](img/cylinderex1.png)
 
-Drone.cylinder0() method
-========================
+### Drone.cylinder0() method
+
 A version of cylinder that hollows out the middle.
 
-Example
--------
+#### Example
+
 To create a hollow cylinder of Iron 7 blocks in radius and 1 block high...
 
     cylinder0(blocks.iron, 7, 1);
 
 ![cylinder0 example](img/cylinder0ex1.png)
 
-Drone.arc() method
-==================
+### Drone.arc() method
+
 The arc() method can be used to create 1 or more 90 degree arcs in the horizontal or vertical planes.
 This method is called by cylinder() and cylinder0() and the sphere() and sphere0() methods.
 
-Parameters
-----------
+#### Parameters
+
 arc() takes a single parameter - an object with the following named properties...
 
  * radius - The radius of the arc.
@@ -1372,8 +1475,8 @@ arc() takes a single parameter - an object with the following named properties..
    circle to draw. If the quadrants property is absent then all 4
    quadrants are drawn.
 
-Examples
---------
+#### Examples
+
 To draw a 1/4 circle (top right quadrant only) with a radius of 10 and stroke width of 2 blocks ...
 
     arc({blockType: blocks.iron, 
@@ -1391,16 +1494,16 @@ To draw a 1/4 circle (top right quadrant only) with a radius of 10 and stroke wi
 [bres]: http://en.wikipedia.org/wiki/Midpoint_circle_algorithm
 [dv]: http://www.minecraftwiki.net/wiki/Data_values
 
-Drone.door() method
-===================
+### Drone.door() method
+
 create a door - if a parameter is supplied an Iron door is created otherwise a wooden door is created.
 
-Parameters
-----------
+#### Parameters
+
  * doorType (optional - default wood) - If a parameter is provided then the door is Iron.
 
-Example
--------
+#### Example
+
 To create a wooden door at the crosshairs/drone's location...
 
     var drone = new Drone();
@@ -1412,33 +1515,33 @@ To create an iron door...
 
 ![iron door](img/doorex1.png)
     
-Drone.door2() method
-====================
+### Drone.door2() method
+
 Create double doors (left and right side)
 
-Parameters
-----------
+#### Parameters
+
  * doorType (optional - default wood) - If a parameter is provided then the door is Iron.
 
-Example
--------
+#### Example
+
 To create double-doors at the cross-hairs/drone's location...
 
     drone.door2();
 
 ![double doors](img/door2ex1.png)
 
-Drone.sign() method
-===================
+### Drone.sign() method
+
 Signs must use block 63 (stand-alone signs) or 68 (signs on walls)
 
-Parameters
-----------
+#### Parameters
+
  * message -  can be a string or an array of strings. 
  * block - can be 63 or 68
 
-Example
--------
+#### Example
+
 To create a free-standing sign...
 
     drone.sign(["Hello","World"],63);
@@ -1451,16 +1554,15 @@ To create a free-standing sign...
 
 ![wall sign](img/signex2.png)
 
-Drone Trees methods
-===================
+### Drone Trees methods
 
  * oak()
  * spruce()
  * birch()
  * jungle()
 
-Example
--------
+#### Example
+
 To create 4 trees in a row, point the cross-hairs at the ground then type `/js ` and ...
 
     up().oak().right(8).spruce().right(8).birch().right(8).jungle();
@@ -1473,35 +1575,33 @@ the `up()` method is called first).
 
 ![tree example](img/treeex1.png)
 
-    
 None of the tree methods require parameters. Tree methods will only be successful
 if the tree is placed on grass in a setting where trees can grow.
 
-Drone.garden() method
-=====================
+### Drone.garden() method
+
 places random flowers and long grass (similar to the effect of placing bonemeal on grass)
 
-Parameters
-----------
+#### Parameters
 
  * width - the width of the garden
  * length - how far from the drone the garden extends
 
-Example
--------
+#### Example
+
 To create a garden 10 blocks wide by 5 blocks long...
 
     garden(10,5);
 
 ![garden example](img/gardenex1.png)
 
-Drone.rand() method
-===================
+### Drone.rand() method
+
 rand takes either an array (if each blockid has the same chance of occurring)
 or an object where each property is a blockid and the value is it's weight (an integer)
 
-Example
--------
+#### Example
+
 place random blocks stone, mossy stone and cracked stone (each block has the same chance of being picked)
 
     rand( [blocks.brick.stone, blocks.brick.mossy, blocks.brick.cracked ],w,d,h) 
@@ -1512,34 +1612,32 @@ to place random blocks stone has a 50% chance of being picked,
 
 regular stone has a 50% chance, mossy stone has a 30% chance and cracked stone has just a 20% chance of being picked.
 
-Copy & Paste using Drone
-========================
+### Copy & Paste using Drone
+
 A drone can be used to copy and paste areas of the game world.
 
-Drone.copy() method
-===================
+### Drone.copy() method
+
 Copies an area so it can be pasted elsewhere. The name can be used for
 pasting the copied area elsewhere...
 
-Parameters
-----------
+#### Parameters
 
  * name - the name to be given to the copied area (used by `paste`)
  * width - the width of the area to copy
  * height - the height of the area to copy
  * length - the length of the area (extending away from the drone) to copy
 
-Example
--------
+#### Example
 
     drone.copy('somethingCool',10,5,10).right(12).paste('somethingCool');
 
-Drone.paste() method
-====================
+### Drone.paste() method
+
 Pastes a copied area to the current location.
 
-Example
--------
+#### Example
+
 To copy a 10x5x10 area (using the drone's coordinates as the starting
 point) into memory.  the copied area can be referenced using the name
 'somethingCool'. The drone moves 12 blocks right then pastes the copy.
@@ -1548,8 +1646,7 @@ point) into memory.  the copied area can be referenced using the name
          .right(12)
          .paste('somethingCool');
 
-Chaining
-========
+### Chaining
 
 All of the Drone methods return a Drone object, which means methods
 can be 'chained' together so instead of writing this...
@@ -1580,30 +1677,28 @@ commands in a new script file and load it using /js load()
 
 [fl]: http://en.wikipedia.org/wiki/Fluent_interface
 
-Drone Properties
-================
+### Drone Properties
 
  * x - The Drone's position along the west-east axis (x increases as you move east)
  * y - The Drone's position along the vertical axis (y increses as you move up)
  * z - The Drone's position along the north-south axis (z increases as you move south)
  * dir - The Drone's direction 0 is east, 1 is south , 2 is west and 3 is north.
 
-Extending Drone
-===============
+### Extending Drone
+
 The Drone object can be easily extended - new buidling recipes/blue-prints can be added and can
 become part of a Drone's chain using the *static* method `Drone.extend`. 
 
-Drone.extend() static method
-============================
+### Drone.extend() static method
+
 Use this method to add new methods (which also become chainable global functions) to the Drone object.
 
-Parameters
-----------
+#### Parameters
+
  * name - The name of the new method e.g. 'pyramid'
  * function - The method body.
 
-Example
--------
+#### Example
 
     // submitted by [edonaldson][edonaldson]
     Drone.extend('pyramid', function(block,height){
@@ -1625,11 +1720,10 @@ Once the method is defined (it can be defined in a new pyramid.js file) it can b
 
 [edonaldson]: https://github.com/edonaldson
 
-Drone Constants
-===============
+### Drone Constants
 
-Drone.PLAYER_STAIRS_FACING
---------------------------
+#### Drone.PLAYER_STAIRS_FACING
+
 An array which can be used when constructing stairs facing in the Drone's direction...
 
     var d = new Drone();
@@ -1637,8 +1731,8 @@ An array which can be used when constructing stairs facing in the Drone's direct
 
 ... will construct a single oak stair block facing the drone.
 
-Drone.PLAYER_SIGN_FACING
-------------------------
+#### Drone.PLAYER_SIGN_FACING
+
 An array which can be used when placing signs so they face in a given direction.
 This is used internally by the Drone.sign() method. It should also be used for placing
 any of the following blocks...
@@ -1652,22 +1746,22 @@ To place a chest facing the Drone ...
 
     drone.box( blocks.chest + ':' + Drone.PLAYER_SIGN_FACING[drone.dir]);
 
-Drone.PLAYER_TORCH_FACING
--------------------------
+#### Drone.PLAYER_TORCH_FACING
+
 Used when placing torches so that they face towards the drone. 
 
     drone.box( blocks.torch + ':' + Drone.PLAYER_TORCH_FACING[drone.dir]);
 
-Drone.times() Method
-====================
+### Drone.times() Method
+
 The times() method makes building multiple copies of buildings easy. It's possible to create rows or grids of buildings without resorting to `for` or `while` loops.
 
-Parameters
-----------
+#### Parameters
+
  * numTimes (optional - default 2) : The number of times you want to repeat the preceding statements.
 
-Example
--------
+#### Example
+
 Say you want to do the same thing over and over. You have a couple of options...
 
  * You can use a for loop...
@@ -1723,17 +1817,17 @@ Another example: This statement creates a row of trees 2 by 3 ...
 
 ![times example 1](img/times-trees.png)
 
-## Drone.blocktype() method
+### Drone.blocktype() method
 
 Creates the text out of blocks. Useful for large-scale in-game signs.
 
-### Parameters
+#### Parameters
  
  * message - The message to create - (use `\n` for newlines)
  * foregroundBlock (default: black wool) - The block to use for the foreground
  * backgroundBlock (default: none) - The block to use for the background
 
-### Example
+#### Example
 
 To create a 2-line high message using glowstone...
 
@@ -1743,31 +1837,31 @@ To create a 2-line high message using glowstone...
 
 [imgbt1]: img/blocktype1.png
 
-## Drone.rainbow() method
+### Drone.rainbow() method
 
 Creates a Rainbow.
 
-### Parameters
+#### Parameters
 
  * radius (optional - default:18) - The radius of the rainbow
 
-### Example
+#### Example
     
     var d = new Drone();
     d.rainbow(30);
 
 ![rainbow example](img/rainbowex1.png)
 
-## Drone.sphere() method
+### Drone.sphere() method
 
 Creates a sphere.
 
-### Parameters
+#### Parameters
  
  * block - The block the sphere will be made of.
  * radius - The radius of the sphere.
 
-### Example
+#### Example
 
 To create a sphere of Iron with a radius of 10 blocks...
 
@@ -1778,16 +1872,16 @@ To create a sphere of Iron with a radius of 10 blocks...
 Spheres are time-consuming to make. You *can* make large spheres (250 radius) but expect the
 server to be very busy for a couple of minutes while doing so.
 
-## Drone.sphere0() method
+### Drone.sphere0() method
 
 Creates an empty sphere.
 
-### Parameters
+#### Parameters
  
  * block - The block the sphere will be made of.
  * radius - The radius of the sphere.
 
-### Example
+#### Example
 
 To create a sphere of Iron with a radius of 10 blocks...
 
@@ -1796,17 +1890,17 @@ To create a sphere of Iron with a radius of 10 blocks...
 Spheres are time-consuming to make. You *can* make large spheres (250 radius) but expect the
 server to be very busy for a couple of minutes while doing so.
 
-## Drone.hemisphere() method
+### Drone.hemisphere() method
 
 Creates a hemisphere. Hemispheres can be either north or south.
 
-### Parameters
+#### Parameters
 
  * block - the block the hemisphere will be made of.
  * radius - the radius of the hemisphere
  * northSouth - whether the hemisphere is 'north' or 'south'
 
-### Example
+#### Example
 
 To create a wood 'north' hemisphere with a radius of 7 blocks...
 
@@ -1814,17 +1908,17 @@ To create a wood 'north' hemisphere with a radius of 7 blocks...
 
 ![hemisphere example](img/hemisphereex1.png)
 
-## Drone.hemisphere0() method
+### Drone.hemisphere0() method
 
 Creates a hollow hemisphere. Hemispheres can be either north or south.
 
-### Parameters
+#### Parameters
 
  * block - the block the hemisphere will be made of.
  * radius - the radius of the hemisphere
  * northSouth - whether the hemisphere is 'north' or 'south'
 
-### Example
+#### Example
 
 To create a glass 'north' hemisphere with a radius of 20 blocks...
 
@@ -1832,11 +1926,11 @@ To create a glass 'north' hemisphere with a radius of 20 blocks...
 
 ![hemisphere example](img/hemisphereex2.png)
 
-## Drone.spiral_stairs() method
+### Drone.spiral_stairs() method
 
 Constructs a spiral staircase with slabs at each corner.
 
-### Parameters
+#### Parameters
 
  * stairBlock - The block to use for stairs, should be one of the following...
    - 'oak'
@@ -1853,13 +1947,13 @@ Constructs a spiral staircase with slabs at each corner.
 
 ![Spiral Staircase](img/spiralstair1.png)
 
-### Example
+#### Example
 
 To construct a spiral staircase 5 floors high made of oak...
 
     spiral_stairs('oak', 5);
 
-## Example Plugin #1
+## Example Plugin #1 - A simple extension to Minecraft.
 
 A simple minecraft plugin. The most basic module.
 
@@ -1884,7 +1978,7 @@ permission since it relies on the `/js` command to execute.
         player.sendMessage('Hello ' + player.name);
     };
 
-## Example Plugin #2
+## Example Plugin #2 - Making extensions available for all players.
 
 A simple minecraft plugin. Commands for other players.
 
@@ -1910,7 +2004,7 @@ command does not evaluate javascript code so this command is much more secure.
         player.sendMessage('Hello ' + player.name);
     });
 
-## Example Plugin #3
+## Example Plugin #3 - Limiting use of commands to operators only.
 
 A simple minecraft plugin. Commands for operators only.
 
@@ -1939,7 +2033,8 @@ message for operators.
         }
         player.sendMessage('Hello ' + player.name);
     });
-## Example Plugin #4
+## Example Plugin #4 - Using parameters in commands.
+
 A simple minecraft plugin. Handling parameters.
 
 ### Usage: 
@@ -1963,7 +2058,7 @@ a fixed 'Hello ' to anything you like by passing a parameter.
         player.sendMessage( salutation + ' ' + player.name);
     });
 
-## Example Plugin #5
+## Example Plugin #5 - Re-use - Using your own and others modules.
 
 A simple minecraft plugin. Using Modules.
 
@@ -1997,7 +2092,7 @@ Source Code...
         greetings.hello(player);
     });
 
-## Example Plugin #6
+## Example Plugin #6 - Re-use - Using 'utils' to get Player objects.
 
 A simple minecraft plugin. Finding players by name.
 
@@ -2039,7 +2134,7 @@ Source Code ...
             sender.sendMessage('Player ' + playerName + ' not found.');
     });
 
-## Example Plugin #7
+## Example Plugin #7 - Listening for events, Greet players when they join the game.
 
 A simple event-driven minecraft plugin. How to handle Events.
 
@@ -2125,7 +2220,7 @@ cleaner and more readable. Similarly where you see a method like
         }
     });
 
-## Arrows Module 
+## Arrows Plugin
 
 The arrows mod adds fancy arrows to the game. Arrows which... 
 
@@ -2149,7 +2244,7 @@ All of the above functions can take an optional player object or name
 as a parameter. For example: `/js arrows.explosive('player23')` makes
 player23's arrows explosive.
  
-## alias Module
+## alias Plugin
 
 The alias module lets players and server admins create their own
 per-player or global custom in-game command aliases.
@@ -2199,7 +2294,7 @@ Aliases can be used at the in-game prompt by players or in the server
 console.  Aliases will not be able to avail of command autocompletion
 (pressing the TAB key will have no effect).
 
-## Classroom Module
+## Classroom Plugin
 
 The `classroom` object contains a couple of utility functions for use
 in a classroom setting. The goal of these functions is to make it
@@ -2315,7 +2410,7 @@ global commands for a plugin, please let me know.
 
 [pcppevt]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/player/PlayerCommandPreprocessEvent.html
 
-## homes Module
+## homes Plugin
 
 The homes plugin lets players set a location as home and return to the
 location, invite other players to their home and also visit other

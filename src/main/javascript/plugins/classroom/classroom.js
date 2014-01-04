@@ -1,7 +1,7 @@
 var utils = require('utils');
 
 /************************************************************************
-## Classroom Module
+## Classroom Plugin
 
 The `classroom` object contains a couple of utility functions for use
 in a classroom setting. The goal of these functions is to make it

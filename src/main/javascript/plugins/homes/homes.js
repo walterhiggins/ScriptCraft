@@ -1,5 +1,5 @@
 /*************************************************************************
-## homes Module
+## homes Plugin
 
 The homes plugin lets players set a location as home and return to the
 location, invite other players to their home and also visit other

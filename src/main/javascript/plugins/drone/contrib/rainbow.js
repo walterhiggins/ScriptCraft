@@ -2,15 +2,15 @@ var Drone = require('../drone').Drone;
 var blocks = require('blocks');
 
 /************************************************************************
-## Drone.rainbow() method
+### Drone.rainbow() method
 
 Creates a Rainbow.
 
-### Parameters
+#### Parameters
 
  * radius (optional - default:18) - The radius of the rainbow
 
-### Example
+#### Example
     
     var d = new Drone();
     d.rainbow(30);

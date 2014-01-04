@@ -1,5 +1,6 @@
 /*************************************************************************
-## Example Plugin #4
+## Example Plugin #4 - Using parameters in commands.
+
 A simple minecraft plugin. Handling parameters.
 
 ### Usage: 

@@ -1,5 +1,5 @@
 /*************************************************************************
-## Example Plugin #2
+## Example Plugin #2 - Making extensions available for all players.
 
 A simple minecraft plugin. Commands for other players.
 

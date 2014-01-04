@@ -1,12 +1,5 @@
 'use strict';
 /************************************************************************
-# ScriptCraft API Reference
-
-Walter Higgins
-
-[walter.higgins@gmail.com][email]
-
-[email]: mailto:walter.higgins@gmail.com?subject=ScriptCraft_API_Reference
 
 ## Modules in Scriptcraft
 
@@ -160,10 +153,10 @@ The events object is used to add new event handlers to Minecraft.
 ## Module variables
 The following variables are available only within the context of Modules. (not available at in-game prompt).
 
-### __filename variable
+### &#95;&#95;filename variable
 The current file - this variable is only relevant from within the context of a Javascript module.
 
-### __dirname variable
+### &#95;&#95;dirname variable
 The current directory - this variable is only relevant from within the context of a Javascript module.
 
 ## Global functions
@@ -176,7 +169,7 @@ The `echo()` function displays a message on the in-game screen. The
 message is displayed to the `self` player (this is usually the player
 who issued the `/js` or `/jsp` command).
 
-### Example
+#### Example
 
     /js echo('Hello World')
 
@@ -184,7 +177,7 @@ For programmers familiar with Javascript web programming, an `alert`
 function is also provided.  `alert` works exactly the same as `echo`
 e.g. `alert('Hello World')`.
 
-### Notes
+#### Notes
 
 The `echo` and `alert` functions are provided as convenience functions
 for beginning programmers. The use of these 2 functions is not
@@ -192,26 +185,7 @@ recommended in event-handling code or multi-threaded code. In such
 cases, if you want to send a message to a given player then use the
 Bukkit API's [Player.sendMessage()][plsm] function instead.
 
-[plsm]: 
-
- * require (modulename) - Will load modules. See [Node.js modules][njsmod]
-
- * load (filename,warnOnFileNotFound) - loads and evaluates a
-   javascript file, returning the evaluated object. (Note: Prefer
-   `require()` to `load()`)
-  
- * save (object, filename) - saves an object to a file.
-
- * plugin (name, interface, isPersistent) - defines a new plugin. If
-   isPersistent is true then the plugin doesn't have to worry about
-   loading and saving state - that will be done by the framework. Just
-   make sure that anything you want to save (and restore) is in the plugin's
-   'store' property - this will be created automatically if not
-   already defined.  (its type is object {} ) . More on plugins below.
-    
- * command (name, function) - defines a command that can be used by
-   non-operators. The `command` function provides a way for plugin
-   developers to provide new commands for use by players.
+[plsm]: http://jd.bukkit.org/dev/apidocs/org/bukkit/command/CommandSender.html#sendMessage(java.lang.String)
 
 ### require() function
 
@@ -254,17 +228,16 @@ load() will return the result of the last statement evaluated in the file.
 
     var myData = load("myData.json"); // loads a javascript file and evaluates it - eval'd contents are returned.
 
-myData.json contents...
+##### myData.json contents...
 
-    __data = { 
-        players: {
-            walterh: {
-                h: ["jsp home {1}"],
-                sunny:["time set 0",
-                       "weather clear"]
-                     }
-                 }
-            }
+    { players: {
+        walterh: {
+          h: ["jsp home {1}"],
+          sunny:["time set 0",
+                 "weather clear"]
+        }
+      }
+    }
 
 ### save() function
 
@@ -288,11 +261,12 @@ restored using the `load()` function.
                      date_of_birth: '1982/01/31' };
     save(myObject, 'johndoe.json');
 
-johndoe.json contents...
+##### johndoe.json contents...
 
-    var __data = { "name": "John Doe", 
-                   "aliases": ["John Ray", "John Mee"], 
-                   "date_of_birth": "1982/01/31" };
+    { "name": "John Doe", 
+      "aliases": ["John Ray", "John Mee"], 
+      "date_of_birth": "1982/01/31" 
+    };
 
 ### plugin() function
 

@@ -1,5 +1,5 @@
 /*************************************************************************
-## Example Plugin #1
+## Example Plugin #1 - A simple extension to Minecraft.
 
 A simple minecraft plugin. The most basic module.
 

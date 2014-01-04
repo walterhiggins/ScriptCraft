@@ -2,17 +2,17 @@ var Drone = require('./drone').Drone;
 var blocks = require('blocks');
 
 /************************************************************************
-## Drone.blocktype() method
+### Drone.blocktype() method
 
 Creates the text out of blocks. Useful for large-scale in-game signs.
 
-### Parameters
+#### Parameters
  
  * message - The message to create - (use `\n` for newlines)
  * foregroundBlock (default: black wool) - The block to use for the foreground
  * backgroundBlock (default: none) - The block to use for the background
 
-### Example
+#### Example
 
 To create a 2-line high message using glowstone...
 
