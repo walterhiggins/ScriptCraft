@@ -19,14 +19,16 @@ for (var i = 0; i < contents.length; i++){
     line = contents[i];
     if (line.match(/^##\s+/)){
         var h2 = line.match(/^##\s+(.*)/)[1].trim();
-        var link = h2.replace(/[^a-zA-Z0-9 \-]/g,'');
+        var link = '' + java.net.URLDecoder.decode(h2,"UTF-8");
+        link = link.replace(/[^a-zA-Z0-9 \-]/g,'');
         link = link.replace(/ /g,'-');
         link = link.toLowerCase();
         println (' * [' + h2 + '](#' + link + ')');
     }
     if (line.match(/^###\s+/)){
         var h3 = line.match(/^###\s+(.*)/)[1].trim();
-        var link = h3.replace(/[^a-zA-Z0-9 \-]/g,'');
+        var link = '' + java.net.URLDecoder.decode(h3,"UTF-8");
+        link = link.replace(/[^a-zA-Z0-9 \-]/g,'');
         var link = link.replace(/ /g,'-');
         link = link.toLowerCase();
         println ('   * [' + h3 + '](#' + link + ')');
