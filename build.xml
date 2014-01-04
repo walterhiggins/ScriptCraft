@@ -61,7 +61,7 @@
     <javac includeantruntime="false" srcdir="${src}" destdir="${build}" classpath="${minecraft.dir}/craftbukkit.jar" />
   </target>
     
-  <target name="gendocs" depends="init" description="Generate API documentation">
+  <target name="gendocs" depends="construct-ypgpm, init" description="Generate API documentation">
     <javac includeantruntime="false" srcdir="src/docs/java"/>
     <java classname="jscript" failonerror="true" fork="true" output="docs/API-Reference.md">
       <classpath>
@@ -72,6 +72,27 @@
     </java>
   </target>
 
+  <target name="gen-toc" depends="init" description="Generate Table of Contents for Young Programmers Guide">
+    <javac includeantruntime="false" srcdir="src/docs/java"/>
+    <java classname="jscript" failonerror="true" fork="true" output="${dist}/toc.md">
+      <classpath>
+        <pathelement path="src/docs/java"/>      
+      </classpath>
+      <arg value="src/docs/javascript/generateTOC.js"/>
+      <arg value="src/docs/templates/ypgpm.mdt"/>
+    </java>
+  </target>
+
+  <!-- Piece together the Young persons' guide from template and generated table of contents -->
+  <target name="construct-ypgpm" depends="gen-toc,init">
+    <concat destfile="docs/YoungPersonsGuideToProgrammingMinecraft.md">
+      <header filtering="no" trimleading="yes"># The Young Person's Guide to Programming in Minecraft
+
+      </header>
+      <fileset file="${dist}/toc.md" />
+      <fileset file="src/docs/templates/ypgpm.mdt" />
+   </concat>      
+  </target>
 
   <target name="zip_js" depends="init">
     <delete file="${build}/${js-plugins-dir}.zip"/>
