@@ -873,26 +873,30 @@ loops come in. Open your favorite text editor and create a new file in
 your scriptcraft/plugins/{your-name} directory, name the file `myskyscraper.js`, then
 type the following...
 
-    exports.myskyscraper = function(floors)
-    {
-        floors = floors || 10; // default number of floors is 10
+    var myskyscraper = function(floors) {
+        if (typeof floors == 'undefined'){
+            floors = 10;
+        }
         this.chkpt('myskyscraper'); // saves the drone position so it can return there later
         for (var i = 0; i < floors; i++)
         {
-            this.box(blocks.iron,20,1,20).up().box0(blocks.glass_pane,20,3,20).up(3);
+            this.box(blocks.iron,20,1,20)
+                .up()
+                .box0(blocks.glass_pane,20,3,20)
+                .up(3);
         }
         return this.move('myskyscraper'); // return to where we started
     };
 
-    load('../drone/drone.js');
+    var Drone = require('../drone/drone.js').Drone;
     Drone.extend('myskyscraper',myskyscraper);
 
 ... so this takes a little explaining. First I create a new function
 called myskyscraper that will take a single parameter `floors` so that
 when you eventually call the `myskyscraper()` function you can tell it
 how many floors you want built. The first statement in the function
-`floors = floors || 10;` just sets floors to 10 if no parameter is
-supplied. The next statement `this.chkpt('myskyscraper')` just saves
+`if (typeof floors == 'undefined'){ floors = 10; }` sets floors to 10 if no parameter is
+supplied. The next statement `this.chkpt('myskyscraper')` saves
 the position of the Drone so it can eventually return to where it
 started when finished building (I don't want the drone stranded atop
 the skyscraper when it's finished). Then comes the `for` loop. I loop
