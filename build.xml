@@ -58,15 +58,17 @@
   </target>
   
   <target name="compile" depends="init, server-setup" description="compile bukkit plugin source">
-    <javac includeantruntime="false" srcdir="${src}" destdir="${build}" classpath="${minecraft.dir}/craftbukkit.jar" />
+    <javac includeantruntime="false" srcdir="${src}" source="1.6" target="1.6" destdir="${build}" classpath="${minecraft.dir}/craftbukkit.jar" />
   </target>
     
   <target name="gendocs" depends="construct-ypgpm, construct-api-ref" description="Generate API documentation">
   </target>
 
-  <target name="generate-api-ref-entries" depends="init">
+  <target name="compile-docs" depends="init">
     <javac includeantruntime="false" srcdir="src/docs/java"/>
+  </target>
 
+  <target name="generate-api-ref-entries" depends="compile-docs,init">
     <java classname="jscript" failonerror="true" fork="true" output="${dist}/apiref.md">
       <classpath>
         <pathelement path="src/docs/java"/>      
@@ -94,8 +96,7 @@ Walter Higgins
    </concat>      
   </target>
 
-  <target name="gen-toc-apiref" depends="generate-api-ref-entries, init" description="Generate Table of Contents for API Reference">
-    <javac includeantruntime="false" srcdir="src/docs/java"/>
+  <target name="gen-toc-apiref" depends="compile-docs,generate-api-ref-entries, init" description="Generate Table of Contents for API Reference">
     <java classname="jscript" failonerror="true" fork="true" output="${dist}/toc-apiref.md">
       <classpath>
         <pathelement path="src/docs/java"/>      
@@ -105,8 +106,7 @@ Walter Higgins
     </java>
   </target>
 
-  <target name="gen-toc-ypgpm" depends="init" description="Generate Table of Contents for Young Programmers Guide">
-    <javac includeantruntime="false" srcdir="src/docs/java"/>
+  <target name="gen-toc-ypgpm" depends="compile-docs,init" description="Generate Table of Contents for Young Programmers Guide">
     <java classname="jscript" failonerror="true" fork="true" output="${dist}/toc-ypgpm.md">
       <classpath>
         <pathelement path="src/docs/java"/>      

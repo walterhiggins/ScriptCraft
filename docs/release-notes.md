@@ -1,3 +1,11 @@
+# 2014 01 05
+
+Bug Fix: On Mac OS, alias plugin caused Exceptions due to missing
+.trim() function on String.
+
+Changed target for compilation to 1.6 so that ScriptCraft will work
+with both java 1.6 and 1.7.
+
 # 2014 01 02
 
 Added a warning in console at start-up if legacy directories are detected.

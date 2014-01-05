@@ -77,3 +77,9 @@ for (var method in formattingCodes){
         return function(){return c+this;};
     }(formattingCodes[method]);
 }
+// wph 20140105 trim not availabe in String on Mac OS.
+if (!String.prototype.trim){
+    String.prototype.trim = function(){
+        return this.replace(/^\s+|\s+$/g,'');
+    }
+}
