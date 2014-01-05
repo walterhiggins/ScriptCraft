@@ -48,12 +48,12 @@ signs.menu = function(
     /* String */ label, 
     /* Array */ options,
     /* Function */ callback,
-    /* Number */ selectedIndex)
+    /* Number */ selectedIndex
+)
 {
     
     if (typeof selectedIndex == "undefined")
         selectedIndex = 0;
-    
     //
     // variables common to all instances of this menu can go here
     //
@@ -76,15 +76,24 @@ signs.menu = function(
     {
         if (typeof save == "undefined")
             save = true;
-
+        /*
+          @deprecated start
+          all calls should explicitly provide a [org.bukkit.block.Sign][buksign] parameter.
+         */
         if (typeof sign == "undefined"){
             var mouseLoc = utils.getMousePos();
             if (mouseLoc){
                 sign = mouseLoc.block.state;
+                if (!(sign && sign.setLine)){
+                    throw new Error("You must first provide a sign!");
+                }
             }else{
-                throw new Exception("You must provide a sign!");
+                throw new Error("You must first provide a sign!");
             }
         }
+        /*
+          @deprecated end
+         */
         //
         // per-sign variables go here
         //

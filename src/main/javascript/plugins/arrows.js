@@ -91,9 +91,19 @@ for (var type in _types)
 var _onMenuChoice = function(event){
     arrows.store.players[event.player.name] = event.number;
 };
-arrows.sign = signs.menu("Arrow", 
-                         ["Normal","Explosive","Teleport","Flourish","Lightning","Firework"],
-                         _onMenuChoice );
+var convertToArrowSign = signs.menu(
+    "Arrow", 
+    ["Normal","Explosive","Teleport","Flourish","Lightning","Firework"],
+    _onMenuChoice);
+
+arrows.sign = function(cmdSender)
+{
+    var sign = signs.getTargetedBy(cmdSender);
+    if (!sign){
+        throw new Error('You must first look at a sign!');
+    }
+    return convertToArrowSign(sign,true);
+};
 
 /*
   event handler called when a projectile hits something

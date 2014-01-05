@@ -1,4 +1,4 @@
 {
     name: 'signs',
-    main: './menu.js'
+    main: './signs.js'
 }
