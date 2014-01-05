@@ -6,6 +6,8 @@ Bug Fix: On Mac OS, alias plugin caused Exceptions due to missing
 Changed target for compilation to 1.6 so that ScriptCraft will work
 with both java 1.6 and 1.7.
 
+Added documentation for the Signs module.
+
 # 2014 01 02
 
 Added a warning in console at start-up if legacy directories are detected.

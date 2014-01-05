@@ -78,6 +78,8 @@ var onTabCompleteJS = function( __onTC_result, __onTC_sender, __onTC_cmd, __onTC
     if (__onTC_cmd.name == 'jsp')
         return tabCompleteJSP( __onTC_result, __onTC_sender, __onTC_cmd, __onTC_alias, __onTC_args );
 
+    global.self = __onTC_sender; // bring in self just for autocomplete
+
     var _globalSymbols = _getProperties(global)
     var result = __onTC_result;
     var args = __onTC_args;
@@ -169,5 +171,7 @@ var onTabCompleteJS = function( __onTC_result, __onTC_sender, __onTC_cmd, __onTC
     }
     for (var i = 0;i < propsOfLastArg.length; i++)
         result.add(propsOfLastArg[i]);
+
+    delete global.self; // delete self when no longer needed for autocomplete
 };
 module.exports = onTabCompleteJS;
