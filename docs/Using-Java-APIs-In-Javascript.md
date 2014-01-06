@@ -1,47 +1,10 @@
 # Using Java APIs in Javascript
 
-## Using java.lang package classes
-
 ScriptCraft uses the Javascript Engine bundled with Java 6 and later
 versions. This means that all of the core Java classes can be used
-from within ScriptCraft. For example, in Java the following code will
-print out the `user.dir` and `user.timezone` properties...
-
-    System.out.println( System.getProperty( "user.dir" ) );
-    System.out.println( System.getProperty( "user.timezone" ) );
-
-... In Java, any classes in the `java.lang` package don't need to be
-prefixed with the package so the `java.lang.System` class can simply
-be written as `System`. In Javascript you need to write...
-
-    println( java.lang.System.getProperty( "user.dir" ) );
-    println( java.lang.System.getProperty( "user.timezone" ) );
-
-... the `println()` function is one of the default functions provided
-by the JS Engine in Java so there is no need to add the class name
-prefix, but for other System class methods you need to explicitly
-include the package name e.g. `java.lang.`. If you are using the
-System class in a number of statements you can save yourself some
-typing by declaring a System variable and using that instead of the
-fully-qualified package and class name...
-
-    var System = java.lang.System;
-    println( System.getProperty( "user.dir" ) );
-    println( System.getProperty( "user.timezone" ) );
-
-The JS Engine provides an `importPackage()` function which can be used
-to import packages. This also saves you having to type full package
-names before classes. For example...
-
-    importPackage(java.util);
-    var hMap = new HashMap();
-    hMap.put('name','Walter');
-
-... makes all of the classes in the Java Library's `java.util` package
-available for use without having to use the `java.util`
-prefix. However, importing the `java.lang` package is not recommended
-as some of the java.lang classes (e.g. String, Object) conflict with
-Javascript Object types.
+from within ScriptCraft. In addition, all of the Bukkit API can be
+used from Javascript too. There are some things to consider when using
+Java classes in Javascript...
 
 ## Using Java Beans
 
@@ -102,6 +65,48 @@ by one of the Player classes super-classes. You'll see the
 `getLocation()` method listed under a section titled **Methods
 inherited from interface org.bukkit.entity.Entity** in the
 [Player][bukpl] javadoc page.
+
+## Using java.lang package classes
+
+In Java the following code will print out the `user.dir` and
+`user.timezone` properties...
+
+    System.out.println( System.getProperty( "user.dir" ) );
+    System.out.println( System.getProperty( "user.timezone" ) );
+
+... In Java, any classes in the `java.lang` package don't need to be
+prefixed with the package so the `java.lang.System` class can simply
+be written as `System`. However, in Javascript classes in the
+`java.lang` package need to be fully qualified so you need to write...
+
+    println( java.lang.System.getProperty( "user.dir" ) );
+    println( java.lang.System.getProperty( "user.timezone" ) );
+
+... the `println()` function is one of the default functions provided
+by the JS Engine in Java so there is no need to add the class name
+prefix, but for other System class methods you need to explicitly
+include the package name e.g. `java.lang.`. If you are using the
+System class in a number of statements you can save yourself some
+typing by declaring a System variable and using that instead of the
+fully-qualified package and class name...
+
+    var System = java.lang.System;
+    println( System.getProperty( "user.dir" ) );
+    println( System.getProperty( "user.timezone" ) );
+
+The JS Engine provides an `importPackage()` function which can be used
+to import packages. This also saves you having to type full package
+names before classes. For example...
+
+    importPackage(java.util);
+    var hMap = new HashMap();
+    hMap.put('name','Walter');
+
+... makes all of the classes in the Java Library's `java.util` package
+available for use without having to use the `java.util`
+prefix. However, importing the `java.lang` package is not recommended
+as some of the java.lang classes (e.g. String, Object) conflict with
+Javascript Object types.
 
 ## Summary
 
