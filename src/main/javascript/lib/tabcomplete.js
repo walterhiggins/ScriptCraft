@@ -74,18 +74,18 @@ var _getProperties = function(o)
     return result.sort();
 };
 
-var onTabCompleteJS = function( __onTC_result, __onTC_sender, __onTC_cmd, __onTC_alias, __onTC_args) {
-    if (__onTC_cmd.name == 'jsp')
-        return tabCompleteJSP( __onTC_result, __onTC_sender, __onTC_cmd, __onTC_alias, __onTC_args );
+var onTabCompleteJS = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs) {
 
-    global.self = __onTC_sender; // bring in self just for autocomplete
+    if (pluginCmd.name == 'jsp')
+        return tabCompleteJSP( result, cmdSender, pluginCmd, cmdAlias, cmdArgs );
+
+    global.self = cmdSender; // bring in self just for autocomplete
 
     var _globalSymbols = _getProperties(global)
-    var result = __onTC_result;
-    var args = __onTC_args;
-    var lastArg = args.length?args[args.length-1]+'':null;
+
+    var lastArg = cmdArgs.length?cmdArgs[cmdArgs.length-1]+'':null;
     var propsOfLastArg = [];
-    var statement = args.join(' ');
+    var statement = cmdArgs.join(' ');
     
     statement = statement.replace(/^\s+/,'').replace(/\s+$/,'');
     

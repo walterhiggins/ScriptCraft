@@ -10,7 +10,7 @@ var PrintWriter = java.io.PrintWriter;
 var _save = function(object, filename){
     var objectToStr = null;
     try{
-        objectToStr = JSON.stringify(object);
+        objectToStr = JSON.stringify(object,null,2);
     }catch(e){
         print("ERROR: " + e.getMessage() + " while saving " + filename);
         return;

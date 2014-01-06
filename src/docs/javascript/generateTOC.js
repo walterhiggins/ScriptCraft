@@ -13,11 +13,18 @@ while ( (line = br.readLine()) != null){
 }
 br.close();
 
+var anchors = {};
+
 var createLink = function(text){
     var result = text.replace(/&#95;/g,'_');
     result = result.replace(/[^a-zA-Z0-9 _\-]/g,'');
     result = result.replace(/ /g,'-');
-    return result.toLowerCase();
+    var result = result.toLowerCase();
+    if (anchors[result]){
+        result = result + '-' + (anchors[result]++);
+    }
+    anchors[result] = 1;
+    return result;
 };
 println('## Table of Contents');
 
