@@ -2,7 +2,14 @@ target
 *.class
 *.js~
 *.js#
+*.md#
+*.md~
+*.mdt~
+*.mdt#
 *.iml
+*.#*
 *.idea
 .DS_Store
 build.local.properties
+/src/main/javascript/lib/.#tabcomplete.js
+/src/main/javascript/plugins/.#example-1.js

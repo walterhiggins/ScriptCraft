@@ -2356,7 +2356,11 @@ Allows in-game operators to easily spawn creatures at current location.
     /jsp spawn sheep
     /jsp spawn wolf
 
-See <http://jd.bukkit.org/beta/apidocs/org/bukkit/entity/EntityType.html> for a list of possible entities (creatures) which can be spawned.
+This command supports TAB completion so to see a list of possible
+entitities, type `/jsp spawn ' at the in-game command prompt, then
+press TAB. Visit
+<http://jd.bukkit.org/beta/apidocs/org/bukkit/entity/EntityType.html>
+for a list of possible entities (creatures) which can be spawned.
 
 ## alias Plugin
 
@@ -2659,8 +2663,7 @@ is displayed in a side-bar along the right edge of of the screen.
 
  * Once you leave the game, your score is reset to zero.
 
- * You can disconnect from the server and your score will be saved for
-   the next time you join.
+ * When you disconnect from the server, your score will be reset to zero.
 
 ### Gameplay Mechanics
 
