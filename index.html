@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>Scriptcraft by walterhiggins</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Scriptcraft</h1>
+        <h2>A Minecraft mod that lets you build and mod the game using Javascript (uses CraftBukkit API)</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/walterhiggins/ScriptCraft/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/walterhiggins/ScriptCraft/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/walterhiggins/ScriptCraft" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>
+<a name="lets-begin" class="anchor" href="#lets-begin"><span class="octicon octicon-link"></span></a>Let's begin...</h1>
+
+<p>I created ScriptCraft to make it easier for younger programmers to
+create their own Minecraft Mods. Mods are written using the
+Javascript programming language. Once the ScriptCraft mod is
+installed, you can add your own new Mods by adding Javascript (.js)
+files in a directory.</p>
+
+<ul>
+<li>If you're new to programming and want to start modding Minecraft, then <a href="docs/YoungPersonsGuideToProgrammingMinecraft.md">Start Here</a>.</li>
+<li>If you've already used <a href="http://scratch.mit.edu/">Scratch</a>, have attended a few
+<a href="http://coderdojo.com/">CoderDojo</a> sessions, or have already dabbled with Javascript,
+then <a href="http://cdathenry.wordpress.com/category/modderdojo/">Start Here</a>.</li>
+<li>Watch some <a href="http://www.youtube.com/watch?v=DDp20SKm43Y&amp;list=PL4Tw0AgXQZH5BiFHqD2hXyXQi0-qFbGp_">demos</a> of what you can do with ScriptCraft.</li>
+</ul><p>This is a simple mod in a file called greet.js in the scriptcraft/plugins directory...</p>
+
+<pre><code>exports.greet = function( player ) {
+    player.sendMessage('Hello ' + player.name );
+};
+</code></pre>
+
+<p>At the in-game prompt, type...</p>
+
+<pre><code>/js greet(self)
+</code></pre>
+
+<p>... to see the greeting. Anything you can do using CraftBukkit's API in Java, you can do using ScriptCraft in Javascript.</p>
+
+<h1>
+<a name="description" class="anchor" href="#description"><span class="octicon octicon-link"></span></a>Description</h1>
+
+<p>ScriptCraft is a plugin for Minecraft Servers which lets operators,
+administrators and plug-in authors customize the game using
+Javascript.  ScriptCraft makes it easier to create your own mods. Mods
+can be written in Javscript and can use the full <a href="http://dl.bukkit.org/">Bukkit API</a>.  The
+ScriptCraft mod also lets you enter javascript commands at the in-game
+prompt.  To bring up the in-game prompt press the <code>/</code> key then type
+<code>js</code> followed by any javascript statement.  E.g. <code>/js 1+1</code> will print
+2.</p>
+
+<p>ScriptCraft also includes many objects and functions to make building
+and modding easier using Javascript. The Javascript <code>Drone</code> object
+bundled with ScriptCraft provides an easy way to build at-scale in
+Minecraft. See the attached <a href="https://github.com/walterhiggins/ScriptCraft/tree/master/src/main/javascript//drone/cottage.js">cottage.js</a> file for an example
+of how you can use the sample Drone plugin to create new buildings in
+Minecraft.</p>
+
+<h1>
+<a name="prerequisites" class="anchor" href="#prerequisites"><span class="octicon octicon-link"></span></a>Prerequisites</h1>
+
+<p>You will need to have Java version 6 or 7 installed on your
+machine. Check the version by typing <code>java -version</code> at a command
+prompt.  You will need to <a href="http://wiki.bukkit.org/Setting_up_a_server">install Bukkit</a> on your machine. Bukkit
+is a version of Minecraft (server) that makes it easy to install
+plugins and customize Minecraft.  You can <a href="http://dl.bukkit.org/downloads/craftbukkit/">download the CraftBukkit
+server here.</a></p>
+
+<h1>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
+
+<p>If you don't want to compile from source, you can <a href="http://scriptcraftjs.org/download">download the
+compiled plugin here</a> and copy it the craftbukkit's plugins
+directory.</p>
+
+<h1>
+<a name="post-install" class="anchor" href="#post-install"><span class="octicon octicon-link"></span></a>Post Install</h1>
+
+<p>Once installed, a new js-plugins directory is automatically created in
+the same directory as the plugins folder.  All files in the js-plugins
+directory will be automatically loaded when CraftBukkit starts.  <em>Only
+players who are ops can use this plugin.</em> You can grant a player <code>op</code>
+privileges by typing 'op ' at the server console prompt or
+by adding the player's username to the ops.txt file in your
+craftbukkit directory.</p>
+
+<p>Launch CraftBukkit, then launch the Minecraft client and create a new
+server connection. The IP address will be <code>localhost</code> . Once you've
+connected to your bukkit server and have entered the game, look at a
+ground-level block and type ...</p>
+
+<pre><code>/js up().box('35:15', 4, 9, 1)
+</code></pre>
+
+<p>... This will create a black monolith structure 4 blocks wide by 9
+blocks high by 1 block long.  Take a look at the
+src/main/javascript/drone/drone.js file to see what ScriptCraft's
+drone can do.  If you're interested in customizing minecraft beyond
+just creating new buildings, take a look at [./homes/homes.js][homes]
+and [./chat/color.js][chatcolor] for examples of how to create a
+javascript plugin for Minecraft.</p>
+
+<p>A Javascript mod for minecraft is just a javascript source file (.js)
+located in the craftbukkit/js-plugins directory. All .js files in this
+directory will be automatically loaded when the craftbukkit server
+starts. To get started writing your own mod, first take a look at some
+of the existing mods in the <a href="blob/master/src/main/javascript/plugins/homes/homes.js">homes</a>, <a href="blob/master/src/main/javascript/plugins/chat/color.js">chat</a>, <a href="blob/master/src/main/javascript/plugins/arrows/arrows.js">arrows</a> and
+<a href="blob/master/src/main/javascript/modules/signs/menu.js">signs</a> directories. The chat/color.js mod is probably the
+simplest mod to get started with.</p>
+
+<h1>
+<a name="additional-information" class="anchor" href="#additional-information"><span class="octicon octicon-link"></span></a>Additional information</h1>
+
+<p>Because the Bukkit API is open, all of the Bukkit API is accessible
+via javascript once the ScriptCraft plugin is loaded. There are a
+couple of useful Java objects exposed via javascript in the Bukkit
+ScriptCraft plugin...</p>
+
+<ul>
+<li><p><code>__plugin</code> - the ScriptCraft Plugin itself. This is a useful
+starting point for accessing other Bukkit objects. The <code>__plugin</code>
+object is of type <a href="https://github.com/walterhiggins/ScriptCraft/blob/master/docs/API-Reference.md">org.bukkit.plugin.java.JavaPlugin</a> and all
+of its properties and methods are accessible. For example... <code>js
+__plugin.server.motd</code> returns the server's message of the day
+(javascript is more concise than the equivalent java code:
+__plugin.getServer().getMotd() ).</p></li>
+<li><p><code>server</code> - The top-level org.bukkit.Server object. See the <a href="http://jd.bukkit.org/apidocs/">Bukkit API docs</a> for reference.</p></li>
+<li><p><code>self</code> - The player/command-block or server console operator who
+invoked the <code>/js</code> command. Again, this is a good jumping off point for
+diving into the Bukkit API.</p></li>
+</ul><h1>
+<a name="further-reading" class="anchor" href="#further-reading"><span class="octicon octicon-link"></span></a>Further Reading</h1>
+
+<p>ScriptCraft has <a href="http://scriptcraftjs.org/">its own website</a> with further information.</p>
+
+<ul>
+<li>To get started using ScriptCraft to Learn Javascript, read <a href="docs/YoungPersonsGuideToProgrammingMinecraft.md">The Young Person's Guide to Programming in Minecraft</a>.</li>
+<li>The ScriptCraft <a href="https://github.com/walterhiggins/ScriptCraft/blob/master/docs/API-Reference.md">API documentation</a>.</li>
+<li>To delve deeper into creating your own minecraft mod for use by others, read <a href="docs/Anatomy-of-a-Plugin.md">Creating a complete Minecraft Mod in  Javascript</a>.</li>
+<li>Take a look at some <a href="../../tree/master/src/main/javascript/plugins/examples">examples</a>
+</li>
+</ul><p>You can find more information about <a href="http://walterhiggins.net/blog/cat-index-scriptcraft.html">ScriptCraft on my blog</a>.</p>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
