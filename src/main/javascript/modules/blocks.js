@@ -33,7 +33,7 @@ var blocks = {
     sapling: {
         oak: 6,
         spruce: '6:1',
-        birch: '62:2',
+        birch: '6:2',
         jungle: '6:3'
     },
     bedrock: 7,
