@@ -187,11 +187,12 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     {
         var file = resolveModuleToFile(path, parentFile);
         if (!file){
-            var errMsg = java.lang.String
-                .format("require() failed to find matching file for module '%s' " + 
-                        "while searching directory '%s' and paths %s.",
-                        [path, parentFile.canonicalPath, JSON.stringify(modulePaths)]);
-            console.warn(errMsg);
+            var errMsg = '' + java.lang.String.format("require() failed to find matching file for module '%s' " + 
+                                                      "in working directory '%s' ", [path, parentFile.canonicalPath]);
+            if (! ( (''+path).match(/^\./) )){
+                errMsg = errMsg + ' and not found in paths ' + JSON.stringify(modulePaths);
+            }
+            logger.warning(errMsg);
             throw new Error(errMsg);
         }
         var canonizedFilename = _canonize(file);
@@ -242,7 +243,7 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
                 .apply(moduleInfo.exports,  /* this */
                        parameters);   
         } catch (e){
-            console.error("Error:" + e + " while executing module " + canonizedFilename);
+            logger.severe('Error:' + e + ' while executing module ' + canonizedFilename);
             throw e;
         }
         if (verbose)

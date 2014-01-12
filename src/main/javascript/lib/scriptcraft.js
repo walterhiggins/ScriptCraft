@@ -422,7 +422,9 @@ function __onEnable (__engine, __plugin, __script)
         return ;
     var File = java.io.File
     ,FileReader = java.io.FileReader
-    ,BufferedReader = java.io.BufferedReader;
+    ,BufferedReader = java.io.BufferedReader
+    ,PrintWriter = java.io.PrintWriter
+    ,FileWriter = java.io.FileWriter;
 
     var _canonize = function(file){ 
         return "" + file.getCanonicalPath().replaceAll("\\\\","/"); 
@@ -432,6 +434,23 @@ function __onEnable (__engine, __plugin, __script)
     var jsPluginsRootDir = libDir.parentFile; // scriptcraft
     var jsPluginsRootDirName = _canonize(jsPluginsRootDir);
 
+    /*
+      Save a javascript object to a file (saves using JSON notation)
+    */
+    var _save = function(object, filename){
+        var objectToStr = null;
+        try{
+            objectToStr = JSON.stringify(object,null,2);
+        }catch(e){
+            print("ERROR: " + e.getMessage() + " while saving " + filename);
+            return;
+        }
+        var f = (filename instanceof File) ? filename : new File(filename);
+        var out = new PrintWriter(new FileWriter(f));
+        out.println( objectToStr );
+        out.close();
+    };
+    
     var _loaded = {};
     /*
       Load the contents of the file and evaluate as javascript
@@ -487,7 +506,7 @@ function __onEnable (__engine, __plugin, __script)
     /*
       now that load is defined, use it to load a global config object
      */
-    var config = _load(new File(jsPluginsRootDir, "data/global-config.json" ));
+    var config = _load(new File(jsPluginsRootDir, 'data/global-config.json' ));
     if (!config)
         config = {verbose: false};
     global.config = config;
@@ -510,27 +529,6 @@ function __onEnable (__engine, __plugin, __script)
         }
     };
 
-    global.setTimeout = function( callback, delayInMillis){
-        /*
-          javascript programmers familiar with setTimeout know that it expects
-          a delay in milliseconds. However, bukkit's scheduler expects a delay in ticks 
-          (where 1 tick = 1/20th second)
-        */
-        var bukkitTask = server.scheduler.runTaskLater(__plugin, callback, delayInMillis/50);
-        return bukkitTask;
-    };
-    global.clearTimeout = function(bukkitTask){
-        bukkitTask.cancel();
-    };
-
-    global.setInterval = function(callback, intervalInMillis){
-        var delay = intervalInMillis/ 50;
-        var bukkitTask = server.scheduler.runTaskTimer(__plugin, callback, delay, delay);
-        return bukkitTask;
-    };
-    global.clearInterval = function(bukkitTask){
-        bukkitTask.cancel();
-    };
     global.refresh = function(){
         __plugin.pluginLoader.disablePlugin(__plugin);
         __plugin.pluginLoader.enablePlugin(__plugin);
@@ -547,6 +545,7 @@ function __onEnable (__engine, __plugin, __script)
     global.echo = _echo;
     global.alert = _echo;
     global.load = _load;
+    global.save = _save;
     
     global.addUnloadHandler = _addUnloadHandler;
 
@@ -556,21 +555,30 @@ function __onEnable (__engine, __plugin, __script)
      */
     var modulePaths = [jsPluginsRootDirName + '/lib/',
                        jsPluginsRootDirName + '/modules/'];
-    global.require = fnRequire(__plugin.logger, __engine, config.verbose, jsPluginsRootDirName, modulePaths);
+    global.require = fnRequire(__plugin.logger, 
+                               __engine, 
+                               config.verbose, 
+                               jsPluginsRootDirName, 
+                               modulePaths);
 
+    require('js-patch')(global);
     global.console = require('console');
+    /*
+      setup persistence
+     */
+    require('persistence')(jsPluginsRootDir,global);
+
     global.command = require('command').command;
     var plugins = require('plugin');
 
     global.__onTabComplete = require('tabcomplete');
     
     global.plugin = plugins.plugin;
-    global.save = plugins.save;
 
     var events = require('events');
     events.on('server.PluginDisableEvent',function(l,e){
         // save config
-        plugins.save(global.config, new File(jsPluginsRootDir, "data/global-config.json" ));
+        save(global.config, new File(jsPluginsRootDir, "data/global-config.json" ));
 
         _runUnloadHandlers();
         org.bukkit.event.HandlerList["unregisterAll(org.bukkit.plugin.Plugin)"](__plugin);
@@ -625,10 +633,12 @@ function __onEnable (__engine, __plugin, __script)
     for (var i = 0; i < legacyDirs.length; i++){
         if (legacyDirs[i].exists() && legacyDirs[i].isDirectory()){
             legacyExists = true;
-            console.warn('Legacy ScriptCraft directory ' + legacyDirs[i].canonicalPath + ' was found. This directory is no longer used.');
+            console.warn('Legacy ScriptCraft directory %s was found. This directory is no longer used.',
+                         legacyDirs[i].canonicalPath);
         }
     }
     if (legacyExists){
-        console.info('Please note that the working directory for ' + __plugin + ' is ' + jsPluginsRootDir.canonicalPath);
+        console.info('Please note that the working directory for %s is %s', 
+                     __plugin, jsPluginsRootDir.canonicalPath);
     }
 }

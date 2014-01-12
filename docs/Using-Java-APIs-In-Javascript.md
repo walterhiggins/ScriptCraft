@@ -35,11 +35,11 @@ using the more succinct...
 it is easier to read. The important thing to remember when using the
 Bukkit (or any Java API) from Javascript is that for any Java Bean, a
 property called `propertyName` will have a getter called
-`getPropertyName()` and a setter called `setPropertyName`. From this
+`getPropertyName()` and a setter called `setPropertyName()`. From this
 rule you can infer what any Bukkit class properties are. For example,
 the [Bukkit Player][bukpl] object has the following methods...
 
- * float getWalSpeed()
+ * float getWalkSpeed()
  * void setWalkSpeed(float speed)
 
 ... so from this you can infer that every Player object has a
@@ -61,7 +61,7 @@ the world in which a player is located...
 If you're new to Java and the [Bukkit API][bukapi] is the first time
 you've browsed Java documentation, you may be wondering where the
 `location` property came from - the `location` property is "inherited"
-by one of the Player classes super-classes. You'll see the
+from one of the Player class's super-classes (it's ancestors). You'll see the
 `getLocation()` method listed under a section titled **Methods
 inherited from interface org.bukkit.entity.Entity** in the
 [Player][bukpl] javadoc page.

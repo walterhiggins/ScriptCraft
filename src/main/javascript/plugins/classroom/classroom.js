@@ -47,6 +47,7 @@ var classroom = plugin("classroom", {
     allowScripting: function (/* boolean: true or false */ canScript, sender) {
         if (typeof sender == 'undefined'){
             console.log("Attempt to set classroom scripting without credentials");
+            console.log("classroom.allowScripting(boolean, sender)");
             return;
         }
         if (!sender.op){

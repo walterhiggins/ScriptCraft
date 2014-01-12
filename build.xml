@@ -7,13 +7,6 @@
   <property name="minecraft.dir" location="${dist}/minecraft" />
   <property name="js-plugins-dir" value="scriptcraft"/>
   <property name="http.agent" value="'Walter'" />
-  <target name="testy">
-    <echo message="${http.agent}"/>
-    <get src="http://dl.bukkit.org/api/1.0/downloads/projects/CraftBukkit/?_accept=application/xml"
-         verbose="true"
-         httpusecaches="false"
-         dest="${minecraft.dir}/waltbukkit.xml" />
-  </target>
   <target name="init">
     <property file="build.local.properties"/>
     <tstamp>
@@ -144,7 +137,7 @@ Walter Higgins
     
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
     <mkdir dir="${dist}/${DSTAMP}" />
-    <jar jarfile="${dist}/${DSTAMP}/ScriptCraft.jar" basedir="${build}"/>
+    <jar jarfile="${dist}/${DSTAMP}/scriptcraft.jar" basedir="${build}"/>
   </target>
 
   <target name="clean" description="clean up" >
@@ -157,6 +150,6 @@ Walter Higgins
       <fileset dir="${minecraft.dir}/plugins/" includes="scriptcraft*.*"/>
     </delete>
     <mkdir dir="${minecraft.dir}/plugins" />
-    <copy file="${dist}/${DSTAMP}/ScriptCraft.jar" todir="${minecraft.dir}/plugins"/>
+    <copy file="${dist}/${DSTAMP}/scriptcraft.jar" todir="${minecraft.dir}/plugins"/>
   </target>
 </project>

@@ -29,7 +29,7 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
     /** 
      * Unzips bundled javascript code.
      */
-    private void unzipJS()
+    private void unzipJS() throws IOException
     {
         //
         // does the js-plugins directory exist?
@@ -37,9 +37,13 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
         File jsPlugins = new File(JS_PLUGINS_DIR);
         if (!jsPlugins.exists())
         {
-            getLogger().finest("Directory " + JS_PLUGINS_DIR + " does not exist.");
-            getLogger().finest("Initializing " + JS_PLUGINS_DIR + " directory with contents from plugin archive.");
-            jsPlugins.mkdir();
+            getLogger().info("Directory " + jsPlugins.getCanonicalPath() + " does not exist.");
+            getLogger().info("Initializing " + jsPlugins.getCanonicalPath() + " directory with contents from plugin archive.");
+            try{
+                jsPlugins.mkdirs();
+            }catch(Exception e){
+                throw new RuntimeException("Failed to create directory " + jsPlugins.getCanonicalPath() + ":" + e.getMessage());
+            }
         }
         
         ZipInputStream zis = new ZipInputStream(getResource(JS_PLUGINS_ZIP));
@@ -48,7 +52,7 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
             while ( ( entry = zis.getNextEntry() ) != null)
             {
                 String filename = entry.getName();
-                //File newFile = new File(jsPlugins.getName() + File.separator + filename);
+
                 File newFile = new File(jsPlugins, filename);
                 
                 //create all non exists folders
@@ -59,17 +63,23 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
                     //
                     // only write out to file if zip entry is newer than file
                     //
+                    String reason = null;
                     long zTime = entry.getTime();
                     boolean unzip = false;
-                    if (!newFile.exists())
+                    if (!newFile.exists()){
+                        reason = "NE";
                         unzip = true;
+                    }
                     else{
                         long fTime = newFile.lastModified();
-                        if (zTime > fTime)
+                        if (zTime > fTime){
+                            reason = "" + new Long((zTime-fTime)/3600000) + "h";
                             unzip = true;
+                        }
+                        
                     }
                     if (unzip){
-                        getLogger().info("Unzipping " + newFile.getCanonicalPath());
+                        getLogger().info("Unzipping " + newFile.getCanonicalPath() + " (" + reason + ")" );
                         FileOutputStream fout = new FileOutputStream(newFile);             
                         for (int c = zis.read(); c != -1; c = zis.read()) {
                             fout.write(c);
@@ -90,9 +100,9 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
     @Override
         public void onEnable()
     {
-        unzipJS();
         FileReader reader = null;
         try{
+            unzipJS();
             ScriptEngineManager factory = new ScriptEngineManager();
             File bootScript = new File(JS_PLUGINS_DIR + "/lib/scriptcraft.js");
             this.engine = factory.getEngineByName("JavaScript");
@@ -103,6 +113,7 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
             
         }catch(Exception e){
             e.printStackTrace();
+            this.getLogger().severe(e.getMessage());
         }finally {
             if (reader != null){
                 try {

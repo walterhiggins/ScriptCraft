@@ -15,8 +15,20 @@ Once the game begins, guess a number by typing the `/` character
 followed by a number between 1 and 10.
 
 ***/
+
+var sb = function(cmd){ 
+    org.bukkit.Bukkit.dispatchCommand(server.consoleSender, 'scoreboard ' + cmd) 
+};
+
 exports.Game_NumberGuess = {
     start: function(sender) {
+
+        var guesses = 0;
+
+        sb('objectives add NumberGuess dummy Guesses');
+        sb('players set ' + sender.name + ' NumberGuess ' + guesses);
+        sb('objectives setdisplay sidebar NumberGuess');
+        
         importPackage(org.bukkit.conversations);
         
         var number = Math.ceil(Math.random() * 10);
@@ -38,6 +50,7 @@ exports.Game_NumberGuess = {
                 if (s == number){
                     setTimeout(function(){
                         ctx.forWhom.sendRawMessage("You guessed Correct!");
+                        sb('objectives remove NumberGuess');
                     },100);
                     return null;
                 }else{
@@ -45,6 +58,9 @@ exports.Game_NumberGuess = {
                         ctx.setSessionData("hint","too low\n");
                     if (s > number)
                         ctx.setSessionData("hint","too high\n");
+                    guesses++;
+                    sb('players set ' + sender.name + ' NumberGuess ' + guesses);
+                    
                     return prompt;
                 }
             },

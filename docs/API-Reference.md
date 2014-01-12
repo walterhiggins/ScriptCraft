@@ -117,6 +117,8 @@ Walter Higgins
  * [Example Plugin #7 - Listening for events, Greet players when they join the game.](#example-plugin-7---listening-for-events-greet-players-when-they-join-the-game)
  * [Arrows Plugin](#arrows-plugin)
    * [Usage:](#usage-6)
+ * [Spawn Plugin](#spawn-plugin)
+   * [Usage](#usage-7)
  * [alias Plugin](#alias-plugin)
    * [Examples](#examples-2)
  * [Classroom Plugin](#classroom-plugin)
@@ -135,6 +137,10 @@ Walter Higgins
    * [Example](#example-1)
  * [SnowballFight mini-game](#snowballfight-mini-game)
    * [Description](#description-2)
+ * [Cow Clicker Mini-Game](#cow-clicker-mini-game)
+   * [How to Play](#how-to-play)
+   * [Rules](#rules)
+   * [Gameplay Mechanics](#gameplay-mechanics)
 
 ## Modules in Scriptcraft
 
@@ -2340,6 +2346,18 @@ All of the above functions can take an optional player object or name
 as a parameter. For example: `/js arrows.explosive('player23')` makes
 player23's arrows explosive.
  
+## Spawn Plugin
+
+Allows in-game operators to easily spawn creatures at current location.
+
+### Usage
+
+    /jsp spawn cow
+    /jsp spawn sheep
+    /jsp spawn wolf
+
+See <http://jd.bukkit.org/beta/apidocs/org/bukkit/entity/EntityType.html> for a list of possible entities (creatures) which can be spawned.
+
 ## alias Plugin
 
 The alias module lets players and server admins create their own
@@ -2621,3 +2639,44 @@ player returns to their previous mode of play (creative or
 survival). Create a small arena with a couple of small buildings for
 cover to make the game more fun.
   
+## Cow Clicker Mini-Game
+
+### How to Play
+
+At the in-game prompt type `jsp cowclicker` to start or stop
+playing. Right-Click on Cows to score points. No points for killing
+cows (hint: use the same keyboard keys you'd use for opening doors).
+
+Every time you click a cow your score increases by 1 point. Your score
+is displayed in a side-bar along the right edge of of the screen.
+
+![cow clicker](img/cowclicker.png)
+
+### Rules
+
+ * You can join and leave the Cow Clicker game at any time by typing
+   `/jsp cowclicker` at the in-game prompt.
+
+ * Once you leave the game, your score is reset to zero.
+
+ * You can disconnect from the server and your score will be saved for
+   the next time you join.
+
+### Gameplay Mechanics
+
+This is meant as a trivially simple use of the [Bukkit Scoreboard
+API][bukscore]. There are many things you'll want to consider when constructing
+your own mini-game...
+
+ * Is the game itself a long-lived game - that is - should players and
+   scores be persisted (stored) between server restarts?  
+
+ * What should happen when a player quits the server - should this also be
+   understood as quitting the mini-game?
+
+ * What should happen when a player who was previously playing the
+   mini-game, joins the server - should they automatically resume the
+   mini-game?
+
+[bukscore]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scoreboard/package-summary.html
+

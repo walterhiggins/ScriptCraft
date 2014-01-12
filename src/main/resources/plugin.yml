@@ -1,4 +1,4 @@
-name: ScriptCraftPlugin
+name: scriptcraft
 main: net.walterhiggins.scriptcraft.ScriptCraftPlugin
 version: [[version]]
 commands:

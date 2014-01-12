@@ -1,5 +1,12 @@
 args = args.slice(1);
 
+// wph 20140105 trim not availabe in String on Mac OS.
+if (typeof String.prototype.trim == 'undefined'){
+    String.prototype.trim = function(){
+        return this.replace(/^\s+|\s+$/g,'');
+    };
+}
+
 var template = args[0];
 
 var BufferedReader = java.io.BufferedReader;

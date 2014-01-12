@@ -1,3 +1,25 @@
+# 2014 01 12
+
+## Important
+The ScriptCraft.jar file has been renamed scriptcraft.jar (see bug fix
+details below). This means that you will have to remove the existing
+`plugins/ScriptCraft.jar` file if present.
+
+Bug Fix: On Mac OS, the plugins/scriptcraft directory is copied to
+plugins/ScriptCraftPlugin the 2nd time ScriptCraftPlugin is loaded.
+This has been fixed by changing the plugin name from ScriptCraftPlugin
+to scriptcraft.  The jar file has also been rename from
+ScriptCraft.jar to scriptcraft.jar.
+
+New command: `jsp spawn` lets in-game operators spawn any type of
+entity. For example `/jsp spawn cow` will spawn a cow at the in-game
+operator's current location.
+
+New minigame: Cow Clicker. A simple demonstration of using Bukkit's
+Scoreboard API. Players click cows to score points. Scores are
+displayed in a side bar on screen. Players join or leave the game by
+typing `/jsp cowclicker` at the in-game prompt.
+
 # 2014 01 05
 
 Bug Fix: On Mac OS, alias plugin caused Exceptions due to missing
