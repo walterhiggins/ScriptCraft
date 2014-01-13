@@ -126,6 +126,11 @@ ScriptCraft plugin...
 [cbdl]: http://dl.bukkit.org/downloads/craftbukkit/
 [bukapi]: http://jd.bukkit.org/apidocs/
 
+Contributing
+============
+
+If you would like to contribute source code and/or documentation changes please [read contributing.md][contrib]
+
 Further Reading
 ===============
 
@@ -150,3 +155,4 @@ You can find more information about [ScriptCraft on my blog][blog].
 [cda]: http://cdathenry.wordpress.com/category/modderdojo/
 [ytpl]: http://www.youtube.com/watch?v=DDp20SKm43Y&list=PL4Tw0AgXQZH5BiFHqD2hXyXQi0-qFbGp_
 [ex]: ../../tree/master/src/main/javascript/plugins/examples
+[contrib]: contributing.md
