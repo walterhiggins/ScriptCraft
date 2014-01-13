@@ -1,3 +1,8 @@
+# 2014 01 13
+
+Bug Fix: Make ScriptCraft work with Nashorn javascript engine bundled with Java 8
+<https://github.com/walterhiggins/ScriptCraft/issues/112>
+
 # 2014 01 12
 
 ## Important

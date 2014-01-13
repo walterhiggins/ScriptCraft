@@ -13,7 +13,7 @@ module.exports = function( rootDir, $ ){
         if (typeof write == 'undefined')
             write = false;
         if (!write){
-            dataFromFile = $.load(_dataDir.canonicalPath + '/' + name + '-store.json');
+            dataFromFile = $.scload(_dataDir.canonicalPath + '/' + name + '-store.json');
             if (dataFromFile){
                 for (i in dataFromFile){
                     data[i] = dataFromFile[i];
@@ -21,7 +21,7 @@ module.exports = function( rootDir, $ ){
             }
         }else{
             // flush data to file
-            $.save(data, _dataDir.canonicalPath + '/' + name + '-store.json');
+            $.scsave(data, _dataDir.canonicalPath + '/' + name + '-store.json');
         }
         _persistentData[name] = data;
         return data;
@@ -30,7 +30,7 @@ module.exports = function( rootDir, $ ){
     $.addUnloadHandler(function(){
         for (var name in _persistentData){
             var data = _persistentData[name];
-        $.save(data, _dataDir.canonicalPath + '/' + name + '-store.json');
+        $.scsave(data, _dataDir.canonicalPath + '/' + name + '-store.json');
         }
     });
 };

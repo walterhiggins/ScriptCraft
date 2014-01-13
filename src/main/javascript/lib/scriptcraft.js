@@ -207,11 +207,11 @@ to load the named module.
 
 require() will return the loaded module's exports.
 
-### load() function 
+### scload() function 
 
 #### No longer recommended for use by Plugin/Module developers (deprecated)
 
-load() should only be used to load .json data.
+scload() should only be used to load .json data.
 
 #### Parameters
 
@@ -220,13 +220,13 @@ load() should only be used to load .json data.
 
 #### Returns
 
-load() will return the result of the last statement evaluated in the file.
+scload() will return the result of the last statement evaluated in the file.
 
 #### Example
 
-    load("myFile.js"); // loads a javascript file and evaluates it.
+    scload("myFile.js"); // loads a javascript file and evaluates it.
 
-    var myData = load("myData.json"); // loads a javascript file and evaluates it - eval'd contents are returned.
+    var myData = scload("myData.json"); // loads a javascript file and evaluates it - eval'd contents are returned.
 
 ##### myData.json contents...
 
@@ -239,15 +239,15 @@ load() will return the result of the last statement evaluated in the file.
       }
     }
 
-### save() function
+### scsave() function
 
-The save() function saves an in-memory javascript object to a
-specified file. Under the hood, save() uses JSON (specifically
+The scsave() function saves an in-memory javascript object to a
+specified file. Under the hood, scsave() uses JSON (specifically
 json2.js) to save the object. Again, there will usually be no need to
 call this function directly as all javascript plugins' state are saved
 automatically if they are declared using the `plugin()` function.  Any
-in-memory object saved using the `save()` function can later be
-restored using the `load()` function.
+in-memory object saved using the `scsave()` function can later be
+restored using the `scload()` function.
 
 #### Parameters
 
@@ -259,7 +259,7 @@ restored using the `load()` function.
     var myObject = { name: 'John Doe',
                      aliases: ['John Ray', 'John Mee'],
                      date_of_birth: '1982/01/31' };
-    save(myObject, 'johndoe.json');
+    scsave(myObject, 'johndoe.json');
 
 ##### johndoe.json contents...
 
@@ -415,11 +415,6 @@ var server = org.bukkit.Bukkit.server;
 */
 function __onEnable (__engine, __plugin, __script)
 {
-    /*
-      don't execute this more than once
-    */
-    if (typeof load == "function")
-        return ;
     var File = java.io.File
     ,FileReader = java.io.FileReader
     ,BufferedReader = java.io.BufferedReader
@@ -450,8 +445,15 @@ function __onEnable (__engine, __plugin, __script)
         out.println( objectToStr );
         out.close();
     };
-    
-    var _loaded = {};
+    /*
+      make sure eval is present
+     */
+    if (typeof eval == 'undefined'){
+        global.eval = function(str){
+            return __engine.eval(str);
+        };
+    }
+        
     /*
       Load the contents of the file and evaluate as javascript
      */
@@ -465,11 +467,6 @@ function __onEnable (__engine, __plugin, __script)
             file = new File(filename);
 
         var canonizedFilename = _canonize(file);
-        /*
-          wph 20130123 don't load the same file more than once.
-        */
-        if (_loaded[canonizedFilename])
-            return _loaded[canonizedFilename];
         
         if (file.exists()) {
             var parent = file.getParentFile();
@@ -484,9 +481,6 @@ function __onEnable (__engine, __plugin, __script)
                 wrappedCode = "(" + code + ")";
                 result = __engine.eval(wrappedCode);
                 // issue #103 avoid side-effects of || operator on Mac Rhino
-                _loaded[canonizedFilename] = result ;
-                if (!_loaded[canonizedFilename])
-                    _loaded[canonizedFilename]= true;
             }catch (e){
                 __plugin.logger.severe("Error evaluating " + canonizedFilename + ", " + e );
             }
@@ -544,12 +538,12 @@ function __onEnable (__engine, __plugin, __script)
 
     global.echo = _echo;
     global.alert = _echo;
-    global.load = _load;
-    global.save = _save;
+    global.scload = _load;
+    global.scsave = _save;
     
     global.addUnloadHandler = _addUnloadHandler;
 
-    var fnRequire = load(jsPluginsRootDirName + '/lib/require.js',true);
+    var fnRequire = _load(jsPluginsRootDirName + '/lib/require.js',true);
     /*
       setup paths to search for modules
      */
@@ -570,15 +564,13 @@ function __onEnable (__engine, __plugin, __script)
 
     global.command = require('command').command;
     var plugins = require('plugin');
-
     global.__onTabComplete = require('tabcomplete');
-    
     global.plugin = plugins.plugin;
 
     var events = require('events');
     events.on('server.PluginDisableEvent',function(l,e){
         // save config
-        save(global.config, new File(jsPluginsRootDir, "data/global-config.json" ));
+        _save(global.config, new File(jsPluginsRootDir, "data/global-config.json" ));
 
         _runUnloadHandlers();
         org.bukkit.event.HandlerList["unregisterAll(org.bukkit.plugin.Plugin)"](__plugin);
@@ -586,7 +578,6 @@ function __onEnable (__engine, __plugin, __script)
     // wph 20131226 - make events global as it is used by many plugins/modules
     global.events = events;
 
-    plugins.autoload(jsPluginsRootDir);
 
     global.__onCommand = function( sender, cmd, label, args) {
         var jsArgs = [];
@@ -620,6 +611,8 @@ function __onEnable (__engine, __plugin, __script)
         }
         return result;
     };
+
+    plugins.autoload(jsPluginsRootDir);
     /*
       wph 20140102 - warn if legacy 'craftbukkit/js-plugins' or 'craftbukkit/scriptcraft' directories are present
      */

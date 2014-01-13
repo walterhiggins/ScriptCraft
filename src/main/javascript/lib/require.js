@@ -68,7 +68,7 @@ module specification, the '.js' suffix is optional.
         // look for a package.json file
         var pkgJsonFile = new File(dir, './package.json');
         if (pkgJsonFile.exists()){
-            var pkg = load(pkgJsonFile);
+            var pkg = scload(pkgJsonFile);
             var mainFile = new File(dir, pkg.main);
             if (mainFile.exists()){
                 return mainFile;

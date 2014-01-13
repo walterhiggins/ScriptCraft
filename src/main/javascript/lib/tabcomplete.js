@@ -76,6 +76,8 @@ var _getProperties = function(o)
 
 var onTabCompleteJS = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs) {
 
+    cmdArgs = Array.prototype.slice.call(cmdArgs, 0);
+
     if (pluginCmd.name == 'jsp')
         return tabCompleteJSP( result, cmdSender, pluginCmd, cmdAlias, cmdArgs );
 

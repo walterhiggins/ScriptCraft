@@ -65,7 +65,6 @@ exports.autoload = function(dir) {
     */
     var _reload = function(pluginDir)
     {
-        _loaded = [];
         var sourceFiles = [];
         _listSourceFiles(sourceFiles,pluginDir);
 

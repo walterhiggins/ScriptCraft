@@ -93,11 +93,7 @@ exports.on = function(
         priority = bkEvent.EventPriority[priority];
     }
     if (typeof eventType == "string"){
-        var subPkgs = eventType.split('.');
-        eventType = bkEvent[subPkgs[0]];
-        for (var i = 1;i < subPkgs.length; i++){
-            eventType = eventType[subPkgs[i]];
-        }
+        eventType = eval('org.bukkit.event.' + eventType);
     }
     var handlerList = eventType.getHandlerList();
     var listener = {};

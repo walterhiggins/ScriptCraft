@@ -25,8 +25,8 @@ Walter Higgins
  * [Global functions](#global-functions)
    * [echo function](#echo-function)
    * [require() function](#require-function)
-   * [load() function](#load-function)
-   * [save() function](#save-function)
+   * [scload() function](#scload-function)
+   * [scsave() function](#scsave-function)
    * [plugin() function](#plugin-function)
    * [command() function](#command-function)
    * [setTimeout() function](#settimeout-function)
@@ -348,11 +348,11 @@ to load the named module.
 
 require() will return the loaded module's exports.
 
-### load() function 
+### scload() function 
 
 #### No longer recommended for use by Plugin/Module developers (deprecated)
 
-load() should only be used to load .json data.
+scload() should only be used to load .json data.
 
 #### Parameters
 
@@ -361,13 +361,13 @@ load() should only be used to load .json data.
 
 #### Returns
 
-load() will return the result of the last statement evaluated in the file.
+scload() will return the result of the last statement evaluated in the file.
 
 #### Example
 
-    load("myFile.js"); // loads a javascript file and evaluates it.
+    scload("myFile.js"); // loads a javascript file and evaluates it.
 
-    var myData = load("myData.json"); // loads a javascript file and evaluates it - eval'd contents are returned.
+    var myData = scload("myData.json"); // loads a javascript file and evaluates it - eval'd contents are returned.
 
 ##### myData.json contents...
 
@@ -380,15 +380,15 @@ load() will return the result of the last statement evaluated in the file.
       }
     }
 
-### save() function
+### scsave() function
 
-The save() function saves an in-memory javascript object to a
-specified file. Under the hood, save() uses JSON (specifically
+The scsave() function saves an in-memory javascript object to a
+specified file. Under the hood, scsave() uses JSON (specifically
 json2.js) to save the object. Again, there will usually be no need to
 call this function directly as all javascript plugins' state are saved
 automatically if they are declared using the `plugin()` function.  Any
-in-memory object saved using the `save()` function can later be
-restored using the `load()` function.
+in-memory object saved using the `scsave()` function can later be
+restored using the `scload()` function.
 
 #### Parameters
 
@@ -400,7 +400,7 @@ restored using the `load()` function.
     var myObject = { name: 'John Doe',
                      aliases: ['John Ray', 'John Mee'],
                      date_of_birth: '1982/01/31' };
-    save(myObject, 'johndoe.json');
+    scsave(myObject, 'johndoe.json');
 
 ##### johndoe.json contents...
 
