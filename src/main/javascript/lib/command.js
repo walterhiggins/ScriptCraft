@@ -22,10 +22,9 @@ var executeCmd = function(args, player){
         if (!intercepted)
             console.warn('Command %s is not recognised',name);
     }else{
-        func = cmd.callback;
         var result = null;
         try { 
-            result = func(args.slice(1),player);
+            result = cmd.callback(args.slice(1),player);
         }catch (e){
             console.error("Error while trying to execute command: " + JSON.stringify(args));
             throw e;

@@ -37,9 +37,10 @@ location. For example...
   create a firework at the given location
 */
 var firework = function(location){
-    importPackage(org.bukkit.entity);
-    importPackage(org.bukkit);
-    
+    var Color = org.bukkit.Color;
+    var FireworkEffect = org.bukkit.FireworkEffect;
+    var EntityType = org.bukkit.entity.EntityType;
+
     var randInt = function(n){
         return Math.floor(Math.random() * n);
     };

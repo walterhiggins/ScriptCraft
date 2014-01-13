@@ -3,7 +3,12 @@
 */
 var err = java.lang.System.err;
 
-args = args.slice(1);
+args = Array.prototype.slice.call(args,1);
+
+if (typeof importPackage == 'undefined'){
+    // load compatibility script
+    load('nashorn:mozilla_compat.js');
+}
 var dir = args[0];
 var foreach = function(array, func){
     for (var i =0; i < array.length; i++){
@@ -142,7 +147,7 @@ for (var i = 0;i < contents.length; i++){
         writeComment = false;
     }
     if (writeComment){
-        println(contents[i]);
+        java.lang.System.out.println(contents[i]);
     }
 }
 

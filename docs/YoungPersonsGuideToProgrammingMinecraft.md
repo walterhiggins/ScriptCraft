@@ -1,5 +1,4 @@
 # The Young Person's Guide to Programming in Minecraft
-
 ## Table of Contents
  * [Introduction](#introduction)
  * [Installation](#installation)

@@ -105,7 +105,7 @@ Walter Higgins
         <pathelement path="src/docs/java"/>      
       </classpath>
       <arg value="src/docs/javascript/generateTOC.js"/>
-      <arg value="src/docs/templates/ypgpm.mdt"/>
+      <arg value="src/docs/templates/ypgpm.md"/>
     </java>
   </target>
 
@@ -113,10 +113,9 @@ Walter Higgins
   <target name="construct-ypgpm" depends="gen-toc-ypgpm,init">
     <concat destfile="docs/YoungPersonsGuideToProgrammingMinecraft.md">
       <header filtering="no" trimleading="yes"># The Young Person's Guide to Programming in Minecraft
-
       </header>
       <fileset file="${dist}/toc-ypgpm.md" />
-      <fileset file="src/docs/templates/ypgpm.mdt" />
+      <fileset file="src/docs/templates/ypgpm.md" />
    </concat>      
   </target>
 

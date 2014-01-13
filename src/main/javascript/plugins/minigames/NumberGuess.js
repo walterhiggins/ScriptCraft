@@ -29,8 +29,10 @@ exports.Game_NumberGuess = {
         sb('players set ' + sender.name + ' NumberGuess ' + guesses);
         sb('objectives setdisplay sidebar NumberGuess');
         
-        importPackage(org.bukkit.conversations);
-        
+        var Prompt = org.bukkit.conversations.Prompt;
+        var ConversationFactory = org.bukkit.conversations.ConversationFactory;
+        var ConversationPrefix = org.bukkit.conversations.ConversationPrefix;
+
         var number = Math.ceil(Math.random() * 10);
         
         var prompt = new Prompt()
