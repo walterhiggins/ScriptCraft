@@ -46,8 +46,8 @@ Minecraft.
 [cottage]: https://github.com/walterhiggins/ScriptCraft/tree/master/src/main/javascript//drone/cottage.js
 [bukkit]: http://dl.bukkit.org/
 
-Prerequisites
-=============
+# Prerequisites
+
 You will need to have Java version 6 or 7 installed on your
 machine. Check the version by typing `java -version` at a command
 prompt.  You will need to [install Bukkit][ib] on your machine. Bukkit
@@ -55,14 +55,14 @@ is a version of Minecraft (server) that makes it easy to install
 plugins and customize Minecraft.  You can [download the CraftBukkit
 server here.][cbdl]
 
-Installation
-============
+# Installation
+
 If you don't want to compile from source, you can [download the
 compiled plugin here][dl] and copy it the craftbukkit's plugins
 directory.
 
-Post Install
-============
+# Post Install
+
 Once installed, a new js-plugins directory is automatically created in
 the same directory as the plugins folder.  All files in the js-plugins
 directory will be automatically loaded when CraftBukkit starts.  *Only
@@ -99,8 +99,8 @@ of the existing mods in the [homes][ho], [chat][ch], [arrows][ar] and
 [signs][si] directories. The chat/color.js mod is probably the
 simplest mod to get started with.
 
-Additional information
-======================
+# Additional information
+
 Because the Bukkit API is open, all of the Bukkit API is accessible
 via javascript once the ScriptCraft plugin is loaded. There are a
 couple of useful Java objects exposed via javascript in the Bukkit
@@ -126,13 +126,16 @@ ScriptCraft plugin...
 [cbdl]: http://dl.bukkit.org/downloads/craftbukkit/
 [bukapi]: http://jd.bukkit.org/apidocs/
 
-Contributing
-============
+# Contributing
 
 If you would like to contribute source code and/or documentation changes please [read contributing.md][contrib]
 
-Configuration
-=============
+## Status
+
+[![Travis Build Status](https://api.travis-ci.org/walterhiggins/ScriptCraft.png)](http://travis-ci.org/walterhiggins/ScriptCraft)
+
+# Configuration
+
 ScriptCraft is a Bukkit Plugin and uses the Bukkit Configuration
 API. On first loading, ScriptCraft will create a config.yml file in
 the plugins/scriptcraft/ directory. This file looks like this...
@@ -148,8 +151,7 @@ scriptcraft. It's strongly recommended that the `lib` directory always
 be set to true to get the latest core scriptcraft code . The modules
 and plugins directories are optional and not part of scriptcraft core.
 
-Further Reading
-===============
+# Further Reading
 
 ScriptCraft has [its own website][website] with further information.
 

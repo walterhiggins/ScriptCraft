@@ -1,3 +1,7 @@
+# Status
+
+[![Travis Build Status](https://api.travis-ci.org/walterhiggins/ScriptCraft.png)](http://travis-ci.org/walterhiggins/ScriptCraft)
+
 # Notes for Contributors
 
 This project uses a Maven-like directory structure...
