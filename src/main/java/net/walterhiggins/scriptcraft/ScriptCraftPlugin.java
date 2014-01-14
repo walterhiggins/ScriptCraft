@@ -1,20 +1,12 @@
 package net.walterhiggins.scriptcraft;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.InputStreamReader;
 import javax.script.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.Collection;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.*;
-import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
 public class ScriptCraftPlugin extends JavaPlugin implements Listener
@@ -23,114 +15,27 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
     // need to look at possibly having context/scope per operator
     //protected Map<CommandSender,ScriptCraftEvaluator> playerContexts = new HashMap<CommandSender,ScriptCraftEvaluator>();
     protected ScriptEngine engine = null;
-    private static final String JS_PLUGINS_DIR = "plugins/scriptcraft";
-    private static final String JS_PLUGINS_ZIP = "scriptcraft.zip";
-    
-    /** 
-     * Unzips bundled javascript code.
-     */
-    private void unzipJS() throws IOException
-    {
-        //
-        // does the js-plugins directory exist?
-        //
-        File jsPlugins = new File(JS_PLUGINS_DIR);
-        if (!jsPlugins.exists())
-        {
-            getLogger().info("Directory " + jsPlugins.getCanonicalPath() + " does not exist.");
-            getLogger().info("Initializing " + jsPlugins.getCanonicalPath() + " directory with contents from plugin archive.");
-            try{
-                jsPlugins.mkdirs();
-            }catch(Exception e){
-                throw new RuntimeException("Failed to create directory " + jsPlugins.getCanonicalPath() + ":" + e.getMessage());
-            }
-        }
-        
-        ZipInputStream zis = new ZipInputStream(getResource(JS_PLUGINS_ZIP));
-        ZipEntry entry;
-        try {
-            while ( ( entry = zis.getNextEntry() ) != null)
-            {
-                String filename = entry.getName();
-
-                File newFile = new File(jsPlugins, filename);
-                
-                //create all non exists folders
-                //else you will hit FileNotFoundException for compressed folder
-                if (entry.isDirectory()){
-                    newFile.mkdirs();
-                }else{
-                    //
-                    // only write out to file if zip entry is newer than file
-                    //
-                    String reason = null;
-                    long zTime = entry.getTime();
-                    boolean unzip = false;
-                    if (!newFile.exists()){
-                        reason = "NE";
-                        unzip = true;
-                    }
-                    else{
-                        long fTime = newFile.lastModified();
-                        if (zTime > fTime){
-                            reason = "" + new Long((zTime-fTime)/3600000) + "h";
-                            unzip = true;
-                        }
-                        
-                    }
-                    if (unzip){
-                        getLogger().info("Unzipping " + newFile.getCanonicalPath() + " (" + reason + ")" );
-                        FileOutputStream fout = new FileOutputStream(newFile);             
-                        for (int c = zis.read(); c != -1; c = zis.read()) {
-                            fout.write(c);
-                        }
-                        fout.close();
-                    }
-                    
-                }
-                zis.closeEntry();
-            }
-            zis.close();
-        }catch (IOException ioe){
-            getLogger().warning(ioe.getMessage());
-            ioe.printStackTrace();
-        }
-    }
     
     @Override
         public void onEnable()
     {
-        FileReader reader = null;
         try{
-            unzipJS();
+
             ScriptEngineManager factory = new ScriptEngineManager();
-            File bootScript = new File(JS_PLUGINS_DIR + "/lib/scriptcraft.js");
             this.engine = factory.getEngineByName("JavaScript");
-            reader = new FileReader(bootScript);
-            this.engine.eval(reader);
             Invocable inv = (Invocable)this.engine;
-            inv.invokeFunction("__onEnable", engine, this, bootScript);
-            
+            this.engine.eval(new InputStreamReader(this.getResource("boot.js")));
+            inv.invokeFunction("__scboot", this, engine);
+
         }catch(Exception e){
             e.printStackTrace();
             this.getLogger().severe(e.getMessage());
-        }finally {
-            if (reader != null){
-                try {
-                    reader.close();
-                }catch(IOException ioe){
-                    // fail silently
-                }
-            }
         }
     }
     public List<String> onTabComplete(CommandSender sender, Command cmd,
                                       String alias,
                                       String[] args)
     {
-        //
-        // delegate to javascript
-        //
         List<String> result = new ArrayList<String>();
         try {
             Invocable inv = (Invocable)this.engine;

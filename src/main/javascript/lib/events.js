@@ -93,7 +93,18 @@ exports.on = function(
         priority = bkEvent.EventPriority[priority];
     }
     if (typeof eventType == "string"){
-        eventType = eval('org.bukkit.event.' + eventType);
+        /*
+          Nashorn doesn't support bracket notation for accessing packages. 
+          E.g. java.net will work but java['net'] won't. 
+          
+          https://bugs.openjdk.java.net/browse/JDK-8031715
+        */
+        if (typeof Java != 'undefined'){
+            // nashorn environment
+            eventType = Java.type('org.bukkit.event.' + eventType);
+        } else {
+            eventType = eval('org.bukkit.event.' + eventType);
+        }
     }
     var handlerList = eventType.getHandlerList();
     var listener = {};

@@ -428,6 +428,7 @@ function __onEnable (__engine, __plugin, __script)
     var libDir = __script.parentFile; // lib (assumes scriptcraft.js is in craftbukkit/plugins/scriptcraft/lib directory
     var jsPluginsRootDir = libDir.parentFile; // scriptcraft
     var jsPluginsRootDirName = _canonize(jsPluginsRootDir);
+    var logger = __plugin.logger;
 
     /*
       Save a javascript object to a file (saves using JSON notation)
@@ -482,7 +483,7 @@ function __onEnable (__engine, __plugin, __script)
                 result = __engine.eval(wrappedCode);
                 // issue #103 avoid side-effects of || operator on Mac Rhino
             }catch (e){
-                __plugin.logger.severe("Error evaluating " + canonizedFilename + ", " + e );
+                logger.severe("Error evaluating " + canonizedFilename + ", " + e );
             }
             finally {
                 try {
@@ -493,7 +494,7 @@ function __onEnable (__engine, __plugin, __script)
             }
         }else{
             if (warnOnFileNotFound) 
-                __plugin.logger.warning(canonizedFilename + " not found");
+                logger.warning(canonizedFilename + " not found");
         }
         return result;
     };
@@ -529,7 +530,6 @@ function __onEnable (__engine, __plugin, __script)
     };
     
     var _echo = function (msg) {
-        __plugin.logger.info( msg );
         if (typeof self == "undefined"){
             return;
         }
@@ -543,17 +543,28 @@ function __onEnable (__engine, __plugin, __script)
     
     global.addUnloadHandler = _addUnloadHandler;
 
-    var fnRequire = _load(jsPluginsRootDirName + '/lib/require.js',true);
+    var configRequire = _load(jsPluginsRootDirName + '/lib/require.js',true);
     /*
       setup paths to search for modules
      */
     var modulePaths = [jsPluginsRootDirName + '/lib/',
                        jsPluginsRootDirName + '/modules/'];
-    global.require = fnRequire(__plugin.logger, 
-                               __engine, 
-                               config.verbose, 
-                               jsPluginsRootDirName, 
-                               modulePaths);
+
+    if (config.verbose){
+        logger.info('Setting up CommonJS-style module system. Root Directory: ' + jsPluginsRootDirName);
+        logger.info('Module paths: ' + JSON.stringify(modulePaths));
+    }
+    var requireHooks = {
+        loading: function(path){
+            if (config.verbose)
+                logger.info('loading ' + path);
+        },
+        loaded: function(path){
+            if (config.verbose)
+                logger.info('loaded  ' + path);
+        }
+    };
+    global.require = configRequire(jsPluginsRootDirName, modulePaths,requireHooks );
 
     require('js-patch')(global);
     global.console = require('console');
@@ -570,10 +581,10 @@ function __onEnable (__engine, __plugin, __script)
     var events = require('events');
     events.on('server.PluginDisableEvent',function(l,e){
         // save config
-        _save(global.config, new File(jsPluginsRootDir, "data/global-config.json" ));
+        _save(global.config, new File(jsPluginsRootDir, 'data/global-config.json' ));
 
         _runUnloadHandlers();
-        org.bukkit.event.HandlerList["unregisterAll(org.bukkit.plugin.Plugin)"](__plugin);
+        org.bukkit.event.HandlerList['unregisterAll(org.bukkit.plugin.Plugin)'](__plugin);
     });
     // wph 20131226 - make events global as it is used by many plugins/modules
     global.events = events;
@@ -593,12 +604,11 @@ function __onEnable (__engine, __plugin, __script)
             global.self = sender;
             global.__engine = __engine;
             try { 
-                //var jsResult = __engine["eval(java.lang.String,javax.script.Bindings)"]( fnBody, bindings );
                 var jsResult = __engine.eval(fnBody);
                 if (jsResult)
                     sender.sendMessage(jsResult);
             }catch (e){
-                __plugin.logger.severe("Error while trying to evaluate javascript: " + fnBody + ", Error: "+ e);
+                logger.severe("Error while trying to evaluate javascript: " + fnBody + ", Error: "+ e);
                 throw e;
             }finally{
                 delete global.self;

@@ -1,0 +1,4 @@
+extract-js: 
+  plugins: true
+  modules: true
+  lib: true  

@@ -54,12 +54,7 @@ module specification, the '.js' suffix is optional.
 [cjsmodules]: http://wiki.commonjs.org/wiki/Modules/1.1.1.
 
 ***/
-(function (logger, evaluator, verbose, rootDir, modulePaths) {
-
-    if (verbose){
-        logger.info("Setting up 'require' module system. Root Directory: " + rootDir);
-        logger.info("Module paths: " + JSON.stringify(modulePaths));
-    }
+(function (rootDir, modulePaths, hooks) {
 
     var File = java.io.File;
     
@@ -152,9 +147,6 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
                     if (resolvedFile.exists())
                         return resolvedFile;
                 }
-                if (verbose){
-                    logger.info("Module " + moduleName + " not found in " + modulePaths[i]);
-                }
             }
         } else {
             // it's of the form ./path
@@ -192,8 +184,7 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
             if (! ( (''+path).match(/^\./) )){
                 errMsg = errMsg + ' and not found in paths ' + JSON.stringify(modulePaths);
             }
-            logger.warning(errMsg);
-            throw new Error(errMsg);
+            throw errMsg;
         }
         var canonizedFilename = _canonize(file);
         
@@ -201,9 +192,8 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
         if (moduleInfo){
             return moduleInfo;
         }
-        if (verbose){
-            logger.info("loading module " + canonizedFilename);
-        }
+        if (hooks)
+            hooks.loading(canonizedFilename);
         var reader = new java.io.FileReader(file);
         var br = new java.io.BufferedReader(reader);
         var code = "";
@@ -225,10 +215,9 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
         _loadedModules[canonizedFilename] = moduleInfo;
         var compiledWrapper = null;
         try {
-            compiledWrapper = evaluator.eval(code);
+            compiledWrapper = eval(code);
         }catch (e){
-            logger.severe("Error:" + e + " while evaluating module " + canonizedFilename);
-            throw e;
+            throw "Error:" + e + " while evaluating module " + canonizedFilename;
         }
         var __dirname = "" + file.parentFile.canonicalPath;
         var parameters = [
@@ -243,12 +232,10 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
                 .apply(moduleInfo.exports,  /* this */
                        parameters);   
         } catch (e){
-            logger.severe('Error:' + e + ' while executing module ' + canonizedFilename);
-            throw e;
+            throw 'Error:' + e + ' while executing module ' + canonizedFilename;
         }
-        if (verbose)
-            logger.info("loaded module " + canonizedFilename);
-
+        if (hooks)
+            hooks.loaded(canonizedFilename);
         moduleInfo.loaded = true;
         return moduleInfo;
     };

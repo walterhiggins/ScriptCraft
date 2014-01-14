@@ -49,6 +49,8 @@ exports.autoload = function(dir) {
     var _listSourceFiles = function(store,dir)
     {
         var files = dir.listFiles();
+        if (!files)
+            return;
         for (var i = 0;i < files.length; i++) {
             var file = files[i];
             if (file.isDirectory()){
@@ -73,8 +75,6 @@ exports.autoload = function(dir) {
             console.info(len + ' scriptcraft plugins found.');
         for (var i = 0;i < len; i++){
             var pluginPath = _canonize(sourceFiles[i]);
-            if (config.verbose)
-                console.info('Loading plugin: ' + pluginPath);
             var module = {};
             try {
                 module = require(pluginPath);
