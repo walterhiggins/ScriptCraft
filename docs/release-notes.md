@@ -1,3 +1,18 @@
+# 2014 01 14
+
+Added config.yml file for configuration options. This file allows
+scriptcraft admins to turn on or off re-unzipping of the modules,
+plugins and lib folders when deploying a new version of
+scriptcraft. It's strongly recommended that the lib directory always
+be set to true to get the latest core scriptcraft code . The modules
+and plugins directories are optional and not part of scriptcraft core.
+The config.yml file looks like this...
+
+    extract-js:
+      plugins: true
+      modules: true
+      lib: true
+
 # 2014 01 13
 
 Bug Fix: Make ScriptCraft work with Nashorn javascript engine bundled with Java 8

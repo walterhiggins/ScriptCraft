@@ -131,6 +131,23 @@ Contributing
 
 If you would like to contribute source code and/or documentation changes please [read contributing.md][contrib]
 
+Configuration
+=============
+ScriptCraft is a Bukkit Plugin and uses the Bukkit Configuration
+API. On first loading, ScriptCraft will create a config.yml file in
+the plugins/scriptcraft/ directory. This file looks like this...
+
+    extract-js:
+      plugins: true
+      modules: true
+      lib: true
+
+This file allows scriptcraft admins to turn on or off re-unzipping of the `modules`,
+`plugins` and `lib` folders when deploying a new version of
+scriptcraft. It's strongly recommended that the `lib` directory always
+be set to true to get the latest core scriptcraft code . The modules
+and plugins directories are optional and not part of scriptcraft core.
+
 Further Reading
 ===============
 
