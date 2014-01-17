@@ -1,3 +1,39 @@
+# 2014 01 17
+
+Added support for communication with Arduino and other devices which
+use the [MQTT protocol][mqtt] via a new `sc-mqtt` module. This module
+requires a separate sc-mqtt.jar file downloadable from
+<http://scriptcraftjs.org/download/extras/mqtt> which must be included
+in the CraftBukkit classpath. If using MQTT in ScriptCraft, then
+Craftbukkit should be launched like this...
+
+    java -classpath craftbukkit.jar;sc-mqtt.jar org.bukkit.craftbukkit.Main
+
+You can use the new `sc-mqtt` module like this to send and receive
+messages between minecraft and an Arduino. For example to send a
+message to the MQTT broker whenever a player breaks a block...
+
+    var mqtt = require('sc-mqtt');
+    var client = mqtt.client('tcp://localhost:1883','scripcraft');
+    client.connect();
+    
+    events.on('block.BlockBreakEvent', function(listener, event){
+        client.publish('minecraft','block-broken');
+    });
+
+To have minecraft react to inputs from an MQTT broker...
+
+    var mqtt = require('sc-mqtt');
+    var client = mqtt.client('tcp://localhost:1883','scripcraft');
+    client.connect();
+    client.onMessageArrived(function(topic, message){
+        var payload = message.payload;
+        if (topic == 'arduino'){
+           // do something with payload.
+        }
+    });    
+
+[mqtt]: http://mqtt.org/
 # 2014 01 14
 
 Added config.yml file for configuration options. This file allows
