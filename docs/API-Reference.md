@@ -52,6 +52,8 @@ Walter Higgins
    * [Examples](#examples-1)
  * [Http Module](#http-module)
    * [http.request() function](#httprequest-function)
+ * [sc-mqtt module](#sc-mqtt-module)
+   * [Usage](#usage)
  * [Signs Module](#signs-module)
    * [signs.menu() function](#signsmenu-function)
    * [signs.getTargetedBy() function](#signsgettargetedby-function)
@@ -103,22 +105,22 @@ Walter Higgins
    * [Drone.hemisphere0() method](#dronehemisphere0-method)
    * [Drone.spiral_stairs() method](#dronespiral_stairs-method)
  * [Example Plugin #1 - A simple extension to Minecraft.](#example-plugin-1---a-simple-extension-to-minecraft)
-   * [Usage:](#usage)
- * [Example Plugin #2 - Making extensions available for all players.](#example-plugin-2---making-extensions-available-for-all-players)
    * [Usage:](#usage-1)
- * [Example Plugin #3 - Limiting use of commands to operators only.](#example-plugin-3---limiting-use-of-commands-to-operators-only)
+ * [Example Plugin #2 - Making extensions available for all players.](#example-plugin-2---making-extensions-available-for-all-players)
    * [Usage:](#usage-2)
- * [Example Plugin #4 - Using parameters in commands.](#example-plugin-4---using-parameters-in-commands)
+ * [Example Plugin #3 - Limiting use of commands to operators only.](#example-plugin-3---limiting-use-of-commands-to-operators-only)
    * [Usage:](#usage-3)
- * [Example Plugin #5 - Re-use - Using your own and others modules.](#example-plugin-5---re-use---using-your-own-and-others-modules)
+ * [Example Plugin #4 - Using parameters in commands.](#example-plugin-4---using-parameters-in-commands)
    * [Usage:](#usage-4)
- * [Example Plugin #6 - Re-use - Using 'utils' to get Player objects.](#example-plugin-6---re-use---using-utils-to-get-player-objects)
+ * [Example Plugin #5 - Re-use - Using your own and others modules.](#example-plugin-5---re-use---using-your-own-and-others-modules)
    * [Usage:](#usage-5)
+ * [Example Plugin #6 - Re-use - Using 'utils' to get Player objects.](#example-plugin-6---re-use---using-utils-to-get-player-objects)
+   * [Usage:](#usage-6)
  * [Example Plugin #7 - Listening for events, Greet players when they join the game.](#example-plugin-7---listening-for-events-greet-players-when-they-join-the-game)
  * [Arrows Plugin](#arrows-plugin)
-   * [Usage:](#usage-6)
+   * [Usage:](#usage-7)
  * [Spawn Plugin](#spawn-plugin)
-   * [Usage](#usage-7)
+   * [Usage](#usage-8)
  * [alias Plugin](#alias-plugin)
    * [Examples](#examples-2)
  * [Classroom Plugin](#classroom-plugin)
@@ -833,6 +835,67 @@ The following example illustrates how to use http.request to make a request to a
                  }, function( responseCode, responseBody){
           var jsObj = eval("(" + responseBody + ")");
       });
+
+## sc-mqtt module
+
+This module provides a simple way to communicate with devices (such as Arduino)
+using the popular lightweight [MQTT protocol][mqtt].
+
+### Usage
+
+This module can only be used if the separate `sc-mqtt.jar` file is
+present in the CraftBukkit classpath. To use this module, you should
+...
+
+ 1. Download sc-mqtt.jar from <http://scriptcraftjs.org/download/extras/>
+ 2. Save the file to the same directory where craftbukkit.jar resides.
+ 3. Create a new batch file (windows-only) called
+    craftbukkit-sc-mqtt.bat and edit it to include the following
+    command...
+
+        java -classpath sc-mqtt.jar;craftbukit.jar org.bukkit.craftbukkit.Main
+    
+    If you're using Mac OS, create a new craftbukkit-sc-mqtt.command
+    file and edit it (using TextWrangler or another text editor) ...
+
+        java -classpath sc-mqtt.jar:craftbukkit.jar org.bukit.craftbukkit.Main
+
+ 4. Execute the craftbukkit-sc-mqtt batch file / command file to start
+    Craftbukkit. You can now begin using this module to send and receive
+    messages to/from a Net-enabled Arduino or any other device which uses
+    the [MQTT protocol][mqtt]
+  
+
+    var mqtt = require('sc-mqtt');
+
+    // create a new client
+
+    var client = mqtt.client('tcp://localhost:1883', 'uniqueClientId');
+
+    // connect to the broker 
+
+    client.connect({ keepAliveInterval: 15 });
+
+    //  publish a message to the broker
+
+    client.publish('minecraft','loaded');
+    
+    // subscribe to messages on 'arduino' topic 
+
+    client.subscribe('arduino');
+
+    //  do something when an incoming message arrives...
+
+    client.onMessageArrived(function(topic, message){
+        console.log('Message arrived: topic=' + topic + ', message=' + message);
+    });
+
+The `sc-mqtt` module provides a very simple minimal wrapper around the
+[Eclipse Paho MQTT Version 3 Client][pahodocs] java-based MQTT
+library.
+
+[pahodocs]: http://pic.dhe.ibm.com/infocenter/wmqv7/v7r5/index.jsp?topic=/com.ibm.mq.javadoc.doc/WMQMQxrClasses/org/eclipse/paho/client/mqttv3/package-summary.html
+[mqtt]: http://mqtt.org/
 
 ## Signs Module
 

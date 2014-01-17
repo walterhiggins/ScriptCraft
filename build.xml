@@ -22,6 +22,7 @@
   <target name="test" depends="package" description="Perform unit tests">
     
   </target>
+
   <target name="server-setup" depends="init" description="Downloads the latest bukkit dev jar"
           unless="minecraft.present">
     <mkdir dir="${minecraft.dir}" />
@@ -54,7 +55,12 @@
   </target>
   
   <target name="compile" depends="init, server-setup" description="compile bukkit plugin source">
-    <javac includeantruntime="false" srcdir="${src}" source="1.6" target="1.6" destdir="${build}" classpath="${minecraft.dir}/craftbukkit.jar" />
+    <javac includeantruntime="false" 
+           srcdir="${src}" 
+           source="1.6" 
+           target="1.6" 
+           destdir="${build}" 
+           classpath="${minecraft.dir}/craftbukkit.jar" />
   </target>
     
   <target name="gendocs" depends="construct-ypgpm, construct-api-ref" description="Generate API documentation">
@@ -161,6 +167,7 @@ Walter Higgins
     
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
     <mkdir dir="${dist}/${DSTAMP}" />
+    
     <jar jarfile="${dist}/${DSTAMP}/scriptcraft.jar" basedir="${build}"/>
   </target>
 

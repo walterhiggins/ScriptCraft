@@ -15,12 +15,10 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
     // need to look at possibly having context/scope per operator
     //protected Map<CommandSender,ScriptCraftEvaluator> playerContexts = new HashMap<CommandSender,ScriptCraftEvaluator>();
     protected ScriptEngine engine = null;
-    
     @Override
         public void onEnable()
     {
         try{
-
             ScriptEngineManager factory = new ScriptEngineManager();
             this.engine = factory.getEngineByName("JavaScript");
             Invocable inv = (Invocable)this.engine;
