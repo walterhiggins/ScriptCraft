@@ -2457,11 +2457,11 @@ such an alias)...
 
     /jsp alias global stormy = time 18000; weather storm
 
-To delete an alias ...
+To remove an alias ...
 
-    /jsp alias delete cw
+    /jsp alias remove cw
 
-... deletes the 'cw' alias from the appropriate alias map.
+... removes the 'cw' alias from the appropriate alias map.
 
 To get a list of aliases currently defined...
 

@@ -573,7 +573,8 @@ function __onEnable (__engine, __plugin, __script)
      */
     require('persistence')(jsPluginsRootDir,global);
 
-    global.command = require('command').command;
+    var cmdModule = require('command');
+    global.command = cmdModule.command;
     var plugins = require('plugin');
     global.__onTabComplete = require('tabcomplete');
     global.plugin = plugins.plugin;
@@ -593,7 +594,9 @@ function __onEnable (__engine, __plugin, __script)
     global.__onCommand = function( sender, cmd, label, args) {
         var jsArgs = [];
         var i = 0;
-        for (;i < args.length; i++) jsArgs.push('' + args[i]);
+        for (;i < args.length; i++) {
+            jsArgs.push('' + args[i]);
+        }
  
         var result = false;
         var cmdName = ('' + cmd.name).toLowerCase();
@@ -616,7 +619,7 @@ function __onEnable (__engine, __plugin, __script)
             }
         }
         if (cmdName == 'jsp'){
-            command.exec(jsArgs, sender);
+            cmdModule.exec(jsArgs, sender);
             result = true;
         }
         return result;
