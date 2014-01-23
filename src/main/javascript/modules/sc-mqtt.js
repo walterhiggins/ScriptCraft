@@ -97,6 +97,7 @@ function Client(brokerUrl, clientId){
             }else{
                 client.connect(options);
             }
+            return client;
         },
         publish: function(topic, message, qos, retained){
             if (typeof message == 'string'){
@@ -109,21 +110,27 @@ function Client(brokerUrl, clientId){
                 retained = false;
             }
             client.publish(topic, message,qos, retained);
+            return client;
         },
         subscribe: function(topic){
             client.subscribe(topic);
+            return client;
         },
         unsubscribe: function(topic){
             client.unsubscribe(topic);
+            return client;
         },
         onMessageArrived: function(fn){
             callback.setMesgArrived(fn);
+            return client;
         },
         onDeliveryComplete: function(fn){
             callback.setDeliveryComplete(fn);
+            return client;
         },
         onConnectionLost: function(fn){
             callback.setConnLost(fn);
+            return client;
         }
     };
 };
