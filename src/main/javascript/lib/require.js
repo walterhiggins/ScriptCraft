@@ -174,13 +174,13 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
       wph 20131215 Experimental 
     */
     var _loadedModules = {};
-    
+    var _format = java.lang.String.format;
     var _require = function(parentFile, path)
     {
         var file = resolveModuleToFile(path, parentFile);
         if (!file){
-            var errMsg = '' + java.lang.String.format("require() failed to find matching file for module '%s' " + 
-                                                      "in working directory '%s' ", [path, parentFile.canonicalPath]);
+            var errMsg = '' + _format("require() failed to find matching file for module '%s' " + 
+                                      "in working directory '%s' ", [path, parentFile.canonicalPath]);
             if (! ( (''+path).match(/^\./) )){
                 errMsg = errMsg + ' and not found in paths ' + JSON.stringify(modulePaths);
             }

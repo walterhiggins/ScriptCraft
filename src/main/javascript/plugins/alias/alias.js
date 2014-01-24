@@ -1,3 +1,4 @@
+'use strict';
 /*************************************************************************
 ## alias Plugin
 
@@ -65,8 +66,8 @@ Execute the alias : \n \
   persist aliases
 */
 var _store = {
-    players: {},
-    global: {}
+  players: {},
+  global: {}
 };
 /*
   turns 'cw = time set {1} ; weather {2}' into {cmd: 'cw', aliases: ['time set {1}', 'weather {2}']}
@@ -74,159 +75,148 @@ var _store = {
   used for the 'set' and 'global' options.
 */
 var _processParams = function(params){
-    var paramStr = params.join(' ');
-    var eqPos = paramStr.indexOf('=');
-    var aliasCmd = paramStr.substring(0,eqPos).trim();
-    var aliasValue = paramStr.substring(eqPos+1).trim();
-    return { cmd: aliasCmd, aliases: aliasValue.split(/\s*;\s*/) };
+  var paramStr = params.join(' '),
+    eqPos = paramStr.indexOf('='),
+    aliasCmd = paramStr.substring(0,eqPos).trim(),
+    aliasValue = paramStr.substring(eqPos+1).trim();
+  return { 
+    cmd: aliasCmd, 
+    aliases: aliasValue.split(/\s*;\s*/) 
+  };
 };
 
 var _set = function(params, player){
-    var playerAliases = _store.players[player.name];
-    if (!playerAliases){
-        playerAliases = {};
-    }
-    var o = _processParams(params);
-    playerAliases[o.cmd] = o.aliases;
-    _store.players[player.name] = playerAliases;
-    player.sendMessage("Alias '" + o.cmd + "' created.");
+  var playerAliases = _store.players[player.name];
+  if (!playerAliases){
+    playerAliases = {};
+  }
+  var o = _processParams(params);
+  playerAliases[o.cmd] = o.aliases;
+  _store.players[player.name] = playerAliases;
+  player.sendMessage("Alias '" + o.cmd + "' created.");
 };
 
 var _remove = function(params, player){
-    if (_store.players[player.name] &&
-        _store.players[player.name][params[0]]){
-        delete _store.players[player.name][params[0]];
-        player.sendMessage("Alias '" + params[0] + "' removed.");
-    }
-    else{
-        player.sendMessage("Alias '" + params[0] + "' does not exist.");
-    }
-    if (player.op){
-        if (_store.global[params[0]])
-            delete _store.global[params[0]];
-    }
+  if (_store.players[player.name] &&
+      _store.players[player.name][params[0]]){
+    delete _store.players[player.name][params[0]];
+    player.sendMessage("Alias '" + params[0] + "' removed.");
+  }
+  else{
+    player.sendMessage("Alias '" + params[0] + "' does not exist.");
+  }
+  if (player.op){
+    if (_store.global[params[0]])
+      delete _store.global[params[0]];
+  }
 };
 
 var _global = function(params, player){
-    if (!player.op){
-        player.sendMessage("Only operators can set global aliases. " + 
-                           "You need to be an operator to perform this command.");
-        return;
-    }
-    var o = _processParams(params);
-    _store.global[o.cmd] = o.aliases;
-    player.sendMessage("Global alias '" + o.cmd + "' created.");
+  if (!player.op){
+    player.sendMessage("Only operators can set global aliases. " + 
+                       "You need to be an operator to perform this command.");
+    return;
+  }
+  var o = _processParams(params);
+  _store.global[o.cmd] = o.aliases;
+  player.sendMessage("Global alias '" + o.cmd + "' created.");
 };
 
 var _list = function(params, player){
-    try { 
-        var alias = 0;
-        if (_store.players[player.name]){
-            player.sendMessage("Your aliases:");
-            for (alias in _store.players[player.name]){
-                player.sendMessage(alias + " = " + 
-                                   JSON.stringify(_store.players[player.name][alias]));
-            }
-        }else{
-            player.sendMessage("You have no player-specific aliases.");
-        }
-        player.sendMessage("Global aliases:");
-        for (alias in _store.global){
-            player.sendMessage(alias + " = " + JSON.stringify(_store.global[alias]) );
-        }
-    }catch(e){
-        console.error("Error in list function: " + e.message);
-        throw e;
+  var alias = 0;
+  try { 
+    if (_store.players[player.name]){
+      player.sendMessage("Your aliases:");
+      for (alias in _store.players[player.name]){
+        player.sendMessage(alias + " = " + 
+                           JSON.stringify(_store.players[player.name][alias]));
+      }
+    }else{
+      player.sendMessage("You have no player-specific aliases.");
     }
+    player.sendMessage("Global aliases:");
+    for (alias in _store.global){
+      player.sendMessage(alias + " = " + JSON.stringify(_store.global[alias]) );
+    }
+  }catch(e){
+    console.error("Error in list function: " + e.message);
+    throw e;
+  }
 };
 var _help = function(params, player){
-    player.sendMessage('Usage:\n' + _usage);
+  player.sendMessage('Usage:\n' + _usage);
 };
+
 var alias = plugin('alias', {
-    store:  _store,
-    set:    _set,
-    global: _global,
-    remove: _remove,
-    list:   _list,
-    help:   _help
+  store:  _store,
+  set:    _set,
+  global: _global,
+  remove: _remove,
+  list:   _list,
+  help:   _help
 }, true );
 
 var aliasCmd = command('alias', function( params, invoker ) {
-    var operation = params[0], fn;
-    if (!operation){
-        invoker.sendMessage('Usage:\n' + _usage);
-        return;
+  var operation = params[0], 
+    fn;
+  if (!operation){
+    invoker.sendMessage('Usage:\n' + _usage);
+    return;
+  }
+  /*
+   wph 20140122 this is kind of dumb but Nashorn has some serious problems 
+   accessing object properties by array index notation
+   in JRE8 alias[operation] returns null - definitely a bug in Nashorn.
+   */
+  for (var key in alias){
+    if (key == operation){
+      fn = alias[key];
+      fn(params.slice(1),invoker);
+      return;
     }
-    /*
-      wph 20140122 this is kind of dumb but Nashorn has some serious problems 
-      accessing object properties by array index notation
-      in JRE8 alias[operation] returns null - definitely a bug in Nashorn.
-     */
-    if (operation == 'set'){
-        alias.set(params.slice(1), invoker);
-    }else if (operation == 'global'){
-        alias.global(params.slice(1), invoker);
-    }else if (operation == 'remove'){
-        alias.remove(params.slice(1), invoker);
-    }else if (operation == 'list'){
-        alias.list(params.slice(1), invoker);
-    }else if (operation == 'help'){
-        alias.help(params.slice(1), invoker);
-    }else {
-        invoker.sendMessage('Usage:\n' + _usage);
-    }
+  }
+  invoker.sendMessage('Usage:\n' + _usage);
 });
 
 var _intercept = function( msg, invoker, exec)
 {
-    if (msg.trim().length == 0)
-        return false;
-    var msgParts = msg.split(' ');
-    var command = msg.match(/^\/*([^\s]+)/)[1];
-
-    var template = [], isAlias = false, cmds = [];
-    
-    if (_store.global[command]){
-        template = _store.global[command];
-        isAlias = true;
-    }else{
-        if (config.verbose){
-            var commandObj = server.commandMap.getCommand(command);
-            if (!commandObj)
-                console.info('No global alias found for command: ' + command);
-        }
-    }
-    /*
-      allows player-specific aliases to override global aliases
-     */
-    if (_store.players[invoker] &&
-        _store.players[invoker][command])
-    {
-        template = _store.players[invoker][command];
-        isAlias = true;
-    }else{
-        if (config.verbose){
-            var commandObj = server.commandMap.getCommand(command);
-            if (!commandObj)
-                console.info('No player alias found for command: ' + command);
-        }
-    }
-    for (var i = 0;i < template.length; i++)
-    {
-        var filledinCommand = template[i].replace(/{([0-9]+)}/g, function (match,index){ 
-            index = parseInt(index,10);
-            if (msgParts[index])
-                return msgParts[index]
-            else
-                return match;
-        });
-        cmds.push(filledinCommand);
-    }
-    
-    for (var i = 0; i< cmds.length; i++){
-        exec(cmds[i]);
-    }
-    return isAlias;
+  if (msg.trim().length == 0)
+    return false;
+  var msgParts = msg.split(' '),
+    command = msg.match(/^\/*([^\s]+)/)[1],
+    template = [], isAlias = false, cmds = [],
+    commandObj,
+    filledinCommand;
+  
+  if (_store.global[command]){
+    template = _store.global[command];
+    isAlias = true;
+  }
+  /*
+   allows player-specific aliases to override global aliases
+   */
+  if (_store.players[invoker] &&
+      _store.players[invoker][command])
+  {
+    template = _store.players[invoker][command];
+    isAlias = true;
+  }
+  for (var i = 0;i < template.length; i++)
+  {
+    filledinCommand = template[i].replace(/{([0-9]+)}/g, function (match,index){ 
+      index = parseInt(index,10);
+      if (msgParts[index])
+	return msgParts[index];
+      else
+	return match;
+    });
+    cmds.push(filledinCommand);
+  }
+  
+  for (var i = 0; i< cmds.length; i++){
+    exec(cmds[i]);
+  }
+  return isAlias;
 
 };
 /*
@@ -234,19 +224,19 @@ var _intercept = function( msg, invoker, exec)
   command about to be issued matches an alias.
 */
 events.on('player.PlayerCommandPreprocessEvent', function(listener,evt){
-    var invoker = evt.player;
-    var exec = function(cmd){ invoker.performCommand(cmd);};
-    var isAlias = _intercept(''+evt.message, ''+invoker.name, exec);
-    if (isAlias)
-        evt.cancelled = true;
-
+  var invoker = evt.player;
+  var exec = function(cmd){ invoker.performCommand(cmd);};
+  var isAlias = _intercept(''+evt.message, ''+invoker.name, exec);
+  if (isAlias)
+    evt.cancelled = true;
 });
 /* define a 'void' command because ServerCommandEvent can't be canceled */
 command('void',function(){});
+
 events.on('server.ServerCommandEvent', function(listener,evt){
-    var invoker = evt.sender;
-    var exec = function(cmd){ invoker.server.dispatchCommand(invoker, cmd); };
-    var isAlias = _intercept(''+evt.command, ''+ invoker.name, exec);
-    if (isAlias)
-        evt.command = 'jsp void';
+  var invoker = evt.sender;
+  var exec = function(cmd){ invoker.server.dispatchCommand(invoker, cmd); };
+  var isAlias = _intercept(''+evt.command, ''+ invoker.name, exec);
+  if (isAlias)
+    evt.command = 'jsp void';
 });
