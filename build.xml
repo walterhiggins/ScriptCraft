@@ -75,8 +75,8 @@
       <classpath>
         <pathelement path="src/docs/java"/>      
       </classpath>
-      <arg value="src/docs/javascript/generateApiDocs.js"/>
-      <arg value="src/main/javascript"/>
+      <arg value="src/docs/js/generateApiDocs.js"/>
+      <arg value="src/main/js"/>
     </java>
 
   </target>
@@ -103,7 +103,7 @@ Walter Higgins
       <classpath>
         <pathelement path="src/docs/java"/>      
       </classpath>
-      <arg value="src/docs/javascript/generateTOC.js"/>
+      <arg value="src/docs/js/generateTOC.js"/>
       <arg value="${dist}/apiref.md"/>
     </java>
   </target>
@@ -113,7 +113,7 @@ Walter Higgins
       <classpath>
         <pathelement path="src/docs/java"/>      
       </classpath>
-      <arg value="src/docs/javascript/generateTOC.js"/>
+      <arg value="src/docs/js/generateTOC.js"/>
       <arg value="src/docs/templates/ypgpm.md"/>
     </java>
   </target>
@@ -134,7 +134,7 @@ Walter Higgins
   <target name="zip_lib" depends="init">
     <delete file="${build}/lib.zip"/>
     <zip destfile="${build}/lib.zip" 
-         basedir="./src/main/javascript" 
+         basedir="./src/main/js" 
          excludes="modules/**, plugins/**,">
     </zip>
   </target>
@@ -142,7 +142,7 @@ Walter Higgins
   <target name="zip_modules" depends="init">
     <delete file="${build}/modules.zip"/>
     <zip destfile="${build}/modules.zip" 
-         basedir="./src/main/javascript" 
+         basedir="./src/main/js" 
          excludes="lib/**, plugins/**,">
     </zip>
   </target>
@@ -150,7 +150,7 @@ Walter Higgins
   <target name="zip_plugins" depends="init">
     <delete file="${build}/plugins.zip"/>
     <zip destfile="${build}/plugins.zip" 
-         basedir="./src/main/javascript"
+         basedir="./src/main/js"
          excludes="lib/**, modules/**">
     </zip>
   </target>

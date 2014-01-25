@@ -13,7 +13,7 @@ var _plugin = function(/* String */ moduleName, /* Object */ moduleObject, isPer
   //
   // don't load plugin more than once
   //
-  if (typeof _plugins[moduleName] != "undefined")
+  if (typeof _plugins[moduleName] != 'undefined')
     return _plugins[moduleName].module;
 
   var pluginData = {persistent: isPersistent, module: moduleObject};
@@ -34,14 +34,14 @@ var scriptCraftDir = null;
 var pluginDir = null;
 var dataDir = null;
 
-exports.autoload = function(dir) {
+exports.autoload = function(dir,logger) {
 
   scriptCraftDir = dir;
-  pluginDir = new File(dir, "plugins");
-  dataDir = new File(dir, "data");
+  pluginDir = new File(dir, 'plugins');
+  dataDir = new File(dir, 'data');
 
   var _canonize = function(file){ 
-    return '' + file.canonicalPath.replaceAll("\\\\","/"); 
+    return '' + file.canonicalPath.replaceAll('\\\\','/'); 
   };
   /*
    recursively walk the given directory and return a list of all .js files 
@@ -85,7 +85,7 @@ exports.autoload = function(dir) {
           global[property] = module[property];
         }
       }catch (e){
-        
+	logger.severe('Plugin ' + pluginPath + ' ' + e);
       }
     }
   };

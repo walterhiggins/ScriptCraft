@@ -625,7 +625,7 @@ function __onEnable (__engine, __plugin, __script)
         return result;
     };
 
-    plugins.autoload(jsPluginsRootDir);
+    plugins.autoload(jsPluginsRootDir,logger);
     /*
       wph 20140102 - warn if legacy 'craftbukkit/js-plugins' or 'craftbukkit/scriptcraft' directories are present
      */
