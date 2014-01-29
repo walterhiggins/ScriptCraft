@@ -56,7 +56,9 @@ module specification, the '.js' suffix is optional.
 ***/
 (function ( rootDir, modulePaths, hooks ) {
 
-  var File = java.io.File;
+  var File = java.io.File,
+    FileReader = java.io.FileReader,
+    BufferedReader = java.io.BufferedReader;
     
   var readModuleFromDirectory = function( dir ) {
 
@@ -170,82 +172,90 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     }
     return null;
   };
-    /*
-      wph 20131215 Experimental 
-    */
-    var _loadedModules = {};
-    var _format = java.lang.String.format;
-    var _require = function(parentFile, path)
-    {
-        var file = resolveModuleToFile(path, parentFile);
-        if (!file){
-            var errMsg = '' + _format("require() failed to find matching file for module '%s' " + 
-                                      "in working directory '%s' ", [path, parentFile.canonicalPath]);
-            if (! ( (''+path).match(/^\./) )){
-                errMsg = errMsg + ' and not found in paths ' + JSON.stringify(modulePaths);
-            }
-            throw errMsg;
-        }
-        var canonizedFilename = _canonize(file);
-        
-        var moduleInfo = _loadedModules[canonizedFilename];
-        if (moduleInfo){
-            return moduleInfo;
-        }
-        if (hooks)
-            hooks.loading(canonizedFilename);
-        var reader = new java.io.FileReader(file);
-        var br = new java.io.BufferedReader(reader);
-        var code = "";
-        var r = null;
-        while ((r = br.readLine()) !== null) 
-            code += r + "\n";
+  /*
+   wph 20131215 Experimental 
+   */
+  var _loadedModules = {};
+  var _format = java.lang.String.format;
+  /*
+   require() function implementation
+   */
+  var _require = function( parentFile, path ) {
+    var file,
+	canonizedFilename,
+	moduleInfo,
+	buffered,
+        head = '(function(exports,module,require,__filename,__dirname){ ',
+	code = '',
+	line = null;
+    
+    file = resolveModuleToFile(path, parentFile);
+    if ( !file ) {
+      var errMsg = '' + _format("require() failed to find matching file for module '%s' " + 
+                                "in working directory '%s' ", [path, parentFile.canonicalPath]);
+      if (! ( (''+path).match( /^\./ ) ) ) {
+        errMsg = errMsg + ' and not found in paths ' + JSON.stringify(modulePaths);
+      }
+      throw errMsg;
+    }
+    canonizedFilename = _canonize(file);
+    
+    moduleInfo = _loadedModules[canonizedFilename];
+    if ( moduleInfo ) {
+      return moduleInfo;
+    }
+    if ( hooks ) {
+      hooks.loading( canonizedFilename );
+    }
+    buffered = new BufferedReader(new FileReader(file));
+    while ( (line = buffered.readLine()) !== null ) {
+      code += line + '\n';
+    }
+    buffered.close(); // close the stream so there's no file locks
 
-        var head = "(function(exports,module,require,__filename,__dirname){ ";
-
-        moduleInfo = {
-            loaded: false,
-            id: canonizedFilename,
-            exports: {},
-            require: _requireClosure(file.parentFile)
-        };
-        var tail = "})";
-        code = head + code + tail;
-
-        _loadedModules[canonizedFilename] = moduleInfo;
-        var compiledWrapper = null;
-        try {
-            compiledWrapper = eval(code);
-        }catch (e){
-            throw "Error:" + e + " while evaluating module " + canonizedFilename;
-        }
-        var __dirname = "" + file.parentFile.canonicalPath;
-        var parameters = [
-            moduleInfo.exports, /* exports */
-            moduleInfo,         /* module */
-            moduleInfo.require, /* require */
-            canonizedFilename,  /* __filename */
-            __dirname           /* __dirname */
-        ];
-        try {
-            compiledWrapper
-                .apply(moduleInfo.exports,  /* this */
-                       parameters);   
-        } catch (e){
-            throw 'Error:' + e + ' while executing module ' + canonizedFilename;
-        }
-        if (hooks)
-            hooks.loaded(canonizedFilename);
-        moduleInfo.loaded = true;
-        return moduleInfo;
+    moduleInfo = {
+      loaded: false,
+      id: canonizedFilename,
+      exports: {},
+      require: _requireClosure(file.parentFile)
     };
+    var tail = '})';
+    code = head + code + tail;
 
-    var _requireClosure = function(parent){
-        return function(path){
-            var module = _require(parent, path);
-            return module.exports;
-        };
+    _loadedModules[canonizedFilename] = moduleInfo;
+    var compiledWrapper = null;
+    try {
+      compiledWrapper = eval(code);
+    } catch (e) {
+      throw 'Error:' + e + ' while evaluating module ' + canonizedFilename;
+    }
+    var __dirname = '' + file.parentFile.canonicalPath;
+    var parameters = [
+      moduleInfo.exports, /* exports */
+      moduleInfo,         /* module */
+      moduleInfo.require, /* require */
+      canonizedFilename,  /* __filename */
+      __dirname           /* __dirname */
+    ];
+    try {
+      compiledWrapper
+        .apply(moduleInfo.exports,  /* this */
+               parameters);   
+    } catch (e) {
+      throw 'Error:' + e + ' while executing module ' + canonizedFilename;
+    }
+    if ( hooks ) { 
+      hooks.loaded( canonizedFilename );
+    }
+    moduleInfo.loaded = true;
+    return moduleInfo;
+  };
+
+  var _requireClosure = function( parent ) {
+    return function( path ) {
+      var module = _require( parent, path );
+      return module.exports;
     };
-    return _requireClosure(new java.io.File(rootDir));
+  };
+  return _requireClosure( new java.io.File(rootDir) );
 })
-
