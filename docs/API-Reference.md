@@ -787,7 +787,7 @@ To call the fireworks.firework() function directly, you must provide a
 location. For example...
 
     /js var fireworks = require('fireworks');
-    /js fireworks.firework(self.location);
+    /js fireworks.firework( self.location );
 
 ![firework example](img/firework.png)
 
@@ -829,11 +829,14 @@ The following example illustrates how to use http.request to make a request to a
 ... The following example illustrates a more complex use-case POSTing parameters to a CGI process on a server...
 
     var http = require('./http/request');
-    http.request({ url: "http://pixenate.com/pixenate/pxn8.pl",
-                   method: "POST",
-                   params: {script: "[]"}
-                 }, function( responseCode, responseBody){
-          var jsObj = eval("(" + responseBody + ")");
+    http.request(
+      { 
+        url: 'http://pixenate.com/pixenate/pxn8.pl',
+        method: 'POST',
+        params: {script: '[]'}
+      }, 
+      function( responseCode, responseBody ) {
+         var jsObj = eval('(' + responseBody + ')');
       });
 
 ## sc-mqtt module
@@ -870,24 +873,24 @@ present in the CraftBukkit classpath. To use this module, you should
 
     // create a new client
 
-    var client = mqtt.client('tcp://localhost:1883', 'uniqueClientId');
+    var client = mqtt.client( 'tcp://localhost:1883', 'uniqueClientId' );
 
     // connect to the broker 
 
-    client.connect({ keepAliveInterval: 15 });
+    client.connect( { keepAliveInterval: 15 } );
 
     //  publish a message to the broker
 
-    client.publish('minecraft','loaded');
+    client.publish( 'minecraft', 'loaded' );
     
     // subscribe to messages on 'arduino' topic 
 
-    client.subscribe('arduino');
+    client.subscribe( 'arduino' );
 
     //  do something when an incoming message arrives...
 
-    client.onMessageArrived(function(topic, message){
-        console.log('Message arrived: topic=' + topic + ', message=' + message);
+    client.onMessageArrived( function( topic, message ) {
+        console.log( 'Message arrived: topic=' + topic + ', message=' + message );
     });
 
 The `sc-mqtt` module provides a very simple minimal wrapper around the
@@ -1023,7 +1026,7 @@ Example
 -------
 
     /js var boldGoldText = "Hello World".bold().gold();
-    /js self.sendMessage(boldGoldText);
+    /js self.sendMessage( boldGoldText );
 
 <p style="color:gold;font-weight:bold">Hello World</p>    
 
@@ -1173,7 +1176,7 @@ package for scheduling processing of arrays.
    - object : Additional (optional) information passed into the foreach method.
    - array : The entire array.
 
- * object (optional) : An object which may be used by the callback.
+ * context (optional) : An object which may be used by the callback.
  * delay (optional, numeric) : If a delay is specified (in ticks - 20
    ticks = 1 second), then the processing will be scheduled so that
    each item will be processed in turn with a delay between the completion of each
@@ -1273,9 +1276,9 @@ To warn players when night is approaching...
 
     utils.at( '19:00', function() {
 
-        utils.foreach( server.onlinePlayers, function(player){
-            player.chat('The night is dark and full of terrors!');            
-        });
+      utils.foreach( server.onlinePlayers, function( player ) {
+        player.chat( 'The night is dark and full of terrors!' );
+      });
 
     });
   
@@ -1410,7 +1413,7 @@ Drones can be created in any of the following ways...
     block is broken at the block's location you would do so like
     this...
 
-        events.on('block.BlockBreakEvent',function(listener,event){
+        events.on('block.BlockBreakEvent',function( listener,event) { 
             var location = event.block.location;
             var drone = new Drone(location);
             // do more stuff with the drone here...
@@ -1552,7 +1555,7 @@ Markers are created and returned to using the followng two methods...
     //
     // the drone can now go off on a long excursion
     //
-    for (i = 0; i< 100; i++){ 
+    for ( i = 0; i< 100; i++) {  
         drone.fwd(12).box(6); 
     }
     //
@@ -1624,11 +1627,11 @@ arc() takes a single parameter - an object with the following named properties..
  * radius - The radius of the arc.
  * blockType - The type of block to use - this is the block Id only (no meta). See [Data Values][dv].
  * meta - The metadata value. See [Data Values][dv].
- * orientation (default: 'horizontal') - the orientation of the arc - can be 'vertical' or 'horizontal'.
- * stack (default: 1) - the height or length of the arc (depending on
+ * orientation (default: 'horizontal' ) - the orientation of the arc - can be 'vertical' or 'horizontal'.
+ * stack (default: 1 ) - the height or length of the arc (depending on
    the orientation - if orientation is horizontal then this parameter
-   refers to the height, if vertical then it refers to the length).
- * strokeWidth (default: 1) - the width of the stroke (how many
+   refers to the height, if vertical then it refers to the length ).
+ * strokeWidth (default: 1 ) - the width of the stroke (how many
    blocks) - if drawing nested arcs it's usually a good idea to set
    strokeWidth to at least 2 so that there are no gaps between each
    arc. The arc method uses a [bresenham algorithm][bres] to plot
@@ -1652,7 +1655,7 @@ To draw a 1/4 circle (top right quadrant only) with a radius of 10 and stroke wi
          orientation: 'vertical', 
          stack: 1,
          fill: false
-         });
+         } );
 
 ![arc example 1](img/arcex1.png)
 
@@ -1715,7 +1718,7 @@ To create a free-standing sign...
 
 ... to create a wall mounted sign...
 
-    drone.sign(["Welcome","to","Scriptopia"], 68);
+    drone.sign(["Welcome","to","Scriptopia"], 68 );
 
 ![wall sign](img/signex2.png)
 
@@ -1730,13 +1733,13 @@ To create a free-standing sign...
 
 To create 4 trees in a row, point the cross-hairs at the ground then type `/js ` and ...
 
-    up().oak().right(8).spruce().right(8).birch().right(8).jungle();
+    up( ).oak( ).right(8 ).spruce( ).right(8 ).birch( ).right(8 ).jungle( );
 
 Trees won't always generate unless the conditions are right. You
 should use the tree methods when the drone is directly above the
 ground. Trees will usually grow if the drone's current location is
 occupied by Air and is directly above an area of grass (That is why
-the `up()` method is called first).
+the `up( )` method is called first).
 
 ![tree example](img/treeex1.png)
 
@@ -1795,7 +1798,7 @@ pasting the copied area elsewhere...
 
 #### Example
 
-    drone.copy('somethingCool',10,5,10).right(12).paste('somethingCool');
+    drone.copy('somethingCool',10,5,10 ).right(12 ).paste('somethingCool' );
 
 ### Drone.paste() method
 
@@ -1807,9 +1810,9 @@ To copy a 10x5x10 area (using the drone's coordinates as the starting
 point) into memory.  the copied area can be referenced using the name
 'somethingCool'. The drone moves 12 blocks right then pastes the copy.
 
-    drone.copy('somethingCool',10,5,10)
-         .right(12)
-         .paste('somethingCool');
+    drone.copy('somethingCool',10,5,10 )
+         .right(12 )
+         .paste('somethingCool' );
 
 ### Chaining
 
@@ -1866,9 +1869,9 @@ Use this method to add new methods (which also become chainable global functions
 #### Example
 
     // submitted by [edonaldson][edonaldson]
-    Drone.extend('pyramid', function(block,height){
+    Drone.extend('pyramid', function( block,height) { 
         this.chkpt('pyramid');
-        for (var i = height; i > 0; i -= 2) {
+        for ( var i = height; i > 0; i -= 2) {
             this.box(block, i, 1, i).up().right().fwd();
         }
         return this.move('pyramid');      
@@ -1931,7 +1934,7 @@ Say you want to do the same thing over and over. You have a couple of options...
 
  * You can use a for loop...
 
-    d = new Drone(); for (var i =0;i < 4; i++){ d.cottage().right(8); }
+    d = new Drone(); for ( var i =0;i < 4; i++) {  d.cottage().right(8); }
 
 While this will fit on the in-game prompt, it's awkward. You need to
 declare a new Drone object first, then write a for loop to create the
@@ -1940,7 +1943,7 @@ syntax for what should really be simple.
 
  * You can use a while loop...
    
-    d = new Drone(); var i=4; while (i--){ d.cottage().right(8); }
+    d = new Drone(); var i=4; while (i--) {  d.cottage().right(8); }
 
 ... which is slightly shorter but still too much syntax. Each of the
 above statements is fine for creating a 1-dimensional array of
@@ -2218,9 +2221,9 @@ This example demonstrates adding and using parameters in commands.
 This differs from example 3 in that the greeting can be changed from
 a fixed 'Hello ' to anything you like by passing a parameter.
 
-    command('hello-params', function (parameters, player) {
-        var salutation = parameters[0] ;
-        player.sendMessage( salutation + ' ' + player.name);
+    command( 'hello-params', function ( parameters, player ) {
+      var salutation = parameters[0] ;
+      player.sendMessage( salutation + ' ' + player.name );
     });
 
 ## Example Plugin #5 - Re-use - Using your own and others modules.
@@ -2253,8 +2256,8 @@ this example, we use that module...
 Source Code...
 
     var greetings = require('./example-1-hello-module');
-    command('hello-module', function( parameters, player ){
-        greetings.hello(player);
+    command( 'hello-module', function( parameters, player ) {
+      greetings.hello( player );
     });
 
 ## Example Plugin #6 - Re-use - Using 'utils' to get Player objects.
@@ -2290,13 +2293,14 @@ Source Code ...
     var utils = require('utils');
     var greetings = require('./example-1-hello-module');
 
-    command('hello-byname', function( parameters, sender ) {
-        var playerName = parameters[0];
-        var recipient = utils.player(playerName);
-        if (recipient)
-            greetings.hello(recipient);
-        else
-            sender.sendMessage('Player ' + playerName + ' not found.');
+    command( 'hello-byname', function( parameters, sender ) {
+      var playerName = parameters[0];
+      var recipient = utils.player( playerName );
+      if ( recipient ) {
+        greetings.hello( recipient );
+      } else {
+        sender.sendMessage( 'Player ' + playerName + ' not found.' );
+      }
     });
 
 ## Example Plugin #7 - Listening for events, Greet players when they join the game.
@@ -2379,10 +2383,10 @@ cleaner and more readable. Similarly where you see a method like
 [bksaf]: http://jd.bukkit.org/dev/apidocs/org/bukkit/entity/Player.html#setAllowFlight()
 [bkapi]: http://jd.bukkit.org/dev/apidocs/
 
-    events.on('player.PlayerJoinEvent', function (listener, event){
-        if (event.player.op) {
-            event.player.sendMessage('Welcome to ' + __plugin);
-        }
+    events.on( 'player.PlayerJoinEvent', function( listener, event ) {
+      if ( event.player.op ) {
+        event.player.sendMessage('Welcome to ' + __plugin);
+      }
     });
 
 ## Arrows Plugin
@@ -2506,11 +2510,11 @@ to every student in a Minecraft classroom environment.
 To allow all players (and any players who connect to the server) to
 use the `js` and `jsp` commands...
 
-    /js classroom.allowScripting(true,self)
+    /js classroom.allowScripting( true, self )
 
 To disallow scripting (and prevent players who join the server from using the commands)...
 
-    /js classroom.allowScripting(false,self)
+    /js classroom.allowScripting( false, self )
 
 Only ops users can run the classroom.allowScripting() function - this is so that students 
 don't try to bar themselves and each other from scripting.

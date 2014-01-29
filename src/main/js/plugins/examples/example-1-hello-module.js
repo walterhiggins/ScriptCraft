@@ -25,6 +25,6 @@ permission since it relies on the `/js` command to execute.
     };
 
 ***/
-exports.hello = function(player){
-    player.sendMessage('Hello ' + player.name);
+exports.hello = function( player ) {
+  player.sendMessage( 'Hello ' + player.name );
 };

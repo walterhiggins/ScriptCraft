@@ -12,23 +12,23 @@ var Drone = require('../drone').Drone;
 *  depth - (Optional) depth of the cube, defaults to width
 */
 
-Drone.extend("rboxcall", function(callback, probability, width, height, depth) {
-   this.chkpt('rboxcall-start');
+Drone.extend("rboxcall", function( callback, probability, width, height, depth ) {
+  this.chkpt('rboxcall-start');
 
-   for(var i = 0; i < width; ++i) {
-      this.move('rboxcall-start').right(i);
-      for(var j = 0; j < depth; ++j) {
-         this.move('rboxcall-start').right(i).fwd(j);
-         for(var k = 0; k < height; ++k) {
-            if(Math.random()*100 < probability) {
-               callback.call(null, new Drone(this.x, this.y, this.z));
-            }
-            this.up();
-         }
+  for(var i = 0; i < width; ++i) {
+    this.move('rboxcall-start').right(i);
+    for(var j = 0; j < depth; ++j) {
+      this.move('rboxcall-start').right(i).fwd(j);
+      for(var k = 0; k < height; ++k) {
+        if(Math.random()*100 < probability) {
+          callback.call(null, new Drone(this.x, this.y, this.z));
+        }
+        this.up();
       }
-   }
+    }
+  }
 
-   this.move('rboxcall-start');
+  this.move('rboxcall-start');
 
-   return this;
+  return this;
 });

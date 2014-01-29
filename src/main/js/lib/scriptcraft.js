@@ -413,238 +413,257 @@ var server = org.bukkit.Bukkit.server;
 /*
   private implementation
 */
-function __onEnable (__engine, __plugin, __script)
+function __onEnable ( __engine, __plugin, __script )
 {
-    var File = java.io.File
-    ,FileReader = java.io.FileReader
-    ,BufferedReader = java.io.BufferedReader
-    ,PrintWriter = java.io.PrintWriter
-    ,FileWriter = java.io.FileWriter;
+  var File = java.io.File,
+    FileReader = java.io.FileReader,
+    BufferedReader = java.io.BufferedReader,
+    PrintWriter = java.io.PrintWriter,
+    FileWriter = java.io.FileWriter;
 
-    var _canonize = function(file){ 
-        return "" + file.getCanonicalPath().replaceAll("\\\\","/"); 
-    };
-    
-    var libDir = __script.parentFile; // lib (assumes scriptcraft.js is in craftbukkit/plugins/scriptcraft/lib directory
-    var jsPluginsRootDir = libDir.parentFile; // scriptcraft
-    var jsPluginsRootDirName = _canonize(jsPluginsRootDir);
-    var logger = __plugin.logger;
+  var _canonize = function( file ) { 
+    return '' + file.getCanonicalPath().replaceAll( '\\\\', '/' ); 
+  };
+  // lib (assumes scriptcraft.js is in craftbukkit/plugins/scriptcraft/lib directory
+  var libDir = __script.parentFile,
+    jsPluginsRootDir = libDir.parentFile, // scriptcraft
+    jsPluginsRootDirName = _canonize(jsPluginsRootDir),
+    logger = __plugin.logger;
 
-    /*
-      Save a javascript object to a file (saves using JSON notation)
-    */
-    var _save = function(object, filename){
-        var objectToStr = null;
-        try{
-            objectToStr = JSON.stringify(object,null,2);
-        }catch(e){
-            print("ERROR: " + e.getMessage() + " while saving " + filename);
-            return;
-        }
-        var f = (filename instanceof File) ? filename : new File(filename);
-        var out = new PrintWriter(new FileWriter(f));
-        out.println( objectToStr );
-        out.close();
-    };
-    /*
-      make sure eval is present
-     */
-    if (typeof eval == 'undefined'){
-        global.eval = function(str){
-            return __engine.eval(str);
-        };
+  /*
+   Save a javascript object to a file (saves using JSON notation)
+   */
+  var _save = function( object, filename ) {
+    var objectToStr = null,
+      f,
+      out;
+    try {
+      objectToStr = JSON.stringify( object, null, 2 );
+    } catch( e ) {
+      print( 'ERROR: ' + e.getMessage() + ' while saving ' + filename );
+      return;
     }
-        
-    /*
-      Load the contents of the file and evaluate as javascript
-     */
-    var _load = function(filename,warnOnFileNotFound)
+    f = (filename instanceof File) ? filename : new File(filename);
+    out = new PrintWriter(new FileWriter(f));
+    out.println( objectToStr );
+    out.close();
+  };
+  /*
+   make sure eval is present
+   */
+  if ( typeof eval == 'undefined' ) {
+    global.eval = function( str ) {
+      return __engine.eval( str );
+    };
+  }
+  
+  /*
+   Load the contents of the file and evaluate as javascript
+   */
+  var _load = function( filename, warnOnFileNotFound )
+  {
+    var result = null,
+      file = filename,
+      r,
+      parent,
+      reader,
+      br,
+      code,
+      wrappedCode;
+    
+    if ( !( filename instanceof File ) ) {
+      file = new File(filename);
+    }
+    var canonizedFilename = _canonize( file );
+    
+    if ( file.exists() ) {
+      parent = file.getParentFile();
+      reader = new FileReader( file );
+      br = new BufferedReader( reader );
+      code = '';
+      try {
+        while ( (r = br.readLine()) !== null ) {
+          code += r + '\n';
+	}
+        wrappedCode = '(' + code + ')';
+        result = __engine.eval( wrappedCode );
+        // issue #103 avoid side-effects of || operator on Mac Rhino
+      } catch ( e ) {
+        logger.severe( 'Error evaluating ' + canonizedFilename + ', ' + e );
+      }
+      finally {
+        try {
+          reader.close();
+        } catch ( re ) {
+          // fail silently on reader close error
+        }
+      }
+    } else {
+      if ( warnOnFileNotFound ) {
+        logger.warning( canonizedFilename + ' not found' );
+      }
+    }
+    return result;
+  };
+  /*
+   now that load is defined, use it to load a global config object
+   */
+  var config = _load( new File(jsPluginsRootDir, 'data/global-config.json' ) );
+  if ( !config ) {
+    config = { verbose: false };
+  }
+  global.config = config;
+  global.__plugin = __plugin;
+  /*
+   wph 20131229 Issue #103 JSON is not bundled with javax.scripting / Rhino on Mac.
+   */
+  (function(){
+    var jsonFileReader = new FileReader( new File( jsPluginsRootDirName + '/lib/json2.js' ) );
+    var jsonLoaded = __engine['eval(java.io.Reader)']( jsonFileReader );
+  }());
+
+  /*
+   Unload Handlers
+   */
+  var unloadHandlers = [];
+  var _addUnloadHandler = function( f ) {
+    unloadHandlers.push( f );
+  };
+  var _runUnloadHandlers = function() {
+    for ( var i = 0; i < unloadHandlers.length; i++ ) {
+      unloadHandlers[i]( );
+    }
+  };
+  global.addUnloadHandler = _addUnloadHandler;
+
+
+  global.refresh = function( ) {
+    __plugin.pluginLoader.disablePlugin( __plugin );
+    __plugin.pluginLoader.enablePlugin( __plugin );
+  };
+  
+  var _echo = function ( msg ) {
+    if ( typeof self == 'undefined' ) {
+      return;
+    }
+    self.sendMessage( msg );
+  };
+
+  global.echo = _echo;
+  global.alert = _echo;
+  global.scload = _load;
+  global.scsave = _save;
+
+  var configRequire = _load( jsPluginsRootDirName + '/lib/require.js', true );
+  /*
+   setup paths to search for modules
+   */
+  var modulePaths = [ jsPluginsRootDirName + '/lib/',
+		      jsPluginsRootDirName + '/modules/' ];
+
+  if ( config.verbose ) {
+    logger.info( 'Setting up CommonJS-style module system. Root Directory: ' + jsPluginsRootDirName );
+    logger.info( 'Module paths: ' + JSON.stringify(modulePaths) );
+  }
+  var requireHooks = {
+    loading: function( path ) {
+      if ( config.verbose ) {
+        logger.info( 'loading ' + path );
+      }
+    },
+    loaded: function( path ) {
+      if ( config.verbose ) {
+        logger.info( 'loaded  ' + path );
+      }
+    }
+  };
+  global.require = configRequire( jsPluginsRootDirName, modulePaths, requireHooks );
+
+  require('js-patch')( global );
+  global.console = require('console');
+  /*
+   setup persistence
+   */
+  require('persistence')( jsPluginsRootDir, global );
+
+  var cmdModule = require('command');
+  global.command = cmdModule.command;
+  var plugins = require('plugin');
+  global.__onTabComplete = require('tabcomplete');
+  global.plugin = plugins.plugin;
+
+  var events = require('events');
+  events.on( 'server.PluginDisableEvent', function( l, e ) {
+    // save config
+    _save( global.config, new File( jsPluginsRootDir, 'data/global-config.json' ) );
+
+    _runUnloadHandlers();
+    org.bukkit.event.HandlerList['unregisterAll(org.bukkit.plugin.Plugin)'](__plugin);
+  });
+  // wph 20131226 - make events global as it is used by many plugins/modules
+  global.events = events;
+
+
+  global.__onCommand = function( sender, cmd, label, args) {
+    var jsArgs = [];
+    var i = 0;
+    for ( ; i < args.length ; i++ ) {
+      jsArgs.push( '' + args[i] );
+    }
+    
+    var result = false;
+    var cmdName = ( '' + cmd.name ).toLowerCase();
+    if (cmdName == 'js')
     {
-        var result = null
-        ,file = filename
-        ,r = undefined;
-        
-        if (!(filename instanceof File))
-            file = new File(filename);
-
-        var canonizedFilename = _canonize(file);
-        
-        if (file.exists()) {
-            var parent = file.getParentFile();
-            var reader = new FileReader(file);
-            var br = new BufferedReader(reader);
-            var code = "";
-            var wrappedCode;
-            try{
-                while ((r = br.readLine()) !== null) 
-                    code += r + "\n";
-
-                wrappedCode = "(" + code + ")";
-                result = __engine.eval(wrappedCode);
-                // issue #103 avoid side-effects of || operator on Mac Rhino
-            }catch (e){
-                logger.severe("Error evaluating " + canonizedFilename + ", " + e );
-            }
-            finally {
-                try {
-                    reader.close();
-                }catch (re){
-                    // fail silently on reader close error
-                }
-            }
-        }else{
-            if (warnOnFileNotFound) 
-                logger.warning(canonizedFilename + " not found");
-        }
-        return result;
-    };
-    /*
-      now that load is defined, use it to load a global config object
-     */
-    var config = _load(new File(jsPluginsRootDir, 'data/global-config.json' ));
-    if (!config)
-        config = {verbose: false};
-    global.config = config;
-    global.__plugin = __plugin;
-    /*
-      wph 20131229 Issue #103 JSON is not bundled with javax.scripting / Rhino on Mac.
-     */
-    var jsonLoaded = __engine["eval(java.io.Reader)"](new FileReader(new File(jsPluginsRootDirName + '/lib/json2.js')));
-
-    /*
-      Unload Handlers
-    */
-    var unloadHandlers = [];
-    var _addUnloadHandler = function(f) {
-        unloadHandlers.push(f);
-    };
-    var _runUnloadHandlers = function() {
-        for (var i = 0; i < unloadHandlers.length; i++) {
-            unloadHandlers[i]();
-        }
-    };
-
-    global.refresh = function(){
-        __plugin.pluginLoader.disablePlugin(__plugin);
-        __plugin.pluginLoader.enablePlugin(__plugin);
-    };
-    
-    var _echo = function (msg) {
-        if (typeof self == "undefined"){
-            return;
-        }
-        self.sendMessage(msg);
-    };
-
-    global.echo = _echo;
-    global.alert = _echo;
-    global.scload = _load;
-    global.scsave = _save;
-    
-    global.addUnloadHandler = _addUnloadHandler;
-
-    var configRequire = _load(jsPluginsRootDirName + '/lib/require.js',true);
-    /*
-      setup paths to search for modules
-     */
-    var modulePaths = [jsPluginsRootDirName + '/lib/',
-                       jsPluginsRootDirName + '/modules/'];
-
-    if (config.verbose){
-        logger.info('Setting up CommonJS-style module system. Root Directory: ' + jsPluginsRootDirName);
-        logger.info('Module paths: ' + JSON.stringify(modulePaths));
+      result = true;
+      var fnBody = jsArgs.join(' ');
+      global.self = sender;
+      global.__engine = __engine;
+      try { 
+        var jsResult = __engine.eval(fnBody);
+        if ( jsResult ) {
+          sender.sendMessage(jsResult);
+	}
+      } catch ( e ) {
+        logger.severe( 'Error while trying to evaluate javascript: ' + fnBody + ', Error: '+ e );
+        throw e;
+      } finally {
+        delete global.self;
+        delete global.__engine;
+      }
     }
-    var requireHooks = {
-        loading: function(path){
-            if (config.verbose)
-                logger.info('loading ' + path);
-        },
-        loaded: function(path){
-            if (config.verbose)
-                logger.info('loaded  ' + path);
-        }
-    };
-    global.require = configRequire(jsPluginsRootDirName, modulePaths,requireHooks );
-
-    require('js-patch')(global);
-    global.console = require('console');
-    /*
-      setup persistence
-     */
-    require('persistence')(jsPluginsRootDir,global);
-
-    var cmdModule = require('command');
-    global.command = cmdModule.command;
-    var plugins = require('plugin');
-    global.__onTabComplete = require('tabcomplete');
-    global.plugin = plugins.plugin;
-
-    var events = require('events');
-    events.on('server.PluginDisableEvent',function(l,e){
-        // save config
-        _save(global.config, new File(jsPluginsRootDir, 'data/global-config.json' ));
-
-        _runUnloadHandlers();
-        org.bukkit.event.HandlerList['unregisterAll(org.bukkit.plugin.Plugin)'](__plugin);
-    });
-    // wph 20131226 - make events global as it is used by many plugins/modules
-    global.events = events;
-
-
-    global.__onCommand = function( sender, cmd, label, args) {
-        var jsArgs = [];
-        var i = 0;
-        for (;i < args.length; i++) {
-            jsArgs.push('' + args[i]);
-        }
- 
-        var result = false;
-        var cmdName = ('' + cmd.name).toLowerCase();
-        if (cmdName == 'js')
-        {
-            result = true;
-            var fnBody = jsArgs.join(' ');
-            global.self = sender;
-            global.__engine = __engine;
-            try { 
-                var jsResult = __engine.eval(fnBody);
-                if (jsResult)
-                    sender.sendMessage(jsResult);
-            }catch (e){
-                logger.severe("Error while trying to evaluate javascript: " + fnBody + ", Error: "+ e);
-                throw e;
-            }finally{
-                delete global.self;
-                delete global.__engine;
-            }
-        }
-        if (cmdName == 'jsp'){
-            cmdModule.exec(jsArgs, sender);
-            result = true;
-        }
-        return result;
-    };
-
-    plugins.autoload(jsPluginsRootDir,logger);
-    /*
-      wph 20140102 - warn if legacy 'craftbukkit/js-plugins' or 'craftbukkit/scriptcraft' directories are present
-     */
-    var cbPluginsDir = jsPluginsRootDir.parentFile;
-    var cbDir = new File(cbPluginsDir.canonicalPath).parentFile;
-    var legacyDirs = [
-        new File(cbDir, 'js-plugins'), 
-        new File(cbDir, 'scriptcraft')
-    ];
-    var legacyExists = false;
-    for (var i = 0; i < legacyDirs.length; i++){
-        if (legacyDirs[i].exists() && legacyDirs[i].isDirectory()){
-            legacyExists = true;
-            console.warn('Legacy ScriptCraft directory %s was found. This directory is no longer used.',
-                         legacyDirs[i].canonicalPath);
-        }
+    if ( cmdName == 'jsp' ) {
+      cmdModule.exec( jsArgs, sender );
+      result = true;
     }
-    if (legacyExists){
-        console.info('Please note that the working directory for %s is %s', 
-                     __plugin, jsPluginsRootDir.canonicalPath);
+    return result;
+  };
+
+  plugins.autoload( jsPluginsRootDir, logger );
+    /*
+     wph 20140102 - warn if legacy 'craftbukkit/js-plugins' or 'craftbukkit/scriptcraft' directories are present
+     */
+  (function(){
+    var cbPluginsDir = jsPluginsRootDir.parentFile,
+      cbDir = new File(cbPluginsDir.canonicalPath).parentFile,
+      legacyExists = false,
+      legacyDirs = [new File( cbDir, 'js-plugins' ), 
+		    new File( cbDir, 'scriptcraft' )];
+
+    for ( var i = 0; i < legacyDirs.length; i++ ) {
+      if ( legacyDirs[i].exists() 
+	   && legacyDirs[i].isDirectory() ) {
+
+	legacyExists = true; 
+
+	console.warn('Legacy ScriptCraft directory %s was found. This directory is no longer used.',
+          legacyDirs[i].canonicalPath);
+      }
     }
+    if ( legacyExists ) {
+      console.info( 'Please note that the working directory for %s is %s', 
+	__plugin, jsPluginsRootDir.canonicalPath );
+    }
+  })();
+
 }

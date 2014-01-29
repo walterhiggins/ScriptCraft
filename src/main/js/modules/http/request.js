@@ -37,74 +37,76 @@ The following example illustrates how to use http.request to make a request to a
 ... The following example illustrates a more complex use-case POSTing parameters to a CGI process on a server...
 
     var http = require('./http/request');
-    http.request({ url: "http://pixenate.com/pixenate/pxn8.pl",
-                   method: "POST",
-                   params: {script: "[]"}
-                 }, function( responseCode, responseBody){
-          var jsObj = eval("(" + responseBody + ")");
+    http.request(
+      { 
+        url: 'http://pixenate.com/pixenate/pxn8.pl',
+        method: 'POST',
+        params: {script: '[]'}
+      }, 
+      function( responseCode, responseBody ) {
+         var jsObj = eval('(' + responseBody + ')');
       });
 
 ***/
-exports.request = function( request, callback)
-{
-    var paramsToString = function(params){
-        var result = "";
-        var paramNames = [];
-        for (var i in params){
-            paramNames.push(i);
-        }
-        for (var i = 0;i < paramNames.length;i++){
-            result += paramNames[i] + "=" + encodeURI(params[paramNames[i]]);
-            if (i < paramNames.length-1)
-                result += "&";
-        }
-        return result;
-    };
-    
-    server.scheduler.runTaskAsynchronously(__plugin,function() 
-    {
-        var url, paramsAsString, conn, requestMethod;
-        if (typeof request === "string"){
-            url = request;
-            requestMethod = "GET";
-        }else{
-            paramsAsString = paramsToString(request.params);
-            if (request.method)
-                requestMethod = request.method
-            else
-                requestMethod = "GET";
+exports.request = function( request, callback ) {
+  var paramsToString = function( params ) {
+    var result = '',
+      paramNames = [],
+      i;
+    for ( i in params ) {
+      paramNames.push( i );
+    }
+    for ( i = 0; i < paramNames.length; i++ ) {
+      result += paramNames[i] + '=' + encodeURI( params[ paramNames[i] ] );
+      if ( i < paramNames.length-1 )
+        result += '&';
+    }
+    return result;
+  };
+  
+  server.scheduler.runTaskAsynchronously( __plugin, function() {
+    var url, paramsAsString, conn, requestMethod;
+    if (typeof request === 'string'){
+      url = request;
+      requestMethod = 'GET';
+    }else{
+      paramsAsString = paramsToString( request.params );
+      if ( request.method ) {
+	requestMethod = request.method;
+      } else {
+	requestMethod = 'GET';
+      }
+      if ( requestMethod == 'GET' && request.params ) {
+	// append each parameter to the URL
+	url = request.url + '?' + paramsAsString;
+      }
+    }
+    conn = new java.net.URL( url ).openConnection();
+    conn.requestMethod = requestMethod;
+    conn.doOutput = true;
+    conn.instanceFollowRedirects = false;
 
-            if (requestMethod == "GET" && request.params){
-                // append each parameter to the URL
-                url = request.url + "?" + paramsAsString;
-            }
-        }
-        conn = new java.net.URL(url).openConnection();
-        conn.requestMethod = requestMethod;
-        conn.doOutput = true;
-        conn.instanceFollowRedirects = false;
-
-        if (conn.requestMethod == "POST"){
-            conn.doInput = true;
-            // put each parameter in the outputstream
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); 
-            conn.setRequestProperty("charset", "utf-8");
-            conn.setRequestProperty("Content-Length", "" + paramsAsString.length);
-            conn.useCaches =false ;
-            wr = new java.io.DataOutputStream(conn.getOutputStream ());
-            wr.writeBytes(paramsAsString);
-            wr.flush();
-            wr.close();
-        }
-        var rc = conn.responseCode;
-        var response;
-        var stream;
-        if (rc == 200){
-            stream = conn.getInputStream();
-            response = new java.util.Scanner(stream).useDelimiter("\\A").next();
-        }
-        server.scheduler.runTask(__plugin,function(){
-            callback(rc,response);
-        });
+    if ( conn.requestMethod == 'POST' ) {
+      conn.doInput = true;
+      // put each parameter in the outputstream
+      conn.setRequestProperty('Content-Type', 'application/x-www-form-urlencoded'); 
+      conn.setRequestProperty('charset', 'utf-8');
+      conn.setRequestProperty('Content-Length', '' + paramsAsString.length);
+      conn.useCaches =false ;
+      wr = new java.io.DataOutputStream(conn.getOutputStream ());
+      wr.writeBytes(paramsAsString);
+      wr.flush();
+      wr.close();
+    }
+    var rc = conn.responseCode;
+    var response;
+    var stream;
+    if ( rc == 200 ) {
+      stream = conn.getInputStream();
+      response = new java.util.Scanner( stream ).useDelimiter("\\A").next();
+    }
+    server.scheduler.runTask( __plugin, function( ) {
+      callback( rc, response );
     });
+  });
 };

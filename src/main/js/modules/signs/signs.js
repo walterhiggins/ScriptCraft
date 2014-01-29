@@ -92,16 +92,18 @@ the entity has targeted. It is a utility function for use by plugin authors.
 var utils = require('utils');
 var menu = require('./menu');
 // include all menu exports
-for (var i in menu){
-    exports[i] = menu[i];
+for ( var i in menu ) {
+  exports[i] = menu[i];
 }
 
-exports.getTargetedBy = function( livingEntity ){
-    var location = utils.getMousePos( livingEntity );
-    if (!location)
-        return null;
-    var state = location.block.state;
-    if (!(state || state.setLine))
-        return null;
-    return state;
+exports.getTargetedBy = function( livingEntity ) {
+  var location = utils.getMousePos( livingEntity );
+  if ( !location ) { 
+    return null;
+  }
+  var state = location.block.state;
+  if ( ! (state || state.setLine) ) {
+    return null;
+  }
+  return state;
 };

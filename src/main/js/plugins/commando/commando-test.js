@@ -1,21 +1,22 @@
 /*
   A test of the commando plugin.
-  Adds a new `/scriptcrafttimeofday` command with 4 possible options: Dawn, Midday, Dusk, Midnight
+  Adds a new `/js-time` command with 4 possible options: Dawn, Midday, Dusk, Midnight
 */
-var commando = require('./commando').commando;
-var times = {
-    Dawn: 0,
-    Midday: 6000,
-    Dusk: 12000,
-    Midnight: 18000
-};
-commando('scriptcrafttimeofday',function(params,sender){
-    if (config.verbose){
-        console.log('scriptcrafttimeofday.params=%s',JSON.stringify(params));
+var commando = require('./commando').commando,
+  times = ['Dawn','Midday','Dusk','Midnight'];
+
+commando( 'js-time' , function( params, sender ) {
+  var time = ''+params[0].toLowerCase(),
+    i = 0;
+  if ( sender.location ) {
+    for ( ; i < 4; i++ ) {
+      if ( times.toLowerCase() == time ) { 
+	sender.location.world.setTime( i * 6000 );
+	break;
+      }
     }
-    if (sender.location)
-        sender.location.world.setTime(times[params[0]]);
-    else
-        sender.sendMessage('This command only works in-world');
+  } else {
+    sender.sendMessage('This command only works in-world');
+  }
     
-},['Dawn','Midday','Dusk','Midnight']);
+},times);

@@ -25,130 +25,98 @@ player23's arrows explosive.
  
 ***/
 
-var signs = require('signs');
-var fireworks = require('fireworks');
-var utils = require('utils');
-
-var _store = {players: {}};
-
-var arrows = plugin("arrows",{
-    /*
-      turn a sign into a menu of arrow choices
-    */
-    sign: function(sign){},
-    /*
-      change player's arrows to normal
-     */
-    normal: function(player){},
-    /*
-      change player's arrows to explode on impact
-     */
-    explosive: function(player){},
-    /*
-      change player's arrows to teleporting
-     */
-    teleport: function(player){},
-    /*
-      change player's arrows to plant trees where they land
-     */
-    flourish: function(player){},
-    /*
-      change player's arrows to strike lightning where they land
-     */
-    lightning: function(player){},
-
-    /*
-      launch a firework where the arrow lands
-     */
-    explosiveYield: 2.5,
-    
-    store: _store
-
-},true);
+var signs = require('signs'),
+  fireworks = require('fireworks'),
+  utils = require('utils'),
+  EXPLOSIVE_YIELD = 2.5,
+  _store = { players: { } },
+  arrows = plugin( 'arrows', { store: _store }, true ),
+  i,
+  type,
+  _types = [ 'Normal', 'Explosive', 'Teleport', 'Flourish', 'Lightning', 'Firework' ];
 
 exports.arrows = arrows;
 
-//
-// setup functions for the arrow types
-//
-var _types = {normal: 0, explosive: 1, teleport: 2, flourish: 3, lightning: 4, firework: 5};
-for (var type in _types)
-{
-    arrows[type] = (function(n){
-        return function(player){
-            player = utils.player(player);
-            if (player)
-                arrows.store.players[player.name] = n;
-            else
-                console.warn('arrows.' + n + ' No player ' + player);
-        };
-    })(_types[type]);
+
+for ( i = 0; i < _types.length; i++ ) {
+  type = _types[i].toLowerCase();
+  // iife (immediately-invoked function expression)
+  arrows[ type ] = ( function( n ) {
+    return function( player ) {
+      player = utils.player( player );
+      if ( player ) {
+        arrows.store.players[ player.name ] = n;
+      } else {
+        console.warn('arrows.' + n + ' No player ' + player);
+      }
+    };
+  } )( i );
 }
 
 /*
-  called when the player chooses an arrow option from a menu sign
-*/
-var _onMenuChoice = function(event){
-    arrows.store.players[event.player.name] = event.number;
+ called when the player chooses an arrow option from a menu sign
+ */
+var _onMenuChoice = function( event ) {
+  arrows.store.players[ event.player.name ] = event.number;
 };
-var convertToArrowSign = signs.menu(
-    "Arrow", 
-    ["Normal","Explosive","Teleport","Flourish","Lightning","Firework"],
-    _onMenuChoice);
+var convertToArrowSign = signs.menu( 'Arrow', _types, _onMenuChoice );
 
-arrows.sign = function(cmdSender)
-{
-    var sign = signs.getTargetedBy(cmdSender);
-    if (!sign){
-        throw new Error('You must first look at a sign!');
-    }
-    return convertToArrowSign(sign,true);
+/*
+ turn a sign into a menu of arrow choices
+ */
+arrows.sign = function( cmdSender ) {
+  var sign = signs.getTargetedBy( cmdSender );
+  if ( !sign ) {
+    throw new Error( 'You must first look at a sign!' );
+  }
+  return convertToArrowSign( sign, true );
 };
 
 /*
-  event handler called when a projectile hits something
-*/
-var _onArrowHit = function(listener,event)
-{
-    var projectile = event.entity;
-    var world = projectile.world;
-    var shooter = projectile.shooter;
-    var fireworkCount = 5;
-    if (projectile instanceof org.bukkit.entity.Arrow && 
-        shooter instanceof org.bukkit.entity.Player)
-    {
-        var arrowType = arrows.store.players[shooter.name];
+ event handler called when a projectile hits something
+ */
+var _onArrowHit = function( listener, event ) {
+  var projectile = event.entity,
+    world = projectile.world,
+    shooter = projectile.shooter,
+    fireworkCount = 5,
+    arrowType,
+    TeleportCause = org.bukkit.event.player.PlayerTeleportEvent.TeleportCause,
+    launch = function( ) {
+      fireworks.firework( projectile.location );
+      if ( --fireworkCount ) { 
+	setTimeout( launch, 2000 );
+      }
+    };
 
-        switch (arrowType){
-        case 1:
-            projectile.remove();
-            world.createExplosion(projectile.location,arrows.explosiveYield);
-            break;
-        case 2:
-            projectile.remove();
-            var teleportCause =org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-            shooter.teleport(projectile.location,
-                             teleportCause.PLUGIN);
-            break;
-        case 3:
-            projectile.remove();
-            world.generateTree(projectile.location, org.bukkit.TreeType.BIG_TREE);
-            break;
-        case 4: 
-            projectile.remove();
-            world.strikeLightning(projectile.location);
-            break;
-        case 5:
-            projectile.remove();
-            var launch = function(){
-                fireworks.firework(projectile.location);
-                if (--fireworkCount)
-                    setTimeout(launch,2000);
-            };
-            launch();
-            break;
-        }
+  if (projectile instanceof org.bukkit.entity.Arrow 
+      && shooter instanceof org.bukkit.entity.Player) {
+
+    arrowType = arrows.store.players[ shooter.name ];
+
+    switch ( arrowType ) {
+    case 1:
+      projectile.remove();
+      world.createExplosion( projectile.location, EXPLOSIVE_YIELD );
+      break;
+    case 2:
+      projectile.remove();
+      shooter.teleport( projectile.location, TeleportCause.PLUGIN );
+      break;
+    case 3:
+      projectile.remove();
+      world.generateTree( projectile.location, org.bukkit.TreeType.BIG_TREE );
+      break;
+    case 4: 
+      projectile.remove();
+      world.strikeLightning( projectile.location );
+      break;
+    case 5:
+      projectile.remove();
+      launch();
+      break;
     }
+  }
 };
-events.on('entity.ProjectileHitEvent',_onArrowHit);
+events.on( 'entity.ProjectileHitEvent', _onArrowHit );
 

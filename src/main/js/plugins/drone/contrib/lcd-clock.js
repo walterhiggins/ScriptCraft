@@ -17,21 +17,21 @@ exports.LCDClock = function(drone, fgColor,bgColor,border) {
     world = drone.world,
     intervalId = -1;
 
-  if (typeof bgColor == 'undefined')
+  if ( typeof bgColor == 'undefined' ) {
     bgColor = '35:15'; // black wool
-  
-  if (typeof fgColor == 'undefined')
+  }
+  if ( typeof fgColor == 'undefined' ) {
     fgColor = 35 ; // white wool 
-
-  if (border){
+  }
+  if ( border ) {
     drone.box(border,21,9,1);
     drone.up().right();
   }
   drone.blocktype('00:00',fgColor,bgColor);
   return { 
-    start24: function(){
+    start24: function( ) {
       var clock = this;
-      function tick(){
+      function tick() {
 	var rolloverMins = 24*60;
 	var timeOfDayInMins = Math.floor(((world.time + 6000) % 24000) / 16.6667);
 	timeOfDayInMins = timeOfDayInMins % rolloverMins;
@@ -40,10 +40,10 @@ exports.LCDClock = function(drone, fgColor,bgColor,border) {
       };
       intervalId = setInterval(tick, 800);
     },
-    stop24: function(){
-      clearInterval(intervalId);
+    stop24: function() {
+      clearInterval( intervalId );
     },
-    update: function(secs){
+    update: function(secs) {
       var digits = [0,0,0,0],
 	s = secs % 60;
 	m = (secs - s) / 60;

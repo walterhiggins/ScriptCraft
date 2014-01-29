@@ -29,13 +29,13 @@ this example, we use that module...
 Source Code...
 
     var greetings = require('./example-1-hello-module');
-    command('hello-module', function( parameters, player ){
-        greetings.hello(player);
+    command( 'hello-module', function( parameters, player ) {
+      greetings.hello( player );
     });
 
 ***/
 var greetings = require('./example-1-hello-module');
 
-command('hello-module', function( parameters, player ){
-    greetings.hello(player);
+command( 'hello-module', function( parameters, player ) {
+  greetings.hello( player );
 });

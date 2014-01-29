@@ -19,22 +19,22 @@ This example demonstrates adding and using parameters in commands.
 This differs from example 3 in that the greeting can be changed from
 a fixed 'Hello ' to anything you like by passing a parameter.
 
-    command('hello-params', function (parameters, player) {
-        var salutation = parameters[0] ;
-        player.sendMessage( salutation + ' ' + player.name);
+    command( 'hello-params', function ( parameters, player ) {
+      var salutation = parameters[0] ;
+      player.sendMessage( salutation + ' ' + player.name );
     });
 
 ***/
 
-command('hello-params', function (parameters, player) {
-    /*
-      parameters is an array (or list) of strings.  parameters[0]
-      refers to the first element in the list.  Arrays in Javascript
-      are 0-based. That is, the 1st element is parameters[0], the 2nd
-      element is parameters[1], the 3rd element is parameters[2] and
-      so on. In this example, parameters[1] refers to the first word
-      which appears after `jsp hello-params `.
-     */
-    var salutation = parameters[0] ;
-    player.sendMessage( salutation + ' ' + player.name);
+command('hello-params', function( parameters, player ) {
+  /*
+   parameters is an array (or list) of strings.  parameters[0]
+   refers to the first element in the list.  Arrays in Javascript
+   are 0-based. That is, the 1st element is parameters[0], the 2nd
+   element is parameters[1], the 3rd element is parameters[2] and
+   so on. In this example, parameters[1] refers to the first word
+   which appears after `jsp hello-params `.
+   */
+  var salutation = parameters[0] ;
+  player.sendMessage( salutation + ' ' + player.name );
 });

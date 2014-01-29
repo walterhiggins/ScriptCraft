@@ -27,6 +27,6 @@ command does not evaluate javascript code so this command is much more secure.
 
 ***/
 
-command('hello', function (parameters, player) {
-    player.sendMessage('Hello ' + player.name);
+command( 'hello', function( parameters, player ) {
+  player.sendMessage( 'Hello ' + player.name );
 });

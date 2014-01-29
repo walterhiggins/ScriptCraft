@@ -54,46 +54,45 @@ module specification, the '.js' suffix is optional.
 [cjsmodules]: http://wiki.commonjs.org/wiki/Modules/1.1.1.
 
 ***/
-(function (rootDir, modulePaths, hooks) {
+(function ( rootDir, modulePaths, hooks ) {
 
-    var File = java.io.File;
+  var File = java.io.File;
     
-    var readModuleFromDirectory = function(dir){
+  var readModuleFromDirectory = function( dir ) {
 
-        // look for a package.json file
-        var pkgJsonFile = new File(dir, './package.json');
-        if (pkgJsonFile.exists()){
-            var pkg = scload(pkgJsonFile);
-            var mainFile = new File(dir, pkg.main);
-            if (mainFile.exists()){
-                return mainFile;
-            } else {
-                return null;
-            }
-        }else{
-            // look for an index.js file
-            var indexJsFile = new File(dir + './index.js');
-            if (indexJsFile.exists()){
-                return indexJsFile;
-            } else { 
-                return null;
-            }
-        }
-    };
+    // look for a package.json file
+    var pkgJsonFile = new File( dir, './package.json' );
+    if ( pkgJsonFile.exists() ) {
+      var pkg = scload( pkgJsonFile );
+      var mainFile = new File( dir, pkg.main );
+      if ( mainFile.exists() ) {
+        return mainFile;
+      } else {
+        return null;
+      }
+    } else {
+      // look for an index.js file
+      var indexJsFile = new File( dir + './index.js' );
+      if ( indexJsFile.exists() ) {
+        return indexJsFile;
+      } else { 
+        return null;
+      }
+    }
+  };
 
-    var fileExists = function(file) {
-        if (file.isDirectory()){
-            return readModuleFromDirectory(file);
-        }else {
-            return file;
-        }
-    };
+  var fileExists = function( file ) {
+    if ( file.isDirectory() ) {
+      return readModuleFromDirectory( file );
+    } else {
+      return file;
+    }
+  };
 
-    var _canonize = function(file){ 
-        return "" + file.canonicalPath.replaceAll("\\\\","/"); 
-    };
+  var _canonize = function(file){ 
+    return "" + file.canonicalPath.replaceAll("\\\\","/"); 
+  };
 
-    var resolveModuleToFile = function(moduleName, parentDir) {
 /**********************************************************************
 ### module name resolution
 
@@ -128,48 +127,49 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     3.2 if no package.json file exists then look for an index.js file in the directory
 
 ***/
-        var file = new File(moduleName);
+  var resolveModuleToFile = function ( moduleName, parentDir ) {
+    var file = new File(moduleName);
 
-        if (file.exists()){
-            return fileExists(file);
+    if ( file.exists() ) {
+      return fileExists(file);
+    }
+    if ( moduleName.match( /^[^\.\/]/ ) ) {
+      // it's a module named like so ... 'events' , 'net/http'
+      //
+      var resolvedFile;
+      for (var i = 0;i < modulePaths.length; i++){
+        resolvedFile = new File(modulePaths[i] + moduleName);
+        if (resolvedFile.exists()){
+          return fileExists(resolvedFile);
+        }else{
+          // try appending a .js to the end
+          resolvedFile = new File(modulePaths[i] + moduleName + '.js');
+          if (resolvedFile.exists())
+            return resolvedFile;
         }
-        if (moduleName.match(/^[^\.\/]/)){
-            // it's a module named like so ... 'events' , 'net/http'
-            //
-            var resolvedFile;
-            for (var i = 0;i < modulePaths.length; i++){
-                resolvedFile = new File(modulePaths[i] + moduleName);
-                if (resolvedFile.exists()){
-                    return fileExists(resolvedFile);
-                }else{
-                    // try appending a .js to the end
-                    resolvedFile = new File(modulePaths[i] + moduleName + '.js');
-                    if (resolvedFile.exists())
-                        return resolvedFile;
-                }
-            }
-        } else {
-            // it's of the form ./path
-            file = new File(parentDir, moduleName);
-            if (file.exists()){
-                return fileExists(file);
-            }else { 
+      }
+    } else {
+      // it's of the form ./path
+      file = new File(parentDir, moduleName);
+      if (file.exists()){
+        return fileExists(file);
+      }else { 
 
-                // try appending a .js to the end
-                var pathWithJSExt = file.canonicalPath + '.js';
-                file = new File( parentDir, pathWithJSExt);
-                if (file.exists())
-                    return file;
-                else{
-                    file = new File(pathWithJSExt);
-                    if (file.exists())
-                        return file;
-                }
-                    
-            }
+        // try appending a .js to the end
+        var pathWithJSExt = file.canonicalPath + '.js';
+        file = new File( parentDir, pathWithJSExt);
+        if (file.exists())
+          return file;
+        else{
+          file = new File(pathWithJSExt);
+          if (file.exists())
+            return file;
         }
-        return null;
-    };
+        
+      }
+    }
+    return null;
+  };
     /*
       wph 20131215 Experimental 
     */

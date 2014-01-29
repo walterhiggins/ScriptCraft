@@ -36,18 +36,18 @@ String, then it tries to find the player with that name.
 
 ***/
 var _player = function ( playerName ) {
-    if (typeof playerName == 'undefined'){
-        if (typeof self == 'undefined'){
-            return null;
-        } else { 
-            return self;
-        }
-    } else {
-        if (typeof playerName == 'string')
-            return org.bukkit.Bukkit.getPlayer(playerName);
-        else
-            return playerName; // assumes it's a player object
+  if ( typeof playerName == 'undefined' ) {
+    if ( typeof self == 'undefined' ) {
+      return null;
+    } else { 
+      return self;
     }
+  } else {
+    if ( typeof playerName == 'string' )
+      return org.bukkit.Bukkit.getPlayer( playerName );
+    else
+      return playerName; // assumes it's a player object
+  }
 };
 /*************************************************************************
 ### utils.locationToJSON() function
@@ -73,15 +73,15 @@ This can be useful if you write a plugin that needs to store location data since
 A JSON object in the above form.
  
 ***/
-var _locationToJSON = function(location){
-    return { 
-        world: ''+location.world.name, 
-        x: location.x, 
-        y: location.y, 
-        z: location.z, 
-        yaw: location.yaw,
-        pitch: location.pitch
-    };
+var _locationToJSON = function( location ) {
+  return { 
+    world: ''+location.world.name, 
+    x: location.x, 
+    y: location.y, 
+    z: location.z, 
+    yaw: location.yaw,
+    pitch: location.pitch
+  };
 };
 /*************************************************************************
 ### utils.locationToString() function
@@ -102,8 +102,8 @@ keys in a lookup table.
     lookupTable[key] = player.name;
 
 ***/
-exports.locationToString = function(location){
-    return JSON.stringify(_locationToJSON(location));
+exports.locationToString = function( location ) {
+  return JSON.stringify( _locationToJSON( location ) );
 };
 exports.locationToJSON = _locationToJSON;
 
@@ -117,21 +117,23 @@ returned by locationToJSON() and reconstructs and returns a bukkit
 Location object.
 
 ***/
-exports.locationFromJSON = function(json){
-    if (json.constuctor == Array){ 
-        // for support of legacy format
-        var world = org.bukkit.Bukkit.getWorld(json[0]);
-        return new org.bukkit.Location(world, json[1], json[2] , json[3]);
-    }else{
-        var world = org.bukkit.Bukkit.getWorld(json.world);
-        return new org.bukkit.Location(world, json.x, json.y , json.z, json.yaw, json.pitch);
-    }
+exports.locationFromJSON = function( json ) {
+  var world;
+  if ( json.constuctor == Array ) { 
+    // for support of legacy format
+    world = org.bukkit.Bukkit.getWorld( json[0] );
+    return new org.bukkit.Location( world, json[1], json[2] , json[3] );
+  } else {
+    world = org.bukkit.Bukkit.getWorld( json.world );
+    return new org.bukkit.Location( world, json.x, json.y , json.z, json.yaw, json.pitch );
+  }
 };
 
 exports.player = _player;
-exports.getPlayerObject = function(player){
-    console.warn('utils.getPlayerObject() is deprecated. Use utils.player() instead.');
-    return _player(player);
+
+exports.getPlayerObject = function( player ) {
+  console.warn( 'utils.getPlayerObject() is deprecated. Use utils.player() instead.' );
+  return _player(player);
 };
 /*************************************************************************
 ### utils.getPlayerPos() function
@@ -153,15 +155,14 @@ An [org.bukkit.Location][bkloc] object.
 [bksndr]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/command/CommandSender.html
 ***/
 exports.getPlayerPos = function( player ) {
-    player = _player(player);
-    if (player){
-        if (player instanceof org.bukkit.command.BlockCommandSender)
-            return player.block.location;
-        else
-            return player.location;
-    }
+  player = _player( player );
+  if ( player ) {
+    if ( player instanceof org.bukkit.command.BlockCommandSender )
+      return player.block.location;
     else
-        return null;
+      return player.location;
+  } 
+  return null;
 };
 /************************************************************************
 ### utils.getMousePos() function
@@ -186,19 +187,21 @@ The following code will strike lightning at the location the player is looking a
     }
 
 ***/
-exports.getMousePos = function (player) {
-    
-    player = _player(player);
-    if (!player)
-        return null;
-    // player might be CONSOLE or a CommandBlock
-    if (!player.getTargetBlock)
-        return null;
-    var targetedBlock = player.getTargetBlock(null,5);
-    if (targetedBlock == null || targetedBlock.isEmpty()){
-        return null;
-    }
-    return targetedBlock.location;
+exports.getMousePos = function( player ) {
+  
+  player = _player(player);
+  if ( !player ) {
+    return null;
+  }
+  // player might be CONSOLE or a CommandBlock
+  if ( !player.getTargetBlock ) {
+    return null;
+  }
+  var targetedBlock = player.getTargetBlock( null, 5 );
+  if ( targetedBlock == null || targetedBlock.isEmpty() ) {
+    return null;
+  }
+  return targetedBlock.location;
 };
 /************************************************************************
 ### utils.foreach() function
@@ -228,7 +231,7 @@ package for scheduling processing of arrays.
    - object : Additional (optional) information passed into the foreach method.
    - array : The entire array.
 
- * object (optional) : An object which may be used by the callback.
+ * context (optional) : An object which may be used by the callback.
  * delay (optional, numeric) : If a delay is specified (in ticks - 20
    ticks = 1 second), then the processing will be scheduled so that
    each item will be processed in turn with a delay between the completion of each
@@ -286,20 +289,26 @@ without hogging CPU usage...
     utils.foreach (a, processItem, null, 10, onDone);
     
 ***/
-var _foreach = function(array, callback, object, delay, onCompletion) {
-    if (array instanceof java.util.Collection)
-        array = array.toArray();
-    var i = 0;
-    var len = array.length;
-    if (delay){
-        var next = function(){ callback(array[i],i,object,array); i++;};
-        var hasNext = function(){return i < len;};
-        _nicely(next,hasNext,onCompletion,delay);
-    }else{
-        for (;i < len; i++){
-            callback(array[i],i,object,array);
-        }
+var _foreach = function( array, callback, context, delay, onCompletion ) {
+  if ( array instanceof java.util.Collection ) {
+    array = array.toArray();
+  }
+  var i = 0;
+  var len = array.length;
+  if ( delay ) {
+    var next = function( ) { 
+      callback(array[i], i, context, array); 
+      i++;
+    };
+    var hasNext = function( ) {
+      return i < len;
+    };
+    _nicely( next, hasNext, onCompletion, delay );
+  } else {
+    for ( ;i < len; i++ ) {
+      callback( array[i], i, context, array );
     }
+  }
 };
 exports.foreach = _foreach;
 /************************************************************************
@@ -327,16 +336,17 @@ function and the start of the next `next()` function.
 See the source code to utils.foreach for an example of how utils.nicely is used.
 
 ***/
-var _nicely = function(next, hasNext, onDone, delay){
-    if (hasNext()){
-        next();
-        server.scheduler.runTaskLater(__plugin,function(){
-            _nicely(next,hasNext,onDone,delay);
-        },delay);
-    }else{
-        if (onDone)
-            onDone();
+var _nicely = function( next, hasNext, onDone, delay ) {
+  if ( hasNext() ){
+    next();
+    server.scheduler.runTaskLater( __plugin, function() {
+      _nicely( next, hasNext, onDone, delay );
+    }, delay );
+  }else{
+    if ( onDone ) {
+      onDone();
     }
+  }
 };
 exports.nicely = _nicely;
 /************************************************************************
@@ -360,34 +370,34 @@ To warn players when night is approaching...
 
     utils.at( '19:00', function() {
 
-        utils.foreach( server.onlinePlayers, function(player){
-            player.chat('The night is dark and full of terrors!');            
-        });
+      utils.foreach( server.onlinePlayers, function( player ) {
+        player.chat( 'The night is dark and full of terrors!' );
+      });
 
     });
   
 ***/
-exports.at = function(time24hr, callback, worlds) {
-    var forever = function(){ return true;};
-    var timeParts = time24hr.split(':');
-    var hrs = ((timeParts[0] * 1000) + 18000) % 24000;
-    var mins;
-    if (timeParts.length > 1)
-        mins = (timeParts[1] / 60) * 1000;
-    
-    var timeMc = hrs + mins;
-    if (typeof worlds == 'undefined'){
-        worlds = server.worlds;
-    }
-    _nicely(function(){
-        _foreach (worlds, function (world){
-            var time = world.getTime();
-            var diff = timeMc - time;
-            if (diff > 0 && diff < 100){
-                callback();
-            }
-        });
-    },forever, null, 100);
+exports.at = function( time24hr, callback, worlds ) {
+  var forever = function(){ return true; };
+  var timeParts = time24hr.split( ':' );
+  var hrs = ( (timeParts[0] * 1000) + 18000 ) % 24000;
+  var mins;
+  if ( timeParts.length > 1 ) {
+    mins = ( timeParts[1] / 60 ) * 1000;
+  }
+  var timeMc = hrs + mins;
+  if ( typeof worlds == 'undefined' ) {
+    worlds = server.worlds;
+  }
+  _nicely( function() {
+    _foreach( worlds, function ( world ) {
+      var time = world.getTime();
+      var diff = timeMc - time;
+      if ( diff > 0 && diff < 100 ) {
+        callback();
+      }
+    });
+  }, forever, null, 100 );
 };
 
 /************************************************************************
@@ -411,25 +421,25 @@ a given directory and recursiving trawling all sub-directories.
     });  
 
 ***/
-exports.find = function( dir , filter){
-    var result = [];
-    var recurse = function(dir, store){
-        var files, dirfile = new java.io.File(dir);
-        
-        if (typeof filter == 'undefined')
-            files = dirfile.list();
-        else
-            files = dirfile.list(filter);
-
-        _foreach(files, function (file){
-            file = new java.io.File(dir + '/' + file);
-            if (file.isDirectory()){
-                recurse(file.canonicalPath, store);
-            }else{
-                store.push(file.canonicalPath);
-            }
-        });
+exports.find = function( dir , filter ) {
+  var result = [];
+  var recurse = function( dir, store ) {
+    var files, dirfile = new java.io.File( dir );
+    
+    if ( typeof filter == 'undefined' ) {
+      files = dirfile.list();
+    } else {
+      files = dirfile.list(filter);
     }
-    recurse(dir,result);
-    return result;
-}
+    _foreach( files, function( file ) {
+      file = new java.io.File( dir + '/' + file );
+      if ( file.isDirectory() ) {
+        recurse( file.canonicalPath, store );
+      } else {
+        store.push( file.canonicalPath );
+      }
+    });
+  };
+  recurse( dir, result );
+  return result;
+};

@@ -35,35 +35,39 @@ ScriptCraft uses Java's [String.format()][strfmt] so any string substitution ide
 [webcons]: https://developer.mozilla.org/en-US/docs/Web/API/console
 
 ***/
-var logger = __plugin.logger;
-var argsToArray = function(args){
-    var result = [];
-    for (var i =0;i < args.length; i++)
-        result.push(args[i]);
-    return result;
+var logger = __plugin.logger,
+  logMethodName = 'log(java.util.logging.Level,java.lang.String)';
+var argsToArray = function( args ) {
+  var result = [];
+  for ( var i =0; i < args.length; i++ ) {
+    result.push(args[i]);
+  }
+  return result;
 }
-var log = function(level, restOfArgs){
-    var args = argsToArray(restOfArgs);
-    if (args.length > 1){
-        var msg = java.lang.String.format(args[0],args.slice(1));
-        logger['log(java.util.logging.Level,java.lang.String)'](level,msg);
-    }else{
-        logger['log(java.util.logging.Level,java.lang.String)'](level, args[0]);
-    }
+var log = function( level, restOfArgs ) {
+  var args = argsToArray( restOfArgs );
+  if ( args.length > 1 ) {
+    var msg = java.lang.String.format( args[0], args.slice(1) );
+    logger[logMethodName]( level, msg );
+  } else {
+    logger[logMethodName]( level, args[0] );
+  }
 };
 
 var Level = java.util.logging.Level;
 
-exports.log = function(){
-    log(Level.INFO, arguments);
+exports.log = function( ) {
+    log( Level.INFO, arguments );
 };
 
-exports.info = function(){
-    log(Level.INFO, arguments);
-}
-exports.warn = function(){
-    log(Level.WARNING, arguments);
+exports.info = function( ) {
+    log( Level.INFO, arguments );
 };
-exports.error = function(){
-    log(Level.SEVERE, arguments);
+
+exports.warn = function( ) {
+    log( Level.WARNING, arguments );
+};
+
+exports.error = function( ) {
+    log( Level.SEVERE, arguments );
 };

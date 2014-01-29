@@ -79,15 +79,15 @@ cleaner and more readable. Similarly where you see a method like
 [bksaf]: http://jd.bukkit.org/dev/apidocs/org/bukkit/entity/Player.html#setAllowFlight()
 [bkapi]: http://jd.bukkit.org/dev/apidocs/
 
-    events.on('player.PlayerJoinEvent', function (listener, event){
-        if (event.player.op) {
-            event.player.sendMessage('Welcome to ' + __plugin);
-        }
+    events.on( 'player.PlayerJoinEvent', function( listener, event ) {
+      if ( event.player.op ) {
+        event.player.sendMessage('Welcome to ' + __plugin);
+      }
     });
 
 ***/
-events.on('player.PlayerJoinEvent', function (listener, event){
-    if (event.player.op) {
-        event.player.sendMessage('Welcome to ' + __plugin);
-    }
+events.on( 'player.PlayerJoinEvent', function( listener, event ) {
+  if ( event.player.op ) {
+    event.player.sendMessage( 'Welcome to ' + __plugin );
+  }
 });

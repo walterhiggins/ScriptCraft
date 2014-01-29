@@ -52,7 +52,7 @@ console.  Aliases will not be able to avail of command autocompletion
 
 ***/
 
-var _usage = "\
+var _usage = '\
 /jsp alias set {alias} = {comand-1} ;{command-2}\n \
 /jsp alias global {alias} = {command-1} ; {command-2}\n \
 /jsp alias list\n \
@@ -61,7 +61,7 @@ Create a new alias : \n \
 /jsp alias set cw = time set {1} ; weather {2}\n \
 Execute the alias : \n \
 /cw 4000 sun \n \
-...is the same as '/time set 4000' and '/weather sun'";
+...is the same as \'/time set 4000\' and \'/weather sun\'';
 /*
   persist aliases
 */
@@ -74,80 +74,80 @@ var _store = {
   _processParams is a private function which takes an array of parameters
   used for the 'set' and 'global' options.
 */
-var _processParams = function(params){
+var _processParams = function( params ) {
   var paramStr = params.join(' '),
     eqPos = paramStr.indexOf('='),
-    aliasCmd = paramStr.substring(0,eqPos).trim(),
-    aliasValue = paramStr.substring(eqPos+1).trim();
+    aliasCmd = paramStr.substring( 0, eqPos).trim(),
+    aliasValue = paramStr.substring( eqPos + 1 ).trim();
   return { 
     cmd: aliasCmd, 
-    aliases: aliasValue.split(/\s*;\s*/) 
+    aliases: aliasValue.split( /\s*;\s*/ ) 
   };
 };
 
-var _set = function(params, player){
+var _set = function( params, player ) {
   var playerAliases = _store.players[player.name];
-  if (!playerAliases){
+  if (!playerAliases ) {
     playerAliases = {};
   }
-  var o = _processParams(params);
+  var o = _processParams( params );
   playerAliases[o.cmd] = o.aliases;
   _store.players[player.name] = playerAliases;
-  player.sendMessage("Alias '" + o.cmd + "' created.");
+  player.sendMessage( 'Alias ' + o.cmd + ' created.' );
 };
 
-var _remove = function(params, player){
-  if (_store.players[player.name] &&
-      _store.players[player.name][params[0]]){
+var _remove = function( params, player ) {
+  if ( _store.players[player.name] && _store.players[player.name][ params[0] ] ) {
     delete _store.players[player.name][params[0]];
-    player.sendMessage("Alias '" + params[0] + "' removed.");
+    player.sendMessage( 'Alias ' + params[0] + ' removed.' );
   }
   else{
-    player.sendMessage("Alias '" + params[0] + "' does not exist.");
+    player.sendMessage( 'Alias ' + params[0] + ' does not exist.' );
   }
-  if (player.op){
-    if (_store.global[params[0]])
+  if ( player.op ) {
+    if ( _store.global[params[0]] ) {
       delete _store.global[params[0]];
+    }
   }
 };
 
-var _global = function(params, player){
-  if (!player.op){
-    player.sendMessage("Only operators can set global aliases. " + 
-                       "You need to be an operator to perform this command.");
+var _global = function( params, player ) {
+  if ( !player.op ) {
+    player.sendMessage( 'Only operators can set global aliases. ' + 
+                        'You need to be an operator to perform this command.' );
     return;
   }
-  var o = _processParams(params);
+  var o = _processParams( params );
   _store.global[o.cmd] = o.aliases;
-  player.sendMessage("Global alias '" + o.cmd + "' created.");
+  player.sendMessage( 'Global alias ' + o.cmd + ' created.' );
 };
 
-var _list = function(params, player){
+var _list = function( params, player ) {
   var alias = 0;
   try { 
-    if (_store.players[player.name]){
-      player.sendMessage("Your aliases:");
-      for (alias in _store.players[player.name]){
-        player.sendMessage(alias + " = " + 
-                           JSON.stringify(_store.players[player.name][alias]));
+    if ( _store.players[player.name] ) {
+      player.sendMessage('Your aliases:');
+      for ( alias in _store.players[player.name] ) {
+        player.sendMessage( alias + ' = ' + 
+			    JSON.stringify( _store.players[player.name][alias] ) );
       }
-    }else{
-      player.sendMessage("You have no player-specific aliases.");
+    } else {
+      player.sendMessage( 'You have no player-specific aliases.' );
     }
-    player.sendMessage("Global aliases:");
-    for (alias in _store.global){
-      player.sendMessage(alias + " = " + JSON.stringify(_store.global[alias]) );
+    player.sendMessage( 'Global aliases:' );
+    for ( alias in _store.global ) {
+      player.sendMessage( alias + ' = ' + JSON.stringify( _store.global[alias] ) );
     }
-  }catch(e){
-    console.error("Error in list function: " + e.message);
+  } catch( e ) {
+    console.error( 'Error in list function: ' + e.message );
     throw e;
   }
 };
-var _help = function(params, player){
-  player.sendMessage('Usage:\n' + _usage);
+var _help = function( params, player ) {
+  player.sendMessage( 'Usage:\n' + _usage );
 };
 
-var alias = plugin('alias', {
+var alias = plugin( 'alias', {
   store:  _store,
   set:    _set,
   global: _global,
@@ -156,11 +156,11 @@ var alias = plugin('alias', {
   help:   _help
 }, true );
 
-var aliasCmd = command('alias', function( params, invoker ) {
+var aliasCmd = command( 'alias', function(  params, invoker ) {
   var operation = params[0], 
     fn;
-  if (!operation){
-    invoker.sendMessage('Usage:\n' + _usage);
+  if ( !operation ) {
+    invoker.sendMessage( 'Usage:\n' + _usage );
     return;
   }
   /*
@@ -168,53 +168,53 @@ var aliasCmd = command('alias', function( params, invoker ) {
    accessing object properties by array index notation
    in JRE8 alias[operation] returns null - definitely a bug in Nashorn.
    */
-  for (var key in alias){
-    if (key == operation){
+  for ( var key in alias ) {
+    if ( key == operation ) {
       fn = alias[key];
-      fn(params.slice(1),invoker);
+      fn( params.slice(1), invoker );
       return;
     }
   }
-  invoker.sendMessage('Usage:\n' + _usage);
+  invoker.sendMessage( 'Usage:\n' + _usage );
 });
 
-var _intercept = function( msg, invoker, exec)
-{
-  if (msg.trim().length == 0)
+var _intercept = function(  msg, invoker, exec ) {
+  if ( msg.trim().length == 0 )
     return false;
   var msgParts = msg.split(' '),
-    command = msg.match(/^\/*([^\s]+)/)[1],
-    template = [], isAlias = false, cmds = [],
+    command = msg.match( /^\/*([^\s]+)/ )[1],
+    template = [], 
+    isAlias = false, 
+    cmds = [],
     commandObj,
-    filledinCommand;
+    filledinCommand,
+    i;
   
-  if (_store.global[command]){
+  if ( _store.global[command] ) {
     template = _store.global[command];
     isAlias = true;
   }
   /*
    allows player-specific aliases to override global aliases
    */
-  if (_store.players[invoker] &&
-      _store.players[invoker][command])
-  {
+  if ( _store.players[invoker] && _store.players[invoker][command] ) {
     template = _store.players[invoker][command];
     isAlias = true;
   }
-  for (var i = 0;i < template.length; i++)
-  {
-    filledinCommand = template[i].replace(/{([0-9]+)}/g, function (match,index){ 
-      index = parseInt(index,10);
-      if (msgParts[index])
+  for ( i = 0; i < template.length; i++) {
+    filledinCommand = template[i].replace( /{([0-9]+)}/g, function( match, index ) { 
+      index = parseInt( index, 10 );
+      if ( msgParts[index] ) {
 	return msgParts[index];
-      else
+      } else {
 	return match;
+      }
     });
-    cmds.push(filledinCommand);
+    cmds.push( filledinCommand );
   }
   
-  for (var i = 0; i< cmds.length; i++){
-    exec(cmds[i]);
+  for (i = 0; i< cmds.length; i++ ) {
+    exec( cmds[i] );
   }
   return isAlias;
 
@@ -223,20 +223,27 @@ var _intercept = function( msg, invoker, exec)
   Intercept all command processing and replace with aliased commands if the 
   command about to be issued matches an alias.
 */
-events.on('player.PlayerCommandPreprocessEvent', function(listener,evt){
+events.on( 'player.PlayerCommandPreprocessEvent', function( listener, evt ) {
   var invoker = evt.player;
-  var exec = function(cmd){ invoker.performCommand(cmd);};
-  var isAlias = _intercept(''+evt.message, ''+invoker.name, exec);
-  if (isAlias)
+  var exec = function( cmd ) { 
+    invoker.performCommand(cmd);
+  };
+  var isAlias = _intercept( ''+evt.message, ''+invoker.name, exec);
+  if ( isAlias ) {
     evt.cancelled = true;
+  }
 });
 /* define a 'void' command because ServerCommandEvent can't be canceled */
-command('void',function(){});
+command('void',function(  ) {
+} );
 
-events.on('server.ServerCommandEvent', function(listener,evt){
+events.on( 'server.ServerCommandEvent', function( listener, evt ) {
   var invoker = evt.sender;
-  var exec = function(cmd){ invoker.server.dispatchCommand(invoker, cmd); };
-  var isAlias = _intercept(''+evt.command, ''+ invoker.name, exec);
-  if (isAlias)
+  var exec = function( cmd ) { 
+    invoker.server.dispatchCommand( invoker, cmd); 
+  };
+  var isAlias = _intercept( ''+evt.command, ''+ invoker.name, exec );
+  if ( isAlias ) {
     evt.command = 'jsp void';
+  }
 });

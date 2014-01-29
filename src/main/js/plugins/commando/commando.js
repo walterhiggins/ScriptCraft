@@ -78,37 +78,41 @@ global commands for a plugin, please let me know.
 ***/
 var commands = {};
 
-exports.commando = function(name, func, options, intercepts){
-    var result = command(name, func, options, intercepts);
-    commands[name] = result;
-    return result;
+exports.commando = function( name, func, options, intercepts ) {
+  var result = command( name, func, options, intercepts );
+  commands[name] = result;
+  return result;
 };
 
-events.on('player.PlayerCommandPreprocessEvent', function(l,e){
-    var msg = '' + e.message;
-    var parts = msg.match(/^\/([^\s]+)/);
-    if (!parts)
-        return;
-    if (parts.length < 2)
-        return;
-    var command = parts[1];
-    if (commands[command]){
-        e.message = "/jsp " + msg.replace(/^\//,"");
+events.on( 'player.PlayerCommandPreprocessEvent', function( l, e ) {
+  var msg = '' + e.message;
+  var parts = msg.match( /^\/([^\s]+)/ );
+  if ( !parts ) {
+    return;
+  }
+  if ( parts.length < 2 ) {
+    return;
+  }
+  var command = parts[1];
+  if ( commands[command] ) {
+    e.message = '/jsp ' + msg.replace( /^\//, '' );
+  }
+} );
+events.on( 'server.ServerCommandEvent', function( l, e ) {
+  var msg = '' + e.command;
+  var parts = msg.match( /^\/*([^\s]+)/ );
+  if ( !parts ) {
+    return;
+  }
+  if ( parts.length < 2 ) {
+    return;
+  }
+  var command = parts[1];
+  if ( commands[ command ] ) {
+    var newCmd = 'jsp ' + msg.replace( /^\//, '' );
+    if ( config.verbose ) {
+      console.log( 'Redirecting to : %s', newCmd );
     }
-});
-events.on('server.ServerCommandEvent', function(l,e){
-    var msg = '' + e.command;
-    var parts = msg.match(/^\/*([^\s]+)/);
-    if (!parts)
-        return;
-    if (parts.length < 2)
-        return;
-    var command = parts[1];
-    if (commands[command]){
-        var newCmd = "jsp " + msg.replace(/^\//,"");
-        if (config.verbose){
-            console.log('Redirecting to : %s',newCmd);
-        }
-        e.command = newCmd;
-    }
+    e.command = newCmd;
+  }
 });

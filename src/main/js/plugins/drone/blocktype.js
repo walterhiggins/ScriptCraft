@@ -307,16 +307,24 @@ var bitmaps = {
 /*
   wph 20130121 compute the width, and x,y coords of pixels ahead of time
 */
-for (var c in bitmaps.raw){
-    var bits = bitmaps.raw[c];
-    var width = bits.length/5;
-    var bmInfo = {"width": width,"pixels":[]}
-    bitmaps.computed[c] = bmInfo;
-    for (var j = 0; j < bits.length; j++){
-        if (bits.charAt(j) != ' '){
-            bmInfo.pixels.push([j%width,Math.ceil(j/width)]);
-        }
+var c,
+  bits,
+  width,
+  bmInfo,
+  j;
+for ( c in bitmaps.raw ) {
+  bits = bitmaps.raw[c];
+  width = bits.length/5;
+  bmInfo = { width: width, pixels:[] };
+  bitmaps.computed[c] = bmInfo;
+  for ( j = 0; j < bits.length; j++ ) {
+    if ( bits.charAt(j) != ' ' ) {
+      bmInfo.pixels.push( [ 
+	j % width, 
+	Math.ceil( j / width ) 
+      ] );
     }
+  }
 }
 
 
@@ -328,46 +336,72 @@ for (var c in bitmaps.raw){
 // bg
 //   background material, optional. The negative space within the bounding box of the text.
 //
-Drone.extend('blocktype', function(message,fg,bg){
+Drone.extend('blocktype', function( message, fg, bg ) {
 
-    this.chkpt('blocktext');
+  var bmfg,
+    bmbg,
+    lines,
+    lineCount,
+    h,
+    line,
+    i,
+    x,
+    y,
+    ch,
+    bits,
+    charWidth,
+    j;
 
-    if (typeof fg == "undefined")
-        fg = blocks.wool.black;
+  this.chkpt('blocktext');
 
-    var bmfg = this._getBlockIdAndMeta(fg);
-    var bmbg = null;
-    if (typeof bg != "undefined")
-        bmbg = this._getBlockIdAndMeta(bg);
-    var lines = message.split("\n");
-    var lineCount = lines.length;    
-    for (var h = 0;h < lineCount; h++) {
-        var line = lines[h];
-        line = line.toLowerCase().replace(/[^0-9a-z \.\-\+\/\;\'\:\!]/g,"");
-        this.up(7*(lineCount-(h+1)));
-        
-        for (var i =0;i < line.length; i++)  {
-            var ch = line.charAt(i)
-            var bits = bitmaps.computed[ch];
-            if (typeof bits == "undefined"){
-                bits = bitmaps.computed[' '];
-            }
-            var charWidth = bits.width;
-            if (typeof bg != "undefined")
-                this.cuboidX(bmbg[0],bmbg[1],charWidth,7,1);
-            for (var j = 0;j < bits.pixels.length;j++){
-                this.chkpt('btbl');
-                var x = bits.pixels[j][0];
-                var y = bits.pixels[j][1];
-                this.up(6-y).right(x).cuboidX(bmfg[0],bmfg[1]);
-                this.move('btbl');
-            }
-            this.right(charWidth-1);
-        }
-        this.move('blocktext');
-    }
+  if ( typeof fg == 'undefined' ) {
+    fg = blocks.wool.black;
+  }
+
+  bmfg = this._getBlockIdAndMeta( fg );
+  bmbg = null;
+  if ( typeof bg != 'undefined' ) {
+    bmbg = this._getBlockIdAndMeta( bg );
+  }
+  lines = message.split( '\n' );
+  lineCount = lines.length;    
+
+  for ( h = 0; h < lineCount; h++) {
+
+    line = lines[h];
+    line = line.toLowerCase().replace( /[^0-9a-z \.\-\+\/\;\'\:\!]/g, '' );
+    this.up( 7 * ( lineCount - ( h + 1 ) ) );
     
-    return this.move('blocktext');
+    for ( i =0; i < line.length; i++) {
+
+      ch = line.charAt( i );
+      bits = bitmaps.computed[ ch ];
+
+      if ( typeof bits == 'undefined' ) {
+        bits = bitmaps.computed[' '];
+      }
+      charWidth = bits.width;
+
+      if ( typeof bg != 'undefined' ) {
+        this.cuboidX( bmbg[0], bmbg[1], charWidth, 7, 1 );
+      }
+
+      for ( j = 0; j < bits.pixels.length; j++ ) {
+
+        this.chkpt( 'btbl' );
+        x = bits.pixels[ j ][ 0 ];
+        y = bits.pixels[ j ][ 1] ;
+        this.up( 6 - y ).right( x ).cuboidX( bmfg[ 0 ], bmfg[ 1 ] );
+        this.move( 'btbl' );
+
+      }
+      this.right( charWidth - 1 );
+
+    }
+    this.move( 'blocktext' );
+  }
+  
+  return this.move( 'blocktext' );
 });
 
 
