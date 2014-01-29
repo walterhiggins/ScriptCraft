@@ -19,9 +19,12 @@ for a list of possible entities (creatures) which can be spawned.
 var entities = [],
   EntityType = org.bukkit.entity.EntityType;
 
-for ( var t in EntityType ) {
-  if ( EntityType[t] && EntityType[t].ordinal ) {
-    entities.push(t);
+var MaterialEnum = Packages.MaterialEnum;
+
+var entitytypes = EntityType.values();
+for ( var t in entitytypes ) {
+  if ( entitytypes[t] && entitytypes[t].ordinal ) { 
+    entities.push(entitytypes[t].name());
   }
 }
 command( 'spawn', function( parameters, sender ) {
@@ -30,6 +33,10 @@ command( 'spawn', function( parameters, sender ) {
     return;
   }
   var location = sender.location;
+  if ( !location ) {
+    sender.sendMessage( 'You have no location. This command only works in-game.' );
+    return;
+  }
   var world = location.world;
   var type = ('' + parameters[0]).toUpperCase();
   world.spawnEntity( location, EntityType[type] );
