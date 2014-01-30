@@ -14,16 +14,16 @@ This project uses a Maven-like directory structure...
                                          scriptcraft +
                                                        ScriptCraftPlugin.java
 
-               javascript +
-                           lib +
-                                (core javascript code goes here. Modules in this directory
-                                 should not be 'require'd by plugin or module authors)
-                           modules + 
-                                    (this is where module authors should put modules for 
-                                     use by others)
-                           plugins +
-                                    (this is where plugins - scriptcraft extensions for use by 
-                                     operators and players should go) 
+               js +
+                   lib +
+                        (core javascript code goes here. Modules in this directory
+                         should not be 'require'd by plugin or module authors)
+                   modules + 
+                            (this is where module authors should put modules for 
+                             use by others)
+                   plugins +
+                           (this is where plugins - scriptcraft extensions for use by 
+                            operators and players should go) 
                resources +
                           plugin.yml
          docs +
@@ -70,6 +70,14 @@ called `greet.js` located in the plugins folder...
 ... will be loaded at startup and the `greet` function will be
 global. Anyone with operator privileges can type `/js greet(self)` at
 the in-game command prompt to execute the function.
+
+## Coding Conventions
+
+See <https://github.com/rwaldron/idiomatic.js> for a recommended
+approach to writing javascript code for ScriptCraft. ScriptCraft is
+aimed at younger programmers so readability is important - moreso than
+cleverness. If submitting new code for inclusion in ScriptCraft please
+ensure it is documented using the guidelines below...
 
 ## Documentation contributions
 
