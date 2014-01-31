@@ -14,6 +14,7 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
     // right now all ops share the same JS context/scope
     // need to look at possibly having context/scope per operator
     //protected Map<CommandSender,ScriptCraftEvaluator> playerContexts = new HashMap<CommandSender,ScriptCraftEvaluator>();
+    private String NO_JAVASCRIPT_MESSAGE = "No JavaScript Engine available. ScriptCraft will not work without Javascript.";
     protected ScriptEngine engine = null;
     @Override
         public void onEnable()
@@ -21,10 +22,13 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
         try{
             ScriptEngineManager factory = new ScriptEngineManager();
             this.engine = factory.getEngineByName("JavaScript");
-            Invocable inv = (Invocable)this.engine;
-            this.engine.eval(new InputStreamReader(this.getResource("boot.js")));
-            inv.invokeFunction("__scboot", this, engine);
-
+	    if (this.engine == null){
+		this.getLogger().severe(NO_JAVASCRIPT_MESSAGE);
+	    } else { 
+		Invocable inv = (Invocable)this.engine;
+		this.engine.eval(new InputStreamReader(this.getResource("boot.js")));
+		inv.invokeFunction("__scboot", this, engine);
+	    }
         }catch(Exception e){
             e.printStackTrace();
             this.getLogger().severe(e.getMessage());
@@ -35,6 +39,10 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
                                       String[] args)
     {
         List<String> result = new ArrayList<String>();
+	if (this.engine == null){
+	    this.getLogger().severe(NO_JAVASCRIPT_MESSAGE);
+	    return null;
+	}
         try {
             Invocable inv = (Invocable)this.engine;
             inv.invokeFunction("__onTabComplete", result, sender, cmd, alias, args);
@@ -50,6 +58,10 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
         boolean result = false;
         String javascriptCode = "";
         Object jsResult = null;
+	if (this.engine == null){
+	    this.getLogger().severe(NO_JAVASCRIPT_MESSAGE);
+	    return false;
+	}
         try { 
             jsResult = ((Invocable)this.engine).invokeFunction("__onCommand", sender, cmd, label, args);
         }catch (Exception se){
