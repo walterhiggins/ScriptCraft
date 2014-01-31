@@ -14,7 +14,7 @@ module.exports = function( $ ) {
      a delay in milliseconds. However, bukkit's scheduler expects a delay in ticks 
      (where 1 tick = 1/20th second)
      */
-    var bukkitTask = server.scheduler.runTaskLater( __plugin, callback, delayInMillis/50 );
+    var bukkitTask = server.scheduler.runTaskLater( __plugin, callback, Math.ceil( delayInMillis / 50 ) );
     return bukkitTask;
   };
 
@@ -23,7 +23,7 @@ module.exports = function( $ ) {
   };
     
   $.setInterval = function( callback, intervalInMillis ) {
-    var delay = intervalInMillis/ 50;
+    var delay = Math.ceil( intervalInMillis / 50);
     var bukkitTask = server.scheduler.runTaskTimer( __plugin, callback, delay, delay );
     return bukkitTask;
   };
