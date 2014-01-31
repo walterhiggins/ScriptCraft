@@ -62,6 +62,7 @@
            source="1.6" 
            target="1.6" 
            destdir="${build}" 
+           debug="true" 
            classpath="${minecraft.dir}/craftbukkit.jar" />
   </target>
     
