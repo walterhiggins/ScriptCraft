@@ -18,23 +18,29 @@ For example imagine you have 3 files program.js, inc.js  and math.js ...
 
 ### math.js
 
-    exports.add = function(a,b){
-        return a + b;
-    }
+```javascript
+exports.add = function(a,b){
+    return a + b;
+}
+```
 
 ### inc.js
 
-    var math = require('./math');
-    exports.increment = function(n){
-        return math.add(n, 1);
-    }
+```javascript
+var math = require('./math');
+exports.increment = function(n){
+    return math.add(n, 1);
+}
+```
 
 ### program.js
 
-    var inc = require('./inc').increment;
-    var a = 7;
-    a = inc(a);
-    print(a);
+```javascript
+var inc = require('./inc').increment;
+var a = 7;
+a = inc(a);
+print(a);
+```
 
 You can see from the above sample code that programs can use modules
 and modules themeselves can use other modules. Modules have full

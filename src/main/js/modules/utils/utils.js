@@ -22,14 +22,16 @@ String, then it tries to find the player with that name.
 
 #### Example
 
-    var utils = require('utils');
-    var name = 'walterh';
-    var player = utils.player(name);
-    if (player) {
-        player.sendMessage('Got ' + name);
-    }else{
-        console.log('No player named ' + name);
-    }
+```javascript
+var utils = require('utils');
+var name = 'walterh';
+var player = utils.player(name);
+if ( player ) {
+    player.sendMessage('Got ' + name);
+} else {
+    console.log('No player named ' + name);
+}
+```
 
 [bkpl]: http://jd.bukkit.org/dev/apidocs/org/bukkit/entity/Player.html
 [bkloc]: http://jd.bukkit.org/dev/apidocs/org/bukkit/Location.html
@@ -95,11 +97,13 @@ The utils.locationToString() function returns a
 keys in a lookup table.
 
 #### Example
-    
-    var utils = require('utils');
-    ...
-    var key = utils.locationToString(player.location);
-    lookupTable[key] = player.name;
+
+```javascript    
+var utils = require('utils');
+...
+var key = utils.locationToString(player.location);
+lookupTable[key] = player.name;
+```
 
 ***/
 exports.locationToString = function( location ) {
@@ -179,12 +183,14 @@ is the location of the block the player is looking at (targeting).
 
 The following code will strike lightning at the location the player is looking at...
 
-    var utils = require('utils');
-    var playerName = 'walterh';
-    var targetPos = utils.getMousePos(playerName);
-    if (targetPos){
-       targetPos.world.strikeLightning(targetPos);
-    }
+```javascript
+var utils = require('utils');
+var playerName = 'walterh';
+var targetPos = utils.getMousePos(playerName);
+if (targetPos){
+   targetPos.world.strikeLightning(targetPos);
+}
+```
 
 ***/
 exports.getMousePos = function( player ) {
@@ -251,42 +257,48 @@ and put the code there.
 
 The following example illustrates how to use foreach for immediate processing of an array...
 
-    var utils = require('utils');
-    var players = ['moe', 'larry', 'curly'];
-    utils.foreach (players, function(item){ 
-        server.getPlayer(item).sendMessage('Hi ' + item);
-    });
+```javascript
+var utils = require('utils');
+var players = ['moe', 'larry', 'curly'];
+utils.foreach (players, function(item){ 
+    server.getPlayer(item).sendMessage('Hi ' + item);
+});
+```
 
 ... The `utils.foreach()` function can work with Arrays or any Java-style collection. This is important
 because many objects in the Bukkit API use Java-style collections...
 
-    utils.foreach( server.onlinePlayers, function(player){
-         player.chat('Hello!');
-    }); 
+```javascript
+utils.foreach( server.onlinePlayers, function(player){
+    player.chat('Hello!');
+}); 
+```
 
 ... the above code sends a 'Hello!' to every online player.
 
 The following example is a more complex use case - The need to build an enormous structure
 without hogging CPU usage...
 
-    // build a structure 200 wide x 200 tall x 200 long
-    // (That's 8 Million Blocks - enough to tax any machine!)
-    var utils = require('utils');
+```javascript
+// build a structure 200 wide x 200 tall x 200 long
+// (That's 8 Million Blocks - enough to tax any machine!)
+var utils = require('utils');
 
-    var a = []; 
-    a.length = 200; 
-    var drone = new Drone();
-    var processItem = function(item, index, object, array){
-        // build a box 200 wide by 200 long then move up
-        drone.box(blocks.wood, 200, 1, 200).up();
-    };
-    // by the time the job's done 'self' might be someone else 
-    // assume this code is within a function/closure
-    var player = self;
-    var onDone = function(){ 
-        player.sendMessage('Job Done!');
-    };
-    utils.foreach (a, processItem, null, 10, onDone);
+var a = []; 
+a.length = 200; 
+var drone = new Drone();
+var processItem = function(item, index, object, array){
+    // build a box 200 wide by 200 long then move up
+    drone.box(blocks.wood, 200, 1, 200).up();
+};
+// by the time the job's done 'self' might be someone else 
+// assume this code is within a function/closure
+var player = self;
+var onDone = function(){ 
+    player.sendMessage('Job Done!');
+};
+utils.foreach (a, processItem, null, 10, onDone);
+```
     
 ***/
 var _foreach = function( array, callback, context, delay, onCompletion ) {
@@ -366,15 +378,17 @@ The utils.at() function will perform a given task at a given time every
 
 To warn players when night is approaching...
 
-    var utils = require('utils');
+```javascript
+var utils = require('utils');
 
-    utils.at( '19:00', function() {
+utils.at( '19:00', function() {
 
-      utils.foreach( server.onlinePlayers, function( player ) {
+    utils.foreach( server.onlinePlayers, function( player ) {
         player.chat( 'The night is dark and full of terrors!' );
-      });
-
     });
+
+});
+```
   
 ***/
 exports.at = function( time24hr, callback, worlds ) {
@@ -415,10 +429,12 @@ a given directory and recursiving trawling all sub-directories.
 
 #### Example
 
-    var utils = require('utils');
-    var jsFiles = utils.find('./', function(dir,name){
-        return name.match(/\.js$/);
-    });  
+```javascript
+var utils = require('utils');
+var jsFiles = utils.find('./', function(dir,name){
+    return name.match(/\.js$/);
+});  
+```
 
 ***/
 exports.find = function( dir , filter ) {

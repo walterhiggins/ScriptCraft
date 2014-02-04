@@ -474,9 +474,11 @@ object can do, let's use that knowledge to create a Minecraft Mod!
 
 Once you've installed Notepad++, Launch it, create a new file and type the following...
 
-    exports.greet = function(player){
-        player.sendMessage('Hi ' + player.name);
-    }
+```javascript
+exports.greet = function( player ) {
+    player.sendMessage('Hi ' + player.name);
+}
+```
 
 ... then save the file in a new directory
 `craftbukkit/plugins/scriptcraft/plugins/{your_name}` (replace
@@ -514,12 +516,14 @@ one or more functions, objects or variables. For example...
 
 #### thrower.js
 
-    exports.egg = function(player){
-        player.throwEgg();
-    }
-    exports.snowball = function(player){
-        player.throwSnowball();
-    }
+```javascript
+exports.egg = function(player){
+    player.throwEgg();
+}
+exports.snowball = function(player){
+    player.throwSnowball();
+}
+```
 
 ... is a plugin which provides 2 javascript functions called `egg()`
 and `snowball()` which can be invoked from the in-game prompt like
@@ -536,9 +540,11 @@ differently each time it is called.
 
 Change the `greet()` function so that it looks like this...
 
-    exports.greet = function ( greeting , player) {
-        player.sendMessage( greeting + player.name );
-    }
+```javascript
+exports.greet = function ( greeting , player) {
+    player.sendMessage( greeting + player.name );
+}
+```
 
 ... Save your greet.js file and issue the `/js refresh()` command in
 minecraft. Now enter the following command in Minecraft...
@@ -696,16 +702,20 @@ At the in-game command prompt type the following then hit Enter...
 statements on a single line at the in-game command prompt but the
 statements could be written like this...
 
-    var players = server.onlinePlayers;
-    for (var i = 0; i < players.length; i++) {
-        var player = players[i];
-        player.sendMessage('Hi!');
-    }
+```javascript
+var players = server.onlinePlayers;
+var player;
+var i;
+for ( i = 0; i < players.length; i++ ) {
+    player = players[i];
+    player.sendMessage( 'Hi!' );
+}
+```
 
 ... On the first line, a new variable `players` is created from the
 server object's onlinePlayers property. `players` is more concise and
 easier to type than the long-winded `server.onlinePlayers`.  On the
-second line, the for loop is declared, a counter variable `i` is set
+fourth line, the for loop is declared, a counter variable `i` is set
 to 0 (zero - arrays in javascript start at 0 not 1) and each time
 around the loop is tested to see if it's less than the number of
 players online. At the end of each run around the loop the `i`
@@ -729,13 +739,17 @@ function. Open the `hi.js` file you created earlier (using NotePad++ ,
 TextWrangler or your editor of choice) and add the following code at
 the bottom of the file...
 
-    exports.hiAll = function (){
-        var players = server.onlinePlayers;
-        for (var i = 0; i < players.length; i++) {
-            var player = players[i];
-            player.sendMessage('Hi!');
-        }
+```javascript
+exports.hiAll = function () {
+    var players = server.onlinePlayers,
+        player,
+        i;
+    for ( i = 0; i < players.length; i++) {
+        player = players[i];
+        player.sendMessage( 'Hi!' );
     }
+}
+```
 
 ... save the file, at the in-game command prompt type `reload` and
 then type `/js hiAll()`. This will send the message `Hi!` to all of
@@ -749,11 +763,13 @@ use `for` loops and Arrays to get things done.
 Another way to repeat things over and over is to use a `while`
 loop. The following `while` loop counts to 100...
 
-    var i = 1;
-    while (i <= 100){
-        console.log( i );
-        i = i + 1;
-    } 
+```javascript
+var i = 1;
+while (i <= 100){
+    console.log( i );
+    i = i + 1;
+} 
+```
 
 A `while` loop will repeat until its condition is `false` - the
 condition in the above example is `i <= 100` so while i is less than
@@ -775,12 +791,14 @@ Just like `for` loops, `while` loops can be also be used to loop
 through arrays. The following loop prints out all of the players on
 the server...
 
-    var players = server.onlinePlayers;
-    var i = 0;
-    while ( i < players.length ) {
-        console.log( players[i] );
-        i = i + 1;
-    }
+```javascript
+var players = server.onlinePlayers;
+var i = 0;
+while ( i < players.length ) {
+    console.log( players[i] );
+    i = i + 1;
+}
+```
 
 ... whether you chose to use a `for` loop or a `while` loop is largely
 a matter of personal taste, `for` loops are more commonly used with
@@ -814,31 +832,30 @@ above example uses a named function which already exists ( `console.log` ),
 you can also create new functions on-the-fly and pass them to the
 utils.foreach() function...
 
-    /*
-      give every player the ability to fly.
-    */
-    var utils = require('utils');
-    utils.foreach( server.onlinePlayers, 
-                   function (player) { 
-                       player.setAllowFlight(true); 
-                   }
-    );
+```javascript
+/*
+  give every player the ability to fly.
+*/
+var utils = require('utils');
+utils.foreach( server.onlinePlayers, function( player ) { 
+    player.setAllowFlight(true); 
+} );
+```
 
 ... Another example, this time each player will hear a Cat's Meow...
 
-    /*
-      Play a Cat's Meow sound for each player.
-    */
-    var utils = require('utils');
-    utils.foreach( server.onlinePlayers, 
-                   function (player) { 
-                       player.playSound(player.location, 
-                                        org.bukkit.Sound.CAT_MEOW,
-                                        1,
-                                        1);
-
-                   }
-    );
+```javascript
+/*
+  Play a Cat's Meow sound for each player.
+*/
+var utils = require('utils');
+utils.foreach( server.onlinePlayers, function( player ) { 
+    player.playSound(player.location, 
+                     org.bukkit.Sound.CAT_MEOW,
+                     1,
+                     1);
+} );
+```
 
 ### Exercise
 Try changing the above function so that different sounds are played
@@ -873,23 +890,24 @@ loops come in. Open your favorite text editor and create a new file in
 your scriptcraft/plugins/{your-name} directory, name the file `myskyscraper.js`, then
 type the following...
 
-    var myskyscraper = function(floors) {
-        if (typeof floors == 'undefined'){
-            floors = 10;
-        }
-        this.chkpt('myskyscraper'); // saves the drone position so it can return there later
-        for (var i = 0; i < floors; i++)
-        {
-            this.box(blocks.iron,20,1,20)
-                .up()
-                .box0(blocks.glass_pane,20,3,20)
-                .up(3);
-        }
-        return this.move('myskyscraper'); // return to where we started
-    };
-
-    var Drone = require('../drone/drone.js').Drone;
-    Drone.extend('myskyscraper',myskyscraper);
+```javascript
+var myskyscraper = function(floors) {
+    if (typeof floors == 'undefined'){
+        floors = 10;
+    }
+    this.chkpt('myskyscraper'); // saves the drone position so it can return there later
+    for (var i = 0; i < floors; i++)
+    {
+        this.box(blocks.iron,20,1,20)
+            .up()
+            .box0(blocks.glass_pane,20,3,20)
+            .up(3);
+    }
+    return this.move('myskyscraper'); // return to where we started
+};
+var Drone = require('../drone/drone.js').Drone;
+Drone.extend('myskyscraper',myskyscraper);
+```
 
 ... so this takes a little explaining. First I create a new function
 called myskyscraper that will take a single parameter `floors` so that
@@ -969,17 +987,15 @@ flying or not? This is where the `if - else` construct comes in handy.
 Open your favorite editor and type the following code into a new file
 in your scriptcraft/plugins directory...
 
-     function flightStatus(player)
-     {
-         if ( player.flying ) 
-         { 
-             player.sendMessage( 'Hey, You are flying!' );
-         } 
-         else 
-         {
-             player.sendMessage( 'You are not flying.' );
-         }
-     }
+```javascript
+function flightStatus( player ) {
+    if ( player.flying ) { 
+         player.sendMessage( 'Hey, You are flying!' );
+    } else {
+         player.sendMessage( 'You are not flying.' );
+    }
+}
+```
 
 ... now type `/reload` at the in-game prompt then type `/js
 flightStatus(self)` and an appropriate message will appear based on
@@ -1009,10 +1025,12 @@ of event occurs, it's probably best to illustrate this by example. The
 following code sends a message to any player who breaks a block in the
 game...
 
-    events.on('block.BlockBreakEvent', function (listener, event) { 
-        var breaker = event.player;
-        breaker.sendMessage('You broke a block');    
-    });
+```javascript
+events.on('block.BlockBreakEvent', function ( listener, event ) { 
+    var breaker = event.player;
+    breaker.sendMessage('You broke a block');    
+} );
+```
 
 The `events.on()` function is how you *register* a function which you
 want to be called whenever a particular type of event occurs. In the
@@ -1063,11 +1081,13 @@ just specify the fully qualified class name instead. E.g. ...
 
 If you want an event handler to only execute once, you can remove the handler like this...
 
-    events.on('block.BlockBreakEvent', function(listener, evt) { 
-        var breaker = evt.player;
-        breaker.sendMessage('You broke a block');
-        evt.handlers.unregister( listener );
-    });
+```javascript
+events.on('block.BlockBreakEvent', function( listener, evt ) { 
+    var breaker = evt.player;
+    breaker.sendMessage('You broke a block');
+    evt.handlers.unregister( listener );
+} );
+```
 
 The `evt.handlers.unregister( listener );` statement will remove this
 function from the list of listeners for this event.
@@ -1121,47 +1141,55 @@ the name column until I find 'jane' then look *across* to get her
 score. In Javascript, an object which stored such a table would look
 like this...
 
-    var scoreboard = {
-       walter: 5,
-       tom:    6,
-       jane:   8,
-       bart:   7
-    };
+```javascript
+var scoreboard = {
+    walter: 5,
+    tom:    6,
+    jane:   8,
+    bart:   7
+};
+```
 
 ... and if I wanted to write a function which took a player name as a
 parameter and returned their score, I'd do it like this...
 
-    function getScore(player){
-        return scoreboard[ player ];
-    }
+```javascript
+function getScore(player){
+    return scoreboard[ player ];
+}
+```
 
 ... I might call such a function like this...
 
-    var janesScore = getScore('jane'); // returns 8
+```javascript
+var janesScore = getScore('jane'); // returns 8
+```
     
 ... putting it all together, a hypothetical scoreboard.js mdoule might
 look something like this...
 
-    var utils = require('utils');
-    var scores = {};
+```javascript
+var utils = require('utils');
+var scores = {};
 
-    exports.initialise = function(names){
-        scores = {};
-        utils.foreach(names, function(name){ 
-            scores[name] = 0;
-        });
-    };
+exports.initialise = function(names){
+    scores = {};
+    utils.foreach(names, function(name){ 
+        scores[name] = 0;
+    });
+};
 
-    /* changes score by diff e.g. to add 6 to the player's current score
-       updateScore('walter',6); // walter's new score = 5 + 6 = 11.
-    */
-    exports.updateScore = function(name, diff){
-        scores[name] += diff; 
-    };
+/* changes score by diff e.g. to add 6 to the player's current score
+   updateScore('walter',6); // walter's new score = 5 + 6 = 11.
+*/
+exports.updateScore = function(name, diff){
+    scores[name] += diff; 
+};
 
-    exports.getScore = function(name){
-        return scores[name];
-    };
+exports.getScore = function(name){
+    return scores[name];
+};
+```
 
 ## Counting block break events for each player
 
@@ -1170,20 +1198,21 @@ keep a count of how many blocks each player has broken ...
 
 #### block-break-counter.js
 
-    var breaks = {};
-    // every time a player joins the game reset their block-break-count to 0
-    events.on('player.PlayerJoinEvent', function(listener, event){
-        breaks[event.player] = 0;
-    });
-    events.on('block.BlockBreakEvent', function(listener, event){
-        var breaker = event.player;
-        var breakCount = breaks[breaker.name];
-        breakCount++; // increment the count.
-        breaks[breaker.name] = breakCount;
-         
-        breaker.sendMessage('You broke ' + breakCount + ' blocks');
-  
-    });
+```javascript
+var breaks = {};
+// every time a player joins the game reset their block-break-count to 0
+events.on('player.PlayerJoinEvent', function(listener, event){
+    breaks[event.player] = 0;
+});
+events.on('block.BlockBreakEvent', function(listener, event){
+    var breaker = event.player;
+    var breakCount = breaks[breaker.name];
+    breakCount++; // increment the count.
+    breaks[breaker.name] = breakCount;
+     
+    breaker.sendMessage('You broke ' + breakCount + ' blocks');
+});
+```
 
 With a little more work, you could turn this into a game where players
 compete against each other to break as many blocks as possible within

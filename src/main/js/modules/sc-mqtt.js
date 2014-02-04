@@ -17,31 +17,38 @@ present in the CraftBukkit classpath. To use this module, you should
     craftbukkit-sc-mqtt.bat and edit it to include the following
     command...
 
-        java -classpath sc-mqtt.jar;craftbukit.jar org.bukkit.craftbukkit.Main
-    
+    ```sh
+    java -classpath sc-mqtt.jar;craftbukit.jar org.bukkit.craftbukkit.Main
+    ```
+
     If you're using Mac OS, create a new craftbukkit-sc-mqtt.command
     file and edit it (using TextWrangler or another text editor) ...
 
-        java -classpath sc-mqtt.jar:craftbukkit.jar org.bukit.craftbukkit.Main
+    ```sh
+    java -classpath sc-mqtt.jar:craftbukkit.jar org.bukit.craftbukkit.Main
+    ```
 
  4. Execute the craftbukkit-sc-mqtt batch file / command file to start
     Craftbukkit. You can now begin using this module to send and receive
     messages to/from a Net-enabled Arduino or any other device which uses
     the [MQTT protocol][mqtt]
   
-        var mqtt = require('sc-mqtt');
-        // create a new client
-        var client = mqtt.client( 'tcp://localhost:1883', 'uniqueClientId' );
-        // connect to the broker 
-        client.connect( { keepAliveInterval: 15 } );
-        //  publish a message to the broker
-        client.publish( 'minecraft', 'loaded' );
-        // subscribe to messages on 'arduino' topic 
-        client.subscribe( 'arduino' );
-        //  do something when an incoming message arrives...
-        client.onMessageArrived( function( topic, message ) {
-            console.log( 'Message arrived: topic=' + topic + ', message=' + message );
-        });
+    ```javascript
+    var mqtt = require('sc-mqtt');
+    // create a new client
+    var client = mqtt.client( 'tcp://localhost:1883', 'uniqueClientId' );
+    // connect to the broker 
+    client.connect( { keepAliveInterval: 15 } );
+    //  publish a message to the broker
+    client.publish( 'minecraft', 'loaded' );
+    // subscribe to messages on 'arduino' topic 
+    client.subscribe( 'arduino' );
+    //  do something when an incoming message arrives...
+    client.onMessageArrived( function( topic, message ) {
+        console.log( 'Message arrived: topic=' + topic + ', message=' + message );
+    });
+
+    ```
 
 The `sc-mqtt` module provides a very simple minimal wrapper around the
 [Eclipse Paho MQTT Version 3 Client][pahodocs] java-based MQTT

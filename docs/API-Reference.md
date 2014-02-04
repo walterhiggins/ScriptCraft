@@ -156,21 +156,23 @@ loads the module circle.js in the same directory.
 
 The contents of foo.js:
 
-    var circle = require('./circle.js');
-    console.log( 'The area of a circle of radius 4 is '
-               + circle.area(4));
+```javascript
+var circle = require('./circle.js');
+console.log( 'The area of a circle of radius 4 is '
+             + circle.area(4));
+```
 
 The contents of circle.js:
 
-    var PI = Math.PI;
-    
-    exports.area = function (r) {
-      return PI * r * r;
-    };
-
-    exports.circumference = function (r) {
-      return 2 * PI * r;
-    };
+```javascript
+var PI = Math.PI;
+exports.area = function (r) {
+    return PI * r * r;
+};
+exports.circumference = function (r) {
+    return 2 * PI * r;
+};
+```
 
 The module circle.js has exported the functions area() and
 circumference(). To add functions and objects to the root of your
@@ -210,9 +212,11 @@ module in the `plugins` directory exports becomes a global
 variable. For example, if you have a module greeting.js in the plugins
 directory....
 
-    exports.greet = function(player) {
-        player.sendMessage('Hello ' + player.name);
-    };
+```javascript
+exports.greet = function(player) {
+    player.sendMessage('Hello ' + player.name);
+};
+```
 
 ... then `greet` becomes a global function and can be used at the
 in-game (or server) command prompt like so...
@@ -400,10 +404,12 @@ restored using the `scload()` function.
 
 #### Example
 
-    var myObject = { name: 'John Doe',
-                     aliases: ['John Ray', 'John Mee'],
-                     date_of_birth: '1982/01/31' };
-    scsave(myObject, 'johndoe.json');
+```javascript
+var myObject = { name: 'John Doe',
+                 aliases: ['John Ray', 'John Mee'],
+                 date_of_birth: '1982/01/31' };
+scsave(myObject, 'johndoe.json');
+```
 
 ##### johndoe.json contents...
 
@@ -490,13 +496,15 @@ If Node.js supports setTimeout() then it's probably good for ScriptCraft to supp
 
 #### Example
 
-    //
-    // start a storm in 5 seconds
-    //    
-    setTimeout( function() {
-        var world = server.worlds.get(0);
-        world.setStorm(true);
-    }, 5000);
+```javascript
+//
+// start a storm in 5 seconds
+//    
+setTimeout( function() {
+    var world = server.worlds.get(0);
+    world.setStorm(true);
+}, 5000);
+```
 
 ### clearTimeout() function
 
@@ -566,23 +574,29 @@ For example imagine you have 3 files program.js, inc.js  and math.js ...
 
 ### math.js
 
-    exports.add = function(a,b){
-        return a + b;
-    }
+```javascript
+exports.add = function(a,b){
+    return a + b;
+}
+```
 
 ### inc.js
 
-    var math = require('./math');
-    exports.increment = function(n){
-        return math.add(n, 1);
-    }
+```javascript
+var math = require('./math');
+exports.increment = function(n){
+    return math.add(n, 1);
+}
+```
 
 ### program.js
 
-    var inc = require('./inc').increment;
-    var a = 7;
-    a = inc(a);
-    print(a);
+```javascript
+var inc = require('./inc').increment;
+var a = 7;
+a = inc(a);
+print(a);
+```
 
 You can see from the above sample code that programs can use modules
 and modules themeselves can use other modules. Modules have full
@@ -857,31 +871,38 @@ present in the CraftBukkit classpath. To use this module, you should
     craftbukkit-sc-mqtt.bat and edit it to include the following
     command...
 
-        java -classpath sc-mqtt.jar;craftbukit.jar org.bukkit.craftbukkit.Main
-    
+    ```sh
+    java -classpath sc-mqtt.jar;craftbukit.jar org.bukkit.craftbukkit.Main
+    ```
+
     If you're using Mac OS, create a new craftbukkit-sc-mqtt.command
     file and edit it (using TextWrangler or another text editor) ...
 
-        java -classpath sc-mqtt.jar:craftbukkit.jar org.bukit.craftbukkit.Main
+    ```sh
+    java -classpath sc-mqtt.jar:craftbukkit.jar org.bukit.craftbukkit.Main
+    ```
 
  4. Execute the craftbukkit-sc-mqtt batch file / command file to start
     Craftbukkit. You can now begin using this module to send and receive
     messages to/from a Net-enabled Arduino or any other device which uses
     the [MQTT protocol][mqtt]
   
-        var mqtt = require('sc-mqtt');
-        // create a new client
-        var client = mqtt.client( 'tcp://localhost:1883', 'uniqueClientId' );
-        // connect to the broker 
-        client.connect( { keepAliveInterval: 15 } );
-        //  publish a message to the broker
-        client.publish( 'minecraft', 'loaded' );
-        // subscribe to messages on 'arduino' topic 
-        client.subscribe( 'arduino' );
-        //  do something when an incoming message arrives...
-        client.onMessageArrived( function( topic, message ) {
-            console.log( 'Message arrived: topic=' + topic + ', message=' + message );
-        });
+    ```javascript
+    var mqtt = require('sc-mqtt');
+    // create a new client
+    var client = mqtt.client( 'tcp://localhost:1883', 'uniqueClientId' );
+    // connect to the broker 
+    client.connect( { keepAliveInterval: 15 } );
+    //  publish a message to the broker
+    client.publish( 'minecraft', 'loaded' );
+    // subscribe to messages on 'arduino' topic 
+    client.subscribe( 'arduino' );
+    //  do something when an incoming message arrives...
+    client.onMessageArrived( function( topic, message ) {
+        console.log( 'Message arrived: topic=' + topic + ', message=' + message );
+    });
+
+    ```
 
 The `sc-mqtt` module provides a very simple minimal wrapper around the
 [Eclipse Paho MQTT Version 3 Client][pahodocs] java-based MQTT
@@ -1042,14 +1063,16 @@ String, then it tries to find the player with that name.
 
 #### Example
 
-    var utils = require('utils');
-    var name = 'walterh';
-    var player = utils.player(name);
-    if (player) {
-        player.sendMessage('Got ' + name);
-    }else{
-        console.log('No player named ' + name);
-    }
+```javascript
+var utils = require('utils');
+var name = 'walterh';
+var player = utils.player(name);
+if ( player ) {
+    player.sendMessage('Got ' + name);
+} else {
+    console.log('No player named ' + name);
+}
+```
 
 [bkpl]: http://jd.bukkit.org/dev/apidocs/org/bukkit/entity/Player.html
 [bkloc]: http://jd.bukkit.org/dev/apidocs/org/bukkit/Location.html
@@ -1087,11 +1110,13 @@ The utils.locationToString() function returns a
 keys in a lookup table.
 
 #### Example
-    
-    var utils = require('utils');
-    ...
-    var key = utils.locationToString(player.location);
-    lookupTable[key] = player.name;
+
+```javascript    
+var utils = require('utils');
+...
+var key = utils.locationToString(player.location);
+lookupTable[key] = player.name;
+```
 
 ### utils.locationFromJSON() function
 
@@ -1132,12 +1157,14 @@ is the location of the block the player is looking at (targeting).
 
 The following code will strike lightning at the location the player is looking at...
 
-    var utils = require('utils');
-    var playerName = 'walterh';
-    var targetPos = utils.getMousePos(playerName);
-    if (targetPos){
-       targetPos.world.strikeLightning(targetPos);
-    }
+```javascript
+var utils = require('utils');
+var playerName = 'walterh';
+var targetPos = utils.getMousePos(playerName);
+if (targetPos){
+   targetPos.world.strikeLightning(targetPos);
+}
+```
 
 ### utils.foreach() function
 
@@ -1186,42 +1213,48 @@ and put the code there.
 
 The following example illustrates how to use foreach for immediate processing of an array...
 
-    var utils = require('utils');
-    var players = ['moe', 'larry', 'curly'];
-    utils.foreach (players, function(item){ 
-        server.getPlayer(item).sendMessage('Hi ' + item);
-    });
+```javascript
+var utils = require('utils');
+var players = ['moe', 'larry', 'curly'];
+utils.foreach (players, function(item){ 
+    server.getPlayer(item).sendMessage('Hi ' + item);
+});
+```
 
 ... The `utils.foreach()` function can work with Arrays or any Java-style collection. This is important
 because many objects in the Bukkit API use Java-style collections...
 
-    utils.foreach( server.onlinePlayers, function(player){
-         player.chat('Hello!');
-    }); 
+```javascript
+utils.foreach( server.onlinePlayers, function(player){
+    player.chat('Hello!');
+}); 
+```
 
 ... the above code sends a 'Hello!' to every online player.
 
 The following example is a more complex use case - The need to build an enormous structure
 without hogging CPU usage...
 
-    // build a structure 200 wide x 200 tall x 200 long
-    // (That's 8 Million Blocks - enough to tax any machine!)
-    var utils = require('utils');
+```javascript
+// build a structure 200 wide x 200 tall x 200 long
+// (That's 8 Million Blocks - enough to tax any machine!)
+var utils = require('utils');
 
-    var a = []; 
-    a.length = 200; 
-    var drone = new Drone();
-    var processItem = function(item, index, object, array){
-        // build a box 200 wide by 200 long then move up
-        drone.box(blocks.wood, 200, 1, 200).up();
-    };
-    // by the time the job's done 'self' might be someone else 
-    // assume this code is within a function/closure
-    var player = self;
-    var onDone = function(){ 
-        player.sendMessage('Job Done!');
-    };
-    utils.foreach (a, processItem, null, 10, onDone);
+var a = []; 
+a.length = 200; 
+var drone = new Drone();
+var processItem = function(item, index, object, array){
+    // build a box 200 wide by 200 long then move up
+    drone.box(blocks.wood, 200, 1, 200).up();
+};
+// by the time the job's done 'self' might be someone else 
+// assume this code is within a function/closure
+var player = self;
+var onDone = function(){ 
+    player.sendMessage('Job Done!');
+};
+utils.foreach (a, processItem, null, 10, onDone);
+```
     
 ### utils.nicely() function
 
@@ -1262,15 +1295,17 @@ The utils.at() function will perform a given task at a given time every
 
 To warn players when night is approaching...
 
-    var utils = require('utils');
+```javascript
+var utils = require('utils');
 
-    utils.at( '19:00', function() {
+utils.at( '19:00', function() {
 
-      utils.foreach( server.onlinePlayers, function( player ) {
+    utils.foreach( server.onlinePlayers, function( player ) {
         player.chat( 'The night is dark and full of terrors!' );
-      });
-
     });
+
+});
+```
   
 ### utils.find() function
 
@@ -1286,10 +1321,12 @@ a given directory and recursiving trawling all sub-directories.
 
 #### Example
 
-    var utils = require('utils');
-    var jsFiles = utils.find('./', function(dir,name){
-        return name.match(/\.js$/);
-    });  
+```javascript
+var utils = require('utils');
+var jsFiles = utils.find('./', function(dir,name){
+    return name.match(/\.js$/);
+});  
+```
 
 ## Drone Plugin
 

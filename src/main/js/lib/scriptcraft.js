@@ -12,21 +12,23 @@ loads the module circle.js in the same directory.
 
 The contents of foo.js:
 
-    var circle = require('./circle.js');
-    console.log( 'The area of a circle of radius 4 is '
-               + circle.area(4));
+```javascript
+var circle = require('./circle.js');
+console.log( 'The area of a circle of radius 4 is '
+             + circle.area(4));
+```
 
 The contents of circle.js:
 
-    var PI = Math.PI;
-    
-    exports.area = function (r) {
-      return PI * r * r;
-    };
-
-    exports.circumference = function (r) {
-      return 2 * PI * r;
-    };
+```javascript
+var PI = Math.PI;
+exports.area = function (r) {
+    return PI * r * r;
+};
+exports.circumference = function (r) {
+    return 2 * PI * r;
+};
+```
 
 The module circle.js has exported the functions area() and
 circumference(). To add functions and objects to the root of your
@@ -66,9 +68,11 @@ module in the `plugins` directory exports becomes a global
 variable. For example, if you have a module greeting.js in the plugins
 directory....
 
-    exports.greet = function(player) {
-        player.sendMessage('Hello ' + player.name);
-    };
+```javascript
+exports.greet = function(player) {
+    player.sendMessage('Hello ' + player.name);
+};
+```
 
 ... then `greet` becomes a global function and can be used at the
 in-game (or server) command prompt like so...
@@ -256,10 +260,12 @@ restored using the `scload()` function.
 
 #### Example
 
-    var myObject = { name: 'John Doe',
-                     aliases: ['John Ray', 'John Mee'],
-                     date_of_birth: '1982/01/31' };
-    scsave(myObject, 'johndoe.json');
+```javascript
+var myObject = { name: 'John Doe',
+                 aliases: ['John Ray', 'John Mee'],
+                 date_of_birth: '1982/01/31' };
+scsave(myObject, 'johndoe.json');
+```
 
 ##### johndoe.json contents...
 
@@ -346,13 +352,15 @@ If Node.js supports setTimeout() then it's probably good for ScriptCraft to supp
 
 #### Example
 
-    //
-    // start a storm in 5 seconds
-    //    
-    setTimeout( function() {
-        var world = server.worlds.get(0);
-        world.setStorm(true);
-    }, 5000);
+```javascript
+//
+// start a storm in 5 seconds
+//    
+setTimeout( function() {
+    var world = server.worlds.get(0);
+    world.setStorm(true);
+}, 5000);
+```
 
 ### clearTimeout() function
 
@@ -477,7 +485,6 @@ function __onEnable ( __engine, __plugin, __script )
     var canonizedFilename = _canonize( file );
     
     if ( file.exists() ) {
-      parent = file.getParentFile();
       reader = new FileReader( file );
       br = new BufferedReader( reader );
       code = '';
