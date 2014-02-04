@@ -13,3 +13,5 @@ target
 build.local.properties
 /src/main/javascript/lib/.#tabcomplete.js
 /src/main/javascript/plugins/.#example-1.js
+/nbproject/private/private.xml
+/nbproject/project.xml

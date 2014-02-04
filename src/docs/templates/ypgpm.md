@@ -730,7 +730,7 @@ loop. The following `while` loop counts to 100...
 
 ```javascript
 var i = 1;
-while (i <= 100){
+while ( i <= 100 ) {
     console.log( i );
     i = i + 1;
 } 
@@ -857,12 +857,12 @@ type the following...
 
 ```javascript
 var myskyscraper = function(floors) {
-    if (typeof floors == 'undefined'){
+    var i ;
+    if ( typeof floors == 'undefined' ) {
         floors = 10;
     }
     this.chkpt('myskyscraper'); // saves the drone position so it can return there later
-    for (var i = 0; i < floors; i++)
-    {
+    for ( i = 0; i < floors; i++ ) {
         this.box(blocks.iron,20,1,20)
             .up()
             .box0(blocks.glass_pane,20,3,20)

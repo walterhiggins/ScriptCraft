@@ -46,29 +46,36 @@ function each time the event is fired.
 
 The following code will print a message on screen every time a block is broken in the game
 
-    events.on('block.BlockBreakEvent', function(listener, evt){ 
-        evt.player.sendMessage( evt.player.name + ' broke a block!');
-    });
+```javascript
+events.on( 'block.BlockBreakEvent', function( listener, evt ) { 
+    evt.player.sendMessage( evt.player.name + ' broke a block!');
+} );
+```
 
 To handle an event only once and unregister from further events...
-    
-    events.on('block.BlockBreakEvent', function(listener, evt){ 
-        evt.player.sendMessage( evt.player.name + ' broke a block!');
-        evt.handlers.unregister(listener);
-    });
+
+```javascript    
+events.on( 'block.BlockBreakEvent', function( listener, evt ) { 
+    evt.player.sendMessage( evt.player.name + ' broke a block!');
+    evt.handlers.unregister( listener );
+} );
 
 To unregister a listener *outside* of the listener function...
 
-    var myBlockBreakListener = events.on('block.BlockBreakEvent',function(l,e){ ... });
-    ...
-    var handlers = org.bukkit.event.block.BlockBreakEvent.getHandlerList();
-    handlers.unregister(myBlockBreakListener);
+```javascript    
+var myBlockBreakListener = events.on( 'block.BlockBreakEvent', function( l, e ) { ... } );
+...
+var handlers = org.bukkit.event.block.BlockBreakEvent.getHandlerList();
+handlers.unregister(myBlockBreakListener);
+```
 
 To listen for events using a full class name as the `eventName` parameter...
 
-    events.on(org.bukkit.event.block.BlockBreakEvent, function(listener, evt){ 
-        evt.player.sendMessage( evt.player.name + ' broke a block!');
-    });
+```javascript    
+events.on( org.bukkit.event.block.BlockBreakEvent, function( listener, evt ) { 
+    evt.player.sendMessage( evt.player.name + ' broke a block!');
+} );
+```
 
 [buk2]: http://wiki.bukkit.org/Event_API_Reference
 [buk]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/event/Event.html
