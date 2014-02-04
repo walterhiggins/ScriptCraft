@@ -29,30 +29,19 @@ present in the CraftBukkit classpath. To use this module, you should
     messages to/from a Net-enabled Arduino or any other device which uses
     the [MQTT protocol][mqtt]
   
-
-    var mqtt = require('sc-mqtt');
-
-    // create a new client
-
-    var client = mqtt.client( 'tcp://localhost:1883', 'uniqueClientId' );
-
-    // connect to the broker 
-
-    client.connect( { keepAliveInterval: 15 } );
-
-    //  publish a message to the broker
-
-    client.publish( 'minecraft', 'loaded' );
-    
-    // subscribe to messages on 'arduino' topic 
-
-    client.subscribe( 'arduino' );
-
-    //  do something when an incoming message arrives...
-
-    client.onMessageArrived( function( topic, message ) {
-        console.log( 'Message arrived: topic=' + topic + ', message=' + message );
-    });
+        var mqtt = require('sc-mqtt');
+        // create a new client
+        var client = mqtt.client( 'tcp://localhost:1883', 'uniqueClientId' );
+        // connect to the broker 
+        client.connect( { keepAliveInterval: 15 } );
+        //  publish a message to the broker
+        client.publish( 'minecraft', 'loaded' );
+        // subscribe to messages on 'arduino' topic 
+        client.subscribe( 'arduino' );
+        //  do something when an incoming message arrives...
+        client.onMessageArrived( function( topic, message ) {
+            console.log( 'Message arrived: topic=' + topic + ', message=' + message );
+        });
 
 The `sc-mqtt` module provides a very simple minimal wrapper around the
 [Eclipse Paho MQTT Version 3 Client][pahodocs] java-based MQTT
