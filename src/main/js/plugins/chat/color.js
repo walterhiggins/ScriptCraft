@@ -1,6 +1,36 @@
-/*
-  TODO: Document this module
-*/
+/*************************************************************************
+## chat Plugin
+
+This plugin lets players choose a text color to use when chatting. Players can list colors by typing...
+
+    /jsp list_colors
+
+... and can set the color to use when chatting by typing...
+
+    /jsp chat_color {color}
+
+... where {color} is one of the following colors...
+
+ * black
+ * blue
+ * darkgreen
+ * darkaqua
+ * darkred
+ * purple
+ * gold
+ * gray
+ * darkgray
+ * indigo
+ * brightgreen
+ * aqua
+ * red
+ * pink
+ * yellow
+ * white
+
+This plugin's source code is useful to study because it is short and demonstrates use of the `plugin()`, and `command()` functions, persistence and event handling.
+
+***/
 var _store = { players: { } },
   colorCodes = {},
   i,

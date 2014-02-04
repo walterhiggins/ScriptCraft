@@ -28,8 +28,8 @@ The `jsp home` command has the following options...
 
  * `/jsp home` ..command will return you to your home, if you have set one.
 
- * `/jsp home <player>` Will take you to the home of <player> (where 
-   <player> is the name of the player whose home you wish to visit.
+ * `/jsp home {player}` Will take you to the home of {player} (where 
+   {player} is the name of the player whose home you wish to visit.
 
  * `/jsp home delete` Deletes your home location from the location
    database. This does not actually remove the home from the world or
@@ -44,8 +44,8 @@ visit.
 
  * `/jsp home list` Lists home which you can visit.
  * `/jsp home ilist` Lists players who can visit your home.
- * `/jsp home invite <player>` Invites the named player to your home.
- * `/jsp home uninvite <player>` Uninvites (revokes invitation) the named player to your home.
+ * `/jsp home invite {player}` Invites the named player to your home.
+ * `/jsp home uninvite {player}` Uninvites (revokes invitation) the named player to your home.
  * `/jsp home public` Opens your home to all players (all players can visit your home).
  * `/jsp home private` Makes your home private (no longer visitable by all).
 
@@ -53,7 +53,7 @@ visit.
 The following administration options can only be used by server operators...
 
  * `/jsp home listall` List all of the homes
- * `/jsp home clear <player>` Removes the player's home
+ * `/jsp home clear {player}` Removes the player's home
    location. Again, this command does not destroy any structures in
    the world, it simply removes the location from the database. No
    blocks are destroyed by this command.
@@ -74,21 +74,21 @@ var homes =  plugin( 'homes', {
     return [
       /* basic functions */
       '/jsp home : Return to your own home',
-      '/jsp home <player> : Go to player home',
+      '/jsp home {player} : Go to player home',
       '/jsp home set : Set your current location as home',
       '/jsp home delete : Delete your home location',
 
       /* social */
       '/jsp home list : List homes you can visit',
       '/jsp home ilist : List players who can visit your home',
-      '/jsp home invite <player> : Invite <player> to your home',
-      '/jsp home uninvite <player> : Uninvite <player> to your home',
+      '/jsp home invite {player} : Invite {player} to your home',
+      '/jsp home uninvite {player} : Uninvite {player} to your home',
       '/jsp home public : Open your home to all players',
       '/jsp home private : Make your home private',
 
       /* administration */
       '/jsp home listall : Show all houses (ops only)',
-      '/jsp home clear <player> : Clears player home location (ops only)'
+      '/jsp home clear {player} : Clears player home location (ops only)'
     ];
   },
   /* ========================================================================
