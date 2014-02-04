@@ -26,8 +26,9 @@ easy addition of 'Mods' and extensions to Minecraft. ScriptCraft is a
 difficult but CraftBukkit makes it easy.  Follow these steps to
 Install ScriptCraft on your computer...
 
-1. [Download and install CraftBukkit][dlbuk]. Then follow the [Bukkit Installation Instructions][bii]. 
-[bii]: http://wiki.bukkit.org/Setting_up_a_server
+1. [Download and install CraftBukkit][dlbuk]. Then follow the [Bukkit
+   Installation Instructions][bii]. (Tip: You can grab the very latest
+   version of bukkit from the [alternative versions list][dlbuk2])
 
 2. Start the CraftBukkit server, then once it has started up, stop it
    by typing 'stop'. If you go to the craftbukkit folder (see step 1) you
@@ -1172,6 +1173,8 @@ different objects and methods available for use by ScriptCraft.
 
 [buk]: http://wiki.bukkit.org/Setting_up_a_server
 [dlbuk]: http://dl.bukkit.org/
+[dlbuk2]: http://dl.bukkit.org/downloads/craftbukkit/
+[bii]: http://wiki.bukkit.org/Setting_up_a_server
 [sc-plugin]: http://scriptcraftjs.org/download/
 [ce]: http://www.codecademy.com/
 [mcdv]: http://www.minecraftwiki.net/wiki/Data_values
