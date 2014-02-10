@@ -136,57 +136,56 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
 
 ***/
   var resolveModuleToFile = function ( moduleName, parentDir ) {
-    var file = new File(moduleName);
-
+    var file = new File(moduleName),
+      i = 0,
+      pathWithJSExt,
+      resolvedFile;
     if ( file.exists() ) {
       return fileExists(file);
     }
     if ( moduleName.match( /^[^\.\/]/ ) ) {
       // it's a module named like so ... 'events' , 'net/http'
       //
-      var resolvedFile;
-      for (var i = 0;i < modulePaths.length; i++){
+      for ( ; i < modulePaths.length; i++ ) {
         resolvedFile = new File(modulePaths[i] + moduleName);
-        if (resolvedFile.exists()){
+        if ( resolvedFile.exists() ) {
           return fileExists(resolvedFile);
-        }else{
+        } else {
           // try appending a .js to the end
           resolvedFile = new File(modulePaths[i] + moduleName + '.js');
-          if (resolvedFile.exists())
+          if ( resolvedFile.exists() ) {
             return resolvedFile;
+	  }
         }
       }
     } else {
       // it's of the form ./path
       file = new File(parentDir, moduleName);
-      if (file.exists()){
+      if ( file.exists() ) {
         return fileExists(file);
-      }else { 
-
+      } else { 
         // try appending a .js to the end
-        var pathWithJSExt = file.canonicalPath + '.js';
-        file = new File( parentDir, pathWithJSExt);
-        if (file.exists())
+        pathWithJSExt = file.canonicalPath + '.js';
+        file = new File( parentDir, pathWithJSExt );
+        if (file.exists()) {
           return file;
-        else{
+        } else {
           file = new File(pathWithJSExt);
-          if (file.exists())
+          if ( file.exists() ) {
             return file;
+	  }
         }
         
       }
     }
     return null;
   };
-  /*
-   wph 20131215 Experimental 
-   */
   var _loadedModules = {};
   var _format = java.lang.String.format;
   /*
    require() function implementation
    */
-  var _require = function( parentFile, path ) {
+  var _require = function( parentFile, path, options ) {
     var file,
 	canonizedFilename,
 	moduleInfo,
@@ -194,7 +193,15 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
         head = '(function(exports,module,require,__filename,__dirname){ ',
 	code = '',
 	line = null;
-    
+
+    if ( typeof options == 'undefined' ) { 
+      options = { cache: true };
+    } else { 
+      if ( typeof options.cache == 'undefined' ) {
+	options.cache = true;
+      }
+    }
+
     file = resolveModuleToFile(path, parentFile);
     if ( !file ) {
       var errMsg = '' + _format("require() failed to find matching file for module '%s' " + 
@@ -205,10 +212,12 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
       throw errMsg;
     }
     canonizedFilename = _canonize(file);
-    
+  
     moduleInfo = _loadedModules[canonizedFilename];
     if ( moduleInfo ) {
-      return moduleInfo;
+      if ( options.cache ) { 
+	return moduleInfo;
+      }
     }
     if ( hooks ) {
       hooks.loading( canonizedFilename );
@@ -228,7 +237,9 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     var tail = '})';
     code = head + code + tail;
 
-    _loadedModules[canonizedFilename] = moduleInfo;
+    if ( options.cache ) {
+      _loadedModules[canonizedFilename] = moduleInfo;
+    }
     var compiledWrapper = null;
     try {
       compiledWrapper = eval(code);
@@ -258,8 +269,8 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
   };
 
   var _requireClosure = function( parent ) {
-    return function( path ) {
-      var module = _require( parent, path );
+    return function( path, options ) {
+      var module = _require( parent, path , options);
       return module.exports;
     };
   };

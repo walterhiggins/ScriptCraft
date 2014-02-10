@@ -31,15 +31,7 @@ var _plugin = function(/* String */ moduleName, /* Object */ moduleObject, isPer
 
 exports.plugin = _plugin;
 
-var scriptCraftDir = null;
-var pluginDir = null;
-var dataDir = null;
-
-exports.autoload = function( dir, logger ) {
-
-  scriptCraftDir = dir;
-  pluginDir = new File( dir, 'plugins' );
-  dataDir = new File( dir, 'data' );
+exports.autoload = function( context, pluginDir, logger, options ) {
 
   var _canonize = function( file ) { 
     return '' + file.canonicalPath.replaceAll('\\\\','/'); 
@@ -76,22 +68,26 @@ exports.autoload = function( dir, logger ) {
 
     var len = sourceFiles.length;
     if ( config.verbose ) {
-      console.info( len + ' scriptcraft plugins found.' );
+      console.info( len + ' scriptcraft plugins found in ' + pluginDir );
     }
     for ( var i = 0; i < len; i++ ) {
       pluginPath = _canonize( sourceFiles[i] );
       module = {};
 
       try {
-        module = require( pluginPath );
+        module = require( pluginPath , options);
         for ( property in module ) {
           /*
-           all exports in plugins become global
+           all exports in plugins become members of context object
            */
-          global[property] = module[property];
+          context[property] = module[property];
         }
       } catch ( e ) {
-	logger.severe( 'Plugin ' + pluginPath + ' ' + e );
+	if ( typeof logger != 'undefined' ) {
+	  logger.severe( 'Plugin ' + pluginPath + ' ' + e );
+	} else { 
+	  java.lang.System.out.println( 'Error: Plugin ' + pluginPath + ' ' + e );
+	}
       }
     }
   }(pluginDir));

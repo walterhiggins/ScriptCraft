@@ -491,7 +491,7 @@ function __onEnable ( __engine, __plugin, __script )
       try {
         while ( (r = br.readLine()) !== null ) {
           code += r + '\n';
-	}
+        }
         wrappedCode = '(' + code + ')';
         result = __engine.eval( wrappedCode );
         // issue #103 avoid side-effects of || operator on Mac Rhino
@@ -566,7 +566,7 @@ function __onEnable ( __engine, __plugin, __script )
    setup paths to search for modules
    */
   var modulePaths = [ jsPluginsRootDirName + '/lib/',
-		      jsPluginsRootDirName + '/modules/' ];
+                      jsPluginsRootDirName + '/modules/' ];
 
   if ( config.verbose ) {
     logger.info( 'Setting up CommonJS-style module system. Root Directory: ' + jsPluginsRootDirName );
@@ -612,27 +612,44 @@ function __onEnable ( __engine, __plugin, __script )
 
 
   global.__onCommand = function( sender, cmd, label, args) {
-    var jsArgs = [];
-    var i = 0;
+    var jsArgs = [],
+      i = 0,
+      jsResult,
+      result,
+      cmdName,
+      fnBody;
     for ( ; i < args.length ; i++ ) {
       jsArgs.push( '' + args[i] );
     }
     
-    var result = false;
-    var cmdName = ( '' + cmd.name ).toLowerCase();
+    result = false;
+    cmdName = ( '' + cmd.name ).toLowerCase();
     if (cmdName == 'js')
     {
       result = true;
-      var fnBody = jsArgs.join(' ');
+      fnBody = jsArgs.join(' ');
       global.self = sender;
       global.__engine = __engine;
       try { 
-        var jsResult = __engine.eval(fnBody);
-        if ( jsResult ) {
-          sender.sendMessage(jsResult);
-	}
+        if ( typeof eval == 'undefined' ) { 
+          jsResult = __engine.eval(fnBody);
+        } else {
+          /*
+           nashorn
+           https://bugs.openjdk.java.net/browse/JDK-8034055
+           */
+          jsResult = eval( fnBody ); 
+        }
+        if ( typeof jsResult != 'undefined' ) { 
+          if ( jsResult == null) { 
+            sender.sendMessage('(null)');
+          } else { 
+            sender.sendMessage(jsResult);
+          }
+        } 
       } catch ( e ) {
         logger.severe( 'Error while trying to evaluate javascript: ' + fnBody + ', Error: '+ e );
+        sender.sendMessage( 'Error while trying to evaluate javascript: ' + fnBody + ', Error: '+ e );
         throw e;
       } finally {
         delete global.self;
@@ -646,7 +663,7 @@ function __onEnable ( __engine, __plugin, __script )
     return result;
   };
 
-  plugins.autoload( jsPluginsRootDir, logger );
+  plugins.autoload( global, new File(jsPluginsRootDir,'plugins'), logger );
     /*
      wph 20140102 - warn if legacy 'craftbukkit/js-plugins' or 'craftbukkit/scriptcraft' directories are present
      */
@@ -655,21 +672,21 @@ function __onEnable ( __engine, __plugin, __script )
       cbDir = new File(cbPluginsDir.canonicalPath).parentFile,
       legacyExists = false,
       legacyDirs = [new File( cbDir, 'js-plugins' ), 
-		    new File( cbDir, 'scriptcraft' )];
+                    new File( cbDir, 'scriptcraft' )];
 
     for ( var i = 0; i < legacyDirs.length; i++ ) {
       if ( legacyDirs[i].exists() 
-	   && legacyDirs[i].isDirectory() ) {
+           && legacyDirs[i].isDirectory() ) {
 
-	legacyExists = true; 
+        legacyExists = true; 
 
-	console.warn('Legacy ScriptCraft directory %s was found. This directory is no longer used.',
+        console.warn('Legacy ScriptCraft directory %s was found. This directory is no longer used.',
           legacyDirs[i].canonicalPath);
       }
     }
     if ( legacyExists ) {
       console.info( 'Please note that the working directory for %s is %s', 
-	__plugin, jsPluginsRootDir.canonicalPath );
+        __plugin, jsPluginsRootDir.canonicalPath );
     }
   })();
 

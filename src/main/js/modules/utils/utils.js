@@ -459,3 +459,79 @@ exports.find = function( dir , filter ) {
   recurse( dir, result );
   return result;
 };
+/************************************************************************
+### utils.serverAddress() function
+
+The utils.serverAddress() function returns the IP(v4) address of the server.
+
+```javascript
+var utils = require('utils');
+var serverAddress = utils.serverAddress();
+console.log(serverAddress);
+```
+***/
+exports.serverAddress = function() {
+  var interfaces = java.net.NetworkInterface.getNetworkInterfaces();
+  var current,
+    addresses,
+    current_addr;
+  while ( interfaces.hasMoreElements() ) {
+    current = interfaces.nextElement();
+    if ( ! current.isUp() || current.isLoopback() || current.isVirtual() ) {
+      continue;
+    }
+    addresses = current.getInetAddresses();
+    while (addresses.hasMoreElements()) {
+      current_addr = addresses.nextElement();
+      if ( current_addr.isLoopbackAddress() ) 
+	continue;
+      if ( current_addr instanceof java.net.Inet4Address)
+          return current_addr.getHostAddress();
+    }
+  }  
+  return null;
+};
+/************************************************************************
+### utils.watchFile() function
+
+Watches for changes to the given file or directory and calls the function provided
+when the file changes.
+
+#### Parameters
+ 
+ * File - the file to watch (can be a file or directory)
+ * Callback - The callback to invoke when the file has changed. The callback takes the 
+   changed file as a parameter.
+
+#### Example
+
+```javascript
+var utils = require('utils');
+utils.watchFile( 'test.txt', function( file ) { 
+   console.log( file + ' has changed');
+});
+```
+***/
+var filesWatched = {};
+exports.watchFile = function( file, callback ) {
+  var File = java.io.File;
+  if ( typeof file == 'string' ) { 
+    file = new File(file);
+  }
+  filesWatched[file.canonicalPath] = {
+    callback: callback,
+    lastModified: file.lastModified()
+  };
+};
+function fileWatcher() {
+  for (var file in filesWatched) {
+    var fileObject = new File(file);
+    var lm = fileObject.lastModified();
+    if ( lm != filesWatched[file].lastModified ) {
+      filesWatched[file].lastModified = lm;
+      filesWatched[file].callback(fileObject);
+    }
+  }
+  setTimeout( fileWatcher, 5000 );
+};
+setTimeout( fileWatcher, 5000 );

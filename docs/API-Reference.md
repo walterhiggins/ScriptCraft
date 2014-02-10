@@ -68,6 +68,8 @@ Walter Higgins
    * [utils.nicely() function](#utilsnicely-function)
    * [utils.at() function](#utilsat-function)
    * [utils.find() function](#utilsfind-function)
+   * [utils.serverAddress() function](#utilsserveraddress-function)
+   * [utils.watchFile() function](#utilswatchfile-function)
  * [Drone Plugin](#drone-plugin)
    * [TLDNR; (Just read this if you're impatient)](#tldnr-just-read-this-if-youre-impatient)
    * [Constructing a Drone Object](#constructing-a-drone-object)
@@ -1338,6 +1340,34 @@ var jsFiles = utils.find('./', function(dir,name){
 });  
 ```
 
+### utils.serverAddress() function
+
+The utils.serverAddress() function returns the IP(v4) address of the server.
+
+```javascript
+var utils = require('utils');
+var serverAddress = utils.serverAddress();
+console.log(serverAddress);
+```
+### utils.watchFile() function
+
+Watches for changes to the given file or directory and calls the function provided
+when the file changes.
+
+#### Parameters
+ 
+ * File - the file to watch (can be a file or directory)
+ * Callback - The callback to invoke when the file has changed. The callback takes the 
+   changed file as a parameter.
+
+#### Example
+
+```javascript
+var utils = require('utils');
+utils.watchFile( 'test.txt', function( file ) { 
+   console.log( file + ' has changed');
+});
+```
 ## Drone Plugin
 
 The Drone is a convenience class for building. It can be used for...
@@ -2560,14 +2590,55 @@ quickly realise how to grant themselves and others operator privileges
 once they have access to ScriptCraft).
 
 The goal of this module is not so much to enforce restrictions
-(security or otherwise) but to make it easier for tutors to setup a shared server
-so students can learn Javascript.
+(security or otherwise) but to make it easier for tutors to setup a
+shared server so students can learn Javascript. When scripting is
+turned on, every player who joins the server will have a dedicated
+directory into which they can save scripts. All scripts in such
+directories are automatically watched and loaded into a global
+variable named after the player.
+
+So for example, if player 'walterh' joins the server, a `walterh`
+global variable is created. If a file `greet.js` with the following
+content is dropped into the `plugins/scriptcraft/players/walterh`
+directory...
+
+```javascript
+exports.hi = function( player ){
+  player.sendMessage('Hi ' + player.name);
+};
+```
+
+... then it can be invoked like this: `/js walterh.hi( self )` . This
+lets every player/student create their own functions without having
+naming collisions.
+
+It's strongly recommended that the
+`craftbukkit/plugins/scriptcraft/players/` directory is shared so that
+others can connect to it and drop .js files into their student
+directories. On Ubuntu, select the folder in Nautilus (the default
+file browser) then right-click and choose *Sharing Options*, check the
+*Share this folder* checkbox and the *Allow others to create and
+delete files* and *Guest access* checkboxes. Click *Create Share*
+button to close the sharing options dialog. Students can then access
+the shared folder as follows...
+
+ * Windows:   Open Explorer, Go to \\{serverAddress}\players\
+ * Macintosh: Open Finder,   Go to smb://{serverAddress}/players/
+ * Linux:     Open Nautilus, Go to smb://{serverAddress}/players/
+
+... where {serverAddress} is the ip address of the server (this is
+displayed to whoever invokes the classroom.allowScripting() function.)
 
 ### classroom.allowScripting() function
 
 Allow or disallow anyone who connects to the server (or is already
 connected) to use ScriptCraft. This function is preferable to granting 'ops' privileges 
 to every student in a Minecraft classroom environment.
+
+Whenever any file is added/edited or removed from any of the players/
+directories the contents are automatically reloaded. This is to
+facilitate quick turnaround time for students getting to grips with
+Javascript.
 
 #### Parameters
 
