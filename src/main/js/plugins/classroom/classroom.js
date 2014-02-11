@@ -3,6 +3,7 @@ var utils = require('utils'),
   logger = __plugin.logger,
   foreach = utils.foreach,
   watchFile = utils.watchFile,
+  unwatchFile = utils.unwatchFile,
   playersDir = __dirname + '/../../players/',
   serverAddress = utils.serverAddress();
 
@@ -100,6 +101,10 @@ function revokeScripting ( player ) {
       }
     }
   });
+  var playerName = '' + player.name;
+  playerName = playerName.replace(/[^a-zA-Z0-9_\-]/g,'');
+  var playerDir = new File( playersDir + playerName );
+  unwatchFile( playerDir );
 }
 
 function grantScripting( player ) {

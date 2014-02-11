@@ -1,4 +1,5 @@
 'use strict';
+var File = java.io.File;
 /************************************************************************
 ## Utilities Module
 
@@ -440,7 +441,7 @@ var jsFiles = utils.find('./', function(dir,name){
 exports.find = function( dir , filter ) {
   var result = [];
   var recurse = function( dir, store ) {
-    var files, dirfile = new java.io.File( dir );
+    var files, dirfile = new File( dir );
     
     if ( typeof filter == 'undefined' ) {
       files = dirfile.list();
@@ -514,7 +515,6 @@ utils.watchFile( 'test.txt', function( file ) {
 ***/
 var filesWatched = {};
 exports.watchFile = function( file, callback ) {
-  var File = java.io.File;
   if ( typeof file == 'string' ) { 
     file = new File(file);
   }
@@ -523,6 +523,25 @@ exports.watchFile = function( file, callback ) {
     lastModified: file.lastModified()
   };
 };
+/************************************************************************
+### utils.unwatchFile() function
+
+Removes a file from the watch list.
+
+#### Example
+```javascript
+var utils = require('utils');
+utils.unwatchFile( 'test.txt');
+```
+
+***/
+exports.unwatchFile = function( file, callback ) {
+  if ( typeof file == 'string' ) { 
+    file = new File(file);
+  }
+  delete filesWatched[file.canonicalPath];  
+};
+
 function fileWatcher() {
   for (var file in filesWatched) {
     var fileObject = new File(file);

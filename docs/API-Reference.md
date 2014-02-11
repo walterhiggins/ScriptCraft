@@ -70,6 +70,7 @@ Walter Higgins
    * [utils.find() function](#utilsfind-function)
    * [utils.serverAddress() function](#utilsserveraddress-function)
    * [utils.watchFile() function](#utilswatchfile-function)
+   * [utils.unwatchFile() function](#utilsunwatchfile-function)
  * [Drone Plugin](#drone-plugin)
    * [TLDNR; (Just read this if you're impatient)](#tldnr-just-read-this-if-youre-impatient)
    * [Constructing a Drone Object](#constructing-a-drone-object)
@@ -1368,6 +1369,16 @@ utils.watchFile( 'test.txt', function( file ) {
    console.log( file + ' has changed');
 });
 ```
+### utils.unwatchFile() function
+
+Removes a file from the watch list.
+
+#### Example
+```javascript
+var utils = require('utils');
+utils.unwatchFile( 'test.txt');
+```
+
 ## Drone Plugin
 
 The Drone is a convenience class for building. It can be used for...
