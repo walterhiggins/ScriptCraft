@@ -2,6 +2,7 @@
 ## Table of Contents
  * [Introduction](#introduction)
  * [Installation](#installation)
+ * [Configuring your Server (optional)](#configuring-your-server-optional)
  * [Learning Javascript](#learning-javascript)
  * [First Steps](#first-steps)
  * [Variables](#variables)
@@ -94,6 +95,25 @@ installed, you don't have to learn Java, you can extend and customize
 Minecraft your way using Javascript. Javascript is easier to learn than 
 Java but it's also more flexible and powerful and is used for creating 
 interactive web sites and many other applications.
+
+## Configuring your Server (optional)
+
+Once you've installed CraftBukkit, depending on your specific needs,
+you might want to consider setting the following properties in the
+`server.properties` file...
+
+    # completely flat worlds are best for building from scratch
+    level-type=FLAT
+    generate-structures=false
+    
+    # creative mode
+    gamemode=1
+    pvp=false
+    
+    # turns off authentication (for classroom environments)
+    online-mode=false
+    spawn-npcs=false
+    spawn-monsters=false
 
 ## Learning Javascript
 
