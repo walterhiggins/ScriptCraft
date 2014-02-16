@@ -515,7 +515,10 @@ function __onEnable ( __engine, __plugin, __script )
   /*
    now that load is defined, use it to load a global config object
    */
-  var config = _load( new File(jsPluginsRootDir, 'data/global-config.json' ) );
+  var configFile = new File(jsPluginsRootDir, 'data/');
+  configFile.mkdirs();
+  configFile = new File(configFile,'global-config.json');
+  var config = _load( configFile );
   if ( !config ) {
     config = { verbose: false };
   }

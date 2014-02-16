@@ -1,3 +1,9 @@
+# 2014 02 11
+
+## Version 2.0.4
+
+Various bug fixes, enhanced classroom module and improved error logging on startup.
+
 # 2014 01 17
 
 Added support for communication with Arduino and other devices which
