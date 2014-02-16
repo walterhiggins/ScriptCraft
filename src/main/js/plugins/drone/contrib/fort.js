@@ -14,6 +14,10 @@ Drone.extend('fort', function( side, height ) {
   if ( side % 2 ) {
     side++;
   }
+  var battlementWidth = 3;
+  if ( side <= 12 ) {
+    battlementWidth = 2;
+  }
   if ( height < 4 || side < 10 ) {
     throw new java.lang.RuntimeException('Forts must be at least 10 wide X 4 tall');
   }
@@ -43,13 +47,15 @@ Drone.extend('fort', function( side, height ) {
   // build battlement's floor
   //
   this.move('fort');
-  this.up(height-2).fwd().right().box('126:0',side-2,1,side-2);
-  var battlementWidth = 3;
-  if ( side <= 12 ) {
-    battlementWidth = 2;
+  this.up(height-2).fwd().right();
+  for ( var i = 0; i < battlementWidth; i++ ) { 
+    this.box0('126:0', side - ( 2 + (i * 2) ), 1, side - ( 2 + ( i * 2) ));
+    this.fwd().right();
   }
-  this.fwd(battlementWidth).right(battlementWidth)
-    .box(0,side-((1+battlementWidth)*2),1,side-((1+battlementWidth)*2));
+//    .box('126:0',side-2,1,side-2);
+  
+//  this.fwd(battlementWidth).right(battlementWidth)
+//    .box(0,side-((1+battlementWidth)*2),1,side-((1+battlementWidth)*2));
   //
   // add door
   //
