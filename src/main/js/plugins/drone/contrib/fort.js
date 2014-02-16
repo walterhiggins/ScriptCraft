@@ -52,10 +52,6 @@ Drone.extend('fort', function( side, height ) {
     this.box0('126:0', side - ( 2 + (i * 2) ), 1, side - ( 2 + ( i * 2) ));
     this.fwd().right();
   }
-//    .box('126:0',side-2,1,side-2);
-  
-//  this.fwd(battlementWidth).right(battlementWidth)
-//    .box(0,side-((1+battlementWidth)*2),1,side-((1+battlementWidth)*2));
   //
   // add door
   //
