@@ -735,6 +735,34 @@ exports.Drone = Drone;
  */
 exports.blocks = blocks;
 
+Drone.queue = [];
+Drone.processingQueue = false;
+Drone.MAX_QUEUE_SIZE = 100000;
+Drone.tick = setInterval( function() {
+  if ( Drone.processingQueue ) { 
+    return;
+  }
+  var maxOpsPerTick = Math.floor(Math.max(10,Math.sqrt(Drone.queue.length))) ;
+  var op;
+  Drone.processingQueue = true;
+  while ( maxOpsPerTick > 0 ) { 
+    op = Drone.queue.shift();
+    if (!op){
+      Drone.processingQueue = false;
+      return;
+    }
+    var block = op.world.getBlockAt( op.x, op.y, op.z );
+    block.setTypeIdAndData( op.typeid, op.meta, false );
+    // wph 20130210 - dont' know if this is a bug in bukkit but for chests, 
+    // the metadata is ignored (defaults to 2 - south facing)
+    // only way to change data is to set it using property/bean.
+    block.data = op.meta;
+    maxOpsPerTick--;
+  }
+  Drone.processingQueue = false;
+  return;
+}, 1);
+
 //
 // add custom methods to the Drone object using this function
 //
@@ -1021,12 +1049,19 @@ Drone.prototype.cuboidX = function( blockType, meta, w, h, d ) {
   var dir = this.dir;
 
   var depthFunc = function( ) {
-    var block = that.world.getBlockAt( that.x, that.y, that.z );
-    block.setTypeIdAndData( blockType, meta, false );
-    // wph 20130210 - dont' know if this is a bug in bukkit but for chests, 
-    // the metadata is ignored (defaults to 2 - south facing)
-    // only way to change data is to set it using property/bean.
-    block.data = meta;
+    var len = Drone.queue.length;
+    if ( len < Drone.MAX_QUEUE_SIZE ) {
+      Drone.queue.push({ 
+          world: that.world, 
+          x: that.x, 
+          y: that.y, 
+          z:that.z, 
+          typeid: blockType,
+          meta: meta
+      });
+    } else { 
+      throw new Error('Drone is too busy!');
+    }
   };
   var heightFunc = function( ) {
     _traverse[dir].depth( that, d, depthFunc );
@@ -1059,15 +1094,16 @@ Drone.prototype.cuboid0 = function( block, w, h, d ) {
   return this.move( 'start_point' );
 };
 
+
 Drone.extend( 'door', function( door ) {
   if ( typeof door == 'undefined' ) {
     door = 64;
   } else {
     door = 71;
   }
-  this.cuboid( door+':' + this.dir )
+  this.cuboidX( door,  this.dir )
     .up( )
-    .cuboid( door+':8' )
+    .cuboidX( door, 8 )
     .down( );
 } );
 
@@ -1078,10 +1114,10 @@ Drone.extend( 'door2' , function( door ) {
     door = 71;
   }
   this
-    .box( door+':' + this.dir ).up( )
-    .box( door+':8' ).right( )
-    .box( door+':9' ).down( )
-    .box( door+':' + this.dir ).left( );
+    .cuboidX( door,  this.dir ).up( )
+    .cuboidX( door, 8 ).right( )
+    .cuboidX( door, 9 ).down( )
+    .cuboidX( door, this.dir ).left( );
 } );
 // player dirs: 0 = east, 1 = south, 2 = west,   3 = north
 // block dirs:  0 = east, 1 = west,  2 = south , 3 = north
