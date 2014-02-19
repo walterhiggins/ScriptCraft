@@ -3,6 +3,7 @@
 ## Version 2.0.5 
 
 Asynchronous building. Drone now builds asynchronously. 
+Fixed Issue #119 (exceptions on reload/stop)
 
 # 2014 02 11
 
