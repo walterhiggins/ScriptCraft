@@ -1,8 +1,10 @@
 var Drone = require('../drone').Drone;
-var Material = org.bukkit.Material;
-function canHang(material){
-  if (material.equals(Material.AIR) ||
-      material.equals(Material.VINE) ) {
+var bkMaterial = org.bukkit.Material;
+
+function canHang( material ) {
+
+  if ( material.equals(bkMaterial.AIR) ||
+       material.equals(bkMaterial.VINE) ) {
     return true;
   } else { 
     return false;

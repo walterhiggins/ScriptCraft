@@ -37,35 +37,37 @@ location. For example...
   create a firework at the given location
 */
 var firework = function( location ) {
-  var Color = org.bukkit.Color;
-  var FireworkEffect = org.bukkit.FireworkEffect;
-  var EntityType = org.bukkit.entity.EntityType;
+  var bkColor = org.bukkit.Color;
+  var bkFireworkEffect = org.bukkit.FireworkEffect;
+  var bkEntityType = org.bukkit.entity.EntityType;
 
   var randInt = function( n ) {
     return Math.floor( Math.random() * n );
   };
   var getColor = function( i ) {
     var colors = [
-      Color.AQUA, Color.BLACK, Color.BLUE, Color.FUCHSIA, Color.GRAY,
-      Color.GREEN, Color.LIME, Color.MAROON, Color.NAVY, Color.OLIVE,
-      Color.ORANGE, Color.PURPLE, Color.RED, Color.SILVER, Color.TEAL,
-      Color.WHITE, Color.YELLOW];
+      bkColor.AQUA, bkColor.BLACK, bkColor.BLUE, bkColor.FUCHSIA, bkColor.GRAY,
+      bkColor.GREEN, bkColor.LIME, bkColor.MAROON, bkColor.NAVY, bkColor.OLIVE,
+      bkColor.ORANGE, bkColor.PURPLE, bkColor.RED, bkColor.SILVER, bkColor.TEAL,
+      bkColor.WHITE, bkColor.YELLOW];
     return colors[i];
   };
-  var fw = location.world.spawnEntity(location, EntityType.FIREWORK);
+  var fw = location.world.spawnEntity(location, bkEntityType.FIREWORK);
   var fwm = fw.getFireworkMeta();
-  var fwTypes = [FireworkEffect.Type.BALL,
-                 FireworkEffect.Type.BALL_LARGE,
-                 FireworkEffect.Type.BURST,
-                 FireworkEffect.Type.CREEPER,
-                 FireworkEffect.Type.STAR];
+  var fwTypes = [
+    bkFireworkEffect.Type.BALL,
+    bkFireworkEffect.Type.BALL_LARGE,
+    bkFireworkEffect.Type.BURST,
+    bkFireworkEffect.Type.CREEPER,
+    bkFireworkEffect.Type.STAR
+  ];
   var type = fwTypes[ randInt( 5 ) ];
   
   var r1i = randInt( 17 );
   var r2i = randInt( 17 );
   var c1 = getColor( r1i );
   var c2 = getColor( r2i );
-  var effectBuilder = FireworkEffect.builder()
+  var effectBuilder = bkFireworkEffect.builder()
         .flicker( Math.round( Math.random() ) == 0 )
         .withColor( c1 )
         .withFade( c2 )

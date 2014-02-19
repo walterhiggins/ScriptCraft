@@ -15,12 +15,13 @@ Once the game begins, guess a number by typing the `/` character
 followed by a number between 1 and 10.
 
 ***/
-var Prompt = org.bukkit.conversations.Prompt,
-  ConversationFactory = org.bukkit.conversations.ConversationFactory,
-  ConversationPrefix = org.bukkit.conversations.ConversationPrefix;
+var bkPrompt = org.bukkit.conversations.Prompt,
+  bkConversationFactory = org.bukkit.conversations.ConversationFactory,
+  bkConversationPrefix = org.bukkit.conversations.ConversationPrefix,
+  bkBukkit = org.bukkit.Bukkit;
 
 var sb = function( cmd ) { 
-  org.bukkit.Bukkit.dispatchCommand( server.consoleSender, 'scoreboard ' + cmd ) ;
+  bkBukkit.dispatchCommand( server.consoleSender, 'scoreboard ' + cmd ) ;
 };
 
 exports.Game_NumberGuess = {
@@ -34,7 +35,7 @@ exports.Game_NumberGuess = {
 
     var number = Math.ceil( Math.random() * 10 );
     
-    var prompt = new Prompt( ) {
+    var prompt = new bkPrompt( ) {
 
       getPromptText: function( ctx ) {
         var hint = '';
@@ -72,12 +73,12 @@ exports.Game_NumberGuess = {
 	return true; 
       }
     };
-    var convPrefix = new ConversationPrefix( ) { 
+    var convPrefix = new bkConversationPrefix( ) { 
       getPrefix: function( ctx ) { 
 	return '[1-10] ';
       } 
     };
-    new ConversationFactory( __plugin )
+    new bkConversationFactory( __plugin )
       .withModality( true )
       .withFirstPrompt( prompt )
       .withPrefix( convPrefix )

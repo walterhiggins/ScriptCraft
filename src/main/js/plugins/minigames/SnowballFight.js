@@ -42,11 +42,11 @@ cover to make the game more fun.
   
 ***/
 
-var GameMode = org.bukkit.GameMode,
-  EntityDamageByEntityEvent = org.bukkit.event.entity.EntityDamageByEntityEvent,
-  ItemStack = org.bukkit.inventory.ItemStack,
-  Material = org.bukkit.Material,
-  Snowball = org.bukkit.entity.Snowball;
+var bkGameMode = org.bukkit.GameMode,
+  bkEntityDamageByEntityEvent = org.bukkit.event.entity.EntityDamageByEntityEvent,
+  bkItemStack = org.bukkit.inventory.ItemStack,
+  bkMaterial = org.bukkit.Material,
+  bkSnowball = org.bukkit.entity.Snowball;
 
 var _startGame = function( gameState ) {
   var i, 
@@ -73,7 +73,7 @@ var _startGame = function( gameState ) {
     for ( i = 0; i < team.length; i++ ) {
       player = server.getPlayer( team[i] );
       gameState.savedModes[ player.name ] = player.gameMode;
-      player.gameMode = GameMode.SURVIVAL;
+      player.gameMode = bkGameMode.SURVIVAL;
       player.inventory.addItem( gameState.ammo );
     }
   }
@@ -112,7 +112,7 @@ var _endGame = function( gameState ) {
       player.sendMessage( scores );
     }
   }
-  handlerList = EntityDamageByEntityEvent.getHandlerList();
+  handlerList = bkEntityDamageByEntityEvent.getHandlerList();
   handlerList.unregister( gameState.listener );
   gameState.inProgress = false;
 };
@@ -197,7 +197,7 @@ var createGame = function( duration, teams ) {
   return { 
     start: function( ) {
       _startGame( _gameState );
-      _gameState.listener = events.on('entity.EntityDamageByEntityEvent',_onSnowballHit);
+      _gameState.listener = events.on(bkEntityDamageByEntityEvent,_onSnowballHit);
       new java.lang.Thread( function( ) {
         while ( _gameState.duration-- ) {
           java.lang.Thread.sleep( 1000 ); // sleep 1,000 millisecs (1 second)

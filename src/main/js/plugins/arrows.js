@@ -28,6 +28,10 @@ player23's arrows explosive.
 var signs = require('signs'),
   fireworks = require('fireworks'),
   utils = require('utils'),
+  bkTeleportCause = org.bukkit.event.player.PlayerTeleportEvent.TeleportCause,
+  bkArrow = org.bukkit.entity.Arrow,
+  bkPlayer = org.bukkit.entity.Player,
+  bkTreeType = org.bukkit.TreeType,
   EXPLOSIVE_YIELD = 2.5,
   _store = { players: { } },
   arrows = plugin( 'arrows', { store: _store }, true ),
@@ -81,7 +85,6 @@ var _onArrowHit = function( listener, event ) {
     shooter = projectile.shooter,
     fireworkCount = 5,
     arrowType,
-    TeleportCause = org.bukkit.event.player.PlayerTeleportEvent.TeleportCause,
     launch = function( ) {
       fireworks.firework( projectile.location );
       if ( --fireworkCount ) { 
@@ -89,8 +92,8 @@ var _onArrowHit = function( listener, event ) {
       }
     };
 
-  if (projectile instanceof org.bukkit.entity.Arrow 
-      && shooter instanceof org.bukkit.entity.Player) {
+  if (projectile instanceof bkArrow 
+      && shooter instanceof bkPlayer) {
 
     arrowType = arrows.store.players[ shooter.name ];
 
@@ -101,11 +104,11 @@ var _onArrowHit = function( listener, event ) {
       break;
     case 2:
       projectile.remove();
-      shooter.teleport( projectile.location, TeleportCause.PLUGIN );
+      shooter.teleport( projectile.location, bkTeleportCause.PLUGIN );
       break;
     case 3:
       projectile.remove();
-      world.generateTree( projectile.location, org.bukkit.TreeType.BIG_TREE );
+      world.generateTree( projectile.location, bkTreeType.BIG_TREE );
       break;
     case 4: 
       projectile.remove();

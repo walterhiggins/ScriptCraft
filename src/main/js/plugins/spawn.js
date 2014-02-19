@@ -17,11 +17,9 @@ for a list of possible entities (creatures) which can be spawned.
 
 ***/
 var entities = [],
-  EntityType = org.bukkit.entity.EntityType;
+  bkEntityType = org.bukkit.entity.EntityType;
 
-var MaterialEnum = Packages.MaterialEnum;
-
-var entitytypes = EntityType.values();
+var entitytypes = bkEntityType.values();
 for ( var t in entitytypes ) {
   if ( entitytypes[t] && entitytypes[t].ordinal ) { 
     entities.push(entitytypes[t].name());

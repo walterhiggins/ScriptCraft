@@ -82,9 +82,10 @@ events.on( org.bukkit.event.block.BlockBreakEvent, function( listener, evt ) {
 
 ***/
 
-var bkEvent = org.bukkit.event,
-  bkEvtExecutor = org.bukkit.plugin.EventExecutor,
-  bkRegListener = org.bukkit.plugin.RegisteredListener;
+var bkEventPriority = org.bukkit.event.EventPriority,
+  bkEventExecutor = org.bukkit.plugin.EventExecutor,
+  bkRegisteredListener = org.bukkit.plugin.RegisteredListener,
+  bkEventPackage = 'org.bukkit.event.';
 
 exports.on = function( 
   /* String or java Class */
@@ -98,9 +99,9 @@ exports.on = function(
     eventExecutor;
 
   if ( typeof priority == 'undefined' ) {
-    priority = bkEvent.EventPriority.HIGHEST;
+    priority = bkEventPriority.HIGHEST;
   } else {
-    priority = bkEvent.EventPriority[priority];
+    priority = bkEventPriority[priority.toUpperCase()];
   }
   if ( typeof eventType == 'string' ) {
     /*
@@ -111,13 +112,13 @@ exports.on = function(
      */
     if ( typeof Java != 'undefined' ) {
       // nashorn environment
-      eventType = Java.type( 'org.bukkit.event.' + eventType );
+      eventType = Java.type( bkEventPackage + eventType );
     } else {
-      eventType = eval( 'org.bukkit.event.' + eventType );
+      eventType = eval( bkEventPackage + eventType );
     }
   }
   handlerList = eventType.getHandlerList( );
-  eventExecutor = new bkEvtExecutor( ) {
+  eventExecutor = new bkEventExecutor( ) {
     execute: function( l, e ) {
       handler( listener.reg, e );
     } 
@@ -130,7 +131,7 @@ exports.on = function(
    The workaround is to make the ScriptCraftPlugin java class a Listener.
    Should only unregister() registered plugins in ScriptCraft js code.
    */
-  listener.reg = new bkRegListener( __plugin, eventExecutor, priority, __plugin, true );
+  listener.reg = new bkRegisteredListener( __plugin, eventExecutor, priority, __plugin, true );
   handlerList.register( listener.reg );
   return listener.reg;
 };

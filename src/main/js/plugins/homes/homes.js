@@ -60,7 +60,8 @@ The following administration options can only be used by server operators...
 
 ***/
 var utils = require('utils'),
-  TeleportCause = org.bukkit.event.player.PlayerTeleportEvent.TeleportCause,
+  bkTeleportCause = org.bukkit.event.player.PlayerTeleportEvent.TeleportCause,
+  bkBukkit = org.bukkit.Bukkit,
   _store = {
     houses: { },
     openHouses: { },
@@ -113,7 +114,7 @@ var homes =  plugin( 'homes', {
       return;
     }
     homeLoc = utils.locationFromJSON( loc );
-    guest.teleport(homeLoc, TeleportCause.PLUGIN);
+    guest.teleport(homeLoc, bkTeleportCause.PLUGIN);
   },
   /*
    determine whether a guest is allow visit a host's home
@@ -185,7 +186,7 @@ var homes =  plugin( 'homes', {
     player = utils.player( player );
     // if home is public - all players
     if ( _store.openHouses[player.name] ) {
-      onlinePlayers = org.bukkit.Bukkit.getOnlinePlayers();
+      onlinePlayers = bkBukkit.getOnlinePlayers();
       for ( i = 0; i < onlinePlayers.length; i++ ) {
 	if ( onlinePlayers[i].name != player.name) {
 	  result.push( onlinePlayers[i].name );

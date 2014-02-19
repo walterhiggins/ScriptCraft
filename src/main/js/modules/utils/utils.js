@@ -1,5 +1,8 @@
 'use strict';
-var File = java.io.File;
+var File = java.io.File,
+  bkBukkit = org.bukkit.Bukkit,
+  bkLocation = org.bukkit.Location,
+  bkBlockCommandSender = org.bukkit.command.BlockCommandSender;
 /************************************************************************
 ## Utilities Module
 
@@ -47,7 +50,7 @@ var _player = function ( playerName ) {
     }
   } else {
     if ( typeof playerName == 'string' )
-      return org.bukkit.Bukkit.getPlayer( playerName );
+      return bkBukkit.getPlayer( playerName );
     else
       return playerName; // assumes it's a player object
   }
@@ -126,11 +129,11 @@ exports.locationFromJSON = function( json ) {
   var world;
   if ( json.constuctor == Array ) { 
     // for support of legacy format
-    world = org.bukkit.Bukkit.getWorld( json[0] );
-    return new org.bukkit.Location( world, json[1], json[2] , json[3] );
+    world = bkBukkit.getWorld( json[0] );
+    return new bkLocation( world, json[1], json[2] , json[3] );
   } else {
-    world = org.bukkit.Bukkit.getWorld( json.world );
-    return new org.bukkit.Location( world, json.x, json.y , json.z, json.yaw, json.pitch );
+    world = bkBukkit.getWorld( json.world );
+    return new bkLocation( world, json.x, json.y , json.z, json.yaw, json.pitch );
   }
 };
 
@@ -162,7 +165,7 @@ An [org.bukkit.Location][bkloc] object.
 exports.getPlayerPos = function( player ) {
   player = _player( player );
   if ( player ) {
-    if ( player instanceof org.bukkit.command.BlockCommandSender )
+    if ( player instanceof bkBlockCommandSender )
       return player.block.location;
     else
       return player.location;

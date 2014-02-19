@@ -1,3 +1,9 @@
+# 2014 02 19
+
+## Version 2.0.5 
+
+Asynchronous building. Drone now builds asynchronously. 
+
 # 2014 02 11
 
 ## Version 2.0.4

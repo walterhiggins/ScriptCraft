@@ -1,6 +1,9 @@
-var utils = require('utils');
-var stringExt = require('utils/string-exts');
-var _store = {};
+var utils = require('utils'),
+  stringExt = require('utils/string-exts'),
+  _store = {},
+  bkBukkit = org.bukkit.Bukkit,
+  bkSign = org.bukkit.block.Sign;
+
 /*
   Define the signs module - signs are persistent 
   (that is - a menu sign will still be a menu after the
@@ -158,12 +161,12 @@ signs.menu = function( /* String */ label, /* Array */ options, /* Function */ c
     var len = signsOfSameLabel.length;
     for ( i = 0; i < len; i++ ) {
       var loc = signsOfSameLabel[i];
-      var world = org.bukkit.Bukkit.getWorld(loc.world);
+      var world = bkBukkit.getWorld(loc.world);
       if ( !world ) {
         continue;
       }
       var block = world.getBlockAt( loc.x, loc.y, loc.z );
-      if ( block.state instanceof org.bukkit.block.Sign ) {
+      if ( block.state instanceof bkSign ) {
         convertToMenuSign( block.state, false );
         defragged.push( loc );
       }
@@ -187,7 +190,7 @@ events.on( 'player.PlayerInteractEvent', function( listener, event ) {
    a sign, then update it.
    */
 
-  if ( ! event.clickedBlock.state instanceof org.bukkit.block.Sign ) {
+  if ( ! event.clickedBlock.state instanceof bkSign ) {
     return;
   }
   var evtLocStr = utils.locationToString(event.clickedBlock.location);

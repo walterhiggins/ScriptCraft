@@ -1,10 +1,10 @@
 var utils = require('utils'),
   blocks = require('blocks'),
-  Location = org.bukkit.Location,
-  Player = org.bukkit.entity.Player,
-  Sign = org.bukkit.block.Sign,
-  TreeType = org.bukkit.TreeType,
-  Material = org.bukkit.Material;
+  bkLocation = org.bukkit.Location,
+  bkPlayer = org.bukkit.entity.Player,
+  bkSign = org.bukkit.block.Sign,
+  bkTreeType = org.bukkit.TreeType,
+  bkMaterial = org.bukkit.Material;
 /*********************************************************************
 ## Drone Plugin
 
@@ -669,7 +669,7 @@ var putSign = function( texts, x, y, z, blockId, meta, world ) {
   putBlock( x, y, z, blockId, meta, world );
   block = world.getBlockAt( x, y, z );
   state = block.state;
-  if ( state instanceof Sign ) {
+  if ( state instanceof bkSign ) {
     for ( i = 0; i < texts.length; i++ ) {
       state.setLine( i % 4, texts[ i ] );
     }
@@ -681,7 +681,7 @@ var Drone = function( x, y, z, dir, world ) {
   this.record = false;
   var usePlayerCoords = false;
   var player = self;
-  if ( x instanceof Player ) {
+  if ( x instanceof bkPlayer ) {
     player = x;
   }
   var playerPos = utils.getPlayerPos( player );
@@ -694,7 +694,7 @@ var Drone = function( x, y, z, dir, world ) {
     that.world = loc.world;
   };
   var mp = utils.getMousePos( player );
-  if ( typeof x == 'undefined' || x instanceof Player ) {
+  if ( typeof x == 'undefined' || x instanceof bkPlayer ) {
     if ( mp ) {
       populateFromLocation( mp );
       if ( playerPos ) {
@@ -713,7 +713,7 @@ var Drone = function( x, y, z, dir, world ) {
       populateFromLocation( playerPos );
     }
   } else {
-    if ( arguments[0] instanceof Location ) {
+    if ( arguments[0] instanceof bkLocation ) {
       populateFromLocation( arguments[ 0 ] );
     } else {
       this.x = x;
@@ -898,7 +898,7 @@ Drone.extend( 'chkpt', function( name ) {
 } );
 
 Drone.extend( 'move', function( ) {
-  if ( arguments[0] instanceof Location ) {
+  if ( arguments[0] instanceof bkLocation ) {
     this.x = arguments[0].x;
     this.y = arguments[0].y;
     this.z = arguments[0].z;
@@ -980,7 +980,7 @@ Drone.extend( 'down', function( n ) {
 // position
 //
 Drone.prototype.getLocation = function( ) {
-  return new Location( this.world, this.x, this.y, this.z );
+  return new bkLocation( this.world, this.x, this.y, this.z );
 };
 //
 // building
@@ -1040,7 +1040,7 @@ Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite ) {
       _traverse[dir].width( that, w, function( ) { 
         var block = that.world.getBlockAt( that.x, that.y, that.z );
         var properBlock = properBlocks[ bi % len ];
-	if (overwrite || block.type.equals(Material.AIR) ) { 
+	if (overwrite || block.type.equals(bkMaterial.AIR) ) { 
           block.setTypeIdAndData( properBlock[0], properBlock[1], false );
 	}
         bi++;
@@ -1805,10 +1805,10 @@ Drone.extend( 'rand', function( dist, width, height, depth, overwrite ) {
 } );
 
 var _trees = {
-  oak: TreeType.BIG_TREE ,
-  birch: TreeType.BIRCH ,
-  jungle: TreeType.JUNGLE,
-  spruce: TreeType.REDWOOD 
+  oak: bkTreeType.BIG_TREE ,
+  birch: bkTreeType.BIRCH ,
+  jungle: bkTreeType.JUNGLE,
+  spruce: bkTreeType.REDWOOD 
 };
 for ( var p in _trees ) {
   Drone.extend(p, function( v ) {
@@ -1817,7 +1817,7 @@ for ( var p in _trees ) {
       if ( block.typeId == 2 ) { 
         this.up( );
       }
-      var treeLoc = new Location(this.world,this.x,this.y,this.z );
+      var treeLoc = new bkLocation(this.world,this.x,this.y,this.z );
       var successful = treeLoc.world.generateTree(treeLoc,v );
       if ( block.typeId == 2 ) { 
         this.down( );

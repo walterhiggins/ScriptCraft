@@ -1,3 +1,4 @@
+var bkDisplaySlot = org.bukkit.scoreboard.DisplaySlot;
 /*
   The scoreboard is a simple wrapper around the Bukkit Scoreboard API.
   It's only concerned with display of scores, not maintaining them - that's the game's job.
@@ -5,7 +6,6 @@
 module.exports = function( options ) {
   var temp = {};
   var ccScoreboard;
-  var DisplaySlot = org.bukkit.scoreboard.DisplaySlot;
 
   return {
     start: function( ) {
@@ -16,7 +16,7 @@ module.exports = function( options ) {
       for ( objective in options ) {
         ccObj = ccScoreboard.registerNewObjective( objective, 'dummy' );
         for ( slot in options[ objective ] ) { 
-          ccObj.displaySlot = DisplaySlot[ slot ];
+          ccObj.displaySlot = bkDisplaySlot[ slot ];
           ccObj.displayName = options[ objective ][ slot ];
         }
       }
@@ -26,7 +26,7 @@ module.exports = function( options ) {
       for ( objective in options ) {
         ccScoreboard.getObjective(objective).unregister();
         for ( slot in options[ objective ] ) {
-          ccScoreboard.clearSlot( DisplaySlot[ slot ] );
+          ccScoreboard.clearSlot( bkDisplaySlot[ slot ] );
         }
       }
     },

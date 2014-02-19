@@ -42,10 +42,10 @@ your own mini-game...
 ***/
 
 var store = {},
-  Bukkit = org.bukkit.Bukkit,
-  Cow = org.bukkit.entity.Cow,
-  Sound = org.bukkit.Sound,
-  OfflinePlayer = org.bukkit.OfflinePlayer,
+  bkBukkit = org.bukkit.Bukkit,
+  bkCow = org.bukkit.entity.Cow,
+  bkSound = org.bukkit.Sound,
+  bkOfflinePlayer = org.bukkit.OfflinePlayer,
   scoreboardConfig = { 
     cowclicker: {
       SIDEBAR: 'Cows Clicked'
@@ -66,14 +66,14 @@ var _onPlayerInteract = function( listener, event ) {
     loc.world.playSound( loc, snd, vol, pitch );
   };
 
-  if ( clickedEntity instanceof  Cow) {
+  if ( clickedEntity instanceof  bkCow) {
     store[ player.name ].score++;
     scoreboard.update( 'cowclicker', player, store[ player.name ].score );
     
-    Bukkit.dispatchCommand( player, 'me clicked a cow!' );
-    sound( Sound.CLICK, 1, 1 );
+    bkBukkit.dispatchCommand( player, 'me clicked a cow!' );
+    sound( bkSound.CLICK, 1, 1 );
     setTimeout( function( ) {
-      sound( Sound.COW_HURT, 10, 0.85 ) ;
+      sound( bkSound.COW_HURT, 10, 0.85 ) ;
     }, 200 );
   }
 };
@@ -128,7 +128,7 @@ var _addPlayer = function( player, score ) {
 
 var _removePlayer = function( player, notify ) {
 
-  if ( player instanceof OfflinePlayer && player.player ) {
+  if ( player instanceof bkOfflinePlayer && player.player ) {
     player = player.player;
   }
 
