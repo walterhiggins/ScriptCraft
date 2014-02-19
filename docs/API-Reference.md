@@ -86,7 +86,9 @@ Walter Higgins
    * [Drone.cylinder0() method](#dronecylinder0-method)
    * [Drone.arc() method](#dronearc-method)
    * [Drone.door() method](#dronedoor-method)
+   * [Drone.door_iron() method](#dronedoor_iron-method)
    * [Drone.door2() method](#dronedoor2-method)
+   * [Drone.door2_iron() method](#dronedoor2_iron-method)
    * [Drone.sign() method](#dronesign-method)
    * [Drone Trees methods](#drone-trees-methods)
    * [Drone.garden() method](#dronegarden-method)
@@ -1760,7 +1762,11 @@ To create an iron door...
     drone.door( blocks.door_iron );
 
 ![iron door](img/doorex1.png)
-    
+
+### Drone.door_iron() method
+
+create an Iron door.
+
 ### Drone.door2() method
 
 Create double doors (left and right side)
@@ -1776,6 +1782,11 @@ To create double-doors at the cross-hairs/drone's location...
     drone.door2();
 
 ![double doors](img/door2ex1.png)
+
+### Drone.door2_iron() method
+
+Create double iron doors
+    
 
 ### Drone.sign() method
 
@@ -1854,7 +1865,12 @@ place random blocks stone, mossy stone and cracked stone (each block has the sam
 
 to place random blocks stone has a 50% chance of being picked, 
 
-    rand({blocks.brick.stone: 5, blocks.brick.mossy: 3, blocks.brick.cracked: 2},w,d,h) 
+    var distribution = {};
+    distribution[ blocks.brick.stone ] = 5;
+    distribution[ blocks.brick.mossy ] = 3;
+    distribution[ blocks.brick.cracked ] = 2;
+
+    rand( distribution, width, height, depth) 
 
 regular stone has a 50% chance, mossy stone has a 30% chance and cracked stone has just a 20% chance of being picked.
 

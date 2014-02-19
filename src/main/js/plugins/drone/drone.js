@@ -3,8 +3,8 @@ var utils = require('utils'),
   Location = org.bukkit.Location,
   Player = org.bukkit.entity.Player,
   Sign = org.bukkit.block.Sign,
-  TreeType = org.bukkit.TreeType;
-
+  TreeType = org.bukkit.TreeType,
+  Material = org.bukkit.Material;
 /*********************************************************************
 ## Drone Plugin
 
@@ -387,7 +387,11 @@ To create an iron door...
     drone.door( blocks.door_iron );
 
 ![iron door](img/doorex1.png)
-    
+
+### Drone.door_iron() method
+
+create an Iron door.
+
 ### Drone.door2() method
 
 Create double doors (left and right side)
@@ -403,6 +407,11 @@ To create double-doors at the cross-hairs/drone's location...
     drone.door2();
 
 ![double doors](img/door2ex1.png)
+
+### Drone.door2_iron() method
+
+Create double iron doors
+    
 
 ### Drone.sign() method
 
@@ -481,7 +490,12 @@ place random blocks stone, mossy stone and cracked stone (each block has the sam
 
 to place random blocks stone has a 50% chance of being picked, 
 
-    rand({blocks.brick.stone: 5, blocks.brick.mossy: 3, blocks.brick.cracked: 2},w,d,h) 
+    var distribution = {};
+    distribution[ blocks.brick.stone ] = 5;
+    distribution[ blocks.brick.mossy ] = 3;
+    distribution[ blocks.brick.cracked ] = 2;
+
+    rand( distribution, width, height, depth) 
 
 regular stone has a 50% chance, mossy stone has a 30% chance and cracked stone has just a 20% chance of being picked.
 
@@ -995,7 +1009,11 @@ Drone.extend( 'sign', function( message, block ) {
   }
 });
 
-Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d ) {
+Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite ) {
+
+  if ( typeof overwrite == 'undefined' ) { 
+    overwrite = true;
+  }
   var properBlocks = [];
   var len = blocks.length;
   for ( var i = 0; i < len; i++ ) {
@@ -1022,7 +1040,9 @@ Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d ) {
       _traverse[dir].width( that, w, function( ) { 
         var block = that.world.getBlockAt( that.x, that.y, that.z );
         var properBlock = properBlocks[ bi % len ];
-        block.setTypeIdAndData( properBlock[0], properBlock[1], false );
+	if (overwrite || block.type.equals(Material.AIR) ) { 
+          block.setTypeIdAndData( properBlock[0], properBlock[1], false );
+	}
         bi++;
       });
     });
@@ -1107,6 +1127,14 @@ Drone.extend( 'door', function( door ) {
     .down( );
 } );
 
+Drone.extend( 'door_iron', function( ) {
+  var door = 71;
+  this.cuboidX( door,  this.dir )
+    .up( )
+    .cuboidX( door, 8 )
+    .down( );
+} );
+
 Drone.extend( 'door2' , function( door ) {
   if ( typeof door == 'undefined' ) {
     door = 64;
@@ -1119,6 +1147,15 @@ Drone.extend( 'door2' , function( door ) {
     .cuboidX( door, 9 ).down( )
     .cuboidX( door, this.dir ).left( );
 } );
+Drone.extend( 'door2_iron' , function( door ) {
+  var door = 71;
+  this
+    .cuboidX( door,  this.dir ).up( )
+    .cuboidX( door, 8 ).right( )
+    .cuboidX( door, 9 ).down( )
+    .cuboidX( door, this.dir ).left( );
+} );
+
 // player dirs: 0 = east, 1 = south, 2 = west,   3 = north
 // block dirs:  0 = east, 1 = west,  2 = south , 3 = north
 // sign dirs:   5 = east, 3 = south, 4 = west, 2 = north
@@ -1712,18 +1749,32 @@ var _copy = function( name, w, h, d ) {
   } );
   Drone.clipBoard[name] = {dir: this.dir, blocks: ccContent};
 };
-var _garden = function( w,d ) {
+var _garden = function( width, depth ) {
+  if ( typeof width == 'undefined' ) { 
+    width = 10;
+  }
+  if ( typeof depth == 'undefined' ) { 
+    depth = width;
+  }
+  var grass = 2,
+    red = 37,
+    yellow = 38,
+    longgrass = '31:1',
+    air = 0;
+
   // make sure grass is present first
-  this.down( ).box(2,w,1,d ).up( ); 
+  this.down()
+    .box( grass, width, 1, depth )
+    .up( ); 
   
   // make flowers more common than long grass
-  var dist = {37: 3, // red flower
-              38: 3, // yellow flower
-              '31:1': 2, // long grass
-              0: 1
-             };
-  
-  return this.rand(dist,w,1,d );
+  var dist = { };
+  dist[red] = 3;
+  dist[yellow] = 3;
+  dist[longgrass] = 2;
+  dist[air] = 1;
+
+  return this.rand( dist, width, 1, depth, false /* don't overwrite */ );
 };
 
 var _rand = function( blockDistribution ) { 
@@ -1744,10 +1795,15 @@ var _rand = function( blockDistribution ) {
   _fisherYates(blockDistribution );
   return blockDistribution;
 };
-Drone.extend('rand',function( dist,w,h,d ) { 
-  var randomized = _rand(dist );
-  this.boxa(randomized,w,h,d );
+
+Drone.extend( 'rand', function( dist, width, height, depth, overwrite ) { 
+  if ( typeof overwrite == 'undefined' ) { 
+    overwrite = true;
+  }
+  var randomized = _rand( dist );
+  this.boxa( randomized, width, height, depth, overwrite);
 } );
+
 var _trees = {
   oak: TreeType.BIG_TREE ,
   birch: TreeType.BIRCH ,

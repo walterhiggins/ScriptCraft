@@ -19,11 +19,11 @@ Drone.extend('hangtorch', function () {
     this.back();
     if (moves == 10){
       this.fwd(moves);
-      console.log('no air to hang torch');
+      console.log('nowhere to hang torch');
       return;
     }
     block = this.world.getBlockAt(this.x, this.y, this.z);
   }
-  this.box(torch);
-  this.fwd(moves);
+  this.box(torch)
+    .fwd(moves);
 });
