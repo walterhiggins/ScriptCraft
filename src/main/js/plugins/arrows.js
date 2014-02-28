@@ -88,7 +88,7 @@ var _onArrowHit = function( listener, event ) {
     launch = function( ) {
       fireworks.firework( projectile.location );
       if ( --fireworkCount ) { 
-	setTimeout( launch, 2000 );
+        setTimeout( launch, 2000 );
       }
     };
 
