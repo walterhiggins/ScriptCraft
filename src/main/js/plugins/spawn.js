@@ -37,5 +37,5 @@ command( 'spawn', function( parameters, sender ) {
   }
   var world = location.world;
   var type = ('' + parameters[0]).toUpperCase();
-  world.spawnEntity( location, EntityType[type] );
+  world.spawnEntity( location, bkEntityType[type] );
 }, entities );
