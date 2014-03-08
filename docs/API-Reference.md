@@ -884,14 +884,14 @@ present in the CraftBukkit classpath. To use this module, you should
     command...
 
     ```sh
-    java -classpath sc-mqtt.jar;craftbukit.jar org.bukkit.craftbukkit.Main
+    java -classpath sc-mqtt.jar;craftbukkit.jar org.bukkit.craftbukkit.Main
     ```
 
     If you're using Mac OS, create a new craftbukkit-sc-mqtt.command
     file and edit it (using TextWrangler or another text editor) ...
 
     ```sh
-    java -classpath sc-mqtt.jar:craftbukkit.jar org.bukit.craftbukkit.Main
+    java -classpath sc-mqtt.jar:craftbukkit.jar org.bukkit.craftbukkit.Main
     ```
 
  4. Execute the craftbukkit-sc-mqtt batch file / command file to start

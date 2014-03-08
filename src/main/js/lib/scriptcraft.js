@@ -548,6 +548,12 @@ function __onEnable ( __engine, __plugin, __script )
 
 
   global.refresh = function( ) {
+    if ( typeof self !== 'undefined' ) {
+      if ( !self.op ) {
+        self.sendMessage('Only operators can refresh()');
+        return;
+      }
+    }
     __plugin.pluginLoader.disablePlugin( __plugin );
     __plugin.pluginLoader.enablePlugin( __plugin );
   };

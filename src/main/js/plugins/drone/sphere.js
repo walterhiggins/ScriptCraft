@@ -74,7 +74,7 @@ Drone.extend( 'sphere', function( block, radius ) {
     this.up( v )
       .fwd( h )
       .right( h )
-      .cylinder( block, sr, sh, { blockType: bm[0], meta: bm[1] } )
+      .cylinder( block, sr, sh, { blockType: bm[0], meta: bm[1]} )
       .left( h )
       .back( h )
       .down( v );

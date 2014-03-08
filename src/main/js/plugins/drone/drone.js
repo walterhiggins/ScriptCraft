@@ -750,33 +750,25 @@ exports.Drone = Drone;
 exports.blocks = blocks;
 
 Drone.queue = [];
-Drone.processingQueue = false;
-Drone.MAX_QUEUE_SIZE = 100000;
-Drone.tick = setInterval( function() {
-  if ( Drone.processingQueue ) { 
-    return;
+Drone.opsPerSec = 10;
+Drone.processQueue = function(){
+  var process = Drone.queue.shift();
+  if (process){
+    try { 
+      process();
+    } catch( e ) { 
+      console.log('Drone build error: %s', e);
+    } 
   }
-  var maxOpsPerTick = Math.floor(Math.max(10,Math.sqrt(Drone.queue.length))) ;
-  var op;
-  Drone.processingQueue = true;
-  while ( maxOpsPerTick > 0 ) { 
-    op = Drone.queue.shift();
-    if (!op){
-      Drone.processingQueue = false;
-      return;
-    }
-    var block = op.world.getBlockAt( op.x, op.y, op.z );
-    block.setTypeIdAndData( op.typeid, op.meta, false );
-    // wph 20130210 - dont' know if this is a bug in bukkit but for chests, 
-    // the metadata is ignored (defaults to 2 - south facing)
-    // only way to change data is to set it using property/bean.
-    block.data = op.meta;
-    maxOpsPerTick--;
+  setTimeout(Drone.processQueue,1000/Drone.opsPerSec);
+};
+setTimeout(Drone.processQueue,1000/Drone.opsPerSec);
+addUnloadHandler(function(){
+  var pendingBuildOps = Drone.queue.length;
+  if (pendingBuildOps > 0){
+    console.warn('There were ' + pendingBuildOps + ' pending build operations which were cancelled');
   }
-  Drone.processingQueue = false;
-  return;
-}, 1);
-
+});
 //
 // add custom methods to the Drone object using this function
 //
@@ -1054,7 +1046,7 @@ Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite ) {
  faster cuboid because blockid, meta and world must be provided 
  use this method when you need to repeatedly place blocks
  */
-Drone.prototype.cuboidX = function( blockType, meta, w, h, d ) {
+Drone.prototype.cuboidX = function( blockType, meta, w, h, d, immediate ) {
 
   if ( typeof h == 'undefined' ) {
     h = 1;
@@ -1065,23 +1057,32 @@ Drone.prototype.cuboidX = function( blockType, meta, w, h, d ) {
   if ( typeof w == 'undefined' ) {
     w = 1;
   }
+  if ( ( w * h * d ) >= 1000000 ) {
+    this.sign([
+      'Build too Big!',
+      'width:' + w,
+      'height:' + h,
+      'depth:' + d
+    ], 68);
+    console.warn('Build too big! ' + w + ' X ' + h + ' X ' + d);
+    return this;
+  }
   var that = this;
   var dir = this.dir;
 
+  if ( !immediate ) {
+    var clone = Drone.clone(this);
+    Drone.queue.push(this.cuboidX.bind(clone, blockType, meta, w, h, d, true));;
+    return this;
+  }
   var depthFunc = function( ) {
-    var len = Drone.queue.length;
-    if ( len < Drone.MAX_QUEUE_SIZE ) {
-      Drone.queue.push({ 
-          world: that.world, 
-          x: that.x, 
-          y: that.y, 
-          z:that.z, 
-          typeid: blockType,
-          meta: meta
-      });
-    } else { 
-      throw new Error('Drone is too busy!');
-    }
+
+      var block = that.world.getBlockAt( that.x, that.y, that.z );
+      block.setTypeIdAndData( blockType, meta, false );
+      // wph 20130210 - dont' know if this is a bug in bukkit but for chests, 
+      // the metadata is ignored (defaults to 2 - south facing)
+      // only way to change data is to set it using property/bean.
+      block.data = meta;
   };
   var heightFunc = function( ) {
     _traverse[dir].depth( that, d, depthFunc );
@@ -1337,7 +1338,6 @@ var _getStrokeDir = function( x,y ) {
  if you're drawing anything that bends it ends up here.
  */
 var _arc2 = function( params  ) {
-
   var drone = params.drone;
   var orientation = params.orientation?params.orientation:'horizontal';
   var quadrants = params.quadrants?params.quadrants:{
@@ -1490,12 +1490,13 @@ var _cylinder0 = function( block,radius,height,exactParams ) {
     radius: radius,
     fill: false,
     orientation: 'horizontal',
-    stack: height,
+    stack: height
   };
 
   if ( exactParams ) { 
-    arcParams.blockType = exactParams.blockType;
-    arcParams.meta = exactParams.meta;
+    for ( var p in exactParams ) {
+      arcParams[p] = exactParams[p];
+    }
   }else{
     var md = this._getBlockIdAndMeta(block );
     arcParams.blockType = md[0];
@@ -1825,7 +1826,10 @@ for ( var p in _trees ) {
     };
   }(_trees[p] ) );
 }
-
+Drone.clone = function(origin) {
+  var result = {x: origin.x, y: origin.y, z: origin.z, world: origin.world, dir: origin.dir};
+  return result;
+};
 //
 // Drone's clipboard 
 //

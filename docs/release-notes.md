@@ -1,3 +1,11 @@
+# 2014 03 08
+
+## Version 2.0.6
+
+Fixed issues #122 #123
+
+Improved background processing of Drone build commands.
+
 # 2014 02 19
 
 ## Version 2.0.5 
