@@ -139,7 +139,7 @@ var _getTeam = function( player, pteams ) {
 var createGame = function( duration, teams ) {
   var players,
     i,
-    _snowBalls = new ItemStack( Material.SNOW_BALL, 64 );
+    _snowBalls = new bkItemStack( bkMaterial.SNOW_BALL, 64 );
 
   var _gameState = {
     teams: teams,
@@ -179,7 +179,7 @@ var createGame = function( duration, teams ) {
    */
   var _onSnowballHit = function( l, event ) {
     var snowball = event.damager;
-    if ( !snowball || !( snowball instanceof Snowball ) ) {
+    if ( !snowball || !( snowball instanceof bkSnowball ) ) {
       return;
     }
     var throwersTeam = _getTeam( snowball.shooter, _gameState.teams );
