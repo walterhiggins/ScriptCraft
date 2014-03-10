@@ -658,11 +658,15 @@ var putBlock = function( x, y, z, blockId, metadata, world ) {
   }
 };
 
-var putSign = function( texts, x, y, z, blockId, meta, world ) {
+var putSign = function( texts, x, y, z, blockId, meta, world, immediate ) {
   var i,
     block,
     state;
 
+  if ( !immediate ) {
+    Drone.queue.push(function(){ putSign(texts, x, y, z, blockId, meta, world, true); });
+    return;
+  }
   if ( blockId != 63 && blockId != 68 ) {
     throw new Error( 'Invalid Parameter: blockId must be 63 or 68' );
   }
@@ -738,6 +742,7 @@ var Drone = function( x, y, z, dir, world ) {
   this.chkpt( 'start' );
   this.record = true;
   this.history = [];
+  this.player = player;
   return this;
 };
 
@@ -780,14 +785,22 @@ Drone.extend = function( name, func ) {
     }
     var oldVal = this.record;
     this.record = false;
-    this[ '_' + name ].apply( this, arguments );
+    this[ '_' + name ].apply( this, arguments );    
     this.record = oldVal;
     return this;
   };
   
   global[name] = function( ) {
     var result = new Drone( self );
+    var len = Drone.queue.length;
     result[name].apply( result, arguments );
+    var newLen = Drone.queue.length;
+    if ( len > (3 * Drone.opsPerSec) || (newLen - len)  > (3 * Drone.opsPerSec)) {
+      if ( result.player && !result.playerNotifiedPending ) {
+	result.player.sendMessage('Build queue will complete in ' + Math.ceil( newLen / Drone.opsPerSec ) + ' seconds (approx.)');
+	result.playerNotifiedPending = true;
+      }
+    }
     return result;
   };
 };
@@ -1522,8 +1535,13 @@ var _cylinder1 = function( block,radius,height,exactParams ) {
   }
   return this.arc(arcParams );
 };
-var _paste = function( name )
+var _paste = function( name, immediate )
 {
+
+  if ( !immediate ) {
+    Drone.queue.push(function(){ _paste(name, true);});
+    return;
+  }
   var ccContent = Drone.clipBoard[name];
   var srcBlocks = ccContent.blocks;
   var srcDir = ccContent.dir; // direction player was facing when copied.
