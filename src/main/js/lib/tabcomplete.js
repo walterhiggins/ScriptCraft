@@ -7,7 +7,7 @@ var _isJavaObject = function(o){
     var result = false;
     try {
         o.hasOwnProperty( 'testForJava' );
-    }catch (e){
+    } catch (e) {
         // java will throw an error when an attempt is made to access the
         // hasOwnProperty method. (it won't exist for Java objects)
         result = true;
@@ -34,6 +34,7 @@ var _getProperties = function( o ) {
     j,
     isObjectMethod,
     typeofProperty;
+
   if ( _isJavaObject( o ) ) {
     propertyLoop:
     for ( i in o ) {
@@ -103,11 +104,12 @@ var onTabCompleteJS = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs 
   if ( pluginCmd.name == 'jsp' ) {
     return tabCompleteJSP( result, cmdSender, pluginCmd, cmdAlias, cmdArgs );
   }
+
   global.self = cmdSender; // bring in self just for autocomplete
 
   _globalSymbols = _getProperties(global);
 
-  lastArg = cmdArgs.length?cmdArgs[cmdArgs.length-1]+'':null;
+  lastArg = cmdArgs.length ? cmdArgs[ cmdArgs.length - 1 ] + '' : null;
   propsOfLastArg = [];
   statement = cmdArgs.join(' ');
   
@@ -117,6 +119,7 @@ var onTabCompleteJS = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs 
     propsOfLastArg = _globalSymbols;
   } else {
     statementSyms = statement.split(/[^\$a-zA-Z0-9_\.]/);
+
     lastSymbol = statementSyms[statementSyms.length-1];
     //print('DEBUG: lastSymbol=[' + lastSymbol + ']');
     //
@@ -124,18 +127,22 @@ var onTabCompleteJS = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs 
     //
     parts = lastSymbol.split(/\./);
     name = parts[0];
+
     symbol = global[name];
+
     lastGoodSymbol = symbol;
-    if ( typeof symbol != 'undefined' ) {
+    if ( typeof symbol !== 'undefined' ) {
       for ( i = 1; i < parts.length; i++ ) {
         name = parts[i];
-        symbol = symbol[name];
+        if ( !name ) { // fix issue #115
+          break;
+        }
+        symbol = symbol[name]; // this causes problem in jre8 if name is ''
         if ( typeof symbol == 'undefined' ) {
           break;
 	}
         lastGoodSymbol = symbol;
       }
-      //print('debug:name['+name+']lastSymbol['+lastSymbol+']symbol['+symbol+']');
       if ( typeof symbol == 'undefined' ) {
         //
         // look up partial matches against last good symbol
@@ -146,7 +153,7 @@ var onTabCompleteJS = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs 
           // ScriptCraft.
           //
           
-          for ( i =0; i < objectProps.length; i++ ) {
+          for ( i = 0; i < objectProps.length; i++ ) {
             candidate = lastSymbol + objectProps[i];
             re = new RegExp( lastSymbol + '$', 'g' );
             propsOfLastArg.push( lastArg.replace( re, candidate ) );
