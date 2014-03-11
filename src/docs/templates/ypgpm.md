@@ -889,7 +889,7 @@ var myskyscraper = function(floors) {
     }
     return this.move('myskyscraper'); // return to where we started
 };
-var Drone = require('../drone/drone.js').Drone;
+var Drone = require('../drone/drone').Drone; 
 Drone.extend('myskyscraper',myskyscraper);
 ```
 
