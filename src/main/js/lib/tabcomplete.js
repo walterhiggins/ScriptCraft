@@ -36,6 +36,15 @@ var _getProperties = function( o ) {
     typeofProperty;
 
   if ( _isJavaObject( o ) ) {
+    /*
+     fix for issue #115 - java objects are not iterable
+     see: http://mail.openjdk.java.net/pipermail/nashorn-dev/2014-March/002790.html
+     */
+    if ( typeof Object.bindProperties === 'function' ) { 
+      var placeholder = {};
+      Object.bindProperties(placeholder, o);
+      o = placeholder;
+    }
     propertyLoop:
     for ( i in o ) {
       //
@@ -45,7 +54,7 @@ var _getProperties = function( o ) {
       for ( j = 0; j < _javaLangObjectMethods.length; j++ ) {
         if ( _javaLangObjectMethods[j] == i ) {
           continue propertyLoop;
-	}
+        }
       }
       typeofProperty = null;
       try { 
@@ -71,9 +80,9 @@ var _getProperties = function( o ) {
       if ( i.match( /^[^_]/ ) ) {
         if ( typeof o[i] == 'function' ) {
           result.push( i+'()' );
-	} else {
+        } else {
           result.push( i );
-	}
+        }
       }
     }
   }
@@ -130,6 +139,8 @@ var onTabCompleteJS = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs 
 
     symbol = global[name];
 
+    //print('DEBUG: name=' + name + ',symbol=' + symbol);
+
     lastGoodSymbol = symbol;
     if ( typeof symbol !== 'undefined' ) {
       for ( i = 1; i < parts.length; i++ ) {
@@ -140,10 +151,14 @@ var onTabCompleteJS = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs 
         symbol = symbol[name]; // this causes problem in jre8 if name is ''
         if ( typeof symbol == 'undefined' ) {
           break;
-	}
+        }
+        // nashorn - object[missingProperty] returns null not undefined
+        if ( symbol == null ) {
+          break;
+        }
         lastGoodSymbol = symbol;
       }
-      if ( typeof symbol == 'undefined' ) {
+      if ( typeof symbol == 'undefined' || symbol === null) {
         //
         // look up partial matches against last good symbol
         //
@@ -165,8 +180,8 @@ var onTabCompleteJS = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs 
           //
           //print('debug:case Y: ScriptCraft.co');
           
-	  li = statement.lastIndexOf(name);
-	  for ( i = 0; i < objectProps.length; i++ ) {
+          li = statement.lastIndexOf(name);
+          for ( i = 0; i < objectProps.length; i++ ) {
             if ( objectProps[i].indexOf(name) == 0 ) {
               candidate = lastSymbol.substring( 0, lastSymbol.lastIndexOf( name ) );
               candidate = candidate + objectProps[i];

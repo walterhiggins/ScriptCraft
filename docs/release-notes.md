@@ -2,7 +2,7 @@
 
 ## Version 2.0.6
 
-Fixed issues #122 #123
+Fixed issues #115 #122 #123
 
 Improved background processing of Drone build commands.
 

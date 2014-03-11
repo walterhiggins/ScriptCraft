@@ -640,15 +640,7 @@ function __onEnable ( __engine, __plugin, __script )
       global.self = sender;
       global.__engine = __engine;
       try { 
-        if ( typeof eval == 'undefined' ) { 
-          jsResult = __engine.eval(fnBody);
-        } else {
-          /*
-           nashorn
-           https://bugs.openjdk.java.net/browse/JDK-8034055
-           */
-          jsResult = eval( fnBody ); 
-        }
+        jsResult = __engine.eval(fnBody);
         if ( typeof jsResult != 'undefined' ) { 
           if ( jsResult == null) { 
             sender.sendMessage('(null)');
@@ -661,8 +653,13 @@ function __onEnable ( __engine, __plugin, __script )
         sender.sendMessage( 'Error while trying to evaluate javascript: ' + fnBody + ', Error: '+ e );
         throw e;
       } finally {
-        delete global.self;
-        delete global.__engine;
+        /*
+         wph 20140312 don't delete self on nashorn until https://bugs.openjdk.java.net/browse/JDK-8034055 is fixed
+         */
+        if ( typeof Java === 'undefined' ) { // Java is an object in Nashorn
+          delete global.self;
+          delete global.__engine;
+        }
       }
     }
     if ( cmdName == 'jsp' ) {
