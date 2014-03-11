@@ -1014,16 +1014,21 @@ Drone.extend( 'sign', function( message, block ) {
   }
 });
 
-Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite ) {
+Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite, immediate ) {
+  
+  var len = blocks.length,
+    i = 0;
 
+  if ( !immediate ) { 
+    for ( ; i < len; i++ ) {
+      blocks[i] = this._getBlockIdAndMeta( blocks[ i ] );
+    }
+    var clone = Drone.clone(this);
+    Drone.queue.push(this.cuboida.bind(clone, blocks, w, h, d, overwrite, true) );
+    return this;
+  }
   if ( typeof overwrite == 'undefined' ) { 
     overwrite = true;
-  }
-  var properBlocks = [];
-  var len = blocks.length;
-  for ( var i = 0; i < len; i++ ) {
-    var bm = this._getBlockIdAndMeta( blocks[ i ] );
-    properBlocks.push( [ bm[0], bm[1] ] );
   }
   if ( typeof h == 'undefined' ) {
     h = 1;
@@ -1037,14 +1042,11 @@ Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite ) {
   var that = this;
   var dir = this.dir;
   var bi = 0;
-  /*
-   
-   */
   _traverse[dir].depth( that, d, function( ) { 
     _traverseHeight( that, h, function( ) { 
       _traverse[dir].width( that, w, function( ) { 
         var block = that.world.getBlockAt( that.x, that.y, that.z );
-        var properBlock = properBlocks[ bi % len ];
+        var properBlock = blocks[ bi % len ];
 	if (overwrite || block.type.equals(bkMaterial.AIR) ) { 
           block.setTypeIdAndData( properBlock[0], properBlock[1], false );
 	}
@@ -1085,7 +1087,7 @@ Drone.prototype.cuboidX = function( blockType, meta, w, h, d, immediate ) {
 
   if ( !immediate ) {
     var clone = Drone.clone(this);
-    Drone.queue.push(this.cuboidX.bind(clone, blockType, meta, w, h, d, true));;
+    Drone.queue.push(this.cuboidX.bind(clone, blockType, meta, w, h, d, true));
     return this;
   }
   var depthFunc = function( ) {
@@ -1639,36 +1641,40 @@ var _getDirFromRotation = function( r ) {
   if ( r > 315 || r < 45 )
     return 1; // south
 };
-var _getBlockIdAndMeta = function(b ) { 
-  var defaultMeta = 0;
+var _getBlockIdAndMeta = function( b ) { 
+  var defaultMeta = 0,
+    i = 0,
+    bs,
+    md,
+    sp;
   if ( typeof b == 'string' ) { 
-    var bs = b;
-    var sp = bs.indexOf(':' );
+    bs = b;
+    sp = bs.indexOf(':' );
     if ( sp == -1 ) { 
       b = parseInt(bs );
       // wph 20130414 - use sensible defaults for certain blocks e.g. stairs
       // should face the drone.
-      for ( var i in blocks.stairs ) { 
+      for ( i in blocks.stairs ) { 
         if ( blocks.stairs[i] === b ) { 
           defaultMeta = Drone.PLAYER_STAIRS_FACING[this.dir];
           break;
         }
       }
-      return [b,defaultMeta];
+      return [ b, defaultMeta ];
     }
     b = parseInt(bs.substring(0,sp ) );
-    var md = parseInt(bs.substring(sp+1,bs.length ) );
+    md = parseInt(bs.substring(sp+1,bs.length ) );
     return [b,md];
   }else{
     // wph 20130414 - use sensible defaults for certain blocks e.g. stairs
     // should face the drone.
-    for ( var i in blocks.stairs ) { 
+    for ( i in blocks.stairs ) { 
       if ( blocks.stairs[i] === b ) { 
         defaultMeta = Drone.PLAYER_STAIRS_FACING[this.dir];
         break;
       }
     }
-    return [b,defaultMeta];
+    return [ b, defaultMeta ];
   }
 };
 //
