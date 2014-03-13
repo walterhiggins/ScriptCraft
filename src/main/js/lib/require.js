@@ -80,7 +80,7 @@ module specification, the '.js' suffix is optional.
       }
     } else {
       // look for an index.js file
-      var indexJsFile = new File( dir + './index.js' );
+      var indexJsFile = new File( dir, './index.js' );
       if ( indexJsFile.exists() ) {
         return indexJsFile;
       } else { 
