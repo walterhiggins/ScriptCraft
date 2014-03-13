@@ -80,7 +80,7 @@ module specification, the '.js' suffix is optional.
       }
     } else {
       // look for an index.js file
-      var indexJsFile = new File( dir + './index.js' );
+      var indexJsFile = new File( dir, './index.js' );
       if ( indexJsFile.exists() ) {
         return indexJsFile;
       } else { 
@@ -244,7 +244,9 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     try {
       compiledWrapper = eval(code);
     } catch (e) {
-      throw 'Error:' + e + ' while evaluating module ' + canonizedFilename;
+      throw new Error( "Error evaluating module " + path
+        + " at " + canonizedFilename + " line #" + e.lineNumber
+        + ". Error was: " + e.message, canonizedFilename, e.lineNumber );
     }
     var __dirname = '' + file.parentFile.canonicalPath;
     var parameters = [
@@ -259,7 +261,9 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
         .apply(moduleInfo.exports,  /* this */
                parameters);   
     } catch (e) {
-      throw 'Error:' + e + ' while executing module ' + canonizedFilename;
+      throw new Error( "Error executing module " + path
+        + " at " + canonizedFilename + " line #" + e.lineNumber
+        + ". Error was: " + e.message, canonizedFilename, e.lineNumber )
     }
     if ( hooks ) { 
       hooks.loaded( canonizedFilename );
