@@ -428,7 +428,9 @@ function __onEnable ( __engine, __plugin, __script )
     BufferedReader = java.io.BufferedReader,
     PrintWriter = java.io.PrintWriter,
     FileWriter = java.io.FileWriter;
-
+  var debug = function(msg){
+    java.lang.System.out.println('DEBUG:' + msg);
+  };
   var _canonize = function( file ) { 
     return '' + file.getCanonicalPath().replaceAll( '\\\\', '/' ); 
   };
@@ -457,14 +459,13 @@ function __onEnable ( __engine, __plugin, __script )
     out.close();
   };
   /*
-   make sure eval is present
+   make sure eval is present: it's present on JRE 6, 7, and 8 on Linux
    */
   if ( typeof eval == 'undefined' ) {
     global.eval = function( str ) {
       return __engine.eval( str );
     };
-  }
-  
+  } 
   /*
    Load the contents of the file and evaluate as javascript
    */
@@ -593,7 +594,14 @@ function __onEnable ( __engine, __plugin, __script )
       }
     }
   };
-  global.require = configRequire( jsPluginsRootDirName, modulePaths, requireHooks );
+  global.require = configRequire( 
+    jsPluginsRootDirName, 
+    modulePaths, 
+    requireHooks,
+    function(code){
+      return __engine.eval(code);
+    }
+  );
 
   require('js-patch')( global );
   global.console = require('console');

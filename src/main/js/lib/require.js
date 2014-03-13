@@ -60,7 +60,7 @@ module specification, the '.js' suffix is optional.
 [cjsmodules]: http://wiki.commonjs.org/wiki/Modules/1.1.1.
 
 ***/
-(function ( rootDir, modulePaths, hooks ) {
+(function ( rootDir, modulePaths, hooks, evaluate ) {
 
   var File = java.io.File,
     FileReader = java.io.FileReader,
@@ -155,7 +155,7 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
           resolvedFile = new File(modulePaths[i] + moduleName + '.js');
           if ( resolvedFile.exists() ) {
             return resolvedFile;
-	  }
+          }
         }
       }
     } else {
@@ -173,7 +173,7 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
           file = new File(pathWithJSExt);
           if ( file.exists() ) {
             return file;
-	  }
+          }
         }
         
       }
@@ -187,18 +187,18 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
    */
   var _require = function( parentFile, path, options ) {
     var file,
-	canonizedFilename,
-	moduleInfo,
-	buffered,
+        canonizedFilename,
+        moduleInfo,
+        buffered,
         head = '(function(exports,module,require,__filename,__dirname){ ',
-	code = '',
-	line = null;
+        code = '',
+        line = null;
 
     if ( typeof options == 'undefined' ) { 
       options = { cache: true };
     } else { 
       if ( typeof options.cache == 'undefined' ) {
-	options.cache = true;
+        options.cache = true;
       }
     }
 
@@ -216,7 +216,7 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     moduleInfo = _loadedModules[canonizedFilename];
     if ( moduleInfo ) {
       if ( options.cache ) { 
-	return moduleInfo;
+        return moduleInfo;
       }
     }
     if ( hooks ) {
@@ -242,8 +242,12 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     }
     var compiledWrapper = null;
     try {
-      compiledWrapper = eval(code);
+      compiledWrapper = evaluate(code);
     } catch (e) {
+      /*
+       wph 20140313 JRE8 (nashorn) gives misleading linenumber of evaluating code not evaluated code.
+       This can be fixed by instead using __engine.eval 
+       */
       throw new Error( "Error evaluating module " + path
         + " line #" + e.lineNumber
         + " : " + e.message, canonizedFilename, e.lineNumber );
