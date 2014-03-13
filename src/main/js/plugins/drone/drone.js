@@ -1057,6 +1057,15 @@ Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite, immed
   return this;
   
 };
+Drone.MAX_VOLUME = 1000000;
+Drone.MAX_SIDE = 1000;
+
+var tooBig = function(w, h, d ) {
+  return ( w * h * d ) >= Drone.MAX_VOLUME || 
+    ( w >= Drone.MAX_SIDE ) || 
+    ( h >= Drone.MAX_SIDE ) ||
+    ( d >= Drone.MAX_SIDE );
+};
 /*
  faster cuboid because blockid, meta and world must be provided 
  use this method when you need to repeatedly place blocks
@@ -1072,7 +1081,7 @@ Drone.prototype.cuboidX = function( blockType, meta, w, h, d, immediate ) {
   if ( typeof w == 'undefined' ) {
     w = 1;
   }
-  if ( ( w * h * d ) >= 1000000 ) {
+  if ( tooBig( w, h, d ) ) {
     this.sign([
       'Build too Big!',
       'width:' + w,

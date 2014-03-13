@@ -1,6 +1,11 @@
-# 2014 03 08
+# 2014 03 12
 
 ## Version 2.0.6
+
+Added Drone.MAX_VOLUME and Drone.MAX_SIDE properties to specify limits on size of Drone ops.
+This is to stop individual players from hogging the CPU in a classrom environment.
+
+# 2014 03 08
 
 Fixed issues #115 #122 #123
 
