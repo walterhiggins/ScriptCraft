@@ -245,8 +245,8 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
       compiledWrapper = eval(code);
     } catch (e) {
       throw new Error( "Error evaluating module " + path
-        + " at " + canonizedFilename + " line #" + e.lineNumber
-        + ". Error was: " + e.message, canonizedFilename, e.lineNumber );
+        + " line #" + e.lineNumber
+        + " : " + e.message, canonizedFilename, e.lineNumber );
     }
     var __dirname = '' + file.parentFile.canonicalPath;
     var parameters = [
@@ -262,8 +262,8 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
                parameters);   
     } catch (e) {
       throw new Error( "Error executing module " + path
-        + " at " + canonizedFilename + " line #" + e.lineNumber
-        + ". Error was: " + e.message, canonizedFilename, e.lineNumber )
+        + " line #" + e.lineNumber
+        + " : " + e.message, canonizedFilename, e.lineNumber )
     }
     if ( hooks ) { 
       hooks.loaded( canonizedFilename );
