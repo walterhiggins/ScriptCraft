@@ -74,7 +74,7 @@ function maze_display(m) {
 // You might also consider creating a new maze_display but for now this will do the work
 function maze_draw(maze_string, d) {
   // d is the Drone to use
-  d.up().chkpt('maze-start');
+  d.chkpt('maze-start');
   for (var j = 0; j < maze_string.length; j += 2) {
     switch(maze_string.substr(j, 2)) {
     case '  ':
@@ -86,11 +86,11 @@ function maze_draw(maze_string, d) {
       break;
     default: // '+ ', '+-', '--', '| '
       if (j == 0) {
-        d.box(blocks.glowstone); // highlight the maze entry and exit
+        d.box(blocks.glowstone,1,2,1); // highlight the maze entry and exit
       } else if (j == maze_string.length - 4) {
-        d.box(blocks.glass);
+        d.box(blocks.glass,1,2,1);
       } else {
-        d.box(blocks.oak);
+        d.box(blocks.oak,1,2,1);
       }
       d.fwd();
     }

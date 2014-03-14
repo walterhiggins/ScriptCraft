@@ -598,8 +598,8 @@ function __onEnable ( __engine, __plugin, __script )
     jsPluginsRootDirName, 
     modulePaths, 
     requireHooks,
-    function(code){
-      return __engine.eval(code);
+    function( code ) {
+      return __engine.eval( code );
     }
   );
 
