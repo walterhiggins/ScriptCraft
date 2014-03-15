@@ -267,7 +267,7 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     } catch (e) {
       throw new Error( "Error executing module " + path
         + " line #" + e.lineNumber
-        + " : " + e.message, canonizedFilename, e.lineNumber )
+        + " : " + e.message, canonizedFilename, e.lineNumber );
     }
     if ( hooks ) { 
       hooks.loaded( canonizedFilename );
@@ -283,4 +283,5 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     };
   };
   return _requireClosure( new java.io.File(rootDir) );
+  // last line deliberately has no semicolon!
 })
