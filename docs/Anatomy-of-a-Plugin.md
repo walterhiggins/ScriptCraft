@@ -46,11 +46,11 @@ chosen color...
     var colorCodes = {};
     for (var i =0;i < colors.length;i++) colorCodes[colors[i]] = i.toString(16);
     
-    events.on('player.AsyncPlayerChatEvent',function(l,e){
-        var player = e.player;
-        var playerChatColor = _store.players[player.name];
-        if (playerChatColor){
-            e.message = '&sect;' + colorCodes[playerChatColor] + e.message;
+    events.on( 'player.AsyncPlayerChatEvent', function( evt ) {
+        var player = evt.player;
+        var playerChatColor = _store.players[ player.name ];
+        if ( playerChatColor ) {
+            evt.message = '&sect;' + colorCodes[ playerChatColor ] + e.message;
         }
     });
         
@@ -71,7 +71,7 @@ choose their text color? If you've written a javascript function and
 want players to be able to use that function, you expose it using the 
 new `command()` function like so...
 
-    command('chat_color',function(params,sender){
+    command( 'chat_color', function( params, sender ) {
         var color = params[0];
         if (colorCodes[color]){
             chat.setColor(sender,color);
@@ -95,7 +95,7 @@ players use to change their chat color setting. The full plugin source
 code is just a couple of lines of code but is a fully working plugin...
 
     // declare a new javascript plugin
-    var _store = {players: {}} // private variable
+    var _store = { players: {} } ; // private variable
     exports.chat = plugin('chat', {
         setColor: function(player, color){
             _store.players[player.name] = color;
@@ -108,24 +108,26 @@ code is just a couple of lines of code but is a fully working plugin...
                   'brightgreen', 'aqua', 'red', 'pink',
                   'yellow', 'white'];
     var colorCodes = {};
-    for (var i =0;i < colors.length;i++) colorCodes[colors[i]] = i.toString(16);
+    for ( var i =0; i < colors.length; i++ ) {
+        colorCodes[ colors[i] ] = i.toString(16);
+    }
         
-    events.on('player.AsyncPlayerChatEvent',function(l,e){
-        var player = e.player;
+    events.on( 'player.AsyncPlayerChatEvent', function( evt ) {
+        var player = evt.player;
         var playerChatColor = _store.players[player.name];
-        if (playerChatColor){
-            e.message = '&sect;' + colorCodes[playerChatColor] + e.message;
+        if ( playerChatColor ) {
+            evt.message = '&sect;' + colorCodes[playerChatColor] + e.message;
         }
     });
-    command('chat_color',function(params,sender){
+    command( 'chat_color', function( params, sender ) {
         var color = params[0];
-        if (colorCodes[color]){
-            chat.setColor(sender,color);
+        if ( colorCodes[ color ] ) {
+            chat.setColor( sender, color );
         }else{
-            sender.sendMessage(color + ' is not a valid color');
-            sender.sendMessage(colors.join(','));
+            sender.sendMessage( color + ' is not a valid color' );
+            sender.sendMessage( colors.join(',') );
         }
-    },colors);
+    }, colors );
 
     
 ![Chat Color plugin][1]
