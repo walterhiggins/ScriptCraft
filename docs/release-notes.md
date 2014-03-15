@@ -1,6 +1,32 @@
-# 2014 03 12
+# 2014 03 15
 
 ## Version 2.0.6
+
+## Simplified Event handling code. 
+
+The callback function for event handling now only takes 1 single
+parameter, the event which triggered the callback. The listener object
+is bound to the callback function so within the callback function
+`this` refers to the listener object. Unregistering listeners has also
+been greatly simplified.  You can have an event handler which fires
+only once by unregistering itself within the callback like this...
+
+    events.on('player.PlayerJoinEvent', function( event ) { 
+
+       // do something
+       event.player.sendMessage( "You're the first player to join" );
+
+       // unregister so this function is called only once ever.
+       this.unregister();
+
+    });
+
+The `events.on()` function also returns the same listener object as
+`this` refered to inside the callback. The listener object has a
+single method `unregister()` which can be called to stop listening for
+the event.
+
+# 2014 03 12
 
 Added Drone.MAX_VOLUME and Drone.MAX_SIDE properties to specify limits on size of Drone ops.
 This is to stop individual players from hogging the CPU in a classrom environment.
