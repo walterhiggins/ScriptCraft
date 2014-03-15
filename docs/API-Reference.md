@@ -679,8 +679,7 @@ This method is used to register event listeners.
    enclosing quotes).
 
  * callback - A function which will be called whenever the event
-   fires. The callback should take 2 parameters, listener (the Bukkit
-   registered listener for this callback) and event (the event fired).
+   fires. The callback should take a single parameter, event (the event fired).
 
  * priority (optional - default: "HIGHEST") - The priority the
    listener/callback takes over other listeners to the same
@@ -690,16 +689,14 @@ This method is used to register event listeners.
 
 #### Returns
 
-An org.bukkit.plugin.RegisteredListener object which can be used to
-unregister the listener. This same object is passed to the callback
-function each time the event is fired.
+An object which can be used to unregister the listener. 
 
 #### Example:
 
 The following code will print a message on screen every time a block is broken in the game
 
 ```javascript
-events.on( 'block.BlockBreakEvent', function( listener, evt ) { 
+events.on( 'block.BlockBreakEvent', function( evt ) { 
     evt.player.sendMessage( evt.player.name + ' broke a block!');
 } );
 ```
@@ -707,24 +704,28 @@ events.on( 'block.BlockBreakEvent', function( listener, evt ) {
 To handle an event only once and unregister from further events...
 
 ```javascript    
-events.on( 'block.BlockBreakEvent', function( listener, evt ) { 
+events.on( 'block.BlockBreakEvent', function( evt ) { 
     evt.player.sendMessage( evt.player.name + ' broke a block!');
-    evt.handlers.unregister( listener );
+    this.unregister();
 } );
+
+The `this` keyword when used inside the callback function refers to
+the Listener object created by ScriptCraft. It has a single method
+`unregister()` which can be used to stop listening. This is the same
+object which is returned by the `events.on()` function.
 
 To unregister a listener *outside* of the listener function...
 
 ```javascript    
-var myBlockBreakListener = events.on( 'block.BlockBreakEvent', function( l, e ) { ... } );
+var myBlockBreakListener = events.on( 'block.BlockBreakEvent', function( evt ) { ... } );
 ...
-var handlers = org.bukkit.event.block.BlockBreakEvent.getHandlerList();
-handlers.unregister(myBlockBreakListener);
+myBlockBreakListener.unregister();
 ```
 
 To listen for events using a full class name as the `eventName` parameter...
 
 ```javascript    
-events.on( org.bukkit.event.block.BlockBreakEvent, function( listener, evt ) { 
+events.on( org.bukkit.event.block.BlockBreakEvent, function( evt ) { 
     evt.player.sendMessage( evt.player.name + ' broke a block!');
 } );
 ```
@@ -1493,7 +1494,7 @@ Drones can be created in any of the following ways...
     block is broken at the block's location you would do so like
     this...
 
-        events.on('block.BlockBreakEvent',function( listener,event) { 
+        events.on('block.BlockBreakEvent',function( event) { 
             var location = event.block.location;
             var drone = new Drone(location);
             // do more stuff with the drone here...
@@ -2429,9 +2430,9 @@ parameters...
     Package' and 'Previous Package' links to browse).
 
  2. The event handling function (also sometimes refered to as a
-    'callback'). In ScriptCraft, this function takes 2 parameters, a
-    listener object and an event object. All of the information about
-    the event is in the event object.
+    'callback'). In ScriptCraft, this function takes a single
+    parameter, an event object. All of the information about the event
+    is in the event object.
 
 In the example below, if a player joins the server and is an operator,
 then the ScriptCraft plugin information will be displayed to that
@@ -2477,7 +2478,7 @@ cleaner and more readable. Similarly where you see a method like
 [bksaf]: http://jd.bukkit.org/dev/apidocs/org/bukkit/entity/Player.html#setAllowFlight()
 [bkapi]: http://jd.bukkit.org/dev/apidocs/
 
-    events.on( 'player.PlayerJoinEvent', function( listener, event ) {
+    events.on( 'player.PlayerJoinEvent', function( event ) {
       if ( event.player.op ) {
         event.player.sendMessage('Welcome to ' + __plugin);
       }

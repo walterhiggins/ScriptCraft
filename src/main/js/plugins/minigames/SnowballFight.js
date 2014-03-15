@@ -112,8 +112,7 @@ var _endGame = function( gameState ) {
       player.sendMessage( scores );
     }
   }
-  handlerList = bkEntityDamageByEntityEvent.getHandlerList();
-  handlerList.unregister( gameState.listener );
+  gameState.listener.unregister();
   gameState.inProgress = false;
 };
 /*
@@ -177,7 +176,7 @@ var createGame = function( duration, teams ) {
   /*
    this function is called every time a player is damaged by another entity/player
    */
-  var _onSnowballHit = function( l, event ) {
+  var _onSnowballHit = function( event ) {
     var snowball = event.damager;
     if ( !snowball || !( snowball instanceof bkSnowball ) ) {
       return;

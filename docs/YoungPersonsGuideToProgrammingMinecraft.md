@@ -1046,7 +1046,7 @@ following code sends a message to any player who breaks a block in the
 game...
 
 ```javascript
-events.on('block.BlockBreakEvent', function ( listener, event ) { 
+events.on('block.BlockBreakEvent', function ( event ) { 
     var breaker = event.player;
     breaker.sendMessage('You broke a block');    
 } );
@@ -1057,7 +1057,7 @@ want to be called whenever a particular type of event occurs. In the
 above code the first parameter `'block.BlockBreakEvent'` is the type
 of event I want to listen for and the second parameter is the function
 I want to be called when that event occurs. The function I want called
-in turn takes 2 parameters. The `event` object has all the information
+in turn takes 1 parameter. The `event` object has all the information
 about the event which just occurred. I can tell who broke the block
 and send a message to the player. The important thing to note is that
 the function defined above will not be called until a player breaks a
@@ -1076,13 +1076,13 @@ It's important to note that when browsing the Bukkit API's
 `events.on()` you can listen to such an event using either the fully
 qualified Class name...
 
-    events.on(org.bukkit.events.entity.EntityShootBowEvent, function( listener, event) { 
+    events.on(org.bukkit.events.entity.EntityShootBowEvent, function( event ) { 
        ...
     });
 
 or an abbreviated name in string form...
 
-    events.on('entity.EntityShootBowEvent', function( listener, event) { 
+    events.on('entity.EntityShootBowEvent', function( event ) { 
        ...
     });
 
@@ -1093,7 +1093,7 @@ prepending the 'org.bukkit.events' package.
 For custom events (events which aren't in the org.bukkit.event tree)
 just specify the fully qualified class name instead. E.g. ...
 
-    events.on ( net.yourdomain.events.YourEvent, function(listener, event ) {
+    events.on ( net.yourdomain.events.YourEvent, function( event ) {
         ...
     });
 
@@ -1102,15 +1102,27 @@ just specify the fully qualified class name instead. E.g. ...
 If you want an event handler to only execute once, you can remove the handler like this...
 
 ```javascript
-events.on('block.BlockBreakEvent', function( listener, evt ) { 
+events.on('block.BlockBreakEvent', function( evt ) { 
     var breaker = evt.player;
     breaker.sendMessage('You broke a block');
-    evt.handlers.unregister( listener );
+    this.unregister();
 } );
 ```
 
-The `evt.handlers.unregister( listener );` statement will remove this
-function from the list of listeners for this event.
+The `this.unregister();` statement will remove this function from the
+list of listeners for the event. The `this` keyword when used inside
+an event handling function refers to a Listener object provided by
+ScriptCraft, it has a single method `unregister()` which can be used
+to stop listening for events.
+
+To unregister a listener *outside* of the listener function...
+
+```javascript    
+var myBlockBreakListener = events.on( 'block.BlockBreakEvent', function( evt ) { ... } );
+...
+myBlockBreakListener.unregister();
+```
+
 
 ## Keeping Score - Lookup tables in Javascript
 
@@ -1221,10 +1233,10 @@ keep a count of how many blocks each player has broken ...
 ```javascript
 var breaks = {};
 // every time a player joins the game reset their block-break-count to 0
-events.on('player.PlayerJoinEvent', function(listener, event){
+events.on('player.PlayerJoinEvent', function( event ) {
     breaks[event.player] = 0;
 });
-events.on('block.BlockBreakEvent', function(listener, event){
+events.on('block.BlockBreakEvent', function( event ) {
     var breaker = event.player;
     var breakCount = breaks[breaker.name];
     breakCount++; // increment the count.

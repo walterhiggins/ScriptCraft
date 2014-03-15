@@ -79,7 +79,7 @@ arrows.sign = function( cmdSender ) {
 /*
  event handler called when a projectile hits something
  */
-var _onArrowHit = function( listener, event ) {
+var _onArrowHit = function( event ) {
   var projectile = event.entity,
     world = projectile.world,
     shooter = projectile.shooter,

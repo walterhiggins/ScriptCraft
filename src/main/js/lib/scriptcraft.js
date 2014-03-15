@@ -617,7 +617,7 @@ function __onEnable ( __engine, __plugin, __script )
   global.plugin = plugins.plugin;
 
   var events = require('events');
-  events.on( 'server.PluginDisableEvent', function( l, e ) {
+  events.on( 'server.PluginDisableEvent', function( evt ) {
     // save config
     _save( global.config, new File( jsPluginsRootDir, 'data/global-config.json' ) );
 

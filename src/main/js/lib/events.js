@@ -27,8 +27,7 @@ This method is used to register event listeners.
    enclosing quotes).
 
  * callback - A function which will be called whenever the event
-   fires. The callback should take 2 parameters, listener (the Bukkit
-   registered listener for this callback) and event (the event fired).
+   fires. The callback should take a single parameter, event (the event fired).
 
  * priority (optional - default: "HIGHEST") - The priority the
    listener/callback takes over other listeners to the same
@@ -38,16 +37,14 @@ This method is used to register event listeners.
 
 #### Returns
 
-An org.bukkit.plugin.RegisteredListener object which can be used to
-unregister the listener. This same object is passed to the callback
-function each time the event is fired.
+An object which can be used to unregister the listener. 
 
 #### Example:
 
 The following code will print a message on screen every time a block is broken in the game
 
 ```javascript
-events.on( 'block.BlockBreakEvent', function( listener, evt ) { 
+events.on( 'block.BlockBreakEvent', function( evt ) { 
     evt.player.sendMessage( evt.player.name + ' broke a block!');
 } );
 ```
@@ -55,24 +52,28 @@ events.on( 'block.BlockBreakEvent', function( listener, evt ) {
 To handle an event only once and unregister from further events...
 
 ```javascript    
-events.on( 'block.BlockBreakEvent', function( listener, evt ) { 
+events.on( 'block.BlockBreakEvent', function( evt ) { 
     evt.player.sendMessage( evt.player.name + ' broke a block!');
-    evt.handlers.unregister( listener );
+    this.unregister();
 } );
+
+The `this` keyword when used inside the callback function refers to
+the Listener object created by ScriptCraft. It has a single method
+`unregister()` which can be used to stop listening. This is the same
+object which is returned by the `events.on()` function.
 
 To unregister a listener *outside* of the listener function...
 
 ```javascript    
-var myBlockBreakListener = events.on( 'block.BlockBreakEvent', function( l, e ) { ... } );
+var myBlockBreakListener = events.on( 'block.BlockBreakEvent', function( evt ) { ... } );
 ...
-var handlers = org.bukkit.event.block.BlockBreakEvent.getHandlerList();
-handlers.unregister(myBlockBreakListener);
+myBlockBreakListener.unregister();
 ```
 
 To listen for events using a full class name as the `eventName` parameter...
 
 ```javascript    
-events.on( org.bukkit.event.block.BlockBreakEvent, function( listener, evt ) { 
+events.on( org.bukkit.event.block.BlockBreakEvent, function( evt ) { 
     evt.player.sendMessage( evt.player.name + ' broke a block!');
 } );
 ```
@@ -118,9 +119,11 @@ exports.on = function(
     }
   }
   handlerList = eventType.getHandlerList( );
+
+  var result = { };
   eventExecutor = new bkEventExecutor( ) {
-    execute: function( l, e ) {
-      handler( listener.reg, e );
+    execute: function( l, evt ) {
+      handler.call( result, evt );
     } 
   };
   /* 
@@ -133,5 +136,8 @@ exports.on = function(
    */
   listener.reg = new bkRegisteredListener( __plugin, eventExecutor, priority, __plugin, true );
   handlerList.register( listener.reg );
-  return listener.reg;
+  result.unregister = function(){
+    handlerList.unregister( listener.reg );
+  };
+  return result;
 };

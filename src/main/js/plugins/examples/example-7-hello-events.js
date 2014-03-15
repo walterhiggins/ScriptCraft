@@ -31,9 +31,9 @@ parameters...
     Package' and 'Previous Package' links to browse).
 
  2. The event handling function (also sometimes refered to as a
-    'callback'). In ScriptCraft, this function takes 2 parameters, a
-    listener object and an event object. All of the information about
-    the event is in the event object.
+    'callback'). In ScriptCraft, this function takes a single
+    parameter, an event object. All of the information about the event
+    is in the event object.
 
 In the example below, if a player joins the server and is an operator,
 then the ScriptCraft plugin information will be displayed to that
@@ -79,14 +79,14 @@ cleaner and more readable. Similarly where you see a method like
 [bksaf]: http://jd.bukkit.org/dev/apidocs/org/bukkit/entity/Player.html#setAllowFlight()
 [bkapi]: http://jd.bukkit.org/dev/apidocs/
 
-    events.on( 'player.PlayerJoinEvent', function( listener, event ) {
+    events.on( 'player.PlayerJoinEvent', function( event ) {
       if ( event.player.op ) {
         event.player.sendMessage('Welcome to ' + __plugin);
       }
     });
 
 ***/
-events.on( 'player.PlayerJoinEvent', function( listener, event ) {
+events.on( 'player.PlayerJoinEvent', function( event ) {
   if ( event.player.op ) {
     event.player.sendMessage( 'Welcome to ' + __plugin );
   }

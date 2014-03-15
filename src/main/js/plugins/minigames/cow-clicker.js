@@ -53,7 +53,7 @@ var store = {},
   };
 var scoreboard = require('minigames/scoreboard')(scoreboardConfig);
 
-var _onPlayerInteract = function( listener, event ) {
+var _onPlayerInteract = function( event ) {
   var player = event.player,
     clickedEntity = event.rightClicked,
     loc = clickedEntity.location;
@@ -77,10 +77,10 @@ var _onPlayerInteract = function( listener, event ) {
     }, 200 );
   }
 };
-var _onPlayerQuit = function( listener, event ) {
+var _onPlayerQuit = function( event ) {
   _removePlayer( event.player );
 };
-var _onPlayerJoin = function( listener, event ) {
+var _onPlayerJoin = function( event ) {
   var gamePlayer = store[event.player.name];
   if ( gamePlayer ) {
     _addPlayer( event.player, gamePlayer.score );

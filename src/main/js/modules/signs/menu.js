@@ -184,7 +184,7 @@ signs.menu = function( /* String */ label, /* Array */ options, /* Function */ c
 //
 // update it every time player interacts with it.
 //
-events.on( 'player.PlayerInteractEvent', function( listener, event ) {
+events.on( 'player.PlayerInteractEvent', function( event ) {
   /*
    look up our list of menu signs. If there's a matching location and there's
    a sign, then update it.

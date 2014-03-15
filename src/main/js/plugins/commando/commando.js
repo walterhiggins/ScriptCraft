@@ -84,8 +84,8 @@ exports.commando = function( name, func, options, intercepts ) {
   return result;
 };
 
-events.on( 'player.PlayerCommandPreprocessEvent', function( l, e ) {
-  var msg = '' + e.message;
+events.on( 'player.PlayerCommandPreprocessEvent', function( evt ) {
+  var msg = '' + evt.message;
   var parts = msg.match( /^\/([^\s]+)/ );
   if ( !parts ) {
     return;
@@ -95,11 +95,11 @@ events.on( 'player.PlayerCommandPreprocessEvent', function( l, e ) {
   }
   var command = parts[1];
   if ( commands[command] ) {
-    e.message = '/jsp ' + msg.replace( /^\//, '' );
+    evt.message = '/jsp ' + msg.replace( /^\//, '' );
   }
 } );
-events.on( 'server.ServerCommandEvent', function( l, e ) {
-  var msg = '' + e.command;
+events.on( 'server.ServerCommandEvent', function( evt ) {
+  var msg = '' + evt.command;
   var parts = msg.match( /^\/*([^\s]+)/ );
   if ( !parts ) {
     return;
@@ -113,6 +113,6 @@ events.on( 'server.ServerCommandEvent', function( l, e ) {
     if ( config.verbose ) {
       console.log( 'Redirecting to : %s', newCmd );
     }
-    e.command = newCmd;
+    evt.command = newCmd;
   }
 });
