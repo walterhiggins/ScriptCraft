@@ -36,6 +36,9 @@ Drone.extend( 'sphere', function( block, radius ) {
       v,
       h;
 
+  if ( radius > 127 ) { 
+    throw new Error('Sphere radius must be less than 128 blocks');
+  }
   for ( i = 0; i <= radius; i++ ) {
     newRadius = Math.round( Math.sqrt( r2 - i * i ) );
     if ( newRadius == lastRadius ) {
@@ -116,6 +119,10 @@ Drone.extend('sphere0', function(block,radius)
       h,
       len,
       yOffset;
+
+  if ( radius > 127 ) { 
+    throw new Error('Sphere radius must be less than 128 blocks');
+  }
 
   for ( i = 0; i <= radius; i++ ) {
     newRadius = Math.round( Math.sqrt( r2 - i * i ) );
@@ -207,6 +214,11 @@ Drone.extend( 'hemisphere', function( block, radius, northSouth ) {
       r2 = radius * radius,
       i = 0,
       newRadius;
+
+  if ( radius > 255 ) { 
+    throw new Error('Hemisphere radius must be less than 256 blocks');
+  }
+
   for ( i = 0; i <= radius; i++ ) {
     newRadius = Math.round( Math.sqrt( r2 - i * i ) );
     if ( newRadius == lastRadius ) {
@@ -270,8 +282,116 @@ To create a glass 'north' hemisphere with a radius of 20 blocks...
 
 ***/
 Drone.extend( 'hemisphere0', function( block, radius, northSouth ) {
+
+  if ( radius > 255 ) { 
+    throw new Error('Hemisphere radius must be less than 256 blocks');
+  }
+
+/*
   return this.hemisphere( block, radius, northSouth)
     .fwd().right().up( northSouth == 'north' ? 0 : 1 )
     .hemisphere( 0, radius-1, northSouth )
     .back().left().down( northSouth == 'north' ? 0 : 1 );
+*/
+  var lastRadius = radius,
+      slices = [ [ radius, 0 ] ],
+      diameter = radius * 2,
+      bm = this._getBlockIdAndMeta(block),
+      r2 = radius * radius,
+      i = 0,
+      len,
+      newRadius;
+
+  if ( radius > 255 ) { 
+    throw new Error('Hemisphere radius must be less than 256 blocks');
+  }
+
+
+  for ( i = 0; i <= radius; i++ ) {
+    newRadius = Math.round( Math.sqrt( r2 - i * i ) );
+    if ( newRadius == lastRadius ) {
+      slices[ slices.length - 1 ][ 1 ]++;
+    } else {
+      slices.push( [ newRadius, 1 ] );
+    }
+    lastRadius = newRadius;
+  }
+  this.chkpt( 'hsphere0' );
+  //
+  // mid section
+  //
+  if ( northSouth == 'north' ) {
+    //this.cylinder( block, radius, slices[0][1], { blockType: bm[0], meta: bm[1] } );
+    this.arc({ 
+      blockType: bm[0], 
+      meta: bm[1],
+      radius: radius,
+      strokeWidth: 1,
+      stack: slices[0][1],
+      fill: false
+    });
+  } else {
+    this.up( radius - slices[0][1] );
+    this.arc({
+      blockType: bm[0],
+      meta: bm[1],
+      radius: radius,
+      strokeWidth: 1,
+      stack: slices[0][1],
+      fill: false
+    });
+    //this.cylinder( block, radius, slices[0][1], { blockType: bm[0], meta: bm[1] } )
+    this.down( radius - slices[0][1] );
+  }
+  
+  var yOffset = -1;
+  len = slices.length;
+  for ( i = 1; i < slices.length; i++ ) {
+    yOffset += slices[i-1][1];
+    var sr = slices[i][0];
+    var sh = slices[i][1];
+    var v = yOffset, h = radius-sr;
+    if ( northSouth == 'north' ) {
+      // northern hemisphere
+      this.up( v )
+	.fwd( h )
+	.right( h );
+
+      //this.cylinder( block, sr, sh, { blockType: bm[0], meta: bm[1] } );
+      this.arc( { 
+	blockType: bm[0],
+	meta: bm[1],
+	radius: sr,
+	stack: sh,
+	fill: false,
+	strokeWidth: i < len - 1 ? 1 + ( sr - slices[ i + 1 ][ 0 ] ) : 1
+      } );
+
+      this.left( h )
+	.back( h )
+	.down( v );
+    } else {
+      // southern hemisphere
+      v = radius - ( yOffset + sh + 1 );
+      this.up( v )
+	.fwd( h )
+	.right( h );
+
+      //this.cylinder( block, sr, sh, { blockType: bm[0], meta: bm[1] } );
+      this.arc({
+        blockType: bm[0],
+        meta: bm[1],
+        radius: sr,
+        stack: sh,
+        fill: false,
+        strokeWidth: i < len - 1 ? 1 + ( sr - slices[ i + 1 ][ 0 ] ) : 1
+      });
+
+      this.left( h )
+	.back( h )
+	.down( v );
+    }
+  }
+  return this.move( 'hsphere0' );
+
 });
