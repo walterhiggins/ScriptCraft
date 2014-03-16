@@ -321,7 +321,7 @@ Drone.extend( 'hemisphere0', function( block, radius, northSouth ) {
   // mid section
   //
   if ( northSouth == 'north' ) {
-    //this.cylinder( block, radius, slices[0][1], { blockType: bm[0], meta: bm[1] } );
+
     this.arc({ 
       blockType: bm[0], 
       meta: bm[1],
@@ -332,6 +332,7 @@ Drone.extend( 'hemisphere0', function( block, radius, northSouth ) {
     });
   } else {
     this.up( radius - slices[0][1] );
+
     this.arc({
       blockType: bm[0],
       meta: bm[1],
@@ -340,7 +341,7 @@ Drone.extend( 'hemisphere0', function( block, radius, northSouth ) {
       stack: slices[0][1],
       fill: false
     });
-    //this.cylinder( block, radius, slices[0][1], { blockType: bm[0], meta: bm[1] } )
+
     this.down( radius - slices[0][1] );
   }
   
@@ -357,7 +358,6 @@ Drone.extend( 'hemisphere0', function( block, radius, northSouth ) {
         .fwd( h )
         .right( h );
 
-      //this.cylinder( block, sr, sh, { blockType: bm[0], meta: bm[1] } );
       this.arc( { 
         blockType: bm[0],
         meta: bm[1],
@@ -377,7 +377,6 @@ Drone.extend( 'hemisphere0', function( block, radius, northSouth ) {
         .fwd( h )
         .right( h );
 
-      //this.cylinder( block, sr, sh, { blockType: bm[0], meta: bm[1] } );
       this.arc({
         blockType: bm[0],
         meta: bm[1],
