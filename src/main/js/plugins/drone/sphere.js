@@ -354,28 +354,28 @@ Drone.extend( 'hemisphere0', function( block, radius, northSouth ) {
     if ( northSouth == 'north' ) {
       // northern hemisphere
       this.up( v )
-	.fwd( h )
-	.right( h );
+        .fwd( h )
+        .right( h );
 
       //this.cylinder( block, sr, sh, { blockType: bm[0], meta: bm[1] } );
       this.arc( { 
-	blockType: bm[0],
-	meta: bm[1],
-	radius: sr,
-	stack: sh,
-	fill: false,
-	strokeWidth: i < len - 1 ? 1 + ( sr - slices[ i + 1 ][ 0 ] ) : 1
+        blockType: bm[0],
+        meta: bm[1],
+        radius: sr,
+        stack: sh,
+        fill: false,
+        strokeWidth: i < len - 1 ? 1 + ( sr - slices[ i + 1 ][ 0 ] ) : 1
       } );
 
       this.left( h )
-	.back( h )
-	.down( v );
+        .back( h )
+        .down( v );
     } else {
       // southern hemisphere
       v = radius - ( yOffset + sh + 1 );
       this.up( v )
-	.fwd( h )
-	.right( h );
+        .fwd( h )
+        .right( h );
 
       //this.cylinder( block, sr, sh, { blockType: bm[0], meta: bm[1] } );
       this.arc({
@@ -388,8 +388,8 @@ Drone.extend( 'hemisphere0', function( block, radius, northSouth ) {
       });
 
       this.left( h )
-	.back( h )
-	.down( v );
+        .back( h )
+        .down( v );
     }
   }
   return this.move( 'hsphere0' );
