@@ -101,6 +101,7 @@ var onTabCompleteJS = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs 
     name,
     symbol,
     lastGoodSymbol,
+    lastArgProp,
     i,
     objectProps,
     candidate,
@@ -165,8 +166,9 @@ var onTabCompleteJS = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs 
         objectProps = _getProperties( lastGoodSymbol );
         if ( name == '' ) {
           // if the last symbol looks like this.. 
-          // ScriptCraft.
+          // server.
           //
+          //print('debug:case Y1: server.');
           
           for ( i = 0; i < objectProps.length; i++ ) {
             candidate = lastSymbol + objectProps[i];
@@ -176,9 +178,9 @@ var onTabCompleteJS = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs 
           
         } else {
           // it looks like this..
-          // ScriptCraft.co
+          // server.wo
           //
-          //print('debug:case Y: ScriptCraft.co');
+          //print('debug:case Y2: server.wo');
           
           li = statement.lastIndexOf(name);
           for ( i = 0; i < objectProps.length; i++ ) {
@@ -191,10 +193,13 @@ var onTabCompleteJS = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs 
           }
         }
       } else {
+	//print('debug:case Y3: server');
         objectProps = _getProperties( symbol );
         for ( i = 0; i < objectProps.length; i++ ) {
           re = new RegExp( lastSymbol+ '$', 'g' );
-          propsOfLastArg.push( lastArg.replace( re, lastSymbol + '.' + objectProps[i] ) );
+          lastArgProp = lastArg.replace( re, lastSymbol + '.' + objectProps[i] ) ;
+          lastArgProp = lastArgProp.replace(/\.\./g,'.');
+          propsOfLastArg.push( lastArgProp );
         }
       }
     } else {
