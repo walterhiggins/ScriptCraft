@@ -73,11 +73,11 @@ foreach( colors, function ( color, i ) {
   colorCodes[color] = i.toString( 16 );
 } );
 
-events.on( 'player.AsyncPlayerChatEvent', function( l, e ) {
-  var player = e.player;
+events.on( 'player.AsyncPlayerChatEvent', function( event ) {
+  var player = event.player;
   var playerChatColor = _store.players[ player.name ];
   if ( playerChatColor ) {
-    e.message = '§' + colorCodes[ playerChatColor ] + e.message;
+    event.message = '§' + colorCodes[ playerChatColor ] + event.message;
   }
 });
 
