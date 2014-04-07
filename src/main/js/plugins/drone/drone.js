@@ -684,7 +684,7 @@ var putSign = function( texts, x, y, z, blockId, meta, world, immediate ) {
 var Drone = function( x, y, z, dir, world ) {
   this.record = false;
   var usePlayerCoords = false;
-  var player = self;
+  var player = (typeof self !== 'undefined' ? self : null);
   if ( x instanceof bkPlayer ) {
     player = x;
   }
