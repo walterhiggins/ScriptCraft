@@ -1,3 +1,7 @@
+# 2014 04 13
+
+Added asynchronous `input()` function module.
+
 # 2014 03 15
 
 ## Version 2.0.6
