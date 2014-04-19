@@ -658,13 +658,13 @@ var putBlock = function( x, y, z, blockId, metadata, world ) {
   }
 };
 
-var putSign = function( texts, x, y, z, blockId, meta, world, immediate ) {
+var putSign = function( drone, x, y, z, world, texts, blockId, meta, immediate ) {
   var i,
     block,
     state;
 
   if ( !immediate ) {
-    Drone.queue.push(function(){ putSign(texts, x, y, z, blockId, meta, world, true); });
+    getQueue(drone).push(function(){ putSign( drone, x, y, z, world, texts, blockId, meta, true); });
     return;
   }
   if ( blockId != 63 && blockId != 68 ) {
@@ -755,21 +755,33 @@ exports.Drone = Drone;
 exports.blocks = blocks;
 
 Drone.queue = [];
+
 Drone.opsPerSec = 10;
 Drone.processQueue = function(){
-  var process = Drone.queue.shift();
-  if (process){
-    try { 
-      process();
-    } catch( e ) { 
-      console.log('Drone build error: %s', e);
-    } 
+  var process,
+    i = 0,
+    queues = getAllQueues();
+
+  for ( ; i < queues.length; i++ ) {  
+    process = queues[i].shift();
+    if (process){
+      try { 
+	process();
+      } catch( e ) { 
+	console.log('Drone build error: %s', e);
+      } 
+    }
   }
-  setTimeout(Drone.processQueue,1000/Drone.opsPerSec);
+  setTimeout( Drone.processQueue, 1000 / Drone.opsPerSec );
 };
-setTimeout(Drone.processQueue,1000/Drone.opsPerSec);
-addUnloadHandler(function(){
-  var pendingBuildOps = Drone.queue.length;
+setTimeout( Drone.processQueue, 1000 / Drone.opsPerSec );
+
+addUnloadHandler( function() {
+  var pendingBuildOps = 0;
+  var allQueues = getAllQueues();
+  for (var i = 0; i < allQueues.length; i++){
+    pendingBuildOps += allQueues[i].length;
+  }
   if (pendingBuildOps > 0){
     console.warn('There were ' + pendingBuildOps + ' pending build operations which were cancelled');
   }
@@ -792,15 +804,7 @@ Drone.extend = function( name, func ) {
   
   global[name] = function( ) {
     var result = new Drone( self );
-    var len = Drone.queue.length;
     result[name].apply( result, arguments );
-    var newLen = Drone.queue.length;
-    if ( len > (3 * Drone.opsPerSec) || (newLen - len)  > (3 * Drone.opsPerSec)) {
-      if ( result.player && !result.playerNotifiedPending ) {
-	result.player.sendMessage('Build queue will complete in ' + Math.ceil( newLen / Drone.opsPerSec ) + ' seconds (approx.)');
-	result.playerNotifiedPending = true;
-      }
-    }
     return result;
   };
 };
@@ -1008,12 +1012,37 @@ Drone.extend( 'sign', function( message, block ) {
   if ( block == 63 ) {
     meta = ( 12 + ( ( this.dir + 2 ) * 4 ) ) % 16;
   }
-  putSign( message, this.x, this.y, this.z, block, meta, this.world );
+  putSign( this, this.x, this.y, this.z, this.world, message, block, meta);
   if ( block == 68 ) {
     this.fwd();
   }
 });
 
+var playerQueues = {};
+/*
+ if the drone has an associated player, then use that player's queue otherwise
+ use the global queue.
+*/
+function getQueue( drone ){
+  if ( drone.player ) {
+    var playerName = ''+drone.player.name;
+    var result = playerQueues[playerName];
+    if (result === undefined){
+      playerQueues[playerName] = [];
+      return playerQueues[playerName];
+    }
+    return result;
+  } else {
+    return Drone.queue;
+  }
+}
+function getAllQueues() {
+  var result = [ Drone.queue ];
+  for (var pq in playerQueues) {
+    result.push(playerQueues[pq]) ;
+  }
+  return result;
+} 
 Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite, immediate ) {
   
   var len = blocks.length,
@@ -1024,7 +1053,7 @@ Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite, immed
       blocks[i] = this._getBlockIdAndMeta( blocks[ i ] );
     }
     var clone = Drone.clone(this);
-    Drone.queue.push(this.cuboida.bind(clone, blocks, w, h, d, overwrite, true) );
+    getQueue(this).push(this.cuboida.bind(clone, blocks, w, h, d, overwrite, true) );
     return this;
   }
   if ( typeof overwrite == 'undefined' ) { 
@@ -1096,7 +1125,7 @@ Drone.prototype.cuboidX = function( blockType, meta, w, h, d, immediate ) {
 
   if ( !immediate ) {
     var clone = Drone.clone(this);
-    Drone.queue.push(this.cuboidX.bind(clone, blockType, meta, w, h, d, true));
+    getQueue(this).push(this.cuboidX.bind(clone, blockType, meta, w, h, d, true));
     return this;
   }
   var depthFunc = function( ) {
@@ -1550,7 +1579,7 @@ var _paste = function( name, immediate )
 {
 
   if ( !immediate ) {
-    Drone.queue.push(function(){ _paste(name, true);});
+    getQueue(this).push(function(){ _paste(name, true);});
     return;
   }
   var ccContent = Drone.clipBoard[name];

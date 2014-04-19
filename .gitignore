@@ -15,3 +15,5 @@ build.local.properties
 /src/main/javascript/plugins/.#example-1.js
 /nbproject/private/private.xml
 /nbproject/project.xml
+/src/docs/nbproject/private/
+/src/docs/build/
