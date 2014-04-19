@@ -140,6 +140,7 @@ Minecraft server and are ready to connect ...
 address field. `localhost` is a special internet address that points to 
 your own computer.
 5. Click 'Join Server' to join the craftbukkit server.
+If you get a message of client disconnected, check your client version. If it's 1.7.2, you need to edit your profile and select 1.6.4 to match craftbukkit.
 6. Once you've joined the game, press the `/` key located at the bottom 
 right of your keyboard. A prompt will appear. Type the following then 
 press enter: `js 1 + 1` The number 2 should be displayed. 
