@@ -573,7 +573,7 @@ commands in a new script file and load it using /js load()
 
 ### Extending Drone
 
-The Drone object can be easily extended - new buidling recipes/blue-prints can be added and can
+The Drone object can be easily extended - new buidling recipes/blueprints can be added and can
 become part of a Drone's chain using the *static* method `Drone.extend`. 
 
 ### Drone.extend() static method
@@ -892,7 +892,6 @@ Drone.prototype.times = function( numTimes, commands ) {
       var command = commands[i];
       var methodName = command[0];
       var args = command[1];
-      print ('command=' + JSON.stringify(command ) + ',methodName=' + methodName );
       this[ methodName ].apply( this, args );
     }
   }
@@ -1002,7 +1001,11 @@ Drone.extend( 'sign', function( message, block ) {
   block = bm[0];
   var meta = bm[1];
   if ( block != 63 && block != 68 ) {
-    print('ERROR: Invalid block id for use in signs');
+    var usage = 'Usage: sign("message", "63:1") or sign("message","68:1")';
+    if ( this.player ) {
+      this.player.sendMessage(usage);
+    }
+    console.error(usage);
     return;
   }
   if ( block == 68 ) {
@@ -1169,45 +1172,43 @@ Drone.prototype.cuboid0 = function( block, w, h, d ) {
 };
 
 
-Drone.extend( 'door', function( door ) {
-  if ( typeof door == 'undefined' ) {
-    door = 64;
+Drone.extend( 'door', function( doorMaterial ) {
+  if ( typeof doorMaterial == 'undefined' ) {
+    doorMaterial = 64; // wood
   } else {
-    door = 71;
+    doorMaterial = 71; // iron
   }
-  this.cuboidX( door,  this.dir )
+  this.cuboidX( doorMaterial,  this.dir )
     .up( )
-    .cuboidX( door, 8 )
+    .cuboidX( doorMaterial, 8 )
     .down( );
 } );
 
 Drone.extend( 'door_iron', function( ) {
-  var door = 71;
-  this.cuboidX( door,  this.dir )
+  this.cuboidX( 71,  this.dir )
     .up( )
-    .cuboidX( door, 8 )
+    .cuboidX( 71, 8 )
     .down( );
 } );
 
-Drone.extend( 'door2' , function( door ) {
-  if ( typeof door == 'undefined' ) {
-    door = 64;
+Drone.extend( 'door2' , function( doorMaterial ) {
+  if ( typeof doorMaterial == 'undefined' ) {
+    doorMaterial = 64;
   } else {
-    door = 71;
+    doorMaterial = 71;
   }
   this
-    .cuboidX( door,  this.dir ).up( )
-    .cuboidX( door, 8 ).right( )
-    .cuboidX( door, 9 ).down( )
-    .cuboidX( door, this.dir ).left( );
+    .cuboidX( doorMaterial,  this.dir ).up( )
+    .cuboidX( doorMaterial, 8 ).right( )
+    .cuboidX( doorMaterial, 9 ).down( )
+    .cuboidX( doorMaterial, this.dir ).left( );
 } );
-Drone.extend( 'door2_iron' , function( door ) {
-  var door = 71;
+Drone.extend( 'door2_iron' , function( ) {
   this
-    .cuboidX( door,  this.dir ).up( )
-    .cuboidX( door, 8 ).right( )
-    .cuboidX( door, 9 ).down( )
-    .cuboidX( door, this.dir ).left( );
+    .cuboidX( 71,  this.dir ).up( )
+    .cuboidX( 71, 8 ).right( )
+    .cuboidX( 71, 9 ).down( )
+    .cuboidX( 71, this.dir ).left( );
 } );
 
 // player dirs: 0 = east, 1 = south, 2 = west,   3 = north
@@ -1312,7 +1313,7 @@ Drone.prototype.toString = function( ) {
   return 'x: ' + this.x + ' y: '+this.y + ' z: ' + this.z + ' dir: ' + this.dir  + ' '+dirs[this.dir];
 };
 Drone.prototype.debug = function( ) { 
-  print(this.toString( ) );
+  console.log(this.toString( ) );
   return this;
 };
 /*
@@ -1390,7 +1391,7 @@ var _getStrokeDir = function( x,y ) {
  The daddy of all arc-related API calls - 
  if you're drawing anything that bends it ends up here.
  */
-var _arc2 = function( params  ) {
+var _arc2 = function( params ) {
   var drone = params.drone;
   var orientation = params.orientation?params.orientation:'horizontal';
   var quadrants = params.quadrants?params.quadrants:{
@@ -1419,33 +1420,32 @@ var _arc2 = function( params  ) {
       x0 = drone.x;
       y0 = drone.z;
     }
-    setPixel = function( x,y ) {
-      x = (x-x0 );
-      y = (y-y0 );
+    setPixel = function( x, y ) {
+      x = ( x-x0 );
+      y = ( y-y0 );
       if ( params.fill ) { 
         // wph 20130114 more efficient esp. for large cylinders/spheres
         if ( y < 0 ) { 
           drone
-            .fwd(y ).right(x )
-            .cuboidX(params.blockType,params.meta,1,stack,Math.abs(y*2 )+1 )
-            .back(y ).left(x );
+            .fwd( y ).right( x )
+            .cuboidX( params.blockType, params.meta, 1, stack, Math.abs( y * 2 ) + 1 )
+            .back( y ).left( x );
         }
       }else{
         if ( strokeWidth == 1 ) { 
-          gotoxy(x,y )
-            .cuboidX(params.blockType,
-                     params.meta,
+	  gotoxy(x,y )
+            .cuboidX( params.blockType, params.meta,
                      1, // width
                      stack, // height
                      strokeWidth // depth
                     )
             .move('center' );
         } else {
-          var strokeDir = _getStrokeDir(x,y );
+          var strokeDir = _getStrokeDir( x, y );
           var width = 1, depth = 1;
           switch ( strokeDir ) {
           case 0: // down
-            y = y-(strokeWidth-1 );
+            y = y-( strokeWidth - 1 );
             depth = strokeWidth;
             break;
           case 1: // up
@@ -1459,9 +1459,9 @@ var _arc2 = function( params  ) {
             width = strokeWidth;
             break;
           }
-          gotoxy(x,y )
-            .cuboidX(params.blockType, params.meta, width, stack, depth )
-            .move('center' );
+          gotoxy( x, y )
+            .cuboidX( params.blockType, params.meta, width, stack, depth )
+            .move( 'center' );
 
         }
       }
@@ -1481,28 +1481,28 @@ var _arc2 = function( params  ) {
       x0 = drone.x;
       y0 = drone.y;
     }
-    setPixel = function( x,y ) {
-      x = (x-x0 );
-      y = (y-y0 );
+    setPixel = function( x, y ) {
+      x = ( x - x0 );
+      y = ( y - y0 );
       if ( params.fill ) { 
         // wph 20130114 more efficient esp. for large cylinders/spheres
         if ( y < 0 ) { 
           drone
-            .up(y ).right(x )
-            .cuboidX(params.blockType,params.meta,1,Math.abs(y*2 )+1,stack )
-            .down(y ).left(x );
+            .up( y ).right( x )
+            .cuboidX( params.blockType, params.meta, 1, Math.abs( y * 2 ) + 1, stack )
+            .down( y ).left( x );
         }
       }else{
         if ( strokeWidth == 1 ) { 
-          gotoxy(x,y )
-            .cuboidX(params.blockType,params.meta,strokeWidth,1,stack )
-            .move('center' );
+          gotoxy( x, y )
+            .cuboidX( params.blockType, params.meta, strokeWidth, 1, stack )
+            .move( 'center' );
         }else{
-          var strokeDir = _getStrokeDir(x,y );
+          var strokeDir = _getStrokeDir( x,y );
           var width = 1, height = 1;
           switch ( strokeDir ) {
           case 0: // down
-            y = y-(strokeWidth-1 );
+            y = y - ( strokeWidth - 1 );
             height = strokeWidth;
             break;
           case 1: // up
@@ -1510,7 +1510,7 @@ var _arc2 = function( params  ) {
             break;
           case 2: // left
             width = strokeWidth;
-            x = x-(strokeWidth-1 );
+            x = x - ( strokeWidth - 1 );
             break;
           case 3: // right
             width = strokeWidth;

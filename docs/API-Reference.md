@@ -2006,7 +2006,7 @@ commands in a new script file and load it using /js load()
 
 ### Extending Drone
 
-The Drone object can be easily extended - new buidling recipes/blue-prints can be added and can
+The Drone object can be easily extended - new buidling recipes/blueprints can be added and can
 become part of a Drone's chain using the *static* method `Drone.extend`. 
 
 ### Drone.extend() static method

@@ -178,7 +178,7 @@ var aliasCmd = command( 'alias', function(  params, invoker ) {
   invoker.sendMessage( 'Usage:\n' + _usage );
 });
 
-var _intercept = function(  msg, invoker, exec ) {
+var _intercept = function( msg, invoker, exec ) {
   if ( msg.trim().length == 0 )
     return false;
   var msgParts = msg.split(' '),
@@ -228,7 +228,7 @@ events.on( 'player.PlayerCommandPreprocessEvent', function( evt ) {
   var exec = function( cmd ) { 
     invoker.performCommand(cmd);
   };
-  var isAlias = _intercept( ''+evt.message, ''+invoker.name, exec);
+  var isAlias = _intercept( (''+evt.message).trim(), ''+invoker.name, exec);
   if ( isAlias ) {
     evt.cancelled = true;
   }
@@ -242,7 +242,7 @@ events.on( 'server.ServerCommandEvent', function( evt ) {
   var exec = function( cmd ) { 
     invoker.server.dispatchCommand( invoker, cmd); 
   };
-  var isAlias = _intercept( ''+evt.command, ''+ invoker.name, exec );
+  var isAlias = _intercept( (''+evt.command).trim(), ''+ invoker.name, exec );
   if ( isAlias ) {
     evt.command = 'jsp void';
   }
