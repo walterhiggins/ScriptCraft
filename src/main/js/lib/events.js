@@ -121,11 +121,11 @@ exports.on = function(
   handlerList = eventType.getHandlerList( );
 
   var result = { };
-  eventExecutor = new bkEventExecutor( ) {
+  eventExecutor = new bkEventExecutor( {
     execute: function( l, evt ) {
       handler.call( result, evt );
     } 
-  };
+  } );
   /* 
    wph 20130222 issue #64 bad interaction with Essentials plugin
    if another plugin tries to unregister a Listener (not a Plugin or a RegisteredListener)
