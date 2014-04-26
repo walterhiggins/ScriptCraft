@@ -929,23 +929,26 @@ ScriptCraft uses Java's [String.format()][strfmt] so any string substitution ide
 [webcons]: https://developer.mozilla.org/en-US/docs/Web/API/console
 
 ## Events Helper Module
-The Events helper module provides a suite of functions one for each possible event.
-For example, the blockBreak function in turn calls events.on(org.bukkit.event.block.BlockBreakEvent, callback, priority)
-This module is a convenience wrapper for easily add new event handlers.
+The Events helper module provides a suite of functions - one for each possible event.
+For example, the events.blockBreak() function is just a wrapper function which calls events.on(org.bukkit.event.block.BlockBreakEvent, callback, priority)
+This module is a convenience wrapper for easily adding new event handling functions in Javascript. 
+At the in-game or server-console prompt, players/admins can type `events.` and use TAB completion 
+to choose from any of the approx. 160 different event types to listen to.
+
 ### Usage
 
     events.blockBreak(function(evt){ 
       evt.player.sendMessage("You broke a block!"); 
     });
 
-... which is just a shorter way of writing ...
+... which is just a shorter and less error-prone way of writing ...
 
     events.on("block.BlockBreakEvent",function(evt){ 
       evt.player.sendMessage("You broke a block!");
     });
 
-The crucial difference is that the events module will have functions for each 
-of the built-in events so tab-completion will help 
+The crucial difference is that the events module now has functions for each 
+of the built-in events. The functions are accessible via tab-completion so will help 
 beginning programmers to explore the events at the server console window.
 
 ### events.worldUnload()
