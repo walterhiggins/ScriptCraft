@@ -55,6 +55,7 @@ events.on( 'block.BlockBreakEvent', function( evt ) {
     evt.player.sendMessage( evt.player.name + ' broke a block!');
     this.unregister();
 } );
+```
 
 The `this` keyword when used inside the callback function refers to
 the Listener object created by ScriptCraft. It has a single method
