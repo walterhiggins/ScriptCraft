@@ -41,7 +41,7 @@ while ( ( entry = zis.nextEntry) != null) {
 
     var comment = [
       '/*********************',
-      '### events.' + fname + '(callback)',
+      '### events.' + fname + '()',
       '#### Parameters ',
       ' * callback - A function which is called whenever the ' + shortName + ' event is fired',
       'see events.on() for more information',
