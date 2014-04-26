@@ -70,13 +70,16 @@
   </target>
 
   <target name="compile-docs" depends="init">
-    <javac includeantruntime="false" srcdir="src/docs/java"/>
+    <javac includeantruntime="false" 
+	   srcdir="src/docs/java"
+	   destdir="${build}"
+	   />
   </target>
 
   <target name="generate-api-ref-entries" depends="copy-js,compile-docs,init">
     <java classname="jscript" failonerror="true" fork="true" output="${dist}/apiref.md">
       <classpath>
-        <pathelement path="src/docs/java"/>      
+        <pathelement path="${build}"/>      
       </classpath>
       <arg value="src/docs/js/generateApiDocs.js"/>
       <arg value="${dist}/js"/>
@@ -84,11 +87,11 @@
 
   </target>
 
-  <target name="gen-events-helper" depends="server-setup,init">
+  <target name="gen-events-helper" depends="compile-docs,server-setup,init">
     <mkdir dir="${dist}/js/lib"/>
     <java classname="jscript" failonerror="true" fork="true" output="${dist}/js/lib/events-helper.js">
       <classpath>
-        <pathelement path="src/docs/java"/>      
+        <pathelement path="${build}"/>      
 	<pathelement path="${minecraft.dir}/craftbukkit.jar"/>
       </classpath>
       <arg value="src/generateEventsHelper.js"/>
@@ -115,7 +118,7 @@ Walter Higgins
   <target name="gen-toc-apiref" depends="compile-docs,generate-api-ref-entries, init" description="Generate Table of Contents for API Reference">
     <java classname="jscript" failonerror="true" fork="true" output="${dist}/toc-apiref.md">
       <classpath>
-        <pathelement path="src/docs/java"/>      
+        <pathelement path="${build}"/>      
       </classpath>
       <arg value="src/docs/js/generateTOC.js"/>
       <arg value="${dist}/apiref.md"/>
@@ -125,7 +128,7 @@ Walter Higgins
   <target name="gen-toc-ypgpm" depends="compile-docs,init" description="Generate Table of Contents for Young Programmers Guide">
     <java classname="jscript" failonerror="true" fork="true" output="${dist}/toc-ypgpm.md">
       <classpath>
-        <pathelement path="src/docs/java"/>      
+        <pathelement path="${build}"/>      
       </classpath>
       <arg value="src/docs/js/generateTOC.js"/>
       <arg value="src/docs/templates/ypgpm.md"/>
