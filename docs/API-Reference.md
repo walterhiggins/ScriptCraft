@@ -964,701 +964,1397 @@ of the built-in events so tab-completion will help
 beginning programmers to explore the events at the server console window.
 
 ### events.hanging()
+
 #### Parameters 
+
  * callback - A function which is called whenever the hanging.HangingEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.world()
+
 #### Parameters 
+
  * callback - A function which is called whenever the world.WorldEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.chunk()
+
 #### Parameters 
+
  * callback - A function which is called whenever the world.ChunkEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.worldUnload()
+
 #### Parameters 
+
  * callback - A function which is called whenever the world.WorldUnloadEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.worldLoad()
+
 #### Parameters 
+
  * callback - A function which is called whenever the world.WorldLoadEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.chunkLoad()
+
 #### Parameters 
+
  * callback - A function which is called whenever the world.ChunkLoadEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.chunkPopulate()
+
 #### Parameters 
+
  * callback - A function which is called whenever the world.ChunkPopulateEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.portalCreate()
+
 #### Parameters 
+
  * callback - A function which is called whenever the world.PortalCreateEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.spawnChange()
+
 #### Parameters 
+
  * callback - A function which is called whenever the world.SpawnChangeEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.chunkUnload()
+
 #### Parameters 
+
  * callback - A function which is called whenever the world.ChunkUnloadEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.worldInit()
+
 #### Parameters 
+
  * callback - A function which is called whenever the world.WorldInitEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entity()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.horseJump()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.HorseJumpEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityCombust()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityCombustEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityRegainHealth()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityRegainHealthEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityCombustByBlock()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityCombustByBlockEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityCombustByEntity()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityCombustByEntityEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerLeashEntity()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.PlayerLeashEntityEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.pigZap()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.PigZapEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.itemDespawn()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.ItemDespawnEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityTarget()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityTargetEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.slimeSplit()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.SlimeSplitEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityChangeBlock()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityChangeBlockEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityPortalEnter()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityPortalEnterEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.creeperPower()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.CreeperPowerEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityDeath()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityDeathEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.projectileHit()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.ProjectileHitEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityTame()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityTameEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.potionSplash()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.PotionSplashEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.expBottle()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.ExpBottleEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityExplode()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityExplodeEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.creatureSpawn()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.CreatureSpawnEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.foodLevelChange()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.FoodLevelChangeEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityInteract()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityInteractEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityBreakDoor()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityBreakDoorEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityCreatePortal()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityCreatePortalEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.sheepRegrowWool()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.SheepRegrowWoolEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.explosionPrime()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.ExplosionPrimeEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityUnleash()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityUnleashEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityShootBow()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityShootBowEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.projectileLaunch()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.ProjectileLaunchEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.itemSpawn()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.ItemSpawnEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.sheepDyeWool()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.SheepDyeWoolEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityTeleport()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityTeleportEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.block()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockFade()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockFadeEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockDamage()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockDamageEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockPiston()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockPistonEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockPistonExtend()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockPistonExtendEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockExp()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockExpEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockGrow()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockGrowEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockPistonRetract()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockPistonRetractEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockDispense()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockDispenseEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockBreak()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockBreakEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.painting()
+
 #### Parameters 
+
  * callback - A function which is called whenever the painting.PaintingEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.paintingPlace()
+
 #### Parameters 
+
  * callback - A function which is called whenever the painting.PaintingPlaceEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.weather()
+
 #### Parameters 
+
  * callback - A function which is called whenever the weather.WeatherEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.lightningStrike()
+
 #### Parameters 
+
  * callback - A function which is called whenever the weather.LightningStrikeEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.vehicle()
+
 #### Parameters 
+
  * callback - A function which is called whenever the vehicle.VehicleEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.vehicleEnter()
+
 #### Parameters 
+
  * callback - A function which is called whenever the vehicle.VehicleEnterEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.vehicleMove()
+
 #### Parameters 
+
  * callback - A function which is called whenever the vehicle.VehicleMoveEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.vehicleCollision()
+
 #### Parameters 
+
  * callback - A function which is called whenever the vehicle.VehicleCollisionEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.vehicleCreate()
+
 #### Parameters 
+
  * callback - A function which is called whenever the vehicle.VehicleCreateEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.asyncPlayerPreLogin()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.AsyncPlayerPreLoginEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerUnleashEntity()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerUnleashEntityEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerPreLogin()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerPreLoginEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.player()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.server()
+
 #### Parameters 
+
  * callback - A function which is called whenever the server.ServerEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.inventoryPickupItem()
+
 #### Parameters 
+
  * callback - A function which is called whenever the inventory.InventoryPickupItemEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.inventoryMoveItem()
+
 #### Parameters 
+
  * callback - A function which is called whenever the inventory.InventoryMoveItemEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.furnaceBurn()
+
 #### Parameters 
+
  * callback - A function which is called whenever the inventory.FurnaceBurnEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.inventory()
+
 #### Parameters 
+
  * callback - A function which is called whenever the inventory.InventoryEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.brew()
+
 #### Parameters 
+
  * callback - A function which is called whenever the inventory.BrewEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.furnaceExtract()
+
 #### Parameters 
+
  * callback - A function which is called whenever the inventory.FurnaceExtractEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.furnaceSmelt()
+
 #### Parameters 
+
  * callback - A function which is called whenever the inventory.FurnaceSmeltEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.inventoryInteract()
+
 #### Parameters 
+
  * callback - A function which is called whenever the inventory.InventoryInteractEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.inventoryClose()
+
 #### Parameters 
+
  * callback - A function which is called whenever the inventory.InventoryCloseEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.inventoryDrag()
+
 #### Parameters 
+
  * callback - A function which is called whenever the inventory.InventoryDragEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.inventoryClick()
+
 #### Parameters 
+
  * callback - A function which is called whenever the inventory.InventoryClickEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.inventoryCreative()
+
 #### Parameters 
+
  * callback - A function which is called whenever the inventory.InventoryCreativeEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.hangingPlace()
+
 #### Parameters 
+
  * callback - A function which is called whenever the hanging.HangingPlaceEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.hangingBreak()
+
 #### Parameters 
+
  * callback - A function which is called whenever the hanging.HangingBreakEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.worldSave()
+
 #### Parameters 
+
  * callback - A function which is called whenever the world.WorldSaveEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.structureGrow()
+
 #### Parameters 
+
  * callback - A function which is called whenever the world.StructureGrowEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityDamage()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityDamageEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityTargetLivingEntity()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityTargetLivingEntityEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerDeath()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.PlayerDeathEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityDamageByBlock()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityDamageByBlockEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityDamageByEntity()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityDamageByEntityEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityPortal()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityPortalEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityPortalExit()
+
 #### Parameters 
+
  * callback - A function which is called whenever the entity.EntityPortalExitEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.signChange()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.SignChangeEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.leavesDecay()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.LeavesDecayEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockRedstone()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockRedstoneEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockCanBuild()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockCanBuildEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockBurn()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockBurnEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockPhysics()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockPhysicsEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockIgnite()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockIgniteEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.notePlay()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.NotePlayEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockPlace()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockPlaceEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockFromTo()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockFromToEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockForm()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockFormEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockSpread()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockSpreadEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.enchantItem()
+
 #### Parameters 
+
  * callback - A function which is called whenever the enchantment.EnchantItemEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.prepareItemEnchant()
+
 #### Parameters 
+
  * callback - A function which is called whenever the enchantment.PrepareItemEnchantEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.paintingBreak()
+
 #### Parameters 
+
  * callback - A function which is called whenever the painting.PaintingBreakEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.paintingBreakByEntity()
+
 #### Parameters 
+
  * callback - A function which is called whenever the painting.PaintingBreakByEntityEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.weatherChange()
+
 #### Parameters 
+
  * callback - A function which is called whenever the weather.WeatherChangeEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.thunderChange()
+
 #### Parameters 
+
  * callback - A function which is called whenever the weather.ThunderChangeEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.vehicleEntityCollision()
+
 #### Parameters 
+
  * callback - A function which is called whenever the vehicle.VehicleEntityCollisionEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.vehicleBlockCollision()
+
 #### Parameters 
+
  * callback - A function which is called whenever the vehicle.VehicleBlockCollisionEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.vehicleExit()
+
 #### Parameters 
+
  * callback - A function which is called whenever the vehicle.VehicleExitEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.vehicleUpdate()
+
 #### Parameters 
+
  * callback - A function which is called whenever the vehicle.VehicleUpdateEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.vehicleDamage()
+
 #### Parameters 
+
  * callback - A function which is called whenever the vehicle.VehicleDamageEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.vehicleDestroy()
+
 #### Parameters 
+
  * callback - A function which is called whenever the vehicle.VehicleDestroyEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerExpChange()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerExpChangeEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerRespawn()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerRespawnEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerCommandPreprocess()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerCommandPreprocessEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerPickupItem()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerPickupItemEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerInventory()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerInventoryEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerFish()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerFishEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerBedEnter()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerBedEnterEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerLogin()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerLoginEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerDropItem()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerDropItemEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerLevelChange()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerLevelChangeEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerVelocity()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerVelocityEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerInteract()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerInteractEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerQuit()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerQuitEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerChatTabComplete()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerChatTabCompleteEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerEggThrow()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerEggThrowEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerChat()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerChatEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerAchievementAwarded()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerAchievementAwardedEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerBedLeave()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerBedLeaveEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerChannel()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerChannelEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerStatisticIncrement()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerStatisticIncrementEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerToggleSprint()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerToggleSprintEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerInteractEntity()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerInteractEntityEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerEditBook()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerEditBookEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerKick()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerKickEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerItemHeld()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerItemHeldEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerItemConsume()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerItemConsumeEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerGameModeChange()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerGameModeChangeEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerItemBreak()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerItemBreakEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerToggleFlight()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerToggleFlightEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerAnimation()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerAnimationEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.asyncPlayerChat()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.AsyncPlayerChatEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerBucket()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerBucketEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerRegisterChannel()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerRegisterChannelEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerMove()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerMoveEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerTeleport()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerTeleportEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerBucketFill()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerBucketFillEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerJoin()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerJoinEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerShearEntity()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerShearEntityEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerToggleSneak()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerToggleSneakEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerChangedWorld()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerChangedWorldEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.serverCommand()
+
 #### Parameters 
+
  * callback - A function which is called whenever the server.ServerCommandEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.remoteServerCommand()
+
 #### Parameters 
+
  * callback - A function which is called whenever the server.RemoteServerCommandEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.mapInitialize()
+
 #### Parameters 
+
  * callback - A function which is called whenever the server.MapInitializeEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.service()
+
 #### Parameters 
+
  * callback - A function which is called whenever the server.ServiceEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.plugin()
+
 #### Parameters 
+
  * callback - A function which is called whenever the server.PluginEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.serviceRegister()
+
 #### Parameters 
+
  * callback - A function which is called whenever the server.ServiceRegisterEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.serverListPing()
+
 #### Parameters 
+
  * callback - A function which is called whenever the server.ServerListPingEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.serviceUnregister()
+
 #### Parameters 
+
  * callback - A function which is called whenever the server.ServiceUnregisterEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.prepareItemCraft()
+
 #### Parameters 
+
  * callback - A function which is called whenever the inventory.PrepareItemCraftEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.inventoryOpen()
+
 #### Parameters 
+
  * callback - A function which is called whenever the inventory.InventoryOpenEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.craftItem()
+
 #### Parameters 
+
  * callback - A function which is called whenever the inventory.CraftItemEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.hangingBreakByEntity()
+
 #### Parameters 
+
  * callback - A function which is called whenever the hanging.HangingBreakByEntityEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.blockMultiPlace()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.BlockMultiPlaceEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.entityBlockForm()
+
 #### Parameters 
+
  * callback - A function which is called whenever the block.EntityBlockFormEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerBucketEmpty()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerBucketEmptyEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerPortal()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerPortalEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.playerUnregisterChannel()
+
 #### Parameters 
+
  * callback - A function which is called whenever the player.PlayerUnregisterChannelEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.pluginDisable()
+
 #### Parameters 
+
  * callback - A function which is called whenever the server.PluginDisableEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ### events.pluginEnable()
+
 #### Parameters 
+
  * callback - A function which is called whenever the server.PluginEnableEvent event is fired
-see events.on() for more information
+
+see events.on() for more information.
+
 ## Blocks Module
 
 You hate having to lookup [Data Values][dv] when you use ScriptCraft's

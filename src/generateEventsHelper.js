@@ -26,7 +26,8 @@ var content = [
   'The crucial difference is that the events module will have functions for each ',
   'of the built-in events so tab-completion will help ',
   'beginning programmers to explore the events at the server console window.',
-  ''
+  '',
+  '***/'
 ];
 for (var i = 0; i< content.length; i++){
   out.println(content[i]);
@@ -42,9 +43,13 @@ while ( ( entry = zis.nextEntry) != null) {
     var comment = [
       '/*********************',
       '### events.' + fname + '()',
+      '',
       '#### Parameters ',
+      '',
       ' * callback - A function which is called whenever the ' + shortName + ' event is fired',
-      'see events.on() for more information',
+      '',
+      'see events.on() for more information.',
+      '',
       '***/'
     ];
     for (var i = 0; i < comment.length; i++){
