@@ -73,15 +73,25 @@
     <javac includeantruntime="false" srcdir="src/docs/java"/>
   </target>
 
-  <target name="generate-api-ref-entries" depends="compile-docs,init">
+  <target name="generate-api-ref-entries" depends="copy-js,compile-docs,init">
     <java classname="jscript" failonerror="true" fork="true" output="${dist}/apiref.md">
       <classpath>
         <pathelement path="src/docs/java"/>      
       </classpath>
       <arg value="src/docs/js/generateApiDocs.js"/>
-      <arg value="src/main/js"/>
+      <arg value="${dist}/js"/>
     </java>
 
+  </target>
+
+  <target name="gen-events-helper" depends="server-setup,init">
+    <mkdir dir="${dist}/js/lib"/>
+    <java classname="jscript" failonerror="true" fork="true" output="${dist}/js/lib/events-helper.js">
+      <classpath>
+        <pathelement path="src/docs/java"/>      
+      </classpath>
+      <arg value="src/generateEventsHelper.js"/>
+    </java>
   </target>
 
   <target name="construct-api-ref" depends="gen-toc-apiref,init">
@@ -134,13 +144,13 @@ Walter Higgins
   <target name="zip_js" depends="zip_lib, zip_modules, zip_plugins">
   </target>
 
-  <target name="copy_js" depends="init">
+  <target name="copy-js" depends="gen-events-helper,init">
     <copy todir="${dist}/js">
       <fileset dir="src/main/js"/>
     </copy>
   </target>
 
-  <target name="zip_lib" depends="copy_js">
+  <target name="zip_lib" depends="copy-js">
     <delete file="${build}/lib.zip"/>
     <zip destfile="${build}/lib.zip" 
          basedir="${dist}/js" 
@@ -148,14 +158,14 @@ Walter Higgins
     </zip>
   </target>
 
-  <target name="get_underscore" depends="copy_js" unless="underscore.present">
+  <target name="get_underscore" depends="copy-js" unless="underscore.present">
     <!-- download underscore -->
     <get src="http://underscorejs.org/underscore.js"
 	 verbose="true"
 	 dest="${dist}/js/modules/underscore.js"/>
   </target>
 
-  <target name="zip_modules" depends="copy_js, get_underscore">
+  <target name="zip_modules" depends="copy-js, get_underscore">
     <delete file="${build}/modules.zip"/>
     <zip destfile="${build}/modules.zip" 
          basedir="${dist}/js" 
@@ -163,7 +173,7 @@ Walter Higgins
     </zip>
   </target>
 
-  <target name="zip_plugins" depends="copy_js">
+  <target name="zip_plugins" depends="copy-js">
     <delete file="${build}/plugins.zip"/>
     <zip destfile="${build}/plugins.zip" 
          basedir="${dist}/js"

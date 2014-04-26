@@ -1,19 +1,10 @@
 'use strict';
-var tabCompleteJSP = require('tabcomplete-jsp');
+var tabCompleteJSP = require('tabcomplete-jsp'),
+  isJavaObject = require('java-utils').isJavaObject;
+
 /*
   Tab Completion of the /js and /jsp commands
 */
-var _isJavaObject = function(o){
-    var result = false;
-    try {
-        o.hasOwnProperty( 'testForJava' );
-    } catch (e) {
-        // java will throw an error when an attempt is made to access the
-        // hasOwnProperty method. (it won't exist for Java objects)
-        result = true;
-    }
-    return result;
-};
 var _javaLangObjectMethods = [
   'equals'
   ,'getClass'
@@ -35,7 +26,7 @@ var _getProperties = function( o ) {
     isObjectMethod,
     typeofProperty;
 
-  if ( _isJavaObject( o ) ) {
+  if ( isJavaObject( o ) ) {
     /*
      fix for issue #115 - java objects are not iterable
      see: http://mail.openjdk.java.net/pipermail/nashorn-dev/2014-March/002790.html

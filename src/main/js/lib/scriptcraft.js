@@ -610,6 +610,8 @@ function __onEnable ( __engine, __plugin, __script )
    */
   require('persistence')( jsPluginsRootDir, global );
 
+  var isJavaObject = require('java-utils').isJavaObject;
+
   var cmdModule = require('command');
   global.command = cmdModule.command;
   var plugins = require('plugin');
@@ -648,12 +650,25 @@ function __onEnable ( __engine, __plugin, __script )
       global.self = sender;
       global.__engine = __engine;
       try { 
-        jsResult = __engine.eval(fnBody);
+
+        jsResult = __engine.eval( fnBody );
+
         if ( typeof jsResult != 'undefined' ) { 
           if ( jsResult == null) { 
             sender.sendMessage('(null)');
           } else { 
-            sender.sendMessage(jsResult);
+	    try { 
+	      if ( isJavaObject(jsResult) || typeof jsResult === 'function') {
+		sender.sendMessage(jsResult);
+	      } else { 
+		var replacer = function replacer(key, value){
+		  return this[key] instanceof java.lang.Object ? '' + this[key] : value;
+		};
+		sender.sendMessage( JSON.stringify( jsResult, replacer, 2) );
+	      }
+	    } catch ( displayError ) { 
+              logger.severe( 'Error while trying to display result: ' + jsResult + ', Error: '+ displayError );
+	    }
           }
         } 
       } catch ( e ) {

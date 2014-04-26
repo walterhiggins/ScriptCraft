@@ -46,6 +46,182 @@ Walter Higgins
  * [console global variable](#console-global-variable)
    * [Example](#example)
    * [Using string substitutions](#using-string-substitutions)
+ * [Events Helper Module](#events-helper-module)
+   * [Usage](#usage)
+   * [events.hanging(callback)](#eventshangingcallback)
+   * [events.world(callback)](#eventsworldcallback)
+   * [events.chunk(callback)](#eventschunkcallback)
+   * [events.worldUnload(callback)](#eventsworldunloadcallback)
+   * [events.worldLoad(callback)](#eventsworldloadcallback)
+   * [events.chunkLoad(callback)](#eventschunkloadcallback)
+   * [events.chunkPopulate(callback)](#eventschunkpopulatecallback)
+   * [events.portalCreate(callback)](#eventsportalcreatecallback)
+   * [events.spawnChange(callback)](#eventsspawnchangecallback)
+   * [events.chunkUnload(callback)](#eventschunkunloadcallback)
+   * [events.worldInit(callback)](#eventsworldinitcallback)
+   * [events.entity(callback)](#eventsentitycallback)
+   * [events.horseJump(callback)](#eventshorsejumpcallback)
+   * [events.entityCombust(callback)](#eventsentitycombustcallback)
+   * [events.entityRegainHealth(callback)](#eventsentityregainhealthcallback)
+   * [events.entityCombustByBlock(callback)](#eventsentitycombustbyblockcallback)
+   * [events.entityCombustByEntity(callback)](#eventsentitycombustbyentitycallback)
+   * [events.playerLeashEntity(callback)](#eventsplayerleashentitycallback)
+   * [events.pigZap(callback)](#eventspigzapcallback)
+   * [events.itemDespawn(callback)](#eventsitemdespawncallback)
+   * [events.entityTarget(callback)](#eventsentitytargetcallback)
+   * [events.slimeSplit(callback)](#eventsslimesplitcallback)
+   * [events.entityChangeBlock(callback)](#eventsentitychangeblockcallback)
+   * [events.entityPortalEnter(callback)](#eventsentityportalentercallback)
+   * [events.creeperPower(callback)](#eventscreeperpowercallback)
+   * [events.entityDeath(callback)](#eventsentitydeathcallback)
+   * [events.projectileHit(callback)](#eventsprojectilehitcallback)
+   * [events.entityTame(callback)](#eventsentitytamecallback)
+   * [events.potionSplash(callback)](#eventspotionsplashcallback)
+   * [events.expBottle(callback)](#eventsexpbottlecallback)
+   * [events.entityExplode(callback)](#eventsentityexplodecallback)
+   * [events.creatureSpawn(callback)](#eventscreaturespawncallback)
+   * [events.foodLevelChange(callback)](#eventsfoodlevelchangecallback)
+   * [events.entityInteract(callback)](#eventsentityinteractcallback)
+   * [events.entityBreakDoor(callback)](#eventsentitybreakdoorcallback)
+   * [events.entityCreatePortal(callback)](#eventsentitycreateportalcallback)
+   * [events.sheepRegrowWool(callback)](#eventssheepregrowwoolcallback)
+   * [events.explosionPrime(callback)](#eventsexplosionprimecallback)
+   * [events.entityUnleash(callback)](#eventsentityunleashcallback)
+   * [events.entityShootBow(callback)](#eventsentityshootbowcallback)
+   * [events.projectileLaunch(callback)](#eventsprojectilelaunchcallback)
+   * [events.itemSpawn(callback)](#eventsitemspawncallback)
+   * [events.sheepDyeWool(callback)](#eventssheepdyewoolcallback)
+   * [events.entityTeleport(callback)](#eventsentityteleportcallback)
+   * [events.block(callback)](#eventsblockcallback)
+   * [events.blockFade(callback)](#eventsblockfadecallback)
+   * [events.blockDamage(callback)](#eventsblockdamagecallback)
+   * [events.blockPiston(callback)](#eventsblockpistoncallback)
+   * [events.blockPistonExtend(callback)](#eventsblockpistonextendcallback)
+   * [events.blockExp(callback)](#eventsblockexpcallback)
+   * [events.blockGrow(callback)](#eventsblockgrowcallback)
+   * [events.blockPistonRetract(callback)](#eventsblockpistonretractcallback)
+   * [events.blockDispense(callback)](#eventsblockdispensecallback)
+   * [events.blockBreak(callback)](#eventsblockbreakcallback)
+   * [events.painting(callback)](#eventspaintingcallback)
+   * [events.paintingPlace(callback)](#eventspaintingplacecallback)
+   * [events.weather(callback)](#eventsweathercallback)
+   * [events.lightningStrike(callback)](#eventslightningstrikecallback)
+   * [events.vehicle(callback)](#eventsvehiclecallback)
+   * [events.vehicleEnter(callback)](#eventsvehicleentercallback)
+   * [events.vehicleMove(callback)](#eventsvehiclemovecallback)
+   * [events.vehicleCollision(callback)](#eventsvehiclecollisioncallback)
+   * [events.vehicleCreate(callback)](#eventsvehiclecreatecallback)
+   * [events.asyncPlayerPreLogin(callback)](#eventsasyncplayerprelogincallback)
+   * [events.playerUnleashEntity(callback)](#eventsplayerunleashentitycallback)
+   * [events.playerPreLogin(callback)](#eventsplayerprelogincallback)
+   * [events.player(callback)](#eventsplayercallback)
+   * [events.server(callback)](#eventsservercallback)
+   * [events.inventoryPickupItem(callback)](#eventsinventorypickupitemcallback)
+   * [events.inventoryMoveItem(callback)](#eventsinventorymoveitemcallback)
+   * [events.furnaceBurn(callback)](#eventsfurnaceburncallback)
+   * [events.inventory(callback)](#eventsinventorycallback)
+   * [events.brew(callback)](#eventsbrewcallback)
+   * [events.furnaceExtract(callback)](#eventsfurnaceextractcallback)
+   * [events.furnaceSmelt(callback)](#eventsfurnacesmeltcallback)
+   * [events.inventoryInteract(callback)](#eventsinventoryinteractcallback)
+   * [events.inventoryClose(callback)](#eventsinventoryclosecallback)
+   * [events.inventoryDrag(callback)](#eventsinventorydragcallback)
+   * [events.inventoryClick(callback)](#eventsinventoryclickcallback)
+   * [events.inventoryCreative(callback)](#eventsinventorycreativecallback)
+   * [events.hangingPlace(callback)](#eventshangingplacecallback)
+   * [events.hangingBreak(callback)](#eventshangingbreakcallback)
+   * [events.worldSave(callback)](#eventsworldsavecallback)
+   * [events.structureGrow(callback)](#eventsstructuregrowcallback)
+   * [events.entityDamage(callback)](#eventsentitydamagecallback)
+   * [events.entityTargetLivingEntity(callback)](#eventsentitytargetlivingentitycallback)
+   * [events.playerDeath(callback)](#eventsplayerdeathcallback)
+   * [events.entityDamageByBlock(callback)](#eventsentitydamagebyblockcallback)
+   * [events.entityDamageByEntity(callback)](#eventsentitydamagebyentitycallback)
+   * [events.entityPortal(callback)](#eventsentityportalcallback)
+   * [events.entityPortalExit(callback)](#eventsentityportalexitcallback)
+   * [events.signChange(callback)](#eventssignchangecallback)
+   * [events.leavesDecay(callback)](#eventsleavesdecaycallback)
+   * [events.blockRedstone(callback)](#eventsblockredstonecallback)
+   * [events.blockCanBuild(callback)](#eventsblockcanbuildcallback)
+   * [events.blockBurn(callback)](#eventsblockburncallback)
+   * [events.blockPhysics(callback)](#eventsblockphysicscallback)
+   * [events.blockIgnite(callback)](#eventsblockignitecallback)
+   * [events.notePlay(callback)](#eventsnoteplaycallback)
+   * [events.blockPlace(callback)](#eventsblockplacecallback)
+   * [events.blockFromTo(callback)](#eventsblockfromtocallback)
+   * [events.blockForm(callback)](#eventsblockformcallback)
+   * [events.blockSpread(callback)](#eventsblockspreadcallback)
+   * [events.enchantItem(callback)](#eventsenchantitemcallback)
+   * [events.prepareItemEnchant(callback)](#eventsprepareitemenchantcallback)
+   * [events.paintingBreak(callback)](#eventspaintingbreakcallback)
+   * [events.paintingBreakByEntity(callback)](#eventspaintingbreakbyentitycallback)
+   * [events.weatherChange(callback)](#eventsweatherchangecallback)
+   * [events.thunderChange(callback)](#eventsthunderchangecallback)
+   * [events.vehicleEntityCollision(callback)](#eventsvehicleentitycollisioncallback)
+   * [events.vehicleBlockCollision(callback)](#eventsvehicleblockcollisioncallback)
+   * [events.vehicleExit(callback)](#eventsvehicleexitcallback)
+   * [events.vehicleUpdate(callback)](#eventsvehicleupdatecallback)
+   * [events.vehicleDamage(callback)](#eventsvehicledamagecallback)
+   * [events.vehicleDestroy(callback)](#eventsvehicledestroycallback)
+   * [events.playerExpChange(callback)](#eventsplayerexpchangecallback)
+   * [events.playerRespawn(callback)](#eventsplayerrespawncallback)
+   * [events.playerCommandPreprocess(callback)](#eventsplayercommandpreprocesscallback)
+   * [events.playerPickupItem(callback)](#eventsplayerpickupitemcallback)
+   * [events.playerInventory(callback)](#eventsplayerinventorycallback)
+   * [events.playerFish(callback)](#eventsplayerfishcallback)
+   * [events.playerBedEnter(callback)](#eventsplayerbedentercallback)
+   * [events.playerLogin(callback)](#eventsplayerlogincallback)
+   * [events.playerDropItem(callback)](#eventsplayerdropitemcallback)
+   * [events.playerLevelChange(callback)](#eventsplayerlevelchangecallback)
+   * [events.playerVelocity(callback)](#eventsplayervelocitycallback)
+   * [events.playerInteract(callback)](#eventsplayerinteractcallback)
+   * [events.playerQuit(callback)](#eventsplayerquitcallback)
+   * [events.playerChatTabComplete(callback)](#eventsplayerchattabcompletecallback)
+   * [events.playerEggThrow(callback)](#eventsplayereggthrowcallback)
+   * [events.playerChat(callback)](#eventsplayerchatcallback)
+   * [events.playerAchievementAwarded(callback)](#eventsplayerachievementawardedcallback)
+   * [events.playerBedLeave(callback)](#eventsplayerbedleavecallback)
+   * [events.playerChannel(callback)](#eventsplayerchannelcallback)
+   * [events.playerStatisticIncrement(callback)](#eventsplayerstatisticincrementcallback)
+   * [events.playerToggleSprint(callback)](#eventsplayertogglesprintcallback)
+   * [events.playerInteractEntity(callback)](#eventsplayerinteractentitycallback)
+   * [events.playerEditBook(callback)](#eventsplayereditbookcallback)
+   * [events.playerKick(callback)](#eventsplayerkickcallback)
+   * [events.playerItemHeld(callback)](#eventsplayeritemheldcallback)
+   * [events.playerItemConsume(callback)](#eventsplayeritemconsumecallback)
+   * [events.playerGameModeChange(callback)](#eventsplayergamemodechangecallback)
+   * [events.playerItemBreak(callback)](#eventsplayeritembreakcallback)
+   * [events.playerToggleFlight(callback)](#eventsplayertoggleflightcallback)
+   * [events.playerAnimation(callback)](#eventsplayeranimationcallback)
+   * [events.asyncPlayerChat(callback)](#eventsasyncplayerchatcallback)
+   * [events.playerBucket(callback)](#eventsplayerbucketcallback)
+   * [events.playerRegisterChannel(callback)](#eventsplayerregisterchannelcallback)
+   * [events.playerMove(callback)](#eventsplayermovecallback)
+   * [events.playerTeleport(callback)](#eventsplayerteleportcallback)
+   * [events.playerBucketFill(callback)](#eventsplayerbucketfillcallback)
+   * [events.playerJoin(callback)](#eventsplayerjoincallback)
+   * [events.playerShearEntity(callback)](#eventsplayershearentitycallback)
+   * [events.playerToggleSneak(callback)](#eventsplayertogglesneakcallback)
+   * [events.playerChangedWorld(callback)](#eventsplayerchangedworldcallback)
+   * [events.serverCommand(callback)](#eventsservercommandcallback)
+   * [events.remoteServerCommand(callback)](#eventsremoteservercommandcallback)
+   * [events.mapInitialize(callback)](#eventsmapinitializecallback)
+   * [events.service(callback)](#eventsservicecallback)
+   * [events.plugin(callback)](#eventsplugincallback)
+   * [events.serviceRegister(callback)](#eventsserviceregistercallback)
+   * [events.serverListPing(callback)](#eventsserverlistpingcallback)
+   * [events.serviceUnregister(callback)](#eventsserviceunregistercallback)
+   * [events.prepareItemCraft(callback)](#eventsprepareitemcraftcallback)
+   * [events.inventoryOpen(callback)](#eventsinventoryopencallback)
+   * [events.craftItem(callback)](#eventscraftitemcallback)
+   * [events.hangingBreakByEntity(callback)](#eventshangingbreakbyentitycallback)
+   * [events.blockMultiPlace(callback)](#eventsblockmultiplacecallback)
+   * [events.entityBlockForm(callback)](#eventsentityblockformcallback)
+   * [events.playerBucketEmpty(callback)](#eventsplayerbucketemptycallback)
+   * [events.playerPortal(callback)](#eventsplayerportalcallback)
+   * [events.playerUnregisterChannel(callback)](#eventsplayerunregisterchannelcallback)
+   * [events.pluginDisable(callback)](#eventsplugindisablecallback)
+   * [events.pluginEnable(callback)](#eventspluginenablecallback)
  * [Blocks Module](#blocks-module)
    * [Examples](#examples)
  * [Fireworks Module](#fireworks-module)
@@ -54,7 +230,7 @@ Walter Higgins
  * [Http Module](#http-module)
    * [http.request() function](#httprequest-function)
  * [sc-mqtt module](#sc-mqtt-module)
-   * [Usage](#usage)
+   * [Usage](#usage-1)
  * [Signs Module](#signs-module)
    * [signs.menu() function](#signsmenu-function)
    * [signs.getTargetedBy() function](#signsgettargetedby-function)
@@ -111,22 +287,22 @@ Walter Higgins
    * [Drone.hemisphere0() method](#dronehemisphere0-method)
    * [Drone.spiral_stairs() method](#dronespiral_stairs-method)
  * [Example Plugin #1 - A simple extension to Minecraft.](#example-plugin-1---a-simple-extension-to-minecraft)
-   * [Usage:](#usage-1)
- * [Example Plugin #2 - Making extensions available for all players.](#example-plugin-2---making-extensions-available-for-all-players)
    * [Usage:](#usage-2)
- * [Example Plugin #3 - Limiting use of commands to operators only.](#example-plugin-3---limiting-use-of-commands-to-operators-only)
+ * [Example Plugin #2 - Making extensions available for all players.](#example-plugin-2---making-extensions-available-for-all-players)
    * [Usage:](#usage-3)
- * [Example Plugin #4 - Using parameters in commands.](#example-plugin-4---using-parameters-in-commands)
+ * [Example Plugin #3 - Limiting use of commands to operators only.](#example-plugin-3---limiting-use-of-commands-to-operators-only)
    * [Usage:](#usage-4)
- * [Example Plugin #5 - Re-use - Using your own and others modules.](#example-plugin-5---re-use---using-your-own-and-others-modules)
+ * [Example Plugin #4 - Using parameters in commands.](#example-plugin-4---using-parameters-in-commands)
    * [Usage:](#usage-5)
- * [Example Plugin #6 - Re-use - Using 'utils' to get Player objects.](#example-plugin-6---re-use---using-utils-to-get-player-objects)
+ * [Example Plugin #5 - Re-use - Using your own and others modules.](#example-plugin-5---re-use---using-your-own-and-others-modules)
    * [Usage:](#usage-6)
+ * [Example Plugin #6 - Re-use - Using 'utils' to get Player objects.](#example-plugin-6---re-use---using-utils-to-get-player-objects)
+   * [Usage:](#usage-7)
  * [Example Plugin #7 - Listening for events, Greet players when they join the game.](#example-plugin-7---listening-for-events-greet-players-when-they-join-the-game)
  * [Arrows Plugin](#arrows-plugin)
-   * [Usage:](#usage-7)
+   * [Usage:](#usage-8)
  * [Spawn Plugin](#spawn-plugin)
-   * [Usage](#usage-8)
+   * [Usage](#usage-9)
  * [alias Plugin](#alias-plugin)
    * [Examples](#examples-2)
  * [chat Plugin](#chat-plugin)
@@ -666,7 +842,6 @@ This method is used to register event listeners.
 
 #### Parameters
 
-
  * eventName - A string or java class. If a string is supplied it must
    be part of the Bukkit event class name.  See [Bukkit API][buk] for
    details of the many bukkit event types. When a string is supplied
@@ -768,6 +943,722 @@ ScriptCraft uses Java's [String.format()][strfmt] so any string substitution ide
 [strfmt]: http://docs.oracle.com/javase/6/docs/api/java/lang/String.html#format(java.lang.String, java.lang.Object...)
 [webcons]: https://developer.mozilla.org/en-US/docs/Web/API/console
 
+## Events Helper Module
+The Events helper module provides a suite of functions one for each possible event.
+For example, the blockBreak function in turn calls events.on(org.bukkit.event.block.BlockBreakEvent, callback, priority)
+This module is a convenience wrapper for easily add new event handlers.
+### Usage
+
+    events.blockBreak(function(evt){ 
+      evt.player.sendMessage("You broke a block!"); 
+    });
+
+... which is just a shorter way of writing ...
+
+    events.on("block.BlockBreakEvent",function(evt){ 
+      evt.player.sendMessage("You broke a block!");
+    });
+
+The crucial difference is that the events module will have functions for each 
+of the built-in events so tab-completion will help 
+beginning programmers to explore the events at the server console window.
+
+### events.hanging(callback)
+#### Parameters 
+ * callback - A function which is called whenever the hanging.HangingEvent event is fired
+see events.on() for more information
+### events.world(callback)
+#### Parameters 
+ * callback - A function which is called whenever the world.WorldEvent event is fired
+see events.on() for more information
+### events.chunk(callback)
+#### Parameters 
+ * callback - A function which is called whenever the world.ChunkEvent event is fired
+see events.on() for more information
+### events.worldUnload(callback)
+#### Parameters 
+ * callback - A function which is called whenever the world.WorldUnloadEvent event is fired
+see events.on() for more information
+### events.worldLoad(callback)
+#### Parameters 
+ * callback - A function which is called whenever the world.WorldLoadEvent event is fired
+see events.on() for more information
+### events.chunkLoad(callback)
+#### Parameters 
+ * callback - A function which is called whenever the world.ChunkLoadEvent event is fired
+see events.on() for more information
+### events.chunkPopulate(callback)
+#### Parameters 
+ * callback - A function which is called whenever the world.ChunkPopulateEvent event is fired
+see events.on() for more information
+### events.portalCreate(callback)
+#### Parameters 
+ * callback - A function which is called whenever the world.PortalCreateEvent event is fired
+see events.on() for more information
+### events.spawnChange(callback)
+#### Parameters 
+ * callback - A function which is called whenever the world.SpawnChangeEvent event is fired
+see events.on() for more information
+### events.chunkUnload(callback)
+#### Parameters 
+ * callback - A function which is called whenever the world.ChunkUnloadEvent event is fired
+see events.on() for more information
+### events.worldInit(callback)
+#### Parameters 
+ * callback - A function which is called whenever the world.WorldInitEvent event is fired
+see events.on() for more information
+### events.entity(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityEvent event is fired
+see events.on() for more information
+### events.horseJump(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.HorseJumpEvent event is fired
+see events.on() for more information
+### events.entityCombust(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityCombustEvent event is fired
+see events.on() for more information
+### events.entityRegainHealth(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityRegainHealthEvent event is fired
+see events.on() for more information
+### events.entityCombustByBlock(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityCombustByBlockEvent event is fired
+see events.on() for more information
+### events.entityCombustByEntity(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityCombustByEntityEvent event is fired
+see events.on() for more information
+### events.playerLeashEntity(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.PlayerLeashEntityEvent event is fired
+see events.on() for more information
+### events.pigZap(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.PigZapEvent event is fired
+see events.on() for more information
+### events.itemDespawn(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.ItemDespawnEvent event is fired
+see events.on() for more information
+### events.entityTarget(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityTargetEvent event is fired
+see events.on() for more information
+### events.slimeSplit(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.SlimeSplitEvent event is fired
+see events.on() for more information
+### events.entityChangeBlock(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityChangeBlockEvent event is fired
+see events.on() for more information
+### events.entityPortalEnter(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityPortalEnterEvent event is fired
+see events.on() for more information
+### events.creeperPower(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.CreeperPowerEvent event is fired
+see events.on() for more information
+### events.entityDeath(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityDeathEvent event is fired
+see events.on() for more information
+### events.projectileHit(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.ProjectileHitEvent event is fired
+see events.on() for more information
+### events.entityTame(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityTameEvent event is fired
+see events.on() for more information
+### events.potionSplash(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.PotionSplashEvent event is fired
+see events.on() for more information
+### events.expBottle(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.ExpBottleEvent event is fired
+see events.on() for more information
+### events.entityExplode(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityExplodeEvent event is fired
+see events.on() for more information
+### events.creatureSpawn(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.CreatureSpawnEvent event is fired
+see events.on() for more information
+### events.foodLevelChange(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.FoodLevelChangeEvent event is fired
+see events.on() for more information
+### events.entityInteract(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityInteractEvent event is fired
+see events.on() for more information
+### events.entityBreakDoor(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityBreakDoorEvent event is fired
+see events.on() for more information
+### events.entityCreatePortal(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityCreatePortalEvent event is fired
+see events.on() for more information
+### events.sheepRegrowWool(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.SheepRegrowWoolEvent event is fired
+see events.on() for more information
+### events.explosionPrime(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.ExplosionPrimeEvent event is fired
+see events.on() for more information
+### events.entityUnleash(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityUnleashEvent event is fired
+see events.on() for more information
+### events.entityShootBow(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityShootBowEvent event is fired
+see events.on() for more information
+### events.projectileLaunch(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.ProjectileLaunchEvent event is fired
+see events.on() for more information
+### events.itemSpawn(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.ItemSpawnEvent event is fired
+see events.on() for more information
+### events.sheepDyeWool(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.SheepDyeWoolEvent event is fired
+see events.on() for more information
+### events.entityTeleport(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityTeleportEvent event is fired
+see events.on() for more information
+### events.block(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockEvent event is fired
+see events.on() for more information
+### events.blockFade(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockFadeEvent event is fired
+see events.on() for more information
+### events.blockDamage(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockDamageEvent event is fired
+see events.on() for more information
+### events.blockPiston(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockPistonEvent event is fired
+see events.on() for more information
+### events.blockPistonExtend(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockPistonExtendEvent event is fired
+see events.on() for more information
+### events.blockExp(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockExpEvent event is fired
+see events.on() for more information
+### events.blockGrow(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockGrowEvent event is fired
+see events.on() for more information
+### events.blockPistonRetract(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockPistonRetractEvent event is fired
+see events.on() for more information
+### events.blockDispense(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockDispenseEvent event is fired
+see events.on() for more information
+### events.blockBreak(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockBreakEvent event is fired
+see events.on() for more information
+### events.painting(callback)
+#### Parameters 
+ * callback - A function which is called whenever the painting.PaintingEvent event is fired
+see events.on() for more information
+### events.paintingPlace(callback)
+#### Parameters 
+ * callback - A function which is called whenever the painting.PaintingPlaceEvent event is fired
+see events.on() for more information
+### events.weather(callback)
+#### Parameters 
+ * callback - A function which is called whenever the weather.WeatherEvent event is fired
+see events.on() for more information
+### events.lightningStrike(callback)
+#### Parameters 
+ * callback - A function which is called whenever the weather.LightningStrikeEvent event is fired
+see events.on() for more information
+### events.vehicle(callback)
+#### Parameters 
+ * callback - A function which is called whenever the vehicle.VehicleEvent event is fired
+see events.on() for more information
+### events.vehicleEnter(callback)
+#### Parameters 
+ * callback - A function which is called whenever the vehicle.VehicleEnterEvent event is fired
+see events.on() for more information
+### events.vehicleMove(callback)
+#### Parameters 
+ * callback - A function which is called whenever the vehicle.VehicleMoveEvent event is fired
+see events.on() for more information
+### events.vehicleCollision(callback)
+#### Parameters 
+ * callback - A function which is called whenever the vehicle.VehicleCollisionEvent event is fired
+see events.on() for more information
+### events.vehicleCreate(callback)
+#### Parameters 
+ * callback - A function which is called whenever the vehicle.VehicleCreateEvent event is fired
+see events.on() for more information
+### events.asyncPlayerPreLogin(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.AsyncPlayerPreLoginEvent event is fired
+see events.on() for more information
+### events.playerUnleashEntity(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerUnleashEntityEvent event is fired
+see events.on() for more information
+### events.playerPreLogin(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerPreLoginEvent event is fired
+see events.on() for more information
+### events.player(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerEvent event is fired
+see events.on() for more information
+### events.server(callback)
+#### Parameters 
+ * callback - A function which is called whenever the server.ServerEvent event is fired
+see events.on() for more information
+### events.inventoryPickupItem(callback)
+#### Parameters 
+ * callback - A function which is called whenever the inventory.InventoryPickupItemEvent event is fired
+see events.on() for more information
+### events.inventoryMoveItem(callback)
+#### Parameters 
+ * callback - A function which is called whenever the inventory.InventoryMoveItemEvent event is fired
+see events.on() for more information
+### events.furnaceBurn(callback)
+#### Parameters 
+ * callback - A function which is called whenever the inventory.FurnaceBurnEvent event is fired
+see events.on() for more information
+### events.inventory(callback)
+#### Parameters 
+ * callback - A function which is called whenever the inventory.InventoryEvent event is fired
+see events.on() for more information
+### events.brew(callback)
+#### Parameters 
+ * callback - A function which is called whenever the inventory.BrewEvent event is fired
+see events.on() for more information
+### events.furnaceExtract(callback)
+#### Parameters 
+ * callback - A function which is called whenever the inventory.FurnaceExtractEvent event is fired
+see events.on() for more information
+### events.furnaceSmelt(callback)
+#### Parameters 
+ * callback - A function which is called whenever the inventory.FurnaceSmeltEvent event is fired
+see events.on() for more information
+### events.inventoryInteract(callback)
+#### Parameters 
+ * callback - A function which is called whenever the inventory.InventoryInteractEvent event is fired
+see events.on() for more information
+### events.inventoryClose(callback)
+#### Parameters 
+ * callback - A function which is called whenever the inventory.InventoryCloseEvent event is fired
+see events.on() for more information
+### events.inventoryDrag(callback)
+#### Parameters 
+ * callback - A function which is called whenever the inventory.InventoryDragEvent event is fired
+see events.on() for more information
+### events.inventoryClick(callback)
+#### Parameters 
+ * callback - A function which is called whenever the inventory.InventoryClickEvent event is fired
+see events.on() for more information
+### events.inventoryCreative(callback)
+#### Parameters 
+ * callback - A function which is called whenever the inventory.InventoryCreativeEvent event is fired
+see events.on() for more information
+### events.hangingPlace(callback)
+#### Parameters 
+ * callback - A function which is called whenever the hanging.HangingPlaceEvent event is fired
+see events.on() for more information
+### events.hangingBreak(callback)
+#### Parameters 
+ * callback - A function which is called whenever the hanging.HangingBreakEvent event is fired
+see events.on() for more information
+### events.worldSave(callback)
+#### Parameters 
+ * callback - A function which is called whenever the world.WorldSaveEvent event is fired
+see events.on() for more information
+### events.structureGrow(callback)
+#### Parameters 
+ * callback - A function which is called whenever the world.StructureGrowEvent event is fired
+see events.on() for more information
+### events.entityDamage(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityDamageEvent event is fired
+see events.on() for more information
+### events.entityTargetLivingEntity(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityTargetLivingEntityEvent event is fired
+see events.on() for more information
+### events.playerDeath(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.PlayerDeathEvent event is fired
+see events.on() for more information
+### events.entityDamageByBlock(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityDamageByBlockEvent event is fired
+see events.on() for more information
+### events.entityDamageByEntity(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityDamageByEntityEvent event is fired
+see events.on() for more information
+### events.entityPortal(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityPortalEvent event is fired
+see events.on() for more information
+### events.entityPortalExit(callback)
+#### Parameters 
+ * callback - A function which is called whenever the entity.EntityPortalExitEvent event is fired
+see events.on() for more information
+### events.signChange(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.SignChangeEvent event is fired
+see events.on() for more information
+### events.leavesDecay(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.LeavesDecayEvent event is fired
+see events.on() for more information
+### events.blockRedstone(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockRedstoneEvent event is fired
+see events.on() for more information
+### events.blockCanBuild(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockCanBuildEvent event is fired
+see events.on() for more information
+### events.blockBurn(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockBurnEvent event is fired
+see events.on() for more information
+### events.blockPhysics(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockPhysicsEvent event is fired
+see events.on() for more information
+### events.blockIgnite(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockIgniteEvent event is fired
+see events.on() for more information
+### events.notePlay(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.NotePlayEvent event is fired
+see events.on() for more information
+### events.blockPlace(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockPlaceEvent event is fired
+see events.on() for more information
+### events.blockFromTo(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockFromToEvent event is fired
+see events.on() for more information
+### events.blockForm(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockFormEvent event is fired
+see events.on() for more information
+### events.blockSpread(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockSpreadEvent event is fired
+see events.on() for more information
+### events.enchantItem(callback)
+#### Parameters 
+ * callback - A function which is called whenever the enchantment.EnchantItemEvent event is fired
+see events.on() for more information
+### events.prepareItemEnchant(callback)
+#### Parameters 
+ * callback - A function which is called whenever the enchantment.PrepareItemEnchantEvent event is fired
+see events.on() for more information
+### events.paintingBreak(callback)
+#### Parameters 
+ * callback - A function which is called whenever the painting.PaintingBreakEvent event is fired
+see events.on() for more information
+### events.paintingBreakByEntity(callback)
+#### Parameters 
+ * callback - A function which is called whenever the painting.PaintingBreakByEntityEvent event is fired
+see events.on() for more information
+### events.weatherChange(callback)
+#### Parameters 
+ * callback - A function which is called whenever the weather.WeatherChangeEvent event is fired
+see events.on() for more information
+### events.thunderChange(callback)
+#### Parameters 
+ * callback - A function which is called whenever the weather.ThunderChangeEvent event is fired
+see events.on() for more information
+### events.vehicleEntityCollision(callback)
+#### Parameters 
+ * callback - A function which is called whenever the vehicle.VehicleEntityCollisionEvent event is fired
+see events.on() for more information
+### events.vehicleBlockCollision(callback)
+#### Parameters 
+ * callback - A function which is called whenever the vehicle.VehicleBlockCollisionEvent event is fired
+see events.on() for more information
+### events.vehicleExit(callback)
+#### Parameters 
+ * callback - A function which is called whenever the vehicle.VehicleExitEvent event is fired
+see events.on() for more information
+### events.vehicleUpdate(callback)
+#### Parameters 
+ * callback - A function which is called whenever the vehicle.VehicleUpdateEvent event is fired
+see events.on() for more information
+### events.vehicleDamage(callback)
+#### Parameters 
+ * callback - A function which is called whenever the vehicle.VehicleDamageEvent event is fired
+see events.on() for more information
+### events.vehicleDestroy(callback)
+#### Parameters 
+ * callback - A function which is called whenever the vehicle.VehicleDestroyEvent event is fired
+see events.on() for more information
+### events.playerExpChange(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerExpChangeEvent event is fired
+see events.on() for more information
+### events.playerRespawn(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerRespawnEvent event is fired
+see events.on() for more information
+### events.playerCommandPreprocess(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerCommandPreprocessEvent event is fired
+see events.on() for more information
+### events.playerPickupItem(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerPickupItemEvent event is fired
+see events.on() for more information
+### events.playerInventory(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerInventoryEvent event is fired
+see events.on() for more information
+### events.playerFish(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerFishEvent event is fired
+see events.on() for more information
+### events.playerBedEnter(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerBedEnterEvent event is fired
+see events.on() for more information
+### events.playerLogin(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerLoginEvent event is fired
+see events.on() for more information
+### events.playerDropItem(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerDropItemEvent event is fired
+see events.on() for more information
+### events.playerLevelChange(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerLevelChangeEvent event is fired
+see events.on() for more information
+### events.playerVelocity(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerVelocityEvent event is fired
+see events.on() for more information
+### events.playerInteract(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerInteractEvent event is fired
+see events.on() for more information
+### events.playerQuit(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerQuitEvent event is fired
+see events.on() for more information
+### events.playerChatTabComplete(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerChatTabCompleteEvent event is fired
+see events.on() for more information
+### events.playerEggThrow(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerEggThrowEvent event is fired
+see events.on() for more information
+### events.playerChat(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerChatEvent event is fired
+see events.on() for more information
+### events.playerAchievementAwarded(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerAchievementAwardedEvent event is fired
+see events.on() for more information
+### events.playerBedLeave(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerBedLeaveEvent event is fired
+see events.on() for more information
+### events.playerChannel(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerChannelEvent event is fired
+see events.on() for more information
+### events.playerStatisticIncrement(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerStatisticIncrementEvent event is fired
+see events.on() for more information
+### events.playerToggleSprint(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerToggleSprintEvent event is fired
+see events.on() for more information
+### events.playerInteractEntity(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerInteractEntityEvent event is fired
+see events.on() for more information
+### events.playerEditBook(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerEditBookEvent event is fired
+see events.on() for more information
+### events.playerKick(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerKickEvent event is fired
+see events.on() for more information
+### events.playerItemHeld(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerItemHeldEvent event is fired
+see events.on() for more information
+### events.playerItemConsume(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerItemConsumeEvent event is fired
+see events.on() for more information
+### events.playerGameModeChange(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerGameModeChangeEvent event is fired
+see events.on() for more information
+### events.playerItemBreak(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerItemBreakEvent event is fired
+see events.on() for more information
+### events.playerToggleFlight(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerToggleFlightEvent event is fired
+see events.on() for more information
+### events.playerAnimation(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerAnimationEvent event is fired
+see events.on() for more information
+### events.asyncPlayerChat(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.AsyncPlayerChatEvent event is fired
+see events.on() for more information
+### events.playerBucket(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerBucketEvent event is fired
+see events.on() for more information
+### events.playerRegisterChannel(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerRegisterChannelEvent event is fired
+see events.on() for more information
+### events.playerMove(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerMoveEvent event is fired
+see events.on() for more information
+### events.playerTeleport(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerTeleportEvent event is fired
+see events.on() for more information
+### events.playerBucketFill(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerBucketFillEvent event is fired
+see events.on() for more information
+### events.playerJoin(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerJoinEvent event is fired
+see events.on() for more information
+### events.playerShearEntity(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerShearEntityEvent event is fired
+see events.on() for more information
+### events.playerToggleSneak(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerToggleSneakEvent event is fired
+see events.on() for more information
+### events.playerChangedWorld(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerChangedWorldEvent event is fired
+see events.on() for more information
+### events.serverCommand(callback)
+#### Parameters 
+ * callback - A function which is called whenever the server.ServerCommandEvent event is fired
+see events.on() for more information
+### events.remoteServerCommand(callback)
+#### Parameters 
+ * callback - A function which is called whenever the server.RemoteServerCommandEvent event is fired
+see events.on() for more information
+### events.mapInitialize(callback)
+#### Parameters 
+ * callback - A function which is called whenever the server.MapInitializeEvent event is fired
+see events.on() for more information
+### events.service(callback)
+#### Parameters 
+ * callback - A function which is called whenever the server.ServiceEvent event is fired
+see events.on() for more information
+### events.plugin(callback)
+#### Parameters 
+ * callback - A function which is called whenever the server.PluginEvent event is fired
+see events.on() for more information
+### events.serviceRegister(callback)
+#### Parameters 
+ * callback - A function which is called whenever the server.ServiceRegisterEvent event is fired
+see events.on() for more information
+### events.serverListPing(callback)
+#### Parameters 
+ * callback - A function which is called whenever the server.ServerListPingEvent event is fired
+see events.on() for more information
+### events.serviceUnregister(callback)
+#### Parameters 
+ * callback - A function which is called whenever the server.ServiceUnregisterEvent event is fired
+see events.on() for more information
+### events.prepareItemCraft(callback)
+#### Parameters 
+ * callback - A function which is called whenever the inventory.PrepareItemCraftEvent event is fired
+see events.on() for more information
+### events.inventoryOpen(callback)
+#### Parameters 
+ * callback - A function which is called whenever the inventory.InventoryOpenEvent event is fired
+see events.on() for more information
+### events.craftItem(callback)
+#### Parameters 
+ * callback - A function which is called whenever the inventory.CraftItemEvent event is fired
+see events.on() for more information
+### events.hangingBreakByEntity(callback)
+#### Parameters 
+ * callback - A function which is called whenever the hanging.HangingBreakByEntityEvent event is fired
+see events.on() for more information
+### events.blockMultiPlace(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.BlockMultiPlaceEvent event is fired
+see events.on() for more information
+### events.entityBlockForm(callback)
+#### Parameters 
+ * callback - A function which is called whenever the block.EntityBlockFormEvent event is fired
+see events.on() for more information
+### events.playerBucketEmpty(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerBucketEmptyEvent event is fired
+see events.on() for more information
+### events.playerPortal(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerPortalEvent event is fired
+see events.on() for more information
+### events.playerUnregisterChannel(callback)
+#### Parameters 
+ * callback - A function which is called whenever the player.PlayerUnregisterChannelEvent event is fired
+see events.on() for more information
+### events.pluginDisable(callback)
+#### Parameters 
+ * callback - A function which is called whenever the server.PluginDisableEvent event is fired
+see events.on() for more information
+### events.pluginEnable(callback)
+#### Parameters 
+ * callback - A function which is called whenever the server.PluginEnableEvent event is fired
+see events.on() for more information
 ## Blocks Module
 
 You hate having to lookup [Data Values][dv] when you use ScriptCraft's

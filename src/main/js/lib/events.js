@@ -13,7 +13,6 @@ This method is used to register event listeners.
 
 #### Parameters
 
-
  * eventName - A string or java class. If a string is supplied it must
    be part of the Bukkit event class name.  See [Bukkit API][buk] for
    details of the many bukkit event types. When a string is supplied
@@ -82,6 +81,10 @@ events.on( org.bukkit.event.block.BlockBreakEvent, function( evt ) {
 [buk]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/event/Event.html
 
 ***/
+var helper = require('events-helper');
+for ( var func in helper ) {
+  exports[func] = helper[func];
+};
 
 var bkEventPriority = org.bukkit.event.EventPriority,
   bkEventExecutor = org.bukkit.plugin.EventExecutor,
