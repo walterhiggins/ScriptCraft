@@ -3,7 +3,6 @@
 
 A simple event-driven minecraft plugin. How to handle Events.
 
-
 This example demonstrates event-driven programming. The code below
 will display the version of ScriptCraft every time an operator joins
 the game. This module is notable from previous modules for the
@@ -85,6 +84,14 @@ cleaner and more readable. Similarly where you see a method like
       }
     });
 
+Update: Since version 2.0.8 the above code can be replaced by the more succinct:
+
+    events.playerJoin( function( event ) {
+      if ( event.player.op ) {
+        event.player.sendMessage('Welcome to ' + __plugin);
+      }
+    });
+    
 ***/
 events.on( 'player.PlayerJoinEvent', function( event ) {
   if ( event.player.op ) {

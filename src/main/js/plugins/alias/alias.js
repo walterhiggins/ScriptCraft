@@ -223,7 +223,7 @@ var _intercept = function( msg, invoker, exec ) {
   Intercept all command processing and replace with aliased commands if the 
   command about to be issued matches an alias.
 */
-events.on( 'player.PlayerCommandPreprocessEvent', function( evt ) {
+events.playerCommandPreprocess( function( evt ) {
   var invoker = evt.player;
   var exec = function( cmd ) { 
     invoker.performCommand(cmd);
@@ -237,7 +237,7 @@ events.on( 'player.PlayerCommandPreprocessEvent', function( evt ) {
 command('void',function(  ) {
 } );
 
-events.on( 'server.ServerCommandEvent', function( evt ) {
+events.serverCommand( function( evt ) {
   var invoker = evt.sender;
   var exec = function( cmd ) { 
     invoker.server.dispatchCommand( invoker, cmd); 

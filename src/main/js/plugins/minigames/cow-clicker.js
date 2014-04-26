@@ -94,9 +94,9 @@ var _startGame = function( ) {
     console.log('Staring game: Cow Clicker');
   }
   
-  events.on( 'player.PlayerQuitEvent', _onPlayerQuit );
-  events.on( 'player.PlayerJoinEvent', _onPlayerJoin );
-  events.on( 'player.PlayerInteractEntityEvent', _onPlayerInteract );
+  events.playerQuit( _onPlayerQuit );
+  events.playerJoin( _onPlayerJoin );
+  events.playerInteractEntity( _onPlayerInteract );
 
   scoreboard.start();
 

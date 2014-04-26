@@ -48,9 +48,6 @@ Walter Higgins
    * [Using string substitutions](#using-string-substitutions)
  * [Events Helper Module](#events-helper-module)
    * [Usage](#usage)
-   * [events.hanging()](#eventshanging)
-   * [events.world()](#eventsworld)
-   * [events.chunk()](#eventschunk)
    * [events.worldUnload()](#eventsworldunload)
    * [events.worldLoad()](#eventsworldload)
    * [events.chunkLoad()](#eventschunkload)
@@ -59,7 +56,6 @@ Walter Higgins
    * [events.spawnChange()](#eventsspawnchange)
    * [events.chunkUnload()](#eventschunkunload)
    * [events.worldInit()](#eventsworldinit)
-   * [events.entity()](#eventsentity)
    * [events.horseJump()](#eventshorsejump)
    * [events.entityCombust()](#eventsentitycombust)
    * [events.entityRegainHealth()](#eventsentityregainhealth)
@@ -92,30 +88,22 @@ Walter Higgins
    * [events.itemSpawn()](#eventsitemspawn)
    * [events.sheepDyeWool()](#eventssheepdyewool)
    * [events.entityTeleport()](#eventsentityteleport)
-   * [events.block()](#eventsblock)
    * [events.blockFade()](#eventsblockfade)
    * [events.blockDamage()](#eventsblockdamage)
-   * [events.blockPiston()](#eventsblockpiston)
    * [events.blockPistonExtend()](#eventsblockpistonextend)
    * [events.blockExp()](#eventsblockexp)
    * [events.blockGrow()](#eventsblockgrow)
    * [events.blockPistonRetract()](#eventsblockpistonretract)
    * [events.blockDispense()](#eventsblockdispense)
    * [events.blockBreak()](#eventsblockbreak)
-   * [events.painting()](#eventspainting)
    * [events.paintingPlace()](#eventspaintingplace)
-   * [events.weather()](#eventsweather)
    * [events.lightningStrike()](#eventslightningstrike)
-   * [events.vehicle()](#eventsvehicle)
    * [events.vehicleEnter()](#eventsvehicleenter)
    * [events.vehicleMove()](#eventsvehiclemove)
-   * [events.vehicleCollision()](#eventsvehiclecollision)
    * [events.vehicleCreate()](#eventsvehiclecreate)
    * [events.asyncPlayerPreLogin()](#eventsasyncplayerprelogin)
    * [events.playerUnleashEntity()](#eventsplayerunleashentity)
    * [events.playerPreLogin()](#eventsplayerprelogin)
-   * [events.player()](#eventsplayer)
-   * [events.server()](#eventsserver)
    * [events.inventoryPickupItem()](#eventsinventorypickupitem)
    * [events.inventoryMoveItem()](#eventsinventorymoveitem)
    * [events.furnaceBurn()](#eventsfurnaceburn)
@@ -194,7 +182,6 @@ Walter Higgins
    * [events.playerToggleFlight()](#eventsplayertoggleflight)
    * [events.playerAnimation()](#eventsplayeranimation)
    * [events.asyncPlayerChat()](#eventsasyncplayerchat)
-   * [events.playerBucket()](#eventsplayerbucket)
    * [events.playerRegisterChannel()](#eventsplayerregisterchannel)
    * [events.playerMove()](#eventsplayermove)
    * [events.playerTeleport()](#eventsplayerteleport)
@@ -206,8 +193,6 @@ Walter Higgins
    * [events.serverCommand()](#eventsservercommand)
    * [events.remoteServerCommand()](#eventsremoteservercommand)
    * [events.mapInitialize()](#eventsmapinitialize)
-   * [events.service()](#eventsservice)
-   * [events.plugin()](#eventsplugin)
    * [events.serviceRegister()](#eventsserviceregister)
    * [events.serverListPing()](#eventsserverlistping)
    * [events.serviceUnregister()](#eventsserviceunregister)
@@ -963,30 +948,6 @@ The crucial difference is that the events module will have functions for each
 of the built-in events so tab-completion will help 
 beginning programmers to explore the events at the server console window.
 
-### events.hanging()
-
-#### Parameters 
-
- * callback - A function which is called whenever the hanging.HangingEvent event is fired
-
-see events.on() for more information.
-
-### events.world()
-
-#### Parameters 
-
- * callback - A function which is called whenever the world.WorldEvent event is fired
-
-see events.on() for more information.
-
-### events.chunk()
-
-#### Parameters 
-
- * callback - A function which is called whenever the world.ChunkEvent event is fired
-
-see events.on() for more information.
-
 ### events.worldUnload()
 
 #### Parameters 
@@ -1048,14 +1009,6 @@ see events.on() for more information.
 #### Parameters 
 
  * callback - A function which is called whenever the world.WorldInitEvent event is fired
-
-see events.on() for more information.
-
-### events.entity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the entity.EntityEvent event is fired
 
 see events.on() for more information.
 
@@ -1315,14 +1268,6 @@ see events.on() for more information.
 
 see events.on() for more information.
 
-### events.block()
-
-#### Parameters 
-
- * callback - A function which is called whenever the block.BlockEvent event is fired
-
-see events.on() for more information.
-
 ### events.blockFade()
 
 #### Parameters 
@@ -1336,14 +1281,6 @@ see events.on() for more information.
 #### Parameters 
 
  * callback - A function which is called whenever the block.BlockDamageEvent event is fired
-
-see events.on() for more information.
-
-### events.blockPiston()
-
-#### Parameters 
-
- * callback - A function which is called whenever the block.BlockPistonEvent event is fired
 
 see events.on() for more information.
 
@@ -1395,14 +1332,6 @@ see events.on() for more information.
 
 see events.on() for more information.
 
-### events.painting()
-
-#### Parameters 
-
- * callback - A function which is called whenever the painting.PaintingEvent event is fired
-
-see events.on() for more information.
-
 ### events.paintingPlace()
 
 #### Parameters 
@@ -1411,27 +1340,11 @@ see events.on() for more information.
 
 see events.on() for more information.
 
-### events.weather()
-
-#### Parameters 
-
- * callback - A function which is called whenever the weather.WeatherEvent event is fired
-
-see events.on() for more information.
-
 ### events.lightningStrike()
 
 #### Parameters 
 
  * callback - A function which is called whenever the weather.LightningStrikeEvent event is fired
-
-see events.on() for more information.
-
-### events.vehicle()
-
-#### Parameters 
-
- * callback - A function which is called whenever the vehicle.VehicleEvent event is fired
 
 see events.on() for more information.
 
@@ -1448,14 +1361,6 @@ see events.on() for more information.
 #### Parameters 
 
  * callback - A function which is called whenever the vehicle.VehicleMoveEvent event is fired
-
-see events.on() for more information.
-
-### events.vehicleCollision()
-
-#### Parameters 
-
- * callback - A function which is called whenever the vehicle.VehicleCollisionEvent event is fired
 
 see events.on() for more information.
 
@@ -1488,22 +1393,6 @@ see events.on() for more information.
 #### Parameters 
 
  * callback - A function which is called whenever the player.PlayerPreLoginEvent event is fired
-
-see events.on() for more information.
-
-### events.player()
-
-#### Parameters 
-
- * callback - A function which is called whenever the player.PlayerEvent event is fired
-
-see events.on() for more information.
-
-### events.server()
-
-#### Parameters 
-
- * callback - A function which is called whenever the server.ServerEvent event is fired
 
 see events.on() for more information.
 
@@ -2131,14 +2020,6 @@ see events.on() for more information.
 
 see events.on() for more information.
 
-### events.playerBucket()
-
-#### Parameters 
-
- * callback - A function which is called whenever the player.PlayerBucketEvent event is fired
-
-see events.on() for more information.
-
 ### events.playerRegisterChannel()
 
 #### Parameters 
@@ -2224,22 +2105,6 @@ see events.on() for more information.
 #### Parameters 
 
  * callback - A function which is called whenever the server.MapInitializeEvent event is fired
-
-see events.on() for more information.
-
-### events.service()
-
-#### Parameters 
-
- * callback - A function which is called whenever the server.ServiceEvent event is fired
-
-see events.on() for more information.
-
-### events.plugin()
-
-#### Parameters 
-
- * callback - A function which is called whenever the server.PluginEvent event is fired
 
 see events.on() for more information.
 
@@ -3138,7 +3003,7 @@ Drones can be created in any of the following ways...
     block is broken at the block's location you would do so like
     this...
 
-        events.on('block.BlockBreakEvent',function( event) { 
+        events.blockBreak( function( event) { 
             var location = event.block.location;
             var drone = new Drone(location);
             // do more stuff with the drone here...
@@ -4046,7 +3911,6 @@ Source Code ...
 
 A simple event-driven minecraft plugin. How to handle Events.
 
-
 This example demonstrates event-driven programming. The code below
 will display the version of ScriptCraft every time an operator joins
 the game. This module is notable from previous modules for the
@@ -4128,6 +3992,14 @@ cleaner and more readable. Similarly where you see a method like
       }
     });
 
+Update: Since version 2.0.8 the above code can be replaced by the more succinct:
+
+    events.playerJoin( function( event ) {
+      if ( event.player.op ) {
+        event.player.sendMessage('Welcome to ' + __plugin);
+      }
+    });
+    
 ## Arrows Plugin
 
 The arrows mod adds fancy arrows to the game. Arrows which... 

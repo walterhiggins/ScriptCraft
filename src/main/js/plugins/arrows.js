@@ -121,5 +121,5 @@ var _onArrowHit = function( event ) {
     }
   }
 };
-events.on( 'entity.ProjectileHitEvent', _onArrowHit );
+events.projectileHit( _onArrowHit );
 

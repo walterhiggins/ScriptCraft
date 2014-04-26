@@ -73,7 +73,7 @@ foreach( colors, function ( color, i ) {
   colorCodes[color] = i.toString( 16 );
 } );
 
-events.on( 'player.AsyncPlayerChatEvent', function( event ) {
+events.asyncPlayerChat( function( event ) {
   var player = event.player;
   var playerChatColor = _store.players[ player.name ];
   if ( playerChatColor ) {

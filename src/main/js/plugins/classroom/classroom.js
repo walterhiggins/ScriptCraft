@@ -158,7 +158,7 @@ var classroom = plugin('classroom', {
 
 exports.classroom = classroom;
 
-events.on( 'player.PlayerJoinEvent', function( event ) { 
+events.playerJoin( function( event ) { 
   if ( _store.enableScripting ) {
     grantScripting(event.player);
   }

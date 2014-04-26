@@ -619,15 +619,16 @@ function __onEnable ( __engine, __plugin, __script )
   global.plugin = plugins.plugin;
 
   var events = require('events');
-  events.on( 'server.PluginDisableEvent', function( evt ) {
+  // wph 20131226 - make events global as it is used by many plugins/modules
+  global.events = events;
+
+  events.pluginDisable(function( evt ) {
     // save config
     _save( global.config, new File( jsPluginsRootDir, 'data/global-config.json' ) );
 
     _runUnloadHandlers();
     org.bukkit.event.HandlerList['unregisterAll(org.bukkit.plugin.Plugin)'](__plugin);
   });
-  // wph 20131226 - make events global as it is used by many plugins/modules
-  global.events = events;
 
 
   global.__onCommand = function( sender, cmd, label, args) {

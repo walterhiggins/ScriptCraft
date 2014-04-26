@@ -24,6 +24,7 @@ var _getProperties = function( o ) {
     i,
     j,
     isObjectMethod,
+    propValue,
     typeofProperty;
 
   if ( isJavaObject( o ) ) {
@@ -49,12 +50,14 @@ var _getProperties = function( o ) {
       }
       typeofProperty = null;
       try { 
-        typeofProperty = typeof o[i];
+	propValue = o[i];
+        typeofProperty = typeof propValue;
       } catch( e ) {
         if ( e.message == 'java.lang.IllegalStateException: Entity not leashed' ) {
           // wph 20131020 fail silently for Entity leashing in craftbukkit
         } else {
-          throw e;
+	  // don't throw an error during tab completion just make a best effort to 
+	  // do the job.
         }
       }
       if ( typeofProperty == 'function' ) {
@@ -119,6 +122,9 @@ var onTabCompleteJS = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs 
   if ( statement.length == 0 ) { 
     propsOfLastArg = _globalSymbols;
   } else {
+    if (statement.match(/\)$/)){
+      return;
+    }
     statementSyms = statement.split(/[^\$a-zA-Z0-9_\.]/);
 
     lastSymbol = statementSyms[statementSyms.length-1];

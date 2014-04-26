@@ -43,7 +43,6 @@ cover to make the game more fun.
 ***/
 
 var bkGameMode = org.bukkit.GameMode,
-  bkEntityDamageByEntityEvent = org.bukkit.event.entity.EntityDamageByEntityEvent,
   bkItemStack = org.bukkit.inventory.ItemStack,
   bkMaterial = org.bukkit.Material,
   bkSnowball = org.bukkit.entity.Snowball;
@@ -196,7 +195,7 @@ var createGame = function( duration, teams ) {
   return { 
     start: function( ) {
       _startGame( _gameState );
-      _gameState.listener = events.on(bkEntityDamageByEntityEvent,_onSnowballHit);
+      _gameState.listener = events.entityDamageByEntity( _onSnowballHit );
       new java.lang.Thread( function( ) {
         while ( _gameState.duration-- ) {
           java.lang.Thread.sleep( 1000 ); // sleep 1,000 millisecs (1 second)

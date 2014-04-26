@@ -36,6 +36,13 @@ while ( ( entry = zis.nextEntry) != null) {
   var name = '' + entry.name;
   if (name.match(/org\/bukkit\/event\/.+Event\.class$/)){
     name = name.replace(/\//g,'.').replace('.class','');
+    
+    // abstract events don't have a static getHandlerList method so 
+    // shouldn't be added to this module
+    var hasHandlerList = eval(name + '.getHandlerList');
+    if ( !hasHandlerList ) {
+      continue;
+    }
     var parts = name.split('.');
     var shortName = name.replace('org.bukkit.event.','');
     var fname = parts.reverse().shift().replace(/^(.)/,function(a){ return a.toLowerCase()}).replace(/Event$/,'');

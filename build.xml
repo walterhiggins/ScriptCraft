@@ -89,6 +89,7 @@
     <java classname="jscript" failonerror="true" fork="true" output="${dist}/js/lib/events-helper.js">
       <classpath>
         <pathelement path="src/docs/java"/>      
+	<pathelement path="${minecraft.dir}/craftbukkit.jar"/>
       </classpath>
       <arg value="src/generateEventsHelper.js"/>
     </java>

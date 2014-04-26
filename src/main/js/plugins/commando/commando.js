@@ -84,7 +84,7 @@ exports.commando = function( name, func, options, intercepts ) {
   return result;
 };
 
-events.on( 'player.PlayerCommandPreprocessEvent', function( evt ) {
+events.playerCommandPreprocess( function( evt ) {
   var msg = '' + evt.message;
   var parts = msg.match( /^\/([^\s]+)/ );
   if ( !parts ) {
@@ -98,7 +98,7 @@ events.on( 'player.PlayerCommandPreprocessEvent', function( evt ) {
     evt.message = '/jsp ' + msg.replace( /^\//, '' );
   }
 } );
-events.on( 'server.ServerCommandEvent', function( evt ) {
+events.serverCommand( function( evt ) {
   var msg = '' + evt.command;
   var parts = msg.match( /^\/*([^\s]+)/ );
   if ( !parts ) {
