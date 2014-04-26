@@ -42,7 +42,13 @@ while ( ( entry = zis.nextEntry) != null) {
     
     // abstract events don't have a static getHandlerList method so 
     // shouldn't be added to this module
-    var hasHandlerList = engine.eval(name + '.getHandlerList');
+    var hasHandlerList = false;
+    try {
+      hasHandlerList = engine.eval(name + '.getHandlerList');
+    } catch ( ex ) {
+      // exception is thrown for JRE7
+      continue;
+    }
     if ( !hasHandlerList ) {
       continue;
     }
