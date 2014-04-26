@@ -954,7 +954,7 @@ beginning programmers to explore the events at the server console window.
 
  * callback - A function which is called whenever the world.WorldUnloadEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.worldLoad()
 
@@ -962,7 +962,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the world.WorldLoadEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.chunkLoad()
 
@@ -970,7 +970,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the world.ChunkLoadEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.chunkPopulate()
 
@@ -978,7 +978,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the world.ChunkPopulateEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.portalCreate()
 
@@ -986,7 +986,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the world.PortalCreateEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.spawnChange()
 
@@ -994,7 +994,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the world.SpawnChangeEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.chunkUnload()
 
@@ -1002,7 +1002,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the world.ChunkUnloadEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.worldInit()
 
@@ -1010,7 +1010,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the world.WorldInitEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.horseJump()
 
@@ -1018,7 +1018,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.HorseJumpEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityCombust()
 
@@ -1026,7 +1026,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityCombustEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityRegainHealth()
 
@@ -1034,7 +1034,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityRegainHealthEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityCombustByBlock()
 
@@ -1042,7 +1042,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityCombustByBlockEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityCombustByEntity()
 
@@ -1050,7 +1050,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityCombustByEntityEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerLeashEntity()
 
@@ -1058,7 +1058,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.PlayerLeashEntityEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.pigZap()
 
@@ -1066,7 +1066,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.PigZapEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.itemDespawn()
 
@@ -1074,7 +1074,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.ItemDespawnEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityTarget()
 
@@ -1082,7 +1082,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityTargetEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.slimeSplit()
 
@@ -1090,7 +1090,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.SlimeSplitEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityChangeBlock()
 
@@ -1098,7 +1098,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityChangeBlockEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityPortalEnter()
 
@@ -1106,7 +1106,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityPortalEnterEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.creeperPower()
 
@@ -1114,7 +1114,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.CreeperPowerEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityDeath()
 
@@ -1122,7 +1122,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityDeathEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.projectileHit()
 
@@ -1130,7 +1130,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.ProjectileHitEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityTame()
 
@@ -1138,7 +1138,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityTameEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.potionSplash()
 
@@ -1146,7 +1146,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.PotionSplashEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.expBottle()
 
@@ -1154,7 +1154,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.ExpBottleEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityExplode()
 
@@ -1162,7 +1162,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityExplodeEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.creatureSpawn()
 
@@ -1170,7 +1170,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.CreatureSpawnEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.foodLevelChange()
 
@@ -1178,7 +1178,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.FoodLevelChangeEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityInteract()
 
@@ -1186,7 +1186,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityInteractEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityBreakDoor()
 
@@ -1194,7 +1194,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityBreakDoorEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityCreatePortal()
 
@@ -1202,7 +1202,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityCreatePortalEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.sheepRegrowWool()
 
@@ -1210,7 +1210,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.SheepRegrowWoolEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.explosionPrime()
 
@@ -1218,7 +1218,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.ExplosionPrimeEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityUnleash()
 
@@ -1226,7 +1226,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityUnleashEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityShootBow()
 
@@ -1234,7 +1234,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityShootBowEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.projectileLaunch()
 
@@ -1242,7 +1242,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.ProjectileLaunchEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.itemSpawn()
 
@@ -1250,7 +1250,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.ItemSpawnEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.sheepDyeWool()
 
@@ -1258,7 +1258,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.SheepDyeWoolEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityTeleport()
 
@@ -1266,7 +1266,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityTeleportEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockFade()
 
@@ -1274,7 +1274,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockFadeEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockDamage()
 
@@ -1282,7 +1282,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockDamageEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockPistonExtend()
 
@@ -1290,7 +1290,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockPistonExtendEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockExp()
 
@@ -1298,7 +1298,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockExpEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockGrow()
 
@@ -1306,7 +1306,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockGrowEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockPistonRetract()
 
@@ -1314,7 +1314,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockPistonRetractEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockDispense()
 
@@ -1322,7 +1322,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockDispenseEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockBreak()
 
@@ -1330,7 +1330,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockBreakEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.paintingPlace()
 
@@ -1338,7 +1338,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the painting.PaintingPlaceEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.lightningStrike()
 
@@ -1346,7 +1346,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the weather.LightningStrikeEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.vehicleEnter()
 
@@ -1354,7 +1354,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the vehicle.VehicleEnterEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.vehicleMove()
 
@@ -1362,7 +1362,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the vehicle.VehicleMoveEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.vehicleCreate()
 
@@ -1370,7 +1370,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the vehicle.VehicleCreateEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.asyncPlayerPreLogin()
 
@@ -1378,7 +1378,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.AsyncPlayerPreLoginEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerUnleashEntity()
 
@@ -1386,7 +1386,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerUnleashEntityEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerPreLogin()
 
@@ -1394,7 +1394,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerPreLoginEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.inventoryPickupItem()
 
@@ -1402,7 +1402,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the inventory.InventoryPickupItemEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.inventoryMoveItem()
 
@@ -1410,7 +1410,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the inventory.InventoryMoveItemEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.furnaceBurn()
 
@@ -1418,7 +1418,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the inventory.FurnaceBurnEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.inventory()
 
@@ -1426,7 +1426,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the inventory.InventoryEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.brew()
 
@@ -1434,7 +1434,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the inventory.BrewEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.furnaceExtract()
 
@@ -1442,7 +1442,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the inventory.FurnaceExtractEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.furnaceSmelt()
 
@@ -1450,7 +1450,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the inventory.FurnaceSmeltEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.inventoryInteract()
 
@@ -1458,7 +1458,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the inventory.InventoryInteractEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.inventoryClose()
 
@@ -1466,7 +1466,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the inventory.InventoryCloseEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.inventoryDrag()
 
@@ -1474,7 +1474,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the inventory.InventoryDragEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.inventoryClick()
 
@@ -1482,7 +1482,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the inventory.InventoryClickEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.inventoryCreative()
 
@@ -1490,7 +1490,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the inventory.InventoryCreativeEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.hangingPlace()
 
@@ -1498,7 +1498,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the hanging.HangingPlaceEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.hangingBreak()
 
@@ -1506,7 +1506,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the hanging.HangingBreakEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.worldSave()
 
@@ -1514,7 +1514,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the world.WorldSaveEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.structureGrow()
 
@@ -1522,7 +1522,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the world.StructureGrowEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityDamage()
 
@@ -1530,7 +1530,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityDamageEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityTargetLivingEntity()
 
@@ -1538,7 +1538,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityTargetLivingEntityEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerDeath()
 
@@ -1546,7 +1546,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.PlayerDeathEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityDamageByBlock()
 
@@ -1554,7 +1554,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityDamageByBlockEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityDamageByEntity()
 
@@ -1562,7 +1562,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityDamageByEntityEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityPortal()
 
@@ -1570,7 +1570,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityPortalEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityPortalExit()
 
@@ -1578,7 +1578,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the entity.EntityPortalExitEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.signChange()
 
@@ -1586,7 +1586,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.SignChangeEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.leavesDecay()
 
@@ -1594,7 +1594,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.LeavesDecayEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockRedstone()
 
@@ -1602,7 +1602,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockRedstoneEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockCanBuild()
 
@@ -1610,7 +1610,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockCanBuildEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockBurn()
 
@@ -1618,7 +1618,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockBurnEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockPhysics()
 
@@ -1626,7 +1626,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockPhysicsEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockIgnite()
 
@@ -1634,7 +1634,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockIgniteEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.notePlay()
 
@@ -1642,7 +1642,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.NotePlayEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockPlace()
 
@@ -1650,7 +1650,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockPlaceEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockFromTo()
 
@@ -1658,7 +1658,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockFromToEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockForm()
 
@@ -1666,7 +1666,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockFormEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockSpread()
 
@@ -1674,7 +1674,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockSpreadEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.enchantItem()
 
@@ -1682,7 +1682,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the enchantment.EnchantItemEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.prepareItemEnchant()
 
@@ -1690,7 +1690,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the enchantment.PrepareItemEnchantEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.paintingBreak()
 
@@ -1698,7 +1698,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the painting.PaintingBreakEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.paintingBreakByEntity()
 
@@ -1706,7 +1706,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the painting.PaintingBreakByEntityEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.weatherChange()
 
@@ -1714,7 +1714,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the weather.WeatherChangeEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.thunderChange()
 
@@ -1722,7 +1722,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the weather.ThunderChangeEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.vehicleEntityCollision()
 
@@ -1730,7 +1730,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the vehicle.VehicleEntityCollisionEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.vehicleBlockCollision()
 
@@ -1738,7 +1738,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the vehicle.VehicleBlockCollisionEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.vehicleExit()
 
@@ -1746,7 +1746,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the vehicle.VehicleExitEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.vehicleUpdate()
 
@@ -1754,7 +1754,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the vehicle.VehicleUpdateEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.vehicleDamage()
 
@@ -1762,7 +1762,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the vehicle.VehicleDamageEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.vehicleDestroy()
 
@@ -1770,7 +1770,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the vehicle.VehicleDestroyEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerExpChange()
 
@@ -1778,7 +1778,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerExpChangeEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerRespawn()
 
@@ -1786,7 +1786,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerRespawnEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerCommandPreprocess()
 
@@ -1794,7 +1794,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerCommandPreprocessEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerPickupItem()
 
@@ -1802,7 +1802,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerPickupItemEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerInventory()
 
@@ -1810,7 +1810,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerInventoryEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerFish()
 
@@ -1818,7 +1818,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerFishEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerBedEnter()
 
@@ -1826,7 +1826,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerBedEnterEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerLogin()
 
@@ -1834,7 +1834,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerLoginEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerDropItem()
 
@@ -1842,7 +1842,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerDropItemEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerLevelChange()
 
@@ -1850,7 +1850,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerLevelChangeEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerVelocity()
 
@@ -1858,7 +1858,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerVelocityEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerInteract()
 
@@ -1866,7 +1866,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerInteractEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerQuit()
 
@@ -1874,7 +1874,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerQuitEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerChatTabComplete()
 
@@ -1882,7 +1882,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerChatTabCompleteEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerEggThrow()
 
@@ -1890,7 +1890,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerEggThrowEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerChat()
 
@@ -1898,7 +1898,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerChatEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerAchievementAwarded()
 
@@ -1906,7 +1906,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerAchievementAwardedEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerBedLeave()
 
@@ -1914,7 +1914,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerBedLeaveEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerChannel()
 
@@ -1922,7 +1922,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerChannelEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerStatisticIncrement()
 
@@ -1930,7 +1930,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerStatisticIncrementEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerToggleSprint()
 
@@ -1938,7 +1938,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerToggleSprintEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerInteractEntity()
 
@@ -1946,7 +1946,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerInteractEntityEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerEditBook()
 
@@ -1954,7 +1954,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerEditBookEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerKick()
 
@@ -1962,7 +1962,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerKickEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerItemHeld()
 
@@ -1970,7 +1970,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerItemHeldEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerItemConsume()
 
@@ -1978,7 +1978,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerItemConsumeEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerGameModeChange()
 
@@ -1986,7 +1986,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerGameModeChangeEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerItemBreak()
 
@@ -1994,7 +1994,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerItemBreakEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerToggleFlight()
 
@@ -2002,7 +2002,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerToggleFlightEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerAnimation()
 
@@ -2010,7 +2010,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerAnimationEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.asyncPlayerChat()
 
@@ -2018,7 +2018,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.AsyncPlayerChatEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerRegisterChannel()
 
@@ -2026,7 +2026,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerRegisterChannelEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerMove()
 
@@ -2034,7 +2034,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerMoveEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerTeleport()
 
@@ -2042,7 +2042,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerTeleportEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerBucketFill()
 
@@ -2050,7 +2050,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerBucketFillEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerJoin()
 
@@ -2058,7 +2058,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerJoinEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerShearEntity()
 
@@ -2066,7 +2066,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerShearEntityEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerToggleSneak()
 
@@ -2074,7 +2074,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerToggleSneakEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerChangedWorld()
 
@@ -2082,7 +2082,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerChangedWorldEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.serverCommand()
 
@@ -2090,7 +2090,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the server.ServerCommandEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.remoteServerCommand()
 
@@ -2098,7 +2098,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the server.RemoteServerCommandEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.mapInitialize()
 
@@ -2106,7 +2106,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the server.MapInitializeEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.serviceRegister()
 
@@ -2114,7 +2114,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the server.ServiceRegisterEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.serverListPing()
 
@@ -2122,7 +2122,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the server.ServerListPingEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.serviceUnregister()
 
@@ -2130,7 +2130,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the server.ServiceUnregisterEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.prepareItemCraft()
 
@@ -2138,7 +2138,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the inventory.PrepareItemCraftEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.inventoryOpen()
 
@@ -2146,7 +2146,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the inventory.InventoryOpenEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.craftItem()
 
@@ -2154,7 +2154,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the inventory.CraftItemEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.hangingBreakByEntity()
 
@@ -2162,7 +2162,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the hanging.HangingBreakByEntityEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.blockMultiPlace()
 
@@ -2170,7 +2170,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.BlockMultiPlaceEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.entityBlockForm()
 
@@ -2178,7 +2178,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the block.EntityBlockFormEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerBucketEmpty()
 
@@ -2186,7 +2186,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerBucketEmptyEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerPortal()
 
@@ -2194,7 +2194,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerPortalEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.playerUnregisterChannel()
 
@@ -2202,7 +2202,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the player.PlayerUnregisterChannelEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.pluginDisable()
 
@@ -2210,7 +2210,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the server.PluginDisableEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ### events.pluginEnable()
 
@@ -2218,7 +2218,7 @@ see events.on() for more information.
 
  * callback - A function which is called whenever the server.PluginEnableEvent event is fired
 
-see events.on() for more information.
+ * priority - optional - see events.on() for more information.
 
 ## Blocks Module
 

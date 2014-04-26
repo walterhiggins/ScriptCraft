@@ -55,7 +55,7 @@ while ( ( entry = zis.nextEntry) != null) {
       '',
       ' * callback - A function which is called whenever the ' + shortName + ' event is fired',
       '',
-      'see events.on() for more information.',
+      ' * priority - optional - see events.on() for more information.',
       '',
       '***/'
     ];
