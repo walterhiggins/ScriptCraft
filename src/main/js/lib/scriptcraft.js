@@ -651,25 +651,32 @@ function __onEnable ( __engine, __plugin, __script )
       global.self = sender;
       global.__engine = __engine;
       try { 
-
+        // cannot rely on native eval in jre7 and jre8 
+        // because ...
+        // js var hearts 
+        // js hearts
+        // ... throws an execption ('hearts' is not defined). vars are not sticky in native eval .
+        //
         jsResult = __engine.eval( fnBody );
 
         if ( typeof jsResult != 'undefined' ) { 
           if ( jsResult == null) { 
-            sender.sendMessage('(null)');
+            // engine eval will return null even if the result should be undefined
+            // this can be confusing so I think it's better to omit output for this case
+            // sender.sendMessage('(null)');
           } else { 
-	    try { 
-	      if ( isJavaObject(jsResult) || typeof jsResult === 'function') {
-		sender.sendMessage(jsResult);
-	      } else { 
-		var replacer = function replacer(key, value){
-		  return this[key] instanceof java.lang.Object ? '' + this[key] : value;
-		};
-		sender.sendMessage( JSON.stringify( jsResult, replacer, 2) );
-	      }
-	    } catch ( displayError ) { 
+            try { 
+              if ( isJavaObject(jsResult) || typeof jsResult === 'function') {
+                sender.sendMessage(jsResult);
+              } else { 
+                var replacer = function replacer(key, value){
+                  return this[key] instanceof java.lang.Object ? '' + this[key] : value;
+                };
+                sender.sendMessage( JSON.stringify( jsResult, replacer, 2) );
+              }
+            } catch ( displayError ) { 
               logger.severe( 'Error while trying to display result: ' + jsResult + ', Error: '+ displayError );
-	    }
+            }
           }
         } 
       } catch ( e ) {
