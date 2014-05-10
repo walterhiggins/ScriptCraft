@@ -1,3 +1,15 @@
+# 2014 05 10
+
+Further simplification of events handling. The events.on() function can still be used but additional functions are now provided for each type of event.
+For example, to register a custom player-join event handler...
+
+    events.playerJoin(function(event){
+       event.player.sendMessage('welcome!');
+    }); 
+
+Added new sounds module for simpler sounds playback and in-game tab completion.
+All of the org.bukkit.Sound enum values are attached to the sounds module.
+
 # 2014 04 13
 
 Added asynchronous `input()` function module.

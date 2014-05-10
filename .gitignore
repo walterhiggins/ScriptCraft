@@ -16,4 +16,10 @@ build.local.properties
 /nbproject/private/private.xml
 /nbproject/project.xml
 /src/docs/nbproject/private/
-/src/docs/build/
+/src/docs/build//#build.xml#
+/#build.xml#
+/src/docs/build/classes/generateApiDocs.js
+/src/docs/build/classes/generateTOC.js
+/src/docs/build/classes/hello.js
+/src/docs/build/classes/.netbeans_automatic_build
+/src/docs/build/classes/.netbeans_update_resources
