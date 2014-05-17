@@ -59,6 +59,8 @@ Walter Higgins
    * [events.horseJump()](#eventshorsejump)
    * [events.entityCombust()](#eventsentitycombust)
    * [events.entityRegainHealth()](#eventsentityregainhealth)
+   * [events.entityCombustByBlock()](#eventsentitycombustbyblock)
+   * [events.entityCombustByEntity()](#eventsentitycombustbyentity)
    * [events.playerLeashEntity()](#eventsplayerleashentity)
    * [events.pigZap()](#eventspigzap)
    * [events.itemDespawn()](#eventsitemdespawn)
@@ -76,6 +78,7 @@ Walter Higgins
    * [events.creatureSpawn()](#eventscreaturespawn)
    * [events.foodLevelChange()](#eventsfoodlevelchange)
    * [events.entityInteract()](#eventsentityinteract)
+   * [events.entityBreakDoor()](#eventsentitybreakdoor)
    * [events.entityCreatePortal()](#eventsentitycreateportal)
    * [events.sheepRegrowWool()](#eventssheepregrowwool)
    * [events.explosionPrime()](#eventsexplosionprime)
@@ -92,27 +95,35 @@ Walter Higgins
    * [events.blockGrow()](#eventsblockgrow)
    * [events.blockPistonRetract()](#eventsblockpistonretract)
    * [events.blockDispense()](#eventsblockdispense)
+   * [events.blockBreak()](#eventsblockbreak)
    * [events.paintingPlace()](#eventspaintingplace)
    * [events.lightningStrike()](#eventslightningstrike)
    * [events.vehicleEnter()](#eventsvehicleenter)
    * [events.vehicleMove()](#eventsvehiclemove)
    * [events.vehicleCreate()](#eventsvehiclecreate)
    * [events.asyncPlayerPreLogin()](#eventsasyncplayerprelogin)
+   * [events.playerUnleashEntity()](#eventsplayerunleashentity)
    * [events.playerPreLogin()](#eventsplayerprelogin)
    * [events.inventoryPickupItem()](#eventsinventorypickupitem)
    * [events.inventoryMoveItem()](#eventsinventorymoveitem)
    * [events.furnaceBurn()](#eventsfurnaceburn)
    * [events.inventory()](#eventsinventory)
    * [events.brew()](#eventsbrew)
+   * [events.furnaceExtract()](#eventsfurnaceextract)
    * [events.furnaceSmelt()](#eventsfurnacesmelt)
    * [events.inventoryClose()](#eventsinventoryclose)
    * [events.inventoryDrag()](#eventsinventorydrag)
    * [events.inventoryClick()](#eventsinventoryclick)
+   * [events.inventoryCreative()](#eventsinventorycreative)
    * [events.hangingPlace()](#eventshangingplace)
    * [events.hangingBreak()](#eventshangingbreak)
    * [events.worldSave()](#eventsworldsave)
    * [events.structureGrow()](#eventsstructuregrow)
    * [events.entityDamage()](#eventsentitydamage)
+   * [events.entityTargetLivingEntity()](#eventsentitytargetlivingentity)
+   * [events.playerDeath()](#eventsplayerdeath)
+   * [events.entityDamageByBlock()](#eventsentitydamagebyblock)
+   * [events.entityDamageByEntity()](#eventsentitydamagebyentity)
    * [events.entityPortal()](#eventsentityportal)
    * [events.entityPortalExit()](#eventsentityportalexit)
    * [events.signChange()](#eventssignchange)
@@ -130,6 +141,7 @@ Walter Higgins
    * [events.enchantItem()](#eventsenchantitem)
    * [events.prepareItemEnchant()](#eventsprepareitemenchant)
    * [events.paintingBreak()](#eventspaintingbreak)
+   * [events.paintingBreakByEntity()](#eventspaintingbreakbyentity)
    * [events.weatherChange()](#eventsweatherchange)
    * [events.thunderChange()](#eventsthunderchange)
    * [events.vehicleEntityCollision()](#eventsvehicleentitycollision)
@@ -156,7 +168,6 @@ Walter Higgins
    * [events.playerChat()](#eventsplayerchat)
    * [events.playerAchievementAwarded()](#eventsplayerachievementawarded)
    * [events.playerBedLeave()](#eventsplayerbedleave)
-   * [events.playerChannel()](#eventsplayerchannel)
    * [events.playerStatisticIncrement()](#eventsplayerstatisticincrement)
    * [events.playerToggleSprint()](#eventsplayertogglesprint)
    * [events.playerInteractEntity()](#eventsplayerinteractentity)
@@ -169,6 +180,7 @@ Walter Higgins
    * [events.playerToggleFlight()](#eventsplayertoggleflight)
    * [events.playerAnimation()](#eventsplayeranimation)
    * [events.asyncPlayerChat()](#eventsasyncplayerchat)
+   * [events.playerRegisterChannel()](#eventsplayerregisterchannel)
    * [events.playerMove()](#eventsplayermove)
    * [events.playerTeleport()](#eventsplayerteleport)
    * [events.playerBucketFill()](#eventsplayerbucketfill)
@@ -184,8 +196,13 @@ Walter Higgins
    * [events.serviceUnregister()](#eventsserviceunregister)
    * [events.prepareItemCraft()](#eventsprepareitemcraft)
    * [events.inventoryOpen()](#eventsinventoryopen)
+   * [events.craftItem()](#eventscraftitem)
+   * [events.hangingBreakByEntity()](#eventshangingbreakbyentity)
+   * [events.blockMultiPlace()](#eventsblockmultiplace)
+   * [events.entityBlockForm()](#eventsentityblockform)
    * [events.playerBucketEmpty()](#eventsplayerbucketempty)
    * [events.playerPortal()](#eventsplayerportal)
+   * [events.playerUnregisterChannel()](#eventsplayerunregisterchannel)
    * [events.pluginDisable()](#eventsplugindisable)
    * [events.pluginEnable()](#eventspluginenable)
  * [Blocks Module](#blocks-module)
@@ -1023,6 +1040,22 @@ beginning programmers to explore the events at the server console window.
 
  * priority - optional - see events.on() for more information.
 
+### events.entityCombustByBlock()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the entity.EntityCombustByBlockEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityCombustByEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the entity.EntityCombustByEntityEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.playerLeashEntity()
 
 #### Parameters 
@@ -1159,6 +1192,14 @@ beginning programmers to explore the events at the server console window.
 
  * priority - optional - see events.on() for more information.
 
+### events.entityBreakDoor()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the entity.EntityBreakDoorEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.entityCreatePortal()
 
 #### Parameters 
@@ -1287,6 +1328,14 @@ beginning programmers to explore the events at the server console window.
 
  * priority - optional - see events.on() for more information.
 
+### events.blockBreak()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the block.BlockBreakEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.paintingPlace()
 
 #### Parameters 
@@ -1332,6 +1381,14 @@ beginning programmers to explore the events at the server console window.
 #### Parameters 
 
  * callback - A function which is called whenever the player.AsyncPlayerPreLoginEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerUnleashEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the player.PlayerUnleashEntityEvent event is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1383,6 +1440,14 @@ beginning programmers to explore the events at the server console window.
 
  * priority - optional - see events.on() for more information.
 
+### events.furnaceExtract()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the inventory.FurnaceExtractEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.furnaceSmelt()
 
 #### Parameters 
@@ -1412,6 +1477,14 @@ beginning programmers to explore the events at the server console window.
 #### Parameters 
 
  * callback - A function which is called whenever the inventory.InventoryClickEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.inventoryCreative()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the inventory.InventoryCreativeEvent event is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1452,6 +1525,38 @@ beginning programmers to explore the events at the server console window.
 #### Parameters 
 
  * callback - A function which is called whenever the entity.EntityDamageEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityTargetLivingEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the entity.EntityTargetLivingEntityEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerDeath()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the entity.PlayerDeathEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityDamageByBlock()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the entity.EntityDamageByBlockEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityDamageByEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the entity.EntityDamageByEntityEvent event is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1588,6 +1693,14 @@ beginning programmers to explore the events at the server console window.
 #### Parameters 
 
  * callback - A function which is called whenever the painting.PaintingBreakEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.paintingBreakByEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the painting.PaintingBreakByEntityEvent event is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1799,14 +1912,6 @@ beginning programmers to explore the events at the server console window.
 
  * priority - optional - see events.on() for more information.
 
-### events.playerChannel()
-
-#### Parameters 
-
- * callback - A function which is called whenever the player.PlayerChannelEvent event is fired
-
- * priority - optional - see events.on() for more information.
-
 ### events.playerStatisticIncrement()
 
 #### Parameters 
@@ -1900,6 +2005,14 @@ beginning programmers to explore the events at the server console window.
 #### Parameters 
 
  * callback - A function which is called whenever the player.AsyncPlayerChatEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerRegisterChannel()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the player.PlayerRegisterChannelEvent event is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2023,6 +2136,38 @@ beginning programmers to explore the events at the server console window.
 
  * priority - optional - see events.on() for more information.
 
+### events.craftItem()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the inventory.CraftItemEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.hangingBreakByEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the hanging.HangingBreakByEntityEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockMultiPlace()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the block.BlockMultiPlaceEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityBlockForm()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the block.EntityBlockFormEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.playerBucketEmpty()
 
 #### Parameters 
@@ -2036,6 +2181,14 @@ beginning programmers to explore the events at the server console window.
 #### Parameters 
 
  * callback - A function which is called whenever the player.PlayerPortalEvent event is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerUnregisterChannel()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the player.PlayerUnregisterChannelEvent event is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2128,20 +2281,20 @@ This new `input()` function is best illustrated by example. The following code i
 var input = require('input');
 exports.numberguess = function(player){
   var randomNumber = Math.ceil(Math.random() * 10);
-  input( player, 'Think of a number between 1 and 10 (q to quit)', function( guess, repeat ) {
+  input( player, 'Think of a number between 1 and 10 (q to quit)', function( guess, guesser, repeat ) {
     if ( guess == 'q'){
       return;
     }
     if ( +guess !== randomNumber ) { 
       if (+guess < randomNumber ) {
-        player.sendMessage('Too low - guess again');
+        guesser.sendMessage('Too low - guess again');
       }
       if (+guess > randomNumber ) {
-        player.sendMessage('Too high - guess again');
+        guesser.sendMessage('Too high - guess again');
       }
       repeat();
     } else {
-      player.sendMessage('You guessed correctly');
+      guesser.sendMessage('You guessed correctly');
     }
   });
 };
@@ -2158,8 +2311,8 @@ The callback is bound to an object which has the following properties:
 The callback function as well as being bound to an object with the above properties (so you can use this.value inside your callback to get the value which has just been input), can also take the following parameters (in exact order):
 
  * value
- * repeat
  * sender
+ * repeat
 
 The `value` parameter will be the same as `this.value`, the `repeat` parameter will be the same as `this.repeat` and so on.
 
@@ -2368,11 +2521,23 @@ a simpler way to play sounds. All of the org.bukkit.Sound Enum values are attach
 ### Usage:
 
     var sounds = require('sounds');
-    sounds.play( self, sounds.VILLAGER_NO , 1, 0); // plays VILLAGER_NO sound at full volume and medium pitch
-    sounds.play( self, sounds.VILLAGER_NO );       // same as previous statement
+    sounds.play( org.bukkit.Sound.VILLAGER_NO , self, 1, 0); // plays VILLAGER_NO sound at full volume and medium pitch
+    sounds.play( org.bukkit.Sound.VILLAGER_NO , self );       // same as previous statement
 
 The play() function takes either a Location object or any object which has a location.
 The volume parameter is in the range 0 to 1 and the pitch parameter is in the range 0 to 4.    
+
+In addition, a play function is provided for each possible sound using the following rules:
+
+1. The sound is converted from ALL_CAPS_UNDERSCORE to camelCase so for example there is a sounds.villagerNo() function which will play the VILLAGER_NO sound.
+2. Each such function can take 3 parameters: location (which can be either an actual Location object or an object which has a location), volume and pitch
+3. Or... each such function can be called without parameters meaning the sound will be played for all online players to hear.
+
+    sounds.villagerNo(self, 1, 0); // plays VILLAGER_NO sound at full volume and medium pitch at invoker's location
+
+    sounds.villagerNo(); // plays VILLAGER_NO sound for all players online.
+
+These methods are provided for convenience to help beginners explore sounds using TAB completion.
 String class extensions
 -----------------------
 The following chat-formatting methods are added to the javascript String class..

@@ -89,7 +89,7 @@
 
   <target name="gen-events-helper" depends="compile-docs,server-setup,init">
     <mkdir dir="${dist}/js/lib"/>
-    <java classname="jscript" failonerror="true" fork="true" output="${dist}/js/lib/events-helper.js">
+    <java classname="jscript" failonerror="true" fork="true" output="${dist}/js/lib/events-helper.js" error="${dist}/geneventserror.log">
       <classpath>
         <pathelement path="${build}"/>      
 	<pathelement path="${minecraft.dir}/craftbukkit.jar"/>

@@ -1,3 +1,10 @@
+# 2014 05 12 
+
+Turn off modality for conversations which are started via the 'input' module.
+(with modality on, player.sendMessage() is suppressed but player.sendRawMessage() isn't.
+ turning modality off as devs would expect player.sendMessage() to work - I did anyway)
+
+
 # 2014 05 10
 
 Further simplification of events handling. The events.on() function can still be used but additional functions are now provided for each type of event.

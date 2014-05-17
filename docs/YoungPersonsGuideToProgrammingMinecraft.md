@@ -1014,7 +1014,7 @@ Open your favorite editor and type the following code into a new file
 in your scriptcraft/plugins directory...
 
 ```javascript
-function flightStatus( player ) {
+exports.flightStatus = function( player ) {
     if ( player.flying ) { 
          player.sendMessage( 'Hey, You are flying!' );
     } else {

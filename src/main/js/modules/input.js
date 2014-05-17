@@ -20,20 +20,20 @@ This new `input()` function is best illustrated by example. The following code i
 var input = require('input');
 exports.numberguess = function(player){
   var randomNumber = Math.ceil(Math.random() * 10);
-  input( player, 'Think of a number between 1 and 10 (q to quit)', function( guess, repeat ) {
+  input( player, 'Think of a number between 1 and 10 (q to quit)', function( guess, guesser, repeat ) {
     if ( guess == 'q'){
       return;
     }
     if ( +guess !== randomNumber ) { 
       if (+guess < randomNumber ) {
-        player.sendMessage('Too low - guess again');
+        guesser.sendMessage('Too low - guess again');
       }
       if (+guess > randomNumber ) {
-        player.sendMessage('Too high - guess again');
+        guesser.sendMessage('Too high - guess again');
       }
       repeat();
     } else {
-      player.sendMessage('You guessed correctly');
+      guesser.sendMessage('You guessed correctly');
     }
   });
 };
@@ -50,8 +50,8 @@ The callback is bound to an object which has the following properties:
 The callback function as well as being bound to an object with the above properties (so you can use this.value inside your callback to get the value which has just been input), can also take the following parameters (in exact order):
 
  * value
- * repeat
  * sender
+ * repeat
 
 The `value` parameter will be the same as `this.value`, the `repeat` parameter will be the same as `this.repeat` and so on.
 
@@ -64,21 +64,22 @@ function asyncInput( sender, promptMesg, callback) {
   var repeat = function(){
     asyncInput( sender, promptMesg, callback);
   };
-  var prompt = new bkPrompt( ) { 
+  var prompt = new bkPrompt( { 
     getPromptText: function( ctx ) {
       return promptMesg;
     },
     acceptInput: function( ctx, value ) {
       callback.apply( { repeat: repeat, sender: sender, message: promptMesg, value: value },
-	[value, repeat, sender]);
+	[value, sender, repeat]);
       return null;
     },
     blocksForInput: function( ctx ) {
       return true;
     }
-  };
+  });
+
   new bkConversationFactory( __plugin )
-    .withModality( true )
+    .withModality( false ) 
     .withFirstPrompt( prompt )
     .buildConversation( sender )
     .begin( );

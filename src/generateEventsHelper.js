@@ -2,6 +2,8 @@ var File = java.io.File,
   FileReader = java.io.FileReader,
   FileInputStream = java.io.FileInputStream,
   out = java.lang.System.out,
+  err = java.lang.System.err,
+  Modifier = java.lang.reflect.Modifier,
   ZipInputStream = java.util.zip.ZipInputStream,
   zis = new ZipInputStream(new FileInputStream('./target/minecraft/craftbukkit.jar')),
   entry = null;
@@ -39,17 +41,9 @@ while ( ( entry = zis.nextEntry) != null) {
   var name = '' + entry.name;
   if (name.match(/org\/bukkit\/event\/.+Event\.class$/)){
     name = name.replace(/\//g,'.').replace('.class','');
-    
-    // abstract events don't have a static getHandlerList method so 
-    // shouldn't be added to this module
-    var hasHandlerList = false;
-    try {
-      hasHandlerList = engine.eval(name + '.getHandlerList');
-    } catch ( ex ) {
-      // exception is thrown for JRE7
-      continue;
-    }
-    if ( !hasHandlerList ) {
+    var clz = java.lang.Class.forName(name);
+    var isAbstract = Modifier.isAbstract(clz.getModifiers());
+    if ( isAbstract ) {
       continue;
     }
     var parts = name.split('.');
