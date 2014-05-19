@@ -15,7 +15,7 @@ for (var i = 0;i < materials.length; i++ ){
   items[name] = (function(material){
     return function(amount){
       if (typeof amount == 'undefined'){
-	amount = 1;
+	return material;
       }
       if (typeof amount == 'number'){
 	return new bkItemStack(material, amount);

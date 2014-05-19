@@ -233,6 +233,7 @@ Walter Higgins
    * [utils.serverAddress() function](#utilsserveraddress-function)
    * [utils.watchFile() function](#utilswatchfile-function)
    * [utils.unwatchFile() function](#utilsunwatchfile-function)
+   * [utils.array() function](#utilsarray-function)
  * [Drone Plugin](#drone-plugin)
    * [TLDNR; (Just read this if you're impatient)](#tldnr-just-read-this-if-youre-impatient)
    * [Constructing a Drone Object](#constructing-a-drone-object)
@@ -2904,6 +2905,16 @@ var utils = require('utils');
 utils.unwatchFile( 'test.txt');
 ```
 
+### utils.array() function
+
+Converts Java collection objects to type Javascript array so they can avail of
+all of Javascript's Array goodness.
+ 
+#### Example
+
+    var utils = require('utils');
+    var worlds = utils.array(server.worlds);
+    
 ## Drone Plugin
 
 The Drone is a convenience class for building. It can be used for...

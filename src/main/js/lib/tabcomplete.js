@@ -72,8 +72,18 @@ var _getProperties = function( o ) {
     }
     for ( i in o ) {
       if ( i.match( /^[^_]/ ) ) {
-        if ( typeof o[i] == 'function' ) {
-          result.push( i+'()' );
+        if ( typeof o[i] == 'function'){ 
+          if ( ! (o[i] instanceof java.lang.Object) ) {
+            try {
+              if (o[i].constructor){} // throws error for java objects in jre7 
+              result.push(i + '()');
+            } catch (e ){
+              result.push(i);
+            }
+            
+          }else {
+           result.push( i );
+          }
         } else {
           result.push( i );
         }
@@ -146,7 +156,13 @@ var onTabCompleteJS = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs 
         if ( !name ) { // fix issue #115
           break;
         }
-        symbol = symbol[name]; // this causes problem in jre8 if name is ''
+        try {
+          // this causes problems in jre if symbol is an enum and name is partial-match
+          symbol = symbol[name]; // this causes problem in jre8 if name is ''
+	} catch (e){
+          symbol = null;
+          break;
+        }
         if ( typeof symbol == 'undefined' ) {
           break;
         }

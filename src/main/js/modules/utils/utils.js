@@ -557,3 +557,37 @@ function fileWatcher() {
   setTimeout( fileWatcher, 5000 );
 };
 setTimeout( fileWatcher, 5000 );
+/**************************************************************************
+### utils.array() function
+
+Converts Java collection objects to type Javascript array so they can avail of
+all of Javascript's Array goodness.
+ 
+#### Example
+
+    var utils = require('utils');
+    var worlds = utils.array(server.worlds);
+    
+***/
+exports.array = function( ){
+  var result = [],
+    javaArray = null,
+    i = 0;
+  if (arguments[0] instanceof java.util.Collection){
+    // it's a java collection
+    javaArray = arguments[0].toArray();
+    for ( ;i < javaArray.length; i++) {
+      result.push(javaArray[i]);
+    }
+  } else if (arguments[0].constructor === Array){
+    // it's a javascript array
+    return arguments[0];
+  } else if (arguments[0].length) {
+    // it's a java array
+    javaArray = arguments[0];
+    for ( ;i < javaArray.length; i++) {
+      result.push(javaArray[i]);
+    }
+  }
+  return result;
+};

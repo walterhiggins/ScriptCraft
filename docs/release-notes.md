@@ -1,3 +1,6 @@
+# 2014 05 19
+Improved Tab Completion to work with Java Enums too.
+
 # 2014 05 12 
 
 Turn off modality for conversations which are started via the 'input' module.

@@ -630,6 +630,7 @@ function __onEnable ( __engine, __plugin, __script )
     org.bukkit.event.HandlerList['unregisterAll(org.bukkit.plugin.Plugin)'](__plugin);
   });
 
+  require('bukkit')( global );
 
   global.__onCommand = function( sender, cmd, label, args) {
     var jsArgs = [],
