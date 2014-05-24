@@ -230,7 +230,9 @@ var blocks = {
     white: 171 // All other colors added below
   },
   hardened_clay: 172,
-  coal_block: 173
+  coal_block: 173,
+  packed_ice: 174,
+  double_plant: 175
 };
 
 // Add all available colors to colorized block collections

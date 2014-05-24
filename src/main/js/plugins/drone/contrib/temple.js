@@ -15,10 +15,16 @@ Drone.extend('temple', function(side) {
     var middle = Math.round( (side-2) / 2 );
     this.chkpt('corner')
       .box( stone, side, 1, side )
-      .right( middle ).box( stair ).right().box( stair )
-      .move('corner').up().fwd().right();
+      .right( middle )
+      .box( stair )
+      .right()
+      .box( stair )
+      .move('corner')
+      .up()
+      .fwd()
+      .right();
     side = side - 2;
   }
 
-  return this.move('temple');
+  this.move('temple');
 });

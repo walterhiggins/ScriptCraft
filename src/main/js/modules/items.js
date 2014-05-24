@@ -1,6 +1,7 @@
 var bkItemStack = org.bukkit.inventory.ItemStack,
-  bkMaterial = org.bukkit.Material
-var items =   function(material, amount){
+  bkMaterial = org.bukkit.Material;
+
+var items =   function( material, amount ) {
   material = material.toUpperCase();
   return new bkItemStack(bkMaterial[material],amount);
 };

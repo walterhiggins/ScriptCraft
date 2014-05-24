@@ -582,13 +582,26 @@ Use this method to add new methods (which also become chainable global functions
 
 #### Parameters
 
- * name - The name of the new method e.g. 'pyramid'
+ * name - The name of the new method e.g. 'pyramid'. 
  * function - The method body.
 
-#### Example
+Alternatively if you provide just a function as a parameter, then the function name will be used as the new method name. For example the following two approaches are both valid.
+
+
+#### Example 1 Using name and function as parameters
 
     // submitted by [edonaldson][edonaldson]
     Drone.extend('pyramid', function( block,height) { 
+        this.chkpt('pyramid');
+        for ( var i = height; i > 0; i -= 2) {
+            this.box(block, i, 1, i).up().right().fwd();
+        }
+        return this.move('pyramid');      
+    });
+
+#### Example 2 Using just a named function as a parameter
+
+    Drone.extend(function pyramid( block,height) { 
         this.chkpt('pyramid');
         for ( var i = height; i > 0; i -= 2) {
             this.box(block, i, 1, i).up().right().fwd();
@@ -790,6 +803,10 @@ addUnloadHandler( function() {
 // add custom methods to the Drone object using this function
 //
 Drone.extend = function( name, func ) {
+  if (arguments.length == 1){
+    func = name;
+    name = func.name;
+  }
   Drone.prototype[ '_' + name ] = func;
   Drone.prototype[ name ] = function( ) {
     if ( this.record ) {
