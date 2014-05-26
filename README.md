@@ -65,8 +65,8 @@ directory.
 
 # Post Install
 
-Once installed, a new js-plugins directory is automatically created in
-the same directory as the plugins folder.  All files in the js-plugins
+Once installed, a new scriptcraft/plugins directory is automatically created in
+the same directory as the plugins folder.  All files in the scriptcraft/plugins
 directory will be automatically loaded when CraftBukkit starts.  *Only
 players who are ops can use this plugin.* You can grant a player `op`
 privileges by typing 'op <username>' at the server console prompt or
@@ -94,7 +94,7 @@ javascript plugin for Minecraft.
 [si]: blob/master/src/main/javascript/modules/signs/menu.js
 
 A Javascript mod for minecraft is just a javascript source file (.js)
-located in the craftbukkit/js-plugins directory. All .js files in this
+located in the craftbukkit/plugins/scriptcraft/plugins directory. All .js files in this
 directory will be automatically loaded when the craftbukkit server
 starts. To get started writing your own mod, first take a look at some
 of the existing mods in the [homes][ho], [chat][ch], [arrows][ar] and

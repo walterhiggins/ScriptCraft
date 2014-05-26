@@ -19,20 +19,6 @@ be chained together like so...
     var theDrone = new Drone();
     theDrone.up().left().box(blocks.oak).down().fwd(3).cylinder0(blocks.lava,8); 
 
-### TLDNR; (Just read this if you're impatient)
-
-At the in-game command prompt type...
-     
-    /js box( blocks.oak )  
-    
-... creates a single wooden block at the cross-hairs or player location
-    
-    /js box( blocks.oak ).right(2).box( blocks.wool.black, 4, 9, 1)
-    
-... creates a single wooden block and a 2001 black obelisk that is 4
-wide x 9 tall x 1 long in size.  If you want to see what else
-ScriptCraft's Drone can do, read on...
-
 ### Constructing a Drone Object
 
 Drones can be created in any of the following ways...

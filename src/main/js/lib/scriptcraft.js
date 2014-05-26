@@ -718,8 +718,8 @@ function __onEnable ( __engine, __plugin, __script )
 
         legacyExists = true; 
 
-        console.warn('Legacy ScriptCraft directory %s was found. This directory is no longer used.',
-          legacyDirs[i].canonicalPath);
+        console.warn('Legacy ScriptCraft directory %s was found. This directory is no longer used.',legacyDirs[i].canonicalPath);
+	console.warn('Please put plugins in the plugins/scriptcraft/plugins directory');
       }
     }
     if ( legacyExists ) {

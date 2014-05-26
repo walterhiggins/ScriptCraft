@@ -235,7 +235,6 @@ Walter Higgins
    * [utils.unwatchFile() function](#utilsunwatchfile-function)
    * [utils.array() function](#utilsarray-function)
  * [Drone Plugin](#drone-plugin)
-   * [TLDNR; (Just read this if you're impatient)](#tldnr-just-read-this-if-youre-impatient)
    * [Constructing a Drone Object](#constructing-a-drone-object)
    * [Drone.box() method](#dronebox-method)
    * [Drone.box0() method](#dronebox0-method)
@@ -2928,20 +2927,6 @@ be chained together like so...
     var theDrone = new Drone();
     theDrone.up().left().box(blocks.oak).down().fwd(3).cylinder0(blocks.lava,8); 
 
-### TLDNR; (Just read this if you're impatient)
-
-At the in-game command prompt type...
-     
-    /js box( blocks.oak )  
-    
-... creates a single wooden block at the cross-hairs or player location
-    
-    /js box( blocks.oak ).right(2).box( blocks.wool.black, 4, 9, 1)
-    
-... creates a single wooden block and a 2001 black obelisk that is 4
-wide x 9 tall x 1 long in size.  If you want to see what else
-ScriptCraft's Drone can do, read on...
-
 ### Constructing a Drone Object
 
 Drones can be created in any of the following ways...
@@ -3491,13 +3476,26 @@ Use this method to add new methods (which also become chainable global functions
 
 #### Parameters
 
- * name - The name of the new method e.g. 'pyramid'
+ * name - The name of the new method e.g. 'pyramid'. 
  * function - The method body.
 
-#### Example
+Alternatively if you provide just a function as a parameter, then the function name will be used as the new method name. For example the following two approaches are both valid.
+
+
+#### Example 1 Using name and function as parameters
 
     // submitted by [edonaldson][edonaldson]
     Drone.extend('pyramid', function( block,height) { 
+        this.chkpt('pyramid');
+        for ( var i = height; i > 0; i -= 2) {
+            this.box(block, i, 1, i).up().right().fwd();
+        }
+        return this.move('pyramid');      
+    });
+
+#### Example 2 Using just a named function as a parameter
+
+    Drone.extend(function pyramid( block,height) { 
         this.chkpt('pyramid');
         for ( var i = height; i > 0; i -= 2) {
             this.box(block, i, 1, i).up().right().fwd();
