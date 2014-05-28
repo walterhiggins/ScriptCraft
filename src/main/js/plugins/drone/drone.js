@@ -654,6 +654,7 @@ var putBlock = function( x, y, z, blockId, metadata, world ) {
   var block = world.getBlockAt( x, y, z );
   if ( block.typeId != blockId || block.data != metadata ) {
     block.setTypeIdAndData( blockId, metadata, false );
+    block.data = metadata;
   }
 };
 
@@ -1580,12 +1581,18 @@ var _cylinder1 = function( block,radius,height,exactParams ) {
 };
 var _paste = function( name, immediate )
 {
-
-  if ( !immediate ) {
-    getQueue(this).push(function(){ _paste(name, true);});
+/*  if ( !immediate ) {
+    var clone = Drone.clone(this);
+    getQueue(this).push(this.paste.bind(clone, name, true) );
     return;
   }
+*/
+
   var ccContent = Drone.clipBoard[name];
+  if (ccContent == undefined){
+    console.warn('Nothing called ' + name + ' in clipboard!');
+    return;
+  }
   var srcBlocks = ccContent.blocks;
   var srcDir = ccContent.dir; // direction player was facing when copied.
   var dirOffset = (4 + (this.dir - srcDir ) ) %4;
@@ -1597,9 +1604,8 @@ var _paste = function( name, immediate )
       var d = srcBlocks[ww][hh].length;
       _traverse[that.dir].depth(that,d,function( dd ) { 
         var b = srcBlocks[ww][hh][dd];
-        var bm = that._getBlockIdAndMeta(b );
-        var cb = bm[0];
-        var md = bm[1];
+        var cb = b.type
+        var md = b.data;
         //
         // need to adjust blocks which face a direction
         //
@@ -1607,59 +1613,59 @@ var _paste = function( name, immediate )
           // 
           // doors
           //
-        case 64: // wood
-        case 71: // iron
-          // top half of door doesn't need to change
-          if ( md < 8 ) {
-            md = (md + dirOffset ) % 4;
-          }
-          break;
-          //
+          case 64: // wood
+          case 71: // iron
+            // top half of door doesn't need to change
+            if ( md < 8 ) {
+              md = (md + dirOffset ) % 4;
+            }
+            break;
+	  //
           // stairs
           //
-        case 53:  // oak 
-        case 67:  // cobblestone 
-        case 108: // red brick 
-        case 109: // stone brick 
-        case 114: // nether brick
-        case 128: // sandstone
-        case 134: // spruce
-        case 135: // birch
-        case 136: // junglewood
-          var dir = md & 0x3;
-          var a = Drone.PLAYER_STAIRS_FACING;
-          var len = a.length;
-          for ( var c=0;c < len;c++ ) { 
-            if ( a[c] == dir ) { 
-              break;
+          case 53:  // oak 
+          case 67:  // cobblestone 
+          case 108: // red brick 
+          case 109: // stone brick 
+          case 114: // nether brick
+          case 128: // sandstone
+          case 134: // spruce
+          case 135: // birch
+          case 136: // junglewood
+            var dir = md & 0x3;
+            var a = Drone.PLAYER_STAIRS_FACING;
+            var len = a.length;
+            for ( var c=0;c < len;c++ ) { 
+              if ( a[c] == dir ) { 
+		break;
+              }
             }
-          }
-          c = (c + dirOffset ) %4;
-          var newDir = a[c];
-          md = (md >>2<<2 ) + newDir;
-          break;
+            c = (c + dirOffset ) %4;
+            var newDir = a[c];
+            md = (md >>2<<2 ) + newDir;
+            break;
           //
           // signs , ladders etc
           //
-        case 23: // dispenser
-        case 54: // chest
-        case 61: // furnace
-        case 62: // burning furnace
-        case 65: // ladder
-        case 68: // wall sign
-          var a = Drone.PLAYER_SIGN_FACING;
-          var len = a.length;
-          for ( var c=0;c < len;c++ ) { 
-            if ( a[c] == md ) { 
-              break;
+          case 23: // dispenser
+          case 54: // chest
+          case 61: // furnace
+          case 62: // burning furnace
+          case 65: // ladder
+          case 68: // wall sign
+            var a = Drone.PLAYER_SIGN_FACING;
+            var len = a.length;
+            for ( var c=0;c < len;c++ ) { 
+              if ( a[c] == md ) { 
+		break;
+              }
             }
+            c = (c + dirOffset ) %4;
+            var newDir = a[c];
+            md = newDir;
+            break;
           }
-          c = (c + dirOffset ) %4;
-          var newDir = a[c];
-          md = newDir;
-          break;
-        }
-        putBlock(that.x,that.y,that.z,cb,md,that.world );
+          putBlock(that.x,that.y,that.z,cb,md,that.world );
       } );
     } );
   } );
@@ -1809,7 +1815,7 @@ var _copy = function( name, w, h, d ) {
       ccContent[ww].push([] );
       _traverse[that.dir].depth(that,d,function( dd ) { 
         var b = that.world.getBlockAt(that.x,that.y,that.z );
-        ccContent[ww][hh][dd] = b;
+        ccContent[ww][hh][dd] = {type:b.getTypeId(), data:b.data};
       } );
     } );
   } );
