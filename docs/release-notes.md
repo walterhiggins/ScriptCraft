@@ -1,3 +1,9 @@
+# 2014 05 29
+Fix tab completion for /jsp command so that it conforms with tab completion norms in minecraft.
+/jsp ice<TAB> completes to /jsp icecream
+Hitting TAB again has no effect. Player must type space then hit TAB to get list of flavors.
+This is consistent with how MC treats other commands for tab completion.
+
 # 2014 05 19
 Improved Tab Completion to work with Java Enums too.
 

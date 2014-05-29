@@ -13,11 +13,7 @@ var __onTabCompleteJSP = function( result, cmdSender, pluginCmd, cmdAlias, cmdAr
   if ( cmd ) {
     opts = cmd.options;
     len = opts.length;
-    if ( cmdArgs.length == 1 ) {
-      for ( i = 0; i < len; i++ ) {
-        result.add( opts[i] );
-      }
-    } else {
+    if ( cmdArgs.length > 1 ) {
       // partial e.g. /jsp chat_color dar
       for ( i = 0; i < len; i++ ) {
         if ( opts[i].indexOf( cmdArgs[1] ) == 0 ) {
