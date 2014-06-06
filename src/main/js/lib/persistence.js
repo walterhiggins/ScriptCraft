@@ -4,7 +4,7 @@ var _dataDir = null,
 module.exports = function( rootDir, $ ) {
 
   var _load = function( name ) {
-    $.scload( _dataDir.canonicalPath + '/' + name + '-store.json' );
+    return $.scload( _dataDir.canonicalPath + '/' + name + '-store.json' );
   };
   var _save = function( name, data ) {
     $.scsave( data, _dataDir.canonicalPath + '/' + name + '-store.json' );

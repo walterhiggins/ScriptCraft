@@ -1,3 +1,6 @@
+# 2014 05 31
+Fix bug in persistence module. Private load function wasn't returning result of scload.
+
 # 2014 05 29
 Fix tab completion for /jsp command so that it conforms with tab completion norms in minecraft.
 /jsp ice<TAB> completes to /jsp icecream
