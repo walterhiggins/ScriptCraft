@@ -108,21 +108,20 @@ exports.on = function(
   } else {
     priority = bkEventPriority[priority.toUpperCase()];
   }
-  if ( typeof eventType == 'string' ) {
-    /*
-     Nashorn doesn't support bracket notation for accessing packages. 
-     E.g. java.net will work but java['net'] won't. 
-     
-     https://bugs.openjdk.java.net/browse/JDK-8031715
-     */
-    if ( typeof Java != 'undefined' ) {
-      // nashorn environment
-      eventType = Java.type( bkEventPackage + eventType );
-    } else {
+  if ( typeof Java != 'undefined' ) {
+    //Nashorn doesn't like when getHandlerList is in a superclass of your event
+    //so to avoid this problem, call getHandlerList using java.lang.reflect
+    //methods
+    handlerList = java.lang.Class.forName(bkEventPackage + '' + eventType)
+        .getMethod("getHandlerList").invoke(null);
+    //rhino environment doesn't have this issue.
+  } else if ( typeof eventType == 'string' ) {
       eventType = eval( bkEventPackage + eventType );
-    }
+      handlerList = eventType.getHandlerList( );
+  } else {
+      handlerList = eventType.getHandlerList( );
   }
-  handlerList = eventType.getHandlerList( );
+
 
   var result = { };
   eventExecutor = new bkEventExecutor( {
