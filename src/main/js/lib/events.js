@@ -92,6 +92,36 @@ var bkEventPriority = org.bukkit.event.EventPriority,
   bkRegisteredListener = org.bukkit.plugin.RegisteredListener,
   bkEventPackage = 'org.bukkit.event.';
 
+var nashorn = (typeof Java != 'undefined');
+
+function getHandlerListForEventType( eventType ){
+  var result = null;
+  var clazz = null;
+  if (!(typeof eventType == 'string')){
+    // it's a fully qualified event class 
+    if (nashorn) {
+      
+      //Nashorn doesn't like when getHandlerList is in a superclass of your event
+      //so to avoid this problem, call getHandlerList using java.lang.reflect
+      //methods
+      clazz = eventType['class'];
+      result = clazz.getMethod("getHandlerList").invoke(null);
+      
+    } else { 
+      result = eventType.getHandlerList();
+    }
+  } else { 
+    // it's an event class name partial
+    if (nashorn) { 
+      clazz = java.lang.Class.forName(bkEventPackage + '' + eventType);
+      result = clazz.getMethod("getHandlerList").invoke(null);
+    } else {
+      var eventType2 = eval( bkEventPackage + eventType );
+      result = eventType2.getHandlerList();
+    }
+  }
+  return result;
+}
 exports.on = function( 
   /* String or java Class */
   eventType, 
@@ -108,20 +138,7 @@ exports.on = function(
   } else {
     priority = bkEventPriority[priority.toUpperCase()];
   }
-  if ( typeof Java != 'undefined' ) {
-    //Nashorn doesn't like when getHandlerList is in a superclass of your event
-    //so to avoid this problem, call getHandlerList using java.lang.reflect
-    //methods
-    handlerList = java.lang.Class.forName(bkEventPackage + '' + eventType)
-        .getMethod("getHandlerList").invoke(null);
-    //rhino environment doesn't have this issue.
-  } else if ( typeof eventType == 'string' ) {
-      eventType = eval( bkEventPackage + eventType );
-      handlerList = eventType.getHandlerList( );
-  } else {
-      handlerList = eventType.getHandlerList( );
-  }
-
+  handlerList = getHandlerListForEventType (eventType);
 
   var result = { };
   eventExecutor = new bkEventExecutor( {
