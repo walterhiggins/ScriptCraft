@@ -4,10 +4,12 @@ var _dataDir = null,
 module.exports = function( rootDir, $ ) {
 
   var _load = function( name ) {
-    return $.scload( _dataDir.canonicalPath + '/' + name + '-store.json' );
+    var result = $.scloadJSON( _dataDir.canonicalPath + '/' + name + '-store.json' );
+    return result;
   };
-  var _save = function( name, data ) {
-    $.scsave( data, _dataDir.canonicalPath + '/' + name + '-store.json' );
+
+  var _save = function( name, objToSave ) {
+    $.scsave( objToSave, _dataDir.canonicalPath + '/' + name + '-store.json' );
   };
 
   _dataDir = new java.io.File( rootDir, 'data' );
@@ -23,7 +25,7 @@ module.exports = function( rootDir, $ ) {
     }
     if ( !write ) {
       dataFromFile = _load( name );
-      if ( dataFromFile ) {
+      if ( typeof dataFromFile != 'undefined') {
         for ( i in dataFromFile ) {
           data[i] = dataFromFile[i];
         }

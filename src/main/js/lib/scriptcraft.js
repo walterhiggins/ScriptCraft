@@ -443,14 +443,15 @@ function __onEnable ( __engine, __plugin, __script )
   /*
    Save a javascript object to a file (saves using JSON notation)
    */
-  var _save = function( object, filename ) {
+  var _save = function( objToSave, filename ) {
     var objectToStr = null,
       f,
       out;
     try {
-      objectToStr = JSON.stringify( object, null, 2 );
+      objectToStr = JSON.stringify( objToSave, null, 2 );
+
     } catch( e ) {
-      print( 'ERROR: ' + e.getMessage() + ' while saving ' + filename );
+      console.error( 'ERROR: ' + e.getMessage() + ' while saving ' + filename );
       return;
     }
     f = (filename instanceof File) ? filename : new File(filename);
@@ -466,6 +467,43 @@ function __onEnable ( __engine, __plugin, __script )
       return __engine.eval( str );
     };
   } 
+
+  var _loadJSON = function ( filename ){
+    var result = null,
+      file = filename,
+      r,
+      reader,
+      br,
+      contents;
+
+    if ( !( filename instanceof File ) ) {
+      file = new File(filename);
+    }
+    var canonizedFilename = _canonize( file );
+    
+    if ( file.exists() ) {
+      reader = new FileReader( file );
+      br = new BufferedReader( reader );
+      contents = '';
+      try {
+        while ( (r = br.readLine()) !== null ) {
+          contents += r + '\n';
+        }
+        result = JSON.parse(contents);
+      } catch ( e ) {
+        logger.severe( 'Error evaluating ' + canonizedFilename + ', ' + e );
+      }
+      finally {
+        try {
+          reader.close();
+        } catch ( re ) {
+          // fail silently on reader close error
+        }
+      }
+    } 
+    return result;
+    
+  };
   /*
    Load the contents of the file and evaluate as javascript
    */
@@ -570,6 +608,7 @@ function __onEnable ( __engine, __plugin, __script )
   global.alert = _echo;
   global.scload = _load;
   global.scsave = _save;
+  global.scloadJSON = _loadJSON;
 
   var configRequire = _load( jsPluginsRootDirName + '/lib/require.js', true );
   /*
