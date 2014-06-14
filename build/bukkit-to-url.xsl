@@ -4,7 +4,7 @@
 
 <xsl:template match="list-item[name='Development Build']">
   <bukkit>
-    <url><xsl:text>http://dl.bukkit.org</xsl:text><xsl:value-of select="latest_artifact/file/url" /></url>
+    <url><xsl:value-of select="latest_artifact/file/url" /></url>
   </bukkit>
 </xsl:template>
 
