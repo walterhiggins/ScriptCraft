@@ -1,3 +1,7 @@
+# 2014 06 14
+Fix issue #140 - fails to build for JRE7
+Changed command() documentation to conform with new way of using (passing a named function)
+
 # 2014 05 31
 Fix bug in persistence module. Private load function wasn't returning result of scload.
 
@@ -18,7 +22,6 @@ Turn off modality for conversations which are started via the 'input' module.
 
 
 # 2014 05 10
-
 Further simplification of events handling. The events.on() function can still be used but additional functions are now provided for each type of event.
 For example, to register a custom player-join event handler...
 

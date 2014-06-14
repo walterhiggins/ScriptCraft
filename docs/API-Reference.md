@@ -434,7 +434,7 @@ As of December 24 2013, the `scriptcraft/plugins` directory has the following su
  * arrows - The arrows module - Changes the behaviour of Arrows: Explosive, Fireworks, Teleportation etc.
  * signs - The signs module (includes example signs) - create interactive signs.
  * chat - The chat plugin/module 
- * alias - The alias plugin/module - for creating custom aliases for commonly used commands.
+ * alias - The alias plugin/module - for creating custom aliases for commonly-used commands.
  * home - The home module - for setting homes and visiting other homes.
 
 ## Global variables
@@ -448,10 +448,7 @@ The ScriptCraft JavaPlugin object.
 The Minecraft Server object
 
 ### self variable
-The current player. (Note - this value should not be used in
-multi-threaded scripts or event-handling code - it's not
-thread-safe). This variable is only safe to use at the in-game prompt
-and should *never* be used in modules. For example you can use it here...
+The current player. (Note - this value should not be used in multi-threaded scripts or event-handling code - it's not thread-safe). This variable is only safe to use at the in-game prompt and should *never* be used in modules. For example you can use it here...
 
     /js console.log(self.name)
 
@@ -480,9 +477,7 @@ ScripCraft provides some global functions which can be used by all plugins/modul
 
 ### echo function
 
-The `echo()` function displays a message on the in-game screen. The
-message is displayed to the `self` player (this is usually the player
-who issued the `/js` or `/jsp` command).
+The `echo()` function displays a message on the in-game screen. The message is displayed to the `self` player (this is usually the player who issued the `/js` or `/jsp` command).
 
 #### Example
 
@@ -494,19 +489,13 @@ e.g. `alert('Hello World')`.
 
 #### Notes
 
-The `echo` and `alert` functions are provided as convenience functions
-for beginning programmers. The use of these 2 functions is not
-recommended in event-handling code or multi-threaded code. In such
-cases, if you want to send a message to a given player then use the
-Bukkit API's [Player.sendMessage()][plsm] function instead.
+The `echo` and `alert` functions are provided as convenience functions for beginning programmers. The use of these 2 functions is not recommended in event-handling code or multi-threaded code. In such cases, if you want to send a message to a given player then use the Bukkit API's [Player.sendMessage()][plsm] function instead.
 
 [plsm]: http://jd.bukkit.org/dev/apidocs/org/bukkit/command/CommandSender.html#sendMessage(java.lang.String)
 
 ### require() function
 
-ScriptCraft's `require()` function is used to load modules. The
-`require()` function takes a module name as a parameter and will try
-to load the named module.
+ScriptCraft's `require()` function is used to load modules. The `require()` function takes a module name as a parameter and will try to load the named module.
 
 #### Parameters
 
@@ -614,48 +603,35 @@ ScriptCraft Plugin][anatomy].
 
 ### command() function
 
-The `command()` function is used to expose javascript functions for
-use by non-operators (regular players). Only operators should be
-allowed use raw javascript using the `/js ` command because it is too
-powerful for use by regular players and can be easily abused. However,
-the `/jsp ` command lets you (the operator / server administrator /
-plugin author) safely expose javascript functions for use by players.
+The `command()` function is used to expose javascript functions for use by non-operators (regular players). Only operators should be allowed use raw javascript using the `/js ` command because it is too powerful for use by regular players and can be easily abused. However, the `/jsp ` command lets you (the operator / server administrator / plugin author) safely expose javascript functions for use by players.
 
 #### Parameters
  
- * commandName : The name to give your command - the command will 
-   be invoked like this by players `/jsp commandName`
- * commandFunction: The javascript function which will be invoked when
-   the command is invoked by a player. The callback function in turn
-   takes 2 parameters...
+ * commandFunction: The named javascript function which will be invoked when the command is invoked by a player. The name of the function will be used as the command name so name this function accordingly. The callback function in turn takes 2 parameters...
 
-   * params : An Array of type String - the list of parameters 
-     passed to the command.
-   * sender : The [CommandSender][bukcs] object that invoked the
-     command (this is usually a Player object but can be a Block
-     ([BlockCommandSender][bukbcs]).
+   * params : An Array of type String - the list of parameters passed to the command.
+   * sender : The [CommandSender][bukcs] object that invoked the command (this is usually a Player object but can be a Block ([BlockCommandSender][bukbcs]).
 
- * options (Array - optional) : An array of command options/parameters
-   which the player can supply (It's useful to supply an array so that
-   Tab-Completion works for the `/jsp ` commands.
- * intercepts (boolean - optional) : Indicates whether this command
-   can intercept Tab-Completion of the `/jsp ` command - advanced
-   usage - see alias/alias.js for example.
+ * options (Array - optional) : An array of command options/parameters which the player can supply (It's useful to supply an array so that Tab-Completion works for the `/jsp ` commands.
+ * intercepts (boolean - optional) : Indicates whether this command can intercept Tab-Completion of the `/jsp ` command - advanced usage - see alias/alias.js for example.
 
 #### Example
 
-See chat/colors.js or alias/alias.js or homes/homes.js for examples of
-how to use the `command()` function.
+    // javascript code
+    function boo( params, sender) {
+        sender.sendMessage( params[0] );
+    }
+    command( boo );
+    
+    # in-game execution
+    /jsp boo Hi!
+    > Hi!
+
+See chat/colors.js or alias/alias.js or homes/homes.js for more examples of how to use the `command()` function.
 
 ### setTimeout() function
 
-This function mimics the setTimeout() function used in browser-based
-javascript.  However, the function will only accept a function
-reference, not a string of javascript code.  Where setTimeout() in the
-browser returns a numeric value which can be subsequently passed to
-clearTimeout(), This implementation returns a [BukkitTask][btdoc]
-object which can be subsequently passed to ScriptCraft's own
-clearTimeout() implementation.
+This function mimics the setTimeout() function used in browser-based javascript. However, the function will only accept a function reference, not a string of javascript code.  Where setTimeout() in the browser returns a numeric value which can be subsequently passed to clearTimeout(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearTimeout() implementation.
 
 If Node.js supports setTimeout() then it's probably good for ScriptCraft to support it too.
 
@@ -679,16 +655,9 @@ A scriptcraft implementation of clearTimeout().
 
 ### setInterval() function
 
-This function mimics the setInterval() function used in browser-based
-javascript.  However, the function will only accept a function
-reference, not a string of javascript code.  Where setInterval() in
-the browser returns a numeric value which can be subsequently passed
-to clearInterval(), This implementation returns a [BukkitTask][btdoc]
-object which can be subsequently passed to ScriptCraft's own
-clearInterval() implementation.
+This function mimics the setInterval() function used in browser-based javascript. However, the function will only accept a function reference, not a string of javascript code.  Where setInterval() in the browser returns a numeric value which can be subsequently passed to clearInterval(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearInterval() implementation.
 
-If Node.js supports setInterval() then it's probably good for
-ScriptCraft to support it too.
+If Node.js supports setInterval() then it's probably good for ScriptCraft to support it too.
 
 [btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
 
@@ -698,9 +667,7 @@ A scriptcraft implementation of clearInterval().
 
 ### refresh() function
 
-The refresh() function can be used to only reload the ScriptCraft
-plugin (it's like the `reload` command except it only reloads
-ScriptCraft). The refresh() function will ...
+The refresh() function can be used to only reload the ScriptCraft plugin (it's like the `reload` command except it only reloads ScriptCraft). The refresh() function will ...
 
 1. Disable the ScriptCraft plugin.
 2. Unload all event listeners associated with the ScriptCraft plugin.
@@ -713,14 +680,9 @@ See [issue #69][issue69] for more information.
 
 ### addUnloadHandler() function
 
-The addUnloadHandler() function takes a callback function as a
-parameter. The callback will be called when the ScriptCraft plugin is
-unloaded (usually as a result of a a `reload` command or server
-shutdown).
+The addUnloadHandler() function takes a callback function as a parameter. The callback will be called when the ScriptCraft plugin is unloaded (usually as a result of a a `reload` command or server shutdown).
 
-This function provides a way for ScriptCraft modules to do any
-required cleanup/housekeeping just prior to the ScriptCraft Plugin
-unloading.
+This function provides a way for ScriptCraft modules to do any required cleanup/housekeeping just prior to the ScriptCraft Plugin unloading.
 
 ## require - Node.js-style module loading in ScriptCraft
 
@@ -938,19 +900,17 @@ to choose from any of the approx. 160 different event types to listen to.
 
 ### Usage
 
-    events.blockBreak(function(evt){ 
-      evt.player.sendMessage("You broke a block!"); 
+    events.blockBreak( function( event ) { 
+      event.player.sendMessage('You broke a block!'); 
     });
 
 ... which is just a shorter and less error-prone way of writing ...
 
-    events.on("block.BlockBreakEvent",function(evt){ 
-      evt.player.sendMessage("You broke a block!");
+    events.on('block.BlockBreakEvent',function( event ) { 
+      event.player.sendMessage('You broke a block!');
     });
 
-The crucial difference is that the events module now has functions for each 
-of the built-in events. The functions are accessible via tab-completion so will help 
-beginning programmers to explore the events at the server console window.
+The crucial difference is that the events module now has functions for each of the built-in events. The functions are accessible via TAB-completion so will help beginning programmers to explore the events at the server console window.
 
 ### events.worldUnload()
 
@@ -2921,8 +2881,7 @@ The Drone is a convenience class for building. It can be used for...
  1. Building
  2. Copying and Pasting
 
-It uses a fluent interface which means all of the Drone's methods return `this` and can 
-be chained together like so...
+It uses a fluent interface which means all of the Drone's methods return `this` and can be chained together like so...
 
     var theDrone = new Drone();
     theDrone.up().left().box(blocks.oak).down().fwd(3).cylinder0(blocks.lava,8); 
@@ -2935,11 +2894,7 @@ Drones can be created in any of the following ways...
          
         var d = box( blocks.oak )
 
-   ... creates a 1x1x1 wooden block at the cross-hairs or player's location and returns a Drone
-   object. This might look odd (if you're familiar with Java's Object-dot-method syntax) but all 
-   of the Drone class's methods are also global functions that return new Drone objects. 
-   This is short-hand for creating drones and is useful for playing around with Drones at the in-game 
-   command prompt. It's shorter than typing ...
+   ... creates a 1x1x1 wooden block at the cross-hairs or player's location and returns a Drone object. This might look odd (if you're familiar with Java's Object-dot-method syntax) but all of the Drone class's methods are also global functions that return new Drone objects. This is short-hand for creating drones and is useful for playing around with Drones at the in-game command prompt. It's shorter than typing ...
     
         var d = new Drone().box( blocks.oak ) 
         
@@ -2962,12 +2917,7 @@ Drones can be created in any of the following ways...
 
         d = new Drone()
     
-    ...will create a new Drone. If the cross-hairs are pointing at a
-    block at the time then, that block's location becomes the drone's
-    starting point.  If the cross-hairs are _not_ pointing at a block,
-    then the drone's starting location will be 2 blocks directly in
-    front of the player.  TIP: Building always happens right and front
-    of the drone's position...
+    ...will create a new Drone. If the cross-hairs are pointing at a block at the time then, that block's location becomes the drone's starting point.  If the cross-hairs are _not_ pointing at a block, then the drone's starting location will be 2 blocks directly in front of the player.  TIP: Building always happens right and front of the drone's position...
     
     Plan View:
 
@@ -2976,12 +2926,7 @@ Drones can be created in any of the following ways...
         |
         D---->
       
-    For convenience you can use a _corner stone_ to begin building.
-    The corner stone should be located just above ground level.  If
-    the cross-hair is point at or into ground level when you create a
-    new Drone(), then building begins at that point. You can get
-    around this by pointing at a 'corner stone' just above ground
-    level or alternatively use the following statement...
+    For convenience you can use a _corner stone_ to begin building. The corner stone should be located just above ground level. If the cross-hair is point at or into ground level when you create a new Drone(), then building begins at that point. You can get around this by pointing at a 'corner stone' just above ground level or alternatively use the following statement...
     
         d = new Drone().up();
           
@@ -2993,26 +2938,15 @@ Drones can be created in any of the following ways...
     
         d = new Drone(x,y,z,direction,world);
 
-    This will create a new Drone at the location you specified using
-    x, y, z In minecraft, the X axis runs west to east and the Z axis runs
-    north to south.  The direction parameter says what direction you want
-    the drone to face: 0 = east, 1 = south, 2 = west, 3 = north.  If the
-    direction parameter is omitted, the player's direction is used
-    instead.
-
-    Both the `direction` and `world` parameters are optional.
+    This will create a new Drone at the location you specified using x, y, z In minecraft, the X axis runs west to east and the Z axis runs north to south.  The direction parameter says what direction you want the drone to face: 0 = east, 1 = south, 2 = west, 3 = north.  If the direction parameter is omitted, the player's direction is used instead. Both the `direction` and `world` parameters are optional.
 
  4. Create a new Drone based on a Bukkit Location object...
 
         d = new Drone(location);
 
-    This is useful when you want to create a drone at a given
-    `org.bukkit.Location` . The `Location` class is used throughout
-    the bukkit API. For example, if you want to create a drone when a
-    block is broken at the block's location you would do so like
-    this...
+    This is useful when you want to create a drone at a given `org.bukkit.Location` . The `Location` class is used throughout the bukkit API. For example, if you want to create a drone when a block is broken at the block's location you would do so like this...
 
-        events.blockBreak( function( event) { 
+        events.blockBreak( function( event ) { 
             var location = event.block.location;
             var drone = new Drone(location);
             // do more stuff with the drone here...
@@ -3034,13 +2968,10 @@ the box() method is a convenience method for building things. (For the more perf
 
 #### parameters
 
- * b - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
-   Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
+ * b - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
  * w (optional - default 1) - the width of the structure 
  * h (optional - default 1) - the height of the structure 
- * d (optional - default 1) - the depth of the structure - NB this is
-   not how deep underground the structure lies - this is how far
-   away (depth of field) from the drone the structure will extend.
+ * d (optional - default 1) - the depth of the structure - NB this is not how deep underground the structure lies - this is how far away (depth of field) from the drone the structure will extend.
 
 #### Example
 
@@ -3061,8 +2992,7 @@ Another convenience method - this one creates 4 walls with no floor or ceiling.
 
 #### Parameters
 
- * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
-   Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
+ * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
  * width (optional - default 1) - the width of the structure 
  * height (optional - default 1) - the height of the structure 
  * length (optional - default 1) - the length of the structure - how far
@@ -3078,8 +3008,7 @@ To create a stone building with the insided hollowed out 7 wide by 3 tall by 6 l
    
 ### Drone.boxa() method
 
-Construct a cuboid using an array of blocks. As the drone moves first along the width axis,
-then the height (y axis) then the length, each block is picked from the array and placed.
+Construct a cuboid using an array of blocks. As the drone moves first along the width axis, then the height (y axis) then the length, each block is picked from the array and placed.
 
 #### Parameters
 
@@ -3101,8 +3030,7 @@ Construct a rainbow-colored road 100 blocks long...
 
 ### Drone Movement
 
-Drones can move freely in minecraft's 3-D world. You control the
-Drone's movement using any of the following methods..
+Drones can move freely in minecraft's 3-D world. You control the Drone's movement using any of the following methods..
 
  * up()
  * down()
@@ -3112,16 +3040,9 @@ Drone's movement using any of the following methods..
  * back()
  * turn()
 
-... Each of these methods takes a single optional parameter
-`numBlocks` - the number of blocks to move in the given direction. If
-no parameter is given, the default is 1.
+... Each of these methods takes a single optional parameter `numBlocks` - the number of blocks to move in the given direction. If no parameter is given, the default is 1.
 
-to change direction use the `turn()` method which also takes a single
-optional parameter (numTurns) - the number of 90 degree turns to make.
-Turns are always clock-wise. If the drone is facing north, then
-drone.turn() will make the turn face east. If the drone is facing east
-then drone.turn(2) will make the drone turn twice so that it is facing
-west.
+To change direction use the `turn()` method which also takes a single optional parameter (numTurns) - the number of 90 degree turns to make. Turns are always clock-wise. If the drone is facing north, then drone.turn() will make the turn face east. If the drone is facing east then drone.turn(2) will make the drone turn twice so that it is facing west.
 
 ### Drone Positional Info
 
@@ -3129,20 +3050,14 @@ west.
 
 ### Drone Markers
 
-Markers are useful when your Drone has to do a lot of work. You can
-set a check-point and return to the check-point using the move()
-method.  If your drone is about to undertake a lot of work -
-e.g. building a road, skyscraper or forest you should set a
-check-point before doing so if you want your drone to return to its
-current location.  
+Markers are useful when your Drone has to do a lot of work. You can set a check-point and return to the check-point using the move() method.  If your drone is about to undertake a lot of work - e.g. building a road, skyscraper or forest you should set a check-point before doing so if you want your drone to return to its current location.  
 
 A 'start' checkpoint is automatically created when the Drone is first created.
 
 Markers are created and returned to using the followng two methods...
 
  * chkpt - Saves the drone's current location so it can be returned to later.
- * move - moves the drone to a saved location. Alternatively you can provide an 
-   org.bukkit.Location object or x,y,z and direction parameters.
+ * move - moves the drone to a saved location. Alternatively you can provide an org.bukkit.Location object or x,y,z and direction parameters.
 
 #### Parameters
 
@@ -3168,8 +3083,7 @@ Creates a prism. This is useful for roofs on houses.
 
 #### Parameters
 
- * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
-   Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
+ * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
  * width - the width of the prism
  * length - the length of the prism (will be 2 time its height)
 
@@ -3189,8 +3103,7 @@ A convenience method for building cylinders. Building begins radius blocks to th
 
 #### Parameters
 
- * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
-   Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
+ * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
  * radius 
  * height
 
@@ -3216,8 +3129,7 @@ To create a hollow cylinder of Iron 7 blocks in radius and 1 block high...
 
 ### Drone.arc() method
 
-The arc() method can be used to create 1 or more 90 degree arcs in the horizontal or vertical planes.
-This method is called by cylinder() and cylinder0() and the sphere() and sphere0() methods.
+The arc() method can be used to create 1 or more 90 degree arcs in the horizontal or vertical planes. This method is called by cylinder() and cylinder0() and the sphere() and sphere0() methods.
 
 #### Parameters
 
@@ -3227,20 +3139,10 @@ arc() takes a single parameter - an object with the following named properties..
  * blockType - The type of block to use - this is the block Id only (no meta). See [Data Values][dv].
  * meta - The metadata value. See [Data Values][dv].
  * orientation (default: 'horizontal' ) - the orientation of the arc - can be 'vertical' or 'horizontal'.
- * stack (default: 1 ) - the height or length of the arc (depending on
-   the orientation - if orientation is horizontal then this parameter
-   refers to the height, if vertical then it refers to the length ).
- * strokeWidth (default: 1 ) - the width of the stroke (how many
-   blocks) - if drawing nested arcs it's usually a good idea to set
-   strokeWidth to at least 2 so that there are no gaps between each
-   arc. The arc method uses a [bresenham algorithm][bres] to plot
-   points along the circumference.
+ * stack (default: 1 ) - the height or length of the arc (depending on the orientation - if orientation is horizontal then this parameter refers to the height, if vertical then it refers to the length ).
+ * strokeWidth (default: 1 ) - the width of the stroke (how many blocks) - if drawing nested arcs it's usually a good idea to set strokeWidth to at least 2 so that there are no gaps between each arc. The arc method uses a [bresenham algorithm][bres] to plot points along the circumference.
  * fill - If true (or present) then the arc will be filled in.
- * quadrants (default:
-   `{topleft:true,topright:true,bottomleft:true,bottomright:true}` - An
-   object with 4 properties indicating which of the 4 quadrants of a
-   circle to draw. If the quadrants property is absent then all 4
-   quadrants are drawn.
+ * quadrants (default: `{topleft:true,topright:true,bottomleft:true,bottomright:true}` - An object with 4 properties indicating which of the 4 quadrants of a circle to draw. If the quadrants property is absent then all 4 quadrants are drawn.
 
 #### Examples
 
@@ -3343,16 +3245,11 @@ To create 4 trees in a row, point the cross-hairs at the ground then type `/js `
 
     up( ).oak( ).right(8 ).spruce( ).right(8 ).birch( ).right(8 ).jungle( );
 
-Trees won't always generate unless the conditions are right. You
-should use the tree methods when the drone is directly above the
-ground. Trees will usually grow if the drone's current location is
-occupied by Air and is directly above an area of grass (That is why
-the `up( )` method is called first).
+Trees won't always generate unless the conditions are right. You should use the tree methods when the drone is directly above the ground. Trees will usually grow if the drone's current location is occupied by Air and is directly above an area of grass (That is why the `up( )` method is called first).
 
 ![tree example](img/treeex1.png)
 
-None of the tree methods require parameters. Tree methods will only be successful
-if the tree is placed on grass in a setting where trees can grow.
+None of the tree methods require parameters. Tree methods will only be successful if the tree is placed on grass in a setting where trees can grow.
 
 ### Drone.garden() method
 
@@ -3373,8 +3270,7 @@ To create a garden 10 blocks wide by 5 blocks long...
 
 ### Drone.rand() method
 
-rand takes either an array (if each blockid has the same chance of occurring)
-or an object where each property is a blockid and the value is it's weight (an integer)
+rand takes either an array (if each blockid has the same chance of occurring) or an object where each property is a blockid and the value is it's weight (an integer)
 
 #### Example
 
@@ -3399,8 +3295,7 @@ A drone can be used to copy and paste areas of the game world.
 
 ### Drone.copy() method
 
-Copies an area so it can be pasted elsewhere. The name can be used for
-pasting the copied area elsewhere...
+Copies an area so it can be pasted elsewhere. The name can be used for pasting the copied area elsewhere...
 
 #### Parameters
 
@@ -3419,9 +3314,7 @@ Pastes a copied area to the current location.
 
 #### Example
 
-To copy a 10x5x10 area (using the drone's coordinates as the starting
-point) into memory.  the copied area can be referenced using the name
-'somethingCool'. The drone moves 12 blocks right then pastes the copy.
+To copy a 10x5x10 area (using the drone's coordinates as the starting point) into memory.  the copied area can be referenced using the name 'somethingCool'. The drone moves 12 blocks right then pastes the copy.
 
     drone.copy('somethingCool',10,5,10 )
          .right(12 )
@@ -3429,8 +3322,7 @@ point) into memory.  the copied area can be referenced using the name
 
 ### Chaining
 
-All of the Drone methods return a Drone object, which means methods
-can be 'chained' together so instead of writing this...
+All of the Drone methods return a Drone object, which means methods can be 'chained' together so instead of writing this...
 
     drone = new Drone(); 
     drone.fwd(3);
@@ -3444,17 +3336,11 @@ can be 'chained' together so instead of writing this...
     
     var drone = new Drone().fwd(3).left(2).box(2).up().box(2).down();
 
-... since each Drone method is also a global function that constructs
-a drone if none is supplied, you can shorten even further to just...
+... since each Drone method is also a global function that constructs a drone if none is supplied, you can shorten even further to just...
     
     fwd(3).left(2).box(2).up().box(2).down()
 
-The Drone object uses a [Fluent Interface][fl] to make ScriptCraft
-scripts more concise and easier to write and read.  Minecraft's
-in-game command prompt is limited to about 80 characters so chaining
-drone commands together means more can be done before hitting the
-command prompt limit. For complex building you should save your
-commands in a new script file and load it using /js load()
+The Drone object uses a [Fluent Interface][fl] to make ScriptCraft scripts more concise and easier to write and read.  Minecraft's in-game command prompt is limited to about 80 characters so chaining drone commands together means more can be done before hitting the command prompt limit. For complex building you should save your commands in a new script file and load it using /js load()
 
 [fl]: http://en.wikipedia.org/wiki/Fluent_interface
 
@@ -3467,8 +3353,7 @@ commands in a new script file and load it using /js load()
 
 ### Extending Drone
 
-The Drone object can be easily extended - new buidling recipes/blueprints can be added and can
-become part of a Drone's chain using the *static* method `Drone.extend`. 
+The Drone object can be easily extended - new buidling recipes/blueprints can be added and can become part of a Drone's chain using the *static* method `Drone.extend`. 
 
 ### Drone.extend() static method
 
@@ -3480,7 +3365,6 @@ Use this method to add new methods (which also become chainable global functions
  * function - The method body.
 
 Alternatively if you provide just a function as a parameter, then the function name will be used as the new method name. For example the following two approaches are both valid.
-
 
 #### Example 1 Using name and function as parameters
 
@@ -3495,13 +3379,14 @@ Alternatively if you provide just a function as a parameter, then the function n
 
 #### Example 2 Using just a named function as a parameter
 
-    Drone.extend(function pyramid( block,height) { 
+    function pyramid( block,height) { 
         this.chkpt('pyramid');
         for ( var i = height; i > 0; i -= 2) {
             this.box(block, i, 1, i).up().right().fwd();
         }
         return this.move('pyramid');      
-    });
+    }
+    Drone.extend( pyramid );
 
 Once the method is defined (it can be defined in a new pyramid.js file) it can be used like so...
 
@@ -3527,9 +3412,7 @@ An array which can be used when constructing stairs facing in the Drone's direct
 
 #### Drone.PLAYER_SIGN_FACING
 
-An array which can be used when placing signs so they face in a given direction.
-This is used internally by the Drone.sign() method. It should also be used for placing
-any of the following blocks...
+An array which can be used when placing signs so they face in a given direction. This is used internally by the Drone.sign() method. It should also be used for placing any of the following blocks...
 
  * chest 
  * ladder
@@ -3562,46 +3445,27 @@ Say you want to do the same thing over and over. You have a couple of options...
 
     d = new Drone(); for ( var i =0;i < 4; i++) {  d.cottage().right(8); }
 
-While this will fit on the in-game prompt, it's awkward. You need to
-declare a new Drone object first, then write a for loop to create the
-4 cottages. It's also error prone, even the `for` loop is too much
-syntax for what should really be simple.
+While this will fit on the in-game prompt, it's awkward. You need to declare a new Drone object first, then write a for loop to create the 4 cottages. It's also error prone, even the `for` loop is too much syntax for what should really be simple.
 
  * You can use a while loop...
    
     d = new Drone(); var i=4; while (i--) {  d.cottage().right(8); }
 
-... which is slightly shorter but still too much syntax. Each of the
-above statements is fine for creating a 1-dimensional array of
-structures. But what if you want to create a 2-dimensional or
-3-dimensional array of structures? Enter the `times()` method.
+... which is slightly shorter but still too much syntax. Each of the above statements is fine for creating a 1-dimensional array of structures. But what if you want to create a 2-dimensional or 3-dimensional array of structures? Enter the `times()` method.
 
-The `times()` method lets you repeat commands in a chain any number of
-times. So to create 4 cottages in a row you would use the following
-statement...
+The `times()` method lets you repeat commands in a chain any number of times. So to create 4 cottages in a row you would use the following statement...
 
     cottage().right(8).times(4);
 
-...which will build a cottage, then move right 8 blocks, then do it
-again 4 times over so that at the end you will have 4 cottages in a
-row. What's more the `times()` method can be called more than once in
-a chain. So if you wanted to create a *grid* of 20 houses ( 4 x 5 ),
-you would do so using the following statement...
+...which will build a cottage, then move right 8 blocks, then do it again 4 times over so that at the end you will have 4 cottages in a row. What's more the `times()` method can be called more than once in a chain. So if you wanted to create a *grid* of 20 houses ( 4 x 5 ), you would do so using the following statement...
 
     cottage().right(8).times(4).fwd(8).left(32).times(5);
 
 ... breaking it down...
 
- 1. The first 3 calls in the chain ( `cottage()`, `right(8)`,
-    `times(4)` ) build a single row of 4 cottages.
+ 1. The first 3 calls in the chain ( `cottage()`, `right(8)`, `times(4)` ) build a single row of 4 cottages.
 
- 2. The last 3 calls in the chain ( `fwd(8)`, `left(32)`, `times(5)` )
-    move the drone forward 8 then left 32 blocks (4 x 8) to return to
-    the original x coordinate, then everything in the chain is
-    repeated again 5 times so that in the end, we have a grid of 20
-    cottages, 4 x 5.  Normally this would require a nested loop but
-    the `times()` method does away with the need for loops when
-    repeating builds.
+ 2. The last 3 calls in the chain ( `fwd(8)`, `left(32)`, `times(5)` ) move the drone forward 8 then left 32 blocks (4 x 8) to return to the original x coordinate, then everything in the chain is repeated again 5 times so that in the end, we have a grid of 20 cottages, 4 x 5.  Normally this would require a nested loop but the `times()` method does away with the need for loops when repeating builds.
 
 Another example: This statement creates a row of trees 2 by 3 ...
 
