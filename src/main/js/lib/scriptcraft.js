@@ -123,7 +123,7 @@ As of December 24 2013, the `scriptcraft/plugins` directory has the following su
  * arrows - The arrows module - Changes the behaviour of Arrows: Explosive, Fireworks, Teleportation etc.
  * signs - The signs module (includes example signs) - create interactive signs.
  * chat - The chat plugin/module 
- * alias - The alias plugin/module - for creating custom aliases for commonly used commands.
+ * alias - The alias plugin/module - for creating custom aliases for commonly-used commands.
  * home - The home module - for setting homes and visiting other homes.
 
 ## Global variables
@@ -137,10 +137,7 @@ The ScriptCraft JavaPlugin object.
 The Minecraft Server object
 
 ### self variable
-The current player. (Note - this value should not be used in
-multi-threaded scripts or event-handling code - it's not
-thread-safe). This variable is only safe to use at the in-game prompt
-and should *never* be used in modules. For example you can use it here...
+The current player. (Note - this value should not be used in multi-threaded scripts or event-handling code - it's not thread-safe). This variable is only safe to use at the in-game prompt and should *never* be used in modules. For example you can use it here...
 
     /js console.log(self.name)
 
@@ -169,9 +166,7 @@ ScripCraft provides some global functions which can be used by all plugins/modul
 
 ### echo function
 
-The `echo()` function displays a message on the in-game screen. The
-message is displayed to the `self` player (this is usually the player
-who issued the `/js` or `/jsp` command).
+The `echo()` function displays a message on the in-game screen. The message is displayed to the `self` player (this is usually the player who issued the `/js` or `/jsp` command).
 
 #### Example
 
@@ -183,19 +178,13 @@ e.g. `alert('Hello World')`.
 
 #### Notes
 
-The `echo` and `alert` functions are provided as convenience functions
-for beginning programmers. The use of these 2 functions is not
-recommended in event-handling code or multi-threaded code. In such
-cases, if you want to send a message to a given player then use the
-Bukkit API's [Player.sendMessage()][plsm] function instead.
+The `echo` and `alert` functions are provided as convenience functions for beginning programmers. The use of these 2 functions is not recommended in event-handling code or multi-threaded code. In such cases, if you want to send a message to a given player then use the Bukkit API's [Player.sendMessage()][plsm] function instead.
 
 [plsm]: http://jd.bukkit.org/dev/apidocs/org/bukkit/command/CommandSender.html#sendMessage(java.lang.String)
 
 ### require() function
 
-ScriptCraft's `require()` function is used to load modules. The
-`require()` function takes a module name as a parameter and will try
-to load the named module.
+ScriptCraft's `require()` function is used to load modules. The `require()` function takes a module name as a parameter and will try to load the named module.
 
 #### Parameters
 
@@ -303,48 +292,35 @@ ScriptCraft Plugin][anatomy].
 
 ### command() function
 
-The `command()` function is used to expose javascript functions for
-use by non-operators (regular players). Only operators should be
-allowed use raw javascript using the `/js ` command because it is too
-powerful for use by regular players and can be easily abused. However,
-the `/jsp ` command lets you (the operator / server administrator /
-plugin author) safely expose javascript functions for use by players.
+The `command()` function is used to expose javascript functions for use by non-operators (regular players). Only operators should be allowed use raw javascript using the `/js ` command because it is too powerful for use by regular players and can be easily abused. However, the `/jsp ` command lets you (the operator / server administrator / plugin author) safely expose javascript functions for use by players.
 
 #### Parameters
  
- * commandName : The name to give your command - the command will 
-   be invoked like this by players `/jsp commandName`
- * commandFunction: The javascript function which will be invoked when
-   the command is invoked by a player. The callback function in turn
-   takes 2 parameters...
+ * commandFunction: The named javascript function which will be invoked when the command is invoked by a player. The name of the function will be used as the command name so name this function accordingly. The callback function in turn takes 2 parameters...
 
-   * params : An Array of type String - the list of parameters 
-     passed to the command.
-   * sender : The [CommandSender][bukcs] object that invoked the
-     command (this is usually a Player object but can be a Block
-     ([BlockCommandSender][bukbcs]).
+   * params : An Array of type String - the list of parameters passed to the command.
+   * sender : The [CommandSender][bukcs] object that invoked the command (this is usually a Player object but can be a Block ([BlockCommandSender][bukbcs]).
 
- * options (Array - optional) : An array of command options/parameters
-   which the player can supply (It's useful to supply an array so that
-   Tab-Completion works for the `/jsp ` commands.
- * intercepts (boolean - optional) : Indicates whether this command
-   can intercept Tab-Completion of the `/jsp ` command - advanced
-   usage - see alias/alias.js for example.
+ * options (Array - optional) : An array of command options/parameters which the player can supply (It's useful to supply an array so that Tab-Completion works for the `/jsp ` commands.
+ * intercepts (boolean - optional) : Indicates whether this command can intercept Tab-Completion of the `/jsp ` command - advanced usage - see alias/alias.js for example.
 
 #### Example
 
-See chat/colors.js or alias/alias.js or homes/homes.js for examples of
-how to use the `command()` function.
+    // javascript code
+    function boo( params, sender) {
+        sender.sendMessage( params[0] );
+    }
+    command( boo );
+    
+    # in-game execution
+    /jsp boo Hi!
+    > Hi!
+
+See chat/colors.js or alias/alias.js or homes/homes.js for more examples of how to use the `command()` function.
 
 ### setTimeout() function
 
-This function mimics the setTimeout() function used in browser-based
-javascript.  However, the function will only accept a function
-reference, not a string of javascript code.  Where setTimeout() in the
-browser returns a numeric value which can be subsequently passed to
-clearTimeout(), This implementation returns a [BukkitTask][btdoc]
-object which can be subsequently passed to ScriptCraft's own
-clearTimeout() implementation.
+This function mimics the setTimeout() function used in browser-based javascript. However, the function will only accept a function reference, not a string of javascript code.  Where setTimeout() in the browser returns a numeric value which can be subsequently passed to clearTimeout(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearTimeout() implementation.
 
 If Node.js supports setTimeout() then it's probably good for ScriptCraft to support it too.
 
@@ -368,16 +344,9 @@ A scriptcraft implementation of clearTimeout().
 
 ### setInterval() function
 
-This function mimics the setInterval() function used in browser-based
-javascript.  However, the function will only accept a function
-reference, not a string of javascript code.  Where setInterval() in
-the browser returns a numeric value which can be subsequently passed
-to clearInterval(), This implementation returns a [BukkitTask][btdoc]
-object which can be subsequently passed to ScriptCraft's own
-clearInterval() implementation.
+This function mimics the setInterval() function used in browser-based javascript. However, the function will only accept a function reference, not a string of javascript code.  Where setInterval() in the browser returns a numeric value which can be subsequently passed to clearInterval(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearInterval() implementation.
 
-If Node.js supports setInterval() then it's probably good for
-ScriptCraft to support it too.
+If Node.js supports setInterval() then it's probably good for ScriptCraft to support it too.
 
 [btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
 
@@ -387,9 +356,7 @@ A scriptcraft implementation of clearInterval().
 
 ### refresh() function
 
-The refresh() function can be used to only reload the ScriptCraft
-plugin (it's like the `reload` command except it only reloads
-ScriptCraft). The refresh() function will ...
+The refresh() function can be used to only reload the ScriptCraft plugin (it's like the `reload` command except it only reloads ScriptCraft). The refresh() function will ...
 
 1. Disable the ScriptCraft plugin.
 2. Unload all event listeners associated with the ScriptCraft plugin.
@@ -402,14 +369,9 @@ See [issue #69][issue69] for more information.
 
 ### addUnloadHandler() function
 
-The addUnloadHandler() function takes a callback function as a
-parameter. The callback will be called when the ScriptCraft plugin is
-unloaded (usually as a result of a a `reload` command or server
-shutdown).
+The addUnloadHandler() function takes a callback function as a parameter. The callback will be called when the ScriptCraft plugin is unloaded (usually as a result of a a `reload` command or server shutdown).
 
-This function provides a way for ScriptCraft modules to do any
-required cleanup/housekeeping just prior to the ScriptCraft Plugin
-unloading.
+This function provides a way for ScriptCraft modules to do any required cleanup/housekeeping just prior to the ScriptCraft Plugin unloading.
 
 ***/
 
