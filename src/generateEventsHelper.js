@@ -4,6 +4,7 @@ var File = java.io.File,
   out = java.lang.System.out,
   err = java.lang.System.err,
   Modifier = java.lang.reflect.Modifier,
+  clz,
   ZipInputStream = java.util.zip.ZipInputStream,
   zis = new ZipInputStream(new FileInputStream('./target/minecraft/craftbukkit.jar')),
   entry = null;
@@ -18,19 +19,17 @@ var content = [
   '',
   '### Usage',
   '',
-  '    events.blockBreak(function(evt){ ', 
-  '      evt.player.sendMessage("You broke a block!"); ', 
+  '    events.blockBreak( function( event ) { ', 
+  '      event.player.sendMessage(\'You broke a block!\'); ', 
   '    });',
   '',
   '... which is just a shorter and less error-prone way of writing ...',
   '',
-  '    events.on("block.BlockBreakEvent",function(evt){ ', 
-  '      evt.player.sendMessage("You broke a block!");',
+  '    events.on(\'block.BlockBreakEvent\',function( event ) { ', 
+  '      event.player.sendMessage(\'You broke a block!\');',
   '    });',
   '',
-  'The crucial difference is that the events module now has functions for each ',
-  'of the built-in events. The functions are accessible via tab-completion so will help ',
-  'beginning programmers to explore the events at the server console window.',
+  'The crucial difference is that the events module now has functions for each of the built-in events. The functions are accessible via TAB-completion so will help beginning programmers to explore the events at the server console window.',
   '',
   '***/'
 ];
@@ -41,14 +40,18 @@ while ( ( entry = zis.nextEntry) != null) {
   var name = '' + entry.name;
   if (name.match(/org\/bukkit\/event\/.+Event\.class$/)){
     name = name.replace(/\//g,'.').replace('.class','');
-    var clz = java.lang.Class.forName(name);
+    try { 
+      clz = java.lang.Class.forName(name);
+    }catch ( e) {
+      clz = engine.eval(name);
+    }
     var isAbstract = Modifier.isAbstract(clz.getModifiers());
     if ( isAbstract ) {
       continue;
     }
     var parts = name.split('.');
     var shortName = name.replace('org.bukkit.event.','');
-    var fname = parts.reverse().shift().replace(/^(.)/,function(a){ return a.toLowerCase()}).replace(/Event$/,'');
+    var fname = parts.reverse().shift().replace(/^(.)/,function(a){ return a.toLowerCase();}).replace(/Event$/,'');
 
     var comment = [
       '/*********************',
