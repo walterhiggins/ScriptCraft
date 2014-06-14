@@ -42,6 +42,14 @@ var executeCmd = function( args, player ) {
   define a new JSP command.
 */
 var defineCmd = function( name, func, options, intercepts ) {
+
+  if ( typeof name == 'function'){
+    intercepts = options;
+    options = func;
+    func = name;
+    name = func.name;
+  }
+  
   if ( typeof options == 'undefined' ) {
     options = [];
   }
