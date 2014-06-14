@@ -12,6 +12,13 @@ var bukkit = {
     }
     return result;
   },
+  playerNames: function(){
+    var result = [];
+    for (var i = 0; i < server.onlinePlayers.length; i++){
+      result.push(''+ server.onlinePlayers[i].name);
+    }
+    return result;
+  },
   worlds: function(){
     var result = [];
     var lWorlds = server.worlds;
