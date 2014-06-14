@@ -301,7 +301,7 @@ The `command()` function is used to expose javascript functions for use by non-o
    * params : An Array of type String - the list of parameters passed to the command.
    * sender : The [CommandSender][bukcs] object that invoked the command (this is usually a Player object but can be a Block ([BlockCommandSender][bukbcs]).
 
- * options (Array - optional) : An array of command options/parameters which the player can supply (It's useful to supply an array so that Tab-Completion works for the `/jsp ` commands.
+ * options (Array|Function - optional) : An array of command options/parameters which the player can supply (It's useful to supply an array so that Tab-Completion works for the `/jsp ` commands. If a function is supplied instead of an array then the function will be invoked at TAB-completion time and should return an array of strings.
  * intercepts (boolean - optional) : Indicates whether this command can intercept Tab-Completion of the `/jsp ` command - advanced usage - see alias/alias.js for example.
 
 #### Example
@@ -315,6 +315,17 @@ The `command()` function is used to expose javascript functions for use by non-o
     # in-game execution
     /jsp boo Hi!
     > Hi!
+
+To use a callback for options (TAB-Completion) ...
+
+    
+    function boo( params, sender ) {
+       var receiver = server.getPlayer( params[0] );
+       if ( receiver ){
+          receiver.sendMessage( sender.name + ' says boo!');
+       }
+    }
+    command( boo, bukkit.playerNames );
 
 See chat/colors.js or alias/alias.js or homes/homes.js for more examples of how to use the `command()` function.
 
