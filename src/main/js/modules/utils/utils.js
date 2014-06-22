@@ -214,6 +214,38 @@ exports.getMousePos = function( player ) {
   return targetedBlock.location;
 };
 /************************************************************************
+### utils.getWorld() function
+
+Given the name of a world, this function returns the world object.  Useful
+ for making some commands easier to type.
+
+#### Parameters
+
+ * worldName : The name of the world to get (eg. "world", "world_nether", "world_the_end"
+
+#### Example
+
+ ```javascript
+ //
+ // start a storm in "world"
+ //
+ utils.getWorld("world").setStorm(true);
+ ```
+
+***/
+exports.getWorld = function( worldName ) {
+    var worldArray = server.worlds;
+    if ( worldArray instanceof java.util.Collection ) {
+        worldArray = worldArray.toArray();
+    }
+    for (var i = 0; i < worldArray.length; ++i) {
+        if (worldArray[i].name == worldName) {
+            return worldArray[i];
+        }
+    }
+    return null;
+};
+/************************************************************************
 ### utils.foreach() function
 
 The utils.foreach() function is a utility function for iterating over
