@@ -670,6 +670,8 @@ var Drone = function( x, y, z, dir, world ) {
 };
 
 exports.Drone = Drone;
+
+
 /* 
  because this is a plugin, any of its exports will be exported globally.
  Since 'blocks' is a module not a plugin it is convenient to export it via 
@@ -735,6 +737,32 @@ Drone.extend = function( name, func ) {
     return result;
   };
 };
+
+var _lookAt = function() {
+    return new Drone();
+};
+
+var _atPlayer = function(player) {
+    return new Drone(utils.getPlayerPos(player));
+};
+
+var _here = function() {
+    var player = (typeof self !== 'undefined' ? self : null);
+    if (player) {
+        return _atPlayer(player);
+    }
+    else {
+        return null;
+    }
+};
+
+/*
+* Handy ways to start a drone... here().firework();  or atPlayer("herobrine").cylinder0(blocks.stone,5,5);
+*/
+Drone.extend('lookAt',_lookAt);
+Drone.extend('atPlayer',_atPlayer);
+Drone.extend('here',_here);
+
 
 /**************************************************************************
 ### Drone.times() Method
