@@ -70,6 +70,7 @@ exports.request = function( request, callback ) {
       url = request;
       requestMethod = 'GET';
     }else{
+      url = request.url;
       paramsAsString = paramsToString( request.params );
       if ( request.method ) {
 	requestMethod = request.method;
