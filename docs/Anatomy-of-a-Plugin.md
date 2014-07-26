@@ -50,7 +50,7 @@ chosen color...
         var player = evt.player;
         var playerChatColor = _store.players[ player.name ];
         if ( playerChatColor ) {
-            evt.message = '&sect;' + colorCodes[ playerChatColor ] + e.message;
+            evt.message = '&sect;' + colorCodes[ playerChatColor ] + evt.message;
         }
     });
         
@@ -116,7 +116,7 @@ code is just a couple of lines of code but is a fully working plugin...
         var player = evt.player;
         var playerChatColor = _store.players[player.name];
         if ( playerChatColor ) {
-            evt.message = '&sect;' + colorCodes[playerChatColor] + e.message;
+            evt.message = '&sect;' + colorCodes[playerChatColor] + evt.message;
         }
     });
     command( 'chat_color', function( params, sender ) {
