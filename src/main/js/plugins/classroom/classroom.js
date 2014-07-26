@@ -2,8 +2,8 @@ var utils = require('utils'),
   autoload = require('plugin').autoload,
   logger = __plugin.logger,
   foreach = utils.foreach,
-  watchFile = utils.watchFile,
-  unwatchFile = utils.unwatchFile,
+  watchDir = utils.watchDir,
+  unwatchDir = utils.unwatchDir,
   playersDir = __dirname + '/../../players/',
   serverAddress = utils.serverAddress();
 
@@ -104,9 +104,9 @@ function revokeScripting ( player ) {
   var playerName = '' + player.name;
   playerName = playerName.replace(/[^a-zA-Z0-9_\-]/g,'');
   var playerDir = new File( playersDir + playerName );
-  unwatchFile( playerDir );
+  unwatchDir( playerDir );
 }
-
+exports.classroomAutoloadTime = {};
 function grantScripting( player ) {
   console.log('Enabling scripting for player ' + player.name);
   var playerName = '' + player.name;
@@ -117,9 +117,15 @@ function grantScripting( player ) {
   var playerContext = {};
   autoload( playerContext, playerDir, logger, { cache: false });
   global[playerName] = playerContext;
-
-  watchFile( playerDir, function( changedDir ){
-    autoload(playerContext, playerDir, logger, { cache: false });
+  watchDir( playerDir, function( changedDir ){
+    var currentTime = new java.util.Date().getTime();
+    //this check is here because this callback might get called multiple times for the watch interval
+    //one call for the file change and another for directory change 
+    //(this happens only in Linux because in Windows the folder lastModifiedTime is not changed)
+    if(currentTime-exports.classroomAutoloadTime[playerName]>1000) {
+      autoload(playerContext, playerDir, logger, { cache: false });
+    } 
+    exports.classroomAutoloadTime[playerName] = currentTime;
   });
 
 /*
