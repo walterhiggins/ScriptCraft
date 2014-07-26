@@ -22,6 +22,8 @@ var Drone = require('../drone').Drone;
  * (todo: should I be looking for block breaks at this location and removing callbacks?)
  */
 
+var utils = require('utils');
+
 // An object which stores the registered rscalls for later rsremove
 var rsRemoveFuncs = {};
 
