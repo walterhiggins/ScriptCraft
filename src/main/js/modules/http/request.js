@@ -38,11 +38,11 @@ The following example illustrates how to use http.request to make a request to a
 
     var http = require('./http/request');
     http.request(
-      { 
+      {
         url: 'http://pixenate.com/pixenate/pxn8.pl',
         method: 'POST',
         params: {script: '[]'}
-      }, 
+      },
       function( responseCode, responseBody ) {
          var jsObj = eval('(' + responseBody + ')');
       });
@@ -63,22 +63,23 @@ exports.request = function( request, callback ) {
     }
     return result;
   };
-  
+
   server.scheduler.runTaskAsynchronously( __plugin, function() {
     var url, paramsAsString, conn, requestMethod;
     if (typeof request === 'string'){
       url = request;
       requestMethod = 'GET';
     }else{
+      url = request.url;
       paramsAsString = paramsToString( request.params );
       if ( request.method ) {
-	requestMethod = request.method;
+        requestMethod = request.method;
       } else {
-	requestMethod = 'GET';
+        requestMethod = 'GET';
       }
       if ( requestMethod == 'GET' && request.params ) {
-	// append each parameter to the URL
-	url = request.url + '?' + paramsAsString;
+        // append each parameter to the URL
+        url = request.url + '?' + paramsAsString;
       }
     }
     conn = new java.net.URL( url ).openConnection();
@@ -89,7 +90,7 @@ exports.request = function( request, callback ) {
     if ( conn.requestMethod == 'POST' ) {
       conn.doInput = true;
       // put each parameter in the outputstream
-      conn.setRequestProperty('Content-Type', 'application/x-www-form-urlencoded'); 
+      conn.setRequestProperty('Content-Type', 'application/x-www-form-urlencoded');
       conn.setRequestProperty('charset', 'utf-8');
       conn.setRequestProperty('Content-Length', '' + paramsAsString.length);
       conn.useCaches =false ;
