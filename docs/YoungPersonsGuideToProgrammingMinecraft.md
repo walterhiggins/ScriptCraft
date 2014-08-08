@@ -1,4 +1,6 @@
 # The Young Person's Guide to Programming in Minecraft
+Printable version is http://www.greenbushlabs.com/ProgrammingMinecraftWithScriptcraft.pdf
+
 ## Table of Contents
  * [Introduction](#introduction)
  * [Installation](#installation)
