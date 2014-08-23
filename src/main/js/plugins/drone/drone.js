@@ -689,9 +689,13 @@ Drone.processQueue = function(){
     process = queues[i].shift();
     if (process){
       try { 
-	process();
+        process();
       } catch( e ) { 
-	console.log('Drone build error: %s', e);
+        console.log('Drone build error: %s', e);
+        if (process.name){
+          console.log('while processing function ' + process.name);
+        }
+
       } 
     }
   }
@@ -715,6 +719,9 @@ addUnloadHandler( function() {
 Drone.extend = function( name, func ) {
   if (arguments.length == 1){
     func = name;
+    if ( !func.name ){
+      throw 'A Drone extension function must have a name!';
+    }
     name = func.name;
   }
   Drone.prototype[ '_' + name ] = func;
@@ -808,12 +815,10 @@ Drone.prototype.times = function( numTimes, commands ) {
 };
 
 Drone.prototype._checkpoints = {};
-
-Drone.extend( 'chkpt', function( name ) {
+Drone.extend(function chkpt( name ) {
   this._checkpoints[ name ] = { x:this.x, y:this.y, z:this.z, dir:this.dir };
-} );
-
-Drone.extend( 'move', function( ) {
+});
+Drone.extend(function move( ) {
   if ( arguments[0] instanceof bkLocation ) {
     this.x = arguments[0].x;
     this.y = arguments[0].y;
@@ -841,9 +846,9 @@ Drone.extend( 'move', function( ) {
       this.x = arguments[0];
     }
   }
-} );
+});
 
-Drone.extend( 'turn', function ( n ) {
+Drone.extend( function turn( n ) {
   if ( typeof n == 'undefined' ) {
     n = 1;
   }
@@ -851,42 +856,42 @@ Drone.extend( 'turn', function ( n ) {
   this.dir %=4;
 } );
 
-Drone.extend( 'right', function( n ) { 
+Drone.extend( function right( n ) { 
   if ( typeof n == 'undefined' ) {
     n = 1;
   }
   _movements[ this.dir ].right( this, n ); 
 });
 
-Drone.extend( 'left', function( n ) { 
+Drone.extend( function left( n ) { 
   if ( typeof n == 'undefined') { 
     n = 1;
   }
   _movements[ this.dir ].left( this, n );
 });
 
-Drone.extend( 'fwd', function( n ) { 
+Drone.extend( function fwd( n ) { 
   if ( typeof n == 'undefined' ) {
     n = 1;
   }
   _movements[ this.dir ].fwd( this, n );
 });
 
-Drone.extend( 'back', function( n ) { 
+Drone.extend( function back( n ) { 
   if ( typeof n == 'undefined' ) { 
     n = 1;
   }
   _movements[ this.dir ].back( this, n );
 });
 
-Drone.extend( 'up', function( n ) { 
+Drone.extend( function up( n ) { 
   if ( typeof n == 'undefined' ) {
     n = 1;
   }
   this.y+= n; 
 });
 
-Drone.extend( 'down', function( n ) { 
+Drone.extend( function down( n ) { 
   if ( typeof n == 'undefined' ) {
     n = 1;
   }
@@ -901,7 +906,7 @@ Drone.prototype.getLocation = function( ) {
 //
 // building
 //
-Drone.extend( 'sign', function( message, block ) {
+Drone.extend( function sign( message, block ) {
   if ( message.constructor != Array ) {
     message = [message];
   }
@@ -955,16 +960,20 @@ function getAllQueues() {
   return result;
 } 
 Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite, immediate ) {
-  
-  var len = blocks.length,
+  //
+  // wph 20140823 make a copy because don't want to modify array in background
+  // 
+  var blocksForBuild = blocks.slice();
+  var len = blocksForBuild.length,
     i = 0;
 
   if ( !immediate ) { 
     for ( ; i < len; i++ ) {
-      blocks[i] = this._getBlockIdAndMeta( blocks[ i ] );
+      blocksForBuild[i] = this._getBlockIdAndMeta( blocksForBuild[ i ] );
     }
     var clone = Drone.clone(this);
-    getQueue(this).push(this.cuboida.bind(clone, blocks, w, h, d, overwrite, true) );
+    var impl = this.cuboida.bind(clone, blocksForBuild, w, h, d, overwrite, true);
+    getQueue(this).push( function cuboida(){ impl(); });
     return this;
   }
   if ( typeof overwrite == 'undefined' ) { 
@@ -982,14 +991,14 @@ Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite, immed
   var that = this;
   var dir = this.dir;
   var bi = 0;
-  _traverse[dir].depth( that, d, function( ) { 
-    _traverseHeight( that, h, function( ) { 
-      _traverse[dir].width( that, w, function( ) { 
+  _traverse[dir].depth( that, d, function traverseDepthCallback( ) { 
+    traverseHeight( that, h, function traverseHeightCallback( ) { 
+      _traverse[dir].width( that, w, function traverseWidthCallback( ) { 
         var block = that.world.getBlockAt( that.x, that.y, that.z );
-        var properBlock = blocks[ bi % len ];
-	if (overwrite || block.type.equals(bkMaterial.AIR) ) { 
+        var properBlock = blocksForBuild[ bi % len ];
+        if (overwrite || block.type.equals(bkMaterial.AIR) ) { 
           block.setTypeIdAndData( properBlock[0], properBlock[1], false );
-	}
+        }
         bi++;
       });
     });
@@ -1036,7 +1045,8 @@ Drone.prototype.cuboidX = function( blockType, meta, w, h, d, immediate ) {
 
   if ( !immediate ) {
     var clone = Drone.clone(this);
-    getQueue(this).push(this.cuboidX.bind(clone, blockType, meta, w, h, d, true));
+    var impl = this.cuboidX.bind(clone, blockType, meta, w, h, d, true);
+    getQueue(this).push(function cuboidX(){ impl(); });
     return this;
   }
   var depthFunc = function( ) {
@@ -1052,7 +1062,7 @@ Drone.prototype.cuboidX = function( blockType, meta, w, h, d, immediate ) {
     _traverse[dir].depth( that, d, depthFunc );
   };
   var widthFunc = function( ) {
-    _traverseHeight( that, h, heightFunc );
+    traverseHeight( that, h, heightFunc );
   };
   _traverse[dir].width( that, w, widthFunc );
   return this;
@@ -1080,7 +1090,7 @@ Drone.prototype.cuboid0 = function( block, w, h, d ) {
 };
 
 
-Drone.extend( 'door', function( doorMaterial ) {
+Drone.extend( function door( doorMaterial ) {
   if ( typeof doorMaterial == 'undefined' ) {
     doorMaterial = 64; // wood
   } else {
@@ -1092,14 +1102,14 @@ Drone.extend( 'door', function( doorMaterial ) {
     .down( );
 } );
 
-Drone.extend( 'door_iron', function( ) {
+Drone.extend( function door_iron( ) {
   this.cuboidX( 71,  this.dir )
     .up( )
     .cuboidX( 71, 8 )
     .down( );
 } );
 
-Drone.extend( 'door2' , function( doorMaterial ) {
+Drone.extend( function door2( doorMaterial ) {
   if ( typeof doorMaterial == 'undefined' ) {
     doorMaterial = 64;
   } else {
@@ -1111,7 +1121,7 @@ Drone.extend( 'door2' , function( doorMaterial ) {
     .cuboidX( doorMaterial, 9 ).down( )
     .cuboidX( doorMaterial, this.dir ).left( );
 } );
-Drone.extend( 'door2_iron' , function( ) {
+Drone.extend( function door2_iron( ) {
   this
     .cuboidX( 71,  this.dir ).up( )
     .cuboidX( 71, 8 ).right( )
@@ -1141,7 +1151,7 @@ var _STAIRBLOCKS = {
 //
 // prism private implementation
 //
-var _prism = function( block, w, d ) {
+function prism( block, w, d ) {
   var stairEquiv = _STAIRBLOCKS[block];
   if ( stairEquiv ) {
     this.fwd( ).prism(stairEquiv,w,d-2 ).back( );
@@ -1196,7 +1206,8 @@ var _prism = function( block, w, d ) {
 //
 // prism0 private implementation
 //
-var _prism0 = function( block,w,d ) { 
+;
+Drone.extend( function prism0( block,w,d ) { 
   this.prism(block,w,d )
     .fwd( ).right( )
     .prism(0,w-2,d-2 )
@@ -1207,10 +1218,9 @@ var _prism0 = function( block,w,d ) {
     var f = Math.floor(d/2 );
     this.fwd(f ).up(f ).cuboid(se,w ).down(f ).back(f );
   }
-};
-Drone.extend('prism0',_prism0 );
-Drone.extend('prism',_prism );
-Drone.extend('box',Drone.prototype.cuboid );
+} );
+Drone.extend(prism);
+Drone.extend('box', Drone.prototype.cuboid );
 Drone.extend('box0',Drone.prototype.cuboid0 );
 Drone.extend('boxa',Drone.prototype.cuboida );
 //
@@ -1341,7 +1351,7 @@ var _arc2 = function( params ) {
         }
       }else{
         if ( strokeWidth == 1 ) { 
-	  gotoxy(x,y )
+          gotoxy(x,y )
             .cuboidX( params.blockType, params.meta,
                      1, // width
                      stack, // height
@@ -1485,12 +1495,6 @@ var _cylinder1 = function( block,radius,height,exactParams ) {
 };
 var _paste = function( name, immediate )
 {
-/*  if ( !immediate ) {
-    var clone = Drone.clone(this);
-    getQueue(this).push(this.paste.bind(clone, name, true) );
-    return;
-  }
-*/
 
   var ccContent = Drone.clipBoard[name];
   if (ccContent == undefined){
@@ -1504,7 +1508,7 @@ var _paste = function( name, immediate )
 
   _traverse[this.dir].width(that,srcBlocks.length,function( ww ) { 
     var h = srcBlocks[ww].length;
-    _traverseHeight(that,h,function( hh ) { 
+    traverseHeight(that,h,function( hh ) { 
       var d = srcBlocks[ww][hh].length;
       _traverse[that.dir].depth(that,d,function( dd ) { 
         var b = srcBlocks[ww][hh][dd];
@@ -1524,7 +1528,7 @@ var _paste = function( name, immediate )
               md = (md + dirOffset ) % 4;
             }
             break;
-	  //
+          //
           // stairs
           //
           case 53:  // oak 
@@ -1541,7 +1545,7 @@ var _paste = function( name, immediate )
             var len = a.length;
             for ( var c=0;c < len;c++ ) { 
               if ( a[c] == dir ) { 
-		break;
+                break;
               }
             }
             c = (c + dirOffset ) %4;
@@ -1561,7 +1565,7 @@ var _paste = function( name, immediate )
             var len = a.length;
             for ( var c=0;c < len;c++ ) { 
               if ( a[c] == md ) { 
-		break;
+                break;
               }
             }
             c = (c + dirOffset ) %4;
@@ -1654,42 +1658,46 @@ _movements[3].fwd = _movements[0].left;
 _movements[3].back = _movements[0].right;
 var _traverse = [{},{},{},{}];
 // east
-_traverse[0].width = function( that,n,callback ) { 
+function walkWidthEast( that,n,callback ) { 
   var s = that.z, e = s + n;
   for ( ; that.z < e; that.z++ ) { 
     callback(that.z-s );
   }
   that.z = s;
-};
-_traverse[0].depth = function( that,n,callback ) { 
+}
+function walkDepthEast( that,n,callback ) { 
   var s = that.x, e = s+n;
   for ( ;that.x < e;that.x++ ) { 
     callback(that.x-s );
   }
   that.x = s;
-};
-// south
-_traverse[1].width = function( that,n,callback ) { 
+}
+function walkWidthSouth( that,n,callback ) { 
   var s = that.x, e = s-n;
   for ( ;that.x > e;that.x-- ) { 
     callback(s-that.x );
   }
   that.x = s;
-};
-_traverse[1].depth = _traverse[0].width;
-// west
-_traverse[2].width = function( that,n,callback ) { 
+}
+function walkWidthWest( that,n,callback ) { 
   var s = that.z, e = s-n;
   for ( ;that.z > e;that.z-- ) { 
     callback(s-that.z );
   }
   that.z = s;
-};
-_traverse[2].depth = _traverse[1].width;
+}
+_traverse[0].width = walkWidthEast;
+_traverse[0].depth = walkDepthEast;
+// south
+_traverse[1].width = walkWidthSouth;
+_traverse[1].depth = walkWidthEast;
+// west
+_traverse[2].width = walkWidthWest;
+_traverse[2].depth = walkWidthSouth;
 // north
-_traverse[3].width = _traverse[0].depth;
-_traverse[3].depth = _traverse[2].width;
-var _traverseHeight = function( that,n,callback ) { 
+_traverse[3].width = walkDepthEast;
+_traverse[3].depth = walkWidthWest;
+function traverseHeight( that,n,callback ) { 
   var s = that.y, e = s + n;
   for ( ; that.y < e; that.y++ ) { 
     callback(that.y-s );
@@ -1699,7 +1707,7 @@ var _traverseHeight = function( that,n,callback ) {
 //
 // standard fisher-yates shuffle algorithm
 //
-var _fisherYates = function(  myArray  ) {
+function fisherYates(  myArray  ) {
   var i = myArray.length;
   if (  i == 0 ) return false;
   while ( --i ) {
@@ -1709,13 +1717,13 @@ var _fisherYates = function(  myArray  ) {
     myArray[i] = tempj;
     myArray[j] = tempi;
   }
-};
+}
 var _copy = function( name, w, h, d ) {
   var that = this;
   var ccContent = [];
   _traverse[this.dir].width(that,w,function( ww ) { 
     ccContent.push([] );
-    _traverseHeight(that,h,function( hh ) { 
+    traverseHeight(that,h,function( hh ) { 
       ccContent[ww].push([] );
       _traverse[that.dir].depth(that,d,function( dd ) { 
         var b = that.world.getBlockAt(that.x,that.y,that.z );
@@ -1768,7 +1776,7 @@ var _rand = function( blockDistribution ) {
     // make array bigger so that it's more random
     blockDistribution = blockDistribution.concat(blockDistribution );
   }
-  _fisherYates(blockDistribution );
+  fisherYates(blockDistribution );
   return blockDistribution;
 };
 
