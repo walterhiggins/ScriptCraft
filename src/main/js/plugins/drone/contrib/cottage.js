@@ -10,8 +10,7 @@ var Drone = require('../drone').Drone;
 // 
 // /js drone.cottage();
 //
-
-Drone.extend('cottage',function ( ) {
+function cottage( ) {
   this.chkpt('cottage')
     .box0(48,7,2,6)  // 4 walls
     .right(3)
@@ -28,12 +27,12 @@ Drone.extend('cottage',function ( ) {
     .right(4)
     .sign(['Home','Sweet','Home'],68)
     .move('cottage');
-});
+}
 //
 // a more complex script that builds an tree-lined avenue with
 // cottages on both sides.
 //
-Drone.extend('cottage_road', function( numberCottages ) {
+function cottage_road( numberCottages ) {
   if (typeof numberCottages == 'undefined'){
     numberCottages = 6;
   }
@@ -90,5 +89,7 @@ Drone.extend('cottage_road', function( numberCottages ) {
   }
   // return drone to where it was at start of function
   return this.move('cottage_road'); 
-});
+}
+Drone.extend(cottage_road);
+Drone.extend(cottage);
 

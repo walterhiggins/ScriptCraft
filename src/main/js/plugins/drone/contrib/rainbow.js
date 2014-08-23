@@ -18,7 +18,7 @@ Creates a Rainbow.
 ![rainbow example](img/rainbowex1.png)
 
 ***/
-Drone.extend('rainbow', function(radius){
+function rainbow( radius ) {
   var i,
     colors,
     bm;
@@ -44,4 +44,5 @@ Drone.extend('rainbow', function(radius){
       orientation: 'vertical'}).right().up();
   }
   return this.move('rainbow');
-});
+}
+Drone.extend(rainbow);

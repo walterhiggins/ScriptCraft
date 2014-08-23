@@ -2,7 +2,7 @@ var Drone = require('../drone').Drone;
 //
 // constructs a mayan temple
 // 
-Drone.extend('temple', function(side) {
+function temple( side ) {
   if ( !side ) {
     side = 20;
   }
@@ -27,4 +27,5 @@ Drone.extend('temple', function(side) {
   }
 
   this.move('temple');
-});
+}
+Drone.extend(temple);

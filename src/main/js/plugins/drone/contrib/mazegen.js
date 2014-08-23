@@ -96,12 +96,12 @@ function maze_draw(maze_string, d) {
     }
   }
 }
-
-// User-facing code starts here
-// Example: Try /js amazing(5,7)
-Drone.extend('amazing', function(size_x, size_y) {
+function maze(size_x, size_y) {
   m = maze_make(size_x, size_y);
   if (m.x > 0 && m.y > 0) {
     maze_draw(maze_display(m), this);
   }
-});
+}
+// User-facing code starts here
+// Example: Try /js amazing(5,7)
+Drone.extend(maze);

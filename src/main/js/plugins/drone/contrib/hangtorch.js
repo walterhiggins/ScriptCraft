@@ -10,7 +10,7 @@ function canHang( material ) {
     return false;
   }
 }  
-Drone.extend('hangtorch', function () { 
+function hangtorch() { 
   var torch = '50:' + Drone.PLAYER_TORCH_FACING[this.dir];
   var moves = 0;
   var block = this.world.getBlockAt(this.x, this.y, this.z);
@@ -28,4 +28,5 @@ Drone.extend('hangtorch', function () {
   }
   this.box(torch)
     .fwd(moves);
-});
+}
+Drone.extend(hangtorch);

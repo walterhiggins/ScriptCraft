@@ -6,7 +6,7 @@ var Drone = require('../drone').Drone;
 // 
 // See it in action here => http://www.youtube.com/watch?v=UEooBt6NTFo
 //
-Drone.extend('dancefloor',function(width,length)
+function dancefloor(width,length)
 {
     if (typeof width == "undefined")
         width = 5;
@@ -35,4 +35,5 @@ Drone.extend('dancefloor',function(width,length)
     var everySecond = 20;
     task = server.scheduler.runTaskTimer(__plugin,strobe,now,everySecond);
     return this;
-});
+}
+Drone.extend(dancefloor);
