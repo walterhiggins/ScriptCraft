@@ -1,9 +1,8 @@
 var Drone = require('../drone').Drone;
-
 //
 // a castle is just a big wide fort with 4 taller forts at each corner
 //
-Drone.extend('castle', function( side, height ) {
+function castle( side, height ) {
   // 
   // use sensible default parameter values
   // if no parameters are supplied
@@ -42,8 +41,17 @@ Drone.extend('castle', function( side, height ) {
   for ( var corner = 0; corner < 4; corner++ ) {
     // construct a 'tower' fort
     this.fort(towerSide,towerHeight); 
+    this.chkpt('tower-' + corner);
+    // create 2 doorways from main castle rampart into each tower
+    this.fwd(towerSide-1).right(towerSide-3).up(towerHeight-5);
+    this.box(blocks.air, 1,2,1);
+    this.back(2).right(2);
+    this.box(blocks.air, 1,2,1);
+
+    this.move('tower-' + corner);
     // move forward the length of the castle then turn right
     this.fwd(side+towerSide-1).turn(); 
   }
   return this.move('castle');
-});
+}
+Drone.extend(castle);
