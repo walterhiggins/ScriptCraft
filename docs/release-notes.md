@@ -1,3 +1,9 @@
+# 2014 08 23
+Chessboard was broken, is now fixed.
+Rainbows are now made from stained glass. Full range of stained_glass colors is available in blocks variable.
+SnowballFight mini-game has been removed. An improved version will be available soon online.
+chat plugin has been removed - will be available in another github repo soon.
+
 # 2014 06 14
 Fix issue #140 - fails to build for JRE7
 Changed command() documentation to conform with new way of using (passing a named function)
