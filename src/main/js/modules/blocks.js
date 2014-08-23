@@ -133,7 +133,9 @@ var blocks = {
   cake: 92,
   redstone_repeater: 93,
   redeston_repeater_active: 94,
-  chest_locked: 95,
+  stained_glass: { 
+    white: 95 // all other colors added below
+  },
   trapdoor: 96,
   monster_egg: 97,
   brick: {
@@ -254,7 +256,7 @@ var colors = {
   red: ':14',
   black: ':15'
 };
-var colorized_blocks = ['wool', 'stained_clay', 'carpet'];
+var colorized_blocks = ['wool', 'stained_clay', 'carpet', 'stained_glass'];
 
 for (var i = 0, len = colorized_blocks.length; i < len; i++) {
   var block = colorized_blocks[i],
@@ -272,12 +274,12 @@ for (var i = 0, len = colorized_blocks.length; i < len; i++) {
  clay blocks.
  */
 blocks.rainbow = [
-  blocks.wool.red,
-  blocks.wool.orange,
-  blocks.wool.yellow,
-  blocks.wool.lime,
-  blocks.wool.lightblue,
-  blocks.wool.blue,
-  blocks.wool.purple];
+  blocks.stained_glass.red,
+  blocks.stained_glass.orange,
+  blocks.stained_glass.yellow,
+  blocks.stained_glass.lime,
+  blocks.stained_glass.lightblue,
+  blocks.stained_glass.blue,
+  blocks.stained_glass.purple];
 
 module.exports = blocks;
