@@ -232,7 +232,9 @@ Walter Higgins
    * [utils.find() function](#utilsfind-function)
    * [utils.serverAddress() function](#utilsserveraddress-function)
    * [utils.watchFile() function](#utilswatchfile-function)
+   * [utils.watchDir() function](#utilswatchdir-function)
    * [utils.unwatchFile() function](#utilsunwatchfile-function)
+   * [utils.unwatchDir() function](#utilsunwatchdir-function)
    * [utils.array() function](#utilsarray-function)
  * [Drone Plugin](#drone-plugin)
    * [Constructing a Drone Object](#constructing-a-drone-object)
@@ -2326,11 +2328,11 @@ The following example illustrates how to use http.request to make a request to a
 
     var http = require('./http/request');
     http.request(
-      { 
+      {
         url: 'http://pixenate.com/pixenate/pxn8.pl',
         method: 'POST',
         params: {script: '[]'}
-      }, 
+      },
       function( responseCode, responseBody ) {
          var jsObj = eval('(' + responseBody + ')');
       });
@@ -2865,6 +2867,28 @@ utils.watchFile( 'test.txt', function( file ) {
    console.log( file + ' has changed');
 });
 ```
+### utils.watchDir() function
+
+Watches for changes to the given directory and calls the function provided
+when the directory changes. It works by calling watchFile/watchDir for each
+file/subdirectory.
+
+#### Parameters
+ 
+ * Dir - the file to watch (can be a file or directory)
+ * Callback - The callback to invoke when the directory has changed. 
+              The callback takes the changed file as a parameter. 
+              For each change inside the directory the callback will also 
+              be called.
+
+#### Example
+
+```javascript
+var utils = require('utils');
+utils.watchDir( 'players/_ial', function( dir ) { 
+   console.log( dir + ' has changed');
+});
+```
 ### utils.unwatchFile() function
 
 Removes a file from the watch list.
@@ -2874,6 +2898,22 @@ Removes a file from the watch list.
 var utils = require('utils');
 utils.unwatchFile( 'test.txt');
 ```
+
+### utils.unwatchDir() function
+
+Removes a directory from the watch list and all files inside the directory
+are also "unwatched"
+
+#### Example
+```javascript
+var utils = require('utils');
+utils.unwatchDir ('players/_ial');
+```
+Would cause also 
+```javascript
+utils.unwatchFile (file);
+```
+for each file inside directory (and unwatchDir for each directory inside it)
 
 ### utils.array() function
 
