@@ -292,7 +292,6 @@ Walter Higgins
    * [Usage](#usage-10)
  * [alias Plugin](#alias-plugin)
    * [Examples](#examples-2)
- * [chat Plugin](#chat-plugin)
  * [Classroom Plugin](#classroom-plugin)
    * [classroom.allowScripting() function](#classroomallowscripting-function)
  * [Commando Plugin](#commando-plugin)
@@ -307,8 +306,6 @@ Walter Higgins
  * [NumberGuess mini-game:](#numberguess-mini-game)
    * [Description](#description-1)
    * [Example](#example-1)
- * [SnowballFight mini-game](#snowballfight-mini-game)
-   * [Description](#description-2)
  * [Cow Clicker Mini-Game](#cow-clicker-mini-game)
    * [How to Play](#how-to-play)
    * [Rules](#rules)
@@ -4027,37 +4024,6 @@ Aliases can be used at the in-game prompt by players or in the server
 console.  Aliases will not be able to avail of command autocompletion
 (pressing the TAB key will have no effect).
 
-## chat Plugin
-
-This plugin lets players choose a text color to use when chatting. Players can list colors by typing...
-
-    /jsp list_colors
-
-... and can set the color to use when chatting by typing...
-
-    /jsp chat_color {color}
-
-... where {color} is one of the following colors...
-
- * black
- * blue
- * darkgreen
- * darkaqua
- * darkred
- * purple
- * gold
- * gray
- * darkgray
- * indigo
- * brightgreen
- * aqua
- * red
- * pink
- * yellow
- * white
-
-This plugin's source code is useful to study because it is short and demonstrates use of the `plugin()`, and `command()` functions, persistence and event handling.
-
 ## Classroom Plugin
 
 The `classroom` object contains a couple of utility functions for use
@@ -4289,47 +4255,6 @@ code is to demonstrate use of Bukkit's Conversation API.
 Once the game begins, guess a number by typing the `/` character
 followed by a number between 1 and 10.
 
-## SnowballFight mini-game
-
-### Description
-
-This is a rough and ready prototype of a simple multi-player
-shoot-em-up. To start a game with all players playing against one another...
-
-    /js new Game_SnowballFight(60).start();
-
-... this obviously works best if all of the players are in close
-proximity within the same game world. Alternatively you can have team
-matches...
-
-
-    /js var redTeam = ['<player1>','<player2>',...etc]
-    /js var blueTeam = ['<player3>','<player4>,...etc]
-    /js var greenTeam = ['<player5>','<player6>,...etc]
-    /js new Game_SnowballFight(60, {red: redTeam,blue: blueTeam,green: greenTeam}).start();
-
-Or you can just have specific players play against each other...
-
-    /js new Game_SnowballFight(60, ['player1','player2','player3']).start();
-
-(where 'player1' etc are the names of actual players)
-  
-You specify the teams in the game as an object where each property's
-name is a team name and each property's value is the list of players
-on that team.  You specify the duration of the game (in seconds) You
-kick off the game with the start() method.  I need to work on a
-better in-game mechanism for players to choose teams and start the
-game but this will do for now.
-
-When the game starts, each player is put in survival mode and given
-snowballs. The aim of the game is to hit players on opposing teams. If
-you hit a player on your own team, you lose a point.
-  
-At the end of the game the scores for each team are broadcast and each
-player returns to their previous mode of play (creative or
-survival). Create a small arena with a couple of small buildings for
-cover to make the game more fun.
-  
 ## Cow Clicker Mini-Game
 
 ### How to Play
