@@ -1,9 +1,9 @@
 var Drone = require('../drone').Drone;
-
+var blocks = require('blocks');
 //
 // constructs a medieval fort
 // 
-Drone.extend('fort', function( side, height ) {
+function fort( side, height ) {
   var brick = 98,
     turret,
     i,
@@ -31,6 +31,7 @@ Drone.extend('fort', function( side, height ) {
   // build walls.
   //
   this.chkpt('fort')
+    .down().chessboard(blocks.wool.black, blocks.wool.white, side).up()
     .box0(brick,side,height-1,side)
     .up(height-1);
   //
@@ -87,5 +88,6 @@ Drone.extend('fort', function( side, height ) {
     .fwd(1) // move inside fort
     .box(ladder, 1,height-1,1)
     .move('fort');
-});
+}
+Drone.extend(fort);
 
