@@ -59,11 +59,12 @@ while ( ( entry = zis.nextEntry) != null) {
       '',
       '#### Parameters ',
       '',
-      ' * callback - A function which is called whenever the ' + shortName + ' event is fired',
+      ' * callback - A function which is called whenever the ['+ shortName + ' event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/' + shortName.replace('.','/') + '.html) is fired',
       '',
       ' * priority - optional - see events.on() for more information.',
       '',
       '***/'
+//http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerJoinEvent.html
     ];
     for (var i = 0; i < comment.length; i++){
       out.println(comment[i]);
