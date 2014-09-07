@@ -1,13 +1,16 @@
 package net.walterhiggins.scriptcraft;
 
-import java.io.InputStreamReader;
-import javax.script.*;
-import java.util.List;
-import java.util.ArrayList;
-
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.command.*;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScriptCraftPlugin extends JavaPlugin implements Listener
 {
@@ -19,12 +22,15 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
     @Override
         public void onEnable()
     {
+        Thread currentThread = Thread.currentThread();
+        ClassLoader previousClassLoader = currentThread.getContextClassLoader();
+        currentThread.setContextClassLoader(getClassLoader());
         try{
             ScriptEngineManager factory = new ScriptEngineManager();
             this.engine = factory.getEngineByName("JavaScript");
 	    if (this.engine == null){
 		this.getLogger().severe(NO_JAVASCRIPT_MESSAGE);
-	    } else { 
+	    } else {
 		Invocable inv = (Invocable)this.engine;
 		this.engine.eval(new InputStreamReader(this.getResource("boot.js")));
 		inv.invokeFunction("__scboot", this, engine);
@@ -32,6 +38,8 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
         }catch(Exception e){
             e.printStackTrace();
             this.getLogger().severe(e.getMessage());
+        }finally{
+            currentThread.setContextClassLoader(previousClassLoader);
         }
     }
     public List<String> onTabComplete(CommandSender sender, Command cmd,
@@ -62,7 +70,7 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
 	    this.getLogger().severe(NO_JAVASCRIPT_MESSAGE);
 	    return false;
 	}
-        try { 
+        try {
             jsResult = ((Invocable)this.engine).invokeFunction("__onCommand", sender, cmd, label, args);
         }catch (Exception se){
             this.getLogger().severe(se.toString());
