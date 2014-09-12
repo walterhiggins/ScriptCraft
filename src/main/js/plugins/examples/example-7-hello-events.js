@@ -93,7 +93,7 @@ Update: Since version 2.0.8 the above code can be replaced by the more succinct:
     });
     
 ***/
-events.on( 'player.PlayerJoinEvent', function( event ) {
+events.playerJoin( function( event ) {
   if ( event.player.op ) {
     event.player.sendMessage( 'Welcome to ' + __plugin );
   }

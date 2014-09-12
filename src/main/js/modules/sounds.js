@@ -1,8 +1,7 @@
-var bkSound = org.bukkit.Sound,
-  bkLocation = org.bukkit.Location,
+var bkLocation = org.bukkit.Location,
   i = 0,
   foreach = require('utils').foreach,
-  allSounds = bkSound.values(),
+  allSounds = bukkit.sound.values(),
   len = allSounds.length,
   sound,
   soundName;
@@ -47,8 +46,8 @@ a simpler way to play sounds. All of the org.bukkit.Sound Enum values are attach
 ### Usage:
 
     var sounds = require('sounds');
-    sounds.play( org.bukkit.Sound.VILLAGER_NO , self, 1, 0); // plays VILLAGER_NO sound at full volume and medium pitch
-    sounds.play( org.bukkit.Sound.VILLAGER_NO , self );       // same as previous statement
+    sounds.play( bukkit.sound.VILLAGER_NO , self, 1, 0); // plays VILLAGER_NO sound at full volume and medium pitch
+    sounds.play( bukkit.sound.VILLAGER_NO , self );       // same as previous statement
 
 The play() function takes either a Location object or any object which has a location.
 The volume parameter is in the range 0 to 1 and the pitch parameter is in the range 0 to 4.    

@@ -44,7 +44,6 @@ your own mini-game...
 var store = {},
   bkBukkit = org.bukkit.Bukkit,
   bkCow = org.bukkit.entity.Cow,
-  bkSound = org.bukkit.Sound,
   bkOfflinePlayer = org.bukkit.OfflinePlayer,
   scoreboardConfig = { 
     cowclicker: {
@@ -71,9 +70,9 @@ var _onPlayerInteract = function( event ) {
     scoreboard.update( 'cowclicker', player, store[ player.name ].score );
     
     bkBukkit.dispatchCommand( player, 'me clicked a cow!' );
-    sound( bkSound.CLICK, 1, 1 );
+    sound( bukkit.sound.CLICK, 1, 1 );
     setTimeout( function( ) {
-      sound( bkSound.COW_HURT, 10, 0.85 ) ;
+      sound( bukkit.sound.COW_HURT, 10, 0.85 ) ;
     }, 200 );
   }
 };
