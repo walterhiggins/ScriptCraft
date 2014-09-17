@@ -46,7 +46,7 @@ chosen color...
     var colorCodes = {};
     for (var i =0;i < colors.length;i++) colorCodes[colors[i]] = i.toString(16);
     
-    events.on( 'player.AsyncPlayerChatEvent', function( evt ) {
+    events.asyncPlayerChat( function( evt ) {
         var player = evt.player;
         var playerChatColor = _store.players[ player.name ];
         if ( playerChatColor ) {
@@ -112,7 +112,7 @@ code is just a couple of lines of code but is a fully working plugin...
         colorCodes[ colors[i] ] = i.toString(16);
     }
         
-    events.on( 'player.AsyncPlayerChatEvent', function( evt ) {
+    events.asyncPlayerChat( function( evt ) {
         var player = evt.player;
         var playerChatColor = _store.players[player.name];
         if ( playerChatColor ) {
