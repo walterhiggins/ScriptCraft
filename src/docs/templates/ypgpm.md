@@ -135,9 +135,9 @@ called `location`. We can use that name like this...
 
     Blackrock Castle
 
-...You might be wondering where the `''` (called double-quotes) went. 
+...You might be wondering why there's no enclosing `'` single quotes. 
 When telling the computer to store some text, you have to put `'` 
-(that's the double-quote character - press Shift+2) at the start and end 
+(that's the single-quote character) at the start and end 
 of the text. The computer doesn't store these quote characters, only the 
 text between them. The computer will store the variables while the 
 Minecraft Server is running. Repeat the last command you entered by 
