@@ -85,7 +85,7 @@ var signs = require('signs'),
 var player = utils.player('tom1234');
 var sign = signs.getTargetedBy( player );
 if ( !sign ) { 
-    player.sendMessage('Not looking at a sign');
+    echo( player, 'Not looking at a sign');
 }
 ```
 

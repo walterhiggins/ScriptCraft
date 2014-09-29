@@ -181,6 +181,10 @@ signs.menu = function( /* String */ label, /* Array */ options, /* Function */ c
   return convertToMenuSign;
 };
 
+if (__plugin.canary){
+  console.warn('signs/menu is not yet supported in CanaryMod');
+  return;
+}
 //
 // update it every time player interacts with it.
 //

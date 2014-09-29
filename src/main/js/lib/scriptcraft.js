@@ -70,7 +70,7 @@ directory....
 
 ```javascript
 exports.greet = function(player) {
-    player.sendMessage('Hello ' + player.name);
+    echo(player, 'Hello ' + player.name);
 };
 ```
 
@@ -166,21 +166,15 @@ ScripCraft provides some global functions which can be used by all plugins/modul
 
 ### echo function
 
-The `echo()` function displays a message on the in-game screen. The message is displayed to the `self` player (this is usually the player who issued the `/js` or `/jsp` command).
+The `echo()` function displays a message on the in-game screen. 
 
 #### Example
 
-    /js echo('Hello World')
+    /js echo( self, 'Hello World')
 
 For programmers familiar with Javascript web programming, an `alert`
 function is also provided.  `alert` works exactly the same as `echo`
-e.g. `alert('Hello World')`.
-
-#### Notes
-
-The `echo` and `alert` functions are provided as convenience functions for beginning programmers. The use of these 2 functions is not recommended in event-handling code or multi-threaded code. In such cases, if you want to send a message to a given player then use the Bukkit API's [Player.sendMessage()][plsm] function instead.
-
-[plsm]: http://jd.bukkit.org/dev/apidocs/org/bukkit/command/CommandSender.html#sendMessage(java.lang.String)
+e.g. `alert( self, 'Hello World')`.
 
 ### require() function
 
@@ -308,7 +302,7 @@ The `command()` function is used to expose javascript functions for use by non-o
 
     // javascript code
     function boo( params, sender) {
-        sender.sendMessage( params[0] );
+        echo( sender, params[0] );
     }
     command( boo );
     
@@ -322,7 +316,7 @@ To use a callback for options (TAB-Completion) ...
     function boo( params, sender ) {
        var receiver = server.getPlayer( params[0] );
        if ( receiver ){
-          receiver.sendMessage( sender.name + ' says boo!');
+          echo( receiver, sender.name + ' says boo!');
        }
     }
     command( boo, bukkit.playerNames );
@@ -331,11 +325,9 @@ See chat/colors.js or alias/alias.js or homes/homes.js for more examples of how 
 
 ### setTimeout() function
 
-This function mimics the setTimeout() function used in browser-based javascript. However, the function will only accept a function reference, not a string of javascript code.  Where setTimeout() in the browser returns a numeric value which can be subsequently passed to clearTimeout(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearTimeout() implementation.
+This function mimics the setTimeout() function used in browser-based javascript. However, the function will only accept a function reference, not a string of javascript code.  Where setTimeout() in the browser returns a numeric value which can be subsequently passed to clearTimeout(), This implementation returns an object which can be subsequently passed to ScriptCraft's own clearTimeout() implementation.
 
 If Node.js supports setTimeout() then it's probably good for ScriptCraft to support it too.
-
-[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
 
 #### Example
 
@@ -355,11 +347,7 @@ A scriptcraft implementation of clearTimeout().
 
 ### setInterval() function
 
-This function mimics the setInterval() function used in browser-based javascript. However, the function will only accept a function reference, not a string of javascript code.  Where setInterval() in the browser returns a numeric value which can be subsequently passed to clearInterval(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearInterval() implementation.
-
-If Node.js supports setInterval() then it's probably good for ScriptCraft to support it too.
-
-[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
+This function mimics the setInterval() function used in browser-based javascript. However, the function will only accept a function reference, not a string of javascript code.  Where setInterval() in the browser returns a numeric value which can be subsequently passed to clearInterval(), This implementation returns an object which can be subsequently passed to ScriptCraft's own clearInterval() implementation.
 
 ### clearInterval() function
 
@@ -384,39 +372,50 @@ The addUnloadHandler() function takes a callback function as a parameter. The ca
 
 This function provides a way for ScriptCraft modules to do any required cleanup/housekeeping just prior to the ScriptCraft Plugin unloading.
 
+### isOp() function
+
+This function takes a single parameter and returns true if it's an operator or has operator-level privileges. 
+
 ***/
 
 /*
   wph 20130124 - make self, plugin and server public - these are far more useful now that tab-complete works.
 */
 var global = this;
-var server = org.bukkit.Bukkit.server;
+var server;
 /*
   private implementation
 */
-function __onEnable ( __engine, __plugin, __script )
-{
-  var File = java.io.File,
-    FileReader = java.io.FileReader,
-    BufferedReader = java.io.BufferedReader,
-    PrintWriter = java.io.PrintWriter,
-    FileWriter = java.io.FileWriter;
-  var debug = function(msg){
-    java.lang.System.out.println('DEBUG:' + msg);
-  };
-  var _canonize = function( file ) { 
+var __onDisableImpl;
+function __onDisable ( __engine, __plugin ) {
+  __onDisableImpl( __engine, __plugin);
+}
+function __onEnable ( __engine, __plugin, __script ) {
+  function _echo( ) {
+    var sender, msg;
+    if (arguments.length == 2){
+      sender = arguments[0];
+      msg = arguments[1];
+    } else { 
+      if ( typeof self == 'undefined' ) {
+	return;
+      }
+      sender = self;
+      msg = arguments[0];
+    }
+    if (__plugin.canary){
+      sender.message( msg );
+    } else { 
+      sender.sendMessage( msg );
+    }
+  } // end echo()
+  function _canonize( file ) { 
     return '' + file.getCanonicalPath().replaceAll( '\\\\', '/' ); 
-  };
-  // lib (assumes scriptcraft.js is in craftbukkit/plugins/scriptcraft/lib directory
-  var libDir = __script.parentFile,
-    jsPluginsRootDir = libDir.parentFile, // scriptcraft
-    jsPluginsRootDirName = _canonize(jsPluginsRootDir),
-    logger = __plugin.logger;
-
+  } 
   /*
    Save a javascript object to a file (saves using JSON notation)
    */
-  var _save = function( objToSave, filename ) {
+  function _save( objToSave, filename ) {
     var objectToStr = null,
       f,
       out;
@@ -431,17 +430,8 @@ function __onEnable ( __engine, __plugin, __script )
     out = new PrintWriter(new FileWriter(f));
     out.println( objectToStr );
     out.close();
-  };
-  /*
-   make sure eval is present: it's present on JRE 6, 7, and 8 on Linux
-   */
-  if ( typeof eval == 'undefined' ) {
-    global.eval = function( str ) {
-      return __engine.eval( str );
-    };
-  } 
-
-  var _loadJSON = function ( filename ){
+  }
+  function _loadJSON( filename ){
     var result = null,
       file = filename,
       r,
@@ -464,7 +454,7 @@ function __onEnable ( __engine, __plugin, __script )
         }
         result = JSON.parse(contents);
       } catch ( e ) {
-        logger.severe( 'Error evaluating ' + canonizedFilename + ', ' + e );
+        logger.error( 'Error evaluating ' + canonizedFilename + ', ' + e );
       }
       finally {
         try {
@@ -475,12 +465,11 @@ function __onEnable ( __engine, __plugin, __script )
       }
     } 
     return result;
-    
-  };
+  }
   /*
    Load the contents of the file and evaluate as javascript
    */
-  var _load = function( filename, warnOnFileNotFound )
+  function _load( filename, warnOnFileNotFound )
   {
     var result = null,
       file = filename,
@@ -508,7 +497,7 @@ function __onEnable ( __engine, __plugin, __script )
         result = __engine.eval( wrappedCode );
         // issue #103 avoid side-effects of || operator on Mac Rhino
       } catch ( e ) {
-        logger.severe( 'Error evaluating ' + canonizedFilename + ', ' + e );
+        logger.error( 'Error evaluating ' + canonizedFilename + ', ' + e );
       }
       finally {
         try {
@@ -523,7 +512,164 @@ function __onEnable ( __engine, __plugin, __script )
       }
     }
     return result;
-  };
+  } // end _load()
+
+  function _isOp( sender ){
+    if (__plugin.canary){
+      return sender.receiverType.name() == 'SERVER' || Canary.ops().isOpped(sender);
+    } else {
+      return sender.op;
+    }
+  }
+  function _refresh( ) {
+    if ( typeof self !== 'undefined' ) {
+      if ( !_isOp(self) ) {
+        echo( self, 'Only operators can refresh()');
+        return;
+      }
+    }
+    if (__plugin.canary){
+      var pluginName = __plugin.name;
+      Canary.manager().disablePlugin( pluginName );
+      Canary.manager().enablePlugin( pluginName );
+    } else {
+      __plugin.pluginLoader.disablePlugin( __plugin );
+      __plugin.pluginLoader.enablePlugin( __plugin );
+    }
+  } // end _refresh()
+  function _onDisable( evt ) {
+    // save config
+    _save( global.config, new File( jsPluginsRootDir, 'data/global-config.json' ) );
+    _runUnloadHandlers();
+  }
+  function _addUnloadHandler( f ) {
+    unloadHandlers.push( f );
+  }
+  function _runUnloadHandlers() {
+    for ( var i = 0; i < unloadHandlers.length; i++ ) {
+      unloadHandlers[i]( );
+    }
+  }
+  function __onCommand() {
+    var jsArgs = [],
+      i = 0,
+      jsResult,
+      result,
+      cmdName,
+      sender,
+      args,
+      cmd, 
+      label,
+      fnBody;
+
+    if ( __plugin.canary ) {
+      sender = arguments[0];
+      args = arguments[1];
+      cmdName = (''+args[0]).toLowerCase().replace(/^\//,'');
+      for ( i = 1; i < args.length ; i++ ) {
+	jsArgs.push( '' + args[i] );
+      }
+    } else {
+      sender = arguments[0];
+      cmd = arguments[1];
+      label = arguments[2];
+      args = arguments[3];
+      cmdName = ( '' + cmd.name ).toLowerCase();
+      for ( ; i < args.length ; i++ ) {
+	jsArgs.push( '' + args[i] );
+      }
+    }
+    result = false;
+
+    if (cmdName == 'js')
+    {
+      result = true;
+      fnBody = jsArgs.join(' ');
+      global.self = sender;
+      global.__engine = __engine;
+      try { 
+        // cannot rely on native eval in jre7 and jre8 
+        // because ...
+        // js var hearts 
+        // js hearts
+        // ... throws an execption ('hearts' is not defined). vars are not sticky in native eval .
+        //
+        jsResult = __engine.eval( fnBody );
+
+        if ( typeof jsResult != 'undefined' ) { 
+          if ( jsResult == null) { 
+            // engine eval will return null even if the result should be undefined
+            // this can be confusing so I think it's better to omit output for this case
+            // sender.sendMessage('(null)');
+          } else { 
+            try { 
+              if ( isJavaObject(jsResult) || typeof jsResult === 'function') {
+                echo(sender, jsResult);
+              } else { 
+                var replacer = function replacer(key, value){
+                  return this[key] instanceof java.lang.Object ? '' + this[key] : value;
+                };
+                echo(sender, JSON.stringify( jsResult, replacer, 2) );
+              }
+            } catch ( displayError ) { 
+              logger.error( 'Error while trying to display result: ' + jsResult + ', Error: '+ displayError );
+            }
+          }
+        } 
+      } catch ( e ) {
+        logger.error( 'Error while trying to evaluate javascript: ' + fnBody + ', Error: '+ e );
+        echo( sender, 'Error while trying to evaluate javascript: ' + fnBody + ', Error: '+ e );
+        throw e;
+      } finally {
+        /*
+         wph 20140312 don't delete self on nashorn until https://bugs.openjdk.java.net/browse/JDK-8034055 is fixed
+         */
+        if ( typeof Java === 'undefined' ) { // Java is an object in Nashorn
+          delete global.self;
+          delete global.__engine;
+        }
+      }
+    }
+    if ( cmdName == 'jsp' ) {
+      cmdModule.exec( jsArgs, sender );
+      result = true;
+    }
+    return result;
+  } // end __onCommand() function
+
+  var Bukkit = null;
+  var Canary = null;
+  var logger = null;
+
+  if (__plugin.canary){
+    Canary = Packages.net.canarymod.Canary;
+    server = Canary.server;
+    logger = __plugin.logman;
+  } else {
+    Bukkit = Packages.org.bukkit.Bukkit;
+    server = Bukkit.server;
+    logger = __plugin.logger;
+  }
+
+  var File = java.io.File,
+    FileReader = java.io.FileReader,
+    BufferedReader = java.io.BufferedReader,
+    PrintWriter = java.io.PrintWriter,
+    FileWriter = java.io.FileWriter,
+    // assumes scriptcraft.js is in mcserver/plugins/scriptcraft/lib directory
+    jsPluginsRootDir = __script.parentFile.parentFile,
+    jsPluginsRootDirName = _canonize(jsPluginsRootDir),
+    unloadHandlers = [];
+
+  /*
+   make sure eval is present: it's present on JRE 6, 7, and 8 on Linux
+   */
+  if ( typeof eval == 'undefined' ) {
+    global.eval = function( str ) {
+      return __engine.eval( str );
+    };
+  } 
+
   /*
    now that load is defined, use it to load a global config object
    */
@@ -532,7 +678,7 @@ function __onEnable ( __engine, __plugin, __script )
   configFile = new File(configFile,'global-config.json');
   var config = _load( configFile );
   if ( !config ) {
-    config = { verbose: false };
+    config = { verbose: true };
   }
   global.config = config;
   global.__plugin = __plugin;
@@ -544,45 +690,14 @@ function __onEnable ( __engine, __plugin, __script )
     var jsonLoaded = __engine['eval(java.io.Reader)']( jsonFileReader );
   }());
 
-  /*
-   Unload Handlers
-   */
-  var unloadHandlers = [];
-  var _addUnloadHandler = function( f ) {
-    unloadHandlers.push( f );
-  };
-  var _runUnloadHandlers = function() {
-    for ( var i = 0; i < unloadHandlers.length; i++ ) {
-      unloadHandlers[i]( );
-    }
-  };
   global.addUnloadHandler = _addUnloadHandler;
-
-
-  global.refresh = function( ) {
-    if ( typeof self !== 'undefined' ) {
-      if ( !self.op ) {
-        self.sendMessage('Only operators can refresh()');
-        return;
-      }
-    }
-    __plugin.pluginLoader.disablePlugin( __plugin );
-    __plugin.pluginLoader.enablePlugin( __plugin );
-  };
-  
-  var _echo = function ( msg ) {
-    if ( typeof self == 'undefined' ) {
-      return;
-    }
-    self.sendMessage( msg );
-  };
-
+  global.refresh = _refresh;
   global.echo = _echo;
   global.alert = _echo;
   global.scload = _load;
   global.scsave = _save;
   global.scloadJSON = _loadJSON;
-
+  global.isOp = _isOp;
   var configRequire = _load( jsPluginsRootDirName + '/lib/require.js', true );
   /*
    setup paths to search for modules
@@ -615,8 +730,11 @@ function __onEnable ( __engine, __plugin, __script )
     }
   );
 
-  require('js-patch')( global );
-  global.console = require('console');
+  var testJSPatch = require('js-patch')( global );
+  var console = require('console')(logger);
+  global.console = console;
+  testJSPatch(console);
+
   /*
    setup persistence
    */
@@ -634,86 +752,13 @@ function __onEnable ( __engine, __plugin, __script )
   // wph 20131226 - make events global as it is used by many plugins/modules
   global.events = events;
 
-  events.pluginDisable(function( evt ) {
-    // save config
-    _save( global.config, new File( jsPluginsRootDir, 'data/global-config.json' ) );
-
-    _runUnloadHandlers();
-    org.bukkit.event.HandlerList['unregisterAll(org.bukkit.plugin.Plugin)'](__plugin);
-  });
-
-  require('bukkit')( global );
-
-  global.__onCommand = function( sender, cmd, label, args) {
-    var jsArgs = [],
-      i = 0,
-      jsResult,
-      result,
-      cmdName,
-      fnBody;
-    for ( ; i < args.length ; i++ ) {
-      jsArgs.push( '' + args[i] );
-    }
-    
-    result = false;
-    cmdName = ( '' + cmd.name ).toLowerCase();
-    if (cmdName == 'js')
-    {
-      result = true;
-      fnBody = jsArgs.join(' ');
-      global.self = sender;
-      global.__engine = __engine;
-      try { 
-        // cannot rely on native eval in jre7 and jre8 
-        // because ...
-        // js var hearts 
-        // js hearts
-        // ... throws an execption ('hearts' is not defined). vars are not sticky in native eval .
-        //
-        jsResult = __engine.eval( fnBody );
-
-        if ( typeof jsResult != 'undefined' ) { 
-          if ( jsResult == null) { 
-            // engine eval will return null even if the result should be undefined
-            // this can be confusing so I think it's better to omit output for this case
-            // sender.sendMessage('(null)');
-          } else { 
-            try { 
-              if ( isJavaObject(jsResult) || typeof jsResult === 'function') {
-                sender.sendMessage(jsResult);
-              } else { 
-                var replacer = function replacer(key, value){
-                  return this[key] instanceof java.lang.Object ? '' + this[key] : value;
-                };
-                sender.sendMessage( JSON.stringify( jsResult, replacer, 2) );
-              }
-            } catch ( displayError ) { 
-              logger.severe( 'Error while trying to display result: ' + jsResult + ', Error: '+ displayError );
-            }
-          }
-        } 
-      } catch ( e ) {
-        logger.severe( 'Error while trying to evaluate javascript: ' + fnBody + ', Error: '+ e );
-        sender.sendMessage( 'Error while trying to evaluate javascript: ' + fnBody + ', Error: '+ e );
-        throw e;
-      } finally {
-        /*
-         wph 20140312 don't delete self on nashorn until https://bugs.openjdk.java.net/browse/JDK-8034055 is fixed
-         */
-        if ( typeof Java === 'undefined' ) { // Java is an object in Nashorn
-          delete global.self;
-          delete global.__engine;
-        }
-      }
-    }
-    if ( cmdName == 'jsp' ) {
-      cmdModule.exec( jsArgs, sender );
-      result = true;
-    }
-    return result;
-  };
-
+  if (__plugin.canary) {
+    // canary plugin doesn't get to handle its own plugin disable event
+  } else {
+    events.pluginDisable(_onDisable);
+  }
+  __onDisableImpl = _onDisable;
+  global.__onCommand = __onCommand;  
   plugins.autoload( global, new File(jsPluginsRootDir,'plugins'), logger );
   require('legacy-check')(jsPluginsRootDir);
-
 }

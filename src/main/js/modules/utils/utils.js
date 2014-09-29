@@ -1,8 +1,14 @@
 'use strict';
-var File = java.io.File,
-  bkBukkit = org.bukkit.Bukkit,
-  bkLocation = org.bukkit.Location,
-  bkBlockCommandSender = org.bukkit.command.BlockCommandSender;
+var File = java.io.File;
+
+if (__plugin.bukkit){
+  var bkBukkit = org.bukkit.Bukkit,
+    bkLocation = org.bukkit.Location,
+    bkBlockCommandSender = org.bukkit.command.BlockCommandSender;
+}
+if (__plugin.canary){
+  var Canary = Packages.net.canarymod.Canary;
+}
 /************************************************************************
 ## Utilities Module
 
@@ -31,7 +37,7 @@ var utils = require('utils');
 var name = 'walterh';
 var player = utils.player(name);
 if ( player ) {
-    player.sendMessage('Got ' + name);
+    echo(player, 'Got ' + name);
 } else {
     console.log('No player named ' + name);
 }
@@ -50,7 +56,11 @@ var _player = function ( playerName ) {
     }
   } else {
     if ( typeof playerName == 'string' )
-      return bkBukkit.getPlayer( playerName );
+      if (__plugin.canary) {
+	return Canary.server.getPlayer( playerName );
+      } else { 
+	return bkBukkit.getPlayer( playerName );
+      }
     else
       return playerName; // assumes it's a player object
   }
@@ -132,8 +142,14 @@ exports.locationFromJSON = function( json ) {
     world = bkBukkit.getWorld( json[0] );
     return new bkLocation( world, json[1], json[2] , json[3] );
   } else {
-    world = bkBukkit.getWorld( json.world );
-    return new bkLocation( world, json.x, json.y , json.z, json.yaw, json.pitch );
+    if (__plugin.canary){
+      world = Canary.server.getWorld( json.world );
+      var cmLocation = Packages.net.canarymod.api.world.position.Location;
+      return new cmLocation(world, json.x, json.y, json.z, json.pitch, json.yaw);
+    } else {
+      world = bkBukkit.getWorld( json.world );
+      return new bkLocation( world, json.x, json.y , json.z, json.yaw, json.pitch );
+    }
   }
 };
 
@@ -203,13 +219,23 @@ exports.getMousePos = function( player ) {
   if ( !player ) {
     return null;
   }
-  // player might be CONSOLE or a CommandBlock
-  if ( !player.getTargetBlock ) {
-    return null;
-  }
-  var targetedBlock = player.getTargetBlock( null, 5 );
-  if ( targetedBlock == null || targetedBlock.isEmpty() ) {
-    return null;
+  var targetedBlock ;
+  if ( __plugin.canary ) {
+    var cmLineTracer = Packages.net.canarymod.LineTracer;
+    var lineTracer = new cmLineTracer(player);
+    targetedBlock = lineTracer.getTargetBlock();
+    if (targetedBlock == null){
+      return null;
+    }
+  } else { 
+    // player might be CONSOLE or a CommandBlock
+    if ( !player.getTargetBlock ) {
+      return null;
+    }
+    targetedBlock = player.getTargetBlock( null, 5 );
+    if ( targetedBlock == null || targetedBlock.isEmpty() ) {
+      return null;
+    }
   }
   return targetedBlock.location;
 };
@@ -265,7 +291,7 @@ The following example illustrates how to use foreach for immediate processing of
 var utils = require('utils');
 var players = ['moe', 'larry', 'curly'];
 utils.foreach (players, function(item){ 
-    server.getPlayer(item).sendMessage('Hi ' + item);
+    echo( server.getPlayer(item), 'Hi ' + item);
 });
 ```
 
@@ -299,7 +325,7 @@ var processItem = function(item, index, object, array){
 // assume this code is within a function/closure
 var player = self;
 var onDone = function(){ 
-    player.sendMessage('Job Done!');
+    echo( player, 'Job Done!');
 };
 utils.foreach (a, processItem, null, 10, onDone);
 ```
@@ -720,3 +746,70 @@ exports.array = function( ){
   }
   return result;
 };
+function getPlayersBukkit(){
+  var result = [];
+  for (var i = 0; i < server.onlinePlayers.length; i++){
+    result.push(server.onlinePlayers[i]);
+  }
+  return result;
+}
+function getPlayersCanary(){
+  var result = [];
+  var players = server.playerList;
+  for (var i = 0; i < players.size(); i++){
+    result.push(players.get(i));
+  }
+  return result;
+}
+function getStatBukkit(player, stat){
+  return player.getStatistic(org.bukkit.Statistic[stat.toUpperCase()]);
+}
+function getStatCanary(player, stat){
+  var cmStatistics = Packages.net.canarymod.api.statistics.Statistics;
+  return player.getStat(cmStatistics[stat.toUpperCase()].instance);
+}
+exports.players = __plugin.canary ? getPlayersCanary: getPlayersBukkit;
+/*************************************************************************
+### utils.stat() function
+
+This function returns a numeric value for a given player statistic.
+
+#### Parameters
+
+ * Player - The player object
+ * Statistic - A string whose value should be one of the following (CanaryMod) 
+   * ANIMALSBRED 
+   * BOATONECM 
+   * CLIMBONECM 
+   * CROUCHONECM 
+   * DAMAGEDEALT 
+   * DAMAGETAKEN 
+   * DEATHS 
+   * DRIVEONECM 
+   * DROP 
+   * FALLONECM 
+   * FISHCAUGHT 
+   * FLYONECM 
+   * HORSEONECM 
+   * JUMP 
+   * JUNKFISHED 
+   * LEAVEGAME 
+   * MINECARTONECM 
+   * MOBKILLS 
+   * PIGONECM 
+   * PLAYERKILLS 
+   * PLAYONEMINUTE 
+   * SPRINTONECM 
+   * SWIMONECM 
+   * TALKEDTOVILLAGER 
+   * TIMESINCEDEATH 
+   * TRADEDWITHVILLAGER 
+   * TREASUREFISHED 
+   * WALKONECM 
+
+See [CanaryMod's Statistic][cmstat] class for a list of possible stat values
+
+[cmstat]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/statistics/Statistics.html
+
+***/
+exports.stat = __plugin.canary ? getStatCanary: getStatBukkit;

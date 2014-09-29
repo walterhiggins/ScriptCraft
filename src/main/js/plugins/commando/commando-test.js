@@ -2,6 +2,10 @@
   A test of the commando plugin.
   Adds a new `/js-time` command with 4 possible options: Dawn, Midday, Dusk, Midnight
 */
+if (__plugin.canary){
+  console.warn('commando-test not yet supported in CanaryMod');
+  return;
+}
 var commando = require('./commando').commando,
   times = ['Dawn','Midday','Dusk','Midnight'];
 
@@ -16,7 +20,7 @@ commando( 'js-time' , function( params, sender ) {
       }
     }
   } else {
-    sender.sendMessage('This command only works in-world');
+    echo( sender, 'This command only works in-world');
   }
     
 },times);

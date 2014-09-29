@@ -35,39 +35,44 @@ ScriptCraft uses Java's [String.format()][strfmt] so any string substitution ide
 [webcons]: https://developer.mozilla.org/en-US/docs/Web/API/console
 
 ***/
-var logger = __plugin.logger,
-  logMethodName = 'log(java.util.logging.Level,java.lang.String)';
-var argsToArray = function( args ) {
+function argsToArray( args ) {
   var result = [];
   for ( var i =0; i < args.length; i++ ) {
     result.push(args[i]);
   }
   return result;
 }
-var log = function( level, restOfArgs ) {
-  var args = argsToArray( restOfArgs );
+function consMsg(params){
+  var args = argsToArray(params);
   if ( args.length > 1 ) {
-    var msg = java.lang.String.format( args[0], args.slice(1) );
-    logger[logMethodName]( level, msg );
+    return java.lang.String.format( args[0], args.slice(1) );
   } else {
-    logger[logMethodName]( level, args[0] );
+    return args[0];
   }
-};
+}
 
-var Level = java.util.logging.Level;
+module.exports = function(logger){
 
-exports.log = function( ) {
-    log( Level.INFO, arguments );
-};
+  function bukkitLog( level, restOfArgs ) {
+    logger['log(java.util.logging.Level,java.lang.String)']( 
+      java.util.logging.Level[level], 
+      consMsg(restOfArgs) 
+    );
+  }
 
-exports.info = function( ) {
-    log( Level.INFO, arguments );
-};
-
-exports.warn = function( ) {
-    log( Level.WARNING, arguments );
-};
-
-exports.error = function( ) {
-    log( Level.SEVERE, arguments );
+  if (__plugin.canary){
+    return {
+      log: function( ) { logger.info( consMsg(arguments) ); },
+      info: function( ) { logger.info( consMsg(arguments) ); },
+      warn: function( ) { logger.warn( consMsg(arguments) ); },
+      error: function( ) { logger.error( consMsg(arguments) ); }
+    };
+  } else {
+    return {
+      log: function() { bukkitLog('INFO', arguments ); },
+      info: function() { bukkitLog('INFO', arguments ); },
+      warn: function( ) { bukkitLog('WARNING', arguments ); },
+      error: function( ) { bukkitLog('SEVERE', arguments ); }
+    };
+  }
 };

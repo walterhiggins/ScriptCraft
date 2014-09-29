@@ -41,6 +41,10 @@ your own mini-game...
 
 ***/
 
+if (__plugin.canary){
+  console.warn('cow-clicker minigame is not yet supported in CanaryMod');
+  return;
+}
 var store = {},
   bkBukkit = org.bukkit.Bukkit,
   bkCow = org.bukkit.entity.Cow,
@@ -122,7 +126,7 @@ var _addPlayer = function( player, score ) {
   store[ player.name ] = { score: score };
   scoreboard.update( 'cowclicker', player, store[ player.name ].score);
   
-  player.sendMessage( 'Go forth and click some cows!' );
+  echo( player, 'Go forth and click some cows!' );
 };
 
 var _removePlayer = function( player, notify ) {
@@ -144,8 +148,8 @@ var _removePlayer = function( player, notify ) {
 
   delete store[ player.name ];
   if ( notify && player ) {
-    player.sendMessage( 'You clicked ' + playerScore + ' cows! ' + 
-			'You must be tired after all that clicking.' );
+    echo( player, 'You clicked ' + playerScore + ' cows! ' + 
+	  'You must be tired after all that clicking.' );
   }
 };
 

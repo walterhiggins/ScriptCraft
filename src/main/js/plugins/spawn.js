@@ -16,26 +16,37 @@ press TAB. Visit
 for a list of possible entities (creatures) which can be spawned.
 
 ***/
-var entities = [],
-  bkEntityType = org.bukkit.entity.EntityType;
-
-var entitytypes = bkEntityType.values();
+var entities = [];
+var entityType = null;
+if (__plugin.canary){  
+  entityType = Packages.net.canarymod.api.entity.EntityType;
+}else {
+  entityType = org.bukkit.entity.EntityType;
+}
+var entitytypes = entityType.values();
 for ( var t in entitytypes ) {
   if ( entitytypes[t] && entitytypes[t].ordinal ) { 
     entities.push(entitytypes[t].name());
   }
 }
+
 command( 'spawn', function( parameters, sender ) {
-  if ( !sender.op ) {
-    sender.sendMessage( 'Only operators can perform this command' );
+  if ( !isOp(sender) ) {
+    echo( sender, 'Only operators can perform this command' );
     return;
   }
   var location = sender.location;
   if ( !location ) {
-    sender.sendMessage( 'You have no location. This command only works in-game.' );
+    echo( sender, 'You have no location. This command only works in-game.' );
     return;
   }
-  var world = location.world;
+  var world = location.world || sender.world;
   var type = ('' + parameters[0]).toUpperCase();
-  world.spawnEntity( location, bkEntityType[type] );
+  if (__plugin.bukkit){
+    world.spawnEntity( location, entityType[type] );
+  } else { 
+    var Canary = Packages.net.canarymod.Canary;
+    var entity = Canary.factory().entityFactory.newEntity(entityType[type], location);
+    entity.spawn();
+  }
 }, entities );

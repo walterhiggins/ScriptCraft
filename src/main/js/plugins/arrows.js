@@ -24,7 +24,10 @@ as a parameter. For example: `/js arrows.explosive('player23')` makes
 player23's arrows explosive.
  
 ***/
-
+if (__plugin.canary){
+  console.warn('arrows plugin not yet supported in CanaryMod');
+  return;
+}
 var signs = require('signs'),
   fireworks = require('fireworks'),
   utils = require('utils'),

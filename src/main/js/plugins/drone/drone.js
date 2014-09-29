@@ -576,8 +576,15 @@ var putBlock = function( x, y, z, blockId, metadata, world ) {
   }
   var block = world.getBlockAt( x, y, z );
   if ( block.typeId != blockId || block.data != metadata ) {
-    block.setTypeIdAndData( blockId, metadata, false );
-    block.data = metadata;
+    if (__plugin.canary) {
+      block.typeId = blockId;
+      block.data = metadata;
+      block.update();
+    }
+    if (__plugin.bukkit) {
+      block.setTypeIdAndData( blockId, metadata, false );
+      block.data = metadata;
+    }
   }
 };
 
@@ -595,12 +602,30 @@ var putSign = function( drone, x, y, z, world, texts, blockId, meta, immediate )
   }
   putBlock( x, y, z, blockId, meta, world );
   block = world.getBlockAt( x, y, z );
-  state = block.state;
-  if ( state instanceof bkSign ) {
+  var getState, isSign, setLine;
+  if (__plugin.canary){
+    isSign = function(block){ 
+      var sign = block.getTileEntity();
+      return sign.setTextOnLine; 
+    };
+    setLine = function( block, i, text) { 
+      var sign = block.getTileEntity();
+      sign.setTextOnLine( text, i ); 
+      sign.upate(true); 
+    };
+  }
+  if (__plugin.bukkit){
+    isSign = function(block){ return block.state && block.state.setLine; };
+    setLine = function( block, i, text) { 
+      var sign = block.state;
+      sign.setLine( i, text ); 
+      sign.upate(true); 
+    };
+  }
+  if ( isSign(block) ) { 
     for ( i = 0; i < texts.length; i++ ) {
-      state.setLine( i % 4, texts[ i ] );
+      setLine(block, i % 4, texts[ i ] );
     }
-    state.update( true );
   }
 };
 
@@ -608,24 +633,26 @@ var Drone = function( x, y, z, dir, world ) {
   this.record = false;
   var usePlayerCoords = false;
   var player = (typeof self !== 'undefined' ? self : null);
-  if ( x instanceof bkPlayer ) {
+  var playerPos;
+  if ( x.location && x.name) {
     player = x;
-  }
-  var playerPos = utils.getPlayerPos( player );
+  } 
+  playerPos = x.location;
+
   var that = this;
   var populateFromLocation = function( loc ) {
     that.x = loc.x;
     that.y = loc.y;
     that.z = loc.z;
-    that.dir = _getDirFromRotation(loc.yaw);
+    that.dir = _getDirFromRotation(loc);
     that.world = loc.world;
   };
   var mp = utils.getMousePos( player );
-  if ( typeof x == 'undefined' || x instanceof bkPlayer ) {
+  if ( typeof x == 'undefined' || x.location ) {
     if ( mp ) {
       populateFromLocation( mp );
       if ( playerPos ) {
-        this.dir = _getDirFromRotation(playerPos.yaw);
+        this.dir = _getDirFromRotation(playerPos);
       }
     } else {
       // base it on the player's current location
@@ -640,14 +667,14 @@ var Drone = function( x, y, z, dir, world ) {
       populateFromLocation( playerPos );
     }
   } else {
-    if ( arguments[0] instanceof bkLocation ) {
+    if ( arguments[0].x && arguments[0].y && arguments[0].z ) {
       populateFromLocation( arguments[ 0 ] );
     } else {
       this.x = x;
       this.y = y;
       this.z = z;
       if ( typeof dir == 'undefined' ) {
-        this.dir = _getDirFromRotation( playerPos.yaw );
+        this.dir = _getDirFromRotation( playerPos);
       } else {
         this.dir = dir%4;
       }
@@ -818,12 +845,13 @@ Drone.prototype._checkpoints = {};
 Drone.extend(function chkpt( name ) {
   this._checkpoints[ name ] = { x:this.x, y:this.y, z:this.z, dir:this.dir };
 });
+
 Drone.extend(function move( ) {
-  if ( arguments[0] instanceof bkLocation ) {
+  if ( arguments[0].x && arguments[0].y && arguments[0].z) {
     this.x = arguments[0].x;
     this.y = arguments[0].y;
     this.z = arguments[0].z;
-    this.dir = _getDirFromRotation(arguments[0].yaw );
+    this.dir = _getDirFromRotation(arguments[0] );
     this.world = arguments[0].world;
   } else if ( typeof arguments[0] === 'string' ) {
     var coords = this._checkpoints[arguments[0]];
@@ -901,7 +929,13 @@ Drone.extend( function down( n ) {
 // position
 //
 Drone.prototype.getLocation = function( ) {
-  return new bkLocation( this.world, this.x, this.y, this.z );
+  if (__plugin.canary) {
+    var cmLocation = Packages.net.canarymod.api.world.position.Location;
+    return new cmLocation( this.world, this.x, this.y, this.z, 0, 0);
+  }
+  if (__plugin.bukkit) { 
+    return new bkLocation( this.world, this.x, this.y, this.z );
+  }
 };
 //
 // building
@@ -916,7 +950,7 @@ Drone.extend( function sign( message, block ) {
   if ( block != 63 && block != 68 ) {
     var usage = 'Usage: sign("message", "63:1") or sign("message","68:1")';
     if ( this.player ) {
-      this.player.sendMessage(usage);
+      echo( this.player, usage);
     }
     console.error(usage);
     return;
@@ -994,11 +1028,8 @@ Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite, immed
   _traverse[dir].depth( that, d, function traverseDepthCallback( ) { 
     traverseHeight( that, h, function traverseHeightCallback( ) { 
       _traverse[dir].width( that, w, function traverseWidthCallback( ) { 
-        var block = that.world.getBlockAt( that.x, that.y, that.z );
-        var properBlock = blocksForBuild[ bi % len ];
-        if (overwrite || block.type.equals(bkMaterial.AIR) ) { 
-          block.setTypeIdAndData( properBlock[0], properBlock[1], false );
-        }
+	var properBlock = blocksForBuild[ bi % len ];
+	putBlock( that.x, that.y, that.z, properBlock[0], properBlock[1], that.world);
         bi++;
       });
     });
@@ -1050,13 +1081,7 @@ Drone.prototype.cuboidX = function( blockType, meta, w, h, d, immediate ) {
     return this;
   }
   var depthFunc = function( ) {
-
-      var block = that.world.getBlockAt( that.x, that.y, that.z );
-      block.setTypeIdAndData( blockType, meta, false );
-      // wph 20130210 - dont' know if this is a bug in bukkit but for chests, 
-      // the metadata is ignored (defaults to 2 - south facing)
-      // only way to change data is to set it using property/bean.
-      block.data = meta;
+    putBlock( that.x, that.y, that.z, blockType, meta, that.world );
   };
   var heightFunc = function( ) {
     _traverse[dir].depth( that, d, depthFunc );
@@ -1578,13 +1603,25 @@ var _paste = function( name, immediate )
     } );
   } );
 };
-var _getDirFromRotation = function( r ) { 
+var _getDirFromRotation = function( location ) { 
   // 0 = east, 1 = south, 2 = west, 3 = north
   // 46 to 135 = west
   // 136 to 225 = north
   // 226 to 315 = east
   // 316 to 45 = south
-
+  var r;
+  if (__plugin.canary ) {
+    r = location.rotation;
+  } 
+  if (__plugin.bukkit) { 
+    r = location.yaw;
+  }
+    
+  // west = -270
+  // north = -180
+  // east = -90
+  // south = 0
+  
   r = (r + 360 ) % 360; // east could be 270 or -90
 
   if ( r > 45 && r <= 135 )

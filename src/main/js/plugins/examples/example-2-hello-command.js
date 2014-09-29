@@ -22,11 +22,11 @@ can use the new extension. Unlike the previous example, the `jsp hello`
 command does not evaluate javascript code so this command is much more secure.
 
     command('hello', function (parameters, player) {
-        player.sendMessage('Hello ' + player.name);
+        echo( player, 'Hello ' + player.name);
     });
 
 ***/
 
 command( 'hello', function( parameters, player ) {
-  player.sendMessage( 'Hello ' + player.name );
+  echo( player, 'Hello ' + player.name );
 });

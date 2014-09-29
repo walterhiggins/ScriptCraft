@@ -106,11 +106,11 @@ var homes =  plugin( 'homes', {
     host = utils.player( host );
     loc = _store.houses[ host.name ];
     if ( !loc ) {
-      guest.sendMessage( host.name + ' has no home' );
+      echo( guest,  host.name + ' has no home' );
       return;
     }
     if ( !this._canVisit( guest, host ) ) {
-      guest.sendMessage( 'You can not visit ' + host.name + "'s home yet" );
+      echo( guest,  'You can not visit ' + host.name + "'s home yet" );
       return;
     }
     homeLoc = utils.locationFromJSON( loc );
@@ -213,8 +213,8 @@ var homes =  plugin( 'homes', {
     }
     invitations.push( guest.name );
     _store.invites[host.name] = invitations;
-    guest.sendMessage( host.name + ' has invited you to their home.' );
-    guest.sendMessage( 'type "/jsp home ' + host.name + '" to accept' );
+    echo( guest,  host.name + ' has invited you to their home.' );
+    echo( guest,  'type "/jsp home ' + host.name + '" to accept' );
   },
   /*
    Uninvite someone to the home
@@ -290,16 +290,16 @@ var options = {
   },
 
   'help': function( params, sender ) { 
-    sender.sendMessage( homes.help() );
+    echo( sender,  homes.help() );
   },
 
   'list': function( params, sender ) {
     var visitable = homes.list();
     if ( visitable.length == 0 ) {
-      sender.sendMessage( 'There are no homes to visit' );
+      echo( sender,  'There are no homes to visit' );
       return;
     } else {
-      sender.sendMessage([
+      echo( sender, [
         'You can visit any of these ' + visitable.length + ' homes'
         ,visitable.join(', ')
       ]);
@@ -309,9 +309,9 @@ var options = {
   'ilist': function( params, sender ) {
     var potentialVisitors = homes.ilist();
     if ( potentialVisitors.length == 0 ) {
-      sender.sendMessage('No one can visit your home');
+      echo( sender, 'No one can visit your home');
     } else {
-      sender.sendMessage([
+      echo( sender, [
         'These ' + potentialVisitors.length + 'players can visit your home',
         potentialVisitors.join(', ')]);
     }
@@ -319,13 +319,13 @@ var options = {
 
   'invite': function( params, sender ) {
     if ( params.length == 1 ) {
-      sender.sendMessage( 'You must provide a player name' );
+      echo( sender,  'You must provide a player name' );
       return;
     }
     var playerName = params[1];
     var guest = utils.player( playerName );
     if ( !guest ) {
-      sender.sendMessage( playerName + ' is not here' );
+      echo( sender,  playerName + ' is not here' );
     } else {
       homes.invite( sender, guest );
     }
@@ -333,13 +333,13 @@ var options = {
 
   'uninvite': function( params, sender ) {
     if ( params.length == 1 ) {
-      sender.sendMessage( 'You must provide a player name' );
+      echo( sender,  'You must provide a player name' );
       return;
     }
     var playerName = params[1];
     var guest = utils.player( playerName );
     if ( !guest ) {
-      sender.sendMessage( playerName + ' is not here' );
+      echo( sender,  playerName + ' is not here' );
     } else {
       homes.uninvite( sender, guest );
     }
@@ -347,25 +347,25 @@ var options = {
 
   'public': function( params, sender ) {
     homes.open( sender, params.slice( 1 ).join(' ') );
-    sender.sendMessage( 'Your home is open to the public' );
+    echo( sender,  'Your home is open to the public' );
   },
 
   'private': function( params, sender ) { 
     homes.close( sender ); 
-    sender.sendMessage( 'Your home is closed to the public' );
+    echo( sender,  'Your home is closed to the public' );
   },
 
   'listall': function( params, sender ) {
     if ( !sender.isOp() ) {
-      sender.sendMessage( 'Only operators can do this' );
+      echo( sender,  'Only operators can do this' );
     } else {
-      sender.sendMessage( homes.listall().join(', ') );
+      echo( sender,  homes.listall().join(', ') );
     }
   },
 
   'clear': function( params, sender ) {
     if ( !sender.isOp() ) {
-      sender.sendMessage( 'Only operators can do this' );
+      echo( sender,  'Only operators can do this' );
     } else { 
       homes.clear( params[1], sender );
     }
@@ -393,7 +393,7 @@ command( 'home', function ( params , sender) {
   } else {
     host = utils.player( params[0] );
     if ( !host ) {
-      sender.sendMessage( params[0] + ' is not here' );
+      echo( sender,  params[0] + ' is not here' );
     } else {
       homes.go( sender, host );
     }

@@ -23,10 +23,10 @@ message for operators.
 
     command('op-hello', function (parameters, player) {
         if (!player.op){
-            player.sendMessage('Only operators can do this.');
-            return;
+          echo( player, 'Only operators can do this.');
+          return;
         }
-        player.sendMessage('Hello ' + player.name);
+        echo( player, 'Hello ' + player.name);
     });
 ***/
 
@@ -35,8 +35,8 @@ command( 'op-hello', function( parameters, player ) {
    this is how you limit based on player privileges
    */
   if ( !player.op ) {
-    player.sendMessage( 'Only operators can do this.' );
+    echo( player, 'Only operators can do this.' );
     return;
   }
-  player.sendMessage( 'Hello ' + player.name );
+  echo( player, 'Hello ' + player.name );
 });

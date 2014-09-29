@@ -8,7 +8,7 @@ to Minecraft.  Normally ScriptCraft only allows for provision of new
 commands as extensions to the jsp command. For example, to create a
 new simple command for use by all players...
 
-    /js command('hi', function(args,player){ player.sendMessage('Hi ' + player.name); });
+    /js command('hi', function(args,player){ echo( player, 'Hi ' + player.name); });
   
 ... then players can use this command by typing...
 
@@ -46,7 +46,7 @@ of the ScriptCraft core.
 
     var commando = require('../commando');
     commando('hi', function(args,player){
-       player.sendMessage('Hi ' + player.name);
+       echo( player, 'Hi ' + player.name);
     });
 
 ...Displays a greeting to any player who issues the `/hi` command.
@@ -76,6 +76,10 @@ global commands for a plugin, please let me know.
 [pcppevt]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/player/PlayerCommandPreprocessEvent.html
 
 ***/
+if (__plugin.canary){
+  console.warn('commando plugin is not yet supported in CanaryMod');
+  return;
+}
 var commands = {};
 
 exports.commando = function( name, func, options, intercepts ) {

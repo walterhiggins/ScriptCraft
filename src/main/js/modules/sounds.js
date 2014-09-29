@@ -1,49 +1,10 @@
-var bkLocation = org.bukkit.Location,
-  i = 0,
-  foreach = require('utils').foreach,
-  allSounds = bukkit.sound.values(),
-  len = allSounds.length,
-  sound,
-  soundName;
-
-for ( ; i < len; i++ ) {
-  sound = allSounds[i];
-  soundName = '' + sound.name();
-  var methodName = soundName.toLowerCase().replace(/_(.)/g,function(a,b){ return b.toUpperCase();});
-  exports[methodName] = (function(sound){ 
-    return function()
-    {
-      switch (arguments.length) { 
-	case 3:
-	  exports.play(sound, arguments[0], arguments[1], arguments[2]);
-	  break;
-	case 2:
-	  // TODO: possible combinations: 
-	  // location, volume, 
-          // volume pitch
-	  exports.play(sound, arguments[0],arguments[1]);
-	  break;
-	case 1:
-	  exports.play(sound, arguments[0]);
-	  break;
-	case 0:
-	  // play the sound at full vol, medium pitch for all players
-	  //
-	  foreach(server.onlinePlayers,function(player){
-	    exports.play(sound, player, 1, 0);
-	  });
-	default:
-	}
-    };
-  })(sound);
-}
 /*************************************************************************
 ## Sounds Module
 
 This module is a simple wrapper around the Bukkit Sound class and provides
 a simpler way to play sounds. All of the org.bukkit.Sound Enum values are attached.
 
-### Usage:
+### Usage (Bukkit) :
 
     var sounds = require('sounds');
     sounds.play( bukkit.sound.VILLAGER_NO , self, 1, 0); // plays VILLAGER_NO sound at full volume and medium pitch
@@ -64,25 +25,8 @@ In addition, a play function is provided for each possible sound using the follo
 
 These methods are provided for convenience to help beginners explore sounds using TAB completion.
 ***/
-exports.play = function(sound, locationOrHasLocation,  volume, pitch) {
-  var location = null;
-  if (!locationOrHasLocation)
-    return;
-  if (locationOrHasLocation instanceof bkLocation){
-    location = locationOrHasLocation;
-  } else {
-    locationOrHasLocation = locationOrHasLocation.location;
-    if (locationOrHasLocation && locationOrHasLocation instanceof bkLocation ){
-      location = locationOrHasLocation;
-    }
-  }
-  if (!location){
-    console.warn('sounds.play() needs a location');
-    return;
-  }
-  if (typeof volume == 'undefined')
-    volume = 1;
-  if (typeof pitch == 'undefined')
-    pitch = 1;
-  location.world.playSound(location, sound, volume, pitch);
-};
+if (__plugin.canary) { 
+  module.exports = require('./canary/sounds');
+} else {
+  module.exports = require('./bukkit/sounds');
+}

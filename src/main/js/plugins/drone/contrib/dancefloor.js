@@ -1,5 +1,5 @@
 var Drone = require('../drone').Drone;
-
+var blocks = require('blocks');
 //
 // Create a floor of colored tiles some of which emit light.
 // The tiles change color every second creating a strobe-lit dance-floor.
@@ -27,13 +27,14 @@ function dancefloor(width,length)
     var discoTicks = 30;
     var task = null;
     var strobe = function() {
-        disco.rand(floorTiles,width,1,length);
+        disco.rand(blocks.rainbow ,width,1,length);
         if (!discoTicks--)
-            task.cancel();
+            clearInterval(task);
     };
     var now = 0;
     var everySecond = 20;
-    task = server.scheduler.runTaskTimer(__plugin,strobe,now,everySecond);
+    task = setInterval( strobe, 1000);
+    
     return this;
 }
 Drone.extend(dancefloor);

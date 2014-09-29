@@ -7,12 +7,12 @@ var __scboot = null;
     FileReader = java.io.FileReader,
     FileOutputStream = java.io.FileOutputStream,
     ZipInputStream = java.util.zip.ZipInputStream,
-    jsPlugins = new File('plugins/scriptcraft'),
+    //jsPlugins = new File('plugins/scriptcraft'),
+    jsPlugins = new File('scriptcraft'),
     initScript = 'lib/scriptcraft.js';
 
-  var unzip = function(path, logger, plugin) {
-    var zis = new ZipInputStream(plugin.getResource(path)),
-      entry, 
+  var unzip = function(zis, logger) {
+    var entry, 
       reason = null, 
       unzipFile = false, 
       zTime = 0,
@@ -57,14 +57,13 @@ var __scboot = null;
   /*
    Called from Java plugin
    */
-  __scboot = function ( plugin, engine )
+  __scboot = function ( plugin, engine, classLoader )
   {
-    var logger = plugin.logger, 
-      cfg = plugin.config,
-      cfgName, 
+    var logger = plugin.logman, 
       initScriptFile = new File(jsPlugins,initScript),
       zips = ['lib','plugins','modules'],
       i = 0,
+      zis,
       len = zips.length;
 
     if (!jsPlugins.exists()){
@@ -74,14 +73,25 @@ var __scboot = null;
     }
 
     for (i = 0; i < len;i++){
-      cfgName = 'extract-js.' + zips[i];
-      if (cfg.getBoolean(cfgName)){
-        unzip( zips[i] + '.zip',logger,plugin);
+      if ( plugin.canary ) {
+	zis = new ZipInputStream(classLoader.getResourceAsStream(zips[i] + '.zip'));
+	unzip( zis, logger );
+      } else {
+	if ( plugin.config.getBoolean('extract-js.' + zips[i]) ) {
+	  zis = new ZipInputStream(plugin.getResource(zips[i] + '.zip'));
+          unzip( zis, logger );
+	}
       }
     }
-    plugin.saveDefaultConfig();
-    
-    engine.eval(new FileReader(initScriptFile));
-    __onEnable(engine, plugin, initScriptFile);
+    if (plugin.bukkit) {
+      plugin.saveDefaultConfig();
+    } 
+    try {
+      engine.eval(new FileReader(initScriptFile));
+      __onEnable(engine, plugin, initScriptFile);
+    }catch ( e ){
+      logger.error('Error evaluating ' + initScriptFile + ': ' + e);
+      throw e;
+    }
   };
 })();

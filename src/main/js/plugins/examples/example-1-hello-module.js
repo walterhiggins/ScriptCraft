@@ -21,10 +21,10 @@ The `hello` function below is only usable by players with the scriptcraft.evalua
 permission since it relies on the `/js` command to execute.
 
     exports.hello = function(player){
-        player.sendMessage('Hello ' + player.name);
+        echo( player, 'Hello ' + player.name);
     };
 
 ***/
 exports.hello = function( player ) {
-  player.sendMessage( 'Hello ' + player.name );
+  echo( player, 'Hello ' + player.name );
 };

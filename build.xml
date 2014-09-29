@@ -1,7 +1,7 @@
 <project name="scriptcraft" default="package" basedir=".">
   <property file="build.properties"/>
   <description>Builds the scriptcraft.jar file - a plugin for bukkit</description>
-  <property name="src" location="src/main/java"/>
+  <property name="src.canary" location="src/main/java/canary"/>
   <property name="build" location="target/classes"/>
   <property name="dist" location="target/" />
   <property name="minecraft.dir" location="${dist}/minecraft" />
@@ -24,46 +24,15 @@
     
   </target>
 
-
-  <target name="server-setup" depends="init" description="Downloads the latest bukkit dev jar"
-          unless="minecraft.present">
-    <mkdir dir="${minecraft.dir}" />
-    
-    <echo>Retrieving CraftBukkit artifact info</echo>
-    <get src="http://dl.bukkit.org/api/1.0/downloads/projects/CraftBukkit/?_accept=application/xml"
-         verbose="true"
-         httpusecaches="false"
-         dest="${minecraft.dir}/bukkit.xml" />
-
-    <xslt in="${minecraft.dir}/bukkit.xml"
-          out="${minecraft.dir}/ant.properties.xml"
-          style="build/bukkit-to-url.xsl"/>
-    <xmlproperty file="${minecraft.dir}/ant.properties.xml" keeproot="true"/>
-
-    <echo>Retrieving CraftBukkit jar</echo>
-    <get src="${bukkit.url}"
-         dest="${minecraft.dir}/craftbukkit.jar"
-         verbose="true"/>
-
-    <echo>Creating default ops.txt for your user</echo>
-    <echo message="${op.name}" file="${minecraft.dir}/ops.txt" />
-   
-  </target>
-
-
-  <target name="run" depends="server-setup, package, update-live-cb" description="Starts Bukkit with ScriptCraft">
-    <echo>Starting Bukkit with ScriptCraft</echo>
-    <java jar="${minecraft.dir}/craftbukkit.jar" maxmemory="1024m" fork="true" dir="${minecraft.dir}" />
-  </target>
   
-  <target name="compile" depends="init, server-setup" description="compile bukkit plugin source">
+  <target name="compile-canary" depends="init" description="compile canary plugin source">
     <javac includeantruntime="false" 
-           srcdir="${src}" 
+           srcdir="${src.canary}" 
            source="1.6" 
            target="1.6" 
            destdir="${build}" 
            debug="true" 
-           classpath="${minecraft.dir}/craftbukkit.jar" />
+           classpath="lib/canary.jar" />
   </target>
     
   <target name="gendocs" depends="construct-ypgpm, construct-api-ref" description="Generate API documentation">
@@ -87,14 +56,33 @@
 
   </target>
 
-  <target name="gen-events-helper" depends="compile-docs,server-setup,init">
+  <target name="gen-events-helper-canary" depends="compile-docs,init">
     <mkdir dir="${dist}/js/lib"/>
     <java classname="jscript" failonerror="true" fork="true" output="${dist}/js/lib/events-helper.js" error="${dist}/geneventserror.log">
       <classpath>
         <pathelement path="${build}"/>      
-	<pathelement path="${minecraft.dir}/craftbukkit.jar"/>
+	<pathelement path="lib/canary.jar"/>
       </classpath>
       <arg value="src/generateEventsHelper.js"/>
+      <arg value="canary"/>
+      <arg value="lib/canary.jar"/>
+      <arg value="blockDestroy"/>
+      <arg value="net.canarymod.hook.player.BlockDestroyHook"/>
+    </java>
+  </target>
+
+  <target name="gen-events-helper-bukkit" depends="compile-docs,init">
+    <mkdir dir="${dist}/js/lib"/>
+    <java classname="jscript" failonerror="true" fork="true" output="${dist}/js/lib/events-helper.js" error="${dist}/geneventserror.log">
+      <classpath>
+        <pathelement path="${build}"/>      
+	<pathelement path="lib/canary.jar"/>
+      </classpath>
+      <arg value="src/generateEventsHelper.js"/>
+      <arg value="canary"/>
+      <arg value="lib/canary.jar"/>
+      <arg value="Break"/>
+      <arg value="org.bukkit.event.block.BlockBreakEvent"/>
     </java>
   </target>
 
@@ -148,7 +136,7 @@ Walter Higgins
   <target name="zip_js" depends="zip_lib, zip_modules, zip_plugins">
   </target>
 
-  <target name="copy-js" depends="gen-events-helper,init">
+  <target name="copy-js" depends="gen-events-helper-canary,init">
     <copy todir="${dist}/js">
       <fileset dir="src/main/js"/>
     </copy>
@@ -185,7 +173,7 @@ Walter Higgins
     </zip>
   </target>
   
-  <target name="package" depends="gendocs,zip_js,compile" description="generate the distribution" >
+  <target name="package" depends="gendocs,zip_js,compile-canary" description="generate the distribution" >
     <!-- ensure plugin.yml is always copied -->
     <delete file="${build}/plugin.yml" />
     <copy todir="${build}">
@@ -206,7 +194,7 @@ Walter Higgins
     <delete dir="${dist}"/>
   </target>
 
-  <target name="update-live-cb" depends="package" description="Copy the built plugin to the live craftbukkit folder for testing.">
+  <target name="update-live-cb" depends="package" description="Copy the built plugin to the live folder for testing.">
     <mkdir dir="${minecraft.dir}/plugins" />
     <delete>
       <fileset dir="${minecraft.dir}/plugins/" includes="scriptcraft*.*"/>

@@ -38,7 +38,7 @@ Source Code ...
       if ( recipient ) {
         greetings.hello( recipient );
       } else {
-        sender.sendMessage( 'Player ' + playerName + ' not found.' );
+        echo( sender, 'Player ' + playerName + ' not found.' );
       }
     });
 
@@ -53,6 +53,6 @@ command( 'hello-byname', function( parameters, sender ) {
   if ( recipient ) {
     greetings.hello( recipient );
   } else {
-    sender.sendMessage( 'Player ' + playerName + ' not found.' );
+    echo( sender, 'Player ' + playerName + ' not found.' );
   }
 });

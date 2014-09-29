@@ -1,4 +1,3 @@
-
 module.exports = function( $ ) {
 
   // wph 20140105 trim not availabe in String on Mac OS.
@@ -44,29 +43,35 @@ module.exports = function( $ ) {
       return bind;
     }(Array.prototype.slice));
   }
-  $.setTimeout = function( callback, delayInMillis ) {
+
+  if (__plugin.canary){
+    require('task-canary')($);
+  } else { 
+    require('task-bukkit')($);
+  }
+
+  return function unitTest( console ) {
     /*
-     javascript programmers familiar with setTimeout know that it expects
-     a delay in milliseconds. However, bukkit's scheduler expects a delay in ticks 
-     (where 1 tick = 1/20th second)
+     sanity tests 
      */
-    var bukkitTask = server.scheduler.runTaskLater( __plugin, callback, Math.ceil( delayInMillis / 50 ) );
-    return bukkitTask;
-  };
+    $.setTimeout(function(){
+      console.log('js-patch setTimeout() test complete');
+    },100);
+    var clearMe = $.setTimeout(function(){
+      console.error('js-patch clearTimeout() test failed');
+    },100);
+    $.clearTimeout( clearMe );
 
-  $.clearTimeout = function( bukkitTask ) {
-    bukkitTask.cancel();
+    var runs = 3;
+    var clearAfterRuns = $.setInterval(function(){
+      runs --;
+      if (runs == 0){
+	$.clearInterval(clearAfterRuns);
+      }
+      if (runs < 0){
+	console.error('js-patch clearInterval test failed.');
+      }
+    },100);
   };
-    
-  $.setInterval = function( callback, intervalInMillis ) {
-    var delay = Math.ceil( intervalInMillis / 50);
-    var bukkitTask = server.scheduler.runTaskTimer( __plugin, callback, delay, delay );
-    return bukkitTask;
-  };
-
-  $.clearInterval = function( bukkitTask ) {
-    bukkitTask.cancel();
-  };
-
 };
 

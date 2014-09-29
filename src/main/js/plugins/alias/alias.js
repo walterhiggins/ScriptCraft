@@ -93,16 +93,16 @@ var _set = function( params, player ) {
   var o = _processParams( params );
   playerAliases[o.cmd] = o.aliases;
   _store.players[player.name] = playerAliases;
-  player.sendMessage( 'Alias ' + o.cmd + ' created.' );
+  echo( player, 'Alias ' + o.cmd + ' created.' );
 };
 
 var _remove = function( params, player ) {
   if ( _store.players[player.name] && _store.players[player.name][ params[0] ] ) {
     delete _store.players[player.name][params[0]];
-    player.sendMessage( 'Alias ' + params[0] + ' removed.' );
+    echo( player, 'Alias ' + params[0] + ' removed.' );
   }
   else{
-    player.sendMessage( 'Alias ' + params[0] + ' does not exist.' );
+    echo( player, 'Alias ' + params[0] + ' does not exist.' );
   }
   if ( player.op ) {
     if ( _store.global[params[0]] ) {
@@ -113,30 +113,30 @@ var _remove = function( params, player ) {
 
 var _global = function( params, player ) {
   if ( !player.op ) {
-    player.sendMessage( 'Only operators can set global aliases. ' + 
-                        'You need to be an operator to perform this command.' );
+    echo( player, 'Only operators can set global aliases. ' + 
+      'You need to be an operator to perform this command.' );
     return;
   }
   var o = _processParams( params );
   _store.global[o.cmd] = o.aliases;
-  player.sendMessage( 'Global alias ' + o.cmd + ' created.' );
+  echo( player, 'Global alias ' + o.cmd + ' created.' );
 };
 
 var _list = function( params, player ) {
   var alias = 0;
   try { 
     if ( _store.players[player.name] ) {
-      player.sendMessage('Your aliases:');
+      echo( player, 'Your aliases:');
       for ( alias in _store.players[player.name] ) {
-        player.sendMessage( alias + ' = ' + 
-			    JSON.stringify( _store.players[player.name][alias] ) );
+        echo( player, alias + ' = ' + 
+	      JSON.stringify( _store.players[player.name][alias] ) );
       }
     } else {
-      player.sendMessage( 'You have no player-specific aliases.' );
+      echo( player, 'You have no player-specific aliases.' );
     }
-    player.sendMessage( 'Global aliases:' );
+    echo( player, 'Global aliases:' );
     for ( alias in _store.global ) {
-      player.sendMessage( alias + ' = ' + JSON.stringify( _store.global[alias] ) );
+      echo( player, alias + ' = ' + JSON.stringify( _store.global[alias] ) );
     }
   } catch( e ) {
     console.error( 'Error in list function: ' + e.message );
@@ -144,7 +144,7 @@ var _list = function( params, player ) {
   }
 };
 var _help = function( params, player ) {
-  player.sendMessage( 'Usage:\n' + _usage );
+  echo( player, 'Usage:\n' + _usage );
 };
 
 var alias = plugin( 'alias', {
@@ -160,7 +160,7 @@ var aliasCmd = command( 'alias', function(  params, invoker ) {
   var operation = params[0], 
     fn;
   if ( !operation ) {
-    invoker.sendMessage( 'Usage:\n' + _usage );
+    echo( invoker, 'Usage:\n' + _usage );
     return;
   }
   /*
@@ -175,7 +175,7 @@ var aliasCmd = command( 'alias', function(  params, invoker ) {
       return;
     }
   }
-  invoker.sendMessage( 'Usage:\n' + _usage );
+  echo( invoker, 'Usage:\n' + _usage );
 });
 
 var _intercept = function( msg, invoker, exec ) {
@@ -223,6 +223,10 @@ var _intercept = function( msg, invoker, exec ) {
   Intercept all command processing and replace with aliased commands if the 
   command about to be issued matches an alias.
 */
+if (__plugin.canary){
+  console.warn('alias plugin is not yet supported in CanaryMod');
+  return;
+}
 events.playerCommandPreprocess( function( evt ) {
   var invoker = evt.player;
   var exec = function( cmd ) { 

@@ -37,7 +37,7 @@ Example
 -------
 
     /js var boldGoldText = "Hello World".bold().gold();
-    /js self.sendMessage( boldGoldText );
+    /js echo(self, boldGoldText );
 
 <p style="color:gold;font-weight:bold">Hello World</p>    
 

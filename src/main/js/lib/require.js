@@ -209,7 +209,7 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
       if (! ( (''+path).match( /^\./ ) ) ) {
         errMsg = errMsg + ' and not found in paths ' + JSON.stringify(modulePaths);
       }
-      throw errMsg;
+      throw new Error(errMsg);
     }
     canonizedFilename = _canonize(file);
   
@@ -249,8 +249,8 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
        This can be fixed by instead using __engine.eval 
        */
       throw new Error( "Error evaluating module " + path
-        + " line #" + e.lineNumber
-        + " : " + e.message, canonizedFilename, e.lineNumber );
+          + " line #" + e.lineNumber
+	  + " : " + e.message, canonizedFilename, e.lineNumber );
     }
     var __dirname = '' + file.parentFile.canonicalPath;
     var parameters = [
@@ -265,9 +265,20 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
         .apply(moduleInfo.exports,  /* this */
                parameters);   
     } catch (e) {
+      var snippet = '';
+      if ((''+e.lineNumber).match(/[0-9]/)){
+	var lines = code.split(/\n/);
+	if (e.lineNumber > 1){
+	  snippet = ' ' + lines[e.lineNumber-2] + '\n';
+	}
+	snippet += '> ' + lines[e.lineNumber-1] + '\n';
+	if (e.lineNumber < lines.length){
+	  snippet += ' ' + lines[e.lineNumber] + '\n';
+	}
+      }
       throw new Error( "Error executing module " + path
         + " line #" + e.lineNumber
-        + " : " + e.message, canonizedFilename, e.lineNumber );
+        + " : " + e.message + (snippet?('\n' + snippet):''), canonizedFilename, e.lineNumber );
     }
     if ( hooks ) { 
       hooks.loaded( canonizedFilename );

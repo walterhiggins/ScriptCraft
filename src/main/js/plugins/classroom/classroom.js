@@ -35,7 +35,7 @@ directory...
 
 ```javascript
 exports.hi = function( player ){
-  player.sendMessage('Hi ' + player.name);
+  echo( player, 'Hi ' + player.name);
 };
 ```
 
@@ -129,10 +129,10 @@ function grantScripting( player ) {
   });
 
 /*
-  player.sendMessage('Create your own minecraft mods by adding javascript (.js) files');
-  player.sendMessage(' Windows:   Open Explorer, go to \\\\' + serverAddress + '\\players\\' + player.name);
-  player.sendMessage(' Macintosh: Open Finder, Go to smb://' + serverAddress + '/players/' + player.name);
-  player.sendMessage(' Linux: Open Nautilus, Go to smb://' + serverAddress + '/players/' + player.name);
+  echo( player, 'Create your own minecraft mods by adding javascript (.js) files');
+  echo( player, ' Windows:   Open Explorer, go to \\\\' + serverAddress + '\\players\\' + player.name);
+  echo( player, ' Macintosh: Open Finder, Go to smb://' + serverAddress + '/players/' + player.name);
+  echo( player, ' Linux: Open Nautilus, Go to smb://' + serverAddress + '/players/' + player.name);
 */
 
 }
@@ -150,13 +150,13 @@ var classroom = plugin('classroom', {
      */
     if ( !sender.op ) {
       console.log( 'Attempt to set classroom scripting without credentials: ' + sender.name );
-      sender.sendMessage('Only operators can use this function');
+      echo( sender, 'Only operators can use this function');
       return;
     }
     foreach( server.onlinePlayers, canScript ? grantScripting : revokeScripting);
     _store.enableScripting = canScript;
 
-    sender.sendMessage('Scripting turned ' + ( canScript ? 'on' : 'off' ) + 
+    echo( sender, 'Scripting turned ' + ( canScript ? 'on' : 'off' ) + 
       ' for all players on server ' + serverAddress);
   },
   store: _store
@@ -164,9 +164,16 @@ var classroom = plugin('classroom', {
 
 exports.classroom = classroom;
 
-events.playerJoin( function( event ) { 
-  if ( _store.enableScripting ) {
-    grantScripting(event.player);
-  }
-}, 'HIGHEST');
-
+if (__plugin.canary){
+  events.connection( function( event ) { 
+    if ( _store.enableScripting ) {
+      grantScripting(event.player);
+    }
+  }, 'CRITICAL');
+} else {
+  events.playerJoin( function( event ) { 
+    if ( _store.enableScripting ) {
+      grantScripting(event.player);
+    }
+  }, 'HIGHEST');
+}

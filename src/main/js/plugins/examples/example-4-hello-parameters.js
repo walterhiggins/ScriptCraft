@@ -21,7 +21,7 @@ a fixed 'Hello ' to anything you like by passing a parameter.
 
     command( 'hello-params', function ( parameters, player ) {
       var salutation = parameters[0] ;
-      player.sendMessage( salutation + ' ' + player.name );
+      echo( player, salutation + ' ' + player.name );
     });
 
 ***/
@@ -36,5 +36,5 @@ command('hello-params', function( parameters, player ) {
    which appears after `jsp hello-params `.
    */
   var salutation = parameters[0] ;
-  player.sendMessage( salutation + ' ' + player.name );
+  echo( player, salutation + ' ' + player.name );
 });

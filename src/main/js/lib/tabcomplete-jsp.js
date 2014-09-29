@@ -3,7 +3,7 @@ var _commands = require('command').commands;
 /*
   Tab completion for the /jsp commmand
 */
-var __onTabCompleteJSP = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs ) {
+var __onTabCompleteJSP = function( result, cmdArgs ) {
   var cmdInput = cmdArgs[0],
     opts,
     cmd,

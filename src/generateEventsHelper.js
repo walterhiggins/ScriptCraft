@@ -1,3 +1,5 @@
+args = Array.prototype.slice.call(args,1);
+// [0] = type, [1] = lib.jar [2] = blockX, [3] = classX
 var File = java.io.File,
   FileReader = java.io.FileReader,
   FileInputStream = java.io.FileInputStream,
@@ -6,27 +8,21 @@ var File = java.io.File,
   Modifier = java.lang.reflect.Modifier,
   clz,
   ZipInputStream = java.util.zip.ZipInputStream,
-  zis = new ZipInputStream(new FileInputStream('./target/minecraft/craftbukkit.jar')),
+  zis = new ZipInputStream(new FileInputStream(args[1])),
   entry = null;
 var content = [
   '/*********************',
   '## Events Helper Module',
   'The Events helper module provides a suite of functions - one for each possible event.',
-  'For example, the events.blockBreak() function is just a wrapper function which calls events.on(org.bukkit.event.block.BlockBreakEvent, callback, priority)',
+  'For example, the events.' + args[2] + '() function is just a wrapper function which calls events.on(' + args[3] + ', callback, priority)',
   'This module is a convenience wrapper for easily adding new event handling functions in Javascript. ',
   'At the in-game or server-console prompt, players/admins can type `events.` and use TAB completion ',
   'to choose from any of the approx. 160 different event types to listen to.',
   '',
   '### Usage',
   '',
-  '    events.blockBreak( function( event ) { ', 
-  '      event.player.sendMessage(\'You broke a block!\'); ', 
-  '    });',
-  '',
-  '... which is just a shorter and less error-prone way of writing ...',
-  '',
-  '    events.on(\'block.BlockBreakEvent\',function( event ) { ', 
-  '      event.player.sendMessage(\'You broke a block!\');',
+  '    events.' + args[2] + '( function( event ) { ', 
+  '      echo( event.player, \'You broke a block!\'); ', 
   '    });',
   '',
   'The crucial difference is that the events module now has functions for each of the built-in events. The functions are accessible via TAB-completion so will help beginning programmers to explore the events at the server console window.',
@@ -38,7 +34,11 @@ for (var i = 0; i< content.length; i++){
 }
 while ( ( entry = zis.nextEntry) != null) { 
   var name = '' + entry.name;
-  if (name.match(/org\/bukkit\/event\/.+Event\.class$/)){
+  var re1 = /org\/bukkit\/event\/.+Event\.class$/;
+  if (args[0] == 'canary'){
+    re1 = /net\/canarymod\/hook\/.+Hook\.class$/;
+  }
+  if (name.match(re1)){
     name = name.replace(/\//g,'.').replace('.class','');
     try { 
       clz = java.lang.Class.forName(name);
@@ -50,8 +50,21 @@ while ( ( entry = zis.nextEntry) != null) {
       continue;
     }
     var parts = name.split('.');
-    var shortName = name.replace('org.bukkit.event.','');
-    var fname = parts.reverse().shift().replace(/^(.)/,function(a){ return a.toLowerCase();}).replace(/Event$/,'');
+    var shortName = null;
+    if (args[0] == 'canary'){
+      shortName = name.replace('net.canarymod.hook.','');
+    }
+    if (args[0] == 'bukkit'){
+      shortName = name.replace('org.bukkit.event.','');
+    }
+    var fname = parts.reverse().shift().replace(/^(.)/,function(a){ 
+      return a.toLowerCase();});
+    if (args[0] == 'bukkit'){
+      fname = fname.replace(/Event$/,'');
+    }
+    if (args[0] == 'canary'){
+      fname = fname.replace(/Hook$/,'');
+    }
 
     var comment = [
       '/*********************',
@@ -70,7 +83,12 @@ while ( ( entry = zis.nextEntry) != null) {
       out.println(comment[i]);
     }
     out.println('exports.' + fname + ' = function(callback,priority){ ');
-    out.println('  return events.on(' + name + ',callback,priority);');
+    if (args[0] == 'canary'){
+      out.println('  return events.on(Packages.' + name + ',callback,priority);');
+    }
+    if (args[0] == 'bukkit'){
+      out.println('  return events.on(' + name + ',callback,priority);');
+    }
     out.println('};');
   }
 }

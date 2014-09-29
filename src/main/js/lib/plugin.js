@@ -1,7 +1,6 @@
 'use strict';
 
-var console = require('./console'),
-  File = java.io.File,
+var File = java.io.File,
   FileWriter = java.io.FileWriter,
   PrintWriter = java.io.PrintWriter;
 /*
@@ -32,7 +31,6 @@ var _plugin = function(/* String */ moduleName, /* Object */ moduleObject, isPer
 exports.plugin = _plugin;
 
 exports.autoload = function( context, pluginDir, logger, options ) {
-
   var _canonize = function( file ) { 
     return '' + file.canonicalPath.replaceAll('\\\\','/'); 
   };
@@ -67,10 +65,12 @@ exports.autoload = function( context, pluginDir, logger, options ) {
     _listSourceFiles( sourceFiles, pluginDir );
 
     var len = sourceFiles.length;
-    if ( config.verbose ) {
-      console.info( len + ' scriptcraft plugins found in ' + pluginDir );
+    if ( config && config.verbose ) {
+      logger.info( len + ' scriptcraft plugins found in ' + pluginDir );
     }
+
     for ( var i = 0; i < len; i++ ) {
+
       pluginPath = _canonize( sourceFiles[i] );
       module = {};
 
@@ -84,7 +84,7 @@ exports.autoload = function( context, pluginDir, logger, options ) {
         }
       } catch ( e ) {
 	if ( typeof logger != 'undefined' ) {
-	  logger.severe( 'Plugin ' + pluginPath + ' ' + e );
+	  logger.error( 'Plugin ' + pluginPath + ' ' + e );
 	} else { 
 	  java.lang.System.out.println( 'Error: Plugin ' + pluginPath + ' ' + e );
 	}

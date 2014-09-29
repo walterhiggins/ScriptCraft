@@ -93,7 +93,7 @@ var _getProperties = function( o ) {
   return result.sort();
 };
 
-var onTabCompleteJS = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs ) {
+var onTabCompleteJS = function( ) {
 
   var _globalSymbols,
     lastArg,
@@ -111,12 +111,33 @@ var onTabCompleteJS = function( result, cmdSender, pluginCmd, cmdAlias, cmdArgs 
     candidate,
     re,
     li,
-    possibleCompletion;
+    possibleCompletion,
+    result,
+    cmdSender,
+    pluginCmd,
+    cmdArgs;
 
+  result = arguments[0];
+  cmdSender = arguments[1];
+  if (__plugin.bukkit){
+    pluginCmd = arguments[2].name;
+    cmdArgs = arguments[4];
+  }
+  if (__plugin.canary){
+    cmdArgs = arguments[2];
+    pluginCmd = arguments[3];
+  }
   cmdArgs = Array.prototype.slice.call( cmdArgs, 0 );
 
-  if ( pluginCmd.name == 'jsp' ) {
-    return tabCompleteJSP( result, cmdSender, pluginCmd, cmdAlias, cmdArgs );
+  if (__plugin.canary){
+    // if 1st element is 'js' then splice
+    // there's probably a better way to do this
+    if (cmdArgs[0] == 'js'){ 
+      cmdArgs = cmdArgs.slice(1);
+    }
+  }
+  if ( pluginCmd == 'jsp' ) {
+    return tabCompleteJSP( result, cmdArgs );
   }
 
   global.self = cmdSender; // bring in self just for autocomplete

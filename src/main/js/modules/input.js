@@ -26,14 +26,14 @@ exports.numberguess = function(player){
     }
     if ( +guess !== randomNumber ) { 
       if (+guess < randomNumber ) {
-        guesser.sendMessage('Too low - guess again');
+        echo( guesser, 'Too low - guess again');
       }
       if (+guess > randomNumber ) {
-        guesser.sendMessage('Too high - guess again');
+        echo( guesser, 'Too high - guess again');
       }
       repeat();
     } else {
-      guesser.sendMessage('You guessed correctly');
+      echo( guesser, 'You guessed correctly');
     }
   });
 };
@@ -56,32 +56,8 @@ The callback function as well as being bound to an object with the above propert
 The `value` parameter will be the same as `this.value`, the `repeat` parameter will be the same as `this.repeat` and so on.
 
 ***/
-
-var bkPrompt = org.bukkit.conversations.Prompt,
-  bkConversationFactory = org.bukkit.conversations.ConversationFactory;
-
-function asyncInput( sender, promptMesg, callback) {
-  var repeat = function(){
-    asyncInput( sender, promptMesg, callback);
-  };
-  var prompt = new bkPrompt( { 
-    getPromptText: function( ctx ) {
-      return promptMesg;
-    },
-    acceptInput: function( ctx, value ) {
-      callback.apply( { repeat: repeat, sender: sender, message: promptMesg, value: value },
-	[value, sender, repeat]);
-      return null;
-    },
-    blocksForInput: function( ctx ) {
-      return true;
-    }
-  });
-
-  new bkConversationFactory( __plugin )
-    .withModality( false ) 
-    .withFirstPrompt( prompt )
-    .buildConversation( sender )
-    .begin( );
+if (__plugin.canary) {
+  module.exports = require('./canary/input');
+} else {
+  module.exports = require('./bukkit/input');
 }
-module.exports = asyncInput;

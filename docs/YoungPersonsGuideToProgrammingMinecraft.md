@@ -171,7 +171,7 @@ called `location`. We can use that name like this...
 
     Blackrock Castle
 
-...You might be wondering where the enclosing `'` single-quotes went. 
+...You might be wondering why there's no enclosing `'` single quotes. 
 When telling the computer to store some text, you have to put `'` 
 (that's the single-quote character) at the start and end 
 of the text. The computer doesn't store these quote characters, only the 
