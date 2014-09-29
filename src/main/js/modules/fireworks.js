@@ -34,9 +34,9 @@ location. For example...
 ***/
 
 if ( __plugin.canary ) {
-  exports.firework = require('./bukkit/fireworks');
-} else {
   exports.firework = require('./canary/fireworks');
+} else {
+  exports.firework = require('./bukkit/fireworks');
 }
 
 
