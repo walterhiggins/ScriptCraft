@@ -35,6 +35,7 @@ Walter Higgins
    * [clearInterval() function](#clearinterval-function)
    * [refresh() function](#refresh-function)
    * [addUnloadHandler() function](#addunloadhandler-function)
+   * [isOp() function](#isop-function)
  * [require - Node.js-style module loading in ScriptCraft](#require---nodejs-style-module-loading-in-scriptcraft)
    * [math.js](#mathjs)
    * [inc.js](#incjs)
@@ -49,168 +50,128 @@ Walter Higgins
    * [Using string substitutions](#using-string-substitutions)
  * [Events Helper Module](#events-helper-module)
    * [Usage](#usage)
-   * [events.worldUnload()](#eventsworldunload)
-   * [events.worldLoad()](#eventsworldload)
-   * [events.chunkLoad()](#eventschunkload)
-   * [events.chunkPopulate()](#eventschunkpopulate)
-   * [events.portalCreate()](#eventsportalcreate)
-   * [events.spawnChange()](#eventsspawnchange)
-   * [events.chunkUnload()](#eventschunkunload)
-   * [events.worldInit()](#eventsworldinit)
-   * [events.horseJump()](#eventshorsejump)
-   * [events.entityCombust()](#eventsentitycombust)
-   * [events.entityRegainHealth()](#eventsentityregainhealth)
-   * [events.entityCombustByBlock()](#eventsentitycombustbyblock)
-   * [events.entityCombustByEntity()](#eventsentitycombustbyentity)
-   * [events.playerLeashEntity()](#eventsplayerleashentity)
-   * [events.pigZap()](#eventspigzap)
-   * [events.itemDespawn()](#eventsitemdespawn)
-   * [events.entityTarget()](#eventsentitytarget)
-   * [events.slimeSplit()](#eventsslimesplit)
-   * [events.entityChangeBlock()](#eventsentitychangeblock)
-   * [events.entityPortalEnter()](#eventsentityportalenter)
-   * [events.creeperPower()](#eventscreeperpower)
-   * [events.entityDeath()](#eventsentitydeath)
-   * [events.projectileHit()](#eventsprojectilehit)
-   * [events.entityTame()](#eventsentitytame)
-   * [events.potionSplash()](#eventspotionsplash)
-   * [events.expBottle()](#eventsexpbottle)
-   * [events.entityExplode()](#eventsentityexplode)
-   * [events.creatureSpawn()](#eventscreaturespawn)
-   * [events.foodLevelChange()](#eventsfoodlevelchange)
-   * [events.entityInteract()](#eventsentityinteract)
-   * [events.entityBreakDoor()](#eventsentitybreakdoor)
-   * [events.entityCreatePortal()](#eventsentitycreateportal)
-   * [events.sheepRegrowWool()](#eventssheepregrowwool)
-   * [events.explosionPrime()](#eventsexplosionprime)
-   * [events.entityUnleash()](#eventsentityunleash)
-   * [events.entityShootBow()](#eventsentityshootbow)
-   * [events.projectileLaunch()](#eventsprojectilelaunch)
-   * [events.itemSpawn()](#eventsitemspawn)
-   * [events.sheepDyeWool()](#eventssheepdyewool)
-   * [events.entityTeleport()](#eventsentityteleport)
-   * [events.blockFade()](#eventsblockfade)
-   * [events.blockDamage()](#eventsblockdamage)
-   * [events.blockPistonExtend()](#eventsblockpistonextend)
-   * [events.blockExp()](#eventsblockexp)
-   * [events.blockGrow()](#eventsblockgrow)
-   * [events.blockPistonRetract()](#eventsblockpistonretract)
-   * [events.blockDispense()](#eventsblockdispense)
-   * [events.blockBreak()](#eventsblockbreak)
-   * [events.paintingPlace()](#eventspaintingplace)
-   * [events.lightningStrike()](#eventslightningstrike)
-   * [events.vehicleEnter()](#eventsvehicleenter)
-   * [events.vehicleMove()](#eventsvehiclemove)
-   * [events.vehicleCreate()](#eventsvehiclecreate)
-   * [events.asyncPlayerPreLogin()](#eventsasyncplayerprelogin)
-   * [events.playerUnleashEntity()](#eventsplayerunleashentity)
-   * [events.playerPreLogin()](#eventsplayerprelogin)
-   * [events.inventoryPickupItem()](#eventsinventorypickupitem)
-   * [events.inventoryMoveItem()](#eventsinventorymoveitem)
-   * [events.furnaceBurn()](#eventsfurnaceburn)
-   * [events.inventory()](#eventsinventory)
-   * [events.brew()](#eventsbrew)
-   * [events.furnaceExtract()](#eventsfurnaceextract)
-   * [events.furnaceSmelt()](#eventsfurnacesmelt)
-   * [events.inventoryClose()](#eventsinventoryclose)
-   * [events.inventoryDrag()](#eventsinventorydrag)
-   * [events.inventoryClick()](#eventsinventoryclick)
-   * [events.inventoryCreative()](#eventsinventorycreative)
-   * [events.hangingPlace()](#eventshangingplace)
-   * [events.hangingBreak()](#eventshangingbreak)
-   * [events.worldSave()](#eventsworldsave)
-   * [events.structureGrow()](#eventsstructuregrow)
-   * [events.entityDamage()](#eventsentitydamage)
-   * [events.entityTargetLivingEntity()](#eventsentitytargetlivingentity)
-   * [events.playerDeath()](#eventsplayerdeath)
-   * [events.entityDamageByBlock()](#eventsentitydamagebyblock)
-   * [events.entityDamageByEntity()](#eventsentitydamagebyentity)
-   * [events.entityPortal()](#eventsentityportal)
-   * [events.entityPortalExit()](#eventsentityportalexit)
-   * [events.signChange()](#eventssignchange)
-   * [events.leavesDecay()](#eventsleavesdecay)
-   * [events.blockRedstone()](#eventsblockredstone)
-   * [events.blockCanBuild()](#eventsblockcanbuild)
-   * [events.blockBurn()](#eventsblockburn)
-   * [events.blockPhysics()](#eventsblockphysics)
-   * [events.blockIgnite()](#eventsblockignite)
-   * [events.notePlay()](#eventsnoteplay)
-   * [events.blockPlace()](#eventsblockplace)
-   * [events.blockFromTo()](#eventsblockfromto)
-   * [events.blockForm()](#eventsblockform)
-   * [events.blockSpread()](#eventsblockspread)
-   * [events.enchantItem()](#eventsenchantitem)
-   * [events.prepareItemEnchant()](#eventsprepareitemenchant)
-   * [events.paintingBreak()](#eventspaintingbreak)
-   * [events.paintingBreakByEntity()](#eventspaintingbreakbyentity)
-   * [events.weatherChange()](#eventsweatherchange)
-   * [events.thunderChange()](#eventsthunderchange)
-   * [events.vehicleEntityCollision()](#eventsvehicleentitycollision)
-   * [events.vehicleBlockCollision()](#eventsvehicleblockcollision)
-   * [events.vehicleExit()](#eventsvehicleexit)
-   * [events.vehicleUpdate()](#eventsvehicleupdate)
-   * [events.vehicleDamage()](#eventsvehicledamage)
+   * [events.minecartActivate()](#eventsminecartactivate)
+   * [events.villagerTradeUnlock()](#eventsvillagertradeunlock)
+   * [events.mobTarget()](#eventsmobtarget)
+   * [events.chickenLayEgg()](#eventschickenlayegg)
+   * [events.potionEffectFinish()](#eventspotioneffectfinish)
+   * [events.entityMove()](#eventsentitymove)
+   * [events.hangingEntityDestroy()](#eventshangingentitydestroy)
+   * [events.vehicleCollision()](#eventsvehiclecollision)
+   * [events.potionEffectApplied()](#eventspotioneffectapplied)
    * [events.vehicleDestroy()](#eventsvehicledestroy)
-   * [events.playerExpChange()](#eventsplayerexpchange)
-   * [events.playerRespawn()](#eventsplayerrespawn)
-   * [events.playerCommandPreprocess()](#eventsplayercommandpreprocess)
-   * [events.playerPickupItem()](#eventsplayerpickupitem)
-   * [events.playerInventory()](#eventsplayerinventory)
-   * [events.playerFish()](#eventsplayerfish)
-   * [events.playerBedEnter()](#eventsplayerbedenter)
-   * [events.playerLogin()](#eventsplayerlogin)
-   * [events.playerDropItem()](#eventsplayerdropitem)
-   * [events.playerLevelChange()](#eventsplayerlevelchange)
-   * [events.playerVelocity()](#eventsplayervelocity)
-   * [events.playerInteract()](#eventsplayerinteract)
-   * [events.playerQuit()](#eventsplayerquit)
-   * [events.playerChatTabComplete()](#eventsplayerchattabcomplete)
-   * [events.playerEggThrow()](#eventsplayereggthrow)
-   * [events.playerChat()](#eventsplayerchat)
-   * [events.playerAchievementAwarded()](#eventsplayerachievementawarded)
-   * [events.playerBedLeave()](#eventsplayerbedleave)
-   * [events.playerStatisticIncrement()](#eventsplayerstatisticincrement)
-   * [events.playerToggleSprint()](#eventsplayertogglesprint)
-   * [events.playerInteractEntity()](#eventsplayerinteractentity)
-   * [events.playerEditBook()](#eventsplayereditbook)
-   * [events.playerKick()](#eventsplayerkick)
-   * [events.playerItemHeld()](#eventsplayeritemheld)
-   * [events.playerItemConsume()](#eventsplayeritemconsume)
-   * [events.playerGameModeChange()](#eventsplayergamemodechange)
-   * [events.playerItemBreak()](#eventsplayeritembreak)
-   * [events.playerToggleFlight()](#eventsplayertoggleflight)
-   * [events.playerAnimation()](#eventsplayeranimation)
-   * [events.asyncPlayerChat()](#eventsasyncplayerchat)
-   * [events.playerRegisterChannel()](#eventsplayerregisterchannel)
+   * [events.vehicleEnter()](#eventsvehicleenter)
+   * [events.damage()](#eventsdamage)
+   * [events.entityMount()](#eventsentitymount)
+   * [events.slimeSplit()](#eventsslimesplit)
+   * [events.endermanDropBlock()](#eventsendermandropblock)
+   * [events.itemTouchGround()](#eventsitemtouchground)
+   * [events.entitySpawn()](#eventsentityspawn)
+   * [events.endermanPickupBlock()](#eventsendermanpickupblock)
+   * [events.vehicleDamage()](#eventsvehicledamage)
+   * [events.entityLightningStruck()](#eventsentitylightningstruck)
+   * [events.entityDespawn()](#eventsentitydespawn)
+   * [events.vehicleMove()](#eventsvehiclemove)
+   * [events.projectileHit()](#eventsprojectilehit)
+   * [events.entityDeath()](#eventsentitydeath)
+   * [events.entityTame()](#eventsentitytame)
+   * [events.vehicleExit()](#eventsvehicleexit)
+   * [events.dimensionSwitch()](#eventsdimensionswitch)
+   * [events.foodLevel()](#eventsfoodlevel)
+   * [events.bookEdit()](#eventsbookedit)
+   * [events.playerListEntry()](#eventsplayerlistentry)
+   * [events.eat()](#eventseat)
+   * [events.playerIdle()](#eventsplayeridle)
+   * [events.enchant()](#eventsenchant)
+   * [events.playerArmSwing()](#eventsplayerarmswing)
+   * [events.teleport()](#eventsteleport)
+   * [events.anvilUse()](#eventsanviluse)
+   * [events.portalUse()](#eventsportaluse)
+   * [events.foodSaturation()](#eventsfoodsaturation)
+   * [events.connection()](#eventsconnection)
+   * [events.playerRespawned()](#eventsplayerrespawned)
+   * [events.armorBroken()](#eventsarmorbroken)
+   * [events.levelUp()](#eventslevelup)
+   * [events.blockRightClick()](#eventsblockrightclick)
+   * [events.itemDrop()](#eventsitemdrop)
+   * [events.playerRespawning()](#eventsplayerrespawning)
+   * [events.craft()](#eventscraft)
+   * [events.experience()](#eventsexperience)
+   * [events.signChange()](#eventssignchange)
+   * [events.healthChange()](#eventshealthchange)
+   * [events.disconnection()](#eventsdisconnection)
+   * [events.gameModeChange()](#eventsgamemodechange)
+   * [events.preConnection()](#eventspreconnection)
+   * [events.villagerTrade()](#eventsvillagertrade)
+   * [events.returnFromIdle()](#eventsreturnfromidle)
+   * [events.slotClick()](#eventsslotclick)
+   * [events.entityRightClick()](#eventsentityrightclick)
+   * [events.foodExhaustion()](#eventsfoodexhaustion)
+   * [events.chat()](#eventschat)
+   * [events.itemPickup()](#eventsitempickup)
+   * [events.bedExit()](#eventsbedexit)
+   * [events.blockPlace()](#eventsblockplace)
+   * [events.toolBroken()](#eventstoolbroken)
+   * [events.kick()](#eventskick)
+   * [events.playerDeath()](#eventsplayerdeath)
+   * [events.blockLeftClick()](#eventsblockleftclick)
+   * [events.blockDestroy()](#eventsblockdestroy)
+   * [events.bedEnter()](#eventsbedenter)
+   * [events.signShow()](#eventssignshow)
+   * [events.inventory()](#eventsinventory)
    * [events.playerMove()](#eventsplayermove)
-   * [events.playerTeleport()](#eventsplayerteleport)
-   * [events.playerBucketFill()](#eventsplayerbucketfill)
-   * [events.playerJoin()](#eventsplayerjoin)
-   * [events.playerShearEntity()](#eventsplayershearentity)
-   * [events.playerToggleSneak()](#eventsplayertogglesneak)
-   * [events.playerChangedWorld()](#eventsplayerchangedworld)
-   * [events.serverCommand()](#eventsservercommand)
-   * [events.remoteServerCommand()](#eventsremoteservercommand)
-   * [events.mapInitialize()](#eventsmapinitialize)
-   * [events.serviceRegister()](#eventsserviceregister)
-   * [events.serverListPing()](#eventsserverlistping)
-   * [events.serviceUnregister()](#eventsserviceunregister)
-   * [events.prepareItemCraft()](#eventsprepareitemcraft)
-   * [events.inventoryOpen()](#eventsinventoryopen)
-   * [events.craftItem()](#eventscraftitem)
-   * [events.hangingBreakByEntity()](#eventshangingbreakbyentity)
-   * [events.blockMultiPlace()](#eventsblockmultiplace)
-   * [events.entityBlockForm()](#eventsentityblockform)
-   * [events.playerBucketEmpty()](#eventsplayerbucketempty)
-   * [events.playerPortal()](#eventsplayerportal)
-   * [events.playerUnregisterChannel()](#eventsplayerunregisterchannel)
+   * [events.itemUse()](#eventsitemuse)
+   * [events.ban()](#eventsban)
+   * [events.statGained()](#eventsstatgained)
+   * [events.smeltBegin()](#eventssmeltbegin)
+   * [events.treeGrow()](#eventstreegrow)
+   * [events.chunkCreated()](#eventschunkcreated)
+   * [events.liquidDestroy()](#eventsliquiddestroy)
+   * [events.chunkLoaded()](#eventschunkloaded)
+   * [events.pistonRetract()](#eventspistonretract)
+   * [events.smelt()](#eventssmelt)
+   * [events.blockUpdate()](#eventsblockupdate)
+   * [events.portalDestroy()](#eventsportaldestroy)
+   * [events.ignition()](#eventsignition)
+   * [events.redstoneChange()](#eventsredstonechange)
+   * [events.weatherChange()](#eventsweatherchange)
+   * [events.chunkCreation()](#eventschunkcreation)
+   * [events.hopperTransfer()](#eventshoppertransfer)
+   * [events.chunkUnload()](#eventschunkunload)
+   * [events.blockGrow()](#eventsblockgrow)
+   * [events.dispense()](#eventsdispense)
+   * [events.blockDropXp()](#eventsblockdropxp)
+   * [events.fireworkExplode()](#eventsfireworkexplode)
+   * [events.leafDecay()](#eventsleafdecay)
+   * [events.pistonExtend()](#eventspistonextend)
+   * [events.noteBlockPlay()](#eventsnoteblockplay)
+   * [events.lightningStrike()](#eventslightningstrike)
+   * [events.decorate()](#eventsdecorate)
+   * [events.explosion()](#eventsexplosion)
+   * [events.tNTActivate()](#eventstntactivate)
+   * [events.timeChange()](#eventstimechange)
+   * [events.flow()](#eventsflow)
+   * [events.portalCreate()](#eventsportalcreate)
+   * [events.blockPhysics()](#eventsblockphysics)
+   * [events.playerCommand()](#eventsplayercommand)
+   * [events.consoleCommand()](#eventsconsolecommand)
+   * [events.commandBlockCommand()](#eventscommandblockcommand)
+   * [events.loadWorld()](#eventsloadworld)
+   * [events.permissionCheck()](#eventspermissioncheck)
+   * [events.serverGuiStart()](#eventsserverguistart)
+   * [events.unloadWorld()](#eventsunloadworld)
    * [events.pluginDisable()](#eventsplugindisable)
    * [events.pluginEnable()](#eventspluginenable)
+   * [events.serverTick()](#eventsservertick)
+   * [events.serverListPing()](#eventsserverlistping)
+   * [events.serverShutdown()](#eventsservershutdown)
  * [Blocks Module](#blocks-module)
    * [Examples](#examples)
  * [Fireworks Module](#fireworks-module)
    * [Examples](#examples-1)
  * [Asynchronous Input Module](#asynchronous-input-module)
+ * [The recipes module](#the-recipes-module)
+   * [Example](#example-1)
  * [Http Module](#http-module)
    * [http.request() function](#httprequest-function)
  * [sc-mqtt module](#sc-mqtt-module)
@@ -219,7 +180,7 @@ Walter Higgins
    * [signs.menu() function](#signsmenu-function)
    * [signs.getTargetedBy() function](#signsgettargetedby-function)
  * [Sounds Module](#sounds-module)
-   * [Usage:](#usage-2)
+   * [Usage (Bukkit) :](#usage-bukkit-)
  * [Utilities Module](#utilities-module)
    * [utils.player() function](#utilsplayer-function)
    * [utils.locationToJSON() function](#utilslocationtojson-function)
@@ -237,6 +198,7 @@ Walter Higgins
    * [utils.unwatchFile() function](#utilsunwatchfile-function)
    * [utils.unwatchDir() function](#utilsunwatchdir-function)
    * [utils.array() function](#utilsarray-function)
+   * [utils.stat() function](#utilsstat-function)
  * [Drone Plugin](#drone-plugin)
    * [Constructing a Drone Object](#constructing-a-drone-object)
    * [Drone.box() method](#dronebox-method)
@@ -275,22 +237,22 @@ Walter Higgins
    * [Drone.hemisphere0() method](#dronehemisphere0-method)
    * [Drone.spiral_stairs() method](#dronespiral_stairs-method)
  * [Example Plugin #1 - A simple extension to Minecraft.](#example-plugin-1---a-simple-extension-to-minecraft)
-   * [Usage:](#usage-3)
+   * [Usage:](#usage-2)
  * [Example Plugin #2 - Making extensions available for all players.](#example-plugin-2---making-extensions-available-for-all-players)
-   * [Usage:](#usage-4)
+   * [Usage:](#usage-3)
  * [Example Plugin #3 - Limiting use of commands to operators only.](#example-plugin-3---limiting-use-of-commands-to-operators-only)
-   * [Usage:](#usage-5)
+   * [Usage:](#usage-4)
  * [Example Plugin #4 - Using parameters in commands.](#example-plugin-4---using-parameters-in-commands)
-   * [Usage:](#usage-6)
+   * [Usage:](#usage-5)
  * [Example Plugin #5 - Re-use - Using your own and others modules.](#example-plugin-5---re-use---using-your-own-and-others-modules)
-   * [Usage:](#usage-7)
+   * [Usage:](#usage-6)
  * [Example Plugin #6 - Re-use - Using 'utils' to get Player objects.](#example-plugin-6---re-use---using-utils-to-get-player-objects)
-   * [Usage:](#usage-8)
+   * [Usage:](#usage-7)
  * [Example Plugin #7 - Listening for events, Greet players when they join the game.](#example-plugin-7---listening-for-events-greet-players-when-they-join-the-game)
  * [Arrows Plugin](#arrows-plugin)
-   * [Usage:](#usage-9)
+   * [Usage:](#usage-8)
  * [Spawn Plugin](#spawn-plugin)
-   * [Usage](#usage-10)
+   * [Usage](#usage-9)
  * [alias Plugin](#alias-plugin)
    * [Examples](#examples-2)
  * [Classroom Plugin](#classroom-plugin)
@@ -306,11 +268,13 @@ Walter Higgins
    * [Administration options](#administration-options)
  * [NumberGuess mini-game:](#numberguess-mini-game)
    * [Description](#description-1)
-   * [Example](#example-1)
+   * [Example](#example-2)
  * [Cow Clicker Mini-Game](#cow-clicker-mini-game)
    * [How to Play](#how-to-play)
    * [Rules](#rules)
    * [Gameplay Mechanics](#gameplay-mechanics)
+ * [Items module](#items-module)
+   * [Usage](#usage-10)
 
 ## Modules in Scriptcraft
 
@@ -381,7 +345,7 @@ directory....
 
 ```javascript
 exports.greet = function(player) {
-    player.sendMessage('Hello ' + player.name);
+    echo(player, 'Hello ' + player.name);
 };
 ```
 
@@ -477,21 +441,15 @@ ScripCraft provides some global functions which can be used by all plugins/modul
 
 ### echo function
 
-The `echo()` function displays a message on the in-game screen. The message is displayed to the `self` player (this is usually the player who issued the `/js` or `/jsp` command).
+The `echo()` function displays a message on the in-game screen. 
 
 #### Example
 
-    /js echo('Hello World')
+    /js echo( self, 'Hello World')
 
 For programmers familiar with Javascript web programming, an `alert`
 function is also provided.  `alert` works exactly the same as `echo`
-e.g. `alert('Hello World')`.
-
-#### Notes
-
-The `echo` and `alert` functions are provided as convenience functions for beginning programmers. The use of these 2 functions is not recommended in event-handling code or multi-threaded code. In such cases, if you want to send a message to a given player then use the Bukkit API's [Player.sendMessage()][plsm] function instead.
-
-[plsm]: http://jd.bukkit.org/dev/apidocs/org/bukkit/command/CommandSender.html#sendMessage(java.lang.String)
+e.g. `alert( self, 'Hello World')`.
 
 ### require() function
 
@@ -619,7 +577,7 @@ The `command()` function is used to expose javascript functions for use by non-o
 
     // javascript code
     function boo( params, sender) {
-        sender.sendMessage( params[0] );
+        echo( sender, params[0] );
     }
     command( boo );
     
@@ -633,7 +591,7 @@ To use a callback for options (TAB-Completion) ...
     function boo( params, sender ) {
        var receiver = server.getPlayer( params[0] );
        if ( receiver ){
-          receiver.sendMessage( sender.name + ' says boo!');
+          echo( receiver, sender.name + ' says boo!');
        }
     }
     command( boo, bukkit.playerNames );
@@ -642,11 +600,9 @@ See chat/colors.js or alias/alias.js or homes/homes.js for more examples of how 
 
 ### setTimeout() function
 
-This function mimics the setTimeout() function used in browser-based javascript. However, the function will only accept a function reference, not a string of javascript code.  Where setTimeout() in the browser returns a numeric value which can be subsequently passed to clearTimeout(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearTimeout() implementation.
+This function mimics the setTimeout() function used in browser-based javascript. However, the function will only accept a function reference, not a string of javascript code.  Where setTimeout() in the browser returns a numeric value which can be subsequently passed to clearTimeout(), This implementation returns an object which can be subsequently passed to ScriptCraft's own clearTimeout() implementation.
 
 If Node.js supports setTimeout() then it's probably good for ScriptCraft to support it too.
-
-[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
 
 #### Example
 
@@ -666,11 +622,7 @@ A scriptcraft implementation of clearTimeout().
 
 ### setInterval() function
 
-This function mimics the setInterval() function used in browser-based javascript. However, the function will only accept a function reference, not a string of javascript code.  Where setInterval() in the browser returns a numeric value which can be subsequently passed to clearInterval(), This implementation returns a [BukkitTask][btdoc] object which can be subsequently passed to ScriptCraft's own clearInterval() implementation.
-
-If Node.js supports setInterval() then it's probably good for ScriptCraft to support it too.
-
-[btdoc]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/BukkitTask.html
+This function mimics the setInterval() function used in browser-based javascript. However, the function will only accept a function reference, not a string of javascript code.  Where setInterval() in the browser returns a numeric value which can be subsequently passed to clearInterval(), This implementation returns an object which can be subsequently passed to ScriptCraft's own clearInterval() implementation.
 
 ### clearInterval() function
 
@@ -694,6 +646,10 @@ See [issue #69][issue69] for more information.
 The addUnloadHandler() function takes a callback function as a parameter. The callback will be called when the ScriptCraft plugin is unloaded (usually as a result of a a `reload` command or server shutdown).
 
 This function provides a way for ScriptCraft modules to do any required cleanup/housekeeping just prior to the ScriptCraft Plugin unloading.
+
+### isOp() function
+
+This function takes a single parameter and returns true if it's an operator or has operator-level privileges. 
 
 ## require - Node.js-style module loading in ScriptCraft
 
@@ -800,17 +756,7 @@ This method is used to register event listeners.
 
 #### Parameters
 
- * eventName - A string or java class. If a string is supplied it must
-   be part of the Bukkit event class name.  See [Bukkit API][buk] for
-   details of the many bukkit event types. When a string is supplied
-   there is no need to provide the full class name - you should omit
-   the 'org.bukkit.event' prefix. e.g. if the string
-   "block.BlockBreakEvent" is supplied then it's converted to the
-   org.bukkit.event.block.BlockBreakEvent class .
- 
-   If a java class is provided (say in the case where you've defined
-   your own custom event) then provide the full class name (without
-   enclosing quotes).
+ * eventName - A Java class. See [Bukkit API][buk] for details of the many bukkit event types.  
 
  * callback - A function which will be called whenever the event
    fires. The callback should take a single parameter, event (the event fired).
@@ -830,16 +776,16 @@ An object which can be used to unregister the listener.
 The following code will print a message on screen every time a block is broken in the game
 
 ```javascript
-events.on( 'block.BlockBreakEvent', function( evt ) { 
-    evt.player.sendMessage( evt.player.name + ' broke a block!');
+events.on( org.bukkit.block.BlockBreakEvent, function( evt ) { 
+    echo(evt.player, evt.player.name + ' broke a block!');
 } );
 ```
 
 To handle an event only once and unregister from further events...
 
 ```javascript    
-events.on( 'block.BlockBreakEvent', function( evt ) { 
-    evt.player.sendMessage( evt.player.name + ' broke a block!');
+events.on( org.bukkit.block.BlockBreakEvent, function( evt ) { 
+    echo( evt.player, evt.player.name + ' broke a block!');
     this.unregister();
 } );
 ```
@@ -852,17 +798,9 @@ object which is returned by the `events.on()` function.
 To unregister a listener *outside* of the listener function...
 
 ```javascript    
-var myBlockBreakListener = events.on( 'block.BlockBreakEvent', function( evt ) { ... } );
+var myBlockBreakListener = events.on( org.bukkit.block.BlockBreakEvent, function( evt ) { ... } );
 ...
 myBlockBreakListener.unregister();
-```
-
-To listen for events using a full class name as the `eventName` parameter...
-
-```javascript    
-events.on( org.bukkit.event.block.BlockBreakEvent, function( evt ) { 
-    evt.player.sendMessage( evt.player.name + ' broke a block!');
-} );
 ```
 
 [buk2]: http://wiki.bukkit.org/Event_API_Reference
@@ -963,830 +901,88 @@ ScriptCraft uses Java's [String.format()][strfmt] so any string substitution ide
 
 ## Events Helper Module
 The Events helper module provides a suite of functions - one for each possible event.
-For example, the events.blockBreak() function is just a wrapper function which calls events.on(org.bukkit.event.block.BlockBreakEvent, callback, priority)
+For example, the events.blockDestroy() function is just a wrapper function which calls events.on(net.canarymod.hook.player.BlockDestroyHook, callback, priority)
 This module is a convenience wrapper for easily adding new event handling functions in Javascript. 
 At the in-game or server-console prompt, players/admins can type `events.` and use TAB completion 
 to choose from any of the approx. 160 different event types to listen to.
 
 ### Usage
 
-    events.blockBreak( function( event ) { 
-      event.player.sendMessage('You broke a block!'); 
-    });
-
-... which is just a shorter and less error-prone way of writing ...
-
-    events.on('block.BlockBreakEvent',function( event ) { 
-      event.player.sendMessage('You broke a block!');
+    events.blockDestroy( function( event ) { 
+      echo( event.player, 'You broke a block!'); 
     });
 
 The crucial difference is that the events module now has functions for each of the built-in events. The functions are accessible via TAB-completion so will help beginning programmers to explore the events at the server console window.
 
-### events.worldUnload()
+### events.minecartActivate()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.WorldUnloadEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/WorldUnloadEvent.html) is fired
+ * callback - A function which is called whenever the [entity.MinecartActivateHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/MinecartActivateHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.worldLoad()
+### events.villagerTradeUnlock()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.WorldLoadEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/WorldLoadEvent.html) is fired
+ * callback - A function which is called whenever the [entity.VillagerTradeUnlockHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/VillagerTradeUnlockHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.chunkLoad()
+### events.mobTarget()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.ChunkLoadEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ChunkLoadEvent.html) is fired
+ * callback - A function which is called whenever the [entity.MobTargetHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/MobTargetHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.chunkPopulate()
+### events.chickenLayEgg()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.ChunkPopulateEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ChunkPopulateEvent.html) is fired
+ * callback - A function which is called whenever the [entity.ChickenLayEggHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ChickenLayEggHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.portalCreate()
+### events.potionEffectFinish()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.PortalCreateEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/PortalCreateEvent.html) is fired
+ * callback - A function which is called whenever the [entity.PotionEffectFinishHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/PotionEffectFinishHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.spawnChange()
+### events.entityMove()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.SpawnChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/SpawnChangeEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityMoveHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityMoveHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.chunkUnload()
+### events.hangingEntityDestroy()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.ChunkUnloadEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ChunkUnloadEvent.html) is fired
+ * callback - A function which is called whenever the [entity.HangingEntityDestroyHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/HangingEntityDestroyHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.worldInit()
+### events.vehicleCollision()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.WorldInitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/WorldInitEvent.html) is fired
+ * callback - A function which is called whenever the [entity.VehicleCollisionHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/VehicleCollisionHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.horseJump()
+### events.potionEffectApplied()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.HorseJumpEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/HorseJumpEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityCombust()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityCombustEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityCombustEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityRegainHealth()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityRegainHealthEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityRegainHealthEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityCombustByBlock()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityCombustByBlockEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityCombustByBlockEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityCombustByEntity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityCombustByEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityCombustByEntityEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerLeashEntity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.PlayerLeashEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/PlayerLeashEntityEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.pigZap()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.PigZapEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/PigZapEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.itemDespawn()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ItemDespawnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ItemDespawnEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityTarget()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityTargetEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityTargetEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.slimeSplit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.SlimeSplitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/SlimeSplitEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityChangeBlock()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityChangeBlockEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityChangeBlockEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityPortalEnter()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityPortalEnterEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityPortalEnterEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.creeperPower()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.CreeperPowerEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/CreeperPowerEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityDeath()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityDeathEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDeathEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.projectileHit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ProjectileHitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ProjectileHitEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityTame()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityTameEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityTameEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.potionSplash()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.PotionSplashEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/PotionSplashEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.expBottle()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ExpBottleEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ExpBottleEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityExplode()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityExplodeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityExplodeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.creatureSpawn()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.CreatureSpawnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/CreatureSpawnEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.foodLevelChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.FoodLevelChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/FoodLevelChangeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityInteract()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityInteractEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityInteractEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityBreakDoor()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityBreakDoorEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityBreakDoorEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityCreatePortal()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityCreatePortalEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityCreatePortalEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.sheepRegrowWool()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.SheepRegrowWoolEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/SheepRegrowWoolEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.explosionPrime()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ExplosionPrimeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ExplosionPrimeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityUnleash()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityUnleashEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityUnleashEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityShootBow()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityShootBowEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityShootBowEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.projectileLaunch()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ProjectileLaunchEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ProjectileLaunchEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.itemSpawn()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ItemSpawnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ItemSpawnEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.sheepDyeWool()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.SheepDyeWoolEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/SheepDyeWoolEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityTeleport()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityTeleportEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityTeleportEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockFade()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockFadeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockFadeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockDamage()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockDamageEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockDamageEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockPistonExtend()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockPistonExtendEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockPistonExtendEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockExp()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockExpEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockExpEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockGrow()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockGrowEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockGrowEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockPistonRetract()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockPistonRetractEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockPistonRetractEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockDispense()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockDispenseEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockDispenseEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockBreak()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockBreakEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockBreakEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.paintingPlace()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [painting.PaintingPlaceEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/painting/PaintingPlaceEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.lightningStrike()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [weather.LightningStrikeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/weather/LightningStrikeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleEnter()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [vehicle.VehicleEnterEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleEnterEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleMove()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [vehicle.VehicleMoveEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleMoveEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleCreate()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [vehicle.VehicleCreateEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleCreateEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.asyncPlayerPreLogin()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.AsyncPlayerPreLoginEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/AsyncPlayerPreLoginEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerUnleashEntity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerUnleashEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerUnleashEntityEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerPreLogin()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerPreLoginEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerPreLoginEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.inventoryPickupItem()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.InventoryPickupItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryPickupItemEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.inventoryMoveItem()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.InventoryMoveItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryMoveItemEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.furnaceBurn()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.FurnaceBurnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/FurnaceBurnEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.inventory()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.InventoryEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.brew()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.BrewEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/BrewEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.furnaceExtract()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.FurnaceExtractEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/FurnaceExtractEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.furnaceSmelt()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.FurnaceSmeltEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/FurnaceSmeltEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.inventoryClose()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.InventoryCloseEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryCloseEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.inventoryDrag()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.InventoryDragEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryDragEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.inventoryClick()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.InventoryClickEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryClickEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.inventoryCreative()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.InventoryCreativeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryCreativeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.hangingPlace()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [hanging.HangingPlaceEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/hanging/HangingPlaceEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.hangingBreak()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [hanging.HangingBreakEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/hanging/HangingBreakEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.worldSave()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.WorldSaveEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/WorldSaveEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.structureGrow()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.StructureGrowEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/StructureGrowEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityDamage()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityDamageEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDamageEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityTargetLivingEntity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityTargetLivingEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityTargetLivingEntityEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerDeath()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.PlayerDeathEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/PlayerDeathEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityDamageByBlock()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityDamageByBlockEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDamageByBlockEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityDamageByEntity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityDamageByEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDamageByEntityEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityPortal()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityPortalEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityPortalEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityPortalExit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityPortalExitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityPortalExitEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.signChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.SignChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/SignChangeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.leavesDecay()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.LeavesDecayEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/LeavesDecayEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockRedstone()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockRedstoneEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockRedstoneEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockCanBuild()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockCanBuildEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockCanBuildEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockBurn()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockBurnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockBurnEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockPhysics()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockPhysicsEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockPhysicsEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockIgnite()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockIgniteEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockIgniteEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.notePlay()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.NotePlayEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/NotePlayEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockPlace()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockPlaceEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockPlaceEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockFromTo()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockFromToEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockFromToEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockForm()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockFormEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockFormEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockSpread()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockSpreadEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockSpreadEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.enchantItem()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [enchantment.EnchantItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/enchantment/EnchantItemEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.prepareItemEnchant()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [enchantment.PrepareItemEnchantEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/enchantment/PrepareItemEnchantEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.paintingBreak()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [painting.PaintingBreakEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/painting/PaintingBreakEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.paintingBreakByEntity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [painting.PaintingBreakByEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/painting/PaintingBreakByEntityEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.weatherChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [weather.WeatherChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/weather/WeatherChangeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.thunderChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [weather.ThunderChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/weather/ThunderChangeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleEntityCollision()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [vehicle.VehicleEntityCollisionEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleEntityCollisionEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleBlockCollision()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [vehicle.VehicleBlockCollisionEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleBlockCollisionEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleExit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [vehicle.VehicleExitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleExitEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleUpdate()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [vehicle.VehicleUpdateEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleUpdateEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleDamage()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [vehicle.VehicleDamageEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleDamageEvent.html) is fired
+ * callback - A function which is called whenever the [entity.PotionEffectAppliedHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/PotionEffectAppliedHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1794,255 +990,479 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleDestroyEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleDestroyEvent.html) is fired
+ * callback - A function which is called whenever the [entity.VehicleDestroyHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/VehicleDestroyHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerExpChange()
+### events.vehicleEnter()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerExpChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerExpChangeEvent.html) is fired
+ * callback - A function which is called whenever the [entity.VehicleEnterHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/VehicleEnterHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerRespawn()
+### events.damage()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerRespawnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerRespawnEvent.html) is fired
+ * callback - A function which is called whenever the [entity.DamageHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/DamageHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerCommandPreprocess()
+### events.entityMount()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerCommandPreprocessEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerCommandPreprocessEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityMountHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityMountHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerPickupItem()
+### events.slimeSplit()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerPickupItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerPickupItemEvent.html) is fired
+ * callback - A function which is called whenever the [entity.SlimeSplitHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/SlimeSplitHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerInventory()
+### events.endermanDropBlock()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerInventoryEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerInventoryEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EndermanDropBlockHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EndermanDropBlockHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerFish()
+### events.itemTouchGround()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerFishEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerFishEvent.html) is fired
+ * callback - A function which is called whenever the [entity.ItemTouchGroundHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ItemTouchGroundHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerBedEnter()
+### events.entitySpawn()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerBedEnterEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerBedEnterEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntitySpawnHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntitySpawnHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerLogin()
+### events.endermanPickupBlock()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerLoginEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerLoginEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EndermanPickupBlockHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EndermanPickupBlockHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerDropItem()
+### events.vehicleDamage()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerDropItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerDropItemEvent.html) is fired
+ * callback - A function which is called whenever the [entity.VehicleDamageHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/VehicleDamageHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerLevelChange()
+### events.entityLightningStruck()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerLevelChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerLevelChangeEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityLightningStruckHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityLightningStruckHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerVelocity()
+### events.entityDespawn()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerVelocityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerVelocityEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityDespawnHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDespawnHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerInteract()
+### events.vehicleMove()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerInteractEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerInteractEvent.html) is fired
+ * callback - A function which is called whenever the [entity.VehicleMoveHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/VehicleMoveHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerQuit()
+### events.projectileHit()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerQuitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerQuitEvent.html) is fired
+ * callback - A function which is called whenever the [entity.ProjectileHitHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ProjectileHitHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerChatTabComplete()
+### events.entityDeath()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerChatTabCompleteEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerChatTabCompleteEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityDeathHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDeathHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerEggThrow()
+### events.entityTame()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerEggThrowEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerEggThrowEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityTameHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityTameHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerChat()
+### events.vehicleExit()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerChatEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerChatEvent.html) is fired
+ * callback - A function which is called whenever the [entity.VehicleExitHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/VehicleExitHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerAchievementAwarded()
+### events.dimensionSwitch()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerAchievementAwardedEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerAchievementAwardedEvent.html) is fired
+ * callback - A function which is called whenever the [entity.DimensionSwitchHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/DimensionSwitchHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerBedLeave()
+### events.foodLevel()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerBedLeaveEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerBedLeaveEvent.html) is fired
+ * callback - A function which is called whenever the [player.FoodLevelHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/FoodLevelHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerStatisticIncrement()
+### events.bookEdit()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerStatisticIncrementEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerStatisticIncrementEvent.html) is fired
+ * callback - A function which is called whenever the [player.BookEditHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/BookEditHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerToggleSprint()
+### events.playerListEntry()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerToggleSprintEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerToggleSprintEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerListEntryHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerListEntryHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerInteractEntity()
+### events.eat()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerInteractEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerInteractEntityEvent.html) is fired
+ * callback - A function which is called whenever the [player.EatHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/EatHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerEditBook()
+### events.playerIdle()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerEditBookEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerEditBookEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerIdleHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerIdleHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerKick()
+### events.enchant()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerKickEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerKickEvent.html) is fired
+ * callback - A function which is called whenever the [player.EnchantHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/EnchantHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerItemHeld()
+### events.playerArmSwing()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerItemHeldEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerItemHeldEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerArmSwingHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerArmSwingHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerItemConsume()
+### events.teleport()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerItemConsumeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerItemConsumeEvent.html) is fired
+ * callback - A function which is called whenever the [player.TeleportHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/TeleportHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerGameModeChange()
+### events.anvilUse()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerGameModeChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerGameModeChangeEvent.html) is fired
+ * callback - A function which is called whenever the [player.AnvilUseHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/AnvilUseHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerItemBreak()
+### events.portalUse()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerItemBreakEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerItemBreakEvent.html) is fired
+ * callback - A function which is called whenever the [player.PortalUseHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PortalUseHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerToggleFlight()
+### events.foodSaturation()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerToggleFlightEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerToggleFlightEvent.html) is fired
+ * callback - A function which is called whenever the [player.FoodSaturationHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/FoodSaturationHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerAnimation()
+### events.connection()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerAnimationEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerAnimationEvent.html) is fired
+ * callback - A function which is called whenever the [player.ConnectionHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ConnectionHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.asyncPlayerChat()
+### events.playerRespawned()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.AsyncPlayerChatEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/AsyncPlayerChatEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerRespawnedHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerRespawnedHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerRegisterChannel()
+### events.armorBroken()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerRegisterChannelEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerRegisterChannelEvent.html) is fired
+ * callback - A function which is called whenever the [player.ArmorBrokenHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ArmorBrokenHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.levelUp()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.LevelUpHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/LevelUpHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockRightClick()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.BlockRightClickHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/BlockRightClickHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.itemDrop()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.ItemDropHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ItemDropHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerRespawning()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerRespawningHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerRespawningHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.craft()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.CraftHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/CraftHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.experience()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.ExperienceHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ExperienceHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.signChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.SignChangeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/SignChangeHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.healthChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.HealthChangeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/HealthChangeHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.disconnection()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.DisconnectionHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/DisconnectionHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.gameModeChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.GameModeChangeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/GameModeChangeHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.preConnection()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PreConnectionHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PreConnectionHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.villagerTrade()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.VillagerTradeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/VillagerTradeHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.returnFromIdle()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.ReturnFromIdleHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ReturnFromIdleHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.slotClick()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.SlotClickHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/SlotClickHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityRightClick()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.EntityRightClickHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/EntityRightClickHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.foodExhaustion()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.FoodExhaustionHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/FoodExhaustionHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.chat()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.ChatHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ChatHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.itemPickup()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.ItemPickupHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ItemPickupHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.bedExit()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.BedExitHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/BedExitHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockPlace()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.BlockPlaceHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/BlockPlaceHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.toolBroken()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.ToolBrokenHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ToolBrokenHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.kick()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.KickHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/KickHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerDeath()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerDeathHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerDeathHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockLeftClick()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.BlockLeftClickHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/BlockLeftClickHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockDestroy()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.BlockDestroyHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/BlockDestroyHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.bedEnter()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.BedEnterHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/BedEnterHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.signShow()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.SignShowHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/SignShowHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.inventory()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.InventoryHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/InventoryHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2050,175 +1470,327 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerMoveEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerMoveEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerMoveHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerMoveHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerTeleport()
+### events.itemUse()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerTeleportEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerTeleportEvent.html) is fired
+ * callback - A function which is called whenever the [player.ItemUseHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ItemUseHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerBucketFill()
+### events.ban()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerBucketFillEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerBucketFillEvent.html) is fired
+ * callback - A function which is called whenever the [player.BanHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/BanHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerJoin()
+### events.statGained()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerJoinEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerJoinEvent.html) is fired
+ * callback - A function which is called whenever the [player.StatGainedHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/StatGainedHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerShearEntity()
+### events.smeltBegin()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerShearEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerShearEntityEvent.html) is fired
+ * callback - A function which is called whenever the [world.SmeltBeginHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/SmeltBeginHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerToggleSneak()
+### events.treeGrow()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerToggleSneakEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerToggleSneakEvent.html) is fired
+ * callback - A function which is called whenever the [world.TreeGrowHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/TreeGrowHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerChangedWorld()
+### events.chunkCreated()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerChangedWorldEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerChangedWorldEvent.html) is fired
+ * callback - A function which is called whenever the [world.ChunkCreatedHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ChunkCreatedHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.serverCommand()
+### events.liquidDestroy()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.ServerCommandEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/ServerCommandEvent.html) is fired
+ * callback - A function which is called whenever the [world.LiquidDestroyHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/LiquidDestroyHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.remoteServerCommand()
+### events.chunkLoaded()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.RemoteServerCommandEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/RemoteServerCommandEvent.html) is fired
+ * callback - A function which is called whenever the [world.ChunkLoadedHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ChunkLoadedHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.mapInitialize()
+### events.pistonRetract()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.MapInitializeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/MapInitializeEvent.html) is fired
+ * callback - A function which is called whenever the [world.PistonRetractHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/PistonRetractHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.serviceRegister()
+### events.smelt()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.ServiceRegisterEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/ServiceRegisterEvent.html) is fired
+ * callback - A function which is called whenever the [world.SmeltHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/SmeltHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.serverListPing()
+### events.blockUpdate()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.ServerListPingEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/ServerListPingEvent.html) is fired
+ * callback - A function which is called whenever the [world.BlockUpdateHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/BlockUpdateHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.serviceUnregister()
+### events.portalDestroy()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.ServiceUnregisterEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/ServiceUnregisterEvent.html) is fired
+ * callback - A function which is called whenever the [world.PortalDestroyHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/PortalDestroyHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.prepareItemCraft()
+### events.ignition()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.PrepareItemCraftEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/PrepareItemCraftEvent.html) is fired
+ * callback - A function which is called whenever the [world.IgnitionHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/IgnitionHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.inventoryOpen()
+### events.redstoneChange()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.InventoryOpenEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryOpenEvent.html) is fired
+ * callback - A function which is called whenever the [world.RedstoneChangeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/RedstoneChangeHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.craftItem()
+### events.weatherChange()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.CraftItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/CraftItemEvent.html) is fired
+ * callback - A function which is called whenever the [world.WeatherChangeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/WeatherChangeHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.hangingBreakByEntity()
+### events.chunkCreation()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [hanging.HangingBreakByEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/hanging/HangingBreakByEntityEvent.html) is fired
+ * callback - A function which is called whenever the [world.ChunkCreationHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ChunkCreationHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.blockMultiPlace()
+### events.hopperTransfer()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockMultiPlaceEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockMultiPlaceEvent.html) is fired
+ * callback - A function which is called whenever the [world.HopperTransferHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/HopperTransferHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.entityBlockForm()
+### events.chunkUnload()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.EntityBlockFormEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/EntityBlockFormEvent.html) is fired
+ * callback - A function which is called whenever the [world.ChunkUnloadHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ChunkUnloadHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerBucketEmpty()
+### events.blockGrow()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerBucketEmptyEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerBucketEmptyEvent.html) is fired
+ * callback - A function which is called whenever the [world.BlockGrowHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/BlockGrowHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerPortal()
+### events.dispense()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerPortalEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerPortalEvent.html) is fired
+ * callback - A function which is called whenever the [world.DispenseHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/DispenseHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.playerUnregisterChannel()
+### events.blockDropXp()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerUnregisterChannelEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerUnregisterChannelEvent.html) is fired
+ * callback - A function which is called whenever the [world.BlockDropXpHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/BlockDropXpHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.fireworkExplode()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.FireworkExplodeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/FireworkExplodeHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.leafDecay()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.LeafDecayHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/LeafDecayHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.pistonExtend()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.PistonExtendHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/PistonExtendHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.noteBlockPlay()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.NoteBlockPlayHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/NoteBlockPlayHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.lightningStrike()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.LightningStrikeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/LightningStrikeHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.decorate()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.DecorateHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/DecorateHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.explosion()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.ExplosionHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ExplosionHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.tNTActivate()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.TNTActivateHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/TNTActivateHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.timeChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.TimeChangeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/TimeChangeHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.flow()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.FlowHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/FlowHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.portalCreate()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.PortalCreateHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/PortalCreateHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockPhysics()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.BlockPhysicsHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/BlockPhysicsHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerCommand()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [command.PlayerCommandHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/command/PlayerCommandHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.consoleCommand()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [command.ConsoleCommandHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/command/ConsoleCommandHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.commandBlockCommand()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [command.CommandBlockCommandHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/command/CommandBlockCommandHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.loadWorld()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [system.LoadWorldHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/LoadWorldHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.permissionCheck()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [system.PermissionCheckHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/PermissionCheckHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.serverGuiStart()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [system.ServerGuiStartHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/ServerGuiStartHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.unloadWorld()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [system.UnloadWorldHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/UnloadWorldHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2226,7 +1798,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.PluginDisableEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/PluginDisableEvent.html) is fired
+ * callback - A function which is called whenever the [system.PluginDisableHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/PluginDisableHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2234,7 +1806,31 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.PluginEnableEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/PluginEnableEvent.html) is fired
+ * callback - A function which is called whenever the [system.PluginEnableHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/PluginEnableHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.serverTick()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [system.ServerTickHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/ServerTickHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.serverListPing()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [system.ServerListPingHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/ServerListPingHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.serverShutdown()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [system.ServerShutdownHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/ServerShutdownHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2317,14 +1913,14 @@ exports.numberguess = function(player){
     }
     if ( +guess !== randomNumber ) { 
       if (+guess < randomNumber ) {
-        guesser.sendMessage('Too low - guess again');
+        echo( guesser, 'Too low - guess again');
       }
       if (+guess > randomNumber ) {
-        guesser.sendMessage('Too high - guess again');
+        echo( guesser, 'Too high - guess again');
       }
       repeat();
     } else {
-      guesser.sendMessage('You guessed correctly');
+      echo( guesser, 'You guessed correctly');
     }
   });
 };
@@ -2345,6 +1941,31 @@ The callback function as well as being bound to an object with the above propert
  * repeat
 
 The `value` parameter will be the same as `this.value`, the `repeat` parameter will be the same as `this.repeat` and so on.
+
+## The recipes module
+
+The Recipes module provides convenience functions for adding and removing recipes
+from the game.
+
+### Example
+To add an EnderBow to the game (assumes there's an enchanted Item variable called enderBow)...
+
+    var recipes = require('recipes');
+    var items = require('items');
+    ...
+    var enderBowRecipe = recipes.add( {
+      result: enderBow,
+      ingredients: {
+        E: items.enderPearl(1),
+        S: items.stick(1),
+        W: items.string(1)
+      },
+      shape: [ 'ESW',
+               'SEW',
+               'ESW' ]
+    } );
+    // to remove...
+    recipes.remove( enderBowRecipe );
 
 ## Http Module
 
@@ -2537,7 +2158,7 @@ var signs = require('signs'),
 var player = utils.player('tom1234');
 var sign = signs.getTargetedBy( player );
 if ( !sign ) { 
-    player.sendMessage('Not looking at a sign');
+    echo( player, 'Not looking at a sign');
 }
 ```
 
@@ -2548,7 +2169,7 @@ if ( !sign ) {
 This module is a simple wrapper around the Bukkit Sound class and provides
 a simpler way to play sounds. All of the org.bukkit.Sound Enum values are attached.
 
-### Usage:
+### Usage (Bukkit) :
 
     var sounds = require('sounds');
     sounds.play( bukkit.sound.VILLAGER_NO , self, 1, 0); // plays VILLAGER_NO sound at full volume and medium pitch
@@ -2605,7 +2226,7 @@ Example
 -------
 
     /js var boldGoldText = "Hello World".bold().gold();
-    /js self.sendMessage( boldGoldText );
+    /js echo(self, boldGoldText );
 
 <p style="color:gold;font-weight:bold">Hello World</p>    
 
@@ -2636,7 +2257,7 @@ var utils = require('utils');
 var name = 'walterh';
 var player = utils.player(name);
 if ( player ) {
-    player.sendMessage('Got ' + name);
+    echo(player, 'Got ' + name);
 } else {
     console.log('No player named ' + name);
 }
@@ -2785,7 +2406,7 @@ The following example illustrates how to use foreach for immediate processing of
 var utils = require('utils');
 var players = ['moe', 'larry', 'curly'];
 utils.foreach (players, function(item){ 
-    server.getPlayer(item).sendMessage('Hi ' + item);
+    echo( server.getPlayer(item), 'Hi ' + item);
 });
 ```
 
@@ -2819,7 +2440,7 @@ var processItem = function(item, index, object, array){
 // assume this code is within a function/closure
 var player = self;
 var onDone = function(){ 
-    player.sendMessage('Job Done!');
+    echo( player, 'Job Done!');
 };
 utils.foreach (a, processItem, null, 10, onDone);
 ```
@@ -2982,6 +2603,47 @@ all of Javascript's Array goodness.
     var utils = require('utils');
     var worlds = utils.array(server.worlds);
     
+### utils.stat() function
+
+This function returns a numeric value for a given player statistic.
+
+#### Parameters
+
+ * Player - The player object
+ * Statistic - A string whose value should be one of the following (CanaryMod) 
+   * ANIMALSBRED 
+   * BOATONECM 
+   * CLIMBONECM 
+   * CROUCHONECM 
+   * DAMAGEDEALT 
+   * DAMAGETAKEN 
+   * DEATHS 
+   * DRIVEONECM 
+   * DROP 
+   * FALLONECM 
+   * FISHCAUGHT 
+   * FLYONECM 
+   * HORSEONECM 
+   * JUMP 
+   * JUNKFISHED 
+   * LEAVEGAME 
+   * MINECARTONECM 
+   * MOBKILLS 
+   * PIGONECM 
+   * PLAYERKILLS 
+   * PLAYONEMINUTE 
+   * SPRINTONECM 
+   * SWIMONECM 
+   * TALKEDTOVILLAGER 
+   * TIMESINCEDEATH 
+   * TRADEDWITHVILLAGER 
+   * TREASUREFISHED 
+   * WALKONECM 
+
+See [CanaryMod's Statistic][cmstat] class for a list of possible stat values
+
+[cmstat]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/statistics/Statistics.html
+
 ## Drone Plugin
 
 The Drone is a convenience class for building. It can be used for...
@@ -3741,7 +3403,7 @@ The `hello` function below is only usable by players with the scriptcraft.evalua
 permission since it relies on the `/js` command to execute.
 
     exports.hello = function(player){
-        player.sendMessage('Hello ' + player.name);
+        echo( player, 'Hello ' + player.name);
     };
 
 ## Example Plugin #2 - Making extensions available for all players.
@@ -3767,7 +3429,7 @@ can use the new extension. Unlike the previous example, the `jsp hello`
 command does not evaluate javascript code so this command is much more secure.
 
     command('hello', function (parameters, player) {
-        player.sendMessage('Hello ' + player.name);
+        echo( player, 'Hello ' + player.name);
     });
 
 ## Example Plugin #3 - Limiting use of commands to operators only.
@@ -3794,10 +3456,10 @@ message for operators.
 
     command('op-hello', function (parameters, player) {
         if (!player.op){
-            player.sendMessage('Only operators can do this.');
-            return;
+          echo( player, 'Only operators can do this.');
+          return;
         }
-        player.sendMessage('Hello ' + player.name);
+        echo( player, 'Hello ' + player.name);
     });
 ## Example Plugin #4 - Using parameters in commands.
 
@@ -3821,7 +3483,7 @@ a fixed 'Hello ' to anything you like by passing a parameter.
 
     command( 'hello-params', function ( parameters, player ) {
       var salutation = parameters[0] ;
-      player.sendMessage( salutation + ' ' + player.name );
+      echo( player, salutation + ' ' + player.name );
     });
 
 ## Example Plugin #5 - Re-use - Using your own and others modules.
@@ -3897,7 +3559,7 @@ Source Code ...
       if ( recipient ) {
         greetings.hello( recipient );
       } else {
-        sender.sendMessage( 'Player ' + playerName + ' not found.' );
+        echo( sender, 'Player ' + playerName + ' not found.' );
       }
     });
 
@@ -3982,7 +3644,7 @@ cleaner and more readable. Similarly where you see a method like
 
     events.on( 'player.PlayerJoinEvent', function( event ) {
       if ( event.player.op ) {
-        event.player.sendMessage('Welcome to ' + __plugin);
+        echo( event.player, 'Welcome to ' + __plugin);
       }
     });
 
@@ -3990,7 +3652,7 @@ Update: Since version 2.0.8 the above code can be replaced by the more succinct:
 
     events.playerJoin( function( event ) {
       if ( event.player.op ) {
-        event.player.sendMessage('Welcome to ' + __plugin);
+        echo( event.player, 'Welcome to ' + __plugin);
       }
     });
     
@@ -4111,7 +3773,7 @@ directory...
 
 ```javascript
 exports.hi = function( player ){
-  player.sendMessage('Hi ' + player.name);
+  echo( player, 'Hi ' + player.name);
 };
 ```
 
@@ -4174,7 +3836,7 @@ to Minecraft.  Normally ScriptCraft only allows for provision of new
 commands as extensions to the jsp command. For example, to create a
 new simple command for use by all players...
 
-    /js command('hi', function(args,player){ player.sendMessage('Hi ' + player.name); });
+    /js command('hi', function(args,player){ echo( player, 'Hi ' + player.name); });
   
 ... then players can use this command by typing...
 
@@ -4212,7 +3874,7 @@ of the ScriptCraft core.
 
     var commando = require('../commando');
     commando('hi', function(args,player){
-       player.sendMessage('Hi ' + player.name);
+       echo( player, 'Hi ' + player.name);
     });
 
 ...Displays a greeting to any player who issues the `/hi` command.
@@ -4355,3 +4017,511 @@ your own mini-game...
 
 [bukscore]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scoreboard/package-summary.html
 
+/*********************
+## Items module
+The Items module provides a suite of functions - one for each possible item.
+See https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/inventory/ItemType.html for a list of possible items
+
+### Usage
+
+    items.book(); // returns net.canarymod.api.inventory.ItemType.Book
+    items.book(2); // returns a new net.canarymod.api.inventory.Item object with an amount 2 (2 books)
+    items.book( itemType ); // compares itemType parameter to ItemType.Book or an Item of type book
+
+The following functions are provided:
+
+ * acaciaLeaves()
+ * acaciaLog()
+ * acaciaSapling()
+ * acaciaStairs()
+ * acaciaWood()
+ * acaciaWoodDoubleStep()
+ * acaciaWoodStep()
+ * activatorRail()
+ * allium()
+ * anvil()
+ * apple()
+ * arrow()
+ * azureBluet()
+ * bakedPotato()
+ * beacon()
+ * bed()
+ * bedrock()
+ * birchLeaves()
+ * birchLog()
+ * birchSapling()
+ * birchWood()
+ * birchWoodDoubleStep()
+ * birchWoodStair()
+ * birchWoodStep()
+ * blackCarpet()
+ * blackGlass()
+ * blackGlassPane()
+ * blackStainedClay()
+ * blazePowder()
+ * blazeRod()
+ * blocksRecord()
+ * blueCarpet()
+ * blueGlass()
+ * blueGlassPane()
+ * blueOrchid()
+ * blueStainedClay()
+ * boat()
+ * bone()
+ * bonemeal()
+ * book()
+ * bookAndQuill()
+ * bookshelf()
+ * bottleOEnchanting()
+ * bow()
+ * bowl()
+ * bread()
+ * brewingStand()
+ * brickBlock()
+ * brickStair()
+ * brownCarpet()
+ * brownGlass()
+ * brownGlassPane()
+ * brownMushroom()
+ * brownStainedClay()
+ * bucket()
+ * burningFurnace()
+ * cactus()
+ * cactusGreen()
+ * cake()
+ * carrot()
+ * carrotOnAStick()
+ * carrots()
+ * cauldron()
+ * chainmailBoots()
+ * chainmailChestplate()
+ * chainmailHelmet()
+ * chainmailLeggings()
+ * charcoal()
+ * chest()
+ * chirpRecord()
+ * clay()
+ * clayBall()
+ * clayBrick()
+ * clownFish()
+ * coal()
+ * coalBlock()
+ * coalOre()
+ * cobble()
+ * cobbleSilverFishBlock()
+ * cobbleStair()
+ * cobblestoneWall()
+ * cocoaBeans()
+ * cocoaPlant()
+ * commandBlock()
+ * compass()
+ * cookedChicken()
+ * cookedClownFish()
+ * cookedFish()
+ * cookedPufferFish()
+ * cookedSalmon()
+ * cookie()
+ * crackedSilverFishBlock()
+ * crackedStoneBrick()
+ * creeperHead()
+ * cyanCarpet()
+ * cyanDye()
+ * cyanGlass()
+ * cyanGlassPane()
+ * cyanStainedClay()
+ * dandelionYellow()
+ * darkOakLeaves()
+ * darkOakLog()
+ * darkOakSapling()
+ * darkOakStairs()
+ * darkOakWood()
+ * darkOakWoodDoubleStep()
+ * darkOakWoodStep()
+ * daylightSensor()
+ * deadBush()
+ * detectorRail()
+ * diamond()
+ * diamondAxe()
+ * diamondBlock()
+ * diamondBoots()
+ * diamondChestplate()
+ * diamondHelmet()
+ * diamondHoe()
+ * diamondHorseArmor()
+ * diamondLeggings()
+ * diamondOre()
+ * diamondPickaxe()
+ * diamondSpade()
+ * diamondSword()
+ * dirt()
+ * dispenser()
+ * doubleGrass()
+ * doublestepBrickBlock()
+ * doublestepCobble()
+ * doublestepNetherBrick()
+ * doublestepOrnateStone()
+ * doublestepQuartz()
+ * doublestepSandStone()
+ * doublestepSandStoneTrim()
+ * doublestepStone()
+ * doublestepStoneBricks()
+ * doublestepWood()
+ * dropper()
+ * egg()
+ * elevenRecord()
+ * emerald()
+ * emeraldBlock()
+ * emeraldOre()
+ * emptyMap()
+ * enchantedBook()
+ * enchantmentTable()
+ * endPortal()
+ * endPortalFrame()
+ * endStone()
+ * enderChest()
+ * enderDragonEgg()
+ * enderPearl()
+ * eyeofEnder()
+ * farRecord()
+ * feather()
+ * fence()
+ * fenceGate()
+ * fermentedSpiderEye()
+ * fireBlock()
+ * fireCharge()
+ * fireworkRocket()
+ * fireworkStar()
+ * fishingRod()
+ * flint()
+ * flintAndSteel()
+ * flowerPot()
+ * furnace()
+ * ghastTear()
+ * glass()
+ * glassBottle()
+ * glassPane()
+ * glisteringMelon()
+ * glowStone()
+ * glowstoneDust()
+ * goldAxe()
+ * goldBlock()
+ * goldBoots()
+ * goldChestplate()
+ * goldHelmet()
+ * goldHoe()
+ * goldHorseArmor()
+ * goldIngot()
+ * goldLeggings()
+ * goldNugget()
+ * goldOre()
+ * goldPickaxe()
+ * goldRecord()
+ * goldSpade()
+ * goldSword()
+ * goldenApple()
+ * goldenCarrot()
+ * grass()
+ * gravel()
+ * grayCarpet()
+ * grayDye()
+ * grayGlass()
+ * grayGlassPane()
+ * grayStainedClay()
+ * greenCarpet()
+ * greenGlass()
+ * greenGlassPane()
+ * greenRecord()
+ * greenStainedClay()
+ * grilledPork()
+ * gunpowder()
+ * hardenedClay()
+ * hayBale()
+ * heavyWeightedPressurePlate()
+ * hopper()
+ * hugeBrownMushroom()
+ * hugeRedMushroom()
+ * humanHead()
+ * ice()
+ * inkSack()
+ * ironAxe()
+ * ironBars()
+ * ironBlock()
+ * ironBoots()
+ * ironChestplate()
+ * ironDoor()
+ * ironHelmet()
+ * ironHoe()
+ * ironHorseArmor()
+ * ironIngot()
+ * ironLeggings()
+ * ironOre()
+ * ironPickaxe()
+ * ironSpade()
+ * ironSword()
+ * itemFrame()
+ * jackOLantern()
+ * jukebox()
+ * jungleLeaves()
+ * jungleLog()
+ * jungleSapling()
+ * jungleWood()
+ * jungleWoodDoubleStep()
+ * jungleWoodStair()
+ * jungleWoodStep()
+ * ladder()
+ * lapisBlock()
+ * lapisLazuli()
+ * lapislazuliOre()
+ * largeFern()
+ * lava()
+ * lavaBucket()
+ * lavaFlowing()
+ * lead()
+ * leather()
+ * leatherBoots()
+ * leatherChestplate()
+ * leatherHelmet()
+ * leatherLeggings()
+ * lever()
+ * lightBlueCarpet()
+ * lightBlueDye()
+ * lightBlueGlass()
+ * lightBlueGlassPane()
+ * lightBlueStainedClay()
+ * lightGrayCarpet()
+ * lightGrayDye()
+ * lightGrayGlass()
+ * lightGrayGlassPane()
+ * lightGrayStainedClay()
+ * lightWeightedPressurePlate()
+ * lilac()
+ * lilypad()
+ * limeCarpet()
+ * limeDye()
+ * limeGlass()
+ * limeGlassPane()
+ * limeStainedClay()
+ * magentaCarpet()
+ * magentaDye()
+ * magentaGlass()
+ * magentaGlassPane()
+ * magentaStainedClay()
+ * magmaCream()
+ * mallRecord()
+ * map()
+ * mellohiRecord()
+ * melon()
+ * melonSeeds()
+ * melonSlice()
+ * milkBucket()
+ * minecart()
+ * minecartCommandBlock()
+ * minecartHopper()
+ * minecartTNT()
+ * mobSpawner()
+ * mossyBrickSilverFishBlock()
+ * mossyCobble()
+ * mossyCobbleWall()
+ * mossyStoneBrick()
+ * mushroomSoup()
+ * mycelium()
+ * nameTag()
+ * netherBrick()
+ * netherBrickFence()
+ * netherBrickStair()
+ * netherBricks()
+ * netherQuartz()
+ * netherQuartzOre()
+ * netherStar()
+ * netherWart()
+ * netherrack()
+ * noteBlock()
+ * oakLeaves()
+ * oakLog()
+ * oakSapling()
+ * oakWood()
+ * oakWoodDoubleStep()
+ * oakWoodStep()
+ * obsidian()
+ * orangeCarpet()
+ * orangeDye()
+ * orangeGlass()
+ * orangeGlassPane()
+ * orangeStainedClay()
+ * orangeTulip()
+ * ornateQuartzBlock()
+ * ornateSilverFishBlock()
+ * ornateStoneBrick()
+ * oxeyeDaisy()
+ * packedIce()
+ * painting()
+ * paper()
+ * peony()
+ * pineLeaves()
+ * pineLog()
+ * pineWoodStair()
+ * pinkCarpet()
+ * pinkDye()
+ * pinkGlass()
+ * pinkGlassPane()
+ * pinkStainedClay()
+ * pinkTulip()
+ * piston()
+ * podzol()
+ * poisonousPotato()
+ * poppy()
+ * pork()
+ * portal()
+ * potato()
+ * potatoes()
+ * potion()
+ * poweredMinecart()
+ * poweredRail()
+ * pufferFish()
+ * pumpkin()
+ * pumpkinPie()
+ * pumpkinSeeds()
+ * purpleCarpet()
+ * purpleDye()
+ * purpleGlass()
+ * purpleGlassPane()
+ * purpleStainedClay()
+ * quartzBlock()
+ * quartzPillarCap()
+ * quartzPillarHorizontal()
+ * quartzPillarVertical()
+ * quartzStairs()
+ * rail()
+ * rawBeef()
+ * rawChicken()
+ * rawFish()
+ * rawSalmon()
+ * redCarpet()
+ * redGlass()
+ * redGlassPane()
+ * redMushroom()
+ * redStainedClay()
+ * redStone()
+ * redTulip()
+ * redstoneBlock()
+ * redstoneComparator()
+ * redstoneLampOff()
+ * redstoneOre()
+ * redstoneRepeater()
+ * redstoneTorchOn()
+ * reed()
+ * roseBush()
+ * roseRed()
+ * rottenFlesh()
+ * saddle()
+ * sand()
+ * sandstone()
+ * sandstoneBlank()
+ * sandstoneOrnate()
+ * sandstoneStair()
+ * seeds()
+ * shears()
+ * shrub()
+ * sign()
+ * skeletonHead()
+ * slimeBall()
+ * snow()
+ * snowBall()
+ * snowBlock()
+ * soil()
+ * soulSand()
+ * spawnEgg()
+ * spiderEye()
+ * spiderWeb()
+ * sponge()
+ * spruceSapling()
+ * spruceWood()
+ * spruceWoodDoubleStep()
+ * spruceWoodStep()
+ * stalRecord()
+ * steak()
+ * stepBrickBlock()
+ * stepCobble()
+ * stepNetherBricks()
+ * stepOrnateStone()
+ * stepQuartz()
+ * stepSandStone()
+ * stepSandStoneTrim()
+ * stepStone()
+ * stepStoneBricks()
+ * stepWood()
+ * stick()
+ * stickyPiston()
+ * stone()
+ * stoneAxe()
+ * stoneBrick()
+ * stoneBrickSilverFishBlock()
+ * stoneBrickStair()
+ * stoneButton()
+ * stoneHoe()
+ * stonePickaxe()
+ * stonePlate()
+ * stoneSilverFishBlock()
+ * stoneSpade()
+ * stoneSword()
+ * storageMinecart()
+ * stradRecord()
+ * string()
+ * sugar()
+ * sunflower()
+ * tallFern()
+ * tallGrass()
+ * tnt()
+ * torch()
+ * trapdoor()
+ * trappedChest()
+ * tripwireHook()
+ * vines()
+ * waitRecord()
+ * wardRecord()
+ * watch()
+ * water()
+ * waterBucket()
+ * waterFlowing()
+ * wheat()
+ * whiteCarpet()
+ * whiteGlass()
+ * whiteGlassPane()
+ * whiteStainedClay()
+ * whiteTulip()
+ * witherSkeletonHead()
+ * woodAxe()
+ * woodDoor()
+ * woodHoe()
+ * woodPickaxe()
+ * woodPlate()
+ * woodSpade()
+ * woodSword()
+ * woodenButton()
+ * woodenStair()
+ * woolBlack()
+ * woolBlue()
+ * woolBrown()
+ * woolCyan()
+ * woolDarkGreen()
+ * woolGray()
+ * woolLightBlue()
+ * woolLightGray()
+ * woolLightGreen()
+ * woolMagenta()
+ * woolOrange()
+ * woolPink()
+ * woolPurple()
+ * woolRed()
+ * woolWhite()
+ * woolYellow()
+ * workbench()
+ * writtenBook()
+ * yellowCarpet()
+ * yellowFlower()
+ * yellowGlass()
+ * yellowGlassPane()
+ * yellowStainedClay()
+ * zombieHead()
+
+***/

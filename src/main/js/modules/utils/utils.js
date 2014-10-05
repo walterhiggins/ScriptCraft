@@ -746,6 +746,16 @@ exports.array = function( ){
   }
   return result;
 };
+/*************************************************************************
+### utils.players() function
+
+This function returns a javascript array of all online players on the server.
+
+### utils.playerNames() function
+
+This function returns a javascript array of player names (as javascript strings)
+
+***/
 function getPlayersBukkit(){
   var result = [];
   for (var i = 0; i < server.onlinePlayers.length; i++){
@@ -761,6 +771,13 @@ function getPlayersCanary(){
   }
   return result;
 }
+var getPlayers = null;
+if (__plugin.canary) {
+  getPlayers = getPlayersCanary;
+} else {
+  getPlayers = getPlayersBukkit;
+}
+
 function getStatBukkit(player, stat){
   return player.getStatistic(org.bukkit.Statistic[stat.toUpperCase()]);
 }
@@ -768,7 +785,12 @@ function getStatCanary(player, stat){
   var cmStatistics = Packages.net.canarymod.api.statistics.Statistics;
   return player.getStat(cmStatistics[stat.toUpperCase()].instance);
 }
-exports.players = __plugin.canary ? getPlayersCanary: getPlayersBukkit;
+function getPlayerNames(){
+  return getPlayers().map(function(p){ return p.name; });
+}
+exports.players = getPlayers;
+exports.playerNames = getPlayerNames;
+
 /*************************************************************************
 ### utils.stat() function
 

@@ -53,8 +53,20 @@
       <arg value="src/docs/js/generateApiDocs.js"/>
       <arg value="${dist}/js"/>
     </java>
-
+    <java classname="jscript" failonerror="true" fork="true" output="${dist}/items.md" error="${dist}/genitemserror.log">
+      <classpath>
+        <pathelement path="${build}"/>      
+	<pathelement path="lib/canary.jar"/>
+      </classpath>
+      <arg value="src/docs/js/generateItemsDoc.js"/>
+    </java>
+    <concat destfile="${dist}/apiref-con.md">
+      <fileset file="${dist}/apiref.md" />
+      <fileset file="${dist}/items.md" />
+    </concat>
   </target>
+
+
 
   <target name="gen-events-helper-canary" depends="compile-docs,init">
     <mkdir dir="${dist}/js/lib"/>
@@ -99,7 +111,7 @@ Walter Higgins
 
       </header>
       <fileset file="${dist}/toc-apiref.md" />
-      <fileset file="${dist}/apiref.md" />
+      <fileset file="${dist}/apiref-con.md" />
    </concat>      
   </target>
 
@@ -109,7 +121,7 @@ Walter Higgins
         <pathelement path="${build}"/>      
       </classpath>
       <arg value="src/docs/js/generateTOC.js"/>
-      <arg value="${dist}/apiref.md"/>
+      <arg value="${dist}/apiref-con.md"/>
     </java>
   </target>
 

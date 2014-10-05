@@ -678,7 +678,7 @@ function __onEnable ( __engine, __plugin, __script ) {
   configFile = new File(configFile,'global-config.json');
   var config = _load( configFile );
   if ( !config ) {
-    config = { verbose: true };
+    config = { verbose: false };
   }
   global.config = config;
   global.__plugin = __plugin;
