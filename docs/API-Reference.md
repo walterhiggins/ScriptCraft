@@ -198,6 +198,8 @@ Walter Higgins
    * [utils.unwatchFile() function](#utilsunwatchfile-function)
    * [utils.unwatchDir() function](#utilsunwatchdir-function)
    * [utils.array() function](#utilsarray-function)
+   * [utils.players() function](#utilsplayers-function)
+   * [utils.playerNames() function](#utilsplayernames-function)
    * [utils.stat() function](#utilsstat-function)
  * [Drone Plugin](#drone-plugin)
    * [Constructing a Drone Object](#constructing-a-drone-object)
@@ -2603,6 +2605,14 @@ all of Javascript's Array goodness.
     var utils = require('utils');
     var worlds = utils.array(server.worlds);
     
+### utils.players() function
+
+This function returns a javascript array of all online players on the server.
+
+### utils.playerNames() function
+
+This function returns a javascript array of player names (as javascript strings)
+
 ### utils.stat() function
 
 This function returns a numeric value for a given player statistic.

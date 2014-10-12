@@ -611,7 +611,7 @@ var putSign = function( drone, x, y, z, world, texts, blockId, meta, immediate )
     setLine = function( block, i, text) { 
       var sign = block.getTileEntity();
       sign.setTextOnLine( text, i ); 
-      sign.upate(true); 
+      sign.upate(); 
     };
   }
   if (__plugin.bukkit){

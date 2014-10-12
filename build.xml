@@ -46,6 +46,7 @@
   </target>
 
   <target name="generate-api-ref-entries" depends="copy-js,compile-docs,init">
+
     <java classname="jscript" failonerror="true" fork="true" output="${dist}/apiref.md">
       <classpath>
         <pathelement path="${build}"/>      
@@ -53,6 +54,7 @@
       <arg value="src/docs/js/generateApiDocs.js"/>
       <arg value="${dist}/js"/>
     </java>
+
     <java classname="jscript" failonerror="true" fork="true" output="${dist}/items.md" error="${dist}/genitemserror.log">
       <classpath>
         <pathelement path="${build}"/>      
@@ -60,10 +62,12 @@
       </classpath>
       <arg value="src/docs/js/generateItemsDoc.js"/>
     </java>
+
     <concat destfile="${dist}/apiref-con.md">
       <fileset file="${dist}/apiref.md" />
       <fileset file="${dist}/items.md" />
     </concat>
+
   </target>
 
 

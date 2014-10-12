@@ -1,50 +1,50 @@
-var bkDisplaySlot = org.bukkit.scoreboard.DisplaySlot;
-/*
-  The scoreboard is a simple wrapper around the Bukkit Scoreboard API.
-  It's only concerned with display of scores, not maintaining them - that's the game's job.
-*/
-module.exports = function( options ) {
-  var temp = {};
-  var ccScoreboard;
-
-  return {
-    start: function( ) {
-      var objective, 
-	slot,
-	ccObj;
-      ccScoreboard = server.scoreboardManager.getNewScoreboard();
-      for ( objective in options ) {
-        ccObj = ccScoreboard.registerNewObjective( objective, 'dummy' );
-        for ( slot in options[ objective ] ) { 
-          ccObj.displaySlot = bkDisplaySlot[ slot ];
-          ccObj.displayName = options[ objective ][ slot ];
-        }
-      }
-    },
-    stop: function(){
-      var objective, slot;
-      for ( objective in options ) {
-        ccScoreboard.getObjective(objective).unregister();
-        for ( slot in options[ objective ] ) {
-          ccScoreboard.clearSlot( bkDisplaySlot[ slot ] );
-        }
-      }
-    },
-    update: function( objective, player, score ) {
-      if ( player.scoreboard && player.scoreboard != ccScoreboard ) {
-        temp[player.name] = player.scoreboard;
-        player.scoreboard = ccScoreboard;
-      }
-      ccScoreboard
-	.getObjective( objective )
-	.getScore( player )
-	.score = score;
-    },
-    restore: function( player ) {
-      // offlineplayers don't have a scoreboard
-      if ( player.scoreboard ) {
-        player.scoreboard = temp[ player.name ];
-      }
+var textcolors = require('textcolors');
+var Canary = Packages.net.canarymod.Canary;
+var sb = Canary.scoreboards().getScoreboard();
+function execCommand( command ){
+  server.executeVanillaCommand(server, command);
+}
+function getTeamByName( teamName ){
+  var allTeams = sb.getTeams().toArray();
+  for (var i = 0;i < allTeams.length; i++){
+    if (allTeams[i].displayName == teamName){
+      return allTeams[i];
     }
-  };
-};
+  }
+  return null;
+}
+function createScoreboard( objectiveName, displayName ){
+  execCommand('scoreboard objectives add ' + objectiveName + ' dummy ' + displayName);
+  execCommand('scoreboard objectives setdisplay sidebar ' + objectiveName);
+}
+function addTeamToScoreboard( teamName, color){
+  execCommand('scoreboard teams add ' + teamName);
+  var team = getTeamByName( teamName );
+  team.prefix = textcolors.colorize(color, '');
+  //execCommand('scoreboard teams option ' + teamName + ' color ' + color);
+}
+function removeScoreboard( name ){
+  //execCommand('scoreboard objectives remove ' + name );
+  sb['removeScoreObjective(String)'](name);
+}
+function addPlayerToTeam( objectiveName, teamName, playerName ){
+  execCommand('scoreboard teams join ' + teamName + ' ' + playerName);
+  execCommand('scoreboard players set ' + playerName + ' ' + objectiveName + ' -1');
+  updatePlayerScore( objectiveName, playerName, 0);
+}
+
+function updatePlayerScore( objectiveName, playerName, score ){
+  var sc = sb['getScore(String, ScoreObjective)']( playerName, sb.getScoreObjective( objectiveName) );
+  sc.score = score;
+}
+
+function removeTeamFromScoreboard( teamName ){
+  execCommand('scoreboard teams remove ' + teamName);
+  //sb['removeTeam(String)'](teamName);
+}
+exports.create = createScoreboard;
+exports.addTeam = addTeamToScoreboard;
+exports.removeTeam = removeTeamFromScoreboard;
+exports.addPlayerToTeam = addPlayerToTeam;
+exports.updateScore = updatePlayerScore;
+exports.remove = removeScoreboard;
