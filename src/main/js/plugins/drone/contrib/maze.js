@@ -96,7 +96,6 @@ function maze_draw(maze_string, d, height, material) {
         d.box(blocks.glowstone,1,height,1); // highlight the maze entry and exit
       } else if (j == maze_string.length - 4) {
         d.box(blocks.glass,1,height,1);
-        alert('Maze complete!');
       } else {
         d.box(material,1,height,1); 
       }
