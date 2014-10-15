@@ -17,7 +17,7 @@ var rainbowColors = [
 	];
 
 exports.road_rainbow = function(howLong) {
-	boxa(rainbowColors,7,1,howLong);
+	boxa(rainbowColors,13,1,howLong);
 };
 
 //Example: /js road_rainbow(100)
