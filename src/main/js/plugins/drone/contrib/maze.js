@@ -1,6 +1,6 @@
 // Maze generation based on http://rosettacode.org/wiki/Maze_generation#JavaScript
 
-var Drone = require('../drone').Drone;
+var Drone = require('../drone/drone').Drone;
 
 function maze_make(x,y) {
   var n=x*y-1;
@@ -72,9 +72,16 @@ function maze_display(m) {
 // ScriptCraft stuff starts here
 // Helper function to parse the ASCII art into Drone actions
 // You might also consider creating a new maze_display but for now this will do the work
-function maze_draw(maze_string, d) {
+function maze_draw(maze_string, d, height, material) {
+
+  if ( typeof height == 'undefined' ) {
+        height = 3;
+    }
+    if ( typeof material == 'undefined' ) {
+        material = blocks.bedrock;
+    }
   // d is the Drone to use
-  d.chkpt('maze-start');
+  d.up().chkpt('maze-start');
   for (var j = 0; j < maze_string.length; j += 2) {
     switch(maze_string.substr(j, 2)) {
     case '  ':
@@ -86,22 +93,23 @@ function maze_draw(maze_string, d) {
       break;
     default: // '+ ', '+-', '--', '| '
       if (j == 0) {
-        d.box(blocks.glowstone,1,2,1); // highlight the maze entry and exit
+        d.box(blocks.glowstone,1,height,1); // highlight the maze entry and exit
       } else if (j == maze_string.length - 4) {
-        d.box(blocks.glass,1,2,1);
+        d.box(blocks.glass,1,height,1);
       } else {
-        d.box(blocks.oak,1,2,1);
+        d.box(material,1,height,1); 
       }
       d.fwd();
     }
   }
+
 }
-function maze(size_x, size_y) {
+
+// User-facing code starts here
+// Example: Try /js maze(5,7)
+Drone.extend('maze', function(size_x, size_y, height, material) {
   m = maze_make(size_x, size_y);
   if (m.x > 0 && m.y > 0) {
-    maze_draw(maze_display(m), this);
+    maze_draw(maze_display(m), this, height, material);
   }
-}
-// User-facing code starts here
-// Example: Try /js amazing(5,7)
-Drone.extend(maze);
+});
