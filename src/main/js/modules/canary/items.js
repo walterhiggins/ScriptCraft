@@ -17,7 +17,10 @@ for (var i = 0;i < materials.length; i++ ){
     continue;
   }
   var materialField = materials[i];
-  var name = (''+materialField.name).replace(/^(.)/,function(a){ return a.toLowerCase() });
+  var name = (''+materialField.name);
+  name = name.replace(/^(.)/,function(a){ 
+    return a.toLowerCase(); 
+  });
   
   items[name] = (function(material){
     return function(amount){

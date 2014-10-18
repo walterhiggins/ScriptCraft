@@ -20,13 +20,12 @@ var content = [
 ];
 
 //var ItemType = java.lang.Class.forName('net.canarymod.api.inventory.ItemType');
-var ItemType = Packages.net.canarymod.api.inventory.ItemType;
-var materials = ItemType.class.getDeclaredFields();
+var materials = itemTypeClass.getDeclaredFields();
 
 var enumVals = [];
 for (var i = 0;i < materials.length; i++ ){
 
-  if (materials[i].type != ItemType.class) {
+  if (materials[i].type != itemTypeClass) {
     continue;
   }
   var materialField = materials[i];

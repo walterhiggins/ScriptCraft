@@ -2,12 +2,31 @@
   <property file="build.properties"/>
   <description>Builds the scriptcraft.jar file - a plugin for bukkit</description>
   <property name="src.canary" location="src/main/java/canary"/>
+  <property name="lib.canary" location="lib/canary.jar"/>
   <property name="src.bukkit" location="src/main/java/bukkit"/>
   <property name="build" location="target/classes"/>
   <property name="dist" location="target/" />
   <property name="minecraft.dir" location="${dist}/minecraft" />
   <property name="js-plugins-dir" value="scriptcraft"/>
   <property name="http.agent" value="'Walter'" />
+
+  <macrodef name="jscript">
+    <attribute name="src"/>
+    <attribute name="out"/>
+    <attribute name="err"/>
+    <element name="js-args" implicit="yes" optional="true"/>
+    <sequential>
+      <java classname="jscript" failonerror="true" fork="true" output="@{out}"  error="@{err}">
+	<classpath>
+          <pathelement path="${build}"/>      
+	  <pathelement path="${lib.canary}"/>
+	</classpath>
+      <arg value="@{src}"/>
+      <js-args/>
+      </java>
+    </sequential>
+  </macrodef>
+
   <target name="init">
     <property file="build.local.properties"/>
     <tstamp>
@@ -35,7 +54,7 @@
       <src path="${src.canary}"/>
       <src path="${src.bukkit}"/>
       <classpath>
-	<pathelement path="lib/canary.jar" />
+	<pathelement path="${lib.canary}" />
 	<pathelement path="lib/bukkit-1.7.9-R0.2.jar" />
       </classpath>
     </javac>
@@ -45,30 +64,19 @@
   </target>
 
   <target name="compile-docs" depends="init">
-    <javac includeantruntime="false" 
-	   srcdir="src/docs/java"
-	   destdir="${build}"
-	   />
+    <javac includeantruntime="false" srcdir="src/docs/java" destdir="${build}">
+      <classpath>
+	<pathelement path="${lib.canary}"/>
+      </classpath>
+    </javac>
   </target>
 
   <target name="generate-api-ref-entries" depends="copy-js,compile-docs,init">
 
-    <java classname="jscript" failonerror="true" fork="true" output="${dist}/apiref.md">
-      <classpath>
-        <pathelement path="${build}"/>      
-      </classpath>
-      <arg value="src/docs/js/generateApiDocs.js"/>
-      <arg value="${dist}/js"/>
-    </java>
-
-    <java classname="jscript" failonerror="true" fork="true" output="${dist}/items.md" error="${dist}/genitemserror.log">
-      <classpath>
-        <pathelement path="${build}"/>      
-	<pathelement path="lib/canary.jar"/>
-      </classpath>
-      <arg value="src/docs/js/generateItemsDoc.js"/>
-    </java>
-
+    <jscript src="src/docs/js/generateApiDocs.js" out="${dist}/apiref.md" err="${dist}/gen-api-error.log">
+      <arg value="${dist}/js"/>      
+    </jscript>
+    <jscript src="src/docs/js/generateItemsDoc.js" out="${dist}/items.md" err="${dist}/gen-items-error.log" />
     <concat destfile="${dist}/apiref-con.md">
       <fileset file="${dist}/apiref.md" />
       <fileset file="${dist}/items.md" />
@@ -80,32 +88,22 @@
 
   <target name="gen-events-helper-canary" depends="compile-docs,init">
     <mkdir dir="${dist}/js/lib"/>
-    <java classname="jscript" failonerror="true" fork="true" output="${dist}/js/lib/events-helper.js" error="${dist}/geneventserror.log">
-      <classpath>
-        <pathelement path="${build}"/>      
-	<pathelement path="lib/canary.jar"/>
-      </classpath>
-      <arg value="src/generateEventsHelper.js"/>
+    <jscript src="src/docs/js/generateEventsHelper.js" out="${dist}/js/lib/events-helper.js" err="${dist}/gen-events-canary-error.log">
       <arg value="canary"/>
-      <arg value="lib/canary.jar"/>
+      <arg value="${lib.canary}"/>
       <arg value="blockDestroy"/>
       <arg value="net.canarymod.hook.player.BlockDestroyHook"/>
-    </java>
+    </jscript>
   </target>
 
   <target name="gen-events-helper-bukkit" depends="compile-docs,init">
     <mkdir dir="${dist}/js/lib"/>
-    <java classname="jscript" failonerror="true" fork="true" output="${dist}/js/lib/events-helper.js" error="${dist}/geneventserror.log">
-      <classpath>
-        <pathelement path="${build}"/>      
-	<pathelement path="lib/canary.jar"/>
-      </classpath>
-      <arg value="src/generateEventsHelper.js"/>
-      <arg value="canary"/>
-      <arg value="lib/canary.jar"/>
+    <jscript src="src/docs/js/generateEventsHelper.js" out="${dist}/js/lib/events-helper.js" err="${dist}/gen-events-bukkit-error.log">
+      <arg value="bukkit"/>
+      <arg value="${lib.canary}"/>
       <arg value="Break"/>
       <arg value="org.bukkit.event.block.BlockBreakEvent"/>
-    </java>
+    </jscript>
   </target>
 
   <target name="construct-api-ref" depends="gen-toc-apiref,init">
@@ -124,25 +122,17 @@ Walter Higgins
       <fileset file="${dist}/apiref-con.md" />
    </concat>      
   </target>
-
+  
   <target name="gen-toc-apiref" depends="compile-docs,generate-api-ref-entries, init" description="Generate Table of Contents for API Reference">
-    <java classname="jscript" failonerror="true" fork="true" output="${dist}/toc-apiref.md">
-      <classpath>
-        <pathelement path="${build}"/>      
-      </classpath>
-      <arg value="src/docs/js/generateTOC.js"/>
+    <jscript src="src/docs/js/generateTOC.js" out="${dist}/toc-apiref.md"  err="${dist}/gen-toc-error.log">
       <arg value="${dist}/apiref-con.md"/>
-    </java>
+    </jscript>
   </target>
 
   <target name="gen-toc-ypgpm" depends="compile-docs,init" description="Generate Table of Contents for Young Programmers Guide">
-    <java classname="jscript" failonerror="true" fork="true" output="${dist}/toc-ypgpm.md">
-      <classpath>
-        <pathelement path="${build}"/>      
-      </classpath>
-      <arg value="src/docs/js/generateTOC.js"/>
+    <jscript src="src/docs/js/generateTOC.js" out="${dist}/toc-ypgpm.md" err="${dist}/gen-ypgpm-error.log">
       <arg value="src/docs/templates/ypgpm.md"/>
-    </java>
+    </jscript>
   </target>
 
   <!-- Piece together the Young persons' guide from template and generated table of contents -->

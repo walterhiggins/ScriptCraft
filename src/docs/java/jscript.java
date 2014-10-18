@@ -1,5 +1,7 @@
 import javax.script.*;
 import java.io.FileReader;
+import net.canarymod.api.Server;
+import net.canarymod.api.inventory.ItemType;
 
 public class jscript
 {
@@ -10,6 +12,7 @@ public class jscript
         java.io.File file = new java.io.File(args[0]);
         engine.put("engine",engine);
         engine.put("args",args);
+	engine.put("itemTypeClass",ItemType.class);
         FileReader fr = new java.io.FileReader(file);
         engine.eval(fr);
         fr.close();

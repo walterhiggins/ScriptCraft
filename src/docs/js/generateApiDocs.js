@@ -106,11 +106,10 @@ if (typeof importPackage == 'undefined'){
 }
 var dir = args[0];
 
-
-importPackage(java.io);
-
+var io = Packages.java.io;
+var File = io.File;
 var store = [];
-find(new File(dir),store,/\/[a-zA-Z0-9_\-]+\.js$/);
+find(new io.File(dir),store,/\/[a-zA-Z0-9_\-]+\.js$/);
 
 store.sort(sorter([ 
     /lib\/scriptcraft\.js$/, 
@@ -127,7 +126,7 @@ store.sort(sorter([
 
 var contents = [];
 foreach(store, function(filename){
-  var br = new BufferedReader(new FileReader(filename));
+  var br = new io.BufferedReader(new io.FileReader(filename));
   var line ;
   while ( (line = br.readLine()) != null){
     contents.push(line);

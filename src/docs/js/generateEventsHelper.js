@@ -33,12 +33,12 @@ for (var i = 0; i< content.length; i++){
   out.println(content[i]);
 }
 while ( ( entry = zis.nextEntry) != null) { 
-  var name = '' + entry.name;
+  var name = new String( entry.name );
   var re1 = /org\/bukkit\/event\/.+Event\.class$/;
   if (args[0] == 'canary'){
     re1 = /net\/canarymod\/hook\/.+Hook\.class$/;
   }
-  if (name.match(re1)){
+  if ( re1.test(name) ) {
     name = name.replace(/\//g,'.').replace('.class','');
     try { 
       clz = java.lang.Class.forName(name);
