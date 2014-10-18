@@ -2619,7 +2619,7 @@ This function returns a numeric value for a given player statistic.
 
 #### Parameters
 
- * Player - The player object
+ * Player - The player object (optional - if only the statistic name parameter is provided then the statistic object is returned)
  * Statistic - A string whose value should be one of the following (CanaryMod) 
    * ANIMALSBRED 
    * BOATONECM 
@@ -2650,10 +2650,26 @@ This function returns a numeric value for a given player statistic.
    * TREASUREFISHED 
    * WALKONECM 
 
-See [CanaryMod's Statistic][cmstat] class for a list of possible stat values
+See [CanaryMod's Statistic][cmstat] class for an up-to-date list of possible stat values
 
 [cmstat]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/statistics/Statistics.html
 
+#### Example 1 Getting stats for a player
+
+    var utils = require('utils');
+    var jumpCount = utils.stat( player, 'jump');
+
+#### Example 2 Getting the JUMP statistic object (which can be used elsewhere)
+
+    var utils = require('utils');
+    var JUMPSTAT = utils.stat('jump');
+    var jumpCount = player.getStat( JUMPSTAT ); // canary-specific code
+
+This function also contains values for each possible stat so you can get at stats like this...
+
+    var utils = require('utils');
+    var JUMPSTAT = utils.stat.JUMP; // Accessing the value
+    var jumpCount = player.getStat ( JUMPSTAT ); // canary-specific code
 ## Drone Plugin
 
 The Drone is a convenience class for building. It can be used for...

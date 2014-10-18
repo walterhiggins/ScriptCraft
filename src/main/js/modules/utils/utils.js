@@ -749,10 +749,10 @@ function toArray( ){
 exports.array = toArray;
 
 function canaryWorlds(){
-  return toArray( server.worlds );
+  return toArray( server.worldManager.allWorlds );
 }
 function bukkitWorlds(){
-  return toArray( server.worldManager.allWorlds );
+  return toArray( server.worlds );
 }
 exports.worlds = __plugin.canary ? canaryWorlds : bukkitWorlds;
 
@@ -788,13 +788,43 @@ if (__plugin.canary) {
   getPlayers = getPlayersBukkit;
 }
 
-function getStatBukkit(player, stat){
-  return player.getStatistic(org.bukkit.Statistic[stat.toUpperCase()]);
+function getStatBukkit(){
+  if (arguments.length == 1){
+    var stat = arguments[1];
+    return org.bukkit.Statistic[stat.toUpperCase()];
+  } else {
+    var player = arguments[0];
+    var stat = arguments[1];
+    return player.getStatistic(org.bukkit.Statistic[stat.toUpperCase()]);
+  }
+  
 }
-function getStatCanary(player, stat){
+function getStatCanary(){
   var cmStatistics = Packages.net.canarymod.api.statistics.Statistics;
-  return player.getStat(cmStatistics[stat.toUpperCase()].instance);
+  if (arguments.length == 1){
+    var stat = arguments[0];
+    return cmStatistics[stat.toUpperCase()].instance;
+  } else {
+    var player = arguments[0];
+    var stat = arguments[1];
+    return player.getStat(cmStatistics[stat.toUpperCase()].instance);
+  }
 }
+if (__plugin.canary){
+  var cmStatistics = Packages.net.canarymod.api.statistics.Statistics;
+  var values = cmStatistics.values();
+  for (var i = 0;i < values.length; i++){
+    var value = values[i];
+    try { 
+      var stat = value.instance;
+      getStatCanary[value.name()] = stat;
+    }catch (e){
+      // as of 20141018 some calls to getInstance() will generate an NPE
+      // see https://github.com/CanaryModTeam/CanaryMod/issues/84
+    }
+  }
+}
+
 function getPlayerNames(){
   return getPlayers().map(function(p){ return p.name; });
 }
@@ -808,7 +838,7 @@ This function returns a numeric value for a given player statistic.
 
 #### Parameters
 
- * Player - The player object
+ * Player - The player object (optional - if only the statistic name parameter is provided then the statistic object is returned)
  * Statistic - A string whose value should be one of the following (CanaryMod) 
    * ANIMALSBRED 
    * BOATONECM 
@@ -839,9 +869,25 @@ This function returns a numeric value for a given player statistic.
    * TREASUREFISHED 
    * WALKONECM 
 
-See [CanaryMod's Statistic][cmstat] class for a list of possible stat values
+See [CanaryMod's Statistic][cmstat] class for an up-to-date list of possible stat values
 
 [cmstat]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/statistics/Statistics.html
 
+#### Example 1 Getting stats for a player
+
+    var utils = require('utils');
+    var jumpCount = utils.stat( player, 'jump');
+
+#### Example 2 Getting the JUMP statistic object (which can be used elsewhere)
+
+    var utils = require('utils');
+    var JUMPSTAT = utils.stat('jump');
+    var jumpCount = player.getStat( JUMPSTAT ); // canary-specific code
+
+This function also contains values for each possible stat so you can get at stats like this...
+
+    var utils = require('utils');
+    var JUMPSTAT = utils.stat.JUMP; // Accessing the value
+    var jumpCount = player.getStat ( JUMPSTAT ); // canary-specific code
 ***/
 exports.stat = __plugin.canary ? getStatCanary: getStatBukkit;
