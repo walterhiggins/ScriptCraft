@@ -724,7 +724,7 @@ all of Javascript's Array goodness.
     var worlds = utils.array(server.worlds);
     
 ***/
-exports.array = function( ){
+function toArray( ){
   var result = [],
     javaArray = null,
     i = 0;
@@ -745,7 +745,17 @@ exports.array = function( ){
     }
   }
   return result;
-};
+}
+exports.array = toArray;
+
+function canaryWorlds(){
+  return toArray( server.worlds );
+}
+function bukkitWorlds(){
+  return toArray( server.worldManager.allWorlds );
+}
+exports.worlds = __plugin.canary ? canaryWorlds : bukkitWorlds;
+
 /*************************************************************************
 ### utils.players() function
 

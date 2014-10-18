@@ -2,6 +2,7 @@
   <property file="build.properties"/>
   <description>Builds the scriptcraft.jar file - a plugin for bukkit</description>
   <property name="src.canary" location="src/main/java/canary"/>
+  <property name="src.bukkit" location="src/main/java/bukkit"/>
   <property name="build" location="target/classes"/>
   <property name="dist" location="target/" />
   <property name="minecraft.dir" location="${dist}/minecraft" />
@@ -25,14 +26,19 @@
   </target>
 
   
-  <target name="compile-canary" depends="init" description="compile canary plugin source">
+  <target name="compile-plugins" depends="init" description="compile canary plugin source">
     <javac includeantruntime="false" 
-           srcdir="${src.canary}" 
            source="1.6" 
            target="1.6" 
            destdir="${build}" 
-           debug="true" 
-           classpath="lib/canary.jar" />
+           debug="true">
+      <src path="${src.canary}"/>
+      <src path="${src.bukkit}"/>
+      <classpath>
+	<pathelement path="lib/canary.jar" />
+	<pathelement path="lib/bukkit-1.7.9-R0.2.jar" />
+      </classpath>
+    </javac>
   </target>
     
   <target name="gendocs" depends="construct-ypgpm, construct-api-ref" description="Generate API documentation">
@@ -189,7 +195,7 @@ Walter Higgins
     </zip>
   </target>
   
-  <target name="package" depends="gendocs,zip_js,compile-canary" description="generate the distribution" >
+  <target name="package" depends="gendocs,zip_js,compile-plugins" description="generate the distribution" >
     <!-- ensure plugin.yml is always copied -->
     <delete file="${build}/plugin.yml" />
     <copy todir="${build}">
