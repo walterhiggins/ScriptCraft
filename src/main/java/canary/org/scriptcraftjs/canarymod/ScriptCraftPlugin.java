@@ -19,6 +19,10 @@ import net.canarymod.Canary;
 import net.canarymod.api.inventory.recipes.CraftingRecipe;
 import net.canarymod.api.inventory.recipes.RecipeRow;
 import net.canarymod.api.inventory.Item;
+// event help stuff
+import net.canarymod.hook.Dispatcher;
+import net.canarymod.plugin.PluginListener;
+import net.canarymod.hook.Hook;
 
 public class ScriptCraftPlugin extends Plugin implements PluginListener, CommandListener
 {
@@ -59,6 +63,16 @@ public class ScriptCraftPlugin extends Plugin implements PluginListener, Command
             this.getLogman().error(e.getMessage());
         }
         return true;
+    }
+    public static interface IDispatcher {
+        public void execute(PluginListener listener, Hook hook);
+    }
+    public Dispatcher getDispatcher(final IDispatcher impl){
+        return new Dispatcher(){
+            public void execute(PluginListener listener, Hook hook){
+                impl.execute(listener, hook);
+            }
+        };
     }
     public CraftingRecipe makeShapedRecipe(Item resultingItem, RecipeRow... rows){
         CraftingRecipe result = new CraftingRecipe(resultingItem, rows);
@@ -116,7 +130,7 @@ public class ScriptCraftPlugin extends Plugin implements PluginListener, Command
     /*
       groupmod permission add visitors canary.jsp
       groupmod permission add visitors canary.command.jsp
-     */
+    */
     @Command(
              aliases = { "jsp" },
              description = "Run javascript-provided command",

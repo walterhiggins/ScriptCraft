@@ -23,9 +23,13 @@ exports.on = function(
   }
   
   var result = { };
-  eventExecutor = new cmDispatcher( {
-    execute: function (l, evt) {
-      handler.call(result, evt );
+  eventExecutor = __plugin.getDispatcher( function(l,e){ 
+    try { 
+      handler.call(result, e); 
+    } catch ( error ){
+      console.log('Error while executing handler:' + handler + 
+		  ' for event type:' + eventType + 
+		  ' error: ' + error);
     }
   });
   /* 
@@ -36,8 +40,15 @@ exports.on = function(
    The workaround is to make the ScriptCraftPlugin java class a Listener.
    Should only unregister() registered plugins in ScriptCraft js code.
    */
+  try {
+    // nashorn
+    eventType = eventType.class;
+  } catch ( e ){
+    // non-nashorn
+    eventType = eventType;
+  }
   regd = new cmPluginListener({});
-  cmHookExecutor.registerHook(regd, __plugin, eventType.class, eventExecutor, priority);
+  cmHookExecutor.registerHook(regd, __plugin, eventType, eventExecutor, priority);
   result.unregister = function(){
     cmHookExecutor.unregisterPluginListener(regd);
   };
