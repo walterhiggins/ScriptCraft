@@ -3,6 +3,9 @@ var cmRecipe = cm.api.inventory.recipes.CraftingRecipe;
 var cmRecipeRow = cm.api.inventory.recipes.RecipeRow;
 
 function addRecipe( recipe ){
+  return server.addRecipe( createRecipe( recipe ) );
+}
+function createRecipe( recipe ){
   if (!recipe){
     return null;
   }
@@ -32,5 +35,6 @@ function addRecipe( recipe ){
 function removeRecipe( recipe ){
   server.removeRecipe( recipe );
 }
+exports.create = createRecipe;
 exports.add = addRecipe;
 exports.remove = removeRecipe;
