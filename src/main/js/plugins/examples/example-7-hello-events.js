@@ -93,11 +93,17 @@ Update: Since version 2.0.8 the above code can be replaced by the more succinct:
     });
     
 ***/
-// wph 20140927 - event handler differs depending on framework.
+// wph 20140927 - event handler registration differs depending on framework.
 
-var onJoin = __plugin.canary ? events.connection : events.playerJoin;
-onJoin( function( event ) {
+function onJoin( event ) {
   if ( isOp(event.player) ) {
     echo( event.player, 'Welcome to ' + __plugin );
   }
-});
+}
+if (__plugin.canary){
+  // canarymod
+  events.connection( onJoin );
+} else {
+  // bukkit
+  events.playerJoin( onJoin );
+}
