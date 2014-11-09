@@ -20,34 +20,33 @@ players connect to a Minecraft Server on the internet or locally
 
 ## Installation
 
-CraftBukkit is a version of the Minecraft server software which allows
+CanaryMod is a version of the Minecraft server software which allows
 easy addition of 'Mods' and extensions to Minecraft. ScriptCraft is a
-'Mod' for use with CraftBukkit.  Adding Mods to Minecraft can be
-difficult but CraftBukkit makes it easy.  Follow these steps to
+'Mod' for use with CanaryMod.  Adding Mods to Minecraft can be
+difficult but CanaryMod makes it easy.  Follow these steps to
 Install ScriptCraft on your computer...
 
-1. [Download and install CraftBukkit][dlbuk2] (choose either Recommended, Beta or Development) . Then follow the [Bukkit
-   Installation Instructions][bii]. (Tip: You can grab the very latest
-   version of bukkit from the [alternative versions list][dlbuk2])
+1. [Download and install CanaryMod][dlcm] (choose either Recommended, Beta or Development) . Then follow the [CanaryMod
+   Installation Instructions][cmadmin]. 
 
-2. Start the CraftBukkit server, then once it has started up, stop it
-   by typing 'stop'. If you go to the craftbukkit folder (see step 1) you
+2. Start the CanaryMod server, then once it has started up, stop it
+   by typing 'stop'. If you go to the CanaryMod folder (see step 1) you
    should see some new files and subfolders.
 
 3. [Download the latest version of the ScriptCraft Mod][sc-plugin]. Then copy the ScriptCraft.jar file to the
-   `craftbukkit/plugins` folder (This folder won't be created until you run Bukkit for the first time (see previous step).
+   `plugins` folder (This folder won't be created until you run CanaryMod for the first time (see previous step).
 
-4. Start up the craftbukkit server again (see [instructions for starting the server][bii]).
+4. Start up the CanaryMod server again (see [instructions for starting the server][cmadmin]).
 
-5. In the CraftBukkit command window type `op {your_username}` and hit
+5. In the CanaryMod command window type `op {your_username}` and hit
    enter, replacing {your_username} with your own minecraft
    username. This will give you `operator` access meaning you can perform
    more commands than are normally available in Minecraft.  You should
    make yourself a server operator (Server operators have full privileges
-   for the server) permanently by editing the craftbukkit/ops.txt file
+   for the server) permanently by editing the ops.txt file
    and adding your username (one username per line).
 
-6. In the CraftBukkit command window type `js 1 + 1` and hit enter. You should see `> 2` .
+6. In the CanaryMod command window type `js 1 + 1` and hit enter. You should see `> 2` .
 
 ... Congratulations! You just installed your own Minecraft Server with 
 the ScriptCraft Mod and are now ready to begin programming in Minecraft.
@@ -62,9 +61,9 @@ interactive web sites and many other applications.
 
 ## Configuring your Server (optional)
 
-Once you've installed CraftBukkit, depending on your specific needs,
+Once you've installed CanaryMod, depending on your specific needs,
 you might want to consider setting the following properties in the
-`server.properties` file...
+`server.properties` or `world.properties` files...
 
     # completely flat worlds are best for building from scratch
     level-type=FLAT
@@ -103,8 +102,8 @@ Minecraft server and are ready to connect ...
 4. Type any name you like in the name field then type `localhost` in the 
 address field. `localhost` is a special internet address that points to 
 your own computer.
-5. Click 'Join Server' to join the craftbukkit server. If the version
-of Minecraft is incompatible with the version of CraftBukkit you will
+5. Click 'Join Server' to join the server. If the version
+of Minecraft is incompatible with the version of the server you will
 not be able to connect to the server. To fix this, you can create a
 Minecraft profile in your client. Profiles let you decide which
 version of Minecraft client you want to run so that your client and
@@ -152,7 +151,7 @@ value like this...
 The `var` keyword is only needed when you first create the variable. Now 
 execute this command...
 
-    /js echo( location ) 
+    /js echo( self, location ) 
 
 ...and it displays...
 
@@ -163,11 +162,11 @@ the variables you'll create in your in-game commands and scripts, there
 are handy *free* variables created for you by ScriptCraft. One such variable is 
 `self`, it contains information about the current player (that's you)...
 
-    /js echo ( self )
+    /js echo ( self, self.name )
     
-... displays the following...
+... displays something like the following...
 
-    CraftPlayer{name=walterh}
+    walterh
 
 ... for me but the message displayed will be different for every player.
 
@@ -181,7 +180,7 @@ looking at the building functions let's look at the `echo()` function.
 `echo()` - as its name implies - will echo back at you whatever you
 tell it. For example, type ...
    
-    /js echo('Hello')
+    /js echo( self, 'Hello')
 
 ... and the game will display...
 
@@ -189,7 +188,7 @@ tell it. For example, type ...
 
 ... type ...
 
-    /js echo( 5 + 7 )
+    /js echo( self, 5 + 7 )
 
 ... and the game will display...
 
@@ -199,7 +198,7 @@ tell it. For example, type ...
 don't recommend it. Homework and Minecraft don't mix! The `echo()` 
 function will display anything you tell it to - Text, Numbers and other types...
 
-    /js echo( new Date() )
+    /js echo( self, new Date() )
 
 ... prints today's date. If the statement above looks confusing - don't 
 worry - `new Date()` creates a new date object - I'll talk about objects 
@@ -466,12 +465,12 @@ Once you've installed Notepad++, Launch it, create a new file and type the follo
 
 ```javascript
 exports.greet = function( player ) {
-    player.sendMessage('Hi ' + player.name);
+    echo( player, 'Hi ' + player.name);
 }
 ```
 
 ... then save the file in a new directory
-`craftbukkit/plugins/scriptcraft/plugins/{your_name}` (replace
+`scriptcraft/plugins/{your_name}` (replace
 {your_name} with your own name) and call the file `greet.js` (be sure
 to change the file-type option to '*.* All Files' when saving or
 NotePad++ will add a '.txt' extension to the filename. Now switch back
@@ -492,7 +491,7 @@ loaded. Try it out by typing this command...
 minecraft username. Congratulations - You've just written your very
 first Minecraft Mod! With ScriptCraft installed, writing Minecraft
 Mods is as simple as writing a new javascript function and saving it
-in a file in the craftbukkit/plugins/scriptcraft/plugins
+in a file in the scriptcraft/plugins
 directory. This function will now be avaible every time you launch
 minecraft. This is a deliberately trivial minecraft mod but the
 principles are the same when creating more complex mods.
@@ -507,17 +506,17 @@ one or more functions, objects or variables. For example...
 #### thrower.js
 
 ```javascript
-exports.egg = function(player){
-    player.throwEgg();
+exports.boo = function(player){
+  echo( player, 'Boo!');
 }
-exports.snowball = function(player){
-    player.throwSnowball();
+exports.yo = function(player){
+  echo( player, 'Yo!');
 }
 ```
 
-... is a plugin which provides 2 javascript functions called `egg()`
-and `snowball()` which can be invoked from the in-game prompt like
-this `/js egg(self)` or `/js snowball(self)`.
+... is a plugin which provides 2 javascript functions called `boo()`
+and `yo()` which can be invoked from the in-game prompt like
+this `/js boo(self)` or `/js yo(self)`.
 
 ## Parameters
 If you want to change the `greet()` function so that it displays a
@@ -532,7 +531,7 @@ Change the `greet()` function so that it looks like this...
 
 ```javascript
 exports.greet = function ( greeting , player) {
-    player.sendMessage( greeting + player.name );
+    echo( player, greeting + player.name );
 }
 ```
 
@@ -599,6 +598,8 @@ things...
 compare the ages of your friends or siblings to your own age.
 
 ## More fun with `true` or `false`
+TODO: This needs to be changed for CanaryMod
+
 You can find out if you can Fly in minecraft by typing the following statement...
 
     /js self.allowFlight 
@@ -633,7 +634,7 @@ expected...
 ... This statement won't work as expected - it will give an Error
 message. This is because sometimes we can read variables but we can't
 change them the same way we read them (this is because of how
-Javascript, Java and the CraftBukkit API work together). To turn on or
+Javascript, Java and the CanaryMod API work together). To turn on or
 off the spawning of monsters, type the following...
 
     /js self.location.world.setSpawnFlags(false, true)
@@ -644,8 +645,8 @@ whether or not Animals can spawn. (SIDENOTE: You may be wondering how
 to change other aspects of the Minecraft game - pretty much all
 aspects of the game can be changed. Changes are made using what are
 called `API` calls - these are calls to functions and methods in
-Minecraft - you can read more about these on the [CraftBukkit API
-Reference][cbapi].)
+Minecraft - you can read more about these on the [CanaryMod API
+Reference][cmapi].)
 
 ## ...and Again, and Again, and Again,...
 
@@ -686,26 +687,24 @@ connnected to a server, the worlds of a server and so on.
 
 At the in-game command prompt type the following then hit Enter...
 
-    /js for (var i = 0;i < server.onlinePlayers.length; i++){ server.onlinePlayers[i].sendMessage('Hi!'); }
+    /js var utils = require('utils');
+    /js var players = utils.players();
+    /js for (var i = 0;i < players.length; i++){ echo(players[i], 'Hi!'); }
 
 ... Lets look at these statements in more detail. We had to enter the
 statements on a single line at the in-game command prompt but the
 statements could be written like this...
 
 ```javascript
-var players = server.onlinePlayers;
-var player;
-var i;
-for ( i = 0; i < players.length; i++ ) {
-    player = players[i];
-    player.sendMessage( 'Hi!' );
+var utils = require('utils');
+var players = utils.players();
+for (var i = 0;i < players.length; i++) { 
+  echo(players[i], 'Hi!'); 
 }
 ```
 
-... On the first line, a new variable `players` is created from the
-server object's onlinePlayers property. `players` is more concise and
-easier to type than the long-winded `server.onlinePlayers`.  On the
-fourth line, the for loop is declared, a counter variable `i` is set
+... On the 2nd line, a new variable `players` is created and assigned a value by calling utils.players(). 
+On the next line, the for loop is declared, a counter variable `i` is set
 to 0 (zero - arrays in javascript start at 0 not 1) and each time
 around the loop is tested to see if it's less than the number of
 players online. At the end of each run around the loop the `i`
@@ -730,18 +729,19 @@ TextWrangler or your editor of choice) and add the following code at
 the bottom of the file...
 
 ```javascript
+var utils = require('utils');
 exports.hiAll = function () {
-    var players = server.onlinePlayers,
-        player,
-        i;
-    for ( i = 0; i < players.length; i++) {
-        player = players[i];
-        player.sendMessage( 'Hi!' );
-    }
+  var players = utils.players();
+    player,
+    i;
+  for ( i = 0; i < players.length; i++) {
+    player = players[i];
+    echo( player, 'Hi!' );
+  }
 }
 ```
 
-... save the file, at the in-game command prompt type `reload` and
+... save the file, at the in-game command prompt type `js refresh()` and
 then type `/js hiAll()`. This will send the message `Hi!` to all of
 the players connected to your server. You've done this using a `for`
 loop and arrays. Arrays and `for` loops are used heavily in all types
@@ -849,7 +849,7 @@ utils.foreach( server.onlinePlayers, function( player ) {
 
 ### Exercise
 Try changing the above function so that different sounds are played
-instead of a Cat's Meow.  You'll need to lookup the [CraftBukkit API's
+instead of a Cat's Meow.  You'll need to lookup the [CanaryMod API's
 Sound class][soundapi] to see all of the possible sounds that can be
 played.
 
@@ -1230,23 +1230,24 @@ covered here. If you want to dive deeper into programming and modding
 minecraft, I recommend reading the accompanying [ScriptCraft API
 reference][api] which covers all of the ScriptCraft functions, objects
 and methods. I also recommend reading the source code to some of the
-existing scriptcraft add-ons, the *chat* module (
-`scriptcraft/plugins/chat/color.js` ) is a good place to start, followed by
-[Anatomy of a ScriptCraft Plug-in][ap].  The online [Craftbukkit API
-Reference][cbapi] provides lots of valuable information about the
+existing scriptcraft plugins, followed by
+[Anatomy of a ScriptCraft Plug-in][ap].  The online [CanaryMod API
+Reference][cmapi] provides lots of valuable information about the
 different objects and methods available for use by ScriptCraft.
 
 
-[buk]: http://wiki.bukkit.org/Setting_up_a_server
+[cmadmin]: http://canarymod.net/books/canarymod-admin-guide
 [dlbuk2]: http://dl.bukkit.org/downloads/craftbukkit/
+[dlcm]: http://canarymod.net/releases
 [bii]: http://wiki.bukkit.org/Setting_up_a_server
 [sc-plugin]: http://scriptcraftjs.org/download/
 [ce]: http://www.codecademy.com/
 [mcdv]: http://www.minecraftwiki.net/wiki/Data_values
 [np]: http://notepad-plus-plus.org/
 [cbapi]: http://jd.bukkit.org/beta/apidocs/
+[cmapi]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/
 [boole]: http://en.wikipedia.org/wiki/George_Boole
-[soundapi]: http://jd.bukkit.org/beta/apidocs/org/bukkit/Sound.html
+[soundapi]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/world/effects/SoundEffect.Type.html
 [ap]: Anatomy-of-a-Plugin.md
 [api]: API-Reference.md
 [twl]: http://www.barebones.com/products/textwrangler/
