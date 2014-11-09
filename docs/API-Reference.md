@@ -48,8 +48,167 @@ Walter Higgins
  * [console global variable](#console-global-variable)
    * [Example](#example)
    * [Using string substitutions](#using-string-substitutions)
- * [Events Helper Module](#events-helper-module)
+ * [Events Helper Module (bukkit version)](#events-helper-module-bukkit-version)
    * [Usage](#usage)
+   * [events.weatherChange()](#eventsweatherchange)
+   * [events.lightningStrike()](#eventslightningstrike)
+   * [events.thunderChange()](#eventsthunderchange)
+   * [events.vehicleMove()](#eventsvehiclemove)
+   * [events.vehicleDestroy()](#eventsvehicledestroy)
+   * [events.vehicleExit()](#eventsvehicleexit)
+   * [events.vehicleEntityCollision()](#eventsvehicleentitycollision)
+   * [events.vehicleBlockCollision()](#eventsvehicleblockcollision)
+   * [events.vehicleEnter()](#eventsvehicleenter)
+   * [events.vehicleDamage()](#eventsvehicledamage)
+   * [events.vehicleUpdate()](#eventsvehicleupdate)
+   * [events.vehicleCreate()](#eventsvehiclecreate)
+   * [events.paintingBreak()](#eventspaintingbreak)
+   * [events.paintingBreakByEntity()](#eventspaintingbreakbyentity)
+   * [events.paintingPlace()](#eventspaintingplace)
+   * [events.enchantItem()](#eventsenchantitem)
+   * [events.prepareItemEnchant()](#eventsprepareitemenchant)
+   * [events.playerInteractEntity()](#eventsplayerinteractentity)
+   * [events.playerEggThrow()](#eventsplayereggthrow)
+   * [events.playerUnleashEntity()](#eventsplayerunleashentity)
+   * [events.playerInventory()](#eventsplayerinventory)
+   * [events.playerLevelChange()](#eventsplayerlevelchange)
+   * [events.playerPortal()](#eventsplayerportal)
+   * [events.playerItemConsume()](#eventsplayeritemconsume)
+   * [events.playerTeleport()](#eventsplayerteleport)
+   * [events.playerBedEnter()](#eventsplayerbedenter)
+   * [events.playerUnregisterChannel()](#eventsplayerunregisterchannel)
+   * [events.playerChat()](#eventsplayerchat)
+   * [events.playerShearEntity()](#eventsplayershearentity)
+   * [events.asyncPlayerChat()](#eventsasyncplayerchat)
+   * [events.playerDropItem()](#eventsplayerdropitem)
+   * [events.playerRegisterChannel()](#eventsplayerregisterchannel)
+   * [events.playerMove()](#eventsplayermove)
+   * [events.playerItemBreak()](#eventsplayeritembreak)
+   * [events.playerBucketEmpty()](#eventsplayerbucketempty)
+   * [events.playerStatisticIncrement()](#eventsplayerstatisticincrement)
+   * [events.playerToggleFlight()](#eventsplayertoggleflight)
+   * [events.playerItemHeld()](#eventsplayeritemheld)
+   * [events.playerAchievementAwarded()](#eventsplayerachievementawarded)
+   * [events.playerToggleSneak()](#eventsplayertogglesneak)
+   * [events.playerExpChange()](#eventsplayerexpchange)
+   * [events.playerPreLogin()](#eventsplayerprelogin)
+   * [events.playerJoin()](#eventsplayerjoin)
+   * [events.playerAnimation()](#eventsplayeranimation)
+   * [events.playerEditBook()](#eventsplayereditbook)
+   * [events.playerPickupItem()](#eventsplayerpickupitem)
+   * [events.playerChangedWorld()](#eventsplayerchangedworld)
+   * [events.playerFish()](#eventsplayerfish)
+   * [events.playerChatTabComplete()](#eventsplayerchattabcomplete)
+   * [events.playerRespawn()](#eventsplayerrespawn)
+   * [events.playerBedLeave()](#eventsplayerbedleave)
+   * [events.asyncPlayerPreLogin()](#eventsasyncplayerprelogin)
+   * [events.playerInteract()](#eventsplayerinteract)
+   * [events.playerBucketFill()](#eventsplayerbucketfill)
+   * [events.playerVelocity()](#eventsplayervelocity)
+   * [events.playerQuit()](#eventsplayerquit)
+   * [events.playerLogin()](#eventsplayerlogin)
+   * [events.playerKick()](#eventsplayerkick)
+   * [events.playerToggleSprint()](#eventsplayertogglesprint)
+   * [events.playerCommandPreprocess()](#eventsplayercommandpreprocess)
+   * [events.playerGameModeChange()](#eventsplayergamemodechange)
+   * [events.furnaceSmelt()](#eventsfurnacesmelt)
+   * [events.inventoryDrag()](#eventsinventorydrag)
+   * [events.craftItem()](#eventscraftitem)
+   * [events.furnaceBurn()](#eventsfurnaceburn)
+   * [events.inventoryOpen()](#eventsinventoryopen)
+   * [events.inventoryPickupItem()](#eventsinventorypickupitem)
+   * [events.inventoryMoveItem()](#eventsinventorymoveitem)
+   * [events.inventoryClick()](#eventsinventoryclick)
+   * [events.inventoryClose()](#eventsinventoryclose)
+   * [events.inventoryCreative()](#eventsinventorycreative)
+   * [events.inventory()](#eventsinventory)
+   * [events.prepareItemCraft()](#eventsprepareitemcraft)
+   * [events.furnaceExtract()](#eventsfurnaceextract)
+   * [events.brew()](#eventsbrew)
+   * [events.serverCommand()](#eventsservercommand)
+   * [events.serverListPing()](#eventsserverlistping)
+   * [events.serviceRegister()](#eventsserviceregister)
+   * [events.pluginDisable()](#eventsplugindisable)
+   * [events.remoteServerCommand()](#eventsremoteservercommand)
+   * [events.mapInitialize()](#eventsmapinitialize)
+   * [events.serviceUnregister()](#eventsserviceunregister)
+   * [events.pluginEnable()](#eventspluginenable)
+   * [events.playerDeath()](#eventsplayerdeath)
+   * [events.entityCreatePortal()](#eventsentitycreateportal)
+   * [events.entityCombust()](#eventsentitycombust)
+   * [events.sheepDyeWool()](#eventssheepdyewool)
+   * [events.expBottle()](#eventsexpbottle)
+   * [events.entityTame()](#eventsentitytame)
+   * [events.projectileLaunch()](#eventsprojectilelaunch)
+   * [events.entityDamage()](#eventsentitydamage)
+   * [events.itemSpawn()](#eventsitemspawn)
+   * [events.projectileHit()](#eventsprojectilehit)
+   * [events.foodLevelChange()](#eventsfoodlevelchange)
+   * [events.itemDespawn()](#eventsitemdespawn)
+   * [events.entityPortalEnter()](#eventsentityportalenter)
+   * [events.entityPortal()](#eventsentityportal)
+   * [events.entityTarget()](#eventsentitytarget)
+   * [events.entityDeath()](#eventsentitydeath)
+   * [events.sheepRegrowWool()](#eventssheepregrowwool)
+   * [events.entityShootBow()](#eventsentityshootbow)
+   * [events.creeperPower()](#eventscreeperpower)
+   * [events.entityCombustByBlock()](#eventsentitycombustbyblock)
+   * [events.entityBreakDoor()](#eventsentitybreakdoor)
+   * [events.entityDamageByEntity()](#eventsentitydamagebyentity)
+   * [events.entityUnleash()](#eventsentityunleash)
+   * [events.entityExplode()](#eventsentityexplode)
+   * [events.entityInteract()](#eventsentityinteract)
+   * [events.explosionPrime()](#eventsexplosionprime)
+   * [events.horseJump()](#eventshorsejump)
+   * [events.creatureSpawn()](#eventscreaturespawn)
+   * [events.entityCombustByEntity()](#eventsentitycombustbyentity)
+   * [events.entityDamageByBlock()](#eventsentitydamagebyblock)
+   * [events.entityTargetLivingEntity()](#eventsentitytargetlivingentity)
+   * [events.entityTeleport()](#eventsentityteleport)
+   * [events.playerLeashEntity()](#eventsplayerleashentity)
+   * [events.slimeSplit()](#eventsslimesplit)
+   * [events.pigZap()](#eventspigzap)
+   * [events.potionSplash()](#eventspotionsplash)
+   * [events.entityChangeBlock()](#eventsentitychangeblock)
+   * [events.entityPortalExit()](#eventsentityportalexit)
+   * [events.entityRegainHealth()](#eventsentityregainhealth)
+   * [events.entityBlockForm()](#eventsentityblockform)
+   * [events.blockSpread()](#eventsblockspread)
+   * [events.blockMultiPlace()](#eventsblockmultiplace)
+   * [events.notePlay()](#eventsnoteplay)
+   * [events.blockFade()](#eventsblockfade)
+   * [events.blockPlace()](#eventsblockplace)
+   * [events.blockPhysics()](#eventsblockphysics)
+   * [events.blockIgnite()](#eventsblockignite)
+   * [events.blockBreak()](#eventsblockbreak)
+   * [events.blockBurn()](#eventsblockburn)
+   * [events.blockFromTo()](#eventsblockfromto)
+   * [events.blockRedstone()](#eventsblockredstone)
+   * [events.blockPistonRetract()](#eventsblockpistonretract)
+   * [events.blockDispense()](#eventsblockdispense)
+   * [events.signChange()](#eventssignchange)
+   * [events.blockPistonExtend()](#eventsblockpistonextend)
+   * [events.blockCanBuild()](#eventsblockcanbuild)
+   * [events.blockGrow()](#eventsblockgrow)
+   * [events.leavesDecay()](#eventsleavesdecay)
+   * [events.blockExp()](#eventsblockexp)
+   * [events.blockForm()](#eventsblockform)
+   * [events.blockDamage()](#eventsblockdamage)
+   * [events.hangingPlace()](#eventshangingplace)
+   * [events.hangingBreakByEntity()](#eventshangingbreakbyentity)
+   * [events.hangingBreak()](#eventshangingbreak)
+   * [events.structureGrow()](#eventsstructuregrow)
+   * [events.spawnChange()](#eventsspawnchange)
+   * [events.worldLoad()](#eventsworldload)
+   * [events.worldInit()](#eventsworldinit)
+   * [events.worldUnload()](#eventsworldunload)
+   * [events.worldSave()](#eventsworldsave)
+   * [events.chunkUnload()](#eventschunkunload)
+   * [events.chunkPopulate()](#eventschunkpopulate)
+   * [events.portalCreate()](#eventsportalcreate)
+   * [events.chunkLoad()](#eventschunkload)
+ * [Events Helper Module (canary version)](#events-helper-module-canary-version)
+   * [Usage](#usage-1)
    * [events.minecartActivate()](#eventsminecartactivate)
    * [events.villagerTradeUnlock()](#eventsvillagertradeunlock)
    * [events.mobTarget()](#eventsmobtarget)
@@ -59,23 +218,23 @@ Walter Higgins
    * [events.hangingEntityDestroy()](#eventshangingentitydestroy)
    * [events.vehicleCollision()](#eventsvehiclecollision)
    * [events.potionEffectApplied()](#eventspotioneffectapplied)
-   * [events.vehicleDestroy()](#eventsvehicledestroy)
-   * [events.vehicleEnter()](#eventsvehicleenter)
+   * [events.vehicleDestroy()](#eventsvehicledestroy-1)
+   * [events.vehicleEnter()](#eventsvehicleenter-1)
    * [events.damage()](#eventsdamage)
    * [events.entityMount()](#eventsentitymount)
-   * [events.slimeSplit()](#eventsslimesplit)
+   * [events.slimeSplit()](#eventsslimesplit-1)
    * [events.endermanDropBlock()](#eventsendermandropblock)
    * [events.itemTouchGround()](#eventsitemtouchground)
    * [events.entitySpawn()](#eventsentityspawn)
    * [events.endermanPickupBlock()](#eventsendermanpickupblock)
-   * [events.vehicleDamage()](#eventsvehicledamage)
+   * [events.vehicleDamage()](#eventsvehicledamage-1)
    * [events.entityLightningStruck()](#eventsentitylightningstruck)
    * [events.entityDespawn()](#eventsentitydespawn)
-   * [events.vehicleMove()](#eventsvehiclemove)
-   * [events.projectileHit()](#eventsprojectilehit)
-   * [events.entityDeath()](#eventsentitydeath)
-   * [events.entityTame()](#eventsentitytame)
-   * [events.vehicleExit()](#eventsvehicleexit)
+   * [events.vehicleMove()](#eventsvehiclemove-1)
+   * [events.projectileHit()](#eventsprojectilehit-1)
+   * [events.entityDeath()](#eventsentitydeath-1)
+   * [events.entityTame()](#eventsentitytame-1)
+   * [events.vehicleExit()](#eventsvehicleexit-1)
    * [events.dimensionSwitch()](#eventsdimensionswitch)
    * [events.foodLevel()](#eventsfoodlevel)
    * [events.bookEdit()](#eventsbookedit)
@@ -97,7 +256,7 @@ Walter Higgins
    * [events.playerRespawning()](#eventsplayerrespawning)
    * [events.craft()](#eventscraft)
    * [events.experience()](#eventsexperience)
-   * [events.signChange()](#eventssignchange)
+   * [events.signChange()](#eventssignchange-1)
    * [events.healthChange()](#eventshealthchange)
    * [events.disconnection()](#eventsdisconnection)
    * [events.gameModeChange()](#eventsgamemodechange)
@@ -110,16 +269,16 @@ Walter Higgins
    * [events.chat()](#eventschat)
    * [events.itemPickup()](#eventsitempickup)
    * [events.bedExit()](#eventsbedexit)
-   * [events.blockPlace()](#eventsblockplace)
+   * [events.blockPlace()](#eventsblockplace-1)
    * [events.toolBroken()](#eventstoolbroken)
    * [events.kick()](#eventskick)
-   * [events.playerDeath()](#eventsplayerdeath)
+   * [events.playerDeath()](#eventsplayerdeath-1)
    * [events.blockLeftClick()](#eventsblockleftclick)
    * [events.blockDestroy()](#eventsblockdestroy)
    * [events.bedEnter()](#eventsbedenter)
    * [events.signShow()](#eventssignshow)
-   * [events.inventory()](#eventsinventory)
-   * [events.playerMove()](#eventsplayermove)
+   * [events.inventory()](#eventsinventory-1)
+   * [events.playerMove()](#eventsplayermove-1)
    * [events.itemUse()](#eventsitemuse)
    * [events.ban()](#eventsban)
    * [events.statGained()](#eventsstatgained)
@@ -134,25 +293,25 @@ Walter Higgins
    * [events.portalDestroy()](#eventsportaldestroy)
    * [events.ignition()](#eventsignition)
    * [events.redstoneChange()](#eventsredstonechange)
-   * [events.weatherChange()](#eventsweatherchange)
+   * [events.weatherChange()](#eventsweatherchange-1)
    * [events.chunkCreation()](#eventschunkcreation)
    * [events.hopperTransfer()](#eventshoppertransfer)
-   * [events.chunkUnload()](#eventschunkunload)
-   * [events.blockGrow()](#eventsblockgrow)
+   * [events.chunkUnload()](#eventschunkunload-1)
+   * [events.blockGrow()](#eventsblockgrow-1)
    * [events.dispense()](#eventsdispense)
    * [events.blockDropXp()](#eventsblockdropxp)
    * [events.fireworkExplode()](#eventsfireworkexplode)
    * [events.leafDecay()](#eventsleafdecay)
    * [events.pistonExtend()](#eventspistonextend)
    * [events.noteBlockPlay()](#eventsnoteblockplay)
-   * [events.lightningStrike()](#eventslightningstrike)
+   * [events.lightningStrike()](#eventslightningstrike-1)
    * [events.decorate()](#eventsdecorate)
    * [events.explosion()](#eventsexplosion)
    * [events.tNTActivate()](#eventstntactivate)
    * [events.timeChange()](#eventstimechange)
    * [events.flow()](#eventsflow)
-   * [events.portalCreate()](#eventsportalcreate)
-   * [events.blockPhysics()](#eventsblockphysics)
+   * [events.portalCreate()](#eventsportalcreate-1)
+   * [events.blockPhysics()](#eventsblockphysics-1)
    * [events.playerCommand()](#eventsplayercommand)
    * [events.consoleCommand()](#eventsconsolecommand)
    * [events.commandBlockCommand()](#eventscommandblockcommand)
@@ -160,10 +319,10 @@ Walter Higgins
    * [events.permissionCheck()](#eventspermissioncheck)
    * [events.serverGuiStart()](#eventsserverguistart)
    * [events.unloadWorld()](#eventsunloadworld)
-   * [events.pluginDisable()](#eventsplugindisable)
-   * [events.pluginEnable()](#eventspluginenable)
+   * [events.pluginDisable()](#eventsplugindisable-1)
+   * [events.pluginEnable()](#eventspluginenable-1)
    * [events.serverTick()](#eventsservertick)
-   * [events.serverListPing()](#eventsserverlistping)
+   * [events.serverListPing()](#eventsserverlistping-1)
    * [events.serverShutdown()](#eventsservershutdown)
  * [Blocks Module](#blocks-module)
    * [Examples](#examples)
@@ -175,7 +334,7 @@ Walter Higgins
  * [Http Module](#http-module)
    * [http.request() function](#httprequest-function)
  * [sc-mqtt module](#sc-mqtt-module)
-   * [Usage](#usage-1)
+   * [Usage](#usage-2)
  * [Signs Module](#signs-module)
    * [signs.menu() function](#signsmenu-function)
    * [signs.getTargetedBy() function](#signsgettargetedby-function)
@@ -239,22 +398,22 @@ Walter Higgins
    * [Drone.hemisphere0() method](#dronehemisphere0-method)
    * [Drone.spiral_stairs() method](#dronespiral_stairs-method)
  * [Example Plugin #1 - A simple extension to Minecraft.](#example-plugin-1---a-simple-extension-to-minecraft)
-   * [Usage:](#usage-2)
- * [Example Plugin #2 - Making extensions available for all players.](#example-plugin-2---making-extensions-available-for-all-players)
    * [Usage:](#usage-3)
- * [Example Plugin #3 - Limiting use of commands to operators only.](#example-plugin-3---limiting-use-of-commands-to-operators-only)
+ * [Example Plugin #2 - Making extensions available for all players.](#example-plugin-2---making-extensions-available-for-all-players)
    * [Usage:](#usage-4)
- * [Example Plugin #4 - Using parameters in commands.](#example-plugin-4---using-parameters-in-commands)
+ * [Example Plugin #3 - Limiting use of commands to operators only.](#example-plugin-3---limiting-use-of-commands-to-operators-only)
    * [Usage:](#usage-5)
- * [Example Plugin #5 - Re-use - Using your own and others modules.](#example-plugin-5---re-use---using-your-own-and-others-modules)
+ * [Example Plugin #4 - Using parameters in commands.](#example-plugin-4---using-parameters-in-commands)
    * [Usage:](#usage-6)
- * [Example Plugin #6 - Re-use - Using 'utils' to get Player objects.](#example-plugin-6---re-use---using-utils-to-get-player-objects)
+ * [Example Plugin #5 - Re-use - Using your own and others modules.](#example-plugin-5---re-use---using-your-own-and-others-modules)
    * [Usage:](#usage-7)
+ * [Example Plugin #6 - Re-use - Using 'utils' to get Player objects.](#example-plugin-6---re-use---using-utils-to-get-player-objects)
+   * [Usage:](#usage-8)
  * [Example Plugin #7 - Listening for events, Greet players when they join the game.](#example-plugin-7---listening-for-events-greet-players-when-they-join-the-game)
  * [Arrows Plugin](#arrows-plugin)
-   * [Usage:](#usage-8)
+   * [Usage:](#usage-9)
  * [Spawn Plugin](#spawn-plugin)
-   * [Usage](#usage-9)
+   * [Usage](#usage-10)
  * [alias Plugin](#alias-plugin)
    * [Examples](#examples-2)
  * [Classroom Plugin](#classroom-plugin)
@@ -276,7 +435,7 @@ Walter Higgins
    * [Rules](#rules)
    * [Gameplay Mechanics](#gameplay-mechanics)
  * [Items module](#items-module)
-   * [Usage](#usage-10)
+   * [Usage](#usage-11)
 
 ## Modules in Scriptcraft
 
@@ -901,7 +1060,1278 @@ ScriptCraft uses Java's [String.format()][strfmt] so any string substitution ide
 [strfmt]: http://docs.oracle.com/javase/6/docs/api/java/lang/String.html#format(java.lang.String, java.lang.Object...)
 [webcons]: https://developer.mozilla.org/en-US/docs/Web/API/console
 
-## Events Helper Module
+## Events Helper Module (bukkit version)
+The Events helper module provides a suite of functions - one for each possible event.
+For example, the events.blockBreak() function is just a wrapper function which calls events.on(org.bukkit.event.block.BlockBreakEvent, callback, priority)
+This module is a convenience wrapper for easily adding new event handling functions in Javascript. 
+At the in-game or server-console prompt, players/admins can type `events.` and use TAB completion 
+to choose from any of the approx. 160 different event types to listen to.
+
+### Usage
+
+    events.blockBreak( function( event ) { 
+      echo( event.player, 'You broke a block!'); 
+    });
+
+The crucial difference is that the events module now has functions for each of the built-in events. The functions are accessible via TAB-completion so will help beginning programmers to explore the events at the server console window.
+
+### events.weatherChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [weather.WeatherChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/weather/WeatherChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.lightningStrike()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [weather.LightningStrikeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/weather/LightningStrikeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.thunderChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [weather.ThunderChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/weather/ThunderChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleMove()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleMoveEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleMoveEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleDestroy()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleDestroyEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleDestroyEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleExit()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleExitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleExitEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleEntityCollision()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleEntityCollisionEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleEntityCollisionEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleBlockCollision()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleBlockCollisionEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleBlockCollisionEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleEnter()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleEnterEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleEnterEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleDamage()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleDamageEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleDamageEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleUpdate()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleUpdateEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleUpdateEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleCreate()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleCreateEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleCreateEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.paintingBreak()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [painting.PaintingBreakEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/painting/PaintingBreakEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.paintingBreakByEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [painting.PaintingBreakByEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/painting/PaintingBreakByEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.paintingPlace()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [painting.PaintingPlaceEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/painting/PaintingPlaceEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.enchantItem()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [enchantment.EnchantItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/enchantment/EnchantItemEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.prepareItemEnchant()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [enchantment.PrepareItemEnchantEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/enchantment/PrepareItemEnchantEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerInteractEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerInteractEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerInteractEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerEggThrow()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerEggThrowEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerEggThrowEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerUnleashEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerUnleashEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerUnleashEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerInventory()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerInventoryEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerInventoryEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerLevelChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerLevelChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerLevelChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerPortal()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerPortalEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerPortalEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerItemConsume()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerItemConsumeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerItemConsumeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerTeleport()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerTeleportEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerTeleportEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerBedEnter()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerBedEnterEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerBedEnterEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerUnregisterChannel()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerUnregisterChannelEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerUnregisterChannelEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerChat()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerChatEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerChatEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerShearEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerShearEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerShearEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.asyncPlayerChat()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.AsyncPlayerChatEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/AsyncPlayerChatEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerDropItem()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerDropItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerDropItemEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerRegisterChannel()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerRegisterChannelEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerRegisterChannelEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerMove()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerMoveEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerMoveEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerItemBreak()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerItemBreakEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerItemBreakEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerBucketEmpty()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerBucketEmptyEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerBucketEmptyEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerStatisticIncrement()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerStatisticIncrementEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerStatisticIncrementEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerToggleFlight()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerToggleFlightEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerToggleFlightEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerItemHeld()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerItemHeldEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerItemHeldEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerAchievementAwarded()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerAchievementAwardedEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerAchievementAwardedEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerToggleSneak()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerToggleSneakEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerToggleSneakEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerExpChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerExpChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerExpChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerPreLogin()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerPreLoginEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerPreLoginEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerJoin()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerJoinEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerJoinEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerAnimation()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerAnimationEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerAnimationEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerEditBook()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerEditBookEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerEditBookEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerPickupItem()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerPickupItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerPickupItemEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerChangedWorld()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerChangedWorldEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerChangedWorldEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerFish()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerFishEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerFishEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerChatTabComplete()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerChatTabCompleteEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerChatTabCompleteEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerRespawn()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerRespawnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerRespawnEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerBedLeave()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerBedLeaveEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerBedLeaveEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.asyncPlayerPreLogin()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.AsyncPlayerPreLoginEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/AsyncPlayerPreLoginEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerInteract()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerInteractEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerInteractEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerBucketFill()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerBucketFillEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerBucketFillEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerVelocity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerVelocityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerVelocityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerQuit()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerQuitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerQuitEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerLogin()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerLoginEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerLoginEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerKick()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerKickEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerKickEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerToggleSprint()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerToggleSprintEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerToggleSprintEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerCommandPreprocess()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerCommandPreprocessEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerCommandPreprocessEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerGameModeChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerGameModeChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerGameModeChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.furnaceSmelt()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [inventory.FurnaceSmeltEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/FurnaceSmeltEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.inventoryDrag()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [inventory.InventoryDragEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryDragEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.craftItem()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [inventory.CraftItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/CraftItemEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.furnaceBurn()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [inventory.FurnaceBurnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/FurnaceBurnEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.inventoryOpen()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [inventory.InventoryOpenEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryOpenEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.inventoryPickupItem()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [inventory.InventoryPickupItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryPickupItemEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.inventoryMoveItem()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [inventory.InventoryMoveItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryMoveItemEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.inventoryClick()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [inventory.InventoryClickEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryClickEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.inventoryClose()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [inventory.InventoryCloseEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryCloseEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.inventoryCreative()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [inventory.InventoryCreativeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryCreativeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.inventory()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [inventory.InventoryEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.prepareItemCraft()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [inventory.PrepareItemCraftEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/PrepareItemCraftEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.furnaceExtract()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [inventory.FurnaceExtractEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/FurnaceExtractEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.brew()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [inventory.BrewEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/BrewEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.serverCommand()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.ServerCommandEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/ServerCommandEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.serverListPing()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.ServerListPingEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/ServerListPingEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.serviceRegister()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.ServiceRegisterEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/ServiceRegisterEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.pluginDisable()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.PluginDisableEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/PluginDisableEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.remoteServerCommand()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.RemoteServerCommandEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/RemoteServerCommandEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.mapInitialize()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.MapInitializeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/MapInitializeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.serviceUnregister()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.ServiceUnregisterEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/ServiceUnregisterEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.pluginEnable()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.PluginEnableEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/PluginEnableEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerDeath()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.PlayerDeathEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/PlayerDeathEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityCreatePortal()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityCreatePortalEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityCreatePortalEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityCombust()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityCombustEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityCombustEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.sheepDyeWool()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.SheepDyeWoolEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/SheepDyeWoolEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.expBottle()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.ExpBottleEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ExpBottleEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityTame()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityTameEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityTameEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.projectileLaunch()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.ProjectileLaunchEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ProjectileLaunchEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityDamage()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityDamageEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDamageEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.itemSpawn()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.ItemSpawnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ItemSpawnEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.projectileHit()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.ProjectileHitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ProjectileHitEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.foodLevelChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.FoodLevelChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/FoodLevelChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.itemDespawn()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.ItemDespawnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ItemDespawnEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityPortalEnter()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityPortalEnterEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityPortalEnterEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityPortal()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityPortalEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityPortalEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityTarget()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityTargetEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityTargetEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityDeath()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityDeathEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDeathEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.sheepRegrowWool()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.SheepRegrowWoolEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/SheepRegrowWoolEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityShootBow()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityShootBowEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityShootBowEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.creeperPower()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.CreeperPowerEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/CreeperPowerEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityCombustByBlock()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityCombustByBlockEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityCombustByBlockEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityBreakDoor()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityBreakDoorEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityBreakDoorEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityDamageByEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityDamageByEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDamageByEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityUnleash()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityUnleashEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityUnleashEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityExplode()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityExplodeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityExplodeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityInteract()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityInteractEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityInteractEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.explosionPrime()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.ExplosionPrimeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ExplosionPrimeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.horseJump()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.HorseJumpEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/HorseJumpEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.creatureSpawn()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.CreatureSpawnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/CreatureSpawnEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityCombustByEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityCombustByEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityCombustByEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityDamageByBlock()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityDamageByBlockEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDamageByBlockEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityTargetLivingEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityTargetLivingEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityTargetLivingEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityTeleport()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityTeleportEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityTeleportEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerLeashEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.PlayerLeashEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/PlayerLeashEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.slimeSplit()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.SlimeSplitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/SlimeSplitEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.pigZap()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.PigZapEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/PigZapEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.potionSplash()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.PotionSplashEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/PotionSplashEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityChangeBlock()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityChangeBlockEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityChangeBlockEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityPortalExit()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityPortalExitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityPortalExitEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityRegainHealth()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityRegainHealthEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityRegainHealthEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityBlockForm()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.EntityBlockFormEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/EntityBlockFormEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockSpread()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockSpreadEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockSpreadEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockMultiPlace()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockMultiPlaceEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockMultiPlaceEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.notePlay()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.NotePlayEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/NotePlayEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockFade()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockFadeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockFadeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockPlace()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockPlaceEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockPlaceEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockPhysics()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockPhysicsEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockPhysicsEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockIgnite()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockIgniteEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockIgniteEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockBreak()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockBreakEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockBreakEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockBurn()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockBurnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockBurnEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockFromTo()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockFromToEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockFromToEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockRedstone()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockRedstoneEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockRedstoneEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockPistonRetract()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockPistonRetractEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockPistonRetractEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockDispense()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockDispenseEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockDispenseEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.signChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.SignChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/SignChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockPistonExtend()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockPistonExtendEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockPistonExtendEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockCanBuild()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockCanBuildEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockCanBuildEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockGrow()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockGrowEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockGrowEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.leavesDecay()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.LeavesDecayEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/LeavesDecayEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockExp()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockExpEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockExpEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockForm()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockFormEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockFormEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockDamage()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockDamageEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockDamageEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.hangingPlace()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [hanging.HangingPlaceEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/hanging/HangingPlaceEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.hangingBreakByEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [hanging.HangingBreakByEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/hanging/HangingBreakByEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.hangingBreak()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [hanging.HangingBreakEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/hanging/HangingBreakEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.structureGrow()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.StructureGrowEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/StructureGrowEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.spawnChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.SpawnChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/SpawnChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.worldLoad()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.WorldLoadEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/WorldLoadEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.worldInit()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.WorldInitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/WorldInitEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.worldUnload()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.WorldUnloadEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/WorldUnloadEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.worldSave()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.WorldSaveEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/WorldSaveEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.chunkUnload()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.ChunkUnloadEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ChunkUnloadEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.chunkPopulate()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.ChunkPopulateEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ChunkPopulateEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.portalCreate()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.PortalCreateEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/PortalCreateEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.chunkLoad()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.ChunkLoadEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ChunkLoadEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+## Events Helper Module (canary version)
 The Events helper module provides a suite of functions - one for each possible event.
 For example, the events.blockDestroy() function is just a wrapper function which calls events.on(net.canarymod.hook.player.BlockDestroyHook, callback, priority)
 This module is a convenience wrapper for easily adding new event handling functions in Javascript. 
@@ -920,7 +2350,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.MinecartActivateHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/MinecartActivateHook.html) is fired
+ * callback - A function which is called whenever the [entity.MinecartActivateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/MinecartActivateHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -928,7 +2358,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.VillagerTradeUnlockHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/VillagerTradeUnlockHook.html) is fired
+ * callback - A function which is called whenever the [entity.VillagerTradeUnlockHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VillagerTradeUnlockHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -936,7 +2366,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.MobTargetHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/MobTargetHook.html) is fired
+ * callback - A function which is called whenever the [entity.MobTargetHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/MobTargetHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -944,7 +2374,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.ChickenLayEggHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ChickenLayEggHook.html) is fired
+ * callback - A function which is called whenever the [entity.ChickenLayEggHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/ChickenLayEggHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -952,7 +2382,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.PotionEffectFinishHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/PotionEffectFinishHook.html) is fired
+ * callback - A function which is called whenever the [entity.PotionEffectFinishHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/PotionEffectFinishHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -960,7 +2390,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityMoveHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityMoveHook.html) is fired
+ * callback - A function which is called whenever the [entity.EntityMoveHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityMoveHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -968,7 +2398,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.HangingEntityDestroyHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/HangingEntityDestroyHook.html) is fired
+ * callback - A function which is called whenever the [entity.HangingEntityDestroyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/HangingEntityDestroyHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -976,7 +2406,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.VehicleCollisionHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/VehicleCollisionHook.html) is fired
+ * callback - A function which is called whenever the [entity.VehicleCollisionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleCollisionHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -984,7 +2414,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.PotionEffectAppliedHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/PotionEffectAppliedHook.html) is fired
+ * callback - A function which is called whenever the [entity.PotionEffectAppliedHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/PotionEffectAppliedHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -992,7 +2422,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.VehicleDestroyHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/VehicleDestroyHook.html) is fired
+ * callback - A function which is called whenever the [entity.VehicleDestroyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleDestroyHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1000,7 +2430,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.VehicleEnterHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/VehicleEnterHook.html) is fired
+ * callback - A function which is called whenever the [entity.VehicleEnterHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleEnterHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1008,7 +2438,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.DamageHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/DamageHook.html) is fired
+ * callback - A function which is called whenever the [entity.DamageHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/DamageHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1016,7 +2446,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityMountHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityMountHook.html) is fired
+ * callback - A function which is called whenever the [entity.EntityMountHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityMountHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1024,7 +2454,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.SlimeSplitHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/SlimeSplitHook.html) is fired
+ * callback - A function which is called whenever the [entity.SlimeSplitHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/SlimeSplitHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1032,7 +2462,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EndermanDropBlockHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EndermanDropBlockHook.html) is fired
+ * callback - A function which is called whenever the [entity.EndermanDropBlockHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EndermanDropBlockHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1040,7 +2470,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.ItemTouchGroundHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ItemTouchGroundHook.html) is fired
+ * callback - A function which is called whenever the [entity.ItemTouchGroundHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/ItemTouchGroundHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1048,7 +2478,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntitySpawnHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntitySpawnHook.html) is fired
+ * callback - A function which is called whenever the [entity.EntitySpawnHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntitySpawnHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1056,7 +2486,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EndermanPickupBlockHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EndermanPickupBlockHook.html) is fired
+ * callback - A function which is called whenever the [entity.EndermanPickupBlockHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EndermanPickupBlockHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1064,7 +2494,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.VehicleDamageHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/VehicleDamageHook.html) is fired
+ * callback - A function which is called whenever the [entity.VehicleDamageHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleDamageHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1072,7 +2502,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityLightningStruckHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityLightningStruckHook.html) is fired
+ * callback - A function which is called whenever the [entity.EntityLightningStruckHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityLightningStruckHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1080,7 +2510,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityDespawnHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDespawnHook.html) is fired
+ * callback - A function which is called whenever the [entity.EntityDespawnHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityDespawnHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1088,7 +2518,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.VehicleMoveHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/VehicleMoveHook.html) is fired
+ * callback - A function which is called whenever the [entity.VehicleMoveHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleMoveHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1096,7 +2526,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.ProjectileHitHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ProjectileHitHook.html) is fired
+ * callback - A function which is called whenever the [entity.ProjectileHitHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/ProjectileHitHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1104,7 +2534,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityDeathHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDeathHook.html) is fired
+ * callback - A function which is called whenever the [entity.EntityDeathHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityDeathHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1112,7 +2542,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityTameHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityTameHook.html) is fired
+ * callback - A function which is called whenever the [entity.EntityTameHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityTameHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1120,7 +2550,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.VehicleExitHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/VehicleExitHook.html) is fired
+ * callback - A function which is called whenever the [entity.VehicleExitHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleExitHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1128,7 +2558,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.DimensionSwitchHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/DimensionSwitchHook.html) is fired
+ * callback - A function which is called whenever the [entity.DimensionSwitchHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/DimensionSwitchHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1136,7 +2566,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.FoodLevelHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/FoodLevelHook.html) is fired
+ * callback - A function which is called whenever the [player.FoodLevelHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/FoodLevelHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1144,7 +2574,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.BookEditHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/BookEditHook.html) is fired
+ * callback - A function which is called whenever the [player.BookEditHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BookEditHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1152,7 +2582,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerListEntryHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerListEntryHook.html) is fired
+ * callback - A function which is called whenever the [player.PlayerListEntryHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerListEntryHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1160,7 +2590,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.EatHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/EatHook.html) is fired
+ * callback - A function which is called whenever the [player.EatHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/EatHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1168,7 +2598,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerIdleHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerIdleHook.html) is fired
+ * callback - A function which is called whenever the [player.PlayerIdleHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerIdleHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1176,7 +2606,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.EnchantHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/EnchantHook.html) is fired
+ * callback - A function which is called whenever the [player.EnchantHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/EnchantHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1184,7 +2614,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerArmSwingHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerArmSwingHook.html) is fired
+ * callback - A function which is called whenever the [player.PlayerArmSwingHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerArmSwingHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1192,7 +2622,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.TeleportHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/TeleportHook.html) is fired
+ * callback - A function which is called whenever the [player.TeleportHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/TeleportHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1200,7 +2630,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.AnvilUseHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/AnvilUseHook.html) is fired
+ * callback - A function which is called whenever the [player.AnvilUseHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/AnvilUseHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1208,7 +2638,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PortalUseHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PortalUseHook.html) is fired
+ * callback - A function which is called whenever the [player.PortalUseHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PortalUseHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1216,7 +2646,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.FoodSaturationHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/FoodSaturationHook.html) is fired
+ * callback - A function which is called whenever the [player.FoodSaturationHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/FoodSaturationHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1224,7 +2654,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.ConnectionHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ConnectionHook.html) is fired
+ * callback - A function which is called whenever the [player.ConnectionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ConnectionHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1232,7 +2662,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerRespawnedHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerRespawnedHook.html) is fired
+ * callback - A function which is called whenever the [player.PlayerRespawnedHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerRespawnedHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1240,7 +2670,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.ArmorBrokenHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ArmorBrokenHook.html) is fired
+ * callback - A function which is called whenever the [player.ArmorBrokenHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ArmorBrokenHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1248,7 +2678,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.LevelUpHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/LevelUpHook.html) is fired
+ * callback - A function which is called whenever the [player.LevelUpHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/LevelUpHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1256,7 +2686,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.BlockRightClickHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/BlockRightClickHook.html) is fired
+ * callback - A function which is called whenever the [player.BlockRightClickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BlockRightClickHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1264,7 +2694,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.ItemDropHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ItemDropHook.html) is fired
+ * callback - A function which is called whenever the [player.ItemDropHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ItemDropHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1272,7 +2702,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerRespawningHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerRespawningHook.html) is fired
+ * callback - A function which is called whenever the [player.PlayerRespawningHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerRespawningHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1280,7 +2710,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.CraftHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/CraftHook.html) is fired
+ * callback - A function which is called whenever the [player.CraftHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/CraftHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1288,7 +2718,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.ExperienceHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ExperienceHook.html) is fired
+ * callback - A function which is called whenever the [player.ExperienceHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ExperienceHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1296,7 +2726,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.SignChangeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/SignChangeHook.html) is fired
+ * callback - A function which is called whenever the [player.SignChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/SignChangeHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1304,7 +2734,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.HealthChangeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/HealthChangeHook.html) is fired
+ * callback - A function which is called whenever the [player.HealthChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/HealthChangeHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1312,7 +2742,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.DisconnectionHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/DisconnectionHook.html) is fired
+ * callback - A function which is called whenever the [player.DisconnectionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/DisconnectionHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1320,7 +2750,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.GameModeChangeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/GameModeChangeHook.html) is fired
+ * callback - A function which is called whenever the [player.GameModeChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/GameModeChangeHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1328,7 +2758,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PreConnectionHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PreConnectionHook.html) is fired
+ * callback - A function which is called whenever the [player.PreConnectionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PreConnectionHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1336,7 +2766,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.VillagerTradeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/VillagerTradeHook.html) is fired
+ * callback - A function which is called whenever the [player.VillagerTradeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/VillagerTradeHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1344,7 +2774,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.ReturnFromIdleHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ReturnFromIdleHook.html) is fired
+ * callback - A function which is called whenever the [player.ReturnFromIdleHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ReturnFromIdleHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1352,7 +2782,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.SlotClickHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/SlotClickHook.html) is fired
+ * callback - A function which is called whenever the [player.SlotClickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/SlotClickHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1360,7 +2790,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.EntityRightClickHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/EntityRightClickHook.html) is fired
+ * callback - A function which is called whenever the [player.EntityRightClickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/EntityRightClickHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1368,7 +2798,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.FoodExhaustionHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/FoodExhaustionHook.html) is fired
+ * callback - A function which is called whenever the [player.FoodExhaustionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/FoodExhaustionHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1376,7 +2806,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.ChatHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ChatHook.html) is fired
+ * callback - A function which is called whenever the [player.ChatHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ChatHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1384,7 +2814,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.ItemPickupHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ItemPickupHook.html) is fired
+ * callback - A function which is called whenever the [player.ItemPickupHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ItemPickupHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1392,7 +2822,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.BedExitHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/BedExitHook.html) is fired
+ * callback - A function which is called whenever the [player.BedExitHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BedExitHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1400,7 +2830,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.BlockPlaceHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/BlockPlaceHook.html) is fired
+ * callback - A function which is called whenever the [player.BlockPlaceHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BlockPlaceHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1408,7 +2838,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.ToolBrokenHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ToolBrokenHook.html) is fired
+ * callback - A function which is called whenever the [player.ToolBrokenHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ToolBrokenHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1416,7 +2846,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.KickHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/KickHook.html) is fired
+ * callback - A function which is called whenever the [player.KickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/KickHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1424,7 +2854,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerDeathHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerDeathHook.html) is fired
+ * callback - A function which is called whenever the [player.PlayerDeathHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerDeathHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1432,7 +2862,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.BlockLeftClickHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/BlockLeftClickHook.html) is fired
+ * callback - A function which is called whenever the [player.BlockLeftClickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BlockLeftClickHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1440,7 +2870,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.BlockDestroyHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/BlockDestroyHook.html) is fired
+ * callback - A function which is called whenever the [player.BlockDestroyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BlockDestroyHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1448,7 +2878,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.BedEnterHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/BedEnterHook.html) is fired
+ * callback - A function which is called whenever the [player.BedEnterHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BedEnterHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1456,7 +2886,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.SignShowHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/SignShowHook.html) is fired
+ * callback - A function which is called whenever the [player.SignShowHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/SignShowHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1464,7 +2894,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.InventoryHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/InventoryHook.html) is fired
+ * callback - A function which is called whenever the [player.InventoryHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/InventoryHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1472,7 +2902,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerMoveHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerMoveHook.html) is fired
+ * callback - A function which is called whenever the [player.PlayerMoveHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerMoveHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1480,7 +2910,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.ItemUseHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/ItemUseHook.html) is fired
+ * callback - A function which is called whenever the [player.ItemUseHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ItemUseHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1488,7 +2918,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.BanHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/BanHook.html) is fired
+ * callback - A function which is called whenever the [player.BanHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BanHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1496,7 +2926,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.StatGainedHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/StatGainedHook.html) is fired
+ * callback - A function which is called whenever the [player.StatGainedHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/StatGainedHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1504,7 +2934,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.SmeltBeginHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/SmeltBeginHook.html) is fired
+ * callback - A function which is called whenever the [world.SmeltBeginHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/SmeltBeginHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1512,7 +2942,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.TreeGrowHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/TreeGrowHook.html) is fired
+ * callback - A function which is called whenever the [world.TreeGrowHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/TreeGrowHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1520,7 +2950,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.ChunkCreatedHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ChunkCreatedHook.html) is fired
+ * callback - A function which is called whenever the [world.ChunkCreatedHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/ChunkCreatedHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1528,7 +2958,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.LiquidDestroyHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/LiquidDestroyHook.html) is fired
+ * callback - A function which is called whenever the [world.LiquidDestroyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/LiquidDestroyHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1536,7 +2966,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.ChunkLoadedHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ChunkLoadedHook.html) is fired
+ * callback - A function which is called whenever the [world.ChunkLoadedHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/ChunkLoadedHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1544,7 +2974,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.PistonRetractHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/PistonRetractHook.html) is fired
+ * callback - A function which is called whenever the [world.PistonRetractHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/PistonRetractHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1552,7 +2982,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.SmeltHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/SmeltHook.html) is fired
+ * callback - A function which is called whenever the [world.SmeltHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/SmeltHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1560,7 +2990,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.BlockUpdateHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/BlockUpdateHook.html) is fired
+ * callback - A function which is called whenever the [world.BlockUpdateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/BlockUpdateHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1568,7 +2998,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.PortalDestroyHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/PortalDestroyHook.html) is fired
+ * callback - A function which is called whenever the [world.PortalDestroyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/PortalDestroyHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1576,7 +3006,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.IgnitionHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/IgnitionHook.html) is fired
+ * callback - A function which is called whenever the [world.IgnitionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/IgnitionHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1584,7 +3014,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.RedstoneChangeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/RedstoneChangeHook.html) is fired
+ * callback - A function which is called whenever the [world.RedstoneChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/RedstoneChangeHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1592,7 +3022,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.WeatherChangeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/WeatherChangeHook.html) is fired
+ * callback - A function which is called whenever the [world.WeatherChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/WeatherChangeHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1600,7 +3030,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.ChunkCreationHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ChunkCreationHook.html) is fired
+ * callback - A function which is called whenever the [world.ChunkCreationHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/ChunkCreationHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1608,7 +3038,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.HopperTransferHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/HopperTransferHook.html) is fired
+ * callback - A function which is called whenever the [world.HopperTransferHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/HopperTransferHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1616,7 +3046,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.ChunkUnloadHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ChunkUnloadHook.html) is fired
+ * callback - A function which is called whenever the [world.ChunkUnloadHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/ChunkUnloadHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1624,7 +3054,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.BlockGrowHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/BlockGrowHook.html) is fired
+ * callback - A function which is called whenever the [world.BlockGrowHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/BlockGrowHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1632,7 +3062,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.DispenseHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/DispenseHook.html) is fired
+ * callback - A function which is called whenever the [world.DispenseHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/DispenseHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1640,7 +3070,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.BlockDropXpHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/BlockDropXpHook.html) is fired
+ * callback - A function which is called whenever the [world.BlockDropXpHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/BlockDropXpHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1648,7 +3078,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.FireworkExplodeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/FireworkExplodeHook.html) is fired
+ * callback - A function which is called whenever the [world.FireworkExplodeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/FireworkExplodeHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1656,7 +3086,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.LeafDecayHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/LeafDecayHook.html) is fired
+ * callback - A function which is called whenever the [world.LeafDecayHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/LeafDecayHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1664,7 +3094,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.PistonExtendHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/PistonExtendHook.html) is fired
+ * callback - A function which is called whenever the [world.PistonExtendHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/PistonExtendHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1672,7 +3102,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.NoteBlockPlayHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/NoteBlockPlayHook.html) is fired
+ * callback - A function which is called whenever the [world.NoteBlockPlayHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/NoteBlockPlayHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1680,7 +3110,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.LightningStrikeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/LightningStrikeHook.html) is fired
+ * callback - A function which is called whenever the [world.LightningStrikeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/LightningStrikeHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1688,7 +3118,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.DecorateHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/DecorateHook.html) is fired
+ * callback - A function which is called whenever the [world.DecorateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/DecorateHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1696,7 +3126,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.ExplosionHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ExplosionHook.html) is fired
+ * callback - A function which is called whenever the [world.ExplosionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/ExplosionHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1704,7 +3134,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.TNTActivateHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/TNTActivateHook.html) is fired
+ * callback - A function which is called whenever the [world.TNTActivateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/TNTActivateHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1712,7 +3142,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.TimeChangeHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/TimeChangeHook.html) is fired
+ * callback - A function which is called whenever the [world.TimeChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/TimeChangeHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1720,7 +3150,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.FlowHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/FlowHook.html) is fired
+ * callback - A function which is called whenever the [world.FlowHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/FlowHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1728,7 +3158,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.PortalCreateHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/PortalCreateHook.html) is fired
+ * callback - A function which is called whenever the [world.PortalCreateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/PortalCreateHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1736,7 +3166,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.BlockPhysicsHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/BlockPhysicsHook.html) is fired
+ * callback - A function which is called whenever the [world.BlockPhysicsHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/BlockPhysicsHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1744,7 +3174,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [command.PlayerCommandHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/command/PlayerCommandHook.html) is fired
+ * callback - A function which is called whenever the [command.PlayerCommandHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/command/PlayerCommandHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1752,7 +3182,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [command.ConsoleCommandHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/command/ConsoleCommandHook.html) is fired
+ * callback - A function which is called whenever the [command.ConsoleCommandHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/command/ConsoleCommandHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1760,7 +3190,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [command.CommandBlockCommandHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/command/CommandBlockCommandHook.html) is fired
+ * callback - A function which is called whenever the [command.CommandBlockCommandHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/command/CommandBlockCommandHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1768,7 +3198,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [system.LoadWorldHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/LoadWorldHook.html) is fired
+ * callback - A function which is called whenever the [system.LoadWorldHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/LoadWorldHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1776,7 +3206,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [system.PermissionCheckHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/PermissionCheckHook.html) is fired
+ * callback - A function which is called whenever the [system.PermissionCheckHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/PermissionCheckHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1784,7 +3214,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [system.ServerGuiStartHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/ServerGuiStartHook.html) is fired
+ * callback - A function which is called whenever the [system.ServerGuiStartHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/ServerGuiStartHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1792,7 +3222,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [system.UnloadWorldHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/UnloadWorldHook.html) is fired
+ * callback - A function which is called whenever the [system.UnloadWorldHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/UnloadWorldHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1800,7 +3230,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [system.PluginDisableHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/PluginDisableHook.html) is fired
+ * callback - A function which is called whenever the [system.PluginDisableHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/PluginDisableHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1808,7 +3238,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [system.PluginEnableHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/PluginEnableHook.html) is fired
+ * callback - A function which is called whenever the [system.PluginEnableHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/PluginEnableHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1816,7 +3246,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [system.ServerTickHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/ServerTickHook.html) is fired
+ * callback - A function which is called whenever the [system.ServerTickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/ServerTickHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1824,7 +3254,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [system.ServerListPingHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/ServerListPingHook.html) is fired
+ * callback - A function which is called whenever the [system.ServerListPingHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/ServerListPingHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1832,7 +3262,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [system.ServerShutdownHook event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/system/ServerShutdownHook.html) is fired
+ * callback - A function which is called whenever the [system.ServerShutdownHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/ServerShutdownHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -1955,7 +3385,7 @@ To add an EnderBow to the game (assumes there's an enchanted Item variable calle
     var recipes = require('recipes');
     var items = require('items');
     ...
-    var enderBowRecipe = recipes.add( {
+    var enderBowRecipe = recipes.create( {
       result: enderBow,
       ingredients: {
         E: items.enderPearl(1),
@@ -1966,8 +3396,10 @@ To add an EnderBow to the game (assumes there's an enchanted Item variable calle
                'SEW',
                'ESW' ]
     } );
+    // add to server
+    var addedRecipe = server.addRecipe( enderBowRecipe );
     // to remove...
-    recipes.remove( enderBowRecipe );
+    server.removeRemove( addedRecipe );
 
 ## Http Module
 

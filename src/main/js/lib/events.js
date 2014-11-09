@@ -64,13 +64,14 @@ myBlockBreakListener.unregister();
 [buk]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/event/Event.html
 
 ***/
-
+var helper;
 if (__plugin.canary){
   module.exports = require('events-canary');
+  helper = require('events-helper-canary');
 } else {
   module.exports = require('events-bukkit');
+  helper = require('events-helper-bukkit');
 }
-var helper = require('events-helper');
 for ( var func in helper ) {
   module.exports[func] = helper[func];
 };

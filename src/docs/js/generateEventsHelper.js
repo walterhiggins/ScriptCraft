@@ -12,7 +12,7 @@ var File = java.io.File,
   entry = null;
 var content = [
   '/*********************',
-  '## Events Helper Module',
+  '## Events Helper Module (' + args[0] + ' version)',
   'The Events helper module provides a suite of functions - one for each possible event.',
   'For example, the events.' + args[2] + '() function is just a wrapper function which calls events.on(' + args[3] + ', callback, priority)',
   'This module is a convenience wrapper for easily adding new event handling functions in Javascript. ',
@@ -29,13 +29,18 @@ var content = [
   '',
   '***/'
 ];
+var canary = false;
+if (args[0] == 'canary'){
+  canary = true;
+}
+
 for (var i = 0; i< content.length; i++){
   out.println(content[i]);
 }
 while ( ( entry = zis.nextEntry) != null) { 
   var name = new String( entry.name );
   var re1 = /org\/bukkit\/event\/.+Event\.class$/;
-  if (args[0] == 'canary'){
+  if (canary){
     re1 = /net\/canarymod\/hook\/.+Hook\.class$/;
   }
   if ( re1.test(name) ) {
@@ -43,6 +48,7 @@ while ( ( entry = zis.nextEntry) != null) {
     try { 
       clz = java.lang.Class.forName(name);
     }catch ( e) {
+      err.println('Warning: could not Class.forName("' + name + '")');
       clz = engine.eval(name);
     }
     var isAbstract = Modifier.isAbstract(clz.getModifiers());
@@ -51,28 +57,28 @@ while ( ( entry = zis.nextEntry) != null) {
     }
     var parts = name.split('.');
     var shortName = null;
-    if (args[0] == 'canary'){
+    if (canary){
       shortName = name.replace('net.canarymod.hook.','');
     }
-    if (args[0] == 'bukkit'){
+    if (!canary){
       shortName = name.replace('org.bukkit.event.','');
     }
     var fname = parts.reverse().shift().replace(/^(.)/,function(a){ 
       return a.toLowerCase();});
-    if (args[0] == 'bukkit'){
+    if (!canary){
       fname = fname.replace(/Event$/,'');
     }
-    if (args[0] == 'canary'){
+    if (canary){
       fname = fname.replace(/Hook$/,'');
     }
-
+    var javaDoc = canary ? 'https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/' : 'http://jd.bukkit.org/rb/apidocs/org/bukkit/event/';
     var comment = [
       '/*********************',
       '### events.' + fname + '()',
       '',
       '#### Parameters ',
       '',
-      ' * callback - A function which is called whenever the ['+ shortName + ' event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/' + shortName.replace('.','/') + '.html) is fired',
+      ' * callback - A function which is called whenever the ['+ shortName + ' event](' + javaDoc + shortName.replace('.','/') + '.html) is fired',
       '',
       ' * priority - optional - see events.on() for more information.',
       '',
