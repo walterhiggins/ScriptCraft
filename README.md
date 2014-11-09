@@ -24,18 +24,20 @@ At the in-game prompt, type...
 
     /js greet(self)
 
-... to see the greeting. Anything you can do using CraftBukkit's API in Java, you can do using ScriptCraft in Javascript.
+... to see the greeting. Anything you can do using CanaryMod or CraftBukkit's API in Java, you can do using ScriptCraft in Javascript.
 
 # Description
 
 ScriptCraft is a plugin for Minecraft Servers which lets operators,
 administrators and plug-in authors customize the game using
 Javascript.  ScriptCraft makes it easier to create your own mods. Mods
-can be written in Javscript and can use the full [CanaryMod API][cm] or [Bukkit API][bukkit].  The
-ScriptCraft mod also lets you enter javascript commands at the in-game
-prompt.  To bring up the in-game prompt press the `/` key then type
-`js ` followed by any javascript statement.  E.g. `/js 1+1` will print
-2.
+can be written in Javscript and can use the full [CanaryMod API][cm]
+or [Bukkit API][bukkit]. I recommend using CanaryMod because
+CraftBukkit is no longer being actively developed due to a legal
+dispute. The ScriptCraft mod also lets you enter javascript commands
+at the in-game prompt.  To bring up the in-game prompt press the `/`
+key then type `js ` followed by any javascript statement. 
+For example:  `/js 1 + 1` will print 2.
 
 ScriptCraft also includes many objects and functions to make building
 and modding easier using Javascript. The Javascript `Drone` object
@@ -51,12 +53,14 @@ Minecraft.
 
 # Prerequisites
 
-You will need to have Java version 6 or 7 installed on your
+You will need to have Java version 6 or later installed on your
 machine. Check the version by typing `java -version` at a command
-prompt.  You will need to [install CanaryMod][ic] or [install Bukkit][ib] on your machine. CanaryMod and Bukkit
-are both versions of Minecraft (server) that make it easy to install
-plugins and customize Minecraft.  You can [download the CanaryMod
-server here.][ic]
+prompt.  You will need to [install CanaryMod][ic] or [install Bukkit][ib] 
+on your machine (I recommend using CanaryMod as Bukkit is
+no longer being actively developed). CanaryMod and Bukkit are both
+versions of Minecraft (server) that make it easy to install plugins
+and customize Minecraft.  You can [download the CanaryMod server
+here.][ic]
 
 # Installation
 
@@ -134,7 +138,7 @@ If you would like to contribute source code and/or documentation changes please 
 
 [![Travis Build Status](https://api.travis-ci.org/walterhiggins/ScriptCraft.png)](http://travis-ci.org/walterhiggins/ScriptCraft)
 
-# Configuration (Bukkit only)
+# Bukkit Configuration (You can ignore this if usng CanaryMod)
 
 ScriptCraft also works with Bukkit Plugin and uses the Bukkit Configuration
 API. On first loading, ScriptCraft will create a config.yml file in
