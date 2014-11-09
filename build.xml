@@ -1,9 +1,18 @@
 <project name="scriptcraft" default="package" basedir=".">
   <property file="build.properties"/>
   <description>Builds the scriptcraft.jar file - a plugin for bukkit</description>
+  <!-- ScriptCraft works with:
+       * CanaryMod
+       * Bukkit
+       * Glowstone (which is bukkit-compatible)
+  -->
   <property name="src.canary" location="src/main/java/canary"/>
-  <property name="lib.canary" location="lib/canary.jar"/>
   <property name="src.bukkit" location="src/main/java/bukkit"/>
+
+  <!-- compiles against these libraries -->
+  <property name="lib.canary" location="lib/CanaryMod-1.7.10-1.1.3-SNAPSHOT-shaded.jar"/>
+  <property name="lib.bukkit" location="lib/bukkit-1.7.9-R0.2.jar"/>
+
   <property name="build" location="target/classes"/>
   <property name="dist" location="target/" />
   <property name="minecraft.dir" location="${dist}/minecraft" />
@@ -55,7 +64,7 @@
       <src path="${src.bukkit}"/>
       <classpath>
 	<pathelement path="${lib.canary}" />
-	<pathelement path="lib/bukkit-1.7.9-R0.2.jar" />
+	<pathelement path="${lib.bukkit}" />
       </classpath>
     </javac>
   </target>
