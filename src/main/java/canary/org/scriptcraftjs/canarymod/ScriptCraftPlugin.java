@@ -74,14 +74,6 @@ public class ScriptCraftPlugin extends Plugin implements PluginListener, Command
             }
         };
     }
-    public CraftingRecipe makeShapedRecipe(Item resultingItem, RecipeRow... rows){
-        CraftingRecipe result = new CraftingRecipe(resultingItem, rows);
-        return result;
-    }
-    public CraftingRecipe makeShapelessRecipe(Item resultingItem, Item... items){
-        CraftingRecipe result = new CraftingRecipe(resultingItem, items);
-        return result;
-    }
     static class ScriptCraftTask extends ServerTask {
         private Runnable runnable = null;
         public ScriptCraftTask(Runnable runnable, TaskOwner owner, long delay, boolean continuous){

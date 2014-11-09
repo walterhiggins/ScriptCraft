@@ -10,7 +10,7 @@ To add an EnderBow to the game (assumes there's an enchanted Item variable calle
     var recipes = require('recipes');
     var items = require('items');
     ...
-    var enderBowRecipe = recipes.add( {
+    var enderBowRecipe = recipes.create( {
       result: enderBow,
       ingredients: {
         E: items.enderPearl(1),
@@ -21,8 +21,10 @@ To add an EnderBow to the game (assumes there's an enchanted Item variable calle
                'SEW',
                'ESW' ]
     } );
+    // add to server
+    var addedRecipe = server.addRecipe( enderBowRecipe );
     // to remove...
-    recipes.remove( enderBowRecipe );
+    server.removeRemove( addedRecipe );
 
 ***/
 if (__plugin.canary) {

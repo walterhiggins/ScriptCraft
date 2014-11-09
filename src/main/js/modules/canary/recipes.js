@@ -26,9 +26,9 @@ function createRecipe( recipe ){
       }
       rows.push( new cmRecipeRow(recipe.shape[i], rr) );
     }
-    result = __plugin.makeShapedRecipe( recipe.result, rows);
+    result = cmRecipe.createShapedRecipe( recipe.result, rows);
   } else { 
-    result = __plugin.makeShapelessRecipe( recipe.result, recipe.ingredients );
+    result = cmRecipe.createShapelessRecipe( recipe.result, recipe.ingredients );
   }
   return result;
 }
