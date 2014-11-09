@@ -1,3 +1,25 @@
+# 2014 11 09
+## Version 3.0.0 Release
+In September 2014, development of CraftBukkit was discontinued due to a DMCA takedown notice. 
+ScriptCraft has since switched from CraftBukkit to CanaryMod as the underlying framework.
+ScriptCraft continues to run on CraftBukkit but - for the immediate future - future development efforts will be to ensure it works primarily on CanaryMod.
+When other frameworks like SpongePowered become available, I hope to eventually support those too.
+
+The biggest change in 3.0.0 is the removal of the short name event registration function.
+
+This will no longer work:
+
+    events.on('block.BlockBreakEvent', function( event ) { ... });
+
+Instead use this:
+
+    events.blockDestroy( function( event ) { ... });
+
+or 
+   
+    events.on(net.canarymod.hook.block.BlockDestroyHook, function( event ) { ... });
+
+
 # 2014 08 23
 Chessboard was broken, is now fixed.
 Rainbows are now made from stained glass. Full range of stained_glass colors is available in blocks variable.
