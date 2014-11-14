@@ -1,5 +1,5 @@
 name: scriptcraft
-main: net.walterhiggins.scriptcraft.ScriptCraftPlugin
+main: org.scriptcraftjs.bukkit.ScriptCraftPlugin
 version: [[version]]
 commands:
    js:
