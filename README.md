@@ -1,4 +1,5 @@
 # Let's begin...
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/walterhiggins/ScriptCraft?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 I created ScriptCraft to make it easier for younger programmers to
 create their own Minecraft Mods. Mods are written using the
