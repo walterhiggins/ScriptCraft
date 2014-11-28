@@ -43,12 +43,13 @@ For example:  `/js 1 + 1` will print 2.
 ScriptCraft also includes many objects and functions to make building
 and modding easier using Javascript. The Javascript `Drone` object
 bundled with ScriptCraft provides an easy way to build at-scale in
-Minecraft. See the attached [cottage.js][cottage] file for an example
+Minecraft. See the attached [temple.js][temple] file for an example
 of how you can use the sample Drone plugin to create new buildings in
 Minecraft.
 
 [drone]: https://github.com/walterhiggins/ScriptCraft/tree/master/src/main/javascript/drone/drone.js
-[cottage]: https://github.com/walterhiggins/ScriptCraft/tree/master/src/main/javascript//drone/cottage.js
+[cottage]: https://github.com/walterhiggins/ScriptCraft/tree/master/src/main/js/plugins/drone/contrib/cottage.js
+[temple]: https://github.com/walterhiggins/ScriptCraft/blob/master/src/main/js/plugins/drone/contrib/temple.js
 [bukkit]: http://dl.bukkit.org/
 [cm]: http://canarymod.net/
 
