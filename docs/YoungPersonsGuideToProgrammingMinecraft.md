@@ -949,7 +949,7 @@ floor. When the loop is done I return the drone to where it started.
 The last 2 lines load the drone module (it must be loaded before I can
 add new features to it) and the last line extends the 'Drone' object
 so that now it can build skyscrapers among other things.  Once you've
-typed in the above code and saved the file, type `reload` in your
+typed in the above code and saved the file, type `/js refresh()` in your
 in-game prompt, then type ...
 
      /js myskyscraper(2);
@@ -1023,7 +1023,7 @@ exports.flightStatus = function( player ) {
 }
 ```
 
-... now type `/reload` at the in-game prompt then type `/js
+... now type `/js refresh()` at the in-game prompt then type `/js
 flightStatus(self)` and an appropriate message will appear based on
 whether or not you're currently flying. Type the `/js flightStatus()`
 command while on the ground and while flying. The message displayed in
