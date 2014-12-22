@@ -104,7 +104,7 @@ var _remove = function( params, player ) {
   else{
     echo( player, 'Alias ' + params[0] + ' does not exist.' );
   }
-  if ( player.op ) {
+  if ( isOp(player) ) {
     if ( _store.global[params[0]] ) {
       delete _store.global[params[0]];
     }
@@ -112,7 +112,7 @@ var _remove = function( params, player ) {
 };
 
 var _global = function( params, player ) {
-  if ( !player.op ) {
+  if ( !isOp(player) ) {
     echo( player, 'Only operators can set global aliases. ' + 
       'You need to be an operator to perform this command.' );
     return;

@@ -148,7 +148,7 @@ var classroom = plugin('classroom', {
     /*
      only operators should be allowed run this function
      */
-    if ( !sender.op ) {
+    if ( !isOp(sender) ) {
       console.log( 'Attempt to set classroom scripting without credentials: ' + sender.name );
       echo( sender, 'Only operators can use this function');
       return;

@@ -22,7 +22,7 @@ This differs from example 2 in that the function will only print a
 message for operators.
 
     command('op-hello', function (parameters, player) {
-        if (!player.op){
+        if ( !isOp(player) ){
           echo( player, 'Only operators can do this.');
           return;
         }
@@ -34,7 +34,7 @@ command( 'op-hello', function( parameters, player ) {
   /*
    this is how you limit based on player privileges
    */
-  if ( !player.op ) {
+  if ( !isOp(player) ) {
     echo( player, 'Only operators can do this.' );
     return;
   }

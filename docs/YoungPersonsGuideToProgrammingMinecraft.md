@@ -777,7 +777,7 @@ exports.hiAll = function () {
 }
 ```
 
-... save the file, at the in-game command prompt type `js refresh()` and
+... save the file, at the in-game command prompt type `/js refresh()` and
 then type `/js hiAll()`. This will send the message `Hi!` to all of
 the players connected to your server. You've done this using a `for`
 loop and arrays. Arrays and `for` loops are used heavily in all types

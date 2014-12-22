@@ -38,17 +38,11 @@ In the example below, if a player joins the server and is an operator,
 then the ScriptCraft plugin information will be displayed to that
 player.
 
-What's also notable about this example is how it uses the [Bukkit
-API][bkapi]. The code...
+What's also notable about this example is how it uses the `isOp()` function. The code...
 
-    if (event.player.op)
+    if ( isOp(event.player) )
 
-... is a succinct way of accessing object properties which in Java
-would have to be written as ...
-
-    if (event.getPlayer().isOp())
-
-... ScriptCraft uses a special version of JavaScript which comes
+ScriptCraft uses a special version of JavaScript which comes
 bundled with Java (Minecraft is written in Java) and JavaScript in
 Java can access properties of Java objects more succinctly than in
 Java itself. What this means in practice is that when you're perusing
@@ -79,7 +73,7 @@ cleaner and more readable. Similarly where you see a method like
 [bkapi]: http://jd.bukkit.org/dev/apidocs/
 
     events.on( 'player.PlayerJoinEvent', function( event ) {
-      if ( event.player.op ) {
+      if ( isOp(event.player) ) {
         echo( event.player, 'Welcome to ' + __plugin);
       }
     });
