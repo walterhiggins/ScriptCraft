@@ -59,7 +59,7 @@ var __scboot = null;
    */
   __scboot = function ( plugin, engine, classLoader )
   {
-    var logger = plugin.logman, 
+    var logger = plugin.canary ? plugin.logman : plugin.logger, 
       initScriptFile = new File(jsPlugins,initScript),
       zips = ['lib','plugins','modules'],
       i = 0,
@@ -90,7 +90,8 @@ var __scboot = null;
       engine.eval(new FileReader(initScriptFile));
       __onEnable(engine, plugin, initScriptFile);
     }catch ( e ){
-      logger.error('Error evaluating ' + initScriptFile + ': ' + e);
+      var msg = 'Error evaluating ' + initScriptFile + ': ' + e;
+      plugin.canary ? logger.error(msg) : logger.severe(msg);
       throw e;
     }
   };

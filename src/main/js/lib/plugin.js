@@ -1,5 +1,5 @@
 'use strict';
-
+/*global persist,exports,config,__plugin,require*/
 var File = java.io.File,
   FileWriter = java.io.FileWriter,
   PrintWriter = java.io.PrintWriter;
@@ -84,7 +84,8 @@ exports.autoload = function( context, pluginDir, logger, options ) {
         }
       } catch ( e ) {
 	if ( typeof logger != 'undefined' ) {
-	  logger.error( 'Plugin ' + pluginPath + ' ' + e );
+	  var msg = 'Plugin ' + pluginPath + ' ' + e ;
+	  __plugin.canary ? logger.error( msg ) : logger.severe( msg );
 	} else { 
 	  java.lang.System.out.println( 'Error: Plugin ' + pluginPath + ' ' + e );
 	}
