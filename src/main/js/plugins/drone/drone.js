@@ -1,3 +1,4 @@
+/*global __plugin, require, org, setTimeout, addUnloadHandler, exports, global*/
 var utils = require('utils'),
   blocks = require('blocks'),
   bkLocation = org.bukkit.Location,
@@ -570,7 +571,7 @@ Used when placing torches so that they face towards the drone.
 // There is no need to read any further unless you want to understand how the Drone object works.
 //
 
-var putBlock = function( x, y, z, blockId, metadata, world ) {
+function putBlock( x, y, z, blockId, metadata, world ) {
   if ( typeof metadata == 'undefined' ) {
     metadata = 0;
   }
@@ -580,15 +581,17 @@ var putBlock = function( x, y, z, blockId, metadata, world ) {
       block.typeId = blockId;
       block.data = metadata;
       block.update();
+      return;
     }
     if (__plugin.bukkit) {
       block.setTypeIdAndData( blockId, metadata, false );
       block.data = metadata;
+      return;
     }
   }
 };
 
-var putSign = function( drone, x, y, z, world, texts, blockId, meta, immediate ) {
+function putSign( drone, x, y, z, world, texts, blockId, meta, immediate ) {
   var i,
     block,
     state;
@@ -629,7 +632,7 @@ var putSign = function( drone, x, y, z, world, texts, blockId, meta, immediate )
   }
 };
 
-var Drone = function( x, y, z, dir, world ) {
+function Drone( x, y, z, dir, world ) {
   this.record = false;
   var usePlayerCoords = false;
   var player = (typeof self !== 'undefined' ? self : null);
@@ -722,7 +725,6 @@ Drone.processQueue = function(){
         if (process.name){
           console.log('while processing function ' + process.name);
         }
-
       } 
     }
   }
@@ -1633,7 +1635,7 @@ var _getDirFromRotation = function( location ) {
   if ( r > 315 || r < 45 )
     return 1; // south
 };
-var _getBlockIdAndMeta = function( b ) { 
+function _getBlockIdAndMeta( b ) { 
   var defaultMeta = 0,
     i = 0,
     bs,
@@ -1770,7 +1772,7 @@ var _copy = function( name, w, h, d ) {
   } );
   Drone.clipBoard[name] = {dir: this.dir, blocks: ccContent};
 };
-var _garden = function( width, depth ) {
+function _garden( width, depth ) {
   if ( typeof width == 'undefined' ) { 
     width = 10;
   }
@@ -1796,9 +1798,9 @@ var _garden = function( width, depth ) {
   dist[air] = 1;
 
   return this.rand( dist, width, 1, depth, false /* don't overwrite */ );
-};
+}
 
-var _rand = function( blockDistribution ) { 
+function _rand( blockDistribution ) { 
   if ( !(blockDistribution.constructor == Array ) ) { 
     var a = [];
     for ( var p in blockDistribution ) { 
@@ -1815,9 +1817,9 @@ var _rand = function( blockDistribution ) {
   }
   fisherYates(blockDistribution );
   return blockDistribution;
-};
+}
 
-Drone.extend( 'rand', function( dist, width, height, depth, overwrite ) { 
+Drone.extend( function rand( dist, width, height, depth, overwrite ) { 
   if ( typeof overwrite == 'undefined' ) { 
     overwrite = true;
   }
@@ -1831,21 +1833,28 @@ var _trees = {
   jungle: bkTreeType.JUNGLE,
   spruce: bkTreeType.REDWOOD 
 };
-for ( var p in _trees ) {
-  Drone.extend(p, function( v ) {
-    return function( ) { 
-      var block = this.world.getBlockAt(this.x,this.y,this.z );
-      if ( block.typeId == 2 ) { 
-        this.up( );
-      }
-      var treeLoc = new bkLocation(this.world,this.x,this.y,this.z );
-      var successful = treeLoc.world.generateTree(treeLoc,v );
-      if ( block.typeId == 2 ) { 
-        this.down( );
-      }
-    };
-  }(_trees[p] ) );
+function bukkitTreeFactory( k, v ) {
+  return function( ) { 
+    var block = this.world.getBlockAt(this.x,this.y,this.z );
+    if ( block.typeId == 2 ) { 
+      this.up( );
+    }
+    var treeLoc = this.getLocation();
+    var successful = treeLoc.world.generateTree(treeLoc,v );
+    if ( block.typeId == 2 ) { 
+      this.down( );
+    }
+  };
 }
+function canaryTreeFactory( k, v ){
+  return function(){
+    console.log(k + ' not yet implemented.');
+  };
+}
+for ( var p in _trees ) {
+  Drone.extend(p, (__plugin.canary? canaryTreeFactory : bukkitTreeFactory) ( p, _trees[p] ) );
+}
+
 Drone.clone = function(origin) {
   var result = {x: origin.x, y: origin.y, z: origin.z, world: origin.world, dir: origin.dir};
   return result;

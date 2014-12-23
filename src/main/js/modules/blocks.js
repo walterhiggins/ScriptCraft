@@ -234,7 +234,8 @@ var blocks = {
   hardened_clay: 172,
   coal_block: 173,
   packed_ice: 174,
-  double_plant: 175
+  double_plant: 175,
+  bonemeal: '351:15'
 };
 
 // Add all available colors to colorized block collections
