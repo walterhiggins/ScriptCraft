@@ -29,11 +29,11 @@ function getMaterialHandler( material ){
     }
   };
 }
-try {
+if (nashorn){
   /*
    nashorn
    */
-  var itemTypeClass = ItemType.class;
+  var itemTypeClass = require('nashorn-type')(ItemType);
   var materials = itemTypeClass.getDeclaredFields();
   for (var i = 0;i < materials.length; i++ ){
 
@@ -48,19 +48,18 @@ try {
     
     items[name] = getMaterialHandler(materialField.get(ItemType));
   }
-} catch ( e ){
+} else {
   // non-nashorn
   for (var field in ItemType){
     if (ItemType[field] === undefined){
       continue;
     }
-    if (ItemType[field].class != ItemType){
+    if (!(ItemType[field] instanceof ItemType)){
       continue;
     }
     var name = (''+field).replace(/^(.)/,function(a){
       return a.toLowerCase();
     });
-    console.log(name);
     items[name] = getMaterialHandler(ItemType[field]);
   }
 }

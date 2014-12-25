@@ -383,6 +383,7 @@ This function takes a single parameter and returns true if it's an operator or h
 */
 var global = this;
 var server;
+global.nashorn = typeof Java !== 'undefined';
 /*
   private implementation
 */
@@ -624,7 +625,7 @@ function __onEnable ( __engine, __plugin, __script ) {
         /*
          wph 20140312 don't delete self on nashorn until https://bugs.openjdk.java.net/browse/JDK-8034055 is fixed
          */
-        if ( typeof Java === 'undefined' ) { // Java is an object in Nashorn
+        if ( !nashorn ) { 
           delete global.self;
           delete global.__engine;
         }
