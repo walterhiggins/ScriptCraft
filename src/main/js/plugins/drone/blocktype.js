@@ -326,17 +326,7 @@ for ( c in bitmaps.raw ) {
     }
   }
 }
-
-
-//
-// message
-//   string with text to be displayed
-// fg
-//   foreground material. The material the text will be in.
-// bg
-//   background material, optional. The negative space within the bounding box of the text.
-//
-Drone.extend('blocktype', function( message, fg, bg ) {
+function blocktype( message, fg, bg ) {
 
   var bmfg,
     bmbg,
@@ -402,7 +392,8 @@ Drone.extend('blocktype', function( message, fg, bg ) {
   }
   
   return this.move( 'blocktext' );
-});
+}
+Drone.extend(blocktype);
 
 
 
