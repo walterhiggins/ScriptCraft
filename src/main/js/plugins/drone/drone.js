@@ -578,9 +578,7 @@ function putBlock( x, y, z, blockId, metadata, world ) {
   var block = world.getBlockAt( x, y, z );
   if ( block.typeId != blockId || block.data != metadata ) {
     if (__plugin.canary) {
-      block.typeId = blockId;
-      block.data = metadata;
-      block.update();
+      world.setBlockAt(x, y, z, blockId, metadata);
       return;
     }
     if (__plugin.bukkit) {
