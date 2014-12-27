@@ -5,7 +5,13 @@ var utils = require('utils'),
   bkPlayer = org.bukkit.entity.Player,
   bkSign = org.bukkit.block.Sign,
   bkTreeType = org.bukkit.TreeType,
-  bkMaterial = org.bukkit.Material;
+  bkMaterial = org.bukkit.Material,
+  bountiful = false;
+
+if (__plugin.canary){
+  bountiful = parseFloat(server.canaryModVersion) > 1.7;
+}
+
 /*********************************************************************
 ## Drone Plugin
 
@@ -579,7 +585,7 @@ function putBlock( x, y, z, blockId, metadata, world ) {
   if ( block.typeId != blockId || block.data != metadata ) {
     if (__plugin.canary) {
       world.setBlockAt(x, y, z, blockId, metadata);
-      if (block.getProperties){
+      if ( bountiful ){
 	// TODO we are in 1.8 
 	var prop = require('blockhelper').property;
 	block = world.getBlockAt(x,y,z);
@@ -597,7 +603,6 @@ function putBlock( x, y, z, blockId, metadata, world ) {
 	      prop(block).set('facing',metadata);
 	      block.update();
 	    }
-	    break;
 	}
       }
       return;
@@ -637,7 +642,7 @@ function putSign( drone, x, y, z, world, texts, blockId, meta, immediate ) {
       sign.setTextOnLine( text, i ); 
       sign.update(); 
     };
-    if ( block.getProperties ) {
+    if ( bountiful ) {
       // 1.8
       var prop = require('blockhelper').property;
       prop(block).set('facing',(drone.dir+2)%4);
@@ -1145,6 +1150,7 @@ Drone.prototype.cuboid0 = function( block, w, h, d ) {
   return this.move( 'start_point' );
 };
 
+
 function door( doorMaterial, hinge) {
   if ( typeof doorMaterial == 'undefined' ) {
     doorMaterial = 64; // wood
@@ -1154,12 +1160,12 @@ function door( doorMaterial, hinge) {
   }
   this.then(function(){
     putBlock( this.x, this.y, this.z, doorMaterial, this.dir, this.world );
-    putBlock( this.x, this.y+1, this.z, doorMaterial, 8, this.world );
-    var lower = this.world.getBlockAt(this.x,this.y,this.z);
-    var upper = this.world.getBlockAt(this.x,this.y+1,this.z);
-    if (upper.getProperties){
+    putBlock( this.x, this.y+1, this.z, doorMaterial, hinge=='left' ? 8 : 9, this.world );
+    if ( bountiful ){
       // 1.8
       var prop = require('blockhelper').property;
+      var lower = this.world.getBlockAt(this.x,this.y,this.z);
+      var upper = this.world.getBlockAt(this.x,this.y+1,this.z);
       prop(upper)
 	.set('half','upper')
 	.set('hinge',hinge);
@@ -1222,11 +1228,11 @@ function stairs(blockType, width, height){
   while (height > 0) {
     _traverse[this.dir].width(this, width, function(){
 
-	putBlock(that.x, that.y, that.z, blockType, 0, that.world);
-	var block = that.world.getBlockAt(that.x,that.y,that.z);
-	if (block.getProperties){
+	putBlock(that.x, that.y, that.z, blockType, Drone.PLAYER_STAIRS_FACING[that.dir], that.world);
+	if ( bountiful ){
 	  // 1.8
 	  var prop = require('blockhelper').property;
+	  var block = that.world.getBlockAt(that.x,that.y,that.z);
 	  prop(block).set('facing',that.dir);
 	  block.update();
 	}

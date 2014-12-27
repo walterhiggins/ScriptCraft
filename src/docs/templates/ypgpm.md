@@ -26,7 +26,7 @@ easy addition of 'Mods' and extensions to Minecraft. ScriptCraft is a
 difficult but CanaryMod makes it easy.  Follow these steps to
 Install ScriptCraft on your computer...
 
-1. [Download and install CanaryMod][dlcm] (choose either Recommended, Beta or Development) . Then follow the [CanaryMod
+1. [Download and install CanaryMod][dlcm] then follow the [CanaryMod
    Installation Instructions][cmadmin]. 
 
 2. Start the CanaryMod server, then once it has started up, stop it
@@ -96,7 +96,7 @@ If you don't already know Javascript, don't worry, you'll learn a little
 about Programming and Javascript along the way. You've set up a 
 Minecraft server and are ready to connect ...
 
-1. Launch Minecraft (keep the Bukkit Command window open). 
+1. Launch Minecraft. 
 2. Click 'Multi-Player'
 3. Click 'Add Server'
 4. Type any name you like in the name field then type `localhost` in the 
