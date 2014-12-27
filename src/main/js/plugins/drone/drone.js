@@ -578,6 +578,7 @@ function putBlock( x, y, z, blockId, metadata, world ) {
   var block = world.getBlockAt( x, y, z );
   if ( block.typeId != blockId || block.data != metadata ) {
     if (__plugin.canary) {
+      //console.log(JSON.stringify([x,y,z,blockId,metadata]));
       if (block.getProperties){
 	// TODO we are in 1.8 
       }
@@ -595,7 +596,10 @@ function putBlock( x, y, z, blockId, metadata, world ) {
 function putSign( drone, x, y, z, world, texts, blockId, meta, immediate ) {
   var i,
     block,
-    state;
+    state,
+    getState, 
+    isSign, 
+    setLine;
 
   if ( !immediate ) {
     getQueue(drone).push(function(){ putSign( drone, x, y, z, world, texts, blockId, meta, true); });
@@ -606,7 +610,6 @@ function putSign( drone, x, y, z, world, texts, blockId, meta, immediate ) {
   }
   putBlock( x, y, z, blockId, meta, world );
   block = world.getBlockAt( x, y, z );
-  var getState, isSign, setLine;
   if (__plugin.canary){
     isSign = function(block){ 
       var sign = block.getTileEntity();
@@ -617,6 +620,12 @@ function putSign( drone, x, y, z, world, texts, blockId, meta, immediate ) {
       sign.setTextOnLine( text, i ); 
       sign.update(); 
     };
+    if ( block.getProperties ) {
+      // 1.8
+      var prop = require('blockhelper').property;
+      prop(block).set('facing',(drone.dir+2)%4);
+      block.update();
+    }
   }
   if (__plugin.bukkit){
     isSign = function(block){ return block.state && block.state.setLine; };
@@ -722,10 +731,8 @@ Drone.processQueue = function(){
       try { 
         process();
       } catch( e ) { 
-        console.log('Drone build error: %s', e);
-        if (process.name){
-          console.log('while processing function ' + process.name);
-        }
+        console.log('Drone build error: ' +  e + ' while processing ' + process);
+	e.printStackTrace(java.lang.System.out);
       } 
     }
   }
@@ -1038,7 +1045,6 @@ Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite, immed
     });
   });
   return this;
-  
 };
 Drone.MAX_VOLUME = 1000000;
 Drone.MAX_SIDE = 1000;
@@ -1096,7 +1102,12 @@ Drone.prototype.cuboidX = function( blockType, meta, w, h, d, immediate ) {
   return this;
   
 };
-
+/*
+ deferred execution of a drone method
+*/
+Drone.prototype.then = function( next ){
+  getQueue(this).push( next.bind( Drone.clone(this) ) );
+};
 Drone.prototype.cuboid = function( block, w, h, d ) {
   var bm = this._getBlockIdAndMeta( block );
   return this.cuboidX( bm[0], bm[1], w, h, d );
@@ -1124,10 +1135,29 @@ Drone.extend( function door( doorMaterial ) {
   } else {
     doorMaterial = 71; // iron
   }
-  this.cuboidX( doorMaterial,  this.dir )
-    .up( )
-    .cuboidX( doorMaterial, 8 )
-    .down( );
+  this.then(function(){
+    putBlock( this.x, this.y, this.z, doorMaterial, this.dir, this.world );
+    putBlock( this.x, this.y+1, this.z, doorMaterial, 8, this.world );
+    var block = this.world.getBlockAt(this.x,this.y,this.z);
+    if (block.getProperties){
+      // 1.8
+      var prop = require('blockhelper').property;
+      prop(block)
+	.set('facing',this.dir)
+	.set('hinge','left')
+	.set('half','lower');
+      var Position = Packages.net.canarymod.api.world.position.Position;
+      var setBlockAt = 'setBlockAt(net.canarymod.api.world.position.Position, net.canarymod.api.world.blocks.Block)';
+      this.world[setBlockAt](new Position(this.x,this.y,this.z),block);
+
+      block = this.world.getBlockAt(this.x,this.y+1,this.z);
+      prop(block)
+	.set('facing',this.dir)
+	.set('hinge','left')
+	.set('half','upper');
+      this.world[setBlockAt](new Position(this.x,this.y+1,this.z),block);
+    }
+  });
 } );
 
 Drone.extend( function door_iron( ) {
@@ -1176,6 +1206,33 @@ var _STAIRBLOCKS = {
   ,135: '5:2'    // birch wood
   ,136: '5:3'    // jungle wood
 };
+
+function stairs(blockType, width, height){
+  if (typeof width === 'undefined')
+    width = 1;
+  if (typeof height === 'undefined')
+    height = 1;
+  this.chkpt('_stairs');
+  var that = this;
+  while (height > 0) {
+    _traverse[this.dir].width(this, width, function(){
+
+	putBlock(that.x, that.y, that.z, blockType, 0, that.world);
+	var block = that.world.getBlockAt(that.x,that.y,that.z);
+	if (block.getProperties){
+	  // 1.8
+	  var prop = require('blockhelper').property;
+	  prop(block).set('facing',that.dir);
+	  block.update();
+	}
+    });
+
+    this.fwd().up();
+    height -= 1;
+  }
+  this.move('_stairs');
+}
+Drone.extend(stairs);
 //
 // prism private implementation
 //
@@ -1236,7 +1293,7 @@ function prism( block, w, d ) {
 //
 ;
 Drone.extend( function prism0( block,w,d ) { 
-  this.prism(block,w,d )
+/*  this.prism(block,w,d )
     .fwd( ).right( )
     .prism(0,w-2,d-2 )
     .left( ).back( );
@@ -1245,6 +1302,27 @@ Drone.extend( function prism0( block,w,d ) {
     // top of roof will be open - need repair
     var f = Math.floor(d/2 );
     this.fwd(f ).up(f ).cuboid(se,w ).down(f ).back(f );
+  }
+*/
+  this
+    .stairs(block,w,d/2)
+    .fwd(d-1)
+    .right(w-1)
+    .turn(2)
+    .stairs(block,w,d/2)
+    .turn(2)
+    .left(w-1)
+    .back(d-1);
+  
+  var se = _STAIRBLOCKS[block];
+  if (se) {
+    this
+      .fwd()
+      .prism(se,1,d-2)
+      .right(w-1)
+      .prism(se,1,d-2)
+      .left(w-1)
+      .back();
   }
 } );
 Drone.extend(prism);
@@ -1540,7 +1618,7 @@ var _paste = function( name, immediate )
       var d = srcBlocks[ww][hh].length;
       _traverse[that.dir].depth(that,d,function( dd ) { 
         var b = srcBlocks[ww][hh][dd];
-        var cb = b.type
+        var cb = b.type;
         var md = b.data;
         //
         // need to adjust blocks which face a direction
@@ -1857,7 +1935,7 @@ for ( var p in _trees ) {
 }
 
 Drone.clone = function(origin) {
-  var result = {x: origin.x, y: origin.y, z: origin.z, world: origin.world, dir: origin.dir};
+  var result = new Drone(origin.x,origin.y,origin.z, origin.dir, origin.world);
   return result;
 };
 //
