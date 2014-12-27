@@ -140,7 +140,8 @@ If you would like to contribute source code and/or documentation changes please 
 
 [![Travis Build Status](https://api.travis-ci.org/walterhiggins/ScriptCraft.png)](http://travis-ci.org/walterhiggins/ScriptCraft)
 
-# Bukkit Configuration (You can ignore this if usng CanaryMod)
+# Bukkit Configuration 
+## (You can ignore this if usng CanaryMod)
 
 ScriptCraft also works with Bukkit Plugin and uses the Bukkit Configuration
 API. On first loading, ScriptCraft will create a config.yml file in
