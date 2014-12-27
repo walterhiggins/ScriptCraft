@@ -578,11 +578,28 @@ function putBlock( x, y, z, blockId, metadata, world ) {
   var block = world.getBlockAt( x, y, z );
   if ( block.typeId != blockId || block.data != metadata ) {
     if (__plugin.canary) {
-      //console.log(JSON.stringify([x,y,z,blockId,metadata]));
+      world.setBlockAt(x, y, z, blockId, metadata);
       if (block.getProperties){
 	// TODO we are in 1.8 
+	var prop = require('blockhelper').property;
+	block = world.getBlockAt(x,y,z);
+	switch (blockId){
+	  case blocks.wool.white:
+	  case blocks.stained_clay.white:
+	  case blocks.stained_glass.white:
+	  case blocks.carpet.white:
+	    prop(block).set('color',metadata);
+	    block.update();
+	    break;
+	  case blocks.torch:
+	    /* TODO This doesn't work right now */
+	    if (metadata >= 0 && metadata <= 3){
+	      prop(block).set('facing',metadata);
+	      block.update();
+	    }
+	    break;
+	}
       }
-      world.setBlockAt(x, y, z, blockId, metadata);
       return;
     }
     if (__plugin.bukkit) {
@@ -1128,63 +1145,51 @@ Drone.prototype.cuboid0 = function( block, w, h, d ) {
   return this.move( 'start_point' );
 };
 
-
-Drone.extend( function door( doorMaterial ) {
+function door( doorMaterial, hinge) {
   if ( typeof doorMaterial == 'undefined' ) {
     doorMaterial = 64; // wood
-  } else {
-    doorMaterial = 71; // iron
+  } 
+  if (typeof hinge == 'undefined') { 
+    hinge = 'left';
   }
   this.then(function(){
     putBlock( this.x, this.y, this.z, doorMaterial, this.dir, this.world );
     putBlock( this.x, this.y+1, this.z, doorMaterial, 8, this.world );
-    var block = this.world.getBlockAt(this.x,this.y,this.z);
-    if (block.getProperties){
+    var lower = this.world.getBlockAt(this.x,this.y,this.z);
+    var upper = this.world.getBlockAt(this.x,this.y+1,this.z);
+    if (upper.getProperties){
       // 1.8
       var prop = require('blockhelper').property;
-      prop(block)
+      prop(upper)
+	.set('half','upper')
+	.set('hinge',hinge);
+      prop(lower)
 	.set('facing',this.dir)
-	.set('hinge','left')
 	.set('half','lower');
-      var Position = Packages.net.canarymod.api.world.position.Position;
-      var setBlockAt = 'setBlockAt(net.canarymod.api.world.position.Position, net.canarymod.api.world.blocks.Block)';
-      this.world[setBlockAt](new Position(this.x,this.y,this.z),block);
 
-      block = this.world.getBlockAt(this.x,this.y+1,this.z);
-      prop(block)
-	.set('facing',this.dir)
-	.set('hinge','left')
-	.set('half','upper');
-      this.world[setBlockAt](new Position(this.x,this.y+1,this.z),block);
+      upper.update();
+      lower.update();
     }
   });
-} );
+}
+Drone.extend( door );
 
 Drone.extend( function door_iron( ) {
-  this.cuboidX( 71,  this.dir )
-    .up( )
-    .cuboidX( 71, 8 )
-    .down( );
+  this.door(71);
 } );
 
 Drone.extend( function door2( doorMaterial ) {
   if ( typeof doorMaterial == 'undefined' ) {
     doorMaterial = 64;
-  } else {
-    doorMaterial = 71;
-  }
+  } 
   this
-    .cuboidX( doorMaterial,  this.dir ).up( )
-    .cuboidX( doorMaterial, 8 ).right( )
-    .cuboidX( doorMaterial, 9 ).down( )
-    .cuboidX( doorMaterial, this.dir ).left( );
+    .door( doorMaterial, 'left')
+    .right()
+    .door( doorMaterial, 'right')
+    .left();
 } );
 Drone.extend( function door2_iron( ) {
-  this
-    .cuboidX( 71,  this.dir ).up( )
-    .cuboidX( 71, 8 ).right( )
-    .cuboidX( 71, 9 ).down( )
-    .cuboidX( 71, this.dir ).left( );
+  this.door2( 71 );
 } );
 
 // player dirs: 0 = east, 1 = south, 2 = west,   3 = north
@@ -1239,42 +1244,18 @@ Drone.extend(stairs);
 function prism( block, w, d ) {
   var stairEquiv = _STAIRBLOCKS[block];
   if ( stairEquiv ) {
-    this.fwd( ).prism(stairEquiv,w,d-2 ).back( );
-    var d2 = 0;
-    var middle = Math.floor( d/2 );
-    var uc = 0,dc = 0;
-    while ( d2 < d ) {
-      var di = (d2 < middle?this.dir:(this.dir+2 )%4 );
-      var bd = block + ':' + Drone.PLAYER_STAIRS_FACING[di];
-      var putStep = true;
-      if ( d2 == middle ) {
-        if ( d % 2 == 1 ) {
-          putStep = false;
-        }
-      }
-      if ( putStep ) {
-        this.cuboid(bd,w );
-      }
-      if ( d2 < middle-1 ) {
-        this.up( );
-        uc++;
-      }
-      var modulo = d % 2;
-      if ( modulo == 1 ) { 
-        if ( d2 > middle && d2<d-1) { 
-          this.down( );
-          dc++;
-        }
-      }else{
-        if ( d2 >= middle && d2<d-1 ) { 
-          this.down( );
-          dc++;
-        }
-      }
-      this.fwd( );
-      d2++;
-    }
-    this.back(d );
+    this
+      .fwd()
+      .prism( stairEquiv,w,d-2 )
+      .back()
+      .stairs(block, w, d / 2)
+      .fwd(d - 1)
+      .right(w - 1)
+      .turn(2)
+      .stairs(block, w, d / 2)
+      .turn(2)
+      .left(w - 1)
+      .back(d - 1);
   }else{
     var c = 0;
     var d2 = d;
@@ -1291,19 +1272,7 @@ function prism( block, w, d ) {
 //
 // prism0 private implementation
 //
-;
-Drone.extend( function prism0( block,w,d ) { 
-/*  this.prism(block,w,d )
-    .fwd( ).right( )
-    .prism(0,w-2,d-2 )
-    .left( ).back( );
-  var se = _STAIRBLOCKS[block];
-  if ( d % 2 == 1 && se ) { 
-    // top of roof will be open - need repair
-    var f = Math.floor(d/2 );
-    this.fwd(f ).up(f ).cuboid(se,w ).down(f ).back(f );
-  }
-*/
+function prism0( block,w,d ) { 
   this
     .stairs(block,w,d/2)
     .fwd(d-1)
@@ -1324,7 +1293,8 @@ Drone.extend( function prism0( block,w,d ) {
       .left(w-1)
       .back();
   }
-} );
+}
+Drone.extend(prism0);
 Drone.extend(prism);
 Drone.extend('box', Drone.prototype.cuboid );
 Drone.extend('box0',Drone.prototype.cuboid0 );
