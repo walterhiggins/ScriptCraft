@@ -1016,51 +1016,29 @@ following code sends a message to any player who breaks a block in the
 game...
 
 ```javascript
-events.on('block.BlockBreakEvent', function ( event ) { 
-    var breaker = event.player;
-    breaker.sendMessage('You broke a block');    
-} );
+function myBlockDestroyHook( event ){
+  var breaker = event.player;
+  echo( breaker, 'You broke a block');
+}
+events.blockDestroy( myBlockDestroyHook );
 ```
 
-The `events.on()` function is how you *register* a function which you
-want to be called whenever a particular type of event occurs. In the
-above code the first parameter `'block.BlockBreakEvent'` is the type
-of event I want to listen for and the second parameter is the function
+The `events.blockDestroy()` function is just one of the many `events` functions which can be used to *register* a function to be called whenever a particular type of event occurs. In the
+above code the blockDestroy function takes as a parameter a function
 I want to be called when that event occurs. The function I want called
 in turn takes 1 parameter. The `event` object has all the information
 about the event which just occurred. I can tell who broke the block
 and send a message to the player. The important thing to note is that
-the function defined above will not be called until a player breaks a
+the `myBlockDestroyHook` function defined above will not be called until a player breaks a
 block. Try it - save the above code in a new file in the
 `scriptcraft/plugins` directory then type `/js refresh()` to reload
 scriptcraft. Then break a block in the game and you should see the
 message 'You broke a block'.
 
 There are many types of events you can listen for in Minecraft. You can
-browse [all possible Bukkit events][bkevts] (click the 'Next
-Package' and 'Previous Package' links to browse). 
+browse [all possible Canary events][cmevts] . 
 
-It's important to note that when browsing the Bukkit API's
-[org.bukkit.event][bkevts] package, if you see a class called
-'org.bukkit.events.entity.EntityShootBowEvent', then when calling
-`events.on()` you can listen to such an event using either the fully
-qualified Class name...
-
-    events.on(org.bukkit.events.entity.EntityShootBowEvent, function( event ) { 
-       ...
-    });
-
-or an abbreviated name in string form...
-
-    events.on('entity.EntityShootBowEvent', function( event ) { 
-       ...
-    });
-
-If the `events.on()` function gets a String (text) as its first
-parameter it automatically converts it to the appropriate Class by
-prepending the 'org.bukkit.events' package.
-
-For custom events (events which aren't in the org.bukkit.event tree)
+For custom events (events which aren't in the net.canarymod.hook tree)
 just specify the fully qualified class name instead. E.g. ...
 
     events.on ( net.yourdomain.events.YourEvent, function( event ) {
@@ -1072,10 +1050,10 @@ just specify the fully qualified class name instead. E.g. ...
 If you want an event handler to only execute once, you can remove the handler like this...
 
 ```javascript
-events.on('block.BlockBreakEvent', function( evt ) { 
-    var breaker = evt.player;
-    breaker.sendMessage('You broke a block');
-    this.unregister();
+events.blockDestroy( function( evt ) { 
+  var breaker = evt.player;
+  echo( breaker, 'You broke a block');
+  this.unregister();
 } );
 ```
 
@@ -1088,12 +1066,10 @@ to stop listening for events.
 To unregister a listener *outside* of the listener function...
 
 ```javascript    
-var myBlockBreakListener = events.on( 'block.BlockBreakEvent', function( evt ) { ... } );
+var myBlockBreakListener = events.blockDestroy(function( evt ) { ... } );
 ...
 myBlockBreakListener.unregister();
 ```
-
-
 ## Keeping Score - Lookup tables in Javascript
 
 In the *Event-Driven Programming* section, I defined a function which
@@ -1252,6 +1228,7 @@ different objects and methods available for use by ScriptCraft.
 [api]: API-Reference.md
 [twl]: http://www.barebones.com/products/textwrangler/
 [bkevts]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/package-summary.html
+[cmevts]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/package-summary.html
 [img_echo_date]: img/ypgpm_echo_date.png
 [img_3d_shapes]: img/ypgpm_3dshapes.jpg
 [img_whd]: img/ypgpm_whd.jpg

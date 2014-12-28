@@ -1,12 +1,9 @@
 /*global __plugin, require, org, setTimeout, addUnloadHandler, exports, global*/
 var utils = require('utils'),
   blocks = require('blocks'),
-  bkLocation = org.bukkit.Location,
-  bkPlayer = org.bukkit.entity.Player,
-  bkSign = org.bukkit.block.Sign,
-  bkTreeType = org.bukkit.TreeType,
-  bkMaterial = org.bukkit.Material,
-  bountiful = false;
+  bountiful = false,
+  THOUSAND = 1000,
+  MILLION = THOUSAND ^ 2;
 
 if (__plugin.canary){
   bountiful = parseFloat(server.canaryModVersion) > 1.7;
@@ -167,298 +164,6 @@ Construct a rainbow-colored road 100 blocks long...
 
 ![boxa example](img/boxaex1.png)
 
-### Drone Movement
-
-Drones can move freely in minecraft's 3-D world. You control the Drone's movement using any of the following methods..
-
- * up()
- * down()
- * left()
- * right()
- * fwd()
- * back()
- * turn()
-
-... Each of these methods takes a single optional parameter `numBlocks` - the number of blocks to move in the given direction. If no parameter is given, the default is 1.
-
-To change direction use the `turn()` method which also takes a single optional parameter (numTurns) - the number of 90 degree turns to make. Turns are always clock-wise. If the drone is facing north, then drone.turn() will make the turn face east. If the drone is facing east then drone.turn(2) will make the drone turn twice so that it is facing west.
-
-### Drone Positional Info
-
- * getLocation() - Returns a Bukkit Location object for the drone
-
-### Drone Markers
-
-Markers are useful when your Drone has to do a lot of work. You can set a check-point and return to the check-point using the move() method.  If your drone is about to undertake a lot of work - e.g. building a road, skyscraper or forest you should set a check-point before doing so if you want your drone to return to its current location.  
-
-A 'start' checkpoint is automatically created when the Drone is first created.
-
-Markers are created and returned to using the followng two methods...
-
- * chkpt - Saves the drone's current location so it can be returned to later.
- * move - moves the drone to a saved location. Alternatively you can provide an org.bukkit.Location object or x,y,z and direction parameters.
-
-#### Parameters
-
- * name - the name of the checkpoint to save or return to.
-
-#### Example
-
-    drone.chkpt('town-square');
-    //
-    // the drone can now go off on a long excursion
-    //
-    for ( i = 0; i< 100; i++) {  
-        drone.fwd(12).box(6); 
-    }
-    //
-    // return to the point before the excursion
-    //
-    drone.move('town-square');
-
-### Drone.prism() method
-
-Creates a prism. This is useful for roofs on houses.
-
-#### Parameters
-
- * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
- * width - the width of the prism
- * length - the length of the prism (will be 2 time its height)
-
-#### Example
-
-    prism(blocks.oak,3,12);
-
-![prism example](img/prismex1.png)
-
-### Drone.prism0() method
-
-A variation on `prism` which hollows out the inside of the prism. It uses the same parameters as `prism`.
-
-### Drone.cylinder() method
-
-A convenience method for building cylinders. Building begins radius blocks to the right and forward.
-
-#### Parameters
-
- * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
- * radius 
- * height
-
-#### Example
-
-To create a cylinder of Iron 7 blocks in radius and 1 block high...
-
-    cylinder(blocks.iron, 7 , 1);
-
-![cylinder example](img/cylinderex1.png)
-
-### Drone.cylinder0() method
-
-A version of cylinder that hollows out the middle.
-
-#### Example
-
-To create a hollow cylinder of Iron 7 blocks in radius and 1 block high...
-
-    cylinder0(blocks.iron, 7, 1);
-
-![cylinder0 example](img/cylinder0ex1.png)
-
-### Drone.arc() method
-
-The arc() method can be used to create 1 or more 90 degree arcs in the horizontal or vertical planes. This method is called by cylinder() and cylinder0() and the sphere() and sphere0() methods.
-
-#### Parameters
-
-arc() takes a single parameter - an object with the following named properties...
-
- * radius - The radius of the arc.
- * blockType - The type of block to use - this is the block Id only (no meta). See [Data Values][dv].
- * meta - The metadata value. See [Data Values][dv].
- * orientation (default: 'horizontal' ) - the orientation of the arc - can be 'vertical' or 'horizontal'.
- * stack (default: 1 ) - the height or length of the arc (depending on the orientation - if orientation is horizontal then this parameter refers to the height, if vertical then it refers to the length ).
- * strokeWidth (default: 1 ) - the width of the stroke (how many blocks) - if drawing nested arcs it's usually a good idea to set strokeWidth to at least 2 so that there are no gaps between each arc. The arc method uses a [bresenham algorithm][bres] to plot points along the circumference.
- * fill - If true (or present) then the arc will be filled in.
- * quadrants (default: `{topleft:true,topright:true,bottomleft:true,bottomright:true}` - An object with 4 properties indicating which of the 4 quadrants of a circle to draw. If the quadrants property is absent then all 4 quadrants are drawn.
-
-#### Examples
-
-To draw a 1/4 circle (top right quadrant only) with a radius of 10 and stroke width of 2 blocks ...
-
-    arc({blockType: blocks.iron, 
-         meta: 0, 
-         radius: 10,
-         strokeWidth: 2,
-         quadrants: { topright: true },
-         orientation: 'vertical', 
-         stack: 1,
-         fill: false
-         } );
-
-![arc example 1](img/arcex1.png)
-
-[bres]: http://en.wikipedia.org/wiki/Midpoint_circle_algorithm
-[dv]: http://www.minecraftwiki.net/wiki/Data_values
-
-### Drone.door() method
-
-create a door - if a parameter is supplied an Iron door is created otherwise a wooden door is created.
-
-#### Parameters
-
- * doorType (optional - default wood) - If a parameter is provided then the door is Iron.
-
-#### Example
-
-To create a wooden door at the crosshairs/drone's location...
-
-    var drone = new Drone();
-    drone.door();
-
-To create an iron door...
-
-    drone.door( blocks.door_iron );
-
-![iron door](img/doorex1.png)
-
-### Drone.door_iron() method
-
-create an Iron door.
-
-### Drone.door2() method
-
-Create double doors (left and right side)
-
-#### Parameters
-
- * doorType (optional - default wood) - If a parameter is provided then the door is Iron.
-
-#### Example
-
-To create double-doors at the cross-hairs/drone's location...
-
-    drone.door2();
-
-![double doors](img/door2ex1.png)
-
-### Drone.door2_iron() method
-
-Create double iron doors
-    
-
-### Drone.sign() method
-
-Signs must use block 63 (stand-alone signs) or 68 (signs on walls)
-
-#### Parameters
-
- * message -  can be a string or an array of strings. 
- * block - can be 63 or 68
-
-#### Example
-
-To create a free-standing sign...
-
-    drone.sign(["Hello","World"],63);
-
-![ground sign](img/signex1.png)
-
-... to create a wall mounted sign...
-
-    drone.sign(["Welcome","to","Scriptopia"], 68 );
-
-![wall sign](img/signex2.png)
-
-### Drone Trees methods
-
- * oak()
- * spruce()
- * birch()
- * jungle()
-
-#### Example
-
-To create 4 trees in a row, point the cross-hairs at the ground then type `/js ` and ...
-
-    up( ).oak( ).right(8 ).spruce( ).right(8 ).birch( ).right(8 ).jungle( );
-
-Trees won't always generate unless the conditions are right. You should use the tree methods when the drone is directly above the ground. Trees will usually grow if the drone's current location is occupied by Air and is directly above an area of grass (That is why the `up( )` method is called first).
-
-![tree example](img/treeex1.png)
-
-None of the tree methods require parameters. Tree methods will only be successful if the tree is placed on grass in a setting where trees can grow.
-
-### Drone.garden() method
-
-places random flowers and long grass (similar to the effect of placing bonemeal on grass)
-
-#### Parameters
-
- * width - the width of the garden
- * length - how far from the drone the garden extends
-
-#### Example
-
-To create a garden 10 blocks wide by 5 blocks long...
-
-    garden(10,5);
-
-![garden example](img/gardenex1.png)
-
-### Drone.rand() method
-
-rand takes either an array (if each blockid has the same chance of occurring) or an object where each property is a blockid and the value is it's weight (an integer)
-
-#### Example
-
-place random blocks stone, mossy stone and cracked stone (each block has the same chance of being picked)
-
-    rand( [blocks.brick.stone, blocks.brick.mossy, blocks.brick.cracked ],w,d,h) 
-
-to place random blocks stone has a 50% chance of being picked, 
-
-    var distribution = {};
-    distribution[ blocks.brick.stone ] = 5;
-    distribution[ blocks.brick.mossy ] = 3;
-    distribution[ blocks.brick.cracked ] = 2;
-
-    rand( distribution, width, height, depth) 
-
-regular stone has a 50% chance, mossy stone has a 30% chance and cracked stone has just a 20% chance of being picked.
-
-### Copy & Paste using Drone
-
-A drone can be used to copy and paste areas of the game world.
-
-### Drone.copy() method
-
-Copies an area so it can be pasted elsewhere. The name can be used for pasting the copied area elsewhere...
-
-#### Parameters
-
- * name - the name to be given to the copied area (used by `paste`)
- * width - the width of the area to copy
- * height - the height of the area to copy
- * length - the length of the area (extending away from the drone) to copy
-
-#### Example
-
-    drone.copy('somethingCool',10,5,10 ).right(12 ).paste('somethingCool' );
-
-### Drone.paste() method
-
-Pastes a copied area to the current location.
-
-#### Example
-
-To copy a 10x5x10 area (using the drone's coordinates as the starting point) into memory.  the copied area can be referenced using the name 'somethingCool'. The drone moves 12 blocks right then pastes the copy.
-
-    drone.copy('somethingCool',10,5,10 )
-         .right(12 )
-         .paste('somethingCool' );
-
 ### Chaining
 
 All of the Drone methods return a Drone object, which means methods can be 'chained' together so instead of writing this...
@@ -576,6 +281,35 @@ Used when placing torches so that they face towards the drone.
 // 
 // There is no need to read any further unless you want to understand how the Drone object works.
 //
+function getDirFromRotation( location ) { 
+  // 0 = east, 1 = south, 2 = west, 3 = north
+  // 46 to 135 = west
+  // 136 to 225 = north
+  // 226 to 315 = east
+  // 316 to 45 = south
+  var r;
+  if (__plugin.canary ) {
+    r = location.rotation;
+  } 
+  if (__plugin.bukkit) { 
+    r = location.yaw;
+  }
+    
+  // west = -270
+  // north = -180
+  // east = -90
+  // south = 0
+  
+  r = (r + 360 ) % 360; // east could be 270 or -90
+
+  if ( r > 45 && r <= 135 )
+    return 2; // west
+  if ( r > 135 && r <= 225 )
+    return 3; // north
+  if ( r > 225 && r <= 315 )
+    return 0; // east
+  return 1; // south
+}
 
 function putBlock( x, y, z, blockId, metadata, world ) {
   if ( typeof metadata == 'undefined' ) {
@@ -613,56 +347,7 @@ function putBlock( x, y, z, blockId, metadata, world ) {
       return;
     }
   }
-};
-
-function putSign( drone, x, y, z, world, texts, blockId, meta, immediate ) {
-  var i,
-    block,
-    state,
-    getState, 
-    isSign, 
-    setLine;
-
-  if ( !immediate ) {
-    getQueue(drone).push(function(){ putSign( drone, x, y, z, world, texts, blockId, meta, true); });
-    return;
-  }
-  if ( blockId != 63 && blockId != 68 ) {
-    throw new Error( 'Invalid Parameter: blockId must be 63 or 68' );
-  }
-  putBlock( x, y, z, blockId, meta, world );
-  block = world.getBlockAt( x, y, z );
-  if (__plugin.canary){
-    isSign = function(block){ 
-      var sign = block.getTileEntity();
-      return sign.setTextOnLine; 
-    };
-    setLine = function( block, i, text) { 
-      var sign = block.getTileEntity();
-      sign.setTextOnLine( text, i ); 
-      sign.update(); 
-    };
-    if ( bountiful ) {
-      // 1.8
-      var prop = require('blockhelper').property;
-      prop(block).set('facing',(drone.dir+2)%4);
-      block.update();
-    }
-  }
-  if (__plugin.bukkit){
-    isSign = function(block){ return block.state && block.state.setLine; };
-    setLine = function( block, i, text) { 
-      var sign = block.state;
-      sign.setLine( i, text ); 
-      sign.update(true); 
-    };
-  }
-  if ( isSign(block) ) { 
-    for ( i = 0; i < texts.length; i++ ) {
-      setLine(block, i % 4, texts[ i ] );
-    }
-  }
-};
+}
 
 function Drone( x, y, z, dir, world ) {
   this.record = false;
@@ -679,7 +364,7 @@ function Drone( x, y, z, dir, world ) {
     that.x = loc.x;
     that.y = loc.y;
     that.z = loc.z;
-    that.dir = _getDirFromRotation(loc);
+    that.dir = getDirFromRotation(loc);
     that.world = loc.world;
   };
   var mp = utils.getMousePos( player );
@@ -687,7 +372,7 @@ function Drone( x, y, z, dir, world ) {
     if ( mp ) {
       populateFromLocation( mp );
       if ( playerPos ) {
-        this.dir = _getDirFromRotation(playerPos);
+        this.dir = getDirFromRotation(playerPos);
       }
     } else {
       // base it on the player's current location
@@ -709,7 +394,7 @@ function Drone( x, y, z, dir, world ) {
       this.y = y;
       this.z = z;
       if ( typeof dir == 'undefined' ) {
-        this.dir = _getDirFromRotation( playerPos);
+        this.dir = getDirFromRotation( playerPos);
       } else {
         this.dir = dir%4;
       }
@@ -729,7 +414,7 @@ function Drone( x, y, z, dir, world ) {
   this.history = [];
   this.player = player;
   return this;
-};
+}
 
 exports.Drone = Drone;
 /* 
@@ -738,7 +423,7 @@ exports.Drone = Drone;
  the Drone module.
  */
 exports.blocks = blocks;
-
+Drone.getDirFromRotation = getDirFromRotation;
 Drone.queue = [];
 
 Drone.opsPerSec = 10;
@@ -805,7 +490,9 @@ Drone.extend = function( name, func ) {
 /**************************************************************************
 ### Drone.times() Method
 
-The times() method makes building multiple copies of buildings easy. It's possible to create rows or grids of buildings without resorting to `for` or `while` loops.
+The times() method makes building multiple copies of buildings
+easy. It's possible to create rows or grids of buildings without
+resorting to `for` or `while` loops.
 
 #### Parameters
 
@@ -819,19 +506,31 @@ Say you want to do the same thing over and over. You have a couple of options...
 
     d = new Drone(); for ( var i =0;i < 4; i++) {  d.cottage().right(8); }
 
-While this will fit on the in-game prompt, it's awkward. You need to declare a new Drone object first, then write a for loop to create the 4 cottages. It's also error prone, even the `for` loop is too much syntax for what should really be simple.
+While this will fit on the in-game prompt, it's awkward. You need to
+declare a new Drone object first, then write a for loop to create the
+4 cottages. It's also error prone, even the `for` loop is too much
+syntax for what should really be simple.
 
  * You can use a while loop...
    
     d = new Drone(); var i=4; while (i--) {  d.cottage().right(8); }
 
-... which is slightly shorter but still too much syntax. Each of the above statements is fine for creating a 1-dimensional array of structures. But what if you want to create a 2-dimensional or 3-dimensional array of structures? Enter the `times()` method.
+... which is slightly shorter but still too much syntax. Each of the
+above statements is fine for creating a 1-dimensional array of
+structures. But what if you want to create a 2-dimensional or
+3-dimensional array of structures? Enter the `times()` method.
 
-The `times()` method lets you repeat commands in a chain any number of times. So to create 4 cottages in a row you would use the following statement...
+The `times()` method lets you repeat commands in a chain any number of
+times. So to create 4 cottages in a row you would use the following
+statement...
 
     cottage().right(8).times(4);
 
-...which will build a cottage, then move right 8 blocks, then do it again 4 times over so that at the end you will have 4 cottages in a row. What's more the `times()` method can be called more than once in a chain. So if you wanted to create a *grid* of 20 houses ( 4 x 5 ), you would do so using the following statement...
+...which will build a cottage, then move right 8 blocks, then do it
+again 4 times over so that at the end you will have 4 cottages in a
+row. What's more the `times()` method can be called more than once in
+a chain. So if you wanted to create a *grid* of 20 houses ( 4 x 5 ),
+you would do so using the following statement...
 
     cottage().right(8).times(4).fwd(8).left(32).times(5);
 
@@ -873,132 +572,32 @@ Drone.prototype.times = function( numTimes, commands ) {
   return this;
 };
 
-Drone.prototype._checkpoints = {};
-Drone.extend(function chkpt( name ) {
-  this._checkpoints[ name ] = { x:this.x, y:this.y, z:this.z, dir:this.dir };
-});
 
-Drone.extend(function move( ) {
-  if ( arguments[0].x && arguments[0].y && arguments[0].z) {
-    this.x = arguments[0].x;
-    this.y = arguments[0].y;
-    this.z = arguments[0].z;
-    this.dir = _getDirFromRotation(arguments[0] );
-    this.world = arguments[0].world;
-  } else if ( typeof arguments[0] === 'string' ) {
-    var coords = this._checkpoints[arguments[0]];
-    if ( coords ) {
-      this.x = coords.x;
-      this.y = coords.y;
-      this.z = coords.z;
-      this.dir = coords.dir%4;
-    }            
-  } else {
-    // expect x,y,z,dir
-    switch( arguments.length ) {
-    case 4:
-      this.dir = arguments[3];
-    case 3:
-      this.z = arguments[2];
-    case 2:
-      this.y = arguments[1];
-    case 1:
-      this.x = arguments[0];
-    }
-  }
-});
-
-Drone.extend( function turn( n ) {
-  if ( typeof n == 'undefined' ) {
-    n = 1;
-  }
-  this.dir += n;
-  this.dir %=4;
-} );
-
-Drone.extend( function right( n ) { 
-  if ( typeof n == 'undefined' ) {
-    n = 1;
-  }
-  _movements[ this.dir ].right( this, n ); 
-});
-
-Drone.extend( function left( n ) { 
-  if ( typeof n == 'undefined') { 
-    n = 1;
-  }
-  _movements[ this.dir ].left( this, n );
-});
-
-Drone.extend( function fwd( n ) { 
-  if ( typeof n == 'undefined' ) {
-    n = 1;
-  }
-  _movements[ this.dir ].fwd( this, n );
-});
-
-Drone.extend( function back( n ) { 
-  if ( typeof n == 'undefined' ) { 
-    n = 1;
-  }
-  _movements[ this.dir ].back( this, n );
-});
-
-Drone.extend( function up( n ) { 
-  if ( typeof n == 'undefined' ) {
-    n = 1;
-  }
-  this.y+= n; 
-});
-
-Drone.extend( function down( n ) { 
-  if ( typeof n == 'undefined' ) {
-    n = 1;
-  }
-  this.y-= n; 
-});
-//
-// position
-//
-Drone.prototype.getLocation = function( ) {
-  if (__plugin.canary) {
-    var cmLocation = Packages.net.canarymod.api.world.position.Location;
-    return new cmLocation( this.world, this.x, this.y, this.z, 0, 0);
-  }
-  if (__plugin.bukkit) { 
-    return new bkLocation( this.world, this.x, this.y, this.z );
-  }
+Drone.prototype.getBlock = function(){
+  return this.world.getBlockAt(this.x,this.y,this.z);
+};
+Drone.prototype.setBlock = function(blockType, data, ox, oy, oz){
+  if (typeof ox == 'undefined')
+    ox = 0;
+  if (typeof oy == 'undefined')
+    oy = 0;
+  if (typeof oz == 'undefined')
+    oz = 0;
+  putBlock(this.x + ox, this.y + oy, this.z + oz, blockType, data, this.world);
+};
+Drone.prototype.bountiful = bountiful;
+Drone.prototype.traverseWidth = function(width, callback){
+  _traverse[this.dir].width(this, width, callback);
+};
+Drone.prototype.traverseHeight = function(height, callback){
+  traverseHeight(this, height, callback);
+};
+Drone.prototype.traverseDepth = function(depth, callback){
+  _traverse[this.dir].depth(this, depth, callback);
 };
 //
 // building
 //
-Drone.extend( function sign( message, block ) {
-  if ( message.constructor != Array ) {
-    message = [message];
-  }
-  var bm = this._getBlockIdAndMeta( block );
-  block = bm[0];
-  var meta = bm[1];
-  if ( block != 63 && block != 68 ) {
-    var usage = 'Usage: sign("message", "63:1") or sign("message","68:1")';
-    if ( this.player ) {
-      echo( this.player, usage);
-    }
-    console.error(usage);
-    return;
-  }
-  if ( block == 68 ) {
-    meta = Drone.PLAYER_SIGN_FACING[ this.dir % 4 ];
-    this.back();
-  }
-  if ( block == 63 ) {
-    meta = ( 12 + ( ( this.dir + 2 ) * 4 ) ) % 16;
-  }
-  putSign( this, this.x, this.y, this.z, this.world, message, block, meta);
-  if ( block == 68 ) {
-    this.fwd();
-  }
-});
 
 var playerQueues = {};
 /*
@@ -1054,22 +653,17 @@ Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite, immed
   if ( typeof w == 'undefined' ) {
     w = 1;
   }
-  var that = this;
-  var dir = this.dir;
   var bi = 0;
-  _traverse[dir].depth( that, d, function traverseDepthCallback( ) { 
-    traverseHeight( that, h, function traverseHeightCallback( ) { 
-      _traverse[dir].width( that, w, function traverseWidthCallback( ) { 
-	var properBlock = blocksForBuild[ bi % len ];
-	putBlock( that.x, that.y, that.z, properBlock[0], properBlock[1], that.world);
-        bi++;
-      });
-    });
+
+  traverseDHW( this, d,h,w, function traverseWidthCallback( ) { 
+    var properBlock = blocksForBuild[ bi % len ];
+    this.setBlock(properBlock[0], properBlock[1]);
+    bi++;
   });
   return this;
 };
-Drone.MAX_VOLUME = 1000000;
-Drone.MAX_SIDE = 1000;
+Drone.MAX_VOLUME = 1 * MILLION;
+Drone.MAX_SIDE = 1 * THOUSAND;
 
 var tooBig = function(w, h, d ) {
   return ( w * h * d ) >= Drone.MAX_VOLUME || 
@@ -1102,25 +696,15 @@ Drone.prototype.cuboidX = function( blockType, meta, w, h, d, immediate ) {
     console.warn('Build too big! ' + w + ' X ' + h + ' X ' + d);
     return this;
   }
-  var that = this;
-  var dir = this.dir;
-
   if ( !immediate ) {
     var clone = Drone.clone(this);
     var impl = this.cuboidX.bind(clone, blockType, meta, w, h, d, true);
     getQueue(this).push(function cuboidX(){ impl(); });
     return this;
   }
-  var depthFunc = function( ) {
-    putBlock( that.x, that.y, that.z, blockType, meta, that.world );
-  };
-  var heightFunc = function( ) {
-    _traverse[dir].depth( that, d, depthFunc );
-  };
-  var widthFunc = function( ) {
-    traverseHeight( that, h, heightFunc );
-  };
-  _traverse[dir].width( that, w, widthFunc );
+  traverseDHW( this, d,h,w, function( ) {
+    this.setBlock( blockType, meta );
+  });
   return this;
   
 };
@@ -1151,52 +735,6 @@ Drone.prototype.cuboid0 = function( block, w, h, d ) {
 };
 
 
-function door( doorMaterial, hinge) {
-  if ( typeof doorMaterial == 'undefined' ) {
-    doorMaterial = 64; // wood
-  } 
-  if (typeof hinge == 'undefined') { 
-    hinge = 'left';
-  }
-  this.then(function(){
-    putBlock( this.x, this.y, this.z, doorMaterial, this.dir, this.world );
-    putBlock( this.x, this.y+1, this.z, doorMaterial, hinge=='left' ? 8 : 9, this.world );
-    if ( bountiful ){
-      // 1.8
-      var prop = require('blockhelper').property;
-      var lower = this.world.getBlockAt(this.x,this.y,this.z);
-      var upper = this.world.getBlockAt(this.x,this.y+1,this.z);
-      prop(upper)
-	.set('half','upper')
-	.set('hinge',hinge);
-      prop(lower)
-	.set('facing',this.dir)
-	.set('half','lower');
-
-      upper.update();
-      lower.update();
-    }
-  });
-}
-Drone.extend( door );
-
-Drone.extend( function door_iron( ) {
-  this.door(71);
-} );
-
-Drone.extend( function door2( doorMaterial ) {
-  if ( typeof doorMaterial == 'undefined' ) {
-    doorMaterial = 64;
-  } 
-  this
-    .door( doorMaterial, 'left')
-    .right()
-    .door( doorMaterial, 'right')
-    .left();
-} );
-Drone.extend( function door2_iron( ) {
-  this.door2( 71 );
-} );
 
 // player dirs: 0 = east, 1 = south, 2 = west,   3 = north
 // block dirs:  0 = east, 1 = west,  2 = south , 3 = north
@@ -1206,102 +744,6 @@ Drone.PLAYER_STAIRS_FACING = [ 0, 2, 1, 3 ];
 Drone.PLAYER_SIGN_FACING = [ 4, 2, 5, 3 ]; 
 Drone.PLAYER_TORCH_FACING = [ 2, 4, 1, 3 ];
 
-var _STAIRBLOCKS = {
-  53: '5:0'     // oak wood
-  ,67: 4    // cobblestone
-  ,108: 45  // brick
-  ,109: 98  // stone brick
-  ,114: 112 // nether brick
-  ,128: 24  // sandstone
-  ,134: '5:1'    // spruce wood
-  ,135: '5:2'    // birch wood
-  ,136: '5:3'    // jungle wood
-};
-
-function stairs(blockType, width, height){
-  if (typeof width === 'undefined')
-    width = 1;
-  if (typeof height === 'undefined')
-    height = 1;
-  this.chkpt('_stairs');
-  var that = this;
-  while (height > 0) {
-    _traverse[this.dir].width(this, width, function(){
-
-	putBlock(that.x, that.y, that.z, blockType, Drone.PLAYER_STAIRS_FACING[that.dir], that.world);
-	if ( bountiful ){
-	  // 1.8
-	  var prop = require('blockhelper').property;
-	  var block = that.world.getBlockAt(that.x,that.y,that.z);
-	  prop(block).set('facing',that.dir);
-	  block.update();
-	}
-    });
-
-    this.fwd().up();
-    height -= 1;
-  }
-  this.move('_stairs');
-}
-Drone.extend(stairs);
-//
-// prism private implementation
-//
-function prism( block, w, d ) {
-  var stairEquiv = _STAIRBLOCKS[block];
-  if ( stairEquiv ) {
-    this
-      .fwd()
-      .prism( stairEquiv,w,d-2 )
-      .back()
-      .stairs(block, w, d / 2)
-      .fwd(d - 1)
-      .right(w - 1)
-      .turn(2)
-      .stairs(block, w, d / 2)
-      .turn(2)
-      .left(w - 1)
-      .back(d - 1);
-  }else{
-    var c = 0;
-    var d2 = d;
-    while ( d2 >= 1 ) { 
-      this.cuboid(block,w,1,d2 );
-      d2 -= 2;
-      this.fwd( ).up( );
-      c++;
-    }
-    this.down(c ).back(c );
-  }
-  return this;
-};
-//
-// prism0 private implementation
-//
-function prism0( block,w,d ) { 
-  this
-    .stairs(block,w,d/2)
-    .fwd(d-1)
-    .right(w-1)
-    .turn(2)
-    .stairs(block,w,d/2)
-    .turn(2)
-    .left(w-1)
-    .back(d-1);
-  
-  var se = _STAIRBLOCKS[block];
-  if (se) {
-    this
-      .fwd()
-      .prism(se,1,d-2)
-      .right(w-1)
-      .prism(se,1,d-2)
-      .left(w-1)
-      .back();
-  }
-}
-Drone.extend(prism0);
-Drone.extend(prism);
 Drone.extend('box', Drone.prototype.cuboid );
 Drone.extend('box0',Drone.prototype.cuboid0 );
 Drone.extend('boxa',Drone.prototype.cuboida );
@@ -1316,380 +758,7 @@ Drone.prototype.debug = function( ) {
   console.log(this.toString( ) );
   return this;
 };
-/*
- do the bresenham thing
- */
-var _bresenham = function( x0,y0,radius, setPixel, quadrants ) { 
-  //
-  // credit: Following code is copied almost verbatim from
-  // http://en.wikipedia.org/wiki/Midpoint_circle_algorithm
-  // Bresenham's circle algorithm
-  //
-  var f = 1 - radius;
-  var ddF_x = 1;
-  var ddF_y = -2 * radius;
-  var x = 0;
-  var y = radius;
-  var defaultQuadrants = {topleft: true, topright: true, bottomleft: true, bottomright: true};
-  quadrants = quadrants?quadrants:defaultQuadrants;
-  /*
-   II  | I
-   ------------
-   III | IV
-   */
-  if ( quadrants.topleft || quadrants.topright )
-    setPixel(x0, y0 + radius ); // quadrant I/II topmost
-  if ( quadrants.bottomleft || quadrants.bottomright )
-    setPixel(x0, y0 - radius ); // quadrant III/IV bottommost
-  if ( quadrants.topright || quadrants.bottomright )
-    setPixel(x0 + radius, y0 ); // quadrant I/IV rightmost
-  if ( quadrants.topleft || quadrants.bottomleft )
-    setPixel(x0 - radius, y0 ); // quadrant II/III leftmost
-  
-  while ( x < y ) {
-    if(f >= 0 ) {
-      y--;
-      ddF_y += 2;
-      f += ddF_y;
-    }
-    x++;
-    ddF_x += 2;
-    f += ddF_x;    
-    if ( quadrants.topright ) { 
-      setPixel(x0 + x, y0 + y ); // quadrant I
-      setPixel(x0 + y, y0 + x ); // quadrant I
-    }
-    if ( quadrants.topleft ) { 
-      setPixel(x0 - x, y0 + y ); // quadrant II
-      setPixel(x0 - y, y0 + x ); // quadrant II
-    }
-    if ( quadrants.bottomleft ) { 
-      setPixel(x0 - x, y0 - y ); // quadrant III
-      setPixel(x0 - y, y0 - x ); // quadrant III
-    }
-    if ( quadrants.bottomright ) { 
-      setPixel(x0 + x, y0 - y ); // quadrant IV
-      setPixel(x0 + y, y0 - x ); // quadrant IV
-    }
-  }
-};
-var _getStrokeDir = function( x,y ) { 
-  var absY = Math.abs(y );
-  var absX = Math.abs(x );
-  var strokeDir = 0;
-  if ( y > 0 && absY >= absX )
-    strokeDir = 0 ; //down
-  else if ( y < 0 && absY >= absX )
-    strokeDir = 1 ; // up
-  else if ( x > 0 && absX >= absY )
-    strokeDir = 2 ; // left
-  else if ( x < 0 && absX >= absY )
-    strokeDir = 3 ; // right
-  return strokeDir;
-};
-/*
- The daddy of all arc-related API calls - 
- if you're drawing anything that bends it ends up here.
- */
-var _arc2 = function( params ) {
-  var drone = params.drone;
-  var orientation = params.orientation?params.orientation:'horizontal';
-  var quadrants = params.quadrants?params.quadrants:{
-    topright:1,
-    topleft:2,
-    bottomleft:3,
-    bottomright:4
-  };
-  var stack = params.stack?params.stack:1;
-  var radius = params.radius;
-  var strokeWidth = params.strokeWidth?params.strokeWidth:1;
-  drone.chkpt('arc2' );
-  var x0, y0, gotoxy,setPixel;
-  
-  if ( orientation == 'horizontal' ) { 
-    gotoxy = function( x,y ) {  return drone.right(x ).fwd(y );};
-    drone.right(radius ).fwd(radius ).chkpt('center' );
-    switch ( drone.dir ) {
-    case 0: // east
-    case 2: // west
-      x0 = drone.z;
-      y0 = drone.x;
-      break;
-    case 1: // south
-    case 3: // north
-      x0 = drone.x;
-      y0 = drone.z;
-    }
-    setPixel = function( x, y ) {
-      x = ( x-x0 );
-      y = ( y-y0 );
-      if ( params.fill ) { 
-        // wph 20130114 more efficient esp. for large cylinders/spheres
-        if ( y < 0 ) { 
-          drone
-            .fwd( y ).right( x )
-            .cuboidX( params.blockType, params.meta, 1, stack, Math.abs( y * 2 ) + 1 )
-            .back( y ).left( x );
-        }
-      }else{
-        if ( strokeWidth == 1 ) { 
-          gotoxy(x,y )
-            .cuboidX( params.blockType, params.meta,
-                     1, // width
-                     stack, // height
-                     strokeWidth // depth
-                    )
-            .move('center' );
-        } else {
-          var strokeDir = _getStrokeDir( x, y );
-          var width = 1, depth = 1;
-          switch ( strokeDir ) {
-          case 0: // down
-            y = y-( strokeWidth - 1 );
-            depth = strokeWidth;
-            break;
-          case 1: // up
-            depth = strokeWidth;
-            break;
-          case 2: // left
-            width = strokeWidth;
-            x = x-(strokeWidth-1 );
-            break;
-          case 3: // right
-            width = strokeWidth;
-            break;
-          }
-          gotoxy( x, y )
-            .cuboidX( params.blockType, params.meta, width, stack, depth )
-            .move( 'center' );
 
-        }
-      }
-    };
-  }else{
-    // vertical
-    gotoxy = function( x,y ) {  return drone.right(x ).up(y );};
-    drone.right(radius ).up(radius ).chkpt('center' ); 
-    switch ( drone.dir ) {
-    case 0: // east
-    case 2: // west
-      x0 = drone.z;
-      y0 = drone.y;
-      break;
-    case 1: // south
-    case 3: // north
-      x0 = drone.x;
-      y0 = drone.y;
-    }
-    setPixel = function( x, y ) {
-      x = ( x - x0 );
-      y = ( y - y0 );
-      if ( params.fill ) { 
-        // wph 20130114 more efficient esp. for large cylinders/spheres
-        if ( y < 0 ) { 
-          drone
-            .up( y ).right( x )
-            .cuboidX( params.blockType, params.meta, 1, Math.abs( y * 2 ) + 1, stack )
-            .down( y ).left( x );
-        }
-      }else{
-        if ( strokeWidth == 1 ) { 
-          gotoxy( x, y )
-            .cuboidX( params.blockType, params.meta, strokeWidth, 1, stack )
-            .move( 'center' );
-        }else{
-          var strokeDir = _getStrokeDir( x,y );
-          var width = 1, height = 1;
-          switch ( strokeDir ) {
-          case 0: // down
-            y = y - ( strokeWidth - 1 );
-            height = strokeWidth;
-            break;
-          case 1: // up
-            height = strokeWidth;
-            break;
-          case 2: // left
-            width = strokeWidth;
-            x = x - ( strokeWidth - 1 );
-            break;
-          case 3: // right
-            width = strokeWidth;
-            break;
-          }
-          gotoxy(x,y )
-            .cuboidX(params.blockType, params.meta, width, height, stack )
-            .move('center' );
-          
-        }
-      }
-    };
-  }
-  /*
-   setPixel assumes a 2D plane - need to put a block along appropriate plane
-   */
-  _bresenham(x0,y0,radius,setPixel,quadrants );
-  
-  params.drone.move('arc2' );
-};
-
-
-Drone.extend('arc',function( params ) {
-  params.drone = this;
-  _arc2(params );
-} );
-
-var _cylinder0 = function( block,radius,height,exactParams ) { 
-  var arcParams = {
-    radius: radius,
-    fill: false,
-    orientation: 'horizontal',
-    stack: height
-  };
-
-  if ( exactParams ) { 
-    for ( var p in exactParams ) {
-      arcParams[p] = exactParams[p];
-    }
-  }else{
-    var md = this._getBlockIdAndMeta(block );
-    arcParams.blockType = md[0];
-    arcParams.meta = md[1];
-  }
-  return this.arc(arcParams );
-};
-var _cylinder1 = function( block,radius,height,exactParams ) { 
-  var arcParams = {
-    radius: radius,
-    fill: true,
-    orientation: 'horizontal',
-    stack: height,
-  };
-
-  if ( exactParams ) { 
-    arcParams.blockType = exactParams.blockType;
-    arcParams.meta = exactParams.meta;
-  }else{
-    var md = this._getBlockIdAndMeta(block );
-    arcParams.blockType = md[0];
-    arcParams.meta = md[1];
-  }
-  return this.arc(arcParams );
-};
-var _paste = function( name, immediate )
-{
-
-  var ccContent = Drone.clipBoard[name];
-  if (ccContent == undefined){
-    console.warn('Nothing called ' + name + ' in clipboard!');
-    return;
-  }
-  var srcBlocks = ccContent.blocks;
-  var srcDir = ccContent.dir; // direction player was facing when copied.
-  var dirOffset = (4 + (this.dir - srcDir ) ) %4;
-  var that = this;
-
-  _traverse[this.dir].width(that,srcBlocks.length,function( ww ) { 
-    var h = srcBlocks[ww].length;
-    traverseHeight(that,h,function( hh ) { 
-      var d = srcBlocks[ww][hh].length;
-      _traverse[that.dir].depth(that,d,function( dd ) { 
-        var b = srcBlocks[ww][hh][dd];
-        var cb = b.type;
-        var md = b.data;
-        //
-        // need to adjust blocks which face a direction
-        //
-        switch ( cb ) {
-          // 
-          // doors
-          //
-          case 64: // wood
-          case 71: // iron
-            // top half of door doesn't need to change
-            if ( md < 8 ) {
-              md = (md + dirOffset ) % 4;
-            }
-            break;
-          //
-          // stairs
-          //
-          case 53:  // oak 
-          case 67:  // cobblestone 
-          case 108: // red brick 
-          case 109: // stone brick 
-          case 114: // nether brick
-          case 128: // sandstone
-          case 134: // spruce
-          case 135: // birch
-          case 136: // junglewood
-            var dir = md & 0x3;
-            var a = Drone.PLAYER_STAIRS_FACING;
-            var len = a.length;
-            for ( var c=0;c < len;c++ ) { 
-              if ( a[c] == dir ) { 
-                break;
-              }
-            }
-            c = (c + dirOffset ) %4;
-            var newDir = a[c];
-            md = (md >>2<<2 ) + newDir;
-            break;
-          //
-          // signs , ladders etc
-          //
-          case 23: // dispenser
-          case 54: // chest
-          case 61: // furnace
-          case 62: // burning furnace
-          case 65: // ladder
-          case 68: // wall sign
-            var a = Drone.PLAYER_SIGN_FACING;
-            var len = a.length;
-            for ( var c=0;c < len;c++ ) { 
-              if ( a[c] == md ) { 
-                break;
-              }
-            }
-            c = (c + dirOffset ) %4;
-            var newDir = a[c];
-            md = newDir;
-            break;
-          }
-          putBlock(that.x,that.y,that.z,cb,md,that.world );
-      } );
-    } );
-  } );
-};
-var _getDirFromRotation = function( location ) { 
-  // 0 = east, 1 = south, 2 = west, 3 = north
-  // 46 to 135 = west
-  // 136 to 225 = north
-  // 226 to 315 = east
-  // 316 to 45 = south
-  var r;
-  if (__plugin.canary ) {
-    r = location.rotation;
-  } 
-  if (__plugin.bukkit) { 
-    r = location.yaw;
-  }
-    
-  // west = -270
-  // north = -180
-  // east = -90
-  // south = 0
-  
-  r = (r + 360 ) % 360; // east could be 270 or -90
-
-  if ( r > 45 && r <= 135 )
-    return 2; // west
-  if ( r > 135 && r <= 225 )
-    return 3; // north
-  if ( r > 225 && r <= 315 )
-    return 0; // east
-  if ( r > 315 || r < 45 )
-    return 1; // south
-};
 function _getBlockIdAndMeta( b ) { 
   var defaultMeta = 0,
     i = 0,
@@ -1726,59 +795,35 @@ function _getBlockIdAndMeta( b ) {
     return [ b, defaultMeta ];
   }
 };
-//
-// movement
-//
-var _movements = [{},{},{},{}];
-// east
-_movements[0].right = function( that,n ) {  that.z +=n; return that;};
-_movements[0].left = function( that,n ) {  that.z -=n; return that;};
-_movements[0].fwd = function( that,n ) {  that.x +=n; return that;};
-_movements[0].back = function( that,n ) {  that.x -= n; return that;};
-// south
-_movements[1].right = _movements[0].back;
-_movements[1].left = _movements[0].fwd;
-_movements[1].fwd = _movements[0].right;
-_movements[1].back = _movements[0].left;
-// west
-_movements[2].right = _movements[0].left;
-_movements[2].left = _movements[0].right;
-_movements[2].fwd = _movements[0].back;
-_movements[2].back = _movements[0].fwd;
-// north
-_movements[3].right = _movements[0].fwd;
-_movements[3].left = _movements[0].back;
-_movements[3].fwd = _movements[0].left;
-_movements[3].back = _movements[0].right;
 var _traverse = [{},{},{},{}];
 // east
-function walkWidthEast( that,n,callback ) { 
-  var s = that.z, e = s + n;
-  for ( ; that.z < e; that.z++ ) { 
-    callback(that.z-s );
+function walkWidthEast( drone, n,callback ) { 
+  var s = drone.z, e = s + n;
+  for ( ; drone.z < e; drone.z++ ) { 
+    callback.call(drone ,drone.z-s );
   }
-  that.z = s;
+  drone.z = s;
 }
-function walkDepthEast( that,n,callback ) { 
-  var s = that.x, e = s+n;
-  for ( ;that.x < e;that.x++ ) { 
-    callback(that.x-s );
+function walkDepthEast( drone,n,callback ) { 
+  var s = drone.x, e = s+n;
+  for ( ;drone.x < e;drone.x++ ) { 
+    callback.call(drone, drone.x-s );
   }
-  that.x = s;
+  drone.x = s;
 }
-function walkWidthSouth( that,n,callback ) { 
-  var s = that.x, e = s-n;
-  for ( ;that.x > e;that.x-- ) { 
-    callback(s-that.x );
+function walkWidthSouth( drone,n,callback ) { 
+  var s = drone.x, e = s-n;
+  for ( ;drone.x > e;drone.x-- ) { 
+    callback.call(drone, s-drone.x );
   }
-  that.x = s;
+  drone.x = s;
 }
-function walkWidthWest( that,n,callback ) { 
-  var s = that.z, e = s-n;
-  for ( ;that.z > e;that.z-- ) { 
-    callback(s-that.z );
+function walkWidthWest( drone,n,callback ) { 
+  var s = drone.z, e = s-n;
+  for ( ;drone.z > e;drone.z-- ) { 
+    callback.call(drone, s-drone.z );
   }
-  that.z = s;
+  drone.z = s;
 }
 _traverse[0].width = walkWidthEast;
 _traverse[0].depth = walkDepthEast;
@@ -1791,138 +836,25 @@ _traverse[2].depth = walkWidthSouth;
 // north
 _traverse[3].width = walkDepthEast;
 _traverse[3].depth = walkWidthWest;
-function traverseHeight( that,n,callback ) { 
-  var s = that.y, e = s + n;
-  for ( ; that.y < e; that.y++ ) { 
-    callback(that.y-s );
+function traverseHeight( drone,n,callback ) { 
+  var s = drone.y, e = s + n;
+  for ( ; drone.y < e; drone.y++ ) { 
+    callback.call(drone, drone.y-s );
   }
-  that.y = s;
+  drone.y = s;
 };
-//
-// standard fisher-yates shuffle algorithm
-//
-function fisherYates(  myArray  ) {
-  var i = myArray.length;
-  if (  i == 0 ) return false;
-  while ( --i ) {
-    var j = Math.floor( Math.random( ) * ( i + 1 ) );
-    var tempi = myArray[i];
-    var tempj = myArray[j];
-    myArray[i] = tempj;
-    myArray[j] = tempi;
-  }
-}
-var _copy = function( name, w, h, d ) {
-  var that = this;
-  var ccContent = [];
-  _traverse[this.dir].width(that,w,function( ww ) { 
-    ccContent.push([] );
-    traverseHeight(that,h,function( hh ) { 
-      ccContent[ww].push([] );
-      _traverse[that.dir].depth(that,d,function( dd ) { 
-        var b = that.world.getBlockAt(that.x,that.y,that.z );
-        ccContent[ww][hh][dd] = {type:b.getTypeId(), data:b.data};
-      } );
-    } );
-  } );
-  Drone.clipBoard[name] = {dir: this.dir, blocks: ccContent};
-};
-function _garden( width, depth ) {
-  if ( typeof width == 'undefined' ) { 
-    width = 10;
-  }
-  if ( typeof depth == 'undefined' ) { 
-    depth = width;
-  }
-  var grass = 2,
-    red = 37,
-    yellow = 38,
-    longgrass = '31:1',
-    air = 0;
-
-  // make sure grass is present first
-  this.down()
-    .box( grass, width, 1, depth )
-    .up( ); 
-  
-  // make flowers more common than long grass
-  var dist = { };
-  dist[red] = 3;
-  dist[yellow] = 3;
-  dist[longgrass] = 2;
-  dist[air] = 1;
-
-  return this.rand( dist, width, 1, depth, false /* don't overwrite */ );
-}
-
-function _rand( blockDistribution ) { 
-  if ( !(blockDistribution.constructor == Array ) ) { 
-    var a = [];
-    for ( var p in blockDistribution ) { 
-      var n = blockDistribution[p];
-      for ( var i = 0;i < n;i++ ) { 
-        a.push(p );
-      }
-    }
-    blockDistribution = a;
-  }
-  while ( blockDistribution.length < 1000 ) { 
-    // make array bigger so that it's more random
-    blockDistribution = blockDistribution.concat(blockDistribution );
-  }
-  fisherYates(blockDistribution );
-  return blockDistribution;
-}
-
-Drone.extend( function rand( dist, width, height, depth, overwrite ) { 
-  if ( typeof overwrite == 'undefined' ) { 
-    overwrite = true;
-  }
-  var randomized = _rand( dist );
-  this.boxa( randomized, width, height, depth, overwrite);
-} );
-
-var _trees = {
-  oak: bkTreeType.BIG_TREE ,
-  birch: bkTreeType.BIRCH ,
-  jungle: bkTreeType.JUNGLE,
-  spruce: bkTreeType.REDWOOD 
-};
-function bukkitTreeFactory( k, v ) {
-  return function( ) { 
-    var block = this.world.getBlockAt(this.x,this.y,this.z );
-    if ( block.typeId == 2 ) { 
-      this.up( );
-    }
-    var treeLoc = this.getLocation();
-    var successful = treeLoc.world.generateTree(treeLoc,v );
-    if ( block.typeId == 2 ) { 
-      this.down( );
-    }
-  };
-}
-function canaryTreeFactory( k, v ){
-  return function(){
-    console.log(k + ' not yet implemented.');
-  };
-}
-for ( var p in _trees ) {
-  Drone.extend(p, (__plugin.canary? canaryTreeFactory : bukkitTreeFactory) ( p, _trees[p] ) );
+function traverseDHW( drone, d,h,w, callback ){
+  _traverse[drone.dir].depth( drone, d, function traverseDepthCallback( ) { 
+    traverseHeight( this, h, function traverseHeightCallback( ) { 
+      _traverse[this.dir].width( this, w, callback);
+    });
+  });
 }
 
 Drone.clone = function(origin) {
   var result = new Drone(origin.x,origin.y,origin.z, origin.dir, origin.world);
   return result;
 };
-//
-// Drone's clipboard 
-//
-Drone.clipBoard = {};
-Drone.extend('garden',_garden );
-Drone.extend('copy', _copy );
-Drone.extend('paste',_paste );
-Drone.extend('cylinder0',_cylinder0 );
-Drone.extend('cylinder', _cylinder1 );
 //
 // wph 20130130 - make this a method - extensions can use it.
 //

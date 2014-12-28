@@ -1,32 +1,44 @@
-var Drone = require('../drone').Drone;
-var bkMaterial = org.bukkit.Material;
+'use strict';
+/*global require, __plugin, org*/
+var Drone = require('../drone').Drone,
+    bkMaterial = org.bukkit.Material,
+    blocks = require('blocks');
 
-function canHang( material ) {
+function canHang( block ) {
 
-  if ( material.equals(bkMaterial.AIR) ||
-       material.equals(bkMaterial.VINE) ) {
-    return true;
-  } else { 
-    return false;
+  if (__plugin.bukkit){
+    if ( block.type.equals(bkMaterial.AIR) ||
+	 block.type.equals(bkMaterial.VINE) ) {
+      return true;
+    } 
   }
+  if (__plugin.canary){
+    if (block.typeId == blocks.air || 
+	block.typeid == blocks.vines ) {
+	return true;
+    }
+  }
+  return false;
 }  
 function hangtorch() { 
   var torch = '50:' + Drone.PLAYER_TORCH_FACING[this.dir];
   var moves = 0;
-  var block = this.world.getBlockAt(this.x, this.y, this.z);
+  var block = this.getBlock();
 
-  while ( !canHang(block.type) ){
+  while ( !canHang(block) ){
 
     moves++;
     this.back();
     if (moves == 10){
-      this.fwd(moves);
+      this
+	.fwd(moves);
       console.log('nowhere to hang torch');
       return;
     }
-    block = this.world.getBlockAt(this.x, this.y, this.z);
+    block = this.getBlock();
   }
-  this.box(torch)
+  this
+    .box(torch)
     .fwd(moves);
 }
 Drone.extend(hangtorch);
