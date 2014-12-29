@@ -45,7 +45,7 @@ function stairs(blockType, width, height){
 	  // 1.8
 	  var prop = require('blockhelper').property;
 	  var block = this.getBlock();
-	  prop(block).set('facing',that.dir);
+	  prop(block).set('facing',this.dir);
 	  block.update();
 	}
     });
