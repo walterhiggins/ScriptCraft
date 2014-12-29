@@ -11,26 +11,33 @@ demonstrates a couple of new features in ScriptCraft ...
  * Persistence
  * Adding Player (non-operator) commands
 
-... First persistence. Persistence is the ability to retain state after 
-the server has shutdown and started up again. Persistence is something 
-you get for free if you create your javsacript plugin using the new 
-`plugin()` function provided with ScriptCraft - just keep any data you 
-want to save in a property called `store` and that data will be written 
-and read at shutdown and startup. The data is persisted in JSON form so 
-it's even somewhat human-readable. Declaring a new plugin is easy, you 
-give your plugin a name, specify an interface/object and whether the 
-plugin should be persistent. For this I'm going to create a new plugin 
-called "chat" that will let players change the default color of their messages 
-in the in-game chat window...
+## Persistence
+... First persistence. Persistence is the ability to retain state
+after the server has shutdown and started up again. You can create a
+Javascript object which will be saved at shutdown and reloaded at
+startup by using the built-in `persist()` function.
 
-    var _store = {players: {}};
-    exports.chat = plugin('chat', { 
-        setColor: function(player,chatColor) { 
-            _store.players[player.name] = chatColor;
-        },
-        store: _store
-    }, true);
+```javascript
+// file: scriptcraft/plugins/my-first-plugin.js
+var prefs = persist('myprefs', {});
+...
+prefs.color = 'black';
+```
+In the example above, a new empty object is created and stored in a file called `myprefs-store.json`. The empty object is returned (if data is not already present in that file or the file does not exist) and any changes to the object's contents are written to the file when the server is shutdown.
 
+The data is persisted in JSON form so it's even somewhat
+human-readable. Declaring a new plugin is easy. I'm going to create a
+new plugin called "chat" that will let players change the default
+color of their messages in the in-game chat window...
+
+```javascript
+var store = persist('chat-colors', {players: {}});
+exports.chat = { 
+  setColor: function(player,chatColor) { 
+    store.players[player.name] = chatColor;
+  }
+}
+```
 The above code doesn't do a whole lot other than let operators set a 
 player's color choice ( `/js chat.setColor(self, 'green')` ). A little 
 bit more code has to be added so that the player's text color will 
@@ -39,25 +46,29 @@ the player's color setting is at least saved. The following code just
 ensures that when a player chats , the text will be displayed in their 
 chosen color...
 
-    var colors = ['black', 'blue', 'darkgreen', 'darkaqua', 'darkred',
-                  'purple', 'gold', 'gray', 'darkgray', 'indigo',
-                  'brightgreen', 'aqua', 'red', 'pink',
-                  'yellow', 'white'];
-    var colorCodes = {};
-    for (var i =0;i < colors.length;i++) colorCodes[colors[i]] = i.toString(16);
-    
-    events.asyncPlayerChat( function( evt ) {
-        var player = evt.player;
-        var playerChatColor = _store.players[ player.name ];
-        if ( playerChatColor ) {
-            evt.message = '&sect;' + colorCodes[ playerChatColor ] + evt.message;
-        }
-    });
+```javascript
+var colors = ['black', 'blue', 'darkgreen', 'darkaqua', 'darkred',
+              'purple', 'gold', 'gray', 'darkgray', 'indigo',
+              'brightgreen', 'aqua', 'red', 'pink',
+              'yellow', 'white'];
+var colorCodes = {};
+for (var i =0;i < colors.length;i++) 
+  colorCodes[colors[i]] = i.toString(16);
+
+events.asyncPlayerChat( function( evt ) {
+  var player = evt.player;
+  var playerChatColor = _store.players[ player.name ];
+  if ( playerChatColor ) {
+    evt.message = '&sect;' + colorCodes[ playerChatColor ] + evt.message;
+  }
+});
+```
         
 The next step is to declare a lookup table of colors / names and add an event 
 handler which intercepts and inserts color codes into player's text 
 messages. 
 
+## Adding new Player Commands
 The other command in ScriptCraft is the `/jsp` command - this lets 
 operators expose plugins for use by regular players. To be clear, `/jsp` 
 does not do any javascript evaluation, it just accepts parameters which 
@@ -71,15 +82,18 @@ choose their text color? If you've written a javascript function and
 want players to be able to use that function, you expose it using the 
 new `command()` function like so...
 
-    command( 'chat_color', function( params, sender ) {
-        var color = params[0];
-        if (colorCodes[color]){
-            chat.setColor(sender,color);
-        }else{
-            sender.sendMessage(color + ' is not a valid color');
-            sender.sendMessage('valid colors: ' + colors.join(', '));
-        }
-    },colors);
+```javascript
+function chat_color( params, sender ){
+  var color = params[0];
+  if (colorCodes[color]){
+    chat.setColor(sender,color);
+  }else{
+    echo(sender, color + ' is not a valid color');
+    echo(sender, 'valid colors: ' + colors.join(', '));
+  }
+}
+command(chat_color, colors);
+```
 
 ... The above code adds a new *subcommand* to the `/jsp` command and 
 also specifies autocomplete options (the last parameter - `colors`) for 
@@ -94,41 +108,39 @@ starts up. I've also added a new `jsp` sub-command - `chat_color` that
 players use to change their chat color setting. The full plugin source 
 code is just a couple of lines of code but is a fully working plugin...
 
-    // declare a new javascript plugin
-    var _store = { players: {} } ; // private variable
-    exports.chat = plugin('chat', {
-        setColor: function(player, color){
-            _store.players[player.name] = color;
-        },
-        store: _store     
-    },true);
+```javascript
+var store = persist('chat-colors', {players: {}});
+exports.chat = { 
+  setColor: function(player,chatColor) { 
+    store.players[player.name] = chatColor;
+  }
+}
+var colors = ['black', 'blue', 'darkgreen', 'darkaqua', 'darkred',
+              'purple', 'gold', 'gray', 'darkgray', 'indigo',
+              'brightgreen', 'aqua', 'red', 'pink',
+              'yellow', 'white'];
+var colorCodes = {};
+for (var i =0;i < colors.length;i++) 
+  colorCodes[colors[i]] = i.toString(16);
 
-    var colors = ['black', 'blue', 'darkgreen', 'darkaqua', 'darkred',
-                  'purple', 'gold', 'gray', 'darkgray', 'indigo',
-                  'brightgreen', 'aqua', 'red', 'pink',
-                  'yellow', 'white'];
-    var colorCodes = {};
-    for ( var i =0; i < colors.length; i++ ) {
-        colorCodes[ colors[i] ] = i.toString(16);
-    }
-        
-    events.asyncPlayerChat( function( evt ) {
-        var player = evt.player;
-        var playerChatColor = _store.players[player.name];
-        if ( playerChatColor ) {
-            evt.message = '&sect;' + colorCodes[playerChatColor] + evt.message;
-        }
-    });
-    command( 'chat_color', function( params, sender ) {
-        var color = params[0];
-        if ( colorCodes[ color ] ) {
-            chat.setColor( sender, color );
-        }else{
-            sender.sendMessage( color + ' is not a valid color' );
-            sender.sendMessage( colors.join(',') );
-        }
-    }, colors );
-
+events.asyncPlayerChat( function( evt ) {
+  var player = evt.player;
+  var playerChatColor = _store.players[ player.name ];
+  if ( playerChatColor ) {
+    evt.message = '&sect;' + colorCodes[ playerChatColor ] + evt.message;
+  }
+});
+function chat_color( params, sender ){
+  var color = params[0];
+  if (colorCodes[color]){
+    chat.setColor(sender,color);
+  }else{
+    echo(sender, color + ' is not a valid color');
+    echo(sender, 'valid colors: ' + colors.join(', '));
+  }
+}
+command(chat_color, colors);
+```
     
 ![Chat Color plugin][1]
 

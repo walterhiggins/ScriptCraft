@@ -93,9 +93,9 @@ drone can do.  If you're interested in customizing minecraft beyond
 just creating new buildings, take a look at [./homes/homes.js][homes] for examples of how to create a
 javascript plugin for Minecraft.
 
-[ho]: blob/master/src/main/javascript/plugins/homes/homes.js
-[ar]: blob/master/src/main/javascript/plugins/arrows/arrows.js
-[si]: blob/master/src/main/javascript/modules/signs/menu.js
+[ho]: blob/master/src/main/js/plugins/homes/homes.js
+[ar]: blob/master/src/main/js/plugins/arrows.js
+[si]: blob/master/src/main/js/modules/signs/menu.js
 
 A Javascript mod for minecraft is just a javascript source file (.js)
 located in the craftbukkit/plugins/scriptcraft/plugins directory. All .js files in this
@@ -180,5 +180,5 @@ You can find more information about [ScriptCraft on my blog][blog].
 [scr]: http://scratch.mit.edu/
 [cda]: http://cdathenry.wordpress.com/category/modderdojo/
 [ytpl]: http://www.youtube.com/watch?v=DDp20SKm43Y&list=PL4Tw0AgXQZH5BiFHqD2hXyXQi0-qFbGp_
-[ex]: ../../tree/master/src/main/javascript/plugins/examples
+[ex]: ../../tree/master/src/main/js/plugins/examples
 [contrib]: contributing.md
