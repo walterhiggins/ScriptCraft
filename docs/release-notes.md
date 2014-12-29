@@ -1,11 +1,25 @@
-# 2014 11 09
-## Version 3.0.0 Release
-In September 2014, development of CraftBukkit was discontinued due to a DMCA takedown notice. 
-ScriptCraft has since switched from CraftBukkit to CanaryMod as the underlying framework.
-ScriptCraft continues to run on CraftBukkit but - for the immediate future - future development efforts will be to ensure it works primarily on CanaryMod.
-When other frameworks like SpongePowered become available, I hope to eventually support those too.
+RELEASE NOTES
+=============
 
-The biggest change in 3.0.0 is the removal of the short name event registration function.
+3.0.2 Release (2014 12 28)
+----------------------------------
+This version includes fixes for CraftBukkit (1.7.X) and also fixes
+problems on Mac OS X and includes some support for Drone methods in
+Minecraft 1.8 (CanaryMod 1.2)
+
+3.0.0 Release (2014 11 09)
+----------------------------------
+In September 2014, development of CraftBukkit was discontinued due to
+a DMCA takedown notice.  ScriptCraft has since switched from
+CraftBukkit to CanaryMod as the underlying framework.  ScriptCraft
+continues to run on CraftBukkit but - for the immediate future -
+future development efforts will be to ensure it works primarily on
+CanaryMod.  When other frameworks like SpongePowered become available,
+
+I hope to eventually support those too.
+
+The biggest change in 3.0.0 is the removal of the short name event
+registration function.
 
 This will no longer work:
 
@@ -20,38 +34,48 @@ or
     events.on(net.canarymod.hook.block.BlockDestroyHook, function( event ) { ... });
 
 
-# 2014 08 23
+2014 08 23
+----------
 Chessboard was broken, is now fixed.
-Rainbows are now made from stained glass. Full range of stained_glass colors is available in blocks variable.
-SnowballFight mini-game has been removed. An improved version will be available soon online.
+Rainbows are now made from stained glass. Full range of stained_glass
+colors is available in blocks variable.
+SnowballFight mini-game has been removed. An improved version will be
+available soon online.
 chat plugin has been removed - will be available in another github repo soon.
 
-# 2014 06 14
+2014 06 14
+----------
 Fix issue #140 - fails to build for JRE7
 Changed command() documentation to conform with new way of using (passing a named function)
 
-# 2014 05 31
+2014 05 31
+----------
 Fix bug in persistence module. Private load function wasn't returning result of scload.
 
-# 2014 05 29
+2014 05 29
+----------
 Fix tab completion for /jsp command so that it conforms with tab completion norms in minecraft.
 /jsp ice<TAB> completes to /jsp icecream
 Hitting TAB again has no effect. Player must type space then hit TAB to get list of flavors.
 This is consistent with how MC treats other commands for tab completion.
 
-# 2014 05 19
+2014 05 19
+----------
 Improved Tab Completion to work with Java Enums too.
 
-# 2014 05 12 
-
+2014 05 12 
+----------
 Turn off modality for conversations which are started via the 'input' module.
 (with modality on, player.sendMessage() is suppressed but player.sendRawMessage() isn't.
  turning modality off as devs would expect player.sendMessage() to work - I did anyway)
 
 
-# 2014 05 10
-Further simplification of events handling. The events.on() function can still be used but additional functions are now provided for each type of event.
-For example, to register a custom player-join event handler...
+2014 05 10
+----------
+Further simplification of events handling. The events.on() function
+can still be used but additional functions are now provided for each
+type of event.  For example, to register a custom player-join event
+handler...
 
     events.playerJoin(function(event){
        event.player.sendMessage('welcome!');
@@ -60,14 +84,12 @@ For example, to register a custom player-join event handler...
 Added new sounds module for simpler sounds playback and in-game tab completion.
 All of the org.bukkit.Sound enum values are attached to the sounds module.
 
-# 2014 04 13
-
+2014 04 13
+----------
 Added asynchronous `input()` function module.
 
-# 2014 03 15
-
-## Version 2.0.6
-
+Version 2.0.6 (2014 03 15)
+--------------------------
 ## Simplified Event handling code. 
 
 The callback function for event handling now only takes 1 single
@@ -94,8 +116,9 @@ the event.
 
 # 2014 03 12
 
-Added Drone.MAX_VOLUME and Drone.MAX_SIDE properties to specify limits on size of Drone ops.
-This is to stop individual players from hogging the CPU in a classrom environment.
+Added Drone.MAX_VOLUME and Drone.MAX_SIDE properties to specify limits
+on size of Drone ops.  This is to stop individual players from hogging
+the CPU in a classrom environment.
 
 # 2014 03 08
 
