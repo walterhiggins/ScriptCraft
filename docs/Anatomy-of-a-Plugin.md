@@ -125,7 +125,7 @@ for (var i =0;i < colors.length;i++)
 
 events.asyncPlayerChat( function( evt ) {
   var player = evt.player;
-  var playerChatColor = _store.players[ player.name ];
+  var playerChatColor = store.players[ player.name ];
   if ( playerChatColor ) {
     evt.message = '&sect;' + colorCodes[ playerChatColor ] + evt.message;
   }
