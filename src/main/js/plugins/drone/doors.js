@@ -58,21 +58,6 @@ function door( doorMaterial, hinge) {
   this.then(function(){
     this.setBlock(doorMaterial, this.dir);
     this.setBlock(doorMaterial, hinge=='left' ? 8 : 9, 0,1,0);
-    if ( this.bountiful ){
-      // 1.8
-      var prop = require('blockhelper').property;
-      var lower = this.getBlock();
-      var upper = this.getBlock();
-      prop(upper)
-	.set('half','upper')
-	.set('hinge',hinge);
-      prop(lower)
-	.set('facing',this.dir)
-	.set('half','lower');
-
-      upper.update();
-      lower.update();
-    }
   });
 }
 Drone.extend( door );

@@ -41,13 +41,6 @@ function stairs(blockType, width, height){
   while (height > 0) {
     this.traverseWidth(width, function(){
       this.setBlock(blockType, Drone.PLAYER_STAIRS_FACING[this.dir]);
-	if ( this.bountiful ){
-	  // 1.8
-	  var prop = require('blockhelper').property;
-	  var block = this.getBlock();
-	  prop(block).set('facing',that.dir);
-	  block.update();
-	}
     });
 
     this.fwd().up();

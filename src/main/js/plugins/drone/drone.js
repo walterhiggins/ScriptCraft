@@ -1,9 +1,9 @@
-/*global __plugin, require, org, setTimeout, addUnloadHandler, exports, global*/
+/*global __plugin, require, org, setTimeout, addUnloadHandler, exports, global, Packages*/
 var utils = require('utils'),
   blocks = require('blocks'),
   bountiful = false,
   THOUSAND = 1000,
-  MILLION = THOUSAND ^ 2;
+  MILLION = THOUSAND * THOUSAND;
 
 if (__plugin.canary){
   bountiful = parseFloat(server.canaryModVersion) > 1.7;
@@ -310,41 +310,113 @@ function getDirFromRotation( location ) {
     return 0; // east
   return 1; // south
 }
-
-function putBlock( x, y, z, blockId, metadata, world ) {
+/*
+ certain block-types in Minecraft 1.8 have properties which must be set. The old
+ data value is deprecated.
+*/
+function bountifulPutBlock(block, blockId, metadata, dir){
+  var prop = require('blockhelper').property;
+  var BlockType = Packages.net.canarymod.api.world.blocks.BlockType;
+  block.type = BlockType.fromId(blockId);
+  switch (blockId)
+  {
+    /*
+     dyed materials
+     */
+  case blocks.wool.white:
+  case blocks.stained_clay.white:
+  case blocks.stained_glass.white:
+  case blocks.carpet.white:
+    prop(block).set('color',metadata);
+    block.update();
+    return true;
+    /*
+     torches
+     */
+  case blocks.torch:
+    if (metadata >= 1 && metadata <= 4){
+      prop(block).set('facing', (dir + 2) % 4);
+    }
+    block.update();
+    return true;
+    /*
+     doors
+     */
+  case blocks.door_wood:
+  case blocks.door_iron:
+    switch (metadata){
+    case 8:
+      prop(block).set('hinge','left');
+      prop(block).set('half','upper');  
+      break;
+    case 9:
+      prop(block).set('hinge','right');
+      prop(block).set('half','upper');  
+      break;
+    default:
+      prop(block).set('facing',metadata);
+      prop(block).set('half','lower');
+    }
+    block.update();
+    return true;
+    /* 
+     stairs
+     */
+  case blocks.stairs.oak:
+  case blocks.stairs.cobblestone:
+  case blocks.stairs.brick:
+  case blocks.stairs.stone:
+  case blocks.stairs.nether:
+  case blocks.stairs.sandstone:
+  case blocks.stairs.spruce:
+  case blocks.stairs.jungle:
+  case blocks.stairs.quartz:
+    prop(block).set('facing', dir);
+    block.update();
+    return true;
+    /*
+     ladder
+     */
+  case blocks.ladder:
+    prop(block).set('facing',dir);
+    block.update();
+    return true;
+    /*
+     signs
+     */
+  case blocks.sign:
+    // facing
+    prop(block).set('facing', (dir+2) % 4);
+    block.update();
+    return true;
+  case blocks.sign_post:
+    // rotation
+    if (metadata !== 0)
+      prop(block).set('rotation', new Packages.java.lang.Integer(metadata));
+    block.update();
+    return true;
+  }
+  return false;
+}
+function putBlock( x, y, z, blockId, metadata, world, dir ) {
   if ( typeof metadata == 'undefined' ) {
     metadata = 0;
   }
-  var block = world.getBlockAt( x, y, z );
+  var block = world.getBlockAt( x, y, z ),
+      placed = false;
+      
   if ( block.typeId != blockId || block.data != metadata ) {
     if (__plugin.canary) {
-      world.setBlockAt(x, y, z, blockId, metadata);
-      if ( bountiful ){
-	// TODO we are in 1.8 
-	var prop = require('blockhelper').property;
-	block = world.getBlockAt(x,y,z);
-	switch (blockId){
-	  case blocks.wool.white:
-	  case blocks.stained_clay.white:
-	  case blocks.stained_glass.white:
-	  case blocks.carpet.white:
-	    prop(block).set('color',metadata);
-	    block.update();
-	    break;
-	  case blocks.torch:
-	    /* TODO This doesn't work right now */
-	    if (metadata >= 0 && metadata <= 3){
-	      prop(block).set('facing',metadata);
-	      block.update();
-	    }
-	}
+      if ( bountiful){ 
+	placed = bountifulPutBlock(block, blockId, metadata, dir);
+      } 
+      if (!placed){
+	world.setBlockAt(x, y, z, blockId, metadata);
       }
-      return;
     }
     if (__plugin.bukkit) {
       block.setTypeIdAndData( blockId, metadata, false );
       block.data = metadata;
-      return;
     }
   }
 }
@@ -583,7 +655,7 @@ Drone.prototype.setBlock = function(blockType, data, ox, oy, oz){
     oy = 0;
   if (typeof oz == 'undefined')
     oz = 0;
-  putBlock(this.x + ox, this.y + oy, this.z + oz, blockType, data, this.world);
+  putBlock(this.x + ox, this.y + oy, this.z + oz, blockType, data, this.world, this.dir);
 };
 Drone.prototype.bountiful = bountiful;
 Drone.prototype.traverseWidth = function(width, callback){
@@ -740,6 +812,7 @@ Drone.prototype.cuboid0 = function( block, w, h, d ) {
 // block dirs:  0 = east, 1 = west,  2 = south , 3 = north
 // sign dirs:   5 = east, 3 = south, 4 = west, 2 = north
 Drone.PLAYER_STAIRS_FACING = [ 0, 2, 1, 3 ];
+
 // for blocks 68 (wall signs) 65 (ladders) 61,62 (furnaces) 23 (dispenser) and 54 (chest)
 Drone.PLAYER_SIGN_FACING = [ 4, 2, 5, 3 ]; 
 Drone.PLAYER_TORCH_FACING = [ 2, 4, 1, 3 ];

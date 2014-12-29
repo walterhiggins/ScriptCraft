@@ -49,12 +49,6 @@ function putSign( drone, texts, blockId, meta ) {
       sign.setTextOnLine( text, i ); 
       sign.update(); 
     };
-    if ( drone.bountiful ) {
-      // 1.8
-      var prop = require('blockhelper').property;
-      prop(block).set('facing',(drone.dir+2)%4);
-      block.update();
-    }
   }
   if (__plugin.bukkit){
     isSign = function(block){ return block.state && block.state.setLine; };
