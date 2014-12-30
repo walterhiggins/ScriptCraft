@@ -1,5 +1,5 @@
 var Drone = require('../drone').Drone;
-
+var blocks = require('blocks');
 //
 // usage: 
 // [1] to build a cottage at the player's current location or the cross-hairs location...
@@ -12,20 +12,22 @@ var Drone = require('../drone').Drone;
 //
 function cottage( ) {
   this.chkpt('cottage')
-    .box0(48,7,2,6)  // 4 walls
+    .box0( blocks.moss_stone, 7, 2, 6)  // 4 walls
     .right(3)
     .door() // door front and center
     .up(1)
     .left(2)
-    .box(102) // windows to left and right
+    .box( blocks.glass_pane ) // windows to left and right
     .right(4)
-    .box(102)
+    .box( blocks.glass_pane )
     .left(5)
     .up()
-    .prism0(53,7,6)
+    .prism0( blocks.stairs.oak, 7, 6)
     .down()
     .right(4)
-    .sign(['Home','Sweet','Home'],68)
+    .back()
+    .wallsign(['Home','Sweet','Home'])
+    .fwd()
     .move('cottage');
 }
 //
@@ -43,7 +45,7 @@ function cottage_road( numberCottages ) {
   var cottagesPerSide = Math.floor(numberCottages/2);
   this
     .chkpt('cottage_road') // make sure the drone's state is saved.
-    .box( 43, 3, 1, cottagesPerSide * ( distanceBetweenTrees + 1 ) ) // build the road
+    .box( blocks.double_slab.stone, 3, 1, cottagesPerSide * ( distanceBetweenTrees + 1 ) ) // build the road
     .up()
     .right() // now centered in middle of road
     .chkpt('cr'); // will be returning to this position later
@@ -68,7 +70,7 @@ function cottage_road( numberCottages ) {
   function pathAndCottage( drone ) {
     drone
       .down()
-      .box(43,1,1,5)
+      .box(blocks.double_slab.stone, 1, 1, 5)
       .fwd(5)
       .left(3)
       .up()
@@ -88,7 +90,7 @@ function cottage_road( numberCottages ) {
     pathAndCottage( this.turn() ).move( 'r' + i );
   }
   // return drone to where it was at start of function
-  return this.move('cottage_road'); 
+  this.move('cottage_road'); 
 }
 Drone.extend(cottage_road);
 Drone.extend(cottage);

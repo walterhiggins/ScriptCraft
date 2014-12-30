@@ -383,6 +383,7 @@ Walter Higgins
    * [Drone.door2() method](#dronedoor2-method)
    * [Drone.door2_iron() method](#dronedoor2_iron-method)
    * [Drone.garden() method](#dronegarden-method)
+   * [Drone.ladder() method](#droneladder-method)
    * [Drone Movement](#drone-movement)
    * [Drone Positional Info](#drone-positional-info)
    * [Drone Markers](#drone-markers)
@@ -390,6 +391,8 @@ Walter Higgins
    * [Drone.prism0() method](#droneprism0-method)
    * [Drone.rainbow() method](#dronerainbow-method)
    * [Drone.rand() method](#dronerand-method)
+   * [Drone.wallsign() method](#dronewallsign-method)
+   * [Drone.signpost() method](#dronesignpost-method)
    * [Drone.sign() method](#dronesign-method)
    * [Drone.sphere() method](#dronesphere-method)
    * [Drone.sphere0() method](#dronesphere0-method)
@@ -4113,7 +4116,7 @@ The Drone is a convenience class for building. It can be used for...
 
 It uses a fluent interface which means all of the Drone's methods return `this` and can be chained together like so...
 
-    var theDrone = new Drone();
+    var theDrone = new Drone(self);
     theDrone.up().left().box(blocks.oak).down().fwd(3).cylinder0(blocks.lava,8); 
 
 ### Constructing a Drone Object
@@ -4126,7 +4129,7 @@ Drones can be created in any of the following ways...
 
    ... creates a 1x1x1 wooden block at the cross-hairs or player's location and returns a Drone object. This might look odd (if you're familiar with Java's Object-dot-method syntax) but all of the Drone class's methods are also global functions that return new Drone objects. This is short-hand for creating drones and is useful for playing around with Drones at the in-game command prompt. It's shorter than typing ...
     
-        var d = new Drone().box( blocks.oak ) 
+        var d = new Drone(self).box( blocks.oak ) 
         
    ... All of the Drone's methods return `this` so you can chain operations together like this...
         
@@ -4145,7 +4148,7 @@ Drones can be created in any of the following ways...
     
  2. Using the following form...
 
-        d = new Drone()
+        d = new Drone(self)
     
     ...will create a new Drone. If the cross-hairs are pointing at a block at the time then, that block's location becomes the drone's starting point.  If the cross-hairs are _not_ pointing at a block, then the drone's starting location will be 2 blocks directly in front of the player.  TIP: Building always happens right and front of the drone's position...
     
@@ -4156,9 +4159,9 @@ Drones can be created in any of the following ways...
         |
         D---->
       
-    For convenience you can use a _corner stone_ to begin building. The corner stone should be located just above ground level. If the cross-hair is point at or into ground level when you create a new Drone(), then building begins at that point. You can get around this by pointing at a 'corner stone' just above ground level or alternatively use the following statement...
+    For convenience you can use a _corner stone_ to begin building. The corner stone should be located just above ground level. If the cross-hair is point at or into ground level when you create a new Drone() with either a player or location given as a parameter, then building begins at the location the player was looking at or at the location. You can get around this by pointing at a 'corner stone' just above ground level or alternatively use the following statement...
     
-        d = new Drone().up();
+        d = new Drone(self).up();
           
     ... which will move the drone up one block as soon as it's created.
 
@@ -4184,7 +4187,7 @@ Drones can be created in any of the following ways...
 
 #### Parameters
 
- * location (optional) : *NB* If an `org.bukkit.Location` object is provided as a parameter, then it should be the only parameter.
+ * location (optional) : *NB* If a `Location` object is provided as a parameter, then it should be the only parameter.
  * x (optional) : The x coordinate of the Drone
  * y (optional) : The y coordinate of the Drone
  * z (optional) : The z coordinate of the Drone
@@ -4211,7 +4214,7 @@ To create a black structure 4 blocks wide, 9 blocks tall and 1 block long...
 
 ... or the following code does the same but creates a variable that can be used for further methods...
 
-    var drone = new Drone();
+    var drone = new Drone(self);
     drone.box(blocks.wool.black, 4, 9, 1);
 
 ![box example 1](img/boxex1.png)
@@ -4562,7 +4565,7 @@ create a door - if a parameter is supplied an Iron door is created otherwise a w
 
 To create a wooden door at the crosshairs/drone's location...
 
-    var drone = new Drone();
+    var drone = new Drone(self);
     drone.door();
 
 To create an iron door...
@@ -4612,6 +4615,29 @@ To create a garden 10 blocks wide by 5 blocks long...
 
 ![garden example](img/gardenex1.png)
 
+### Drone.ladder() method
+
+Creates a ladder extending skyward.
+
+#### Parameters
+
+ * height (optional - default 1) 
+
+#### Example
+
+To create a ladder extending 10 blocks high:
+
+    var drone = new Drone(self);
+    drone.ladder(10)
+
+At the in-game prompt, look at a block and then type:    
+
+    /js ladder(10)
+
+A ladder 10 blocks high will be created at the point you were looking at.
+
+#### Since 
+##### 3.0.3
 ### Drone Movement
 
 Drones can move freely in minecraft's 3-D world. You control the
@@ -4732,7 +4758,37 @@ to place random blocks stone has a 50% chance of being picked,
 
 regular stone has a 50% chance, mossy stone has a 30% chance and cracked stone has just a 20% chance of being picked.
 
+### Drone.wallsign() method
+
+Creates a wall sign (A sign attached to a wall)
+
+#### Parameters
+
+ * message - can be a string or an array of strings
+
+#### Example
+
+    drone.wallsign(['Welcome','to','Scriptopia']);
+
+![wall sign](img/signex2.png)
+
+### Drone.signpost() method
+
+Creates a free-standing signpost 
+
+#### Parameters
+
+ * message - can be a string or an array of strings
+
+#### Example
+
+    drone.signpost(['Hello','World']);
+
+![ground sign](img/signex1.png)
+
 ### Drone.sign() method
+
+Deprecated: Use signpost() or wallsign() methods instead.
 
 Signs must use block 63 (stand-alone signs) or 68 (signs on walls)
 

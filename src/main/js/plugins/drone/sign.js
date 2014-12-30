@@ -2,7 +2,37 @@
 /*global require, echo,__plugin*/
 var Drone = require('./drone').Drone;
 /************************************************************************
+### Drone.wallsign() method
+
+Creates a wall sign (A sign attached to a wall)
+
+#### Parameters
+
+ * message - can be a string or an array of strings
+
+#### Example
+
+    drone.wallsign(['Welcome','to','Scriptopia']);
+
+![wall sign](img/signex2.png)
+
+### Drone.signpost() method
+
+Creates a free-standing signpost 
+
+#### Parameters
+
+ * message - can be a string or an array of strings
+
+#### Example
+
+    drone.signpost(['Hello','World']);
+
+![ground sign](img/signex1.png)
+
 ### Drone.sign() method
+
+Deprecated: Use signpost() or wallsign() methods instead.
 
 Signs must use block 63 (stand-alone signs) or 68 (signs on walls)
 
@@ -64,6 +94,12 @@ function putSign( drone, texts, blockId, meta ) {
     }
   }
 };
+function signpost( message ){
+  this.sign(message, 63);
+}
+function wallsign( message ){
+  this.sign(message, 68);
+}
 function sign( message, block ) {
   if ( message.constructor != Array ) {
     message = [message];
@@ -72,25 +108,17 @@ function sign( message, block ) {
   block = bm[0];
   var meta = bm[1];
   if ( block != 63 && block != 68 ) {
-    var usage = 'Usage: sign("message", "63:1") or sign("message","68:1")';
+    var usage = 'Usage: sign("message", 63) or sign("message", 68)';
     if ( this.player ) {
       echo( this.player, usage);
     }
     console.error(usage);
     return;
   }
-  if ( block == 68 ) {
-    meta = Drone.PLAYER_SIGN_FACING[ this.dir % 4 ];
-    this.back();
-  }
-  if ( block == 63 ) {
-    meta = ( 12 + ( ( this.dir + 2 ) * 4 ) ) % 16;
-  }
   this.then(function(){
-    putSign( this, message, block, meta);
-    if ( block == 68 ) {
-      this.fwd();
-    }
+    putSign( this, message, block,  meta);
   });
 }
 Drone.extend(sign);
+Drone.extend(signpost);
+Drone.extend(wallsign);

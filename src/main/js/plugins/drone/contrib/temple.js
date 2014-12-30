@@ -1,4 +1,5 @@
 var Drone = require('../drone').Drone;
+var blocks = require('blocks');
 //
 // constructs a mayan temple
 // 
@@ -6,20 +7,18 @@ function temple( side ) {
   if ( !side ) {
     side = 20;
   }
-  var stone = '98:1';
-  var stair = '109:' + Drone.PLAYER_STAIRS_FACING[ this.dir ];
-
   this.chkpt('temple');
 
   while ( side > 4 ) {
     var middle = Math.round( (side-2) / 2 );
-    this.chkpt('corner')
-      .box( stone, side, 1, side )
+    this
+      .chkpt('temple-corner')
+      .box( blocks.brick.mossy, side, 1, side )
       .right( middle )
-      .box( stair )
+      .box( blocks.stairs.stone )
       .right()
-      .box( stair )
-      .move('corner')
+      .box( blocks.stairs.stone )
+      .move('temple-corner')
       .up()
       .fwd()
       .right();
@@ -28,4 +27,4 @@ function temple( side ) {
 
   this.move('temple');
 }
-Drone.extend(temple);
+Drone.extend( temple );

@@ -11,7 +11,7 @@ create a door - if a parameter is supplied an Iron door is created otherwise a w
 
 To create a wooden door at the crosshairs/drone's location...
 
-    var drone = new Drone();
+    var drone = new Drone(self);
     drone.door();
 
 To create an iron door...
