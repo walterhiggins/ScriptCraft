@@ -164,21 +164,21 @@ Construct a rainbow-colored road 100 blocks long...
 
 All of the Drone methods return a Drone object, which means methods can be 'chained' together so instead of writing this...
 
-    drone = new Drone(); 
-    drone.fwd(3);
-    drone.left(2);
-    drone.box(2); // create a grass block 
+    drone = new Drone( self ); 
+    drone.fwd( 3 );
+    drone.left( 2 );
+    drone.box( blocks.grass ); // create a grass block 
     drone.up();
-    drone.box(2); // create another grass block
+    drone.box( blocks.grass ); // create another grass block
     drone.down();
 
 ...you could simply write ...
     
-    var drone = new Drone().fwd(3).left(2).box(2).up().box(2).down();
+    var drone = new Drone(self).fwd(3).left(2).box(blocks.grass).up().box(blocks.grass).down();
 
 ... since each Drone method is also a global function that constructs a drone if none is supplied, you can shorten even further to just...
     
-    fwd(3).left(2).box(2).up().box(2).down()
+    fwd(3).left(2).box(blocks.grass).up().box(blocks.grass).down()
 
 The Drone object uses a [Fluent Interface][fl] to make ScriptCraft scripts more concise and easier to write and read.  Minecraft's in-game command prompt is limited to about 80 characters so chaining drone commands together means more can be done before hitting the command prompt limit. For complex building you should save your commands in a new script file and load it using /js load()
 
@@ -230,7 +230,7 @@ Alternatively if you provide just a function as a parameter, then the function n
 
 Once the method is defined (it can be defined in a new pyramid.js file) it can be used like so...
 
-    var d = new Drone();
+    var d = new Drone(self);
     d.pyramid(blocks.brick.stone, 12);
 
 ... or simply ...
@@ -245,7 +245,7 @@ Once the method is defined (it can be defined in a new pyramid.js file) it can b
 
 An array which can be used when constructing stairs facing in the Drone's direction...
 
-    var d = new Drone();
+    var d = new Drone(self);
     d.box(blocks.stairs.oak + ':' + Drone.PLAYER_STAIRS_FACING[d.dir]);
 
 ... will construct a single oak stair block facing the drone.
@@ -259,15 +259,23 @@ An array which can be used when placing signs so they face in a given direction.
  * furnace
  * dispenser
 
-To place a chest facing the Drone ...
+By default, chests, dispensers, signs, ladders and furnaces are placed facing towards the drone so to place a chest facing the Drone just use:
 
-    drone.box( blocks.chest + ':' + Drone.PLAYER_SIGN_FACING[drone.dir]);
+    drone.box( blocks.chest );
+
+To place a chest facing _away_ from the Drone:
+
+    drone.box( blocks.chest + ':' + Drone.PLAYER_SIGN_FACING[(drone.dir + 2) % 4]);
 
 #### Drone.PLAYER_TORCH_FACING
 
-Used when placing torches so that they face towards the drone. 
+Used when placing torches. By default torches will be placed facing up. If you want to place a torch so that it faces towards the drone:
 
     drone.box( blocks.torch + ':' + Drone.PLAYER_TORCH_FACING[drone.dir]);
+
+If you want to place a torch so it faces _away_ from the drone:
+
+    drone.box( blocks.torch + ':' + Drone.PLAYER_TORCH_FACING[(drone.dir + 2) % 4]);
 
 ***/
 
@@ -310,12 +318,8 @@ function putBlock( x, y, z, blockId, metadata, world, dir ) {
   if ( typeof metadata == 'undefined' ) {
     metadata = 0;
   }
-  var block = world.getBlockAt( x, y, z ),
-      placed = false;
+  var block = world.getBlockAt( x, y, z );
 
-  if (block.typeId === blockId && block.data === metadata) {
-    return;
-  }
   if (__plugin.canary) {
     var BlockType = Packages.net.canarymod.api.world.blocks.BlockType;
     block.type = BlockType.fromId(blockId);

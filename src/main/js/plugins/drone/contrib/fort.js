@@ -48,7 +48,7 @@ function fort( side, height ) {
     this
       .box( blocks.brick.stone ) // solid brick corners
       .up()
-      .box(blocks.torch + ':5')
+      .box(blocks.torch)
       .down() // light a torch on each corner
       .fwd()
       .boxa( turret, 1, 1, side-2)
