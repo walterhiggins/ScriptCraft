@@ -4188,12 +4188,12 @@ Drones can be created in any of the following ways...
 #### Parameters
 
  * location (optional) : *NB* If a `Location` object is provided as a parameter, then it should be the only parameter.
- * x (optional) : The x coordinate of the Drone
- * y (optional) : The y coordinate of the Drone
- * z (optional) : The z coordinate of the Drone
- * direction (optional) : The direction in which the Drone is
+ * x : The x coordinate of the Drone
+ * y : The y coordinate of the Drone
+ * z : The z coordinate of the Drone
+ * direction : The direction in which the Drone is
    facing. Possible values are 0 (east), 1 (south), 2 (west) or 3 (north)
- * world (optional) : The world in which the drone is created.
+ * world : The world in which the drone is created.
   
 ### Drone.box() method
 
