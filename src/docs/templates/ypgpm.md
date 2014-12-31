@@ -940,36 +940,35 @@ not very useful. In practice the computer would be expected to make decisions an
 act accordingly. The javascript statement used for making decisions is `if`. 
 While standing on the ground in-game, type the following at the command prompt...
 
-    /js if ( self.flying ) { echo('Hey, You are flying!'); }
+    /js if ( self.onGround ) { echo('You are not flying!'); }
 
-... No message should appear on screen. That is - `Hey, You are
-flying!` should *not* appear on screen.  Now double-tap the `space`
-bar to start flying in-game (tap the space bar twice in rapid
+the following message should have appeared on your screen...
+
+    You are not flying!
+
+Now double-tap the `space` bar to start flying in-game (tap the space bar twice in rapid
 succession), then press and hold space to rise above the ground. Now
 enter the same statement again (If you don't want to type the same
 statement again, just press `/` then press the `UP` cursor key on your
 keyboard, the statement you entered previously should reappear.
 
-    /js if ( self.flying ) { echo('Hey, You are flying!'); }
+    /js if ( self.onGround ) { echo('You are not flying!'); }
 
-... this time the following message should have appeared on your screen...
-
-    Hey, You are flying!
+... this time no message should appear on your screen.
 
 The `if` statement tests to see if something is `true` or `false` and
 if `true` then the block of code between the curly braces ( `{` and
 `}` ) is executed - but only if the condition is true.  The condition
-in the above example is `self.flying` which will be `true` if you are
-currently flying or `false` if you aren't.
+in the above example is `!self.onGround` (self is not on ground) which
+will be `true` if you are currently flying or `false` if you aren't.
 
 What if you wanted to display a message only if a condition is *not*
-true ? For example to only display a message if the player is *not*
-flying...
+true ? For example to only display a message if the player is *not* on the ground...
 
-    /js if ( ! self.flying ) { echo ('You are not flying.'); }
+    /js if ( !self.onGround ) { echo ('You are flying!'); }
 
 ... This code differs in that now there's a `!` (the exclamation mark)
-before `self.flying`. The `!` symbol negates (returns the opposite of)
+before `self.onGround`. The `!` symbol negates (returns the opposite of)
 whatever follows it.
 
 What if you want to display a message in both cases - whether you're
@@ -979,11 +978,11 @@ in your scriptcraft/plugins directory...
 
 ```javascript
 exports.flightStatus = function( player ) {
-    if ( player.flying ) { 
-         player.sendMessage( 'Hey, You are flying!' );
-    } else {
-         player.sendMessage( 'You are not flying.' );
-    }
+  if ( player.onGround ) { 
+    echo(player, 'You are not flying!' );
+  } else {
+    echo(player, 'Hey, You are flying!' );
+  }
 }
 ```
 
@@ -1036,7 +1035,7 @@ scriptcraft. Then break a block in the game and you should see the
 message 'You broke a block'.
 
 There are many types of events you can listen for in Minecraft. You can
-browse [all possible Canary events][cmevts] . 
+browse [all possible event registration functions][cmevts2] in the API Reference. 
 
 For custom events (events which aren't in the net.canarymod.hook tree)
 just specify the fully qualified class name instead. E.g. ...
@@ -1157,8 +1156,9 @@ exports.initialise = function(names){
     });
 };
 
-/* changes score by diff e.g. to add 6 to the player's current score
-   updateScore('walter',6); // walter's new score = 5 + 6 = 11.
+/* 
+  changes score by diff e.g. to add 6 to the player's current score
+  updateScore('walter',6); // walter's new score = 5 + 6 = 11.
 */
 exports.updateScore = function(name, diff){
     scores[name] += diff; 
@@ -1178,18 +1178,24 @@ keep a count of how many blocks each player has broken ...
 
 ```javascript
 var breaks = {};
-// every time a player joins the game reset their block-break-count to 0
-events.on('player.PlayerJoinEvent', function( event ) {
-    breaks[event.player] = 0;
-});
-events.on('block.BlockBreakEvent', function( event ) {
-    var breaker = event.player;
-    var breakCount = breaks[breaker.name];
-    breakCount++; // increment the count.
-    breaks[breaker.name] = breakCount;
-     
-    breaker.sendMessage('You broke ' + breakCount + ' blocks');
-});
+
+/*
+  every time a player joins the game reset their block-break-count to 0
+*/
+function initializeBreakCount( event ){
+  breaks[event.player.name] = 0;	 
+}
+events.connection( initializeBreakCount );
+
+/* 
+  every time a player breaks a block increase their block-break-count
+*/
+function incrementBreakCount( event ){
+  breaks[event.player.name] += 1; // add 1
+  var breakCount = breaks[event.player.name];
+  echo( event.player, 'You broke ' + breakCount + ' blocks');
+}
+events.blockDestroy( incrementBreakCount );
 ```
 
 With a little more work, you could turn this into a game where players
@@ -1229,6 +1235,7 @@ different objects and methods available for use by ScriptCraft.
 [twl]: http://www.barebones.com/products/textwrangler/
 [bkevts]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/package-summary.html
 [cmevts]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/package-summary.html
+[cmevts2]: API-Reference.md#events-helper-module-canary-version
 [img_echo_date]: img/ypgpm_echo_date.png
 [img_3d_shapes]: img/ypgpm_3dshapes.jpg
 [img_whd]: img/ypgpm_whd.jpg
