@@ -1,10 +1,6 @@
 'use strict';
 /*global module, exports, require, Packages, __plugin, server*/
-var Facing = Packages.net.minecraft.util.EnumFacing,
-    DoorHalf = Packages.net.minecraft.block.BlockDoor.EnumDoorHalf,
-    HingePosition = Packages.net.minecraft.block.BlockDoor.EnumHingePosition,
-    DyeColor = Packages.net.minecraft.item.EnumDyeColor,
-    blocks = require('blocks'),
+var blocks = require('blocks'),
     bountiful = false;
 
 if (__plugin.canary){
@@ -13,6 +9,11 @@ if (__plugin.canary){
 
 var lookup = {};
 function initLookup(){
+  var Facing = Packages.net.minecraft.util.EnumFacing,
+    DoorHalf = Packages.net.minecraft.block.BlockDoor.EnumDoorHalf,
+    HingePosition = Packages.net.minecraft.block.BlockDoor.EnumHingePosition,
+    DyeColor = Packages.net.minecraft.item.EnumDyeColor;
+
   lookup = {
     facing: {
       0: Facing.EAST, 
