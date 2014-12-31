@@ -411,7 +411,7 @@ Drone.getDirFromRotation = getDirFromRotation;
 Drone.queue = [];
 
 Drone.opsPerSec = 10;
-Drone.processQueue = function(){
+Drone.processQueue = function processQueue(){
   var process,
     i = 0,
     queues = getAllQueues();
@@ -423,7 +423,6 @@ Drone.processQueue = function(){
         process();
       } catch( e ) { 
         console.log('Drone build error: ' +  e + ' while processing ' + process);
-	e.printStackTrace(java.lang.System.out);
       } 
     }
   }
