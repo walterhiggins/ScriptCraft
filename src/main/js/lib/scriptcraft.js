@@ -46,14 +46,13 @@ module.exports instead of exports.
 ## Module Loading
 
 When the ScriptCraft Java plugin is first installed, a new
-subdirectory is created in the craftbukkit/plugins directory. If your
-craftbukkit directory is called 'craftbukkit' then the new
-subdirectories will be ...
+`scriptcraft` subdirectory is created. If your minecraft server
+directory is called 'mcserver' then the new subdirectories will be ...
 
- * craftbukkit/plugins/scriptcraft/
- * craftbukkit/plugins/scriptcraft/plugins
- * craftbukkit/plugins/scriptcraft/modules
- * craftbukkit/plugins/scriptcraft/lib
+ * mcserver/scriptcraft/
+ * mcserver/scriptcraft/plugins
+ * mcserver/scriptcraft/modules
+ * mcserver/scriptcraft/lib
 
 ... The `plugins`, `modules` and `lib` directories each serve a different purpose.
 
@@ -312,14 +311,14 @@ The `command()` function is used to expose javascript functions for use by non-o
 
 To use a callback for options (TAB-Completion) ...
 
-    
+    var utils = require('utils');
     function boo( params, sender ) {
        var receiver = server.getPlayer( params[0] );
        if ( receiver ){
           echo( receiver, sender.name + ' says boo!');
        }
     }
-    command( boo, bukkit.playerNames );
+    command( boo, utils.playerNames );
 
 See chat/colors.js or alias/alias.js or homes/homes.js for more examples of how to use the `command()` function.
 
