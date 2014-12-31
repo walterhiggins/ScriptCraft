@@ -11,7 +11,7 @@ You can verify that this script loaded correctly by typing commands such as thes
 /js d.up(1)           // move the drone one block up
 /js d.y               // show the drone's vertical position again
 /js d.y=100           // change the drone's yposition to 100
-/js d.box(1)		  // change the block at (x,y,z) into stone
+/js d.box(1)          // change the block at (x,y,z) into stone
 /js d.box(0)          // change the block at (x,y,z) into air
 
 Important: If you type /js.[TAB]  (where [TAB] means "press Tab key") you will see all the possible options for drone.
