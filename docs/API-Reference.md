@@ -44,7 +44,6 @@ Walter Higgins
    * [module name resolution](#module-name-resolution)
  * [events Module](#events-module)
    * [events.on() static method](#eventson-static-method)
-   * [bukkit](#bukkit)
  * [console global variable](#console-global-variable)
    * [Example](#example)
    * [Using string substitutions](#using-string-substitutions)
@@ -970,65 +969,6 @@ myBlockBreakListener.unregister();
 
 [buk2]: http://wiki.bukkit.org/Event_API_Reference
 [buk]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/event/Event.html
-
-
-### bukkit
-
-The bukkit global variable provides short names for commonly used Bukkit
-Java classes and Enums. It also provides some helper functions for getting
-players, player names and worlds.
-
-#### bukkit.stat and bukkit.stats
-
-This is a short name for the [org.bukkit.Statistic](http://jd.bukkit.org/rb/apidocs/org/bukkit/Statistic.html) Enum. 
-
-##### Usage
-
-    var jumpStat = bukkit.stat.JUMP; // var jumpStat = org.bukkit.Statistic.JUMP
-
-#### bukkit.material
-
-This is a short name for the [org.bukkit.Material](http://jd.bukkit.org/rb/apidocs/org/bukkit/Material.html) Enum. 
-
-##### Usage
-    
-    var apple = bukkit.material.APPLE;
-
-#### bukkit.art
-
-This is a short name for the [org.bukkit.Art](http://jd.bukkit.org/rb/apidocs/org/bukkit/Art.html) Enum. 
-
-##### Usage
-    
-    var sunsetArt = bukkit.art.SUNSET;
-
-#### bukkit.mode
-
-This is a short name for the [org.bukkit.GameMode](http://jd.bukkit.org/rb/apidocs/org/bukkit/GameMode.html) Enum. 
-
-##### Usage
-    
-    var creative = bukkit.mode.CREATIVE;
-
-#### bukkit.sound
-
-This is a short name for the [org.bukkit.Sound](http://jd.bukkit.org/rb/apidocs/org/bukkit/Sound.html) Enum. 
-
-##### Usage
-    
-    var oink = bukkit.sound.PIG_IDLE;
-
-#### bukkit.players() function
-
-This function returns a javascript array of all online players on the server.
-
-#### bukkit.playerNames() function
-
-This function returns a javascript array of player names (as javascript strings)
-
-#### bukkit.worlds() function
-
-This function returns a javascript array of all worlds on the server.
 
 ## console global variable
 
@@ -4150,7 +4090,7 @@ Drones can be created in any of the following ways...
 
         d = new Drone(self)
     
-    ...will create a new Drone. If the cross-hairs are pointing at a block at the time then, that block's location becomes the drone's starting point.  If the cross-hairs are _not_ pointing at a block, then the drone's starting location will be 2 blocks directly in front of the player.  TIP: Building always happens right and front of the drone's position...
+    ...will create a new Drone taking the current player as the parameter. If the player's cross-hairs are pointing at a block at the time then, that block's location becomes the drone's starting point.  If the cross-hairs are _not_ pointing at a block, then the drone's starting location will be 2 blocks directly in front of the player.  TIP: Building always happens right and front of the drone's position...
     
     Plan View:
 
@@ -4173,7 +4113,7 @@ Drones can be created in any of the following ways...
 
     This will create a new Drone at the location you specified using x, y, z In minecraft, the X axis runs west to east and the Z axis runs north to south.  The direction parameter says what direction you want the drone to face: 0 = east, 1 = south, 2 = west, 3 = north.  If the direction parameter is omitted, the player's direction is used instead. Both the `direction` and `world` parameters are optional.
 
- 4. Create a new Drone based on a Bukkit Location object...
+ 4. Create a new Drone based on a Location object...
 
         d = new Drone(location);
 
@@ -4187,13 +4127,13 @@ Drones can be created in any of the following ways...
 
 #### Parameters
 
- * location (optional) : *NB* If a `Location` object is provided as a parameter, then it should be the only parameter.
- * x (optional) : The x coordinate of the Drone
- * y (optional) : The y coordinate of the Drone
- * z (optional) : The z coordinate of the Drone
- * direction (optional) : The direction in which the Drone is
-   facing. Possible values are 0 (east), 1 (south), 2 (west) or 3 (north)
- * world (optional) : The world in which the drone is created.
+ * Player : If a player reference is given as the sole parameter then the block the player was looking at will be used as the starting point for the drone. If the player was not looking at a block then the player's location will be used as the starting point. If a `Player` object is provided as a paramter then it should be the only parameter.
+ * location  : *NB* If a `Location` object is provided as a parameter, then it should be the only parameter.
+ * x : The x coordinate of the Drone (x,y,z,direction and world are not needed if either a player or location parameter is provided)
+ * y : The y coordinate of the Drone 
+ * z : The z coordinate of the Drone 
+ * direction : The direction in which the Drone is facing. Possible values are 0 (east), 1 (south), 2 (west) or 3 (north) 
+ * world : The world in which the drone is created. 
   
 ### Drone.box() method
 
