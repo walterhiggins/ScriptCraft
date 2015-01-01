@@ -1,5 +1,6 @@
 'use strict';
-/*global require,__plugin*/
+/*global require, __plugin, Packages, org, echo */
+var blocks = require('blocks');
 /************************************************************************
 ### Drone Trees methods
 
@@ -28,31 +29,72 @@ grow.
 
 ***/
 var Drone = require('./drone').Drone;
-var bkTreeType = org.bukkit.TreeType;
-var _trees = {
-  oak: bkTreeType.BIG_TREE ,
-  birch: bkTreeType.BIRCH ,
-  jungle: bkTreeType.JUNGLE,
-  spruce: bkTreeType.REDWOOD 
-};
 function bukkitTreeFactory( k, v ) {
   return function( ) { 
     var block = this.getBlock();
-    if ( block.typeId == 2 ) { 
+    if ( block.typeId == blocks.grass ) { 
       this.up( );
     }
     var treeLoc = this.getLocation();
     var successful = treeLoc.world.generateTree(treeLoc,v );
-    if ( block.typeId == 2 ) { 
+    if ( block.typeId == blocks.grass ) { 
       this.down( );
     }
   };
 }
 function canaryTreeFactory( k, v ){
   return function(){
-    console.log(k + ' not yet implemented.');
+    var block = this.getBlock();
+    if ( block.typeId == blocks.grass ) { 
+      this.up( );
+    }
+    var treeLoc = this.getLocation();
+    if (!treeLoc.world.generateTree){
+      var msg = k + '() is not supported in this version';
+      if (this.player){
+	echo(this.player, msg);
+      }
+      console.log(msg);
+      return;
+    }
+    var cmTreeType = Packages.net.canarymod.api.world.TreeType;
+    var trees = {
+      oak: cmTreeType.BIGOAK,
+      birch: cmTreeType.BIRCH,
+      jungle: cmTreeType.JUNGLE,
+      spruce: cmTreeType.SPRUCE
+    };
+
+    var successful = treeLoc.world.generateTree(treeLoc, trees[k] );
+    if ( block.typeId == blocks.grass ) { 
+      this.down( );
+    }
   };
 }
-for ( var p in _trees ) {
-  Drone.extend(p, (__plugin.canary? canaryTreeFactory : bukkitTreeFactory) ( p, _trees[p] ) );
+function main(){
+  var trees = {
+    oak: null,
+    birch: null,
+    jungle: null,
+    spruce: null
+  };
+  var p;
+  if (__plugin.canary){
+    for (p in trees ) {
+      Drone.extend(p, canaryTreeFactory ( p, trees[p] ) );
+    }
+  }
+  if (__plugin.bukkit){
+    var bkTreeType = org.bukkit.TreeType;
+    trees = {
+      oak: bkTreeType.BIG_TREE ,
+      birch: bkTreeType.BIRCH ,
+      jungle: bkTreeType.JUNGLE,
+      spruce: bkTreeType.REDWOOD 
+    };
+    for (p in trees ) {
+      Drone.extend(p, bukkitTreeFactory ( p, trees[p] ) );
+    }
+  }
 }
+main();
