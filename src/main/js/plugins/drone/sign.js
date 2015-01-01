@@ -1,6 +1,7 @@
 'use strict';
 /*global require, echo,__plugin*/
-var Drone = require('./drone').Drone;
+var Drone = require('./drone').Drone,
+    blocks = require('blocks');
 /************************************************************************
 ### Drone.wallsign() method
 
@@ -45,13 +46,13 @@ Signs must use block 63 (stand-alone signs) or 68 (signs on walls)
 
 To create a free-standing sign...
 
-    drone.sign(["Hello","World"],63);
+    drone.sign(["Hello","World"], blocks.sign_post);
 
 ![ground sign](img/signex1.png)
 
 ... to create a wall mounted sign...
 
-    drone.sign(["Welcome","to","Scriptopia"], 68 );
+    drone.sign(["Welcome","to","Scriptopia"], blocks.sign );
 
 ![wall sign](img/signex2.png)
 
@@ -64,8 +65,8 @@ function putSign( drone, texts, blockId, meta ) {
     isSign, 
     setLine;
 
-  if ( blockId != 63 && blockId != 68 ) {
-    throw new Error( 'Invalid Parameter: blockId must be 63 or 68' );
+  if ( blockId != blocks.sign_post && blockId != blocks.sign ) {
+    throw new Error( 'Invalid Parameter: blockId must be blocks.sign_post or blocks.sign' );
   }
   drone.setBlock( blockId, meta);
   block = drone.getBlock();
@@ -95,10 +96,23 @@ function putSign( drone, texts, blockId, meta ) {
   }
 };
 function signpost( message ){
-  this.sign(message, 63);
+  this.sign(message, blocks.sign_post);
 }
 function wallsign( message ){
-  this.sign(message, 68);
+  /*
+   must allow for /js wallsign() while looking at a wall block
+   */
+  this.then(function(){
+    if (this.getBlock().typeId == blocks.air){
+      this.sign(message, blocks.sign);
+    } else {
+      this
+	.back()
+	.sign(message, blocks.sign)
+	.fwd();
+    }
+});
+  
 }
 function sign( message, block ) {
   if ( message.constructor != Array ) {
@@ -107,8 +121,8 @@ function sign( message, block ) {
   var bm = this._getBlockIdAndMeta( block );
   block = bm[0];
   var meta = bm[1];
-  if ( block != 63 && block != 68 ) {
-    var usage = 'Usage: sign("message", 63) or sign("message", 68)';
+  if ( block !== blocks.sign_post && block !== blocks.sign ) {
+    var usage = 'Usage: sign("message", blocks.sign_post) or sign("message", blocks.sign)';
     if ( this.player ) {
       echo( this.player, usage);
     }

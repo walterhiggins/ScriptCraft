@@ -4748,13 +4748,13 @@ Signs must use block 63 (stand-alone signs) or 68 (signs on walls)
 
 To create a free-standing sign...
 
-    drone.sign(["Hello","World"],63);
+    drone.sign(["Hello","World"], blocks.sign_post);
 
 ![ground sign](img/signex1.png)
 
 ... to create a wall mounted sign...
 
-    drone.sign(["Welcome","to","Scriptopia"], 68 );
+    drone.sign(["Welcome","to","Scriptopia"], blocks.sign );
 
 ![wall sign](img/signex2.png)
 
