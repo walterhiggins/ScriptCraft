@@ -68,8 +68,7 @@ function putSign( drone, texts, blockId, meta ) {
   if ( blockId != blocks.sign_post && blockId != blocks.sign ) {
     throw new Error( 'Invalid Parameter: blockId must be blocks.sign_post or blocks.sign' );
   }
-  drone.setBlock( blockId, meta);
-  block = drone.getBlock();
+  block = drone.setBlock( blockId, meta);
   if (__plugin.canary){
     isSign = function(block){ 
       var sign = block.getTileEntity();
@@ -96,14 +95,17 @@ function putSign( drone, texts, blockId, meta ) {
   }
 };
 function signpost( message ){
-  this.sign(message, blocks.sign_post);
+  this.then(function(){
+    this.sign(message, blocks.sign_post);
+  });
 }
 function wallsign( message ){
   /*
    must allow for /js wallsign() while looking at a wall block
    */
   this.then(function(){
-    if (this.getBlock().typeId == blocks.air){
+    var block = this.getBlock();
+    if (block.typeId == blocks.air || block.typeId == blocks.sign){
       this.sign(message, blocks.sign);
     } else {
       this
@@ -129,9 +131,8 @@ function sign( message, block ) {
     console.error(usage);
     return;
   }
-  this.then(function(){
-    putSign( this, message, block,  meta);
-  });
+  putSign( this, message, block,  meta);
+
 }
 Drone.extend(sign);
 Drone.extend(signpost);

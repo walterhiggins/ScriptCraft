@@ -10,8 +10,6 @@ if (__plugin.canary){
 var lookup = {};
 function initLookup(){
   var Facing = Packages.net.minecraft.util.EnumFacing,
-    DoorHalf = Packages.net.minecraft.block.BlockDoor.EnumDoorHalf,
-    HingePosition = Packages.net.minecraft.block.BlockDoor.EnumHingePosition,
     DyeColor = Packages.net.minecraft.item.EnumDyeColor;
 
   lookup = {
@@ -28,8 +26,6 @@ function initLookup(){
       up: Facing.UP,
       down: Facing.DOWN
     },
-    half: {   upper: DoorHalf.UPPER, lower: DoorHalf.LOWER },
-    hinge: { left: HingePosition.LEFT, right: HingePosition.RIGHT },
     color: { 
       black: DyeColor.BLACK, 
       blue: DyeColor.BLUE, 
@@ -141,26 +137,7 @@ function applyRotation( block, metadata ){
     }
   }
 }
-function applyDoors( block, metadata ){
-  switch (block.typeId){
-  case blocks.door_wood:
-  case blocks.door_iron:
-    switch (metadata) {
-    case 8:
-      property(block).set('hinge','left');
-      property(block).set('half','upper');  
-      break;
-    case 9:
-      property(block).set('hinge','right');
-      property(block).set('half','upper');  
-      break;
 
-    default:
-      property(block).set('facing',metadata);
-      property(block).set('half','lower');
-    }
-  }
-}
 function applyProperties( block, metadata ){
   if (!bountiful){
     block.data = metadata;
@@ -172,6 +149,5 @@ function applyProperties( block, metadata ){
   applyFacing( block, metadata );
   applyColors( block, metadata );
   applyRotation( block, metadata );
-  applyDoors( block, metadata );
 }
 exports.applyProperties = applyProperties;

@@ -22,13 +22,26 @@ function cottage( ) {
     .box( blocks.glass_pane )
     .left(5)
     .up()
-    .prism0( blocks.stairs.oak, 7, 6)
+    .prism0( blocks.stairs.oak, 7, 6) // add a roof
     .down()
     .right(4)
     .back()
     .wallsign(['Home','Sweet','Home'])
     .fwd()
-    .move('cottage');
+    .move('cottage')
+    .right(3)
+    .fwd(4)
+    .up()
+    .hangtorch()     // place a torch on wall
+    .move('cottage')
+    .right()
+    .fwd(3)
+    .bed()           // place a bed against left wall
+    .fwd()
+    .right(4)
+    .box(blocks.furnace) // place a furnace against right wall
+    .move('cottage')
+  ;
 }
 //
 // a more complex script that builds an tree-lined avenue with

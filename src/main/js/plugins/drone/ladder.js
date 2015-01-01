@@ -27,16 +27,14 @@ A ladder 10 blocks high will be created at the point you were looking at.
 ***/
 var blocks = require('blocks');
 function ladder( height ){
-  this.then(function(){
-    var block = this.getBlock();
-    if (block.typeId == blocks.air || block.typeId == blocks.ladder){
-      this.box(blocks.ladder, 1, height, 1);
-    } else {
-      this
-	.back()
-	.box(blocks.ladder, 1, height, 1)
-	.fwd();
-    }
-  });
+  var block = this.getBlock();
+  if (block.typeId == blocks.air || block.typeId == blocks.ladder){
+    this.box(blocks.ladder, 1, height, 1);
+  } else {
+    this
+      .back()
+      .box(blocks.ladder, 1, height, 1)
+      .fwd();
+  }
 }
 Drone.extend( ladder );

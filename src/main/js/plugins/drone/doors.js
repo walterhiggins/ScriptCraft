@@ -1,3 +1,4 @@
+'use strict';
 /*************************************************************************
 ### Drone.door() method
 
@@ -46,29 +47,43 @@ Create double iron doors
 
 ***/
 
-var Drone = require('./drone').Drone;
-/*global require*/
+var Drone = require('./drone').Drone,
+    blocks = require('blocks');
+/*global require, Packages*/
 function door( doorMaterial, hinge) {
   if ( typeof doorMaterial == 'undefined' ) {
-    doorMaterial = 64; // wood
+    doorMaterial = blocks.door_wood; // wood
   } 
   if (typeof hinge == 'undefined') { 
     hinge = 'left';
   }
   this.then(function(){
-    this.setBlock(doorMaterial, this.dir);
-    this.setBlock(doorMaterial, hinge=='left' ? 8 : 9, 0,1,0);
+    var lower = this.setBlock(doorMaterial, this.dir, 0, 0, 0, false);
+    var upper = this.setBlock(doorMaterial, hinge=='left' ? 8 : 9, 0,1,0, false);
+    if (Drone.bountiful){
+      var DoorHalf = Packages.net.minecraft.block.BlockDoor.EnumDoorHalf,
+	  HingePosition = Packages.net.minecraft.block.BlockDoor.EnumHingePosition,
+	  prop = require('blockhelper').property;
+      prop(lower)
+	.set('facing', this.dir)
+	.set('half', DoorHalf.LOWER );
+      prop(upper)
+	.set('hinge', hinge == 'left' ? HingePosition.LEFT: HingePosition.RIGHT)
+	.set('half', DoorHalf.UPPER);
+    }
+    lower.update();
+    upper.update();
   });
 }
 Drone.extend( door );
 
 Drone.extend( function door_iron( ) {
-  this.door(71);
+  this.door(blocks.door_iron);
 } );
 
 Drone.extend( function door2( doorMaterial ) {
   if ( typeof doorMaterial == 'undefined' ) {
-    doorMaterial = 64;
+    doorMaterial = blocks.door_wood;
   } 
   this
     .door( doorMaterial, 'left')
@@ -77,5 +92,5 @@ Drone.extend( function door2( doorMaterial ) {
     .left();
 } );
 Drone.extend( function door2_iron( ) {
-  this.door2( 71 );
+  this.door2( blocks.door_iron );
 } );

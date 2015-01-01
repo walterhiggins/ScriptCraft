@@ -1,4 +1,4 @@
-/*global __plugin, require, org, setTimeout, addUnloadHandler, exports, global, Packages*/
+/*global __plugin, require, org, setTimeout, addUnloadHandler, exports, global, Packages, server*/
 var utils = require('utils'),
   blocks = require('blocks'),
   THOUSAND = 1000,
@@ -314,7 +314,7 @@ function getDirFromRotation( location ) {
     return 0; // east
   return 1; // south
 }
-function putBlock( x, y, z, blockId, metadata, world, dir ) {
+function putBlock( x, y, z, blockId, metadata, world, dir, update ) {
   if ( typeof metadata == 'undefined' ) {
     metadata = 0;
   }
@@ -325,12 +325,18 @@ function putBlock( x, y, z, blockId, metadata, world, dir ) {
     block.type = BlockType.fromId(blockId);
     var applyProperties = require('blockhelper').applyProperties;
     applyProperties(block, metadata);
-    block.update();
+    if (typeof update === 'undefined'){
+      update = true;
+    }
+    if (update){
+      block.update();
+    }
   }
   if (__plugin.bukkit) {
     block.setTypeIdAndData( blockId, metadata, false );
     block.data = metadata;
   }
+  return block;
 }
 
 function Drone( x, y, z, dir, world ) {
@@ -559,14 +565,23 @@ Drone.prototype.times = function( numTimes, commands ) {
 Drone.prototype.getBlock = function(){
   return this.world.getBlockAt(this.x,this.y,this.z);
 };
-Drone.prototype.setBlock = function(blockType, data, ox, oy, oz){
-  if (typeof ox == 'undefined')
-    ox = 0;
-  if (typeof oy == 'undefined')
-    oy = 0;
-  if (typeof oz == 'undefined')
-    oz = 0;
-  putBlock(this.x + ox, this.y + oy, this.z + oz, blockType, data, this.world, this.dir);
+Drone.prototype.setBlock = function(blockType, data, ow, oh, od, update){
+  if (typeof ow == 'undefined')
+    ow = 0;
+  if (typeof oh == 'undefined')
+    oh = 0;
+  if (typeof od == 'undefined')
+    od = 0;
+  this
+    .right(ow)
+    .up(oh)
+    .fwd(od);
+  var result = putBlock(this.x, this.y, this.z, blockType, data, this.world, this.dir, update);
+  this
+    .left(ow)
+    .down(oh)
+    .back(od);
+  return result;
 };
 Drone.prototype.traverseWidth = function(width, callback){
   _traverse[this.dir].width(this, width, callback);
@@ -865,3 +880,4 @@ Drone.clone = function(origin) {
 // wph 20130130 - make this a method - extensions can use it.
 //
 Drone.prototype._getBlockIdAndMeta = _getBlockIdAndMeta;
+Drone.bountiful = __plugin.canary ? parseFloat(server.canaryModVersion) > 1.7 : false;
