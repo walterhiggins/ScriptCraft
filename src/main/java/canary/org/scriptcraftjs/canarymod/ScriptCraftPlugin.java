@@ -113,7 +113,7 @@ public class ScriptCraftPlugin extends Plugin implements PluginListener, Command
     @Command(
              aliases = { "js" },
              description = "Execute Javascript code",
-             permissions = { "scriptcraft.evaluate", "*" },
+             permissions = { "scriptcraft.evaluate" },
              toolTip = "/js javascript expression")
              public void jsCommand(MessageReceiver sender, String[] args) {
 

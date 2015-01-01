@@ -1,6 +1,7 @@
+'use strict';
+/*global require, exports, __plugin, __dirname, echo, persist, isOp, events, Packages */
 var utils = require('utils'),
   autoload = require('plugin').autoload,
-  logger = __plugin.logger,
   foreach = utils.foreach,
   watchDir = utils.watchDir,
   unwatchDir = utils.unwatchDir,
@@ -30,7 +31,7 @@ variable named after the player.
 
 So for example, if player 'walterh' joins the server, a `walterh`
 global variable is created. If a file `greet.js` with the following
-content is dropped into the `plugins/scriptcraft/players/walterh`
+content is dropped into the `scriptcraft/players/walterh`
 directory...
 
 ```javascript
@@ -44,7 +45,7 @@ lets every player/student create their own functions without having
 naming collisions.
 
 It's strongly recommended that the
-`craftbukkit/plugins/scriptcraft/players/` directory is shared so that
+`scriptcraft/players/` directory is shared so that
 others can connect to it and drop .js files into their student
 directories. On Ubuntu, select the folder in Nautilus (the default
 file browser) then right-click and choose *Sharing Options*, check the
@@ -90,42 +91,56 @@ Only ops users can run the classroom.allowScripting() function - this is so that
 don't try to bar themselves and each other from scripting.
 
 ***/
-var _store = { enableScripting: false },
+var store = persist('classroom', { enableScripting: false }),
   File = java.io.File;
 
 function revokeScripting ( player ) { 
-  foreach( player.getEffectivePermissions(), function( perm ) {
-    if ( (''+perm.permission).indexOf( 'scriptcraft.' ) == 0 ) {
-      if ( perm.attachment ) {
-	perm.attachment.remove();
+  if (__plugin.bukkit){
+    foreach( player.getEffectivePermissions(), function( perm ) {
+      if ( (''+perm.permission).indexOf( 'scriptcraft.' ) == 0 ) {
+	if ( perm.attachment ) {
+	  perm.attachment.remove();
+	}
       }
-    }
-  });
+    });
+  }
+  if (__plugin.canary){
+    // 
+    var Canary = Packages.net.canarymod.Canary;
+    Canary.permissionManager().removePlayerPermission('scriptcraft.evaluate',player);
+  }
   var playerName = '' + player.name;
   playerName = playerName.replace(/[^a-zA-Z0-9_\-]/g,'');
   var playerDir = new File( playersDir + playerName );
   unwatchDir( playerDir );
 }
-exports.classroomAutoloadTime = {};
+var classroomAutoloadTime = {};
+exports.classroomAutoloadTime = classroomAutoloadTime;
+
 function grantScripting( player ) {
   console.log('Enabling scripting for player ' + player.name);
   var playerName = '' + player.name;
   playerName = playerName.replace(/[^a-zA-Z0-9_\-]/g,'');
   var playerDir = new File( playersDir + playerName );
   playerDir.mkdirs();
-  player.addAttachment( __plugin, 'scriptcraft.*', true );
+  if (__plugin.bukkit){
+    player.addAttachment( __plugin, 'scriptcraft.*', true );
+  }
+  if (__plugin.canary){
+    player.permissionProvider.addPermission('scriptcraft.evaluate',true);
+  }
   var playerContext = {};
-  autoload( playerContext, playerDir, logger, { cache: false });
+  autoload( playerContext, playerDir, { cache: false });
   global[playerName] = playerContext;
   watchDir( playerDir, function( changedDir ){
     var currentTime = new java.util.Date().getTime();
     //this check is here because this callback might get called multiple times for the watch interval
     //one call for the file change and another for directory change 
     //(this happens only in Linux because in Windows the folder lastModifiedTime is not changed)
-    if(currentTime-exports.classroomAutoloadTime[playerName]>1000) {
-      autoload(playerContext, playerDir, logger, { cache: false });
+    if (currentTime - classroomAutoloadTime[playerName]>1000 ) {
+      autoload(playerContext, playerDir, { cache: false });
     } 
-    exports.classroomAutoloadTime[playerName] = currentTime;
+    classroomAutoloadTime[playerName] = currentTime;
   });
 
 /*
@@ -137,7 +152,7 @@ function grantScripting( player ) {
 
 }
 
-var classroom = plugin('classroom', {
+var classroom = {
   allowScripting: function (/* boolean: true or false */ canScript, sender ) {
     sender = utils.player(sender);
     if ( !sender ) {
@@ -153,26 +168,28 @@ var classroom = plugin('classroom', {
       echo( sender, 'Only operators can use this function');
       return;
     }
-    foreach( server.onlinePlayers, canScript ? grantScripting : revokeScripting);
-    _store.enableScripting = canScript;
+    foreach( utils.players(), function(player){
+      if (!isOp(player)){
+	canScript ? grantScripting(player) : revokeScripting(player);
+      }
+    });
+    store.enableScripting = canScript;
 
     echo( sender, 'Scripting turned ' + ( canScript ? 'on' : 'off' ) + 
       ' for all players on server ' + serverAddress);
-  },
-  store: _store
-}, true);
-
+  }
+};
 exports.classroom = classroom;
 
 if (__plugin.canary){
   events.connection( function( event ) { 
-    if ( _store.enableScripting ) {
+    if ( store.enableScripting ) {
       grantScripting(event.player);
     }
   }, 'CRITICAL');
 } else {
   events.playerJoin( function( event ) { 
-    if ( _store.enableScripting ) {
+    if ( store.enableScripting ) {
       grantScripting(event.player);
     }
   }, 'HIGHEST');

@@ -5316,7 +5316,7 @@ variable named after the player.
 
 So for example, if player 'walterh' joins the server, a `walterh`
 global variable is created. If a file `greet.js` with the following
-content is dropped into the `plugins/scriptcraft/players/walterh`
+content is dropped into the `scriptcraft/players/walterh`
 directory...
 
 ```javascript
@@ -5330,7 +5330,7 @@ lets every player/student create their own functions without having
 naming collisions.
 
 It's strongly recommended that the
-`craftbukkit/plugins/scriptcraft/players/` directory is shared so that
+`scriptcraft/players/` directory is shared so that
 others can connect to it and drop .js files into their student
 directories. On Ubuntu, select the folder in Nautilus (the default
 file browser) then right-click and choose *Sharing Options*, check the

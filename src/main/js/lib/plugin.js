@@ -30,7 +30,7 @@ var _plugin = function(/* String */ moduleName, /* Object */ moduleObject, isPer
 
 exports.plugin = _plugin;
 
-exports.autoload = function( context, pluginDir, logger, options ) {
+exports.autoload = function( context, pluginDir, options ) {
   var _canonize = function( file ) { 
     return '' + file.canonicalPath.replaceAll('\\\\','/'); 
   };
@@ -66,7 +66,7 @@ exports.autoload = function( context, pluginDir, logger, options ) {
 
     var len = sourceFiles.length;
     if ( config && config.verbose ) {
-      logger.info( len + ' scriptcraft plugins found in ' + pluginDir );
+      console.info( len + ' scriptcraft plugins found in ' + pluginDir );
     }
 
     for ( var i = 0; i < len; i++ ) {
@@ -83,12 +83,8 @@ exports.autoload = function( context, pluginDir, logger, options ) {
           context[property] = module[property];
         }
       } catch ( e ) {
-	if ( typeof logger != 'undefined' ) {
-	  var msg = 'Plugin ' + pluginPath + ' ' + e ;
-	  __plugin.canary ? logger.error( msg ) : logger.severe( msg );
-	} else { 
-	  java.lang.System.out.println( 'Error: Plugin ' + pluginPath + ' ' + e );
-	}
+	var msg = 'Plugin ' + pluginPath + ' ' + e ;
+	console.error( msg );
       }
     }
   }(pluginDir));
