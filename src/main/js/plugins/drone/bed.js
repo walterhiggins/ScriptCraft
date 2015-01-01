@@ -2,6 +2,28 @@
 /*global require, Packages*/
 var Drone = require('./drone').Drone,
     blocks = require('blocks');
+/************************************************************************
+### Drone.bed() method
+
+Creates a bed. The foot of the bed will be at the drone's location and
+the head of the bed will extend away from the drone.
+
+#### Example
+To create a bed at the in-game prompt, look at a block then type:
+
+```javascript
+/js bed()
+```
+
+Like most Drone methods, this returns the drone so it can be chained like so:
+
+```javascript
+this
+  .fwd(3)
+  .bed()
+  .back(3)
+```     
+***/
 var bedDirections = {
   0:3, // east
   1:0, // south

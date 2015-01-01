@@ -371,6 +371,7 @@ Walter Higgins
    * [Drone Constants](#drone-constants)
    * [Drone.times() Method](#dronetimes-method)
    * [Drone.arc() method](#dronearc-method)
+   * [Drone.bed() method](#dronebed-method)
    * [Drone.blocktype() method](#droneblocktype-method)
    * [Copy & Paste using Drone](#copy--paste-using-drone)
    * [Drone.copy() method](#dronecopy-method)
@@ -4416,6 +4417,26 @@ stroke width of 2 blocks ...
 [bres]: http://en.wikipedia.org/wiki/Midpoint_circle_algorithm
 [dv]: http://www.minecraftwiki.net/wiki/Data_values
 
+### Drone.bed() method
+
+Creates a bed. The foot of the bed will be at the drone's location and
+the head of the bed will extend away from the drone.
+
+#### Example
+To create a bed at the in-game prompt, look at a block then type:
+
+```javascript
+/js bed()
+```
+
+Like most Drone methods, this returns the drone so it can be chained like so:
+
+```javascript
+this
+  .fwd(3)
+  .bed()
+  .back(3)
+```     
 ### Drone.blocktype() method
 
 Creates the text out of blocks. Useful for large-scale in-game signs.
