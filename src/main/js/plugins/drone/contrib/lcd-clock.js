@@ -33,9 +33,9 @@ exports.LCDClock = function(drone, fgColor,bgColor,border) {
       var clock = this;
       function tick() {
 	var rolloverMins = 24*60;
-	var timeOfDayInMins = Math.floor(((world.time + 6000) % 24000) / 16.6667);
+	var timeOfDayInMins = Math.floor(((world.totalTime + 6000) % 24000) / 16.6667);
 	timeOfDayInMins = timeOfDayInMins % rolloverMins;
-	console.log('Minecraft time: ' + world.time + ' timeOfDayInMins: ' + timeOfDayInMins);
+	console.log('Minecraft time: ' + world.totalTime + ' timeOfDayInMins: ' + timeOfDayInMins);
 	clock.update(timeOfDayInMins);
       };
       intervalId = setInterval(tick, 800);
