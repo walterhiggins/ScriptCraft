@@ -31,11 +31,11 @@ function ladder( height ){
   this.then(function ladderLater(){
     var block = this.getBlock();
     if (block.typeId == blocks.air || block.typeId == blocks.ladder){
-      this.box(blocks.ladder, 1, height, 1);
+      this.box(blocks.ladder, 1, height, 1, true);
     } else {
       this
 	.back()
-	.box(blocks.ladder, 1, height, 1)
+	.box(blocks.ladder, 1, height, 1, true)
 	.fwd();
     }
   });

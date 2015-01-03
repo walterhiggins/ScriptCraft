@@ -711,24 +711,23 @@ Drone.prototype.cuboidX = function( blockType, meta, w, h, d, immediate ) {
 Drone.prototype.then = function( next ){
   getQueue(this).push( next.bind( Drone.clone(this) ) );
 };
-Drone.prototype.cuboid = function( block, w, h, d ) {
+Drone.prototype.cuboid = function( block, w, h, d, immediate ) {
   var bm = this._getBlockIdAndMeta( block );
-  return this.cuboidX( bm[0], bm[1], w, h, d );
+  return this.cuboidX( bm[0], bm[1], w, h, d, immediate);
 };
 
-Drone.prototype.cuboid0 = function( block, w, h, d ) {
-  this.chkpt( 'start_point' );
-  
-  // Front wall
-  this.cuboid( block, w, h, 1 );
-  // Left wall
-  this.cuboid( block, 1, h, d );
-  // Right wall
-  this.right( w - 1 ).cuboid( block, 1, h, d ).left( w - 1 );
-  // Back wall
-  this.fwd( d - 1 ).cuboid( block, w, h, 1 );
-  
-  return this.move( 'start_point' );
+Drone.prototype.cuboid0 = function( block, w, h, d, immediate ) {
+  var start = 'cuboid0' + w + h + d + immediate;
+  this
+    .chkpt( start )
+    .cuboid( block, w, h, 1, immediate ) // Front wall
+    .cuboid( block, 1, h, d, immediate ) // Left wall
+    .right( w - 1 )
+    .cuboid( block, 1, h, d, immediate ) // Right wall
+    .left( w - 1 )
+    .fwd( d - 1 )
+    .cuboid( block, w, h, 1, immediate ) // Back wall
+    .move( start );
 };
 
 

@@ -326,7 +326,7 @@ for ( c in bitmaps.raw ) {
     }
   }
 }
-function blocktype( message, fg, bg ) {
+function blocktype( message, fg, bg, immediate ) {
 
   var bmfg,
     bmbg,
@@ -373,7 +373,7 @@ function blocktype( message, fg, bg ) {
       charWidth = bits.width;
 
       if ( typeof bg != 'undefined' ) {
-        this.cuboidX( bmbg[0], bmbg[1], charWidth, 7, 1 );
+        this.cuboidX( bmbg[0], bmbg[1], charWidth, 7, 1 , immediate);
       }
 
       for ( j = 0; j < bits.pixels.length; j++ ) {
@@ -381,7 +381,7 @@ function blocktype( message, fg, bg ) {
         this.chkpt( 'btbl' );
         x = bits.pixels[ j ][ 0 ];
         y = bits.pixels[ j ][ 1] ;
-        this.up( 6 - y ).right( x ).cuboidX( bmfg[ 0 ], bmfg[ 1 ] );
+        this.up( 6 - y ).right( x ).cuboidX( bmfg[ 0 ], bmfg[ 1 ], 1, 1, 1, immediate);
         this.move( 'btbl' );
 
       }

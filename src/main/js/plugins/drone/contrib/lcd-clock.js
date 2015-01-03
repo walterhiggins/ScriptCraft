@@ -33,15 +33,28 @@ exports.LCDClock = function(drone, fgColor,bgColor,border) {
     // updating all 4 digits each time is expensive
     // only update digits which have changed (in most cases - just 1)
     //
-    if (digits[3] != lastSecs[3])
-      drone.right(14).blocktype(''+digits[3],fgColor,bgColor).left(14);
-    if (digits[2] != lastSecs[2])
-      drone.right(10).blocktype(''+digits[2],fgColor,bgColor).left(10);
-    if (digits[1] != lastSecs[1])
-      drone.right(4).blocktype(''+digits[1], fgColor, bgColor).left(4);
-    if (digits[0] != lastSecs[0])
-      drone.blocktype(''+digits[0], fgColor, bgColor);
-
+    if (digits[3] != lastSecs[3]){
+      drone
+	.right(14)
+	.blocktype(''+digits[3],fgColor,bgColor, true)
+	.left(14);
+    }
+    if (digits[2] != lastSecs[2]){
+      drone
+	.right(10)
+	.blocktype(''+digits[2],fgColor,bgColor, true)
+	.left(10);
+    }
+    if (digits[1] != lastSecs[1]){
+      drone
+	.right(4)
+	.blocktype(''+digits[1], fgColor, bgColor, true)
+	.left(4);
+    }
+    if (digits[0] != lastSecs[0]){
+      drone
+	.blocktype(''+digits[0], fgColor, bgColor, true);
+    }
     lastSecs[0] = digits[0];
     lastSecs[1] = digits[1];
     lastSecs[2] = digits[2];
@@ -58,7 +71,7 @@ exports.LCDClock = function(drone, fgColor,bgColor,border) {
     drone.box(border,21,9,1);
     drone.up().right();
   }
-  drone.blocktype('00:00', fgColor, bgColor);
+  drone.blocktype('00:00', fgColor, bgColor, true);
   return { 
     start24: function( ) {
       function tick() {
