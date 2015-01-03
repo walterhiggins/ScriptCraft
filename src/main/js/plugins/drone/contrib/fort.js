@@ -1,3 +1,4 @@
+'use strict';
 var Drone = require('../drone').Drone;
 var blocks = require('blocks');
 //
@@ -6,8 +7,7 @@ var blocks = require('blocks');
 function fort( side, height ) {
   var turret,
     i,
-    torch,
-    ladder;
+    torch;
 
   if ( typeof side == 'undefined' ) {
     side = 18;
@@ -93,6 +93,7 @@ function fort( side, height ) {
     .right((side/2)-3)
     .fwd(1) // move inside fort
     .turn(2)
+    .box(blocks.air, 1, height-1, 1)
     .ladder(height-1)
     .move('fort');
 }

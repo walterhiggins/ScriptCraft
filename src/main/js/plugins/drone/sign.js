@@ -59,6 +59,7 @@ To create a free-standing sign...
 ***/
 function putSign( drone, texts, blockId, meta ) {
   var i,
+    len = texts.length,
     block,
     state,
     getState, 
@@ -74,23 +75,26 @@ function putSign( drone, texts, blockId, meta ) {
       var sign = block.getTileEntity();
       return sign.setTextOnLine; 
     };
-    setLine = function( block, i, text) { 
+    setLine = function( block, i) { 
       var sign = block.getTileEntity();
-      sign.setTextOnLine( text, i ); 
+      sign.setTextOnLine( texts[i], i ); 
       sign.update(); 
     };
   }
   if (__plugin.bukkit){
     isSign = function(block){ return block.state && block.state.setLine; };
-    setLine = function( block, i, text) { 
+    setLine = function( block, i) { 
       var sign = block.state;
-      sign.setLine( i, text ); 
+      sign.setLine( i, texts[i] ); 
       sign.update(true); 
     };
   }
   if ( isSign(block) ) { 
-    for ( i = 0; i < texts.length; i++ ) {
-      setLine(block, i % 4, texts[ i ] );
+    if (len > 4){
+      len = 4;
+    }
+    for ( i = 0; i < len; i++ ) {
+      setLine(block, i, texts[ i ] );
     }
   }
 };

@@ -818,7 +818,8 @@ through arrays. The following loop prints out all of the players on
 the server...
 
 ```javascript
-var players = server.onlinePlayers;
+var utils = require('utils');
+var players = utils.players();
 var i = 0;
 while ( i < players.length ) {
     console.log( players[i] );
@@ -847,7 +848,9 @@ loops. utils.foreach() takes two parameters...
 Let's see it in action, the following code will `console.log()` (print) the
 name of each online player in the server console window...
 
-    utils.foreach( server.onlinePlayers, console.log );
+    var utils = require('utils');
+    var players = utils.players;
+    utils.foreach( players, console.log );
 
 ... in the above example, the list of online players is processed one
 at a time and each item (player) is passed to the `console.log`
@@ -863,8 +866,9 @@ utils.foreach() function...
   give every player the ability to fly.
 */
 var utils = require('utils');
-utils.foreach( server.onlinePlayers, function( player ) { 
-    player.setAllowFlight(true); 
+var players = utils.players();
+utils.foreach( players, function( player ) { 
+  player.capabilities.setMayFly(true);
 } );
 ```
 
@@ -875,19 +879,21 @@ utils.foreach( server.onlinePlayers, function( player ) {
   Play a Cat's Meow sound for each player.
 */
 var utils = require('utils');
-utils.foreach( server.onlinePlayers, function( player ) { 
-    player.playSound(player.location, 
-                     org.bukkit.Sound.CAT_MEOW,
-                     1,
-                     1);
+var players = utils.players();
+var sounds = require('sounds');
+utils.foreach( players, function( player ) { 
+  sounds.catMeow( player );	       			  	     
 } );
 ```
 
 ### Exercise
 Try changing the above function so that different sounds are played
-instead of a Cat's Meow.  You'll need to lookup the [CanaryMod API's
-Sound class][soundapi] to see all of the possible sounds that can be
-played.
+instead of a Cat's Meow. To see all of the possible sounds that can be
+played, load the sounds module at the in-game prompt using the following statement:
+
+    /js var sounds = require('sounds');
+
+... then type `/js sounds.` and press the TAB key to see a list of all possible sounds.
 
 Loops are a key part of programming in any language. Javascript
 provides `for` and `while` statements for looping and many javascript
