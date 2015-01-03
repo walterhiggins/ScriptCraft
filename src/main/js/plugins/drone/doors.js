@@ -49,7 +49,7 @@ Create double iron doors
 
 var Drone = require('./drone').Drone,
     blocks = require('blocks');
-/*global require, Packages*/
+/*global require, Packages, __plugin*/
 function door( doorMaterial, hinge) {
   if ( typeof doorMaterial == 'undefined' ) {
     doorMaterial = blocks.door_wood; // wood
@@ -71,8 +71,10 @@ function door( doorMaterial, hinge) {
 	.set('hinge', hinge == 'left' ? HingePosition.LEFT: HingePosition.RIGHT)
 	.set('half', DoorHalf.UPPER);
     }
-    lower.update();
-    upper.update();
+    if (__plugin.canary){
+      lower.update();
+      upper.update();
+    }
   });
 }
 Drone.extend( door );

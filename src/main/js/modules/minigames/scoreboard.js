@@ -1,6 +1,18 @@
-var textcolors = require('textcolors');
-var Canary = Packages.net.canarymod.Canary;
-var sb = Canary.scoreboards().getScoreboard();
+'use strict';
+/*global Packages, require, server, exports*/
+
+/*
+ wph 20150103 - temporarily commenting out - textcolors was removed.
+ var textcolors = require('textcolors');
+*/
+var sb;
+if (__plugin.canary){
+  var Canary = Packages.net.canarymod.Canary;
+  sb = Canary.scoreboards().getScoreboard();
+} else {
+  console.warn('Scoreboard not yet supported in CraftBukkit');
+  return;
+}
 function execCommand( command ){
   server.executeVanillaCommand(server, command);
 }
@@ -20,7 +32,10 @@ function createScoreboard( objectiveName, displayName ){
 function addTeamToScoreboard( teamName, color){
   execCommand('scoreboard teams add ' + teamName);
   var team = getTeamByName( teamName );
-  team.prefix = textcolors.colorize(color, '');
+  /*
+   wph 20150103 - temporarily commenting out - textcolors was removed.
+   team.prefix = textcolors.colorize(color, '');
+   */
   //execCommand('scoreboard teams option ' + teamName + ' color ' + color);
 }
 function removeScoreboard( name ){

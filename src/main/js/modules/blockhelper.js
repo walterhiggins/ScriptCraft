@@ -6,7 +6,12 @@ var blocks = require('blocks'),
 if (__plugin.canary){
   bountiful = parseFloat(server.canaryModVersion) > 1.7;
 }
-
+if (__plugin.bukkit){
+  /*
+   wph 20150103 - metadata still applies for Craftbukkit 1.8
+   bountiful = parseFloat(server.bukkitVersion) > 1.7;
+   */
+}
 var lookup = {};
 function initLookup(){
   var Facing = Packages.net.minecraft.util.EnumFacing,

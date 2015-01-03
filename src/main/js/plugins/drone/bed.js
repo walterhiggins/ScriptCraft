@@ -1,5 +1,5 @@
 'use strict';
-/*global require, Packages*/
+/*global require, Packages, __plugin*/
 var Drone = require('./drone').Drone,
     blocks = require('blocks');
 /************************************************************************
@@ -44,8 +44,10 @@ function bed(){
 	.set('facing',this.dir)
 	.set('part', BedHalf.HEAD);
     }
-    foot.update();
-    head.update();
+    if (__plugin.canary){
+      foot.update();
+      head.update();
+    }
   });
 
 }
