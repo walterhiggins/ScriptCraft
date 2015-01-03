@@ -1,8 +1,16 @@
 RELEASE NOTES
 =============
+3.0.3 Release (2015 01 03)
+--------------------------
+Additional support for Drone methods in 1.7.10 and 1.8.
+Fixes issues:
+
+* 177: https://github.com/walterhiggins/ScriptCraft/issues/177
+* 185: https://github.com/walterhiggins/ScriptCraft/issues/185
+* 188: https://github.com/walterhiggins/ScriptCraft/issues/188
 
 3.0.2 Release (2014 12 28)
-----------------------------------
+--------------------------
 This version includes fixes for CraftBukkit (1.7.X) and also fixes
 problems on Mac OS X and includes some support for Drone methods in
 Minecraft 1.8 (CanaryMod 1.2)
