@@ -5,6 +5,7 @@
        * CanaryMod
        * Bukkit
        * Glowstone (which is bukkit-compatible)
+       * Spigot (which is bukkit-compatible)
   -->
   <property name="src.canary" location="src/main/java/canary"/>
   <property name="src.bukkit" location="src/main/java/bukkit"/>
