@@ -1,6 +1,5 @@
 'use strict';
-/*global require*/
-var Drone = require('./drone').Drone;
+/*global require, module*/
 /************************************************************************
 ### Drone.prism() method
 
@@ -93,5 +92,7 @@ function prism0( block,w,d ) {
       .back();
   }
 }
-Drone.extend(prism0);
-Drone.extend(prism);
+module.exports = function(Drone){
+  Drone.extend(prism0);
+  Drone.extend(prism);
+};

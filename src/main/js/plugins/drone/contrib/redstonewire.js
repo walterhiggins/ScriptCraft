@@ -1,5 +1,7 @@
-var Drone = require('../drone').Drone;
-var blocks = require('blocks');
+'use strict';
+/*global require*/
+var Drone = require('drone'),
+    blocks = require('blocks');
 
 //
 // usage: 

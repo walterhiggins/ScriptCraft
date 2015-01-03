@@ -10,10 +10,7 @@
  /js clock.stop24();
  ... stops the clock...
  */
-var Drone = require('../drone').Drone,
-    blocktype = require('../blocktype'),
-    blocks = require('blocks');
-
+var blocks = require('blocks');
 
 exports.LCDClock = function(drone, fgColor,bgColor,border) {
 

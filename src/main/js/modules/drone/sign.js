@@ -1,7 +1,6 @@
 'use strict';
-/*global require, echo,__plugin*/
-var Drone = require('./drone').Drone,
-    blocks = require('blocks');
+/*global require, echo,__plugin, module*/
+var blocks = require('blocks');
 /************************************************************************
 ### Drone.wallsign() method
 
@@ -124,7 +123,7 @@ function sign( message, block ) {
   if ( message.constructor != Array ) {
     message = [message];
   }
-  var bm = this._getBlockIdAndMeta( block );
+  var bm = this.getBlockIdAndMeta( block );
   block = bm[0];
   var meta = bm[1];
   if ( block !== blocks.sign_post && block !== blocks.sign ) {
@@ -138,6 +137,8 @@ function sign( message, block ) {
   putSign( this, message, block,  meta);
 
 }
-Drone.extend(sign);
-Drone.extend(signpost);
-Drone.extend(wallsign);
+module.exports = function(Drone){
+  Drone.extend(sign);
+  Drone.extend(signpost);
+  Drone.extend(wallsign);
+};

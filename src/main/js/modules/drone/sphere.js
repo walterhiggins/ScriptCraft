@@ -1,5 +1,5 @@
-var Drone = require('./drone').Drone;
-
+'use strict';
+/*global module*/
 /************************************************************************
 ### Drone.sphere() method
 
@@ -22,11 +22,11 @@ Spheres are time-consuming to make. You *can* make large spheres (250 radius) bu
 server to be very busy for a couple of minutes while doing so.
 
 ***/
-Drone.extend( 'sphere', function( block, radius ) {
+function sphere( block, radius ) {
   var lastRadius = radius,
       slices = [ [ radius , 0 ] ],
       diameter = radius * 2,
-      bm = this._getBlockIdAndMeta( block ),
+      bm = this.getBlockIdAndMeta( block ),
       r2 = radius * radius,
       i = 0,
       newRadius,
@@ -83,7 +83,7 @@ Drone.extend( 'sphere', function( block, radius ) {
       .down( v );
   }
   return this.move( 'sphere' );
-});
+}
 /************************************************************************
 ### Drone.sphere0() method
 
@@ -104,12 +104,12 @@ Spheres are time-consuming to make. You *can* make large spheres (250 radius) bu
 server to be very busy for a couple of minutes while doing so.
 
 ***/
-Drone.extend('sphere0', function(block,radius)
+function sphere0(block,radius)
 {
   var lastRadius = radius,
       slices = [ [ radius, 0 ] ],
       diameter = radius * 2,
-      bm = this._getBlockIdAndMeta( block ),
+      bm = this.getBlockIdAndMeta( block ),
       r2 = radius*radius,
       i,
       newRadius,
@@ -185,7 +185,7 @@ Drone.extend('sphere0', function(block,radius)
 
   return this;
 
-});
+}
 /************************************************************************
 ### Drone.hemisphere() method
 
@@ -206,11 +206,11 @@ To create a wood 'north' hemisphere with a radius of 7 blocks...
 ![hemisphere example](img/hemisphereex1.png)
 
 ***/
-Drone.extend( 'hemisphere', function( block, radius, northSouth ) {
+function hemisphere( block, radius, northSouth ) {
   var lastRadius = radius,
       slices = [ [ radius, 0 ] ],
       diameter = radius * 2,
-      bm = this._getBlockIdAndMeta(block),
+      bm = this.getBlockIdAndMeta(block),
       r2 = radius * radius,
       i = 0,
       newRadius;
@@ -260,7 +260,7 @@ Drone.extend( 'hemisphere', function( block, radius, northSouth ) {
     }
   }
   return this.move( 'hsphere' );
-});
+}
 /************************************************************************
 ### Drone.hemisphere0() method
 
@@ -281,22 +281,16 @@ To create a glass 'north' hemisphere with a radius of 20 blocks...
 ![hemisphere example](img/hemisphereex2.png)
 
 ***/
-Drone.extend( 'hemisphere0', function( block, radius, northSouth ) {
+function hemisphere0( block, radius, northSouth ) {
 
   if ( radius > 255 ) { 
     throw new Error('Hemisphere radius must be less than 256 blocks');
   }
 
-/*
-  return this.hemisphere( block, radius, northSouth)
-    .fwd().right().up( northSouth == 'north' ? 0 : 1 )
-    .hemisphere( 0, radius-1, northSouth )
-    .back().left().down( northSouth == 'north' ? 0 : 1 );
-*/
   var lastRadius = radius,
       slices = [ [ radius, 0 ] ],
       diameter = radius * 2,
-      bm = this._getBlockIdAndMeta(block),
+      bm = this.getBlockIdAndMeta(block),
       r2 = radius * radius,
       i = 0,
       len,
@@ -393,4 +387,10 @@ Drone.extend( 'hemisphere0', function( block, radius, northSouth ) {
   }
   return this.move( 'hsphere0' );
 
-});
+}
+module.exports = function(Drone){
+  Drone.extend( sphere );
+  Drone.extend( sphere0 );
+  Drone.extend( hemisphere );
+  Drone.extend( hemisphere0 );
+};

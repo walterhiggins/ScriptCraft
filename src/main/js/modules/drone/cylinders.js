@@ -32,7 +32,7 @@ To create a hollow cylinder of Iron 7 blocks in radius and 1 block high...
 ![cylinder0 example](img/cylinder0ex1.png)
 
 ***/
-var Drone = require('./drone').Drone;
+
 function cylinder0( block,radius,height,exactParams ) { 
   var arcParams = {
     radius: radius,
@@ -46,7 +46,7 @@ function cylinder0( block,radius,height,exactParams ) {
       arcParams[p] = exactParams[p];
     }
   }else{
-    var md = this._getBlockIdAndMeta(block );
+    var md = this.getBlockIdAndMeta(block );
     arcParams.blockType = md[0];
     arcParams.meta = md[1];
   }
@@ -64,12 +64,13 @@ function cylinder( block,radius,height,exactParams ) {
     arcParams.blockType = exactParams.blockType;
     arcParams.meta = exactParams.meta;
   }else{
-    var md = this._getBlockIdAndMeta(block );
+    var md = this.getBlockIdAndMeta(block );
     arcParams.blockType = md[0];
     arcParams.meta = md[1];
   }
   return this.arc(arcParams );
 };
-
-Drone.extend(cylinder0 );
-Drone.extend(cylinder );
+module.exports = function(Drone){
+  Drone.extend(cylinder0 );
+  Drone.extend(cylinder );
+};

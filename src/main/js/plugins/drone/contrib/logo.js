@@ -1,4 +1,7 @@
-var Drone = require('../drone').Drone;
+'use strict';
+/*global require*/
+var Drone = require('drone'),
+    blocks = require('blocks');
 
 //
 // Constructs the JS logo
@@ -9,61 +12,77 @@ var Drone = require('../drone').Drone;
 // bg
 //   the material that the square will be made of
 //
-Drone.extend('logojs', function(fg, bg) {
+function logojs(fg, bg) {
 
     // foreground defaults to gray wool
     if (typeof fg == "undefined")
-        fg = '35:7';
+        fg = blocks.wool.gray;
     // background defaults to gold blocks
     if (typeof bg == "undefined")
-        bg = 41;
+        bg = blocks.gold;
 
     // Draw the sqaure
-    this.chkpt('logojs-start')
-        .up()
-        .box(bg, 100, 100, 1);
+    this
+      .chkpt('logojs-start')
+      .up()
+      .box(bg, 100, 100, 1);
 
     // Draw the J, starting with the hook
-    this.right(30).up(13)
-        .box(fg)
-        .right().down()
-        .box(fg, 1, 3, 1)
-        .right().down()
-        .box(fg, 1, 5, 1)
-        .right().down()
-        .box(fg, 1, 7, 1)
-        .right()
-        .box(fg, 1, 8, 1)
-        .right().down()
-        .box(fg, 1, 10, 1)
-        .right()
-        .box(fg, 1, 9, 1)
-        .right()
-        .box(fg, 1, 8, 1)
-        .right().down()
-        .box(fg, 2, 8, 1)
-        .right(2)
-        .box(fg, 4, 7, 1)
-        .right(4)
-        .box(fg, 1, 8, 1)
-        .right()
-        .box(fg, 1, 9, 1)
-        .right().up()
-        .box(fg, 3, 10, 1)
-        .right(3).up()
-        .box(fg, 2, 9, 1)
-        .right(2).up()
-        .box(fg, 2, 8, 1)
-        .right(2).up()
-        .box(fg, 1, 7, 1)
-        .right().up()
-        .box(fg, 1, 6, 1)
-        .right().up()
-        .box(fg, 1, 5, 1)
-        .right().up(2)
-        .box(fg, 1, 3, 1)
-        .left(9).up(3)
-        .box(fg, 10, 31, 1)
+    this
+      .right(30)
+      .up(13)
+      .box(fg)
+      .right()
+      .down()
+      .box(fg, 1, 3, 1)
+      .right()
+      .down()
+      .box(fg, 1, 5, 1)
+      .right()
+      .down()
+      .box(fg, 1, 7, 1)
+      .right()
+      .box(fg, 1, 8, 1)
+      .right()
+      .down()
+      .box(fg, 1, 10, 1)
+      .right()
+      .box(fg, 1, 9, 1)
+      .right()
+      .box(fg, 1, 8, 1)
+      .right()
+      .down()
+      .box(fg, 2, 8, 1)
+      .right(2)
+      .box(fg, 4, 7, 1)
+      .right(4)
+      .box(fg, 1, 8, 1)
+      .right()
+      .box(fg, 1, 9, 1)
+      .right()
+      .up()
+      .box(fg, 3, 10, 1)
+      .right(3)
+      .up()
+      .box(fg, 2, 9, 1)
+      .right(2)
+      .up()
+      .box(fg, 2, 8, 1)
+      .right(2)
+      .up()
+      .box(fg, 1, 7, 1)
+      .right()
+      .up()
+      .box(fg, 1, 6, 1)
+      .right()
+      .up()
+      .box(fg, 1, 5, 1)
+      .right()
+      .up(2)
+      .box(fg, 1, 3, 1)
+      .left(9)
+      .up(3)
+      .box(fg, 10, 31, 1)
 
     // Draw the S
     // It's drawn in three strokes from bottom to top. Look for when
@@ -181,7 +200,7 @@ Drone.extend('logojs', function(fg, bg) {
     this.move('logojs-start');
 
     return this;
-});
+}
 //
 // Makes a cube of JS logos!
 // This is a wrapper for logojs() so look at its docs
@@ -189,7 +208,7 @@ Drone.extend('logojs', function(fg, bg) {
 // Until the drone can rotate on its Z axis we can't
 // use logojs() to create top/bottom sides of cube.
 //
-Drone.extend('logojscube', function(fg, bg) {
+function logojscube(fg, bg) {
 
     this.chkpt('jscube-start')
         .logojs(fg, bg);
@@ -216,4 +235,6 @@ Drone.extend('logojscube', function(fg, bg) {
         .logojs(fg, bg);
 
     return this;
-});
+}
+Drone.extend( logojs );
+Drone.extend( logojscube );

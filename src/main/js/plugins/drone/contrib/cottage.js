@@ -1,4 +1,4 @@
-var Drone = require('../drone').Drone;
+var Drone = require('drone');
 var blocks = require('blocks');
 //
 // usage: 

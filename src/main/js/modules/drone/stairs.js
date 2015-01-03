@@ -1,3 +1,5 @@
+'use strict';
+/*global module*/
 /**************************************************************************
 ### Drone.stairs() function
 
@@ -30,8 +32,7 @@ To build an oak staircase 3 blocks wide and 5 blocks tall:
 Staircases do not have any blocks beneath them.
 
 ***/
-var Drone = require('./drone').Drone,
-    blocks = require('blocks');
+var blocks = require('blocks');
 /*global require*/
 function stairs(blockType, width, height){
   if (typeof width === 'undefined')
@@ -42,7 +43,7 @@ function stairs(blockType, width, height){
     blockType = blocks.stairs.oak;
   }
   this.then(function(){
-    var bm = this._getBlockIdAndMeta(blockType);
+    var bm = this.getBlockIdAndMeta(blockType);
     this.chkpt('_stairs');
     while (height > 0) {
       this.traverseWidth(width, function(){
@@ -56,4 +57,6 @@ function stairs(blockType, width, height){
   });
   
 }
-Drone.extend(stairs);
+module.exports = function(Drone){
+  Drone.extend(stairs);
+};

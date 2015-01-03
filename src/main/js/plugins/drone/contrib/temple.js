@@ -1,5 +1,5 @@
-var Drone = require('../drone').Drone;
-var blocks = require('blocks');
+var Drone = require('drone'),
+    blocks = require('blocks');
 //
 // constructs a mayan temple
 // 

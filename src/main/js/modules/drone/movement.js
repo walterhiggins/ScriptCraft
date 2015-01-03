@@ -1,7 +1,5 @@
 'use strict';
-/*global require,__plugin*/
-var Drone = require('./drone').Drone,
-    bkLocation = org.bukkit.Location;
+/*global require,__plugin, module, Packages, org*/
 
 /************************************************************************
 ### Drone Movement
@@ -89,12 +87,18 @@ _movements[3].left = _movements[0].back;
 _movements[3].fwd = _movements[0].left;
 _movements[3].back = _movements[0].right;
 
-Drone.prototype._checkpoints = {};
-Drone.extend(function chkpt( name ) {
+function turn( n ) {
+  if ( typeof n == 'undefined' ) {
+    n = 1;
+  }
+  this.dir += n;
+  this.dir %=4;
+}
+function chkpt( name ) {
   this._checkpoints[ name ] = { x:this.x, y:this.y, z:this.z, dir:this.dir };
-});
-
-Drone.extend(function move( ) {
+}
+function move( ) {
+  var Drone = this.constructor;
   if ( arguments[0].x && arguments[0].y && arguments[0].z) {
     this.x = arguments[0].x;
     this.y = arguments[0].y;
@@ -122,64 +126,64 @@ Drone.extend(function move( ) {
       this.x = arguments[0];
     }
   }
-});
-
-Drone.extend( function turn( n ) {
-  if ( typeof n == 'undefined' ) {
-    n = 1;
-  }
-  this.dir += n;
-  this.dir %=4;
-} );
-
-Drone.extend( function right( n ) { 
+}
+function right( n ) { 
   if ( typeof n == 'undefined' ) {
     n = 1;
   }
   _movements[ this.dir ].right( this, n ); 
-});
-
-Drone.extend( function left( n ) { 
+}
+function left( n ) { 
   if ( typeof n == 'undefined') { 
     n = 1;
   }
   _movements[ this.dir ].left( this, n );
-});
-
-Drone.extend( function fwd( n ) { 
+}
+function fwd( n ) { 
   if ( typeof n == 'undefined' ) {
     n = 1;
   }
   _movements[ this.dir ].fwd( this, n );
-});
-
-Drone.extend( function back( n ) { 
+}
+function back( n ) { 
   if ( typeof n == 'undefined' ) { 
     n = 1;
   }
   _movements[ this.dir ].back( this, n );
-});
-
-Drone.extend( function up( n ) { 
+}
+function up( n ) { 
   if ( typeof n == 'undefined' ) {
     n = 1;
   }
   this.y+= n; 
-});
-
-Drone.extend( function down( n ) { 
+}
+function down( n ) { 
   if ( typeof n == 'undefined' ) {
     n = 1;
   }
   this.y-= n; 
-});
-
-Drone.prototype.getLocation = function( ) {
+}
+function getLocation( ) {
   if (__plugin.canary) {
     var cmLocation = Packages.net.canarymod.api.world.position.Location;
     return new cmLocation( this.world, this.x, this.y, this.z, 0, 0);
   }
   if (__plugin.bukkit) { 
+    var bkLocation = org.bukkit.Location;
     return new bkLocation( this.world, this.x, this.y, this.z );
   }
+}
+module.exports = function(Drone){
+  Drone.prototype._checkpoints = {};
+  Drone.prototype.getLocation = getLocation;
+  Drone.extend( chkpt );
+  Drone.extend( move );
+  Drone.extend( turn );
+  Drone.extend( right );
+  Drone.extend( left );
+  Drone.extend( fwd );
+  Drone.extend( back );
+  Drone.extend( up );
+  Drone.extend( down );
 };
+

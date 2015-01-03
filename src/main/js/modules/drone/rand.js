@@ -1,5 +1,5 @@
 'use strict';
-/*global require*/
+/*global require, module*/
 /************************************************************************
 ### Drone.rand() method
 
@@ -23,7 +23,6 @@ to place random blocks stone has a 50% chance of being picked,
 regular stone has a 50% chance, mossy stone has a 30% chance and cracked stone has just a 20% chance of being picked.
 
 ***/
-var Drone = require('./drone').Drone;
 //
 // standard fisher-yates shuffle algorithm
 //
@@ -56,11 +55,13 @@ function _rand( blockDistribution ) {
   fisherYates(blockDistribution );
   return blockDistribution;
 }
-
-Drone.extend( function rand( dist, width, height, depth, overwrite ) { 
+function rand( dist, width, height, depth, overwrite ) { 
   if ( typeof overwrite == 'undefined' ) { 
     overwrite = true;
   }
   var randomized = _rand( dist );
   this.boxa( randomized, width, height, depth, overwrite);
-} );
+}
+module.exports = function(Drone){
+  Drone.extend( rand );
+};

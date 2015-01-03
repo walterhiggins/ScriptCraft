@@ -1,5 +1,5 @@
 'use strict';
-var Drone = require('../drone').Drone;
+var Drone = require('drone');
 var blocks = require('blocks');
 //
 // constructs a medieval fort

@@ -1,6 +1,6 @@
 'use strict';
-/*global require*/
-var Drone = require('./drone').Drone;
+/*global require, module*/
+
 /************************************************************************
 ### Copy & Paste using Drone
 
@@ -37,9 +37,11 @@ point) into memory.  the copied area can be referenced using the name
          .paste('somethingCool' );
 
 ***/
-function paste( name, immediate )
-{
-  var ccContent = Drone.clipBoard[name];
+var clipBoard = {};
+
+function paste( name, immediate ){
+  var Drone = this.constructor;
+  var ccContent = clipBoard[name];
   if (ccContent == undefined){
     console.warn('Nothing called ' + name + ' in clipboard!');
     return;
@@ -59,6 +61,7 @@ function paste( name, immediate )
 	    newDir,
 	    dir,
 	    a,
+	    c,
 	    len;
         //
         // need to adjust blocks which face a direction
@@ -89,7 +92,7 @@ function paste( name, immediate )
             dir = md & 0x3;
             a = Drone.PLAYER_STAIRS_FACING;
             len = a.length;
-            for ( var c=0;c < len;c++ ) { 
+            for ( c = 0; c < len; c++ ) { 
               if ( a[c] == dir ) { 
                 break;
               }
@@ -109,7 +112,7 @@ function paste( name, immediate )
           case 68: // wall sign
             a = Drone.PLAYER_SIGN_FACING;
             len = a.length;
-            for ( var c=0;c < len;c++ ) { 
+            for ( c=0; c < len; c++ ) { 
               if ( a[c] == md ) { 
                 break;
               }
@@ -136,8 +139,10 @@ function copy( name, w, h, d ) {
       } );
     } );
   } );
-  Drone.clipBoard[name] = {dir: this.dir, blocks: ccContent};
+  clipBoard[name] = {dir: this.dir, blocks: ccContent};
 }
-Drone.clipBoard = {};
-Drone.extend( copy );
-Drone.extend( paste );
+
+module.exports = function(Drone){
+  Drone.extend( copy );
+  Drone.extend( paste );
+};

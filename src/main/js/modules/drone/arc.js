@@ -41,8 +41,6 @@ stroke width of 2 blocks ...
 [dv]: http://www.minecraftwiki.net/wiki/Data_values
 
 ***/
-
-var Drone = require('./drone').Drone;
 /*
  do the bresenham thing
  */
@@ -261,8 +259,9 @@ function arcImpl( params ) {
   params.drone.move('arc2' );
 };
 
-
-Drone.extend(function arc( params ) {
-  params.drone = this;
-  arcImpl(params );
-} );
+module.exports = function(Drone){
+  Drone.extend(function arc( params ) {
+    params.drone = this;
+    arcImpl( params );
+  });
+};

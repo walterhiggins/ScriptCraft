@@ -1,6 +1,6 @@
 'use strict';
 /*global require, __plugin, org*/
-var Drone = require('../drone').Drone,
+var Drone = require('drone'),
     bkMaterial = org.bukkit.Material,
     blocks = require('blocks');
 
@@ -21,7 +21,7 @@ function canHang( block ) {
   return false;
 }  
 function hangtorch() { 
-  var torch = '50:' + Drone.PLAYER_TORCH_FACING[this.dir];
+  var torch = blocks.torch + ':' + Drone.PLAYER_TORCH_FACING[this.dir];
   var moves = 0;
   var block = this.getBlock();
 

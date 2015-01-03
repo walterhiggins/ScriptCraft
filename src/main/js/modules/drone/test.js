@@ -1,6 +1,6 @@
-var Drone = require('./drone').Drone;
-
-Drone.prototype.testHorizontalStrokeWidth = function(){
+'use strict';
+/*global module*/
+function testHorizontalStrokeWidth(){
     this.arc({
         blockType: 42,
         meta: 0,
@@ -9,9 +9,8 @@ Drone.prototype.testHorizontalStrokeWidth = function(){
         strokeWidth: 3,
         quadrants: {topright:true,topleft:true,bottomleft:true,bottomright:true}
     });
-};
-
-Drone.prototype.testVerticalStrokeWidth = function(){
+}
+function testVerticalStrokeWidth(){
     this.arc({
         blockType: 42,
         meta: 0,
@@ -20,4 +19,8 @@ Drone.prototype.testVerticalStrokeWidth = function(){
         strokeWidth: 3,
         quadrants: {topright:true,topleft:true,bottomleft:true,bottomright:true}
     });
+}
+module.exports = function(Drone){
+  Drone.prototype.testHorizontalStrokeWidth = testHorizontalStrokeWidth;
+  Drone.prototype.testVerticalStrokeWidth = testVerticalStrokeWidth;
 };

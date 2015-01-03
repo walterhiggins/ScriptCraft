@@ -1,5 +1,7 @@
-var Drone = require('../drone').Drone;
-var blocks = require('blocks');
+'use strict';
+/*global require*/
+var Drone = require('drone'),
+    blocks = require('blocks');
 
 /************************************************************************
 ### Drone.rainbow() method
@@ -33,7 +35,7 @@ function rainbow( radius ) {
   colors = blocks.rainbow.slice(0);
   colors.push(blocks.air);
   for ( i = 0; i < colors.length; i++ ) {
-    bm = this._getBlockIdAndMeta( colors[i] );
+    bm = this.getBlockIdAndMeta( colors[i] );
     this.arc({
       blockType: bm[0],
       meta: bm[1],

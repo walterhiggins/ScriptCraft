@@ -1,3 +1,4 @@
+/*global module*/
 'use strict';
 /*************************************************************************
 ### Drone.door() method
@@ -47,8 +48,7 @@ Create double iron doors
 
 ***/
 
-var Drone = require('./drone').Drone,
-    blocks = require('blocks');
+var blocks = require('blocks');
 /*global require, Packages, __plugin*/
 function door( doorMaterial, hinge) {
   if ( typeof doorMaterial == 'undefined' ) {
@@ -57,6 +57,7 @@ function door( doorMaterial, hinge) {
   if (typeof hinge == 'undefined') { 
     hinge = 'left';
   }
+  var Drone = this.constructor;
   this.then(function(){
     var lower = this.setBlock(doorMaterial, this.dir, 0, 0, 0, false);
     var upper = this.setBlock(doorMaterial, hinge=='left' ? 8 : 9, 0,1,0, false);
@@ -77,22 +78,24 @@ function door( doorMaterial, hinge) {
     }
   });
 }
-Drone.extend( door );
+module.exports = function(Drone){
+  Drone.extend( door );
 
-Drone.extend( function door_iron( ) {
-  this.door(blocks.door_iron);
-} );
+  Drone.extend( function door_iron( ) {
+    this.door(blocks.door_iron);
+  } );
 
-Drone.extend( function door2( doorMaterial ) {
-  if ( typeof doorMaterial == 'undefined' ) {
-    doorMaterial = blocks.door_wood;
-  } 
-  this
-    .door( doorMaterial, 'left')
-    .right()
-    .door( doorMaterial, 'right')
-    .left();
-} );
-Drone.extend( function door2_iron( ) {
-  this.door2( blocks.door_iron );
-} );
+  Drone.extend( function door2( doorMaterial ) {
+    if ( typeof doorMaterial == 'undefined' ) {
+      doorMaterial = blocks.door_wood;
+    } 
+    this
+      .door( doorMaterial, 'left')
+      .right()
+      .door( doorMaterial, 'right')
+      .left();
+  } );
+  Drone.extend( function door2_iron( ) {
+    this.door2( blocks.door_iron );
+  } );
+};

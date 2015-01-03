@@ -1,4 +1,3 @@
-var Drone = require('./drone').Drone;
 var blocks = require('blocks');
 
 /************************************************************************
@@ -348,10 +347,10 @@ function blocktype( message, fg, bg, immediate ) {
     fg = blocks.wool.black;
   }
 
-  bmfg = this._getBlockIdAndMeta( fg );
+  bmfg = this.getBlockIdAndMeta( fg );
   bmbg = null;
   if ( typeof bg != 'undefined' ) {
-    bmbg = this._getBlockIdAndMeta( bg );
+    bmbg = this.getBlockIdAndMeta( bg );
   }
   lines = message.split( '\n' );
   lineCount = lines.length;    
@@ -393,7 +392,9 @@ function blocktype( message, fg, bg, immediate ) {
   
   return this.move( 'blocktext' );
 }
-Drone.extend(blocktype);
+module.exports = function(Drone){
+  Drone.extend(blocktype);
+};
 
 
 

@@ -1,5 +1,5 @@
 'use strict';
-var Drone = require('./drone').Drone;
+/*global require, module*/
 /************************************************************************
 ### Drone.ladder() method
 
@@ -40,4 +40,7 @@ function ladder( height ){
     }
   });
 }
-Drone.extend( ladder );
+
+module.exports = function(Drone){
+  Drone.extend( ladder );
+};

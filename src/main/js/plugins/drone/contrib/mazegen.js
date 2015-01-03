@@ -1,6 +1,6 @@
 // Maze generation based on http://rosettacode.org/wiki/Maze_generation#JavaScript
 
-var Drone = require('../drone').Drone;
+var Drone = require('drone');
 // User-facing code starts here
 // Example: Try /js maze(5,7)
 Drone.extend( function maze( size_x, size_y ) {

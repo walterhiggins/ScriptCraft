@@ -1,5 +1,5 @@
 'use strict';
-/*global require, __plugin, Packages, org, echo */
+/*global require, __plugin, Packages, org, echo, module */
 var blocks = require('blocks');
 /************************************************************************
 ### Drone Trees methods
@@ -28,7 +28,6 @@ successful if the tree is placed on grass in a setting where trees can
 grow.
 
 ***/
-var Drone = require('./drone').Drone;
 function bukkitTreeFactory( k, v ) {
   return function( ) { 
     var block = this.getBlock();
@@ -71,7 +70,7 @@ function canaryTreeFactory( k, v ){
     }
   };
 }
-function main(){
+module.exports = function (Drone){
   var trees = {
     oak: null,
     birch: null,
@@ -96,5 +95,5 @@ function main(){
       Drone.extend(p, bukkitTreeFactory ( p, trees[p] ) );
     }
   }
-}
-main();
+};
+

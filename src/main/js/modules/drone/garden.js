@@ -1,3 +1,5 @@
+/*global module, require*/
+'use strict';
 /************************************************************************
 ### Drone.garden() method
 
@@ -17,7 +19,6 @@ To create a garden 10 blocks wide by 5 blocks long...
 ![garden example](img/gardenex1.png)
 
 ***/
-var Drone = require('./drone').Drone;
 var blocks = require('blocks');
 
 function garden( width, depth ) {
@@ -43,4 +44,6 @@ function garden( width, depth ) {
     .rand( dist, width, 1, depth, false /* don't overwrite */ )
     .down();
 }
-Drone.extend(garden);
+module.exports = function(Drone){
+  Drone.extend(garden);
+};
