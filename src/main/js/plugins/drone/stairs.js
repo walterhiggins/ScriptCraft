@@ -30,23 +30,30 @@ To build an oak staircase 3 blocks wide and 5 blocks tall:
 Staircases do not have any blocks beneath them.
 
 ***/
-var Drone = require('./drone').Drone;
+var Drone = require('./drone').Drone,
+    blocks = require('blocks');
 /*global require*/
 function stairs(blockType, width, height){
   if (typeof width === 'undefined')
     width = 1;
   if (typeof height === 'undefined')
     height = 1;
-  this.chkpt('_stairs');
-  var bm = this._getBlockIdAndMeta(blockType);
-  while (height > 0) {
-    this.traverseWidth(width, function(){
-      this.setBlock(bm[0], bm[1]);
-    });
-
-    this.fwd().up();
-    height -= 1;
+  if (typeof blockType === 'undefined'){
+    blockType = blocks.stairs.oak;
   }
-  this.move('_stairs');
+  this.then(function(){
+    var bm = this._getBlockIdAndMeta(blockType);
+    this.chkpt('_stairs');
+    while (height > 0) {
+      this.traverseWidth(width, function(){
+	this.setBlock(bm[0], bm[1]);
+      });
+
+      this.fwd().up();
+      height -= 1;
+    }
+    this.move('_stairs');
+  });
+  
 }
 Drone.extend(stairs);
