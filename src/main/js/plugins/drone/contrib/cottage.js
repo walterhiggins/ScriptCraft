@@ -11,7 +11,12 @@ var blocks = require('blocks');
 // /js drone.cottage();
 //
 function cottage( ) {
-  this.chkpt('cottage')
+  this
+    .chkpt('cottage')
+    .down()
+    .box(blocks.birch, 7, 1, 6) // birch wood floor
+    .up()
+    .box(blocks.air, 7, 5, 6) // clear area first
     .box0( blocks.moss_stone, 7, 2, 6)  // 4 walls
     .right(3)
     .door() // door front and center
