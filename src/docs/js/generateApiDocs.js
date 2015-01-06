@@ -1,3 +1,4 @@
+/*global load, args, Packages*/
 /*
  This script is run at build time to generate api.md - a single Markdown document containing documentation for ScriptCraft's API
  */

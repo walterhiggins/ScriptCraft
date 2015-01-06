@@ -42,8 +42,8 @@ function stairs(blockType, width, height){
   if (typeof blockType === 'undefined'){
     blockType = blocks.stairs.oak;
   }
+  var bm = this.getBlockIdAndMeta(blockType);
   this.then(function(){
-    var bm = this.getBlockIdAndMeta(blockType);
     this.chkpt('_stairs');
     while (height > 0) {
       this.traverseWidth(width, function(){
@@ -55,7 +55,6 @@ function stairs(blockType, width, height){
     }
     this.move('_stairs');
   });
-  
 }
 module.exports = function(Drone){
   Drone.extend(stairs);

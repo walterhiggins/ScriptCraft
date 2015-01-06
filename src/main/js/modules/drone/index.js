@@ -319,7 +319,7 @@ function getDirFromRotation( location ) {
  low-level function to place a block in the world - all drone methods which 
  place blocks ultimately invoke this function.
 */
-function putBlock( x, y, z, blockId, metadata, world, dir, update ) {
+function putBlock( x, y, z, blockId, metadata, world, update ) {
   if ( typeof metadata == 'undefined' ) {
     metadata = 0;
   }
@@ -576,7 +576,7 @@ Drone.prototype.setBlock = function(blockType, data, ow, oh, od, update){
     .right(ow)
     .up(oh)
     .fwd(od);
-  var result = putBlock(this.x, this.y, this.z, blockType, data, this.world, this.dir, update);
+  var result = putBlock(this.x, this.y, this.z, blockType, data, this.world, update);
   this
     .left(ow)
     .down(oh)
@@ -621,23 +621,7 @@ function getAllQueues() {
   }
   return result;
 } 
-Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite, immediate ) {
-  //
-  // wph 20140823 make a copy because don't want to modify array in background
-  // 
-  var blocksForBuild = blocks.slice();
-  var len = blocksForBuild.length,
-    i = 0;
-
-  if ( !immediate ) { 
-    for ( ; i < len; i++ ) {
-      blocksForBuild[i] = this.getBlockIdAndMeta( blocksForBuild[ i ] );
-    }
-    var clone = Drone.clone(this);
-    var impl = this.cuboida.bind(clone, blocksForBuild, w, h, d, overwrite, true);
-    getQueue(this).push( function cuboida(){ impl(); });
-    return this;
-  }
+Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite) {
   if ( typeof overwrite == 'undefined' ) { 
     overwrite = true;
   }
@@ -650,12 +634,22 @@ Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite, immed
   if ( typeof w == 'undefined' ) {
     w = 1;
   }
-  var bi = 0;
-
-  traverseDHW( this, d,h,w, function traverseWidthCallback( ) { 
-    var properBlock = blocksForBuild[ bi % len ];
-    this.setBlock(properBlock[0], properBlock[1]);
-    bi++;
+  //
+  // wph 20140823 make a copy because don't want to modify array in background
+  // 
+  var blocksForBuild = blocks.slice();
+  var len = blocksForBuild.length,
+  i = 0;
+  for ( ; i < len; i++ ) {
+    blocksForBuild[i] = this.getBlockIdAndMeta( blocksForBuild[ i ] );
+  }
+  this.then(function(){
+    var bi = 0;
+    traverseDHW( this, d,h,w, function traverseWidthCallback( ) { 
+      var properBlock = blocksForBuild[ bi % len ];
+      this.setBlock(properBlock[0], properBlock[1]);
+      bi++;
+    });
   });
   return this;
 };
@@ -694,22 +688,36 @@ Drone.prototype.cuboidX = function( blockType, meta, w, h, d, immediate ) {
     return this;
   }
   if ( !immediate ) {
-    var clone = Drone.clone(this);
-    var impl = this.cuboidX.bind(clone, blockType, meta, w, h, d, true);
-    getQueue(this).push(function cuboidX(){ impl(); });
-    return this;
+    this.then(function(){
+      traverseDHW( this, d,h,w, function( ) {
+	this.setBlock( blockType, meta );
+      });
+    });
+  } else {
+    traverseDHW( this, d,h,w, function( ) {
+      this.setBlock( blockType, meta );
+    });
   }
-  traverseDHW( this, d,h,w, function( ) {
-    this.setBlock( blockType, meta );
-  });
   return this;
   
 };
 /*
  deferred execution of a drone method
 */
+var thenID = 0;
 Drone.prototype.then = function( next ){
-  getQueue(this).push( next.bind( Drone.clone(this) ) );
+  var chkptThen = '_now' + (thenID++);
+  this.chkpt(chkptThen);
+  var thisNext = next.bind(this);
+  function wrapperFn(){
+    var chkNow = '_now' + (thenID++);
+    this.chkpt(chkNow);
+    this.move(chkptThen);
+    thisNext();
+    this.move(chkNow);
+  }
+  getQueue(this).push( wrapperFn.bind(this) );    
+  return this;
 };
 Drone.prototype.cuboid = function( block, w, h, d, immediate ) {
   var bm = this.getBlockIdAndMeta( block );
@@ -871,10 +879,6 @@ function traverseDHW( drone, d,h,w, callback ){
   });
 }
 
-Drone.clone = function(origin) {
-  var result = new Drone(origin.x,origin.y,origin.z, origin.dir, origin.world);
-  return result;
-};
 //
 // wph 20130130 - make this a method - extensions can use it.
 //
