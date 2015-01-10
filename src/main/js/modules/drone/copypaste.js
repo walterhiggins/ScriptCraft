@@ -6,6 +6,15 @@
 
 A drone can be used to copy and paste areas of the game world.
 
+#### Deprecated
+As of January 10 2015 the copy-paste functions in Drone are no longer
+supported. Copy/Paste is:
+
+1. Difficult to do correctly in a way which works for both Minecraft 1.7 and 1.8 
+   due to how blocks changed in 1.8
+2. Not aligned with the purpose of ScriptCraft's Drone module which is to provide 
+   a simple set of functions for scripting and in-game building.
+
 ### Drone.copy() method
 
 Copies an area so it can be pasted elsewhere. The name can be used for
@@ -40,6 +49,7 @@ point) into memory.  the copied area can be referenced using the name
 var clipBoard = {};
 
 function paste( name, immediate ){
+  console.warn('Drone copy/paste is no longer in active development');
   var Drone = this.constructor;
   var ccContent = clipBoard[name];
   if (ccContent == undefined){
@@ -128,6 +138,7 @@ function paste( name, immediate ){
   } );
 }
 function copy( name, w, h, d ) {
+  console.warn('Drone copy/paste is no longer in active development');
   var ccContent = [];
   this.traverseWidth(w,function( ww ) { 
     ccContent.push([] );

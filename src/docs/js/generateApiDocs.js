@@ -76,29 +76,7 @@ function sorter( precedence ){
     }
   };
 }
-function sortByModule(a,b)
-{
-  var aparts = (''+a).split(/\//);
-  var bparts = (''+b).split(/\//);
-  var adir = aparts[aparts.length-2];
-  var afile = aparts[aparts.length-1];
-  var bdir = bparts[bparts.length-2];
-  var bfile = bparts[bparts.length-1];
-  if (afile == '_scriptcraft.js')
-    return -1;
-  if (bfile == '_scriptcraft.js')
-    return 1;
-  if(adir<bdir) return -1;
-  if(adir>bdir) return 1;
-  if (afile.indexOf(adir) == 0)
-    return -1;
-  else
-    return 1;
-}
-
-
 var err = java.lang.System.err;
-
 args = Array.prototype.slice.call(args,1);
 
 if (typeof importPackage == 'undefined'){
@@ -126,7 +104,6 @@ store.sort(sorter([
     /modules\//,
     /examples\//
 ]));
-//err.println("store=" + JSON.stringify(store));
 
 var contents = [];
 foreach(store, function(filename){

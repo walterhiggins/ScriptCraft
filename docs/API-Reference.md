@@ -366,7 +366,6 @@ Walter Higgins
    * [Drone Trees methods](#drone-trees-methods)
    * [Drone.rainbow() method](#dronerainbow-method)
    * [Drone.spiral_stairs() method](#dronespiral_stairs-method)
-   * [Drone.stairs() function](#dronestairs-function-1)
  * [Blocks Module](#blocks-module)
    * [Examples](#examples)
  * [Fireworks Module](#fireworks-module)
@@ -3627,6 +3626,15 @@ To create a 2-line high message using glowstone...
 
 A drone can be used to copy and paste areas of the game world.
 
+#### Deprecated
+As of January 10 2015 the copy-paste functions in Drone are no longer
+supported. Copy/Paste is:
+
+1. Difficult to do correctly in a way which works for both Minecraft 1.7 and 1.8 
+   due to how blocks changed in 1.8
+2. Not aligned with the purpose of ScriptCraft's Drone module which is to provide 
+   a simple set of functions for scripting and in-game building.
+
 ### Drone.copy() method
 
 Copies an area so it can be pasted elsewhere. The name can be used for
@@ -4111,36 +4119,6 @@ Constructs a spiral staircase with slabs at each corner.
 To construct a spiral staircase 5 floors high made of oak...
 
     spiral_stairs('oak', 5);
-
-### Drone.stairs() function
-
-The stairs() function will build a flight of stairs
-
-#### Parameters
-
- * blockType - should be one of the following: 
-
-   * blocks.stairs.oak
-   * blocks.stairs.cobblestone
-   * blocks.stairs.brick
-   * blocks.stairs.stone
-   * blocks.stairs.nether
-   * blocks.stairs.sandstone
-   * blocks.stairs.spruce
-   * blocks.stairs.birch
-   * blocks.stairs.jungle
-   * blocks.stairs.quartz
-
- * width - The width of the staircase - default is 1
- * height - The height of the staircase - default is 1
-
-#### Example
-
-To build an oak staircase 3 blocks wide and 5 blocks tall:
-
-    /js stairs(blocks.stairs.oak, 3, 5) 
-
-Staircases do not have any blocks beneath them.
 
 ## Blocks Module
 
