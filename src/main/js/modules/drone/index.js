@@ -868,8 +868,15 @@ _traverse[3].width = walkDepthEast;
 _traverse[3].depth = walkWidthWest;
 function traverseHeight( drone,n,callback ) { 
   var s = drone.y, e = s + n;
-  for ( ; drone.y < e; drone.y++ ) { 
-    callback.call(drone, drone.y-s );
+  if(n > 0) {
+	  for ( ; drone.y < e; drone.y++ ) { 
+	    callback.call(drone, drone.y-s );
+	  }
+  }
+  if(n < 0) {
+	  for ( ; drone.y > e; drone.y-- ) { 
+	    callback.call(drone, drone.y-s );
+	  }
   }
   drone.y = s;
 };
