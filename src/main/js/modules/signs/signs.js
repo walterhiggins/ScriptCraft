@@ -1,3 +1,5 @@
+'use strict';
+/*global __plugin, require, module, exports*/
 /************************************************************************
 ## Signs Module
 
@@ -92,21 +94,32 @@ if ( !sign ) {
 [buksign]: http://jd.bukkit.org/dev/apidocs/org/bukkit/block/Sign.html
 
 ***/
+function hasSign( block ){
+  if (__plugin.canary){
+    if (block && block.tileEntity && block.tileEntity.setTextOnLine){
+      return block.tileEntity;
+    }
+  }
+  if (__plugin.bukkit){
+    if (block && block.state && block.state.setLine){
+      return block.state;
+    }
+  }
+  return false;
+}
 var utils = require('utils');
-var menu = require('./menu');
+var menu = require('./menu')(hasSign);
 // include all menu exports
 for ( var i in menu ) {
   exports[i] = menu[i];
 }
 
-exports.getTargetedBy = function( livingEntity ) {
+function getTargetedBy( livingEntity ) {
   var location = utils.getMousePos( livingEntity );
   if ( !location ) { 
     return null;
   }
-  var state = location.block.state;
-  if ( ! (state || state.setLine) ) {
-    return null;
-  }
-  return state;
-};
+  return hasSign(utils.blockAt(location));
+}
+exports.getTargetedBy = getTargetedBy;
+exports.hasSign = hasSign;

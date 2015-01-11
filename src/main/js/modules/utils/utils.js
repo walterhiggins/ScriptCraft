@@ -1,3 +1,4 @@
+/*global __plugin, org, exports*/
 'use strict';
 var File = java.io.File;
 
@@ -47,7 +48,7 @@ if ( player ) {
 [bkloc]: http://jd.bukkit.org/dev/apidocs/org/bukkit/Location.html
 
 ***/
-var _player = function ( playerName ) {
+function _player( playerName ) {
   if ( typeof playerName == 'undefined' ) {
     if ( typeof self == 'undefined' ) {
       return null;
@@ -65,6 +66,43 @@ var _player = function ( playerName ) {
       return playerName; // assumes it's a player object
   }
 };
+/*************************************************************************
+### utils.world( worldName ) function
+
+Returns a World object matching the given name
+
+***/
+function _world( worldName ){
+  if (__plugin.canary){
+    try { 
+      return Canary.server.worldManager.getWorld( worldName, true );
+    } catch (error) {
+      console.error( 'utils.world() failed to load ' + worldName + ',Error:' + error );
+    }
+  }
+  if (__plugin.bukkit){
+    return bkBukkit.getWorld( worldName );
+  }
+  return null;
+}
+exports.world = _world;
+
+/*************************************************************************
+### utils.blockAt( Location ) function
+
+Returns the Block at the given location.
+
+***/
+function _blockAt( location ){
+  if (__plugin.canary){
+    return location.world.getBlockAt(location);
+  }
+  if (__plugin.bukkit){
+    return location.block;
+  }
+  return null;
+}
+exports.blockAt = _blockAt;
 /*************************************************************************
 ### utils.locationToJSON() function
 
@@ -139,15 +177,15 @@ exports.locationFromJSON = function( json ) {
   var world;
   if ( json.constuctor == Array ) { 
     // for support of legacy format
-    world = bkBukkit.getWorld( json[0] );
+    world = _world( json[0] );
     return new bkLocation( world, json[1], json[2] , json[3] );
   } else {
     if (__plugin.canary){
-      world = Canary.server.getWorld( json.world );
+      world = _world( json.world );
       var cmLocation = Packages.net.canarymod.api.world.position.Location;
       return new cmLocation(world, json.x, json.y, json.z, json.pitch, json.yaw);
     } else {
-      world = bkBukkit.getWorld( json.world );
+      world = _world( json.world );
       return new bkLocation( world, json.x, json.y , json.z, json.yaw, json.pitch );
     }
   }

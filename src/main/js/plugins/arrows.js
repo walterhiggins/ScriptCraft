@@ -1,3 +1,5 @@
+'use strict';
+/*global require, __plugin, exports, events, setTimeout */
 /*************************************************************************
 ## Arrows Plugin
 
@@ -24,23 +26,19 @@ as a parameter. For example: `/js arrows.explosive('player23')` makes
 player23's arrows explosive.
  
 ***/
-if (__plugin.canary){
-  console.warn('arrows plugin not yet supported in CanaryMod');
-  return;
-}
-var signs = require('signs'),
-  fireworks = require('fireworks'),
-  utils = require('utils'),
-  bkTeleportCause = org.bukkit.event.player.PlayerTeleportEvent.TeleportCause,
-  bkArrow = org.bukkit.entity.Arrow,
-  bkPlayer = org.bukkit.entity.Player,
-  bkTreeType = org.bukkit.TreeType,
-  EXPLOSIVE_YIELD = 2.5,
-  _store = { players: { } },
-  arrows = plugin( 'arrows', { store: _store }, true ),
-  i,
-  type,
-  _types = [ 'Normal', 'Explosive', 'Teleport', 'Flourish', 'Lightning', 'Firework' ];
+var Drone = require('drone'),
+    teleport = require('teleport'),
+    signs = require('signs'),
+    fireworks = require('fireworks'),
+    utils = require('utils'),
+    bkArrow = org.bukkit.entity.Arrow,
+    bkPlayer = org.bukkit.entity.Player,
+    EXPLOSIVE_YIELD = 2.5,
+    store = persist('arrows',{ players: { } }),
+    arrows = {},
+    i,
+    type,
+    _types = [ 'Normal', 'Explosive', 'Teleport', 'Flourish', 'Lightning', 'Firework' ];
 
 exports.arrows = arrows;
 
@@ -52,7 +50,7 @@ for ( i = 0; i < _types.length; i++ ) {
     return function( player ) {
       player = utils.player( player );
       if ( player ) {
-        arrows.store.players[ player.name ] = n;
+        store.players[ player.name ] = n;
       } else {
         console.warn('arrows.' + n + ' No player ' + player);
       }
@@ -64,8 +62,9 @@ for ( i = 0; i < _types.length; i++ ) {
  called when the player chooses an arrow option from a menu sign
  */
 var _onMenuChoice = function( event ) {
-  arrows.store.players[ event.player.name ] = event.number;
+  store.players[ event.player.name ] = event.number;
 };
+
 var convertToArrowSign = signs.menu( 'Arrow', _types, _onMenuChoice );
 
 /*
@@ -82,23 +81,23 @@ arrows.sign = function( cmdSender ) {
 /*
  event handler called when a projectile hits something
  */
-var _onArrowHit = function( event ) {
+function onBukkitArrowHit( event ) {
   var projectile = event.entity,
-    world = projectile.world,
-    shooter = projectile.shooter,
-    fireworkCount = 5,
-    arrowType,
-    launch = function( ) {
-      fireworks.firework( projectile.location );
-      if ( --fireworkCount ) { 
-        setTimeout( launch, 2000 );
-      }
-    };
+      world = projectile.world,
+      shooter = projectile.shooter,
+      fireworkCount = 5,
+      arrowType;
 
+  function launch(){
+    fireworks.firework( projectile.location );
+    if ( --fireworkCount ) { 
+      setTimeout( launch, 2000 );
+    }
+  }
   if (projectile instanceof bkArrow 
       && shooter instanceof bkPlayer) {
 
-    arrowType = arrows.store.players[ shooter.name ];
+    arrowType = store.players[ shooter.name ];
 
     switch ( arrowType ) {
     case 1:
@@ -107,11 +106,11 @@ var _onArrowHit = function( event ) {
       break;
     case 2:
       projectile.remove();
-      shooter.teleport( projectile.location, bkTeleportCause.PLUGIN );
+      teleport(shooter, projectile.location);
       break;
     case 3:
       projectile.remove();
-      world.generateTree( projectile.location, bkTreeType.BIG_TREE );
+      new Drone(projectile.location).oak();
       break;
     case 4: 
       projectile.remove();
@@ -123,6 +122,51 @@ var _onArrowHit = function( event ) {
       break;
     }
   }
-};
-events.projectileHit( _onArrowHit );
+}
+
+function onCanaryArrowHit( event ) {
+  var projectile = event.projectile,
+    world = projectile.world,
+    shooter = projectile.owner,
+    fireworkCount = 5,
+    arrowType,
+    cmArrow = Packages.net.canarymod.api.entity.Arrow,
+    cmPlayer = Packages.net.canarymod.api.entity.living.humanoid.Player,
+    loc = projectile.location,
+    launch = function( ) {
+      fireworks.firework( loc);
+      if ( --fireworkCount ) { 
+        setTimeout( launch, 2000 );
+      }
+    };
+
+  if (projectile instanceof cmArrow && shooter instanceof cmPlayer) {
+
+    arrowType = store.players[ shooter.name ];
+
+    switch ( arrowType ) {
+    case 1:
+      projectile.destroy();
+      world.makeExplosion( shooter, loc, EXPLOSIVE_YIELD, true );
+      break;
+    case 2:
+      projectile.destroy();
+      teleport(shooter, loc);
+      break;
+    case 3:
+      projectile.destroy();
+      new Drone( loc ).oak();
+      break;
+    case 4: 
+      projectile.destroy();
+      world.makeLightningBolt( loc );
+      break;
+    case 5:
+      projectile.destroy();
+      launch();
+      break;
+    }
+  }
+}
+events.projectileHit( __plugin.bukkit ? onBukkitArrowHit : onCanaryArrowHit);
 

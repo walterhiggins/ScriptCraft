@@ -42,38 +42,38 @@ Example
 <p style="color:gold;font-weight:bold">Hello World</p>    
 
 ***/
-var c = org.bukkit.ChatColor;
+var COLOR_CHAR = '\u00a7';
 var formattingCodes = {
-  aqua: c.AQUA,
-  black: c.BLACK,
-  blue: c.BLUE,
-  bold: c.BOLD,
-  brightgreen: c.GREEN,
-  darkaqua: c.DARK_AQUA,
-  darkblue: c.DARK_BLUE,
-  darkgray: c.DARK_GRAY,
-  darkgreen: c.DARK_GREEN,
-  purple: c.LIGHT_PURPLE,
-  darkpurple: c.DARK_PURPLE,
-  darkred: c.DARK_RED,
-  gold: c.GOLD,
-  gray: c.GRAY,
-  green: c.GREEN,
-  italic: c.ITALIC,
-  lightpurple: c.LIGHT_PURPLE,
-  indigo: c.BLUE,
-  red: c.RED,
-  pink: c.LIGHT_PURPLE,
-  yellow: c.YELLOW,
-  white: c.WHITE,
-  strike: c.STRIKETHROUGH,
-  random: c.MAGIC,
-  magic: c.MAGIC,
-  underline: c.UNDERLINE,
-  reset: c.RESET
+  aqua: 'b',
+  black: '0',
+  blue: '9',
+  bold: 'l',
+  brightgreen: 'a',
+  darkaqua: '3',
+  darkblue: '1',
+  darkgray: '8',
+  darkgreen: '2',
+  purple: 'd',
+  darkpurple: '5',
+  darkred: '4',
+  gold: '6',
+  gray: '7',
+  green: 'a',
+  italic: 'o',
+  lightpurple: 'd',
+  indigo: '9',
+  red: 'c',
+  pink: 'd',
+  yellow: 'e',
+  white: 'f',
+  strike: 'm',
+  random: 'k',
+  magic: 'k',
+  underline: 'n',
+  reset: 'r'
 };
 for ( var method in formattingCodes ) {
   String.prototype[method] = function( c ) {
     return function(){ return c + this; };
-  }( formattingCodes[method] );
+  }( COLOR_CHAR + formattingCodes[method] );
 }

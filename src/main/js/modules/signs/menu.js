@@ -1,6 +1,8 @@
+'use strict';
+/*global events, require, org, module, persist, __plugin*/
 var utils = require('utils'),
   stringExt = require('utils/string-exts'),
-  _store = {},
+  store = persist('signs',{}),
   bkBukkit = org.bukkit.Bukkit,
   bkSign = org.bukkit.block.Sign;
 
@@ -9,20 +11,24 @@ var utils = require('utils'),
   (that is - a menu sign will still be a menu after the
   server has shut down and started up) plugins now have persistent state - Yay!
 */
-var signs = plugin("signs", { 
-    /*
-     construct an interactive menu which can then be attached to a Sign.
-     */
-    menu: function(
-      /* String */ label, 
-      /* Array */ options, 
-      /* Function */ onInteract, 
-      /* Number */ defaultSelection ){},
-    store: _store
-  },
-  true);
+var signs = { };
+var hasSign = null;
+module.exports = function(hs){
+  hasSign = hs;
+  return signs;
+};
 
-module.exports = signs;
+var setLine = null;
+if (__plugin.canary){
+  setLine = function(sign, i, text){
+    sign.setTextOnLine( text, i);
+  };
+}
+if (__plugin.bukkit){
+  setLine = function(sign, i, text){
+    sign.setLine( i, text);
+  };
+}
 
 /*
   redraw a menu sign 
@@ -41,9 +47,14 @@ var _redrawMenuSign = function( p_sign, p_selectedIndex, p_displayOptions ) {
     if ( offset+i == p_selectedIndex ) {
       text = ('' + text).replace(/^ /,">");
     }
-    p_sign.setLine( i+1, text );
+    setLine(p_sign, i+1, text);
   }
-  p_sign.update( true );
+  if (__plugin.canary){
+    p_sign.update();
+  }
+  if (__plugin.bukkit){
+    p_sign.update( true );
+  }
 };
 
 var _updaters = {};
@@ -51,7 +62,9 @@ var _updaters = {};
   construct an interactive menu to be subsequently attached to 
   one or more Signs.
 */
-signs.menu = function( /* String */ label, /* Array */ options, /* Function */ callback, /* Number */ selectedIndex ) {
+signs.menu = signMenu;
+
+function signMenu( label, options, callback,  selectedIndex ) {
   
   if ( typeof selectedIndex == "undefined" ) {
     selectedIndex = 0;
@@ -76,33 +89,14 @@ signs.menu = function( /* String */ label, /* Array */ options, /* Function */ c
    The function returned by signs.menu is for use by admins/ops.
    */
   var convertToMenuSign = function(/* Sign */ sign, save) {
-    var mouseLoc;
     if (typeof save == "undefined") {
       save = true;
     }
-    /*
-     @deprecated start
-     all calls should explicitly provide a [org.bukkit.block.Sign][buksign] parameter.
-     */
-    if ( typeof sign == "undefined" ) {
-      mouseLoc = utils.getMousePos();
-      if ( mouseLoc ) {
-        sign = mouseLoc.block.state;
-        if ( !( sign && sign.setLine ) ) {
-          throw new Error("You must first provide a sign!");
-        }
-      } else {
-        throw new Error("You must first provide a sign!");
-      }
-    }
-    /*
-     @deprecated end
-     */
     //
     // per-sign variables go here
     //
     var cSelectedIndex = selectedIndex;
-    sign.setLine( 0, paddedLabel.bold() );
+    setLine(sign, 0, paddedLabel.bold());
     var _updateSign = function( p_player, p_sign ) {
       cSelectedIndex = ( cSelectedIndex + 1 ) % optLen;
       _redrawMenuSign( p_sign, cSelectedIndex, displayOptions );
@@ -136,17 +130,17 @@ signs.menu = function( /* String */ label, /* Array */ options, /* Function */ c
      when the server starts up again.
      */
     if ( save ) {
-      if ( typeof _store.menus == "undefined") {
-        _store.menus = {};
+      if ( typeof store.menus == "undefined") {
+        store.menus = {};
       }
-      var signLocations = _store.menus[label];
+      var signLocations = store.menus[label];
       if ( typeof signLocations == "undefined" ) {
-        signLocations = _store.menus[label] = [];
+        signLocations = store.menus[label] = [];
       }
       signLocations.push( menuSignSaveData );
     }
     return sign;
-  };
+  }; // end of convertToMenuSign function
 
   /*
    a new sign definition - need to store (in-memory only)
@@ -155,19 +149,16 @@ signs.menu = function( /* String */ label, /* Array */ options, /* Function */ c
    world with this same label and make dynamic again.
    */
 
-  if ( _store.menus && _store.menus[label] ) {
-    var signsOfSameLabel = _store.menus[ label ];
+  if ( store.menus && store.menus[label] ) {
+    var signsOfSameLabel = store.menus[ label ];
     var defragged = [];
     var len = signsOfSameLabel.length;
     for ( i = 0; i < len; i++ ) {
-      var loc = signsOfSameLabel[i];
-      var world = bkBukkit.getWorld(loc.world);
-      if ( !world ) {
-        continue;
-      }
-      var block = world.getBlockAt( loc.x, loc.y, loc.z );
-      if ( block.state instanceof bkSign ) {
-        convertToMenuSign( block.state, false );
+      var loc = utils.locationFromJSON(signsOfSameLabel[i]);
+      var block = utils.blockAt(loc);
+      var sign = hasSign(block);
+      if ( sign) {
+        convertToMenuSign( sign, false );
         defragged.push( loc );
       }
     }
@@ -175,33 +166,52 @@ signs.menu = function( /* String */ label, /* Array */ options, /* Function */ c
      remove data for signs which no longer exist.
      */
     if ( defragged.length != len ) {
-      _store.menus[label] = defragged;
+      store.menus[label] = defragged;
     }
   }
   return convertToMenuSign;
 };
 
+/*
 if (__plugin.canary){
   console.warn('signs/menu is not yet supported in CanaryMod');
   return;
 }
-//
-// update it every time player interacts with it.
-//
-events.playerInteract( function( event ) {
-  /*
-   look up our list of menu signs. If there's a matching location and there's
-   a sign, then update it.
-   */
-
-  if ( ! event.clickedBlock.state instanceof bkSign ) {
-    return;
-  }
-  var evtLocStr = utils.locationToString(event.clickedBlock.location);
-  var signUpdater = _updaters[evtLocStr];
-  if ( signUpdater ) { 
-    signUpdater( event.player, event.clickedBlock.state );
-  }
-});
+*/
+if (__plugin.canary){
+  events.blockRightClick( function( event ){
+    var sign = hasSign(event.blockClicked);
+    if (! sign){
+      // it's not a sign
+      return;
+    }
+    var evtLocStr = utils.locationToString(event.blockClicked.location);
+    var signUpdater = _updaters[evtLocStr];
+    if ( signUpdater ) { 
+      signUpdater( event.player,  sign);
+    }
+    
+  });
+}
+if (__plugin.bukkit){
+  //
+  // update it every time player interacts with it.
+  //
+  events.playerInteract( function( event ) {
+    /*
+     look up our list of menu signs. If there's a matching location and there's
+     a sign, then update it.
+     */
+    var sign = hasSign(event.clickedBlock);
+    if ( ! sign ) {
+      return;
+    }
+    var evtLocStr = utils.locationToString(event.clickedBlock.location);
+    var signUpdater = _updaters[evtLocStr];
+    if ( signUpdater ) { 
+      signUpdater( event.player, sign );
+    }
+  });
+}
 
 
