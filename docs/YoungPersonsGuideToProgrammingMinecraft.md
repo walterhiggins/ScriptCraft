@@ -1,3 +1,9 @@
+<!-- 
+IMPORTANT NOTE FOR CONTRIBUTORS
+-------------------------------
+Contributors: This file is generated from source file src/docs/templates/ypgpm.md
+If you would like to make changes, change file src/docs/templates/ypgpm.md instead
+-->
 # The Young Person's Guide to Programming in Minecraft
 ## Table of Contents
  * [Introduction](#introduction)

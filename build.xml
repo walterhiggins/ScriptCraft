@@ -11,8 +11,7 @@
   <property name="src.bukkit" location="src/main/java/bukkit"/>
 
   <!-- compiles against these libraries -->
-  <property name="lib.canary" location="lib/CanaryMod-1.7.10-1.1.3-SNAPSHOT-shaded.jar"/>
-  <!-- property name="lib.bukkit" location="lib/bukkit-1.7.9-R0.2.jar"/ -->
+  <property name="lib.canary" location="lib/CanaryMod-1.8.0-1.2.0-SNAPSHOT-shaded.jar"/>
   <property name="lib.bukkit" location="lib/bukkit-1.7.10-R0.1-SNAPSHOT.jar"/>
 
   <property name="build" location="target/classes"/>
@@ -127,7 +126,13 @@
   <target name="construct-api-ref" depends="gen-toc-apiref,init">
 
     <concat destfile="docs/API-Reference.md">
-      <header filtering="no" trimleading="yes"># ScriptCraft API Reference
+      <header filtering="no" trimleading="yes">&lt;!-- 
+IMPORTANT NOTE FOR CONTRIBUTORS
+-------------------------------
+Contributors: This file is generated from comments in javascript source files src/main/js/*
+If you would like to make changes, change the comments in the src/main/js/* files instead.
+--&gt;
+# ScriptCraft API Reference
 
 Walter Higgins
 
@@ -160,7 +165,13 @@ Walter Higgins
   <!-- Piece together the Young persons' guide from template and generated table of contents -->
   <target name="construct-ypgpm" depends="gen-toc-ypgpm,init">
     <concat destfile="docs/YoungPersonsGuideToProgrammingMinecraft.md">
-      <header filtering="no" trimleading="yes"># The Young Person's Guide to Programming in Minecraft
+      <header filtering="no" trimleading="yes">&lt;!-- 
+  IMPORTANT NOTE FOR CONTRIBUTORS
+  -------------------------------
+  Contributors: This file is generated from source file src/docs/templates/ypgpm.md
+  If you would like to make changes, change file src/docs/templates/ypgpm.md instead
+--&gt;
+# The Young Person's Guide to Programming in Minecraft
       </header>
       <fileset file="${dist}/toc-ypgpm.md" />
       <fileset file="src/docs/templates/ypgpm.md" />
