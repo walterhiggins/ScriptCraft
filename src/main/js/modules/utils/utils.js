@@ -1,4 +1,4 @@
-/*global __plugin, org, exports*/
+/*global __plugin, org, exports, server*/
 'use strict';
 var File = java.io.File;
 
@@ -473,7 +473,7 @@ exports.at = function( time24hr, callback, worlds ) {
   }
   _nicely( function() {
     _foreach( worlds, function ( world ) {
-      var time = world.getTime();
+      var time = getTime(world);
       var diff = timeMc - time;
       if ( diff > 0 && diff < 100 ) {
         callback();
@@ -481,6 +481,46 @@ exports.at = function( time24hr, callback, worlds ) {
     });
   }, forever, null, 100 );
 };
+/*************************************************************************
+### utils.time( world ) function
+
+Returns the timeofday (in minecraft ticks) for the given world. This function is necessary because
+canarymod and bukkit differ in how the timeofday is calculated. 
+
+See http://minecraft.gamepedia.com/Day-night_cycle#Conversions
+
+***/
+function getTime(world){
+  if (__plugin.bukkit){
+    return world.time;
+  }
+  if (__plugin.canary){
+    // there's a bug in canary where if you call world.setTime() the world.totalTime 
+    // becomes huge.
+    if (world.totalTime < world.rawTime){
+      return world.totalTime;
+    } else { 
+      return ((world.totalTime % world.rawTime) + world.relativeTime) % 24000;
+    }
+  }
+  return 0;
+}
+exports.time = getTime;
+
+/*************************************************************************
+### utils.time24( world ) function
+
+Returns the timeofday for the given world using 24 hour notation. (number of minutes)
+
+See http://minecraft.gamepedia.com/Day-night_cycle#Conversions
+
+***/
+function getTime24(world){
+  var mcTime = getTime(world);
+  var mins = Math.floor( ( (mcTime + 6000) % 24000) / 16.6667 );
+  return mins;
+}
+exports.time24 = getTime24;
 
 /************************************************************************
 ### utils.find() function
@@ -797,7 +837,16 @@ exports.worlds = __plugin.canary ? canaryWorlds : bukkitWorlds;
 /*************************************************************************
 ### utils.players() function
 
-This function returns a javascript array of all online players on the server.
+This function returns a javascript array of all online players on the
+server.  You can optionally provide a function which will be invoked
+with each player as a parameter.  For example, to give each player the
+ability to shoot arrows which launch fireworks:
+
+```javascript
+require('utils').players( arrows.firework )
+```
+
+Any players with a bow will be able to launch fireworks by shooting.
 
 ### utils.playerNames() function
 
@@ -866,7 +915,13 @@ if (__plugin.canary){
 function getPlayerNames(){
   return getPlayers().map(function(p){ return p.name; });
 }
-exports.players = getPlayers;
+exports.players = function(fn){
+  var result = getPlayers();
+  if (fn){
+    result.forEach(fn);
+  }
+  return result;
+};
 exports.playerNames = getPlayerNames;
 
 /*************************************************************************

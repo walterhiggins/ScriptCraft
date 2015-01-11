@@ -401,6 +401,8 @@ Walter Higgins
    * [utils.foreach() function](#utilsforeach-function)
    * [utils.nicely() function](#utilsnicely-function)
    * [utils.at() function](#utilsat-function)
+   * [utils.time( world ) function](#utilstime-world--function)
+   * [utils.time24( world ) function](#utilstime24-world--function)
    * [utils.find() function](#utilsfind-function)
    * [utils.serverAddress() function](#utilsserveraddress-function)
    * [utils.watchFile() function](#utilswatchfile-function)
@@ -4811,6 +4813,19 @@ utils.at( '19:00', function() {
 });
 ```
   
+### utils.time( world ) function
+
+Returns the timeofday (in minecraft ticks) for the given world. This function is necessary because
+canarymod and bukkit differ in how the timeofday is calculated. 
+
+See http://minecraft.gamepedia.com/Day-night_cycle#Conversions
+
+### utils.time24( world ) function
+
+Returns the timeofday for the given world using 24 hour notation. (number of minutes)
+
+See http://minecraft.gamepedia.com/Day-night_cycle#Conversions
+
 ### utils.find() function
 
 The utils.find() function will return a list of all files starting at
@@ -4920,7 +4935,16 @@ all of Javascript's Array goodness.
     
 ### utils.players() function
 
-This function returns a javascript array of all online players on the server.
+This function returns a javascript array of all online players on the
+server.  You can optionally provide a function which will be invoked
+with each player as a parameter.  For example, to give each player the
+ability to shoot arrows which launch fireworks:
+
+```javascript
+require('utils').players( arrows.firework )
+```
+
+Any players with a bow will be able to launch fireworks by shooting.
 
 ### utils.playerNames() function
 

@@ -1,7 +1,6 @@
 'use strict';
 /*global require, setInterval, clearInterval, __plugin, exports*/
 /*
- Experimental:
  Point at a block and issue the following ...
  /js var d = new Drone();
  /js var clock = new LCDClock(d);
@@ -10,10 +9,14 @@
  /js clock.stop24();
  ... stops the clock...
  */
-var blocks = require('blocks');
+var blocks = require('blocks'),
+    utils = require('utils'),
+    Drone = require('drone');
 
-exports.LCDClock = function(drone, fgColor,bgColor,border) {
+Drone.extend(lcdclock);
 
+function lcdclock(fgColor, bgColor, border){
+  var drone = this;
   var lastSecs = [0,0,0,0],
       world = drone.world,
       intervalId = -1;
@@ -62,27 +65,19 @@ exports.LCDClock = function(drone, fgColor,bgColor,border) {
     bgColor = blocks.wool.black;
   }
   if ( typeof fgColor == 'undefined' ) {
-    fgColor = blocks.wool.white ; // white wool 
+    fgColor = blocks.glowstone ; 
   }
   if ( border ) {
     drone.box(border,21,9,1);
     drone.up().right();
   }
   drone.blocktype('00:00', fgColor, bgColor, true);
-  return { 
-    start24: function( ) {
-      function tick() {
-	var rolloverMins = 24*60,
-	    mcTime = __plugin.canary ? world.totalTime : world.time,
-	    timeOfDayInMins = Math.floor(((mcTime + 6000) % 24000) / 16.6667);
-	timeOfDayInMins = timeOfDayInMins % rolloverMins;
-	update( timeOfDayInMins );
-      };
-      intervalId = setInterval(tick, 800);
-    },
-    stop24: function() {
-      clearInterval( intervalId );
-    }
-  };
-};
+
+  function tick() {
+    var timeOfDayInMins = utils.time24(world);
+    update( timeOfDayInMins );
+  }
+  intervalId = setInterval(tick, 800);
+  console.log('lcdclock started background task:' + intervalId);
+}
 
