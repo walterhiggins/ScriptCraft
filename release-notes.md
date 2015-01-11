@@ -1,5 +1,24 @@
 RELEASE NOTES
 =============
+3.1.0 Release (2015 01 11)
+--------------------------
+Fixes issue #197
+
+Extending Drone has been made easier. Drone is now a module so it can be required like this:
+
+    var Drone = require('drone');
+    Drone.extend(function myExtension(){ } );
+
+There have been a number of documentation updates.
+The Drone.copy() and Drone.paste() methods are deprecated.
+
+New utils methods:
+
+* utils.time(world) returns the time of day (in minecraft ticks) for a world
+* utils.time24(world) returns the time of day (in minutes) for a world
+
+The Arrows and Signs plugins have now been updated to support CanaryMod.
+
 3.0.3 Release (2015 01 03)
 --------------------------
 Additional support for Drone methods in 1.7.10 and 1.8.
