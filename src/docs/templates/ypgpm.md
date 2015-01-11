@@ -884,29 +884,31 @@ pointing at the block, type the following into the in-game prompt...
 so the next step is to repeat this over and over. This is where `for`
 loops come in. Open your favorite text editor and create a new file in
 your scriptcraft/plugins/{your-name} directory, name the file `myskyscraper.js`, then
-type the following...
+type the following code and save:
 
 ```javascript
-var myskyscraper = function(floors) {
-    var i ;
-    if ( typeof floors == 'undefined' ) {
-        floors = 10;
-    }
-    this.chkpt('myskyscraper'); // saves the drone position so it can return there later
-    for ( i = 0; i < floors; i++ ) {
-        this
-          .box(blocks.iron,20,1,20)
-          .up()
-          .box0(blocks.glass_pane,20,3,20)
-          .up(3);
-    }
-    this.move('myskyscraper'); // return to where we started
+function myskyscraper( floors ) {
+  var i ;
+  if ( typeof floors == 'undefined' ) {
+    floors = 10;
+  }
+  // bookmark the drone's position so it can return there later
+  this.chkpt('myskyscraper'); 
+  for ( i = 0; i < floors; i++ ) {
+    this
+      .box(blocks.iron,20,1,20)
+      .up()
+      .box0(blocks.glass_pane,20,3,20)
+      .up(3);
+  }
+  // return the drone to where it started
+  this.move('myskyscraper'); 
 };
 var Drone = require('drone'); 
 Drone.extend( myskyscraper );
 ```
 
-... so this takes a little explaining. First I create a new function
+So this takes a little explaining. First I create a new function
 called myskyscraper that will take a single parameter `floors` so that
 when you eventually call the `myskyscraper()` function you can tell it
 how many floors you want built. The first statement in the function
@@ -921,11 +923,11 @@ The last 2 lines load the drone module (it must be loaded before I can
 add new features to it) and the last line extends the 'Drone' object
 so that now it can build skyscrapers among other things.  Once you've
 typed in the above code and saved the file, type `/js refresh()` in your
-in-game prompt, then type ...
+in-game prompt, then type:
 
      /js myskyscraper(2);
 
-... A two-story skyscraper should appear. If you're feeling
+A two-story skyscraper should appear. If you're feeling
 adventurous, try a 10 story skyscraper! Or a 20 story skyscraper!
 Minecraft has a height limit (256 blocks from bedrock) beyond which
 you can't build. If you try to build higher than this then building
@@ -945,11 +947,11 @@ All the programs we have seen so far have been fairly predictable - they went
 straight through the statements, and then went back to the beginning again. This is 
 not very useful. In practice the computer would be expected to make decisions and 
 act accordingly. The javascript statement used for making decisions is `if`. 
-While standing on the ground in-game, type the following at the command prompt...
+While standing on the ground in-game, type the following at the command prompt:
 
     /js if ( self.onGround ) { echo('You are not flying!'); }
 
-the following message should have appeared on your screen...
+the following message should have appeared on your screen:
 
     You are not flying!
 
@@ -961,7 +963,7 @@ keyboard, the statement you entered previously should reappear.
 
     /js if ( self.onGround ) { echo('You are not flying!'); }
 
-... this time no message should appear on your screen.
+This time no message should appear on your screen.
 
 The `if` statement tests to see if something is `true` or `false` and
 if `true` then the block of code between the curly braces ( `{` and
@@ -970,11 +972,11 @@ in the above example is `!self.onGround` (self is not on ground) which
 will be `true` if you are currently flying or `false` if you aren't.
 
 What if you wanted to display a message only if a condition is *not*
-true ? For example to only display a message if the player is *not* on the ground...
+true ? For example to only display a message if the player is *not* on the ground:
 
     /js if ( !self.onGround ) { echo ('You are flying!'); }
 
-... This code differs in that now there's a `!` (the exclamation mark)
+This code differs in that now there's a `!` (the exclamation mark)
 before `self.onGround`. The `!` symbol negates (returns the opposite of)
 whatever follows it.
 
@@ -1056,11 +1058,12 @@ just specify the fully qualified class name instead. E.g. ...
 If you want an event handler to only execute once, you can remove the handler like this...
 
 ```javascript
-events.blockDestroy( function( evt ) { 
+function myBlockDestroyHook( evt ) { 
   var breaker = evt.player;
   echo( breaker, 'You broke a block');
   this.unregister();
-} );
+} 
+events.blockDestroy( myBlockDestroyHook );
 ```
 
 The `this.unregister();` statement will remove this function from the
@@ -1072,7 +1075,11 @@ to stop listening for events.
 To unregister a listener *outside* of the listener function...
 
 ```javascript    
-var myBlockBreakListener = events.blockDestroy(function( evt ) { ... } );
+function myBlockDestroyHook( evt ){
+  var breaker = evt.player;
+  echo( breaker, 'You broke a block');
+}
+var myBlockBreakListener = events.blockDestroy( myBlockDestroyHook );
 ...
 myBlockBreakListener.unregister();
 ```
@@ -1127,10 +1134,10 @@ like this...
 
 ```javascript
 var scoreboard = {
-    walter: 5,
-    tom:    6,
-    jane:   8,
-    bart:   7
+  walter: 5,
+  tom:    6,
+  jane:   8,
+  bart:   7
 };
 ```
 
@@ -1139,7 +1146,7 @@ parameter and returned their score, I'd do it like this...
 
 ```javascript
 function getScore(player){
-    return scoreboard[ player ];
+  return scoreboard[ player ];
 }
 ```
 
@@ -1157,10 +1164,10 @@ var utils = require('utils');
 var scores = {};
 
 exports.initialise = function(names){
-    scores = {};
-    utils.foreach(names, function(name){ 
-        scores[name] = 0;
-    });
+  scores = {};
+  utils.foreach(names, function(name){ 
+    scores[name] = 0;
+  });
 };
 
 /* 
@@ -1168,11 +1175,11 @@ exports.initialise = function(names){
   updateScore('walter',6); // walter's new score = 5 + 6 = 11.
 */
 exports.updateScore = function(name, diff){
-    scores[name] += diff; 
+  scores[name] += diff; 
 };
 
 exports.getScore = function(name){
-    return scores[name];
+  return scores[name];
 };
 ```
 
