@@ -894,15 +894,16 @@ var myskyscraper = function(floors) {
     }
     this.chkpt('myskyscraper'); // saves the drone position so it can return there later
     for ( i = 0; i < floors; i++ ) {
-        this.box(blocks.iron,20,1,20)
-            .up()
-            .box0(blocks.glass_pane,20,3,20)
-            .up(3);
+        this
+          .box(blocks.iron,20,1,20)
+          .up()
+          .box0(blocks.glass_pane,20,3,20)
+          .up(3);
     }
-    return this.move('myskyscraper'); // return to where we started
+    this.move('myskyscraper'); // return to where we started
 };
-var Drone = require('../drone/drone').Drone; 
-Drone.extend('myskyscraper',myskyscraper);
+var Drone = require('drone'); 
+Drone.extend( myskyscraper );
 ```
 
 ... so this takes a little explaining. First I create a new function

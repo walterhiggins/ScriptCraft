@@ -210,6 +210,7 @@ Alternatively if you provide just a function as a parameter, then the function n
 #### Example 1 Using name and function as parameters
 
     // submitted by [edonaldson][edonaldson]
+    var Drone = require('drone'); 
     Drone.extend('pyramid', function( block,height) { 
         this.chkpt('pyramid');
         for ( var i = height; i > 0; i -= 2) {
@@ -220,6 +221,7 @@ Alternatively if you provide just a function as a parameter, then the function n
 
 #### Example 2 Using just a named function as a parameter
 
+    var Drone = require('drone'); 
     function pyramid( block,height) { 
         this.chkpt('pyramid');
         for ( var i = height; i > 0; i -= 2) {
