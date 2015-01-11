@@ -7,7 +7,7 @@ Javascript programming language. Once the ScriptCraft mod is
 installed, you can add your own new Mods by adding Javascript (.js)
 files in a directory.
 
- * If you're new to programming and want to start modding Minecraft, then [Start Here][ypgpm].
+ * If you're new to programming and want to start modding Minecraft, then [Start Here][yp].
  * If you've already used [Scratch][scr], have attended a few
    [CoderDojo][cd] sessions, or have already dabbled with Javascript,
    then [Start Here][cda].
@@ -169,16 +169,33 @@ ScriptCraft has [its own website][website] with further information.
 
 You can find more information about [ScriptCraft on my blog][blog].
 
+# Additional Resources
+
+CoderDojo Athenry have some [excellent tutorials][cda] for younger
+programmers who have used [Scratch][scr] and are interested in Modding
+Minecraft using Javascript.  In particular, they have an excellent
+[Scratch - to - Javascript][sj] tutorial which explains Scratch
+programs and how to do the same thing in Javascript.
+
+I highly recommend the series of [tutorials provided by CoderDojo Athenry][cda].
+
+Developer Chris Cacciatore has created some interesting tools using Scriptcraft...
+
+ * [A wolf-bot][wb]
+ * [L-Systems (Large-scale fractal structures in Minecraft)][ls] 
+ 
+[wb]: https://github.com/cacciatc/wolfbot
+[ls]: https://github.com/cacciatc/scriptcraft-lsystems
+
 [blog]: http://walterhiggins.net/blog/cat-index-scriptcraft.html
-[buk]: https://github.com/walterhiggins/ScriptCraft/blob/master/bukkit.md
 [yp]: docs/YoungPersonsGuideToProgrammingMinecraft.md
 [mm]: docs/Anatomy-of-a-Plugin.md
-[api]: https://github.com/walterhiggins/ScriptCraft/blob/master/docs/API-Reference.md
+[api]: docs/API-Reference.md
 [website]: http://scriptcraftjs.org/
-[ypgpm]: docs/YoungPersonsGuideToProgrammingMinecraft.md
 [cd]: http://coderdojo.com/
 [scr]: http://scratch.mit.edu/
 [cda]: http://cdathenry.wordpress.com/category/modderdojo/
 [ytpl]: http://www.youtube.com/watch?v=DDp20SKm43Y&list=PL4Tw0AgXQZH5BiFHqD2hXyXQi0-qFbGp_
-[ex]: ../../tree/master/src/main/js/plugins/examples
+[ex]: src/main/js/plugins/examples
 [contrib]: contributing.md
+[sj]: http://cdathenry.wordpress.com/2013/10/12/modderdojo-week-2-moving-from-scratch-to-javascript/
