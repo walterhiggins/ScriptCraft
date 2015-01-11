@@ -133,7 +133,7 @@ ScriptCraft plugin...
    invoked the `/js` command. Again, this is a good jumping off point for
    diving into the CanaryMod API.
 
-[dl]: http://scriptcraftjs.org/download
+[dl]: http://scriptcraftjs.org/download/latest
 [api]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/
 [ic]: http://canarymod.net/releases
 [cmapi]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/
