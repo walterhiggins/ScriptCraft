@@ -376,7 +376,6 @@ Walter Higgins
    * [Drone.cottage() method](#dronecottage-method)
    * [Drone.cottage_road() method](#dronecottage_road-method)
    * [Drone.dancefloor() method](#dronedancefloor-method)
-   * [Parameters](#parameters)
    * [Drone.fort() method](#dronefort-method)
    * [Drone.hangtorch() method](#dronehangtorch-method)
    * [Drone.lcdclock() method.](#dronelcdclock-method)
@@ -4213,7 +4212,7 @@ Create an animated dance floor of colored tiles some of which emit light.
 The tiles change color every second creating a strobe-lit dance-floor effect.
 See it in action here [http://www.youtube.com/watch?v=UEooBt6NTFo][ytdance]
 
-### Parameters 
+#### Parameters 
 
  * width - how wide the dancefloor should be (optional: default 5)
  * length - how long the dancefloor should be (optional: default 5)

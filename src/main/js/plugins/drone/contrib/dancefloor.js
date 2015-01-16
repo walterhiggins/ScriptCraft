@@ -9,7 +9,7 @@ Create an animated dance floor of colored tiles some of which emit light.
 The tiles change color every second creating a strobe-lit dance-floor effect.
 See it in action here [http://www.youtube.com/watch?v=UEooBt6NTFo][ytdance]
 
-### Parameters 
+#### Parameters 
 
  * width - how wide the dancefloor should be (optional: default 5)
  * length - how long the dancefloor should be (optional: default 5)
