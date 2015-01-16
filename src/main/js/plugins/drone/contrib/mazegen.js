@@ -1,10 +1,45 @@
-// Maze generation based on http://rosettacode.org/wiki/Maze_generation#JavaScript
+'use strict';
+/*global require*/
+/************************************************************************
+### Drone.maze() method
 
-var Drone = require('drone');
+Maze generation based on http://rosettacode.org/wiki/Maze_generation#JavaScript
+
+#### Parameters
+
+ * width (optional - default 10)
+ * length (optional - default 10)
+
+#### Example
+
+At the in-game prompt you can create a maze by looking at a block and typing:
+
+```javascript
+/js maze()
+```
+
+Alternatively you can create a new Drone object from a Player or Location object and call the maze() method.
+
+```javascript
+var d = new Drone(player);
+d.maze();
+```
+![maze example](img/mazeex1.png)
+
+***/
+var Drone = require('drone'),
+    blocks = require('blocks');
+
 // User-facing code starts here
 // Example: Try /js maze(5,7)
-Drone.extend( function maze( size_x, size_y ) {
-  m = maze_make(size_x, size_y);
+Drone.extend( function maze( width, length ) {
+  if (typeof width === 'undefined'){
+    width = 10;
+  }
+  if (typeof length === 'undefined'){
+    length = 10;
+  }
+  var m = maze_make(width, length);
   if (m.x > 0 && m.y > 0) {
     maze_draw(maze_display(m), this);
   }
@@ -15,15 +50,18 @@ Drone.extend( function maze( size_x, size_y ) {
 function maze_make(x,y) {
   var n=x*y-1;
   if (n<0) {
-    echo("illegal maze dimensions");
+    console.log ("illegal maze dimensions");
     return ({x: 0, y: 0});
   }
-  var horiz=[]; for (var j= 0; j<x+1; j++) horiz[j]= [];
-  var verti=[]; for (var j= 0; j<y+1; j++) verti[j]= [];
+  var horiz=[]; 
+  var j;
+  for ( j = 0; j<x+1; j++) horiz[j]= [];
+  var verti=[]; 
+  for ( j = 0; j<y+1; j++) verti[j]= [];
   var here= [Math.floor(Math.random()*x), Math.floor(Math.random()*y)];
   var path= [here];
   var unvisited= [];
-  for (var j= 0; j<x+2; j++) {
+  for (j = 0; j<x+2; j++) {
     unvisited[j]= [];
     for (var k= 0; k<y+1; k++)
       unvisited[j].push(j>0 && j<x+1 && k>0 && (j != here[0]+1 || k != here[1]+1));
@@ -32,12 +70,12 @@ function maze_make(x,y) {
     var potential= [[here[0]+1, here[1]], [here[0],here[1]+1],
         [here[0]-1, here[1]], [here[0],here[1]-1]];
     var neighbors= [];
-    for (var j= 0; j < 4; j++)
+    for (j= 0; j < 4; j++)
       if (unvisited[potential[j][0]+1][potential[j][1]+1])
         neighbors.push(potential[j]);
     if (neighbors.length) {
       n= n-1;
-      next= neighbors[Math.floor(Math.random()*neighbors.length)];
+      var next= neighbors[Math.floor(Math.random()*neighbors.length)];
       unvisited[next[0]+1][next[1]+1]= false;
       if (next[0] == here[0])
         horiz[next[0]][(next[1]+here[1]-1)/2]= true;

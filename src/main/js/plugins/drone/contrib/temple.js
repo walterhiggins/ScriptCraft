@@ -1,8 +1,33 @@
+'use strict';
+/*global require*/
 var Drone = require('drone'),
     blocks = require('blocks');
-//
-// constructs a mayan temple
-// 
+/************************************************************************
+### Drone.temple() method
+
+Constructs a mayan temple.
+
+#### Parameters
+ 
+ * side - How many blocks wide and long the temple will be (default: 20)
+
+#### Example
+
+At the in-game prompt you can create a temple by looking at a block and typing:
+
+```javascript
+/js temple()
+```
+
+Alternatively you can create a new Drone object from a Player or Location object and call the temple() method.
+
+```javascript
+var d = new Drone(player);
+d.temple();
+```
+![temple example](img/templeex1.png)
+
+***/
 function temple( side ) {
   if ( !side ) {
     side = 20;

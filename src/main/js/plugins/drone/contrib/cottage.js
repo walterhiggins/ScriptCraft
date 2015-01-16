@@ -1,15 +1,29 @@
-var Drone = require('drone');
-var blocks = require('blocks');
-//
-// usage: 
-// [1] to build a cottage at the player's current location or the cross-hairs location...
-//
-// /js cottage();
-// 
-// [2] to build a cottage using an existing drone...
-// 
-// /js drone.cottage();
-//
+'use strict';
+/*global require */
+var Drone = require('drone'),
+    blocks = require('blocks');
+/************************************************************************
+### Drone.cottage() method
+
+Creates a simple but cosy dwelling.
+
+#### Example
+
+At the in-game prompt you can create a cottage by looking at a block and typing:
+
+```javascript
+/js cottage()
+```
+
+Alternatively you can create a new Drone object from a Player or Location object and call the cottage() method.
+
+```javascript
+var d = new Drone(player);
+d.cottage();
+```
+![cottage example](img/cottageex1.png)
+
+***/
 function cottage( ) {
   this
     .chkpt('cottage')
@@ -48,6 +62,33 @@ function cottage( ) {
     .move('cottage')
   ;
 }
+/************************************************************************
+### Drone.cottage_road() method
+
+Creates a tree-lined avenue with cottages on both sides.
+
+#### Parameters
+ 
+ * numberOfCottages: The number of cottages to build in total (optional: default 6)
+
+#### Example
+
+At the in-game prompt you can create a cottage road by looking at a block and typing:
+
+```javascript
+/js cottage_road()
+```
+
+Alternatively you can create a new Drone object from a Player or Location object and call the cottage_road() method.
+
+```javascript
+var d = new Drone(player);
+d.cottage_road();
+```
+![cottage_road example](img/cottageroadex1.png)
+
+***/
+
 //
 // a more complex script that builds an tree-lined avenue with
 // cottages on both sides.
@@ -62,11 +103,15 @@ function cottage_road( numberCottages ) {
   //
   var cottagesPerSide = Math.floor(numberCottages/2);
   this
-    .chkpt('cottage_road') // make sure the drone's state is saved.
-    .box( blocks.double_slab.stone, 3, 1, cottagesPerSide * ( distanceBetweenTrees + 1 ) ) // build the road
+    // make sure the drone's state is saved.
+    .chkpt('cottage_road') 
+    // build the road
+    .box( blocks.double_slab.stone, 3, 1, cottagesPerSide * ( distanceBetweenTrees + 1 ) ) 
     .up()
-    .right() // now centered in middle of road
-    .chkpt('cr'); // will be returning to this position later
+    // now centered in middle of road
+    .right() 
+    // will be returning to this position later
+    .chkpt('cottage_road_cr'); 
 
   //
   // step 2 line the road with trees
@@ -81,7 +126,7 @@ function cottage_road( numberCottages ) {
       .fwd( distanceBetweenTrees + 1 ); // move forward.
   }
   this
-    .move('cr')
+    .move('cottage_road_cr')
     .back(6); // move back 1/2 the distance between trees
 
   // this function builds a path leading to a cottage.

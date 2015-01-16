@@ -15,7 +15,7 @@ Creates the text out of blocks. Useful for large-scale in-game signs.
 
 To create a 2-line high message using glowstone...
 
-    blocktype("Hello\nWorld",blocks.glowstone);
+    blocktype('Hello\nWorld', blocks.glowstone);
 
 ![blocktype example][imgbt1]
 

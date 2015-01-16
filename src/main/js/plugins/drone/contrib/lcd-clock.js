@@ -1,19 +1,38 @@
 'use strict';
 /*global require, setInterval, clearInterval, __plugin, exports*/
-/*
- Point at a block and issue the following ...
- /js var d = new Drone();
- /js var clock = new LCDClock(d);
- /js clock.start24(); 
- ... start the clock...
- /js clock.stop24();
- ... stops the clock...
- */
+/*************************************************************************
+### Drone.lcdclock() method.
+
+Constructs a large LCD Clock. The clock will display the current time of day.
+The clock can be stopped by calling the stopLCD() method of the Drone which created the clock.
+
+#### Parameters
+
+ * foregroundBlock (Optional - default is blocks.glowstone)
+ * backgroundBlock (Optional - default is blocks.wool.black)
+ * borderBlock (Optional - a border around the LCD display - default none)
+
+#### Example
+
+At the in-game prompt you can create a LCD clock by looking at a block and typing:
+
+```javascript
+/js var clock = lcdclock()
+/js clock.stopLCD()
+```
+
+Alternatively you can create a new Drone object from a Player or Location object and call the lcdclock() method.
+
+```javascript
+var d = new Drone(player);
+d.lcdclock();
+d.stopLCD();
+```
+![lcdclock example](img/lcdclockex1.png)
+***/
 var blocks = require('blocks'),
     utils = require('utils'),
     Drone = require('drone');
-
-Drone.extend(lcdclock);
 
 function lcdclock(fgColor, bgColor, border){
   var drone = this;
@@ -78,6 +97,9 @@ function lcdclock(fgColor, bgColor, border){
     update( timeOfDayInMins );
   }
   intervalId = setInterval(tick, 800);
-  console.log('lcdclock started background task:' + intervalId);
+  this.stopLCD = function(){
+    clearInterval(intervalId);
+  };
 }
 
+Drone.extend(lcdclock);

@@ -1,9 +1,34 @@
 'use strict';
-var Drone = require('drone');
-var blocks = require('blocks');
-//
-// constructs a medieval fort
-// 
+/*global require */
+var Drone = require('drone'),
+    blocks = require('blocks');
+/************************************************************************
+### Drone.fort() method
+
+Constructs a medieval fort.
+
+#### Parameters
+ 
+ * side - How many blocks whide and long the fort will be (default: 18 . Must be greater than 9)
+ * height - How tall the fort will be (default: 6 . Must be greater than 3)
+
+#### Example
+
+At the in-game prompt you can create a fort by looking at a block and typing:
+
+```javascript
+/js fort()
+```
+
+Alternatively you can create a new Drone object from a Player or Location object and call the fort() method.
+
+```javascript
+var d = new Drone(player);
+d.fort();
+```
+![fort example](img/fortex1.png)
+
+***/ 
 function fort( side, height ) {
   var turret,
     i,
@@ -65,9 +90,9 @@ function fort( side, height ) {
     .right();
 
   for ( i = 0; i < battlementWidth; i++ ) { 
-
+    var bside = side - ( 2 + (i * 2) );
     this
-      .box0(blocks.slab.oak, side - ( 2 + (i * 2) ), 1, side - ( 2 + ( i * 2) ))
+      .box0( blocks.slab.oak, bside, 1, bside)
       .fwd()
       .right();
   }
@@ -77,25 +102,25 @@ function fort( side, height ) {
   torch = blocks.torch + ':' + Drone.PLAYER_TORCH_FACING[this.dir];
   this
     .move('fort')
-    .right((side/2)-1)
+    .right( ( side / 2 ) - 1 )
     .door2() // double doors
     .back()
     .left()
     .up()
-    .box(torch) // left torch
-    .right(3)
-    .box(torch); // right torch
+    .box( torch ) // left torch
+    .right( 3 )
+    .box( torch ); // right torch
   //
   // add ladder up to battlements
   //
   this
     .move('fort')
-    .right((side/2)-3)
-    .fwd(1) // move inside fort
-    .turn(2)
-    .box(blocks.air, 1, height-1, 1)
-    .ladder(height-1)
-    .move('fort');
+    .right( ( side / 2 ) - 3 )
+    .fwd() // move inside fort
+    .turn( 2 )
+    .box( blocks.air, 1, height - 1, 1)
+    .ladder( height - 1 )
+    .move( 'fort' );
 }
 Drone.extend(fort);
 

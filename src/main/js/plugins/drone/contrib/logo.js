@@ -2,16 +2,18 @@
 /*global require*/
 var Drone = require('drone'),
     blocks = require('blocks');
+/************************************************************************
+### Drone.logojs() method
 
-//
-// Constructs the JS logo
-// https://raw.github.com/voodootikigod/logo.js/master/js.png
-//
-// fg
-//   the material that the letters JS will be made of
-// bg
-//   the material that the square will be made of
-//
+Constructs a large Javascript Logo (black JS on Yellow background)
+See: https://raw.github.com/voodootikigod/logo.js/master/js.png
+
+#### Parameters
+
+ * foregroundBlock (Optional - default is blocks.wool.gray)
+ * backgroundBlock (Optional - default is blocks.gold)
+
+***/
 function logojs(fg, bg) {
 
     // foreground defaults to gray wool

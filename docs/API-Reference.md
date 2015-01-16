@@ -371,8 +371,20 @@ Walter Higgins
    * [Drone.hemisphere0() method](#dronehemisphere0-method)
    * [Drone.stairs() function](#dronestairs-function)
    * [Drone Trees methods](#drone-trees-methods)
+   * [Drone.castle() method](#dronecastle-method)
+   * [Drone.chessboard() method](#dronechessboard-method)
+   * [Drone.cottage() method](#dronecottage-method)
+   * [Drone.cottage_road() method](#dronecottage_road-method)
+   * [Drone.dancefloor() method](#dronedancefloor-method)
+   * [Parameters](#parameters)
+   * [Drone.fort() method](#dronefort-method)
+   * [Drone.hangtorch() method](#dronehangtorch-method)
+   * [Drone.lcdclock() method.](#dronelcdclock-method)
+   * [Drone.logojs() method](#dronelogojs-method)
+   * [Drone.maze() method](#dronemaze-method)
    * [Drone.rainbow() method](#dronerainbow-method)
    * [Drone.spiral_stairs() method](#dronespiral_stairs-method)
+   * [Drone.temple() method](#dronetemple-method)
  * [Blocks Module](#blocks-module)
    * [Examples](#examples)
  * [Fireworks Module](#fireworks-module)
@@ -3637,7 +3649,7 @@ Creates the text out of blocks. Useful for large-scale in-game signs.
 
 To create a 2-line high message using glowstone...
 
-    blocktype("Hello\nWorld",blocks.glowstone);
+    blocktype('Hello\nWorld', blocks.glowstone);
 
 ![blocktype example][imgbt1]
 
@@ -4099,6 +4111,243 @@ None of the tree methods require parameters. Tree methods will only be
 successful if the tree is placed on grass in a setting where trees can
 grow.
 
+### Drone.castle() method
+
+Creates a Castle. A castle is just a big wide fort with 4 taller forts at each corner. 
+See also Drone.fort() method.
+
+#### Parameters
+ 
+ * side - How many blocks wide and long the castle will be (default: 24. Must be greater than 19)
+ * height - How tall the castle will be (default: 10. Must be geater than 7)
+
+#### Example
+
+At the in-game prompt you can create a castle by looking at a block and typing:
+
+```javascript
+/js castle()
+```
+
+Alternatively you can create a new Drone object from a Player or Location object and call the castle() method.
+
+```javascript
+var d = new Drone(player);
+d.castle();
+```
+![castle example](img/castleex1.png)
+
+### Drone.chessboard() method
+
+Creates a tile pattern of given block types and size
+
+#### Parameters
+
+ * whiteBlock - (optional: default blocks.wool.white)
+ * blackBlock - (optional: default blocks.wool.black)
+ * width - width of the chessboard
+ * length - length of the chessboard
+
+#### Example
+
+At the in-game prompt you can create a chessboard by looking at a block and typing:
+
+```javascript
+/js chessboard()
+```
+
+Alternatively you can create a new Drone object from a Player or Location object and call the chessboard() method.
+
+```javascript
+var d = new Drone(player);
+d.chessboard();
+```
+![chessboard example](img/chessboardex1.png)
+
+### Drone.cottage() method
+
+Creates a simple but cosy dwelling.
+
+#### Example
+
+At the in-game prompt you can create a cottage by looking at a block and typing:
+
+```javascript
+/js cottage()
+```
+
+Alternatively you can create a new Drone object from a Player or Location object and call the cottage() method.
+
+```javascript
+var d = new Drone(player);
+d.cottage();
+```
+![cottage example](img/cottageex1.png)
+
+### Drone.cottage_road() method
+
+Creates a tree-lined avenue with cottages on both sides.
+
+#### Parameters
+ 
+ * numberOfCottages: The number of cottages to build in total (optional: default 6)
+
+#### Example
+
+At the in-game prompt you can create a cottage road by looking at a block and typing:
+
+```javascript
+/js cottage_road()
+```
+
+Alternatively you can create a new Drone object from a Player or Location object and call the cottage_road() method.
+
+```javascript
+var d = new Drone(player);
+d.cottage_road();
+```
+![cottage_road example](img/cottageroadex1.png)
+
+### Drone.dancefloor() method
+Create an animated dance floor of colored tiles some of which emit light.
+The tiles change color every second creating a strobe-lit dance-floor effect.
+See it in action here [http://www.youtube.com/watch?v=UEooBt6NTFo][ytdance]
+
+### Parameters 
+
+ * width - how wide the dancefloor should be (optional: default 5)
+ * length - how long the dancefloor should be (optional: default 5)
+ * duration - the time duration for which the lights should change (optional: default 30 seconds)
+
+#### Example
+
+At the in-game prompt you can create a dancefloor by looking at a block and typing:
+
+```javascript
+/js dancefloor()
+```
+
+Alternatively you can create a new Drone object from a Player or Location object and call the dancefloor() method.
+
+```javascript
+var d = new Drone(player);
+d.dancefloor();
+```
+
+[ytdance]: http://www.youtube.com/watch?v=UEooBt6NTFo
+![dancefloor example](img/dancefloorex1.png)
+### Drone.fort() method
+
+Constructs a medieval fort.
+
+#### Parameters
+ 
+ * side - How many blocks whide and long the fort will be (default: 18 . Must be greater than 9)
+ * height - How tall the fort will be (default: 6 . Must be greater than 3)
+
+#### Example
+
+At the in-game prompt you can create a fort by looking at a block and typing:
+
+```javascript
+/js fort()
+```
+
+Alternatively you can create a new Drone object from a Player or Location object and call the fort() method.
+
+```javascript
+var d = new Drone(player);
+d.fort();
+```
+![fort example](img/fortex1.png)
+
+### Drone.hangtorch() method
+
+Adds a hanging torch to a wall. This method will try to hang a torch
+against a wall. It will traverse backwards until it finds a block
+adjacent to air and hang the torch. If it can't find a block next to
+air it will log a message in the server.
+
+#### Example
+
+At the in-game prompt you can create a hanging torch by looking at a
+block and typing:
+
+```javascript
+/js hangtorch()
+```
+
+Alternatively you can create a new Drone object from a Player or
+Location object and call the hangtorch() method.
+
+```javascript
+var d = new Drone(player);
+d.hangtorch();
+```
+
+### Drone.lcdclock() method.
+
+Constructs a large LCD Clock. The clock will display the current time of day.
+The clock can be stopped by calling the stopLCD() method of the Drone which created the clock.
+
+#### Parameters
+
+ * foregroundBlock (Optional - default is blocks.glowstone)
+ * backgroundBlock (Optional - default is blocks.wool.black)
+ * borderBlock (Optional - a border around the LCD display - default none)
+
+#### Example
+
+At the in-game prompt you can create a LCD clock by looking at a block and typing:
+
+```javascript
+/js var clock = lcdclock()
+/js clock.stopLCD()
+```
+
+Alternatively you can create a new Drone object from a Player or Location object and call the lcdclock() method.
+
+```javascript
+var d = new Drone(player);
+d.lcdclock();
+d.stopLCD();
+```
+![lcdclock example](img/lcdclockex1.png)
+### Drone.logojs() method
+
+Constructs a large Javascript Logo (black JS on Yellow background)
+See: https://raw.github.com/voodootikigod/logo.js/master/js.png
+
+#### Parameters
+
+ * foregroundBlock (Optional - default is blocks.wool.gray)
+ * backgroundBlock (Optional - default is blocks.gold)
+
+### Drone.maze() method
+
+Maze generation based on http://rosettacode.org/wiki/Maze_generation#JavaScript
+
+#### Parameters
+
+ * width (optional - default 10)
+ * length (optional - default 10)
+
+#### Example
+
+At the in-game prompt you can create a maze by looking at a block and typing:
+
+```javascript
+/js maze()
+```
+
+Alternatively you can create a new Drone object from a Player or Location object and call the maze() method.
+
+```javascript
+var d = new Drone(player);
+d.maze();
+```
+![maze example](img/mazeex1.png)
+
 ### Drone.rainbow() method
 
 Creates a Rainbow.
@@ -4108,9 +4357,18 @@ Creates a Rainbow.
  * radius (optional - default:18) - The radius of the rainbow
 
 #### Example
-    
-    var d = new Drone();
-    d.rainbow(30);
+
+At the in-game prompt you can create a rainbow by looking at a block and typing:
+```javascript
+/js rainbow()
+```
+
+Alternatively you can create a new Drone object from a Player or Location object and call the rainbow() method.
+
+```javascript    
+var d = new Drone(player);
+d.rainbow(30);
+```
 
 ![rainbow example](img/rainbowex1.png)
 
@@ -4140,6 +4398,30 @@ Constructs a spiral staircase with slabs at each corner.
 To construct a spiral staircase 5 floors high made of oak...
 
     spiral_stairs('oak', 5);
+
+### Drone.temple() method
+
+Constructs a mayan temple.
+
+#### Parameters
+ 
+ * side - How many blocks wide and long the temple will be (default: 20)
+
+#### Example
+
+At the in-game prompt you can create a temple by looking at a block and typing:
+
+```javascript
+/js temple()
+```
+
+Alternatively you can create a new Drone object from a Player or Location object and call the temple() method.
+
+```javascript
+var d = new Drone(player);
+d.temple();
+```
+![temple example](img/templeex1.png)
 
 ## Blocks Module
 
