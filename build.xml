@@ -11,7 +11,7 @@
   <property name="src.bukkit" location="src/main/java/bukkit"/>
 
   <!-- compiles against these libraries -->
-  <property name="lib.canary" location="lib/CanaryMod-1.8.0-1.2.0-SNAPSHOT-shaded.jar"/>
+  <property name="lib.canary" location="target/lib/canarymod.jar"/>
   <property name="lib.bukkit" location="lib/bukkit-1.7.10-R0.1-SNAPSHOT.jar"/>
 
   <property name="build" location="target/classes"/>
@@ -47,7 +47,7 @@
     </tstamp>
     <mkdir dir="${build}"/>
 
-    <available file="${minecraft.dir}" property="minecraft.present"/>
+    <available file="${lib.canary}" property="canary.present"/>
     <available file="${dist}/js/modules/underscore.js" property="underscore.present"/>
   </target>
 
@@ -55,8 +55,18 @@
     
   </target>
 
-  
-  <target name="compile-plugins" depends="init" description="compile canary plugin source">
+
+  <target name="get-canary" depends="init" description="Downloads canarymod jar" unless="canary.present">
+    <get src="https://ci.visualillusionsent.net/job/CanaryMod/lastStableBuild/artifact/*zip*/archive.zip"
+	 dest="target/canarymod.zip"
+	 verbose="true"/>
+    <unzip src="target/canarymod.zip"
+	   dest="target/lib">
+      <mapper type="glob" from="*.jar" to="canarymod.jar"/>
+    </unzip>
+  </target>
+
+  <target name="compile-plugins" depends="init,get-canary" description="compile canary plugin source">
     <javac includeantruntime="false" 
            source="1.6" 
            target="1.6" 
@@ -71,10 +81,10 @@
     </javac>
   </target>
     
-  <target name="gendocs" depends="construct-ypgpm, construct-api-ref" description="Generate API documentation">
+  <target name="gendocs" depends="construct-ypgpm, construct-api-ref, get-canary" description="Generate API documentation">
   </target>
 
-  <target name="compile-docs" depends="init">
+  <target name="compile-docs" depends="init, get-canary">
     <javac includeantruntime="false" srcdir="src/docs/java" destdir="${build}">
       <classpath>
 	<pathelement path="${lib.canary}"/>
@@ -82,7 +92,7 @@
     </javac>
   </target>
 
-  <target name="generate-api-ref-entries" depends="copy-js,compile-docs,init">
+  <target name="generate-api-ref-entries" depends="copy-js,compile-docs,init,get-canary">
 
     <jscript src="src/docs/js/generateApiDocs.js" 
 	     out="${dist}/apiref.md" 
@@ -99,7 +109,7 @@
 
   </target>
 
-  <target name="gen-events-helper-canary" depends="compile-docs,init">
+  <target name="gen-events-helper-canary" depends="compile-docs,init, get-canary">
     <mkdir dir="${dist}/js/lib"/>
     <jscript src="src/docs/js/generateEventsHelper.js" 
 	     out="${dist}/js/lib/events-helper-canary.js" 
@@ -111,7 +121,7 @@
     </jscript>
   </target>
 
-  <target name="gen-events-helper-bukkit" depends="compile-docs,init">
+  <target name="gen-events-helper-bukkit" depends="compile-docs,init,get-canary">
     <mkdir dir="${dist}/js/lib"/>
     <jscript src="src/docs/js/generateEventsHelper.js" 
 	     out="${dist}/js/lib/events-helper-bukkit.js" 
@@ -146,7 +156,7 @@ Walter Higgins
    </concat>      
   </target>
   
-  <target name="gen-toc-apiref" depends="compile-docs,generate-api-ref-entries, init" description="Generate Table of Contents for API Reference">
+  <target name="gen-toc-apiref" depends="compile-docs,generate-api-ref-entries, init, get-canary" description="Generate Table of Contents for API Reference">
     <jscript src="src/docs/js/generateTOC.js" 
 	     out="${dist}/toc-apiref.md"  
 	     err="${dist}/gen-toc-error.log">
@@ -154,7 +164,7 @@ Walter Higgins
     </jscript>
   </target>
 
-  <target name="gen-toc-ypgpm" depends="compile-docs,init" description="Generate Table of Contents for Young Programmers Guide">
+  <target name="gen-toc-ypgpm" depends="compile-docs,init, get-canary" description="Generate Table of Contents for Young Programmers Guide">
     <jscript src="src/docs/js/generateTOC.js" 
 	     out="${dist}/toc-ypgpm.md" 
 	     err="${dist}/gen-ypgpm-error.log">
