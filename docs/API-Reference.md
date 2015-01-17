@@ -400,6 +400,9 @@ Walter Higgins
    * [signs.getTargetedBy() function](#signsgettargetedby-function)
  * [Sounds Module](#sounds-module)
    * [Usage (Bukkit) :](#usage-bukkit-)
+ * [Teleport Module](#teleport-module)
+   * [Parameters](#parameters)
+   * [Example](#example-2)
  * [Utilities Module](#utilities-module)
    * [utils.player() function](#utilsplayer-function)
    * [utils.world( worldName ) function](#utilsworld-worldname--function)
@@ -456,7 +459,7 @@ Walter Higgins
    * [Administration options](#administration-options)
  * [NumberGuess mini-game:](#numberguess-mini-game)
    * [Description](#description-1)
-   * [Example](#example-2)
+   * [Example](#example-3)
  * [Cow Clicker Mini-Game](#cow-clicker-mini-game)
    * [How to Play](#how-to-play)
    * [Rules](#rules)
@@ -4820,6 +4823,36 @@ Example
 
 <p style="color:gold;font-weight:bold">Hello World</p>    
 
+## Teleport Module
+
+This module provides a function to teleport entities (Players or NPCs). 
+
+### Parameters
+
+ * entity - The player or NPC to be teleported. If of type String, then a player with that name will be teleported.
+ * destination - The location to which they should be teleported. If not of type Location but is a Player, Block or any
+   object which has a `location` property then that works too. If of type String, then it's assumed that the destination is the player with that name.
+
+### Example 
+
+The following code will teleport each player back to their spawn position.
+
+```javascript
+var teleport = require('teleport'),
+    utils = require('utils'),
+    players = utils.players(), 
+    i = 0;
+for ( ; i < players.length; i++ ) {
+  teleport( players[i], players[i].spawnPosition );
+}
+```
+
+The following code will teleport 'tom' to 'jane's location.
+
+```javascript
+var teleport = require('teleport');
+teleport('tom' , 'jane'); 
+```
 ## Utilities Module
 
 The `utils` module is a storehouse for various useful utility
