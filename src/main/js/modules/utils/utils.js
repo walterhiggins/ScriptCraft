@@ -130,12 +130,13 @@ A JSON object in the above form.
  
 ***/
 var _locationToJSON = function( location ) {
+  var yaw = __plugin.bukkit ? location.yaw : (__plugin.canary ? location.rotation : 0);
   return { 
     world: ''+location.world.name, 
     x: location.x, 
     y: location.y, 
     z: location.z, 
-    yaw: location.yaw,
+    yaw: yaw,
     pitch: location.pitch
   };
 };
@@ -185,10 +186,10 @@ exports.locationFromJSON = function( json ) {
     if (__plugin.canary){
       world = _world( json.world );
       var cmLocation = Packages.net.canarymod.api.world.position.Location;
-      return new cmLocation(world, json.x, json.y, json.z, json.pitch, json.yaw);
+      return new cmLocation(world, json.x, json.y, json.z, json.pitch?json.pitch:0, json.yaw?json.yaw:0);
     } else {
       world = _world( json.world );
-      return new bkLocation( world, json.x, json.y , json.z, json.yaw, json.pitch );
+      return new bkLocation( world, json.x, json.y , json.z, json.yaw?json.yaw:0, json.pitch?json.pitch:0 );
     }
   }
 };
