@@ -1,5 +1,5 @@
 'use strict';
-/*global require, exports, __plugin, __dirname, echo, persist, isOp, events, Packages */
+/*global require, exports, __plugin, __dirname, echo, persist, isOp, events, Packages, command */
 var utils = require('utils'),
   autoload = require('plugin').autoload,
   foreach = utils.foreach,
@@ -60,6 +60,22 @@ the shared folder as follows...
 
 ... where {serverAddress} is the ip address of the server (this is
 displayed to whoever invokes the classroom.allowScripting() function.)
+
+### jsp classroom command
+The `jsp classroom` command makes it easy for tutors to turn on or off
+classroom mode. This command can only be used by server operators. To
+turn on classroom mode (enable scripting for all players):
+
+    jsp classroom on
+
+To turn off classroom mode (disable scripting for all players):
+
+    jsp classroom off
+
+The `jsp classroom` command is provided as an easier way to turn on or
+off classroom mode. This should be used in preference to the
+classroom.allowScripting() function which is provided only for
+programmatically enabling or disabling classroom mode.
 
 ### classroom.allowScripting() function
 
@@ -152,7 +168,7 @@ function grantScripting( player ) {
 
 }
 
-var classroom = {
+var _classroom = {
   allowScripting: function (/* boolean: true or false */ canScript, sender ) {
     sender = utils.player(sender);
     if ( !sender ) {
@@ -179,7 +195,7 @@ var classroom = {
       ' for all players on server ' + serverAddress);
   }
 };
-exports.classroom = classroom;
+exports.classroom = _classroom;
 
 if (__plugin.canary){
   events.connection( function( event ) { 
@@ -194,3 +210,11 @@ if (__plugin.canary){
     }
   }, 'HIGHEST');
 }
+
+command(function classroom(params, sender){
+  if (params[0] == 'on'){
+    _classroom.allowScripting(true, sender);
+  }else {
+    _classroom.allowScripting(false, sender);
+  }
+},['on','off']);

@@ -447,6 +447,7 @@ Walter Higgins
  * [alias Plugin](#alias-plugin)
    * [Examples](#examples-2)
  * [Classroom Plugin](#classroom-plugin)
+   * [jsp classroom command](#jsp-classroom-command)
    * [classroom.allowScripting() function](#classroomallowscripting-function)
  * [Commando Plugin](#commando-plugin)
    * [Description](#description)
@@ -5681,6 +5682,22 @@ the shared folder as follows...
 
 ... where {serverAddress} is the ip address of the server (this is
 displayed to whoever invokes the classroom.allowScripting() function.)
+
+### jsp classroom command
+The `jsp classroom` command makes it easy for tutors to turn on or off
+classroom mode. This command can only be used by server operators. To
+turn on classroom mode (enable scripting for all players):
+
+    jsp classroom on
+
+To turn off classroom mode (disable scripting for all players):
+
+    jsp classroom off
+
+The `jsp classroom` command is provided as an easier way to turn on or
+off classroom mode. This should be used in preference to the
+classroom.allowScripting() function which is provided only for
+programmatically enabling or disabling classroom mode.
 
 ### classroom.allowScripting() function
 
