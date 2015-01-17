@@ -4828,9 +4828,9 @@ miscellaneous utility functions and classes to help with programming.
 
 ### utils.player() function
 
-The utils.player() function will return a [bukkit Player][bkpl] object
+The utils.player() function will return a [Player][cmpl] object
 with the given name. This function takes a single parameter
-`playerName` which can be either a String or a [Player][bkpl] object -
+`playerName` which can be either a String or a [Player][cmpl] object -
 if it's a Player object, then the same object is returned. If it's a
 String, then it tries to find the player with that name.
 
@@ -4847,13 +4847,15 @@ var utils = require('utils');
 var name = 'walterh';
 var player = utils.player(name);
 if ( player ) {
-    echo(player, 'Got ' + name);
+  echo(player, 'Got ' + name);
 } else {
-    console.log('No player named ' + name);
+  console.log('No player named ' + name);
 }
 ```
 
 [bkpl]: http://jd.bukkit.org/dev/apidocs/org/bukkit/entity/Player.html
+[cmpl]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/entity/living/humanoid/Player.html
+[cmloc]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/world/position/Location.html 
 [bkloc]: http://jd.bukkit.org/dev/apidocs/org/bukkit/Location.html
 
 ### utils.world( worldName ) function
@@ -4866,7 +4868,7 @@ Returns the Block at the given location.
 
 ### utils.locationToJSON() function
 
-utils.locationToJSON() returns a [org.bukkit.Location][bkloc] object in JSON form...
+utils.locationToJSON() returns a [Location][cmloc] object in JSON form...
 
     { world: 'world5',
       x: 56.9324,
@@ -4880,7 +4882,7 @@ This can be useful if you write a plugin that needs to store location data since
 
 #### Parameters
  
- * location: An object of type [org.bukkit.Location][bkloc]
+ * location: An object of type [Location][cmloc]
 
 #### Returns
 
@@ -4889,7 +4891,7 @@ A JSON object in the above form.
 ### utils.locationToString() function
 
 The utils.locationToString() function returns a
-[org.bukkit.Location][bkloc] object in string form...
+[Location][cmloc] object in string form...
 
     '{"world":"world5",x:56.9324,y:103.9954,z:43.1323,yaw:0.0,pitch:0.0}'
 
@@ -4907,7 +4909,7 @@ lookupTable[key] = player.name;
 
 ### utils.locationFromJSON() function
 
-This function reconstructs an [org.bukkit.Location][bkloc] object from
+This function reconstructs an [Location][cmloc] object from
 a JSON representation. This is the counterpart to the
 `locationToJSON()` function. It takes a JSON object of the form
 returned by locationToJSON() and reconstructs and returns a bukkit
@@ -4915,7 +4917,7 @@ Location object.
 
 ### utils.getPlayerPos() function
 
-This function returns the player's [Location][bkloc] (x, y, z, pitch
+This function returns the player's [Location][cmloc] (x, y, z, pitch
 and yaw) for a named player.  If the "player" is in fact a
 [org.bukkit.command.BlockCommandSender][bkbcs] then the attached
 Block's location is returned.
@@ -4926,13 +4928,13 @@ Block's location is returned.
 
 #### Returns
 
-An [org.bukkit.Location][bkloc] object.
+A [Location][cmloc] object.
 
 [bkbcs]: http://jd.bukkit.org/dev/apidocs/org/bukkit/command/BlockCommandSender.html
 [bksndr]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/command/CommandSender.html
 ### utils.getMousePos() function
 
-This function returns a [org.bukkit.Location][bkloc] object (the
+This function returns a [Location][cmloc] object (the
 x,y,z) of the current block being targeted by the named player. This
 is the location of the block the player is looking at (targeting).
 
@@ -4949,21 +4951,27 @@ var utils = require('utils');
 var playerName = 'walterh';
 var targetPos = utils.getMousePos(playerName);
 if (targetPos){
-   targetPos.world.strikeLightning(targetPos);
+  if (__plugin.canary){
+    targetPos.world.makeLightningBolt(targetPos);
+  }  
+  if (__plugin.bukkit){ 
+    targetPos.world.strikeLightning(targetPos);
+  }
 }
 ```
 
 ### utils.foreach() function
 
 The utils.foreach() function is a utility function for iterating over
-an array of objects (or a java.util.Collection of objects) and processing each object in turn. Where
-utils.foreach() differs from other similar functions found in
-javascript libraries, is that utils.foreach can process the array
-immediately or can process it *nicely* by processing one item at a
-time then delaying processing of the next item for a given number of
-server ticks (there are 20 ticks per second on the minecraft main
-thread).  This method relies on Bukkit's [org.bukkit.scheduler][sched]
-package for scheduling processing of arrays.
+an array of objects (or a java.util.Collection of objects) and
+processing each object in turn. Where utils.foreach() differs from
+other similar functions found in javascript libraries, is that
+utils.foreach can process the array immediately or can process it
+*nicely* by processing one item at a time then delaying processing of
+the next item for a given number of server ticks (there are 20 ticks
+per second on the minecraft main thread).  This method relies on
+Bukkit's [org.bukkit.scheduler][sched] package for scheduling
+processing of arrays.
 
 [sched]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scheduler/package-summary.html
 
@@ -4981,11 +4989,9 @@ package for scheduling processing of arrays.
    - array : The entire array.
 
  * context (optional) : An object which may be used by the callback.
- * delay (optional, numeric) : If a delay is specified (in ticks - 20
-   ticks = 1 second), then the processing will be scheduled so that
+ * delayInMilliseconds (optional, numeric) : If a delay is specified then the processing will be scheduled so that
    each item will be processed in turn with a delay between the completion of each
-   item and the start of the next. This is recommended for big builds (say 200 x 200 x 200
-   blocks) or any CPU-intensive process.
+   item and the start of the next. This is recommended for any CPU-intensive process.
  * onDone (optional, function) : A function to be executed when all processing 
    is complete. This parameter is only used when the processing is delayed. (It's optional even if a 
    delay parameter is supplied).
@@ -5002,51 +5008,27 @@ The following example illustrates how to use foreach for immediate processing of
 
 ```javascript
 var utils = require('utils');
-var players = ['moe', 'larry', 'curly'];
-utils.foreach (players, function(item){ 
-    echo( server.getPlayer(item), 'Hi ' + item);
+var players = utils.players();
+utils.foreach (players, function( player ) { 
+  echo( player , 'Hi ' + player);
 });
 ```
 
-... The `utils.foreach()` function can work with Arrays or any Java-style collection. This is important
-because many objects in the Bukkit API use Java-style collections...
+... The `utils.foreach()` function can work with Arrays or any
+Java-style collection. This is important because many objects in the
+CanaryMod and Bukkit APIs use Java-style collections...
 
 ```javascript
+// in bukkit, server.onlinePlayers returns a java.util.Collection object
 utils.foreach( server.onlinePlayers, function(player){
-    player.chat('Hello!');
+  player.chat('Hello!');
 }); 
 ```
-
 ... the above code sends a 'Hello!' to every online player.
 
-The following example is a more complex use case - The need to build an enormous structure
-without hogging CPU usage...
-
-```javascript
-// build a structure 200 wide x 200 tall x 200 long
-// (That's 8 Million Blocks - enough to tax any machine!)
-var utils = require('utils');
-
-var a = []; 
-a.length = 200; 
-var drone = new Drone();
-var processItem = function(item, index, object, array){
-    // build a box 200 wide by 200 long then move up
-    drone.box(blocks.wood, 200, 1, 200).up();
-};
-// by the time the job's done 'self' might be someone else 
-// assume this code is within a function/closure
-var player = self;
-var onDone = function(){ 
-    echo( player, 'Job Done!');
-};
-utils.foreach (a, processItem, null, 10, onDone);
-```
-    
 ### utils.nicely() function
 
-The utils.nicely() function is for performing processing using the
-[org.bukkit.scheduler][sched] package/API. utils.nicely() lets you
+The utils.nicely() function is for performing background processing. utils.nicely() lets you
 process with a specified delay between the completion of each `next()`
 function and the start of the next `next()` function.
 `utils.nicely()` is a recursive function - that is - it calls itself
@@ -5060,7 +5042,7 @@ function and the start of the next `next()` function.
    true if the `next` function should be called (processing is not
    complete), false otherwise.
  * onDone : A function which is to be called when all processing is complete (hasNext returned false).
- * delay : The delay (in server ticks - 20 per second) between each call.
+ * delayInMilliseconds : The delay between each call.
 
 #### Example
 
@@ -5087,9 +5069,9 @@ var utils = require('utils');
 
 utils.at( '19:00', function() {
 
-    utils.foreach( server.onlinePlayers, function( player ) {
-        player.chat( 'The night is dark and full of terrors!' );
-    });
+  utils.players(function( player ) {
+    echo( player, 'The night is dark and full of terrors!' );
+  });
 
 });
 ```
@@ -5485,78 +5467,46 @@ following reasons...
     `/scriptcraft/plugins` directory, it will be loaded automatically
     when the server starts up.
 
- 2. It uses ScriptCraft's `events.on()` function to add a new *Event
-    Handler*. An *Event Handler* is a just a function which gets
+ 2. It uses ScriptCraft's `events` module to add a new *Event
+    Handler*. An *Event Handler* is a function that gets
     called whenever a particular *event* happens in the game. The
     function defined below will only be executed whenever a player
     joins the game. This style of program is sometimes refered to as
     *Event-Driven Programming*.
 
-Adding new *Event Handlers* in ScriptCraft is relatively easy. Use the
-`events.on()` function to add a new event handler. It takes 2
-parameters...
+Adding new *Event Handlers* in ScriptCraft is relatively easy. Use one
+of the `events` module's functions to add a new event handler. The
+events module has many functions - one for each type of event. Each
+function takes a single parameter:
 
- 1. The Event Name, in this case `'player.PlayerJoinEvent'`. You can
-    browse [all possible Bukkit events][bkevts] (click the 'Next
-    Package' and 'Previous Package' links to browse).
-
- 2. The event handling function (also sometimes refered to as a
-    'callback'). In ScriptCraft, this function takes a single
-    parameter, an event object. All of the information about the event
-    is in the event object.
+ * The event handling function (also sometimes refered to as a
+   'callback'). In ScriptCraft, this function takes a single
+   parameter, an event object. All of the information about the event
+   is in the event object.
 
 In the example below, if a player joins the server and is an operator,
 then the ScriptCraft plugin information will be displayed to that
 player.
 
-What's also notable about this example is how it uses the `isOp()` function. The code...
+```javascript
+function onJoin( event ){
+  if ( isOp(event.player) ) {
+    echo( event.player, 'Welcome to ' + __plugin );
+  }
+}
+events.connection( onJoin );
+```
+First the onJoin() function is defined, this is our event handler -
+the function we wish to be called every time some new player joins the
+game. Then we hook up - or register - that function using the
+events.connection() function. The events.connection function is the
+function responsible for adding new *connection* event handlers - that
+is - functions which should be invoked when there's a new *connection*
+event in the game. A new *connection* event is fired whenever a player
+joins the game. There are many other types of events you can handle in
+Minecraft. You can see [a full list of events here][cmEvtList].
 
-    if ( isOp(event.player) )
-
-ScriptCraft uses a special version of JavaScript which comes
-bundled with Java (Minecraft is written in Java) and JavaScript in
-Java can access properties of Java objects more succinctly than in
-Java itself. What this means in practice is that when you're perusing
-the [Bukkit API Reference][bkapi] and come across a method like
-[Player.getAllowFlight()][bkgaf], you can write code like this...
-
-    var allowFlight = player.getAllowFlight(); // java style
-
-... or the more succinct ...
-
-    var allowFlight = player.allowFlight; // javascript style
-
-... Which style you choose is up to you but `player.allowFlight` is
-cleaner and more readable. Similarly where you see a method like
-[Player.setAllowFlight()][bksaf], you can write ...
-
-    player.setAllowFlight(true); // java style
-
-... or the more readable...
-
-    player.allowFlight = true; // javascript style
-
-... Which style you choose is up to you.
-
-[bkevts]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/package-summary.html
-[bkgaf]: http://jd.bukkit.org/dev/apidocs/org/bukkit/entity/Player.html#getAllowFlight()
-[bksaf]: http://jd.bukkit.org/dev/apidocs/org/bukkit/entity/Player.html#setAllowFlight()
-[bkapi]: http://jd.bukkit.org/dev/apidocs/
-
-    events.on( 'player.PlayerJoinEvent', function( event ) {
-      if ( isOp(event.player) ) {
-        echo( event.player, 'Welcome to ' + __plugin);
-      }
-    });
-
-Update: Since version 2.0.8 the above code can be replaced by the more succinct:
-
-    events.playerJoin( function( event ) {
-      if ( event.player.op ) {
-        echo( event.player, 'Welcome to ' + __plugin);
-      }
-    });
-    
+[cmEvtList]: #events-helper-module-canary-version
 ## Arrows Plugin
 
 The arrows mod adds fancy arrows to the game. Arrows which... 

@@ -1,3 +1,5 @@
+'use strict';
+/*global __plugin, module, server*/
 function bukkitSetTimeout( callback, delayInMillis ){
   var delay = Math.ceil( delayInMillis / 50 );
   var task = server.scheduler.runTaskLater( __plugin, callback, delay );

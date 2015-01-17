@@ -1,3 +1,5 @@
+'use strict';
+/*global Packages, __plugin, module*/
 /*
  javascript programmers familiar with setTimeout know that it expects
  a delay in milliseconds. However, bukkit's scheduler expects a delay in ticks 
