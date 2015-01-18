@@ -59,6 +59,31 @@ Minecraft your way using Javascript. Javascript is easier to learn than
 Java but it's also more flexible and powerful and is used for creating 
 interactive web sites and many other applications.
 
+## CanaryMod and Permissions
+CanaryMod works slightly differently to CraftBukkit in how it handles
+permissions and groups.  By default, there are 4 groups: visitors,
+players, mods and admins. Each player who joins the game is added to the
+'visitors' group.  This group has no permissions by default so
+visitors can't break or place blocks. If you would like to change this
+behaviour then issue the following command at the console window:
+
+    groupmod permission add visitors canary.world.build
+
+If you would like all admins to have scripting ability then issue the
+following command:
+
+    groupmod permission add admins scriptcraft.evaluate
+
+This will enable all admins on your server to issue javascript statements.
+All operators can issue any command (including the `/js` command to evaluate javascript). 
+For more information on CanaryMod's Permissions and Groups see the following:
+
+ * [Permissions and Groups][cmPerms]
+ * [List of Permissions][cmPermsList]
+
+[cmPerms]: http://canarymod.net/books/canarymod-admin-guide/permissions-and-groups
+[cmPermsList]: http://canarymod.net/books/canarymod-admin-guide/list-permissions
+
 ## Configuring your Server (optional)
 
 Once you've installed CanaryMod, depending on your specific needs,
