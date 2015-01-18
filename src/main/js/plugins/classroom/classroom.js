@@ -1,5 +1,5 @@
 'use strict';
-/*global require, exports, __plugin, __dirname, echo, persist, isOp, events, Packages, command */
+/*global require, exports, __plugin, __dirname, echo, persist, isOp, events, Packages, command, global */
 var utils = require('utils'),
   autoload = require('plugin').autoload,
   foreach = utils.foreach,
@@ -133,6 +133,35 @@ function revokeScripting ( player ) {
 var classroomAutoloadTime = {};
 exports.classroomAutoloadTime = classroomAutoloadTime;
 
+var playerEventHandlers = {};
+
+function reloadPlayerModules( playerContext, playerDir ){
+  /*
+   wph 20150118 first unregister any event handlers registered by the player
+   */
+  var playerDirPath = ''+ playerDir.getAbsolutePath();
+  var eventHandlers = playerEventHandlers[playerDirPath];
+  if (eventHandlers){
+    for (var i = 0;i < eventHandlers.length; i++){
+      eventHandlers[i].unregister();
+    }
+    eventHandlers.length  = 0;
+  } else {
+    playerEventHandlers[playerDirPath] = [];
+    eventHandlers = playerEventHandlers[playerDirPath];
+  }
+  /*
+   override events.on() so that the listener is stored here so it can be unregistered.
+   */
+  var oldOn = events.on;
+  var newOn = function( eventType, fn, priority){
+    var handler = oldOn(eventType, fn, priority);
+    eventHandlers.push(handler);
+  };
+  events.on = newOn;
+  autoload( playerContext, playerDir, { cache: false });
+  events.on = oldOn;
+}
 function grantScripting( player ) {
   console.log('Enabling scripting for player ' + player.name);
   var playerName = '' + player.name;
@@ -146,7 +175,7 @@ function grantScripting( player ) {
     player.permissionProvider.addPermission('scriptcraft.evaluate',true);
   }
   var playerContext = {};
-  autoload( playerContext, playerDir, { cache: false });
+  reloadPlayerModules( playerContext, playerDir );
   global[playerName] = playerContext;
   watchDir( playerDir, function( changedDir ){
     var currentTime = new java.util.Date().getTime();
@@ -154,7 +183,7 @@ function grantScripting( player ) {
     //one call for the file change and another for directory change 
     //(this happens only in Linux because in Windows the folder lastModifiedTime is not changed)
     if (currentTime - classroomAutoloadTime[playerName]>1000 ) {
-      autoload(playerContext, playerDir, { cache: false });
+      reloadPlayerModules(playerContext, playerDir );
     } 
     classroomAutoloadTime[playerName] = currentTime;
   });
