@@ -4981,8 +4981,7 @@ Location object.
 
 This function returns the player's [Location][cmloc] (x, y, z, pitch
 and yaw) for a named player.  If the "player" is in fact a
-[org.bukkit.command.BlockCommandSender][bkbcs] then the attached
-Block's location is returned.
+[BlockCommand][bkbcs] then the attached Block's location is returned.
 
 #### Parameters
 

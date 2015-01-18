@@ -205,8 +205,7 @@ exports.getPlayerObject = function( player ) {
 
 This function returns the player's [Location][cmloc] (x, y, z, pitch
 and yaw) for a named player.  If the "player" is in fact a
-[org.bukkit.command.BlockCommandSender][bkbcs] then the attached
-Block's location is returned.
+[BlockCommand][bkbcs] then the attached Block's location is returned.
 
 #### Parameters
 
@@ -219,16 +218,25 @@ A [Location][cmloc] object.
 [bkbcs]: http://jd.bukkit.org/dev/apidocs/org/bukkit/command/BlockCommandSender.html
 [bksndr]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/command/CommandSender.html
 ***/
-exports.getPlayerPos = function( player ) {
+function getPlayerPos( player ){
   player = _player( player );
   if ( player ) {
-    if ( player instanceof bkBlockCommandSender )
-      return player.block.location;
-    else
-      return player.location;
+    if (__plugin.bukkit){
+      if ( player instanceof bkBlockCommandSender )
+	return player.block.location;
+      else
+	return player.location;
+    }
+    if (__plugin.canary){
+      if ( player instanceof Packages.net.canarymod.api.world.blocks.CommandBlock)
+	return player.block.location;
+      else
+	return player.location;
+    }
   } 
   return null;
-};
+}
+exports.getPlayerPos = getPlayerPos;
 /************************************************************************
 ### utils.getMousePos() function
 
