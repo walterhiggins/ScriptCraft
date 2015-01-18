@@ -25,12 +25,17 @@ exports.on = function(
   
   var result = { };
   eventExecutor = __plugin.getDispatcher( function(l,e){ 
+    function cancel(){
+      if (e.setCanceled){
+        e.setCanceled();
+      }
+    }
     try { 
-      handler.call(result, e); 
+      handler.call(result, e, cancel); 
     } catch ( error ){
       console.log('Error while executing handler:' + handler + 
-		  ' for event type:' + eventType + 
-		  ' error: ' + error);
+                  ' for event type:' + eventType + 
+                  ' error: ' + error);
     }
   });
   /* 

@@ -1,3 +1,4 @@
+/*global Java, exports, org, __plugin */
 var bkEventPriority = org.bukkit.event.EventPriority,
   bkEventExecutor = org.bukkit.plugin.EventExecutor,
   bkRegisteredListener = org.bukkit.plugin.RegisteredListener,
@@ -43,7 +44,12 @@ exports.on = function(
   var result = { };
   eventExecutor = new bkEventExecutor( {
     execute: function( l, evt ) {
-      handler.call( result, evt );
+      function cancel(){
+        if (evt instanceof org.bukkit.event.Cancellable){
+          evt.setCancelled(true);
+        }
+      }
+      handler.call( result, evt, cancel );
     } 
   } );
   /* 
