@@ -450,27 +450,27 @@ utils.at( '19:00', function() {
 ```
   
 ***/
-exports.at = function( time24hr, callback, worlds ) {
+exports.at = function( time24hr, callback, pWorlds ) {
   var forever = function(){ return true; };
   var timeParts = time24hr.split( ':' );
-  var hrs = ( (timeParts[0] * 1000) + 18000 ) % 24000;
-  var mins;
-  if ( timeParts.length > 1 ) {
-    mins = ( timeParts[1] / 60 ) * 1000;
+  var timeMins = (timeParts[0] * 60) + (timeParts[1] * 1);
+  if ( typeof pWorlds == 'undefined' ) {
+    pWorlds = worlds();
   }
-  var timeMc = hrs + mins;
-  if ( typeof worlds == 'undefined' ) {
-    worlds = server.worlds;
-  }
+  var calledToday = false;
   _nicely( function() {
-    _foreach( worlds, function ( world ) {
-      var time = getTime(world);
-      var diff = timeMc - time;
-      if ( diff > 0 && diff < 100 ) {
+    _foreach( pWorlds, function ( world ) {
+      var time = getTime24(world);
+      var diff = time - timeMins;
+      if (diff > 0 && diff < 5 && !calledToday){
         callback();
+	calledToday = true;
+      }
+      if (diff < 0){
+	calledToday = false;
       }
     });
-  }, forever, null, 100 );
+  }, forever, null, 1000 );
 };
 /*************************************************************************
 ### utils.time( world ) function
@@ -817,13 +817,15 @@ function toArray( ){
 }
 exports.array = toArray;
 
-function canaryWorlds(){
-  return toArray( server.worldManager.allWorlds );
+function worlds(){
+  if (__plugin.canary){
+    return toArray(server.worldManager.allWorlds);
+  }
+  if (__plugin.bukkit){
+    return toArray(server.worlds);
+  }
 }
-function bukkitWorlds(){
-  return toArray( server.worlds );
-}
-exports.worlds = __plugin.canary ? canaryWorlds : bukkitWorlds;
+exports.worlds = worlds;
 
 /*************************************************************************
 ### utils.players() function
