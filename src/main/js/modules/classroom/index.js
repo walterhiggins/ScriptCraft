@@ -1,5 +1,5 @@
 'use strict';
-/*global require, exports, __plugin, __dirname, echo, persist, isOp, events, Packages, command, global */
+/*global require, module, __plugin, __dirname, echo, persist, isOp, events, Packages, command, global */
 var utils = require('utils'),
   autoload = require('plugin').autoload,
   foreach = utils.foreach,
@@ -130,8 +130,7 @@ function revokeScripting ( player ) {
   var playerDir = new File( playersDir + playerName );
   unwatchDir( playerDir );
 }
-var classroomAutoloadTime = {};
-exports.classroomAutoloadTime = classroomAutoloadTime;
+var autoloadTime = {};
 
 var playerEventHandlers = {};
 
@@ -182,10 +181,10 @@ function grantScripting( player ) {
     //this check is here because this callback might get called multiple times for the watch interval
     //one call for the file change and another for directory change 
     //(this happens only in Linux because in Windows the folder lastModifiedTime is not changed)
-    if (currentTime - classroomAutoloadTime[playerName]>1000 ) {
+    if (currentTime - autoloadTime[playerName]>1000 ) {
       reloadPlayerModules(playerContext, playerDir );
     } 
-    classroomAutoloadTime[playerName] = currentTime;
+    autoloadTime[playerName] = currentTime;
   });
 
 /*
@@ -224,7 +223,6 @@ var _classroom = {
       ' for all players on server ' + serverAddress);
   }
 };
-exports.classroom = _classroom;
 
 if (__plugin.canary){
   events.connection( function( event ) { 
@@ -239,11 +237,4 @@ if (__plugin.canary){
     }
   }, 'HIGHEST');
 }
-
-command(function classroom(params, sender){
-  if (params[0] == 'on'){
-    _classroom.allowScripting(true, sender);
-  }else {
-    _classroom.allowScripting(false, sender);
-  }
-},['on','off']);
+module.exports = _classroom;

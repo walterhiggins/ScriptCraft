@@ -388,6 +388,9 @@ Walter Higgins
    * [Examples](#examples)
  * [Fireworks Module](#fireworks-module)
    * [Examples](#examples-1)
+ * [Classroom Plugin](#classroom-plugin)
+   * [jsp classroom command](#jsp-classroom-command)
+   * [classroom.allowScripting() function](#classroomallowscripting-function)
  * [Asynchronous Input Module](#asynchronous-input-module)
  * [The recipes module](#the-recipes-module)
    * [Example](#example-1)
@@ -446,9 +449,6 @@ Walter Higgins
    * [Usage](#usage-10)
  * [alias Plugin](#alias-plugin)
    * [Examples](#examples-2)
- * [Classroom Plugin](#classroom-plugin)
-   * [jsp classroom command](#jsp-classroom-command)
-   * [classroom.allowScripting() function](#classroomallowscripting-function)
  * [Commando Plugin](#commando-plugin)
    * [Description](#description)
    * [Example hi-command.js](#example-hi-commandjs)
@@ -4506,6 +4506,103 @@ location. For example...
 
 ![firework example](img/firework.png)
 
+## Classroom Plugin
+
+The `classroom` object contains a couple of utility functions for use
+in a classroom setting. The goal of these functions is to make it
+easier for tutors to facilitate ScriptCraft for use by students in a
+classroom environment. Although granting ScriptCraft access to
+students on a shared server is potentially risky (Students can
+potentially abuse it), it is slighlty less risky than granting
+operator privileges to each student. (Enterprising students will
+quickly realise how to grant themselves and others operator privileges
+once they have access to ScriptCraft).
+
+The goal of this module is not so much to enforce restrictions
+(security or otherwise) but to make it easier for tutors to setup a
+shared server so students can learn Javascript. When scripting is
+turned on, every player who joins the server will have a dedicated
+directory into which they can save scripts. All scripts in such
+directories are automatically watched and loaded into a global
+variable named after the player.
+
+So for example, if player 'walterh' joins the server, a `walterh`
+global variable is created. If a file `greet.js` with the following
+content is dropped into the `scriptcraft/players/walterh`
+directory...
+
+```javascript
+exports.hi = function( player ){
+  echo( player, 'Hi ' + player.name);
+};
+```
+
+... then it can be invoked like this: `/js walterh.hi( self )` . This
+lets every player/student create their own functions without having
+naming collisions.
+
+It's strongly recommended that the
+`scriptcraft/players/` directory is shared so that
+others can connect to it and drop .js files into their student
+directories. On Ubuntu, select the folder in Nautilus (the default
+file browser) then right-click and choose *Sharing Options*, check the
+*Share this folder* checkbox and the *Allow others to create and
+delete files* and *Guest access* checkboxes. Click *Create Share*
+button to close the sharing options dialog. Students can then access
+the shared folder as follows...
+
+ * Windows:   Open Explorer, Go to \\{serverAddress}\players\
+ * Macintosh: Open Finder,   Go to smb://{serverAddress}/players/
+ * Linux:     Open Nautilus, Go to smb://{serverAddress}/players/
+
+... where {serverAddress} is the ip address of the server (this is
+displayed to whoever invokes the classroom.allowScripting() function.)
+
+### jsp classroom command
+The `jsp classroom` command makes it easy for tutors to turn on or off
+classroom mode. This command can only be used by server operators. To
+turn on classroom mode (enable scripting for all players):
+
+    jsp classroom on
+
+To turn off classroom mode (disable scripting for all players):
+
+    jsp classroom off
+
+The `jsp classroom` command is provided as an easier way to turn on or
+off classroom mode. This should be used in preference to the
+classroom.allowScripting() function which is provided only for
+programmatically enabling or disabling classroom mode.
+
+### classroom.allowScripting() function
+
+Allow or disallow anyone who connects to the server (or is already
+connected) to use ScriptCraft. This function is preferable to granting 'ops' privileges 
+to every student in a Minecraft classroom environment.
+
+Whenever any file is added/edited or removed from any of the players/
+directories the contents are automatically reloaded. This is to
+facilitate quick turnaround time for students getting to grips with
+Javascript.
+
+#### Parameters
+
+ * canScript : true or false
+
+#### Example
+
+To allow all players (and any players who connect to the server) to
+use the `js` and `jsp` commands...
+
+    /js classroom.allowScripting( true, self )
+
+To disallow scripting (and prevent players who join the server from using the commands)...
+
+    /js classroom.allowScripting( false, self )
+
+Only ops users can run the classroom.allowScripting() function - this is so that students 
+don't try to bar themselves and each other from scripting.
+
 ## Asynchronous Input Module
 
 The `input` module provides a simple way to prompt players for input at the 
@@ -5077,16 +5174,7 @@ utils.foreach (players, function( player ) {
 
 ... The `utils.foreach()` function can work with Arrays or any
 Java-style collection. This is important because many objects in the
-CanaryMod and Bukkit APIs use Java-style collections...
-
-```javascript
-// in bukkit, server.onlinePlayers returns a java.util.Collection object
-utils.foreach( server.onlinePlayers, function(player){
-  player.chat('Hello!');
-}); 
-```
-... the above code sends a 'Hello!' to every online player.
-
+CanaryMod and Bukkit APIs use Java-style collections.
 ### utils.nicely() function
 
 The utils.nicely() function is for performing background processing. utils.nicely() lets you
@@ -5111,7 +5199,7 @@ See the source code to utils.foreach for an example of how utils.nicely is used.
 
 ### utils.at() function
 
-The utils.at() function will perform a given task at a given time every 
+The utils.at() function will perform a given task at a given time in the 
 (minecraft) day.
 
 #### Parameters
@@ -5120,23 +5208,31 @@ The utils.at() function will perform a given task at a given time every
    9:30 pm is '21:30', midnight is '00:00' and midday is '12:00'
  * callback : A javascript function which will be invoked at the given time.
  * worlds : (optional) An array of worlds. Each world has its own clock. If no array of worlds is specified, all the server's worlds are used.
+ * repeat : (optional) true or false, default is true (repeat the task every day)
 
 #### Example
 
-To warn players when night is approaching...
+To warn players when night is approaching:
 
 ```javascript
 var utils = require('utils');
-
-utils.at( '19:00', function() {
-
+function warning(){
   utils.players(function( player ) {
     echo( player, 'The night is dark and full of terrors!' );
   });
-
-});
+}
+utils.at('19:00', warning);
 ```
-  
+To run a task only once at the next given time:
+```javascript
+var utils = require('utils');
+function wakeup(){
+  utils.players(function( player ) {
+    echo( player, "Wake Up Folks!" );
+  });
+}
+utils.at('06:00', wakeup, null, false);
+```
 ### utils.time( world ) function
 
 Returns the timeofday (in minecraft ticks) for the given world. This function is necessary because
@@ -5657,103 +5753,6 @@ To get help on the `jsp alias` command:
 Aliases can be used at the in-game prompt by players or in the server
 console.  Aliases will not be able to avail of command autocompletion
 (pressing the TAB key will have no effect).
-
-## Classroom Plugin
-
-The `classroom` object contains a couple of utility functions for use
-in a classroom setting. The goal of these functions is to make it
-easier for tutors to facilitate ScriptCraft for use by students in a
-classroom environment. Although granting ScriptCraft access to
-students on a shared server is potentially risky (Students can
-potentially abuse it), it is slighlty less risky than granting
-operator privileges to each student. (Enterprising students will
-quickly realise how to grant themselves and others operator privileges
-once they have access to ScriptCraft).
-
-The goal of this module is not so much to enforce restrictions
-(security or otherwise) but to make it easier for tutors to setup a
-shared server so students can learn Javascript. When scripting is
-turned on, every player who joins the server will have a dedicated
-directory into which they can save scripts. All scripts in such
-directories are automatically watched and loaded into a global
-variable named after the player.
-
-So for example, if player 'walterh' joins the server, a `walterh`
-global variable is created. If a file `greet.js` with the following
-content is dropped into the `scriptcraft/players/walterh`
-directory...
-
-```javascript
-exports.hi = function( player ){
-  echo( player, 'Hi ' + player.name);
-};
-```
-
-... then it can be invoked like this: `/js walterh.hi( self )` . This
-lets every player/student create their own functions without having
-naming collisions.
-
-It's strongly recommended that the
-`scriptcraft/players/` directory is shared so that
-others can connect to it and drop .js files into their student
-directories. On Ubuntu, select the folder in Nautilus (the default
-file browser) then right-click and choose *Sharing Options*, check the
-*Share this folder* checkbox and the *Allow others to create and
-delete files* and *Guest access* checkboxes. Click *Create Share*
-button to close the sharing options dialog. Students can then access
-the shared folder as follows...
-
- * Windows:   Open Explorer, Go to \\{serverAddress}\players\
- * Macintosh: Open Finder,   Go to smb://{serverAddress}/players/
- * Linux:     Open Nautilus, Go to smb://{serverAddress}/players/
-
-... where {serverAddress} is the ip address of the server (this is
-displayed to whoever invokes the classroom.allowScripting() function.)
-
-### jsp classroom command
-The `jsp classroom` command makes it easy for tutors to turn on or off
-classroom mode. This command can only be used by server operators. To
-turn on classroom mode (enable scripting for all players):
-
-    jsp classroom on
-
-To turn off classroom mode (disable scripting for all players):
-
-    jsp classroom off
-
-The `jsp classroom` command is provided as an easier way to turn on or
-off classroom mode. This should be used in preference to the
-classroom.allowScripting() function which is provided only for
-programmatically enabling or disabling classroom mode.
-
-### classroom.allowScripting() function
-
-Allow or disallow anyone who connects to the server (or is already
-connected) to use ScriptCraft. This function is preferable to granting 'ops' privileges 
-to every student in a Minecraft classroom environment.
-
-Whenever any file is added/edited or removed from any of the players/
-directories the contents are automatically reloaded. This is to
-facilitate quick turnaround time for students getting to grips with
-Javascript.
-
-#### Parameters
-
- * canScript : true or false
-
-#### Example
-
-To allow all players (and any players who connect to the server) to
-use the `js` and `jsp` commands...
-
-    /js classroom.allowScripting( true, self )
-
-To disallow scripting (and prevent players who join the server from using the commands)...
-
-    /js classroom.allowScripting( false, self )
-
-Only ops users can run the classroom.allowScripting() function - this is so that students 
-don't try to bar themselves and each other from scripting.
 
 ## Commando Plugin
 

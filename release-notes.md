@@ -1,5 +1,10 @@
 RELEASE NOTES
 =============
+3.1.1 Release (2015 01 24)
+--------------------------
+This is a bug fix release. 
+See https://github.com/walterhiggins/ScriptCraft/compare/3.1.0...master for bug fix details.
+
 3.1.0 Release (2015 01 11)
 --------------------------
 Fixes issue #197
