@@ -1,3 +1,5 @@
+'use strict';
+/*global require, Packages, module*/
 var items = require('items');
 var Canary = Packages.net.canarymod.Canary;
 var cmFireworkHelper = Packages.net.canarymod.api.inventory.helper.FireworkHelper;
