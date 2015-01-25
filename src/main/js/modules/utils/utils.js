@@ -506,10 +506,16 @@ function atAddTask( timeMins, callback, world, repeat){
   atTasks[worldName][timeMins].push({callback: callback, repeat: repeat});
 }
 var atMonitors = [];
-events.loadWorld(function(evt){
+function onLoadStartMonitor(evt){
   var monitor = setInterval( atMonitorFactory(evt.world), 900);
   atMonitors.push( monitor );
-});
+}
+if (__plugin.canary){
+  events.loadWorld( onLoadStartMonitor );
+}
+if (__plugin.bukkit){
+  events.worldLoad( onLoadStartMonitor );
+}
 
 addUnloadHandler(function(){
   _foreach(atMonitors, function(atInterval){
