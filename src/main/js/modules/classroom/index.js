@@ -1,10 +1,11 @@
 'use strict';
 /*global require, module, __plugin, __dirname, echo, persist, isOp, events, Packages, command, global */
 var utils = require('utils'),
+  watcher = require('watcher'),
   autoload = require('plugin').autoload,
   foreach = utils.foreach,
-  watchDir = utils.watchDir,
-  unwatchDir = utils.unwatchDir,
+  watchDir = watcher.watchDir,
+  unwatchDir = watcher.unwatchDir,
   playersDir = __dirname + '/../../players/',
   serverAddress = utils.serverAddress();
 
@@ -212,7 +213,7 @@ var _classroom = {
       echo( sender, 'Only operators can use this function');
       return;
     }
-    foreach( utils.players(), function(player){
+    utils.players(function(player){
       if (!isOp(player)){
 	canScript ? grantScripting(player) : revokeScripting(player);
       }

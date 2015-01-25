@@ -1,4 +1,4 @@
-/*global __plugin, org, exports, server, setTimeout, Packages, setInterval, addUnloadHandler, clearInterval, events*/
+/*global require, __plugin, org, exports, server, setTimeout, Packages, setInterval, addUnloadHandler, clearInterval, events*/
 'use strict';
 var File = java.io.File;
 
@@ -411,117 +411,12 @@ var _nicely = function( next, hasNext, onDone, delay ) {
   }
 };
 exports.nicely = _nicely;
-/************************************************************************
-### utils.at() function
 
-The utils.at() function will perform a given task at a given time in the 
-(minecraft) day.
-
-#### Parameters
-
- * time24hr : The time in 24hr form - e.g. 9:30 in the morning is '09:30' while
-   9:30 pm is '21:30', midnight is '00:00' and midday is '12:00'
- * callback : A javascript function which will be invoked at the given time.
- * worlds : (optional) An array of worlds. Each world has its own clock. If no array of worlds is specified, all the server's worlds are used.
- * repeat : (optional) true or false, default is true (repeat the task every day)
-
-#### Example
-
-To warn players when night is approaching:
-
-```javascript
-var utils = require('utils');
-function warning(){
-  utils.players(function( player ) {
-    echo( player, 'The night is dark and full of terrors!' );
-  });
-}
-utils.at('19:00', warning);
-```
-To run a task only once at the next given time:
-```javascript
-var utils = require('utils');
-function wakeup(){
-  utils.players(function( player ) {
-    echo( player, "Wake Up Folks!" );
-  });
-}
-utils.at('06:00', wakeup, null, false);
-```
-***/
 exports.at = function( time24hr, callback, pWorlds, repeat ) {
-  var timeParts = time24hr.split( ':' );
-  var timeMins = (timeParts[0] * 60) + (timeParts[1] * 1);
-  if (!pWorlds || typeof pWorlds == 'undefined' ) {
-    pWorlds = worlds();
-  }
-  if (repeat === undefined){
-    repeat = true;
-  }
-  _foreach( pWorlds, function ( world ) {
-    atAddTask( timeMins, callback, world, repeat);
-  });
+  console.warn("utils.at() is deprecated, use require('at') instead");
+  var at = require('at');
+  return at( time24hr, callback, pWorlds, repeat);
 };
-var atTasks = {};
-/*
- constructs a function which will be called every x ticks to 
- track the schedule for a given world
-*/
-function atMonitorFactory(world){
-  var worldName = ''+ world.name;
-  var lastRun = null;
-  return function(){
-    var timeMins = getTime24(world);
-    if (timeMins === lastRun){
-      return;
-    }
-    lastRun = timeMins;
-    var worldSchedule = atTasks[worldName];
-    if (!worldSchedule){
-      return;
-    }
-    var tasks = worldSchedule[timeMins];
-    if (!tasks){
-      return;
-    }
-    _foreach(tasks, function(task, i){
-      if (!task){
-	return;
-      }
-      setTimeout(task.callback.bind(null, timeMins, world), 1);
-      if (!task.repeat){
-	tasks[i] = null;
-      }
-    });
-  };
-}
-function atAddTask( timeMins, callback, world, repeat){
-  var worldName = ''+world.name;
-  if (!atTasks[worldName]){
-    atTasks[worldName] = {};
-  }
-  if (!atTasks[worldName][timeMins]){
-    atTasks[worldName][timeMins] = [];
-  }
-  atTasks[worldName][timeMins].push({callback: callback, repeat: repeat});
-}
-var atMonitors = [];
-function onLoadStartMonitor(evt){
-  var monitor = setInterval( atMonitorFactory(evt.world), 900);
-  atMonitors.push( monitor );
-}
-if (__plugin.canary){
-  events.loadWorld( onLoadStartMonitor );
-}
-if (__plugin.bukkit){
-  events.worldLoad( onLoadStartMonitor );
-}
-
-addUnloadHandler(function(){
-  _foreach(atMonitors, function(atInterval){
-    clearInterval(atInterval);
-  });
-});
 /*************************************************************************
 ### utils.time( world ) function
 
@@ -597,7 +492,7 @@ exports.find = function( dir , filter ) {
       files = dirfile.list(filter);
     }
     _foreach( files, function( file ) {
-      file = new java.io.File( dir + '/' + file );
+      file = new File( dir + '/' + file );
       if ( file.isDirectory() ) {
         recurse( file.canonicalPath, store );
       } else {
@@ -640,188 +535,6 @@ exports.serverAddress = function() {
   }  
   return null;
 };
-/************************************************************************
-### utils.watchFile() function
-
-Watches for changes to the given file or directory and calls the function provided
-when the file changes.
-
-#### Parameters
- 
- * File - the file to watch (can be a file or directory)
- * Callback - The callback to invoke when the file has changed. The callback takes the 
-   changed file as a parameter.
-
-#### Example
-
-```javascript
-var utils = require('utils');
-utils.watchFile( 'test.txt', function( file ) { 
-   console.log( file + ' has changed');
-});
-```
-***/
-var filesWatched = {};
-var dirsWatched = {};
-
-exports.watchFile = function( file, callback ) {
-  if ( typeof file == 'string' ) { 
-    file = new File(file);
-  }
-  filesWatched[file.canonicalPath] = {
-    callback: callback,
-    lastModified: file.lastModified()
-  };
-};
-
-/************************************************************************
-### utils.watchDir() function
-
-Watches for changes to the given directory and calls the function provided
-when the directory changes. It works by calling watchFile/watchDir for each
-file/subdirectory.
-
-#### Parameters
- 
- * Dir - the file to watch (can be a file or directory)
- * Callback - The callback to invoke when the directory has changed. 
-              The callback takes the changed file as a parameter. 
-              For each change inside the directory the callback will also 
-              be called.
-
-#### Example
-
-```javascript
-var utils = require('utils');
-utils.watchDir( 'players/_ial', function( dir ) { 
-   console.log( dir + ' has changed');
-});
-```
-***/
-
-exports.watchDir = function( dir, callback ) {
-  if ( typeof dir == 'string' ) { 
-    dir = new File(dir);
-  }
-  dirsWatched[dir.canonicalPath] = {
-    callback: callback,
-    lastModified: dir.lastModified()
-  };
-  
-  var files = dir.listFiles(),file;
-  if ( !files ) {
-    return;
-  }
-  for ( var i = 0; i < files.length; i++ ) {
-    file = files[i];
-    if (file.isDirectory( )) {
-      exports.watchDir(file,callback);
-    }else{
-      exports.watchFile(file,callback);
-    }
-  }
-};
-/************************************************************************
-### utils.unwatchFile() function
-
-Removes a file from the watch list.
-
-#### Example
-```javascript
-var utils = require('utils');
-utils.unwatchFile( 'test.txt');
-```
-
-***/
-exports.unwatchFile = function( file, callback ) {
-  if ( typeof file == 'string' ) { 
-    file = new File(file);
-  }
-  delete filesWatched[file.canonicalPath];  
-};
-
-/************************************************************************
-### utils.unwatchDir() function
-
-Removes a directory from the watch list and all files inside the directory
-are also "unwatched"
-
-#### Example
-```javascript
-var utils = require('utils');
-utils.unwatchDir ('players/_ial');
-```
-Would cause also 
-```javascript
-utils.unwatchFile (file);
-```
-for each file inside directory (and unwatchDir for each directory inside it)
-
-***/
-exports.unwatchDir = function( dir, callback ) {
-  if ( typeof dir == 'string' ) { 
-    dir = new File(dir);
-  }
-  delete dirsWatched[dir.canonicalPath];  
-  
-  var files = dir.listFiles(),file;
-  if ( !files ) {
-    return;
-  }
-  for ( var i = 0; i < files.length; i++ ) {
-    file = files[i];
-    if (file.isDirectory( )) {
-      exports.unwatchDir(file,callback);
-    }else{
-      exports.unwatchFile(file,callback);
-    }
-  }
-};
-
-function fileWatcher(calledCallbacks) {
-  for (var file in filesWatched) {
-    var fileObject = new File(file);
-    var lm = fileObject.lastModified();
-    if ( lm != filesWatched[file].lastModified ) {
-      filesWatched[file].lastModified = lm;
-      filesWatched[file].callback(fileObject);
-      if (!fileObject.exists()) {
-        exports.unwatchFile(file,filesWatched[file].callback);
-      }
-    }
-  }
-};
-
-
-//monitors directories for time change
-//when a change is detected watchFiles are invoked for each of the files in directory
-//and callback is called
-function dirWatcher(calledCallbacks) {
-  for (var dir in dirsWatched) {
-    var dirObject = new File(dir);
-    var lm = dirObject.lastModified();
-    var dw = dirsWatched[dir];
-    if ( lm != dirsWatched[dir].lastModified ) {
-      dirsWatched[dir].lastModified = lm;
-      dirsWatched[dir].callback(dirObject);
-      
-      exports.unwatchDir(dir, dw.callback);
-      //causes all files to be rewatched
-      if (dirObject.exists()) {
-        exports.watchDir(dir, dw.callback);
-      } 
-    }
-  }
-};
-
-//guarantees that a callback is only called once for each change 
-function monitorDirAndFiles() {
-  fileWatcher ();
-  dirWatcher ();
-  setTimeout( monitorDirAndFiles, 3000 );
-};
-
-setTimeout( monitorDirAndFiles, 3000 );
 /**************************************************************************
 ### utils.array() function
 
