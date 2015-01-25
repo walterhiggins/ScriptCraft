@@ -44,7 +44,11 @@ function slash( commands, sender ){
     return;
   }
   if (__plugin.canary){
-    server.executeVanillaCommand(sender, commands);
+    if (sender === server){
+      server.consoleCommand( commands );
+    } else {
+      server.consoleCommand( commands, sender );
+    }
   }
   if (__plugin.bukkit){
     server.dispatchCommand(sender, commands);
