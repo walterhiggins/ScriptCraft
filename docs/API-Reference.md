@@ -384,6 +384,8 @@ Walter Higgins
    * [Drone.rainbow() method](#dronerainbow-method)
    * [Drone.spiral_stairs() method](#dronespiral_stairs-method)
    * [Drone.temple() method](#dronetemple-method)
+ * [The at Module](#the-at-module)
+   * [at() function](#at-function)
  * [Blocks Module](#blocks-module)
    * [Examples](#examples)
  * [Fireworks Module](#fireworks-module)
@@ -401,6 +403,8 @@ Walter Higgins
  * [Signs Module](#signs-module)
    * [signs.menu() function](#signsmenu-function)
    * [signs.getTargetedBy() function](#signsgettargetedby-function)
+ * [The slash Module](#the-slash-module)
+   * [The slash() function](#the-slash-function)
  * [Sounds Module](#sounds-module)
    * [Usage (Bukkit) :](#usage-bukkit-)
  * [Teleport Module](#teleport-module)
@@ -417,19 +421,19 @@ Walter Higgins
    * [utils.getMousePos() function](#utilsgetmousepos-function)
    * [utils.foreach() function](#utilsforeach-function)
    * [utils.nicely() function](#utilsnicely-function)
-   * [utils.at() function](#utilsat-function)
    * [utils.time( world ) function](#utilstime-world--function)
    * [utils.time24( world ) function](#utilstime24-world--function)
    * [utils.find() function](#utilsfind-function)
    * [utils.serverAddress() function](#utilsserveraddress-function)
-   * [utils.watchFile() function](#utilswatchfile-function)
-   * [utils.watchDir() function](#utilswatchdir-function)
-   * [utils.unwatchFile() function](#utilsunwatchfile-function)
-   * [utils.unwatchDir() function](#utilsunwatchdir-function)
    * [utils.array() function](#utilsarray-function)
    * [utils.players() function](#utilsplayers-function)
    * [utils.playerNames() function](#utilsplayernames-function)
    * [utils.stat() function](#utilsstat-function)
+ * [The watcher Module](#the-watcher-module)
+   * [watcher.watchFile() function](#watcherwatchfile-function)
+   * [watcher.watchDir() function](#watcherwatchdir-function)
+   * [watcher.unwatchFile() function](#watcherunwatchfile-function)
+   * [watcher.unwatchDir() function](#watcherunwatchdir-function)
  * [Example Plugin #1 - A simple extension to Minecraft.](#example-plugin-1---a-simple-extension-to-minecraft)
    * [Usage:](#usage-3)
  * [Example Plugin #2 - Making extensions available for all players.](#example-plugin-2---making-extensions-available-for-all-players)
@@ -4454,6 +4458,50 @@ d.temple();
 ```
 ![temple example](img/templeex1.png)
 
+## The at Module
+
+The at module provides a single function `at()` which can be used to schedule
+repeating (or non-repeating) tasks to be done at a particular time. 
+
+### at() function
+
+The utils.at() function will perform a given task at a given time in the 
+(minecraft) day.
+
+#### Parameters
+
+ * time24hr : The time in 24hr form - e.g. 9:30 in the morning is '09:30' while
+   9:30 pm is '21:30', midnight is '00:00' and midday is '12:00'
+ * callback : A javascript function which will be invoked at the given time.
+ * worlds : (optional) An array of worlds. Each world has its own clock. If no array of worlds is specified, all the server's worlds are used.
+ * repeat : (optional) true or false, default is true (repeat the task every day)
+
+#### Example
+
+To warn players when night is approaching:
+
+```javascript
+var utils = require('utils'),
+    at = require('at');
+function warning(){
+  utils.players(function( player ) {
+    echo( player, 'The night is dark and full of terrors!' );
+  });
+}
+at('19:00', warning);
+```
+To run a task only once at the next given time:
+```javascript
+var utils = require('utils'),
+    at = require('at');
+function wakeup(){
+  utils.players(function( player ) {
+    echo( player, "Wake Up Folks!" );
+  });
+}
+at('06:00', wakeup, null, false);
+```
+
 ## Blocks Module
 
 You hate having to lookup [Data Values][dv] when you use ScriptCraft's
@@ -4883,6 +4931,39 @@ if ( !sign ) {
 
 [buksign]: http://jd.bukkit.org/dev/apidocs/org/bukkit/block/Sign.html
 
+## The slash Module
+
+This module provides a single function which makes it easy to execute
+minecraft commands via javascript.
+
+### The slash() function
+
+This function makes it easy to execute one or more minecraft commands.
+
+#### Parameters
+
+ * commands : A String or Array of strings - each string is a command to be executed.
+ * sender: The player or server on whose behalf the commands should be executed.
+
+#### Examples
+
+Invoke the `/defaultgamemode creative` command (as server).
+
+```javascript
+var slash = require('slash');
+slash('defaultgamemode creative', server);
+```
+
+Set the time of day to Midday and toggle downfall:
+
+```javascript
+var slash = require('slash');
+slash([
+  'time set 6000',
+  'toggledownfall'
+], server);
+```
+
 ## Sounds Module
 
 This module is a simple wrapper around the Bukkit Sound class and provides
@@ -5197,42 +5278,6 @@ function and the start of the next `next()` function.
 
 See the source code to utils.foreach for an example of how utils.nicely is used.
 
-### utils.at() function
-
-The utils.at() function will perform a given task at a given time in the 
-(minecraft) day.
-
-#### Parameters
-
- * time24hr : The time in 24hr form - e.g. 9:30 in the morning is '09:30' while
-   9:30 pm is '21:30', midnight is '00:00' and midday is '12:00'
- * callback : A javascript function which will be invoked at the given time.
- * worlds : (optional) An array of worlds. Each world has its own clock. If no array of worlds is specified, all the server's worlds are used.
- * repeat : (optional) true or false, default is true (repeat the task every day)
-
-#### Example
-
-To warn players when night is approaching:
-
-```javascript
-var utils = require('utils');
-function warning(){
-  utils.players(function( player ) {
-    echo( player, 'The night is dark and full of terrors!' );
-  });
-}
-utils.at('19:00', warning);
-```
-To run a task only once at the next given time:
-```javascript
-var utils = require('utils');
-function wakeup(){
-  utils.players(function( player ) {
-    echo( player, "Wake Up Folks!" );
-  });
-}
-utils.at('06:00', wakeup, null, false);
-```
 ### utils.time( world ) function
 
 Returns the timeofday (in minecraft ticks) for the given world. This function is necessary because
@@ -5276,73 +5321,6 @@ var utils = require('utils');
 var serverAddress = utils.serverAddress();
 console.log(serverAddress);
 ```
-### utils.watchFile() function
-
-Watches for changes to the given file or directory and calls the function provided
-when the file changes.
-
-#### Parameters
- 
- * File - the file to watch (can be a file or directory)
- * Callback - The callback to invoke when the file has changed. The callback takes the 
-   changed file as a parameter.
-
-#### Example
-
-```javascript
-var utils = require('utils');
-utils.watchFile( 'test.txt', function( file ) { 
-   console.log( file + ' has changed');
-});
-```
-### utils.watchDir() function
-
-Watches for changes to the given directory and calls the function provided
-when the directory changes. It works by calling watchFile/watchDir for each
-file/subdirectory.
-
-#### Parameters
- 
- * Dir - the file to watch (can be a file or directory)
- * Callback - The callback to invoke when the directory has changed. 
-              The callback takes the changed file as a parameter. 
-              For each change inside the directory the callback will also 
-              be called.
-
-#### Example
-
-```javascript
-var utils = require('utils');
-utils.watchDir( 'players/_ial', function( dir ) { 
-   console.log( dir + ' has changed');
-});
-```
-### utils.unwatchFile() function
-
-Removes a file from the watch list.
-
-#### Example
-```javascript
-var utils = require('utils');
-utils.unwatchFile( 'test.txt');
-```
-
-### utils.unwatchDir() function
-
-Removes a directory from the watch list and all files inside the directory
-are also "unwatched"
-
-#### Example
-```javascript
-var utils = require('utils');
-utils.unwatchDir ('players/_ial');
-```
-Would cause also 
-```javascript
-utils.unwatchFile (file);
-```
-for each file inside directory (and unwatchDir for each directory inside it)
-
 ### utils.array() function
 
 Converts Java collection objects to type Javascript array so they can avail of
@@ -5427,6 +5405,77 @@ This function also contains values for each possible stat so you can get at stat
     var utils = require('utils');
     var JUMPSTAT = utils.stat.JUMP; // Accessing the value
     var jumpCount = player.getStat ( JUMPSTAT ); // canary-specific code
+## The watcher Module
+
+This module exposes functions for watching for changes to files or directories.
+
+### watcher.watchFile() function
+
+Watches for changes to the given file or directory and calls the function provided
+when the file changes.
+
+#### Parameters
+ 
+ * File - the file to watch (can be a file or directory)
+ * Callback - The callback to invoke when the file has changed. The callback takes the 
+   changed file as a parameter.
+
+#### Example
+
+```javascript
+var watcher = require('watcher');
+watcher.watchFile( 'test.txt', function( file ) { 
+  console.log( file + ' has changed');
+});
+```
+### watcher.watchDir() function
+
+Watches for changes to the given directory and calls the function provided
+when the directory changes. It works by calling watchFile/watchDir for each
+file/subdirectory.
+
+#### Parameters
+ 
+ * Dir - the file to watch (can be a file or directory)
+ * Callback - The callback to invoke when the directory has changed. 
+              The callback takes the changed file as a parameter. 
+              For each change inside the directory the callback will also 
+              be called.
+
+#### Example
+
+```javascript
+var watcher = require('watcher');
+watcher.watchDir( 'players/_ial', function( dir ) { 
+  console.log( dir + ' has changed');
+});
+```
+### watcher.unwatchFile() function
+
+Removes a file from the watch list.
+
+#### Example
+```javascript
+var watcher = require('watcher');
+watcher.unwatchFile('test.txt');
+```
+
+### watcher.unwatchDir() function
+
+Removes a directory from the watch list and all files inside the directory
+are also "unwatched"
+
+#### Example
+```javascript
+var watcher = require('watcher');
+watcher.unwatchDir ('players/_ial');
+```
+Would cause also 
+```javascript
+watcher.unwatchFile (file);
+```
+for each file inside directory (and unwatchDir for each directory inside it)
+
 ## Example Plugin #1 - A simple extension to Minecraft.
 
 A simple minecraft plugin. The most basic module.
