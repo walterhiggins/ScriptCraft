@@ -1,4 +1,4 @@
-/*global __plugin, org, exports, server, setTimeout, Packages*/
+/*global __plugin, org, exports, server, setTimeout, Packages, setInterval, addUnloadHandler, clearInterval, events*/
 'use strict';
 var File = java.io.File;
 
@@ -350,16 +350,7 @@ utils.foreach (players, function( player ) {
 
 ... The `utils.foreach()` function can work with Arrays or any
 Java-style collection. This is important because many objects in the
-CanaryMod and Bukkit APIs use Java-style collections...
-
-```javascript
-// in bukkit, server.onlinePlayers returns a java.util.Collection object
-utils.foreach( server.onlinePlayers, function(player){
-  player.chat('Hello!');
-}); 
-```
-... the above code sends a 'Hello!' to every online player.
-
+CanaryMod and Bukkit APIs use Java-style collections.
 ***/
 var _foreach = function( array, callback, context, delay, onCompletion ) {
   if ( array instanceof java.util.Collection ) {
@@ -423,7 +414,7 @@ exports.nicely = _nicely;
 /************************************************************************
 ### utils.at() function
 
-The utils.at() function will perform a given task at a given time every 
+The utils.at() function will perform a given task at a given time in the 
 (minecraft) day.
 
 #### Parameters
@@ -432,46 +423,99 @@ The utils.at() function will perform a given task at a given time every
    9:30 pm is '21:30', midnight is '00:00' and midday is '12:00'
  * callback : A javascript function which will be invoked at the given time.
  * worlds : (optional) An array of worlds. Each world has its own clock. If no array of worlds is specified, all the server's worlds are used.
+ * repeat : (optional) true or false, default is true (repeat the task every day)
 
 #### Example
 
-To warn players when night is approaching...
+To warn players when night is approaching:
 
 ```javascript
 var utils = require('utils');
-
-utils.at( '19:00', function() {
-
+function warning(){
   utils.players(function( player ) {
     echo( player, 'The night is dark and full of terrors!' );
   });
-
-});
+}
+utils.at('19:00', warning);
 ```
-  
+To run a task only once at the next given time:
+```javascript
+var utils = require('utils');
+function wakeup(){
+  utils.players(function( player ) {
+    echo( player, "Wake Up Folks!" );
+  });
+}
+utils.at('06:00', wakeup, null, false);
+```
 ***/
-exports.at = function( time24hr, callback, pWorlds ) {
-  var forever = function(){ return true; };
+exports.at = function( time24hr, callback, pWorlds, repeat ) {
   var timeParts = time24hr.split( ':' );
   var timeMins = (timeParts[0] * 60) + (timeParts[1] * 1);
-  if ( typeof pWorlds == 'undefined' ) {
+  if (!pWorlds || typeof pWorlds == 'undefined' ) {
     pWorlds = worlds();
   }
-  var calledToday = false;
-  _nicely( function() {
-    _foreach( pWorlds, function ( world ) {
-      var time = getTime24(world);
-      var diff = time - timeMins;
-      if (diff > 0 && diff < 5 && !calledToday){
-        callback();
-	calledToday = true;
+  if (repeat === undefined){
+    repeat = true;
+  }
+  _foreach( pWorlds, function ( world ) {
+    atAddTask( timeMins, callback, world, repeat);
+  });
+};
+var atTasks = {};
+/*
+ constructs a function which will be called every x ticks to 
+ track the schedule for a given world
+*/
+function atMonitorFactory(world){
+  var worldName = ''+ world.name;
+  var lastRun = null;
+  return function(){
+    var timeMins = getTime24(world);
+    if (timeMins === lastRun){
+      return;
+    }
+    lastRun = timeMins;
+    var worldSchedule = atTasks[worldName];
+    if (!worldSchedule){
+      return;
+    }
+    var tasks = worldSchedule[timeMins];
+    if (!tasks){
+      return;
+    }
+    _foreach(tasks, function(task, i){
+      if (!task){
+	return;
       }
-      if (diff < 0){
-	calledToday = false;
+      setTimeout(task.callback.bind(null, timeMins, world), 1);
+      if (!task.repeat){
+	tasks[i] = null;
       }
     });
-  }, forever, null, 1000 );
-};
+  };
+}
+function atAddTask( timeMins, callback, world, repeat){
+  var worldName = ''+world.name;
+  if (!atTasks[worldName]){
+    atTasks[worldName] = {};
+  }
+  if (!atTasks[worldName][timeMins]){
+    atTasks[worldName][timeMins] = [];
+  }
+  atTasks[worldName][timeMins].push({callback: callback, repeat: repeat});
+}
+var atMonitors = [];
+events.loadWorld(function(evt){
+  var monitor = setInterval( atMonitorFactory(evt.world), 900);
+  atMonitors.push( monitor );
+});
+
+addUnloadHandler(function(){
+  _foreach(atMonitors, function(atInterval){
+    clearInterval(atInterval);
+  });
+});
 /*************************************************************************
 ### utils.time( world ) function
 
@@ -618,7 +662,6 @@ exports.watchFile = function( file, callback ) {
   if ( typeof file == 'string' ) { 
     file = new File(file);
   }
-  //console.log("Watching file " + file);
   filesWatched[file.canonicalPath] = {
     callback: callback,
     lastModified: file.lastModified()
@@ -654,7 +697,6 @@ exports.watchDir = function( dir, callback ) {
   if ( typeof dir == 'string' ) { 
     dir = new File(dir);
   }
-  //console.log("Watching dir " + dir);
   dirsWatched[dir.canonicalPath] = {
     callback: callback,
     lastModified: dir.lastModified()
@@ -689,7 +731,6 @@ exports.unwatchFile = function( file, callback ) {
   if ( typeof file == 'string' ) { 
     file = new File(file);
   }
-  //console.log("Unwatching file " + file);
   delete filesWatched[file.canonicalPath];  
 };
 
@@ -715,7 +756,6 @@ exports.unwatchDir = function( dir, callback ) {
   if ( typeof dir == 'string' ) { 
     dir = new File(dir);
   }
-  //console.log("Unwatching dir " + dir);
   delete dirsWatched[dir.canonicalPath];  
   
   var files = dir.listFiles(),file;
@@ -737,11 +777,9 @@ function fileWatcher(calledCallbacks) {
     var fileObject = new File(file);
     var lm = fileObject.lastModified();
     if ( lm != filesWatched[file].lastModified ) {
-      //console.log("Change found in " + file);
       filesWatched[file].lastModified = lm;
       filesWatched[file].callback(fileObject);
       if (!fileObject.exists()) {
-        //console.log("File " + file + " was removed.");
         exports.unwatchFile(file,filesWatched[file].callback);
       }
     }
@@ -758,7 +796,6 @@ function dirWatcher(calledCallbacks) {
     var lm = dirObject.lastModified();
     var dw = dirsWatched[dir];
     if ( lm != dirsWatched[dir].lastModified ) {
-      //console.log("Change found in " + dir);
       dirsWatched[dir].lastModified = lm;
       dirsWatched[dir].callback(dirObject);
       
@@ -766,9 +803,7 @@ function dirWatcher(calledCallbacks) {
       //causes all files to be rewatched
       if (dirObject.exists()) {
         exports.watchDir(dir, dw.callback);
-      } else {
-        //console.log("Directory " + dir + " was removed.");
-      }
+      } 
     }
   }
 };
@@ -977,3 +1012,4 @@ This function also contains values for each possible stat so you can get at stat
     var jumpCount = player.getStat ( JUMPSTAT ); // canary-specific code
 ***/
 exports.stat = __plugin.canary ? getStatCanary: getStatBukkit;
+
