@@ -87,8 +87,7 @@ For more information on CanaryMod's Permissions and Groups see the following:
 ## Configuring your Server (optional)
 
 Once you've installed CanaryMod, depending on your specific needs,
-you might want to consider setting the following properties in the
-`server.properties` or `world.properties` files...
+you might want to consider setting the following properties in the `server.cfg` or `config/worlds/<worldName>/<worldName>.cfg` files ...
 
     # completely flat worlds are best for building from scratch
     level-type=FLAT
@@ -623,29 +622,31 @@ things...
 compare the ages of your friends or siblings to your own age.
 
 ## More fun with `true` or `false`
-TODO: This needs to be changed for CanaryMod
 
-You can find out if you can Fly in minecraft by typing the following statement...
+You can find out if you can Fly in minecraft by typing the following statement ...
 
-    /js self.allowFlight 
+    /js self.getCapabilities().mayFly()
 
 ... the result will be `true` or `false` depending on whether you can
 fly or not. You can turn on and off your ability to fly by setting
-your `allowFlight` property to `true` or `false`. Try it...
+your `mayFly` property to `true` or `false`. Try it ...
 
-    /js self.allowFlight = true
+    /js self.getCapabilities().setMayFly(true)
+    /js self.updateCapabilities()
 
-... Now you can fly! To turn off flight...
+... Now you can fly! To turn off flight ...
 
-    /js self.allowFlight = false
+    /js self.getCapabilities().setMayFly(false)
+    /js self.setFlying(false)
+    /js self.updateCapabilities()
 
 ... and you come crashing down to earth. This is just one example of
-how `true` and `false` are used throughout ScriptCraft - these are
-called `boolean` values - named after [George Boole][boole], a 19th Century
+how `true` and `false` are used throughout ScriptCraft &ndash; these are
+called `boolean` values &ndash; named after [George Boole][boole], a 19th Century
 Maths Professor at University College Cork. There are plenty more
 examples of boolean values in Minecraft. You can find out if monsters
 are allowed in your minecraft world by typing the following
-statement...
+statement ...
 
     /js self.location.world.allowMonsters
 
