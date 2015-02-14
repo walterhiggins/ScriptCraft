@@ -87,8 +87,7 @@ For more information on CanaryMod's Permissions and Groups see the following:
 ## Configuring your Server (optional)
 
 Once you've installed CanaryMod, depending on your specific needs,
-you might want to consider setting the following properties in the
-`server.properties` or `world.properties` files...
+you might want to consider setting the following properties in the `server.cfg` or `config/worlds/<worldName>/<worldName>.cfg` files ...
 
     # completely flat worlds are best for building from scratch
     level-type=FLAT
