@@ -74,9 +74,11 @@ events.on( Packages.net.canarymod.hook.player.BlockDestroyHook, function( evt, c
 ```
 
 The `this` keyword when used inside the callback function refers to
-the Listener object created by ScriptCraft. It has a single method
-`unregister()` which can be used to stop listening. This is the same
-object which is returned by the `events.on()` function.
+the Listener object created by ScriptCraft. It has 2 methods
+`unregister()` which can be used to stop listening and `cancel()`
+which can be used to cancel the current event. The object returned by
+`events.on()` only has the `unregister()` method, the `cancel()`
+method is only available from within the event handling function.
 
 To unregister a listener *outside* of the listener function...
 

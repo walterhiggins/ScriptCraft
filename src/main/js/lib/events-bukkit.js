@@ -49,7 +49,16 @@ exports.on = function(
           evt.setCancelled(true);
         }
       }
-      handler.call( result, evt, cancel );
+      /*
+       let handlers use this.cancel() to cancel the current event
+       or this.unregister() to unregister from future events.
+       */
+      var bound = {};
+      for (var i in result){
+        bound[i] = result[i];
+      }
+      bound.cancel = cancel;
+      handler.call( bound, evt, cancel );
     } 
   } );
   /* 

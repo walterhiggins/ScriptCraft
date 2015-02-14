@@ -30,8 +30,17 @@ exports.on = function(
         e.setCanceled();
       }
     }
+    /*
+     let handlers use this.cancel() to cancel the current event
+     or this.unregister() to unregister from future events.
+     */
+    var bound = {};
+    for (var i in result){
+      bound[i] = result[i];
+    }
+    bound.cancel = cancel;
     try { 
-      handler.call(result, e, cancel); 
+      handler.call(bound, e, cancel); 
     } catch ( error ){
       console.log('Error while executing handler:' + handler + 
                   ' for event type:' + eventType + 

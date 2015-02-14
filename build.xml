@@ -58,6 +58,7 @@
 
   <target name="get-canary" depends="init" description="Downloads canarymod jar" unless="canary.present">
     <get src="https://ci.visualillusionsent.net/job/CanaryMod/lastStableBuild/artifact/*zip*/archive.zip"
+	 maxtime="60"
 	 dest="target/canarymod.zip"
 	 verbose="true"/>
     <unzip src="target/canarymod.zip"
