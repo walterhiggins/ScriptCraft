@@ -241,6 +241,13 @@ var blocks = {
   stained_clay: {
     white: 159 // All other colors added below
   },
+  slime: 165,
+  barrier: 166,
+  trapdoor_iron: 167,
+  prismarine: 168,
+  prismarine_brick: '168:1',
+  prismarine_dark: '168:2',
+  sealantern: 169,
   hay: 170,
   carpet: {
     white: 171 // All other colors added below
@@ -249,7 +256,38 @@ var blocks = {
   coal_block: 173,
   packed_ice: 174,
   double_plant: 175,
-  bonemeal: '351:15'
+  sunflower: 175,
+  flower: {
+    sunflower: 175,
+    lilac: '175:1',
+    tallgrass: '175:2',
+    fern: '175:3',
+    rosebush: '175:4',
+    peony: '175:5',
+    yellow: 37,
+    dandelion: 37,
+    rose: 38,
+    red: 38
+  },
+  bonemeal: '351:15',
+  banner: {
+    standing: 176,
+    wallmounted: 177
+  },
+  gate: {
+    spruce: 183,
+    birch: 184,
+    jungle: 185,
+    oak: 186,
+    acacia: 187
+  },
+  fence: {
+    spruce: 188,
+    birch: 189,
+    jungle: 190,
+    oak: 191,
+    acacia: 192
+  }
 };
 
 // Add all available colors to colorized block collections
