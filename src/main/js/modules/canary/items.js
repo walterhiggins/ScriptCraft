@@ -1,3 +1,4 @@
+/*global nashorn, require, Packages, module*/
 var ItemType = Packages.net.canarymod.api.inventory.ItemType;
 var Canary = Packages.net.canarymod.Canary;
 var itemFactory = Canary.factory().itemFactory;
@@ -35,13 +36,14 @@ if (nashorn){
    */
   var itemTypeClass = require('nashorn-type')(ItemType);
   var materials = itemTypeClass.getDeclaredFields();
+  var name;
   for (var i = 0;i < materials.length; i++ ){
 
     if (materials[i].type != itemTypeClass) {
       continue;
     }
     var materialField = materials[i];
-    var name = (''+materialField.name);
+    name = (''+materialField.name);
     name = name.replace(/^(.)/,function(a){ 
       return a.toLowerCase(); 
     });
@@ -57,7 +59,7 @@ if (nashorn){
     if (!(ItemType[field] instanceof ItemType)){
       continue;
     }
-    var name = (''+field).replace(/^(.)/,function(a){
+    name = (''+field).replace(/^(.)/,function(a){
       return a.toLowerCase();
     });
     items[name] = getMaterialHandler(ItemType[field]);
