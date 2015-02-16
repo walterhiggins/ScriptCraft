@@ -28,43 +28,66 @@ main thread of execution.
 
 The following example illustrates how to use http.request to make a request to a JSON web service and evaluate its response...
 
-    var jsResponse;
-    var http = require('./http/request');
-    http.request("http://scriptcraftjs.org/sample.json",function(responseCode, responseBody){
-        jsResponse = eval("(" + responseBody +  ")");
-    });
+```javascript
+var jsResponse;
+var http = require('request');
+http.request('http://scriptcraftjs.org/sample.json',function(responseCode, responseBody){
+  jsResponse = JSON.parse( responseBody );
+});
+```
+The following example illustrates a more complex use-case POSTing parameters to a CGI process on a server...
 
-... The following example illustrates a more complex use-case POSTing parameters to a CGI process on a server...
-
-    var http = require('./http/request');
-    http.request(
-      {
-        url: 'http://pixenate.com/pixenate/pxn8.pl',
-        method: 'POST',
-        params: {script: '[]'}
-      },
-      function( responseCode, responseBody ) {
-         var jsObj = eval('(' + responseBody + ')');
-      });
+```javascript
+var http = require('http');
+http.request( {
+    url: 'http://pixenate.com/pixenate/pxn8.pl',
+    method: 'POST',
+    params: {script: '[]'}
+  },
+  function( responseCode, responseBody ) {
+    var jsObj = JSON.parse( responseBody );
+  });
+```
 
 ***/
-exports.request = function( request, callback ) {
-  var paramsToString = function( params ) {
-    var result = '',
+
+/*global exports, encodeURI, server, __plugin*/
+function paramsToString( params ) {
+  var result = '',
       paramNames = [],
       i;
-    for ( i in params ) {
-      paramNames.push( i );
-    }
-    for ( i = 0; i < paramNames.length; i++ ) {
-      result += paramNames[i] + '=' + encodeURI( params[ paramNames[i] ] );
-      if ( i < paramNames.length-1 )
-        result += '&';
-    }
-    return result;
-  };
-
-  server.scheduler.runTaskAsynchronously( __plugin, function() {
+  for ( i in params ) {
+    paramNames.push( i );
+  }
+  for ( i = 0; i < paramNames.length; i++ ) {
+    result += paramNames[i] + '=' + encodeURI( params[ paramNames[i] ] );
+    if ( i < paramNames.length-1 )
+      result += '&';
+  }
+  return result;
+}
+function invokeNow( fn ){
+  if (__plugin.bukkit){
+    server.schedule.runTask( __plugin, fn);
+    return;
+  }
+  if (__plugin.canary){
+    fn();
+    return;
+  }
+}
+function invokeLater( fn ){
+  if (__plugin.bukkit){
+    server.scheduler.runTaskAsynchronously( __plugin, fn);
+    return;
+  }
+  if (__plugin.canary){
+    fn();
+    return;
+  }
+}
+exports.request = function( request, callback ) {
+  invokeLater( function() {
     var url, paramsAsString, conn, requestMethod;
     if (typeof request === 'string'){
       url = request;
@@ -94,7 +117,7 @@ exports.request = function( request, callback ) {
       conn.setRequestProperty('charset', 'utf-8');
       conn.setRequestProperty('Content-Length', '' + paramsAsString.length);
       conn.useCaches =false ;
-      wr = new java.io.DataOutputStream(conn.getOutputStream ());
+      var wr = new java.io.DataOutputStream(conn.getOutputStream ());
       wr.writeBytes(paramsAsString);
       wr.flush();
       wr.close();
@@ -106,8 +129,9 @@ exports.request = function( request, callback ) {
       stream = conn.getInputStream();
       response = new java.util.Scanner( stream ).useDelimiter("\\A").next();
     }
-    server.scheduler.runTask( __plugin, function( ) {
+    invokeNow( function( ) {
       callback( rc, response );
     });
   });
+
 };
