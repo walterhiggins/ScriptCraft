@@ -4765,24 +4765,26 @@ main thread of execution.
 
 The following example illustrates how to use http.request to make a request to a JSON web service and evaluate its response...
 
-    var jsResponse;
-    var http = require('./http/request');
-    http.request("http://scriptcraftjs.org/sample.json",function(responseCode, responseBody){
-        jsResponse = eval("(" + responseBody +  ")");
-    });
+```javascript
+var jsResponse;
+var http = require('request');
+http.request('http://scriptcraftjs.org/sample.json',function(responseCode, responseBody){
+  jsResponse = JSON.parse( responseBody );
+});
+```
+The following example illustrates a more complex use-case POSTing parameters to a CGI process on a server...
 
-... The following example illustrates a more complex use-case POSTing parameters to a CGI process on a server...
-
-    var http = require('./http/request');
-    http.request(
-      {
-        url: 'http://pixenate.com/pixenate/pxn8.pl',
-        method: 'POST',
-        params: {script: '[]'}
-      },
-      function( responseCode, responseBody ) {
-         var jsObj = eval('(' + responseBody + ')');
-      });
+```javascript
+var http = require('http');
+http.request( {
+    url: 'http://pixenate.com/pixenate/pxn8.pl',
+    method: 'POST',
+    params: {script: '[]'}
+  },
+  function( responseCode, responseBody ) {
+    var jsObj = JSON.parse( responseBody );
+  });
+```
 
 ## sc-mqtt module
 
