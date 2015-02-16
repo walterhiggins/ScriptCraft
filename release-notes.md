@@ -1,5 +1,11 @@
 RELEASE NOTES
 =============
+3.1.2 Release (2015 02 16)
+--------------------------
+Bug fix release. Fixes bug #213 (http.request fixed for CanaryMod)
+New blocks.slime and other block types.
+Various other fixes. See https://github.com/walterhiggins/ScriptCraft/compare/3.1.1...3.1.2
+
 3.1.1 Release (2015 01 24)
 --------------------------
 This is a bug fix release. 
