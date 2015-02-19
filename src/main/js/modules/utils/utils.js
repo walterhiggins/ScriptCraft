@@ -76,13 +76,27 @@ Returns a World object matching the given name
 ***/
 function _world( worldName ){
   if (__plugin.canary){
+    if (worldName instanceof Packages.net.canarymod.api.world.World){
+      return worldName;
+    }
+    var worldMgr = Canary.server.worldManager;
     try { 
-      return Canary.server.worldManager.getWorld( worldName, true );
+      if (worldName === undefined){
+	var worldNames = worldMgr.getLoadedWorldsNames();
+	worldName = worldNames[0];
+      }
+      return worldMgr.getWorld( worldName, true );
     } catch (error) {
       console.error( 'utils.world() failed to load ' + worldName + ',Error:' + error );
     }
   }
   if (__plugin.bukkit){
+    if (worldName instanceof org.bukkit.World){
+      return worldName;
+    }
+    if (worldName === undefined){
+      return bkBukkit.getWorlds().get(0);
+    }
     return bkBukkit.getWorld( worldName );
   }
   return null;
@@ -427,6 +441,8 @@ See http://minecraft.gamepedia.com/Day-night_cycle#Conversions
 
 ***/
 function getTime(world){
+  world = _world(world);
+
   if (__plugin.bukkit){
     return world.time;
   }
@@ -450,8 +466,12 @@ Returns the timeofday for the given world using 24 hour notation. (number of min
 
 See http://minecraft.gamepedia.com/Day-night_cycle#Conversions
 
+#### Parameters
+
+ * world : the name of the world or world object for which you want to get time
 ***/
-function getTime24(world){
+function getTime24( world ){
+  world = _world(world); // accept world name or object or undeifned
   var mcTime = getTime(world);
   var mins = Math.floor( ( (mcTime + 6000) % 24000) / 16.6667 );
   return mins;

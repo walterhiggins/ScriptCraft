@@ -5295,6 +5295,9 @@ Returns the timeofday for the given world using 24 hour notation. (number of min
 
 See http://minecraft.gamepedia.com/Day-night_cycle#Conversions
 
+#### Parameters
+
+ * world : the name of the world or world object for which you want to get time
 ### utils.find() function
 
 The utils.find() function will return a list of all files starting at
