@@ -469,6 +469,7 @@ See http://minecraft.gamepedia.com/Day-night_cycle#Conversions
 #### Parameters
 
  * world : the name of the world or world object for which you want to get time
+
 ***/
 function getTime24( world ){
   world = _world(world); // accept world name or object or undeifned
@@ -499,7 +500,6 @@ var jsFiles = utils.find('./', function(dir,name){
     return name.match(/\.js$/);
 });  
 ```
-
 ***/
 exports.find = function( dir , filter ) {
   var result = [];
@@ -564,7 +564,7 @@ all of Javascript's Array goodness.
 #### Example
 
     var utils = require('utils');
-    var worlds = utils.array(server.worlds);
+    var worlds = utils.array(server.worldManager.getAllWorlds());
     
 ***/
 function toArray( ){

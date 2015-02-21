@@ -114,6 +114,7 @@ Walter Higgins
    * [events.itemPickup()](#eventsitempickup)
    * [events.bedExit()](#eventsbedexit)
    * [events.blockPlace()](#eventsblockplace)
+   * [events.heldItemChange()](#eventshelditemchange)
    * [events.toolBroken()](#eventstoolbroken)
    * [events.kick()](#eventskick)
    * [events.playerDeath()](#eventsplayerdeath)
@@ -1539,6 +1540,14 @@ The crucial difference is that the events module now has functions for each of t
 #### Parameters 
 
  * callback - A function which is called whenever the [player.BlockPlaceHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BlockPlaceHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.heldItemChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.HeldItemChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/HeldItemChangeHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -5298,6 +5307,7 @@ See http://minecraft.gamepedia.com/Day-night_cycle#Conversions
 #### Parameters
 
  * world : the name of the world or world object for which you want to get time
+
 ### utils.find() function
 
 The utils.find() function will return a list of all files starting at
@@ -5318,7 +5328,6 @@ var jsFiles = utils.find('./', function(dir,name){
     return name.match(/\.js$/);
 });  
 ```
-
 ### utils.serverAddress() function
 
 The utils.serverAddress() function returns the IP(v4) address of the server.
