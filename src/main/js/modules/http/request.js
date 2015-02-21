@@ -51,7 +51,7 @@ http.request( {
 
 ***/
 
-/*global exports, encodeURI, server, __plugin*/
+/*global exports, encodeURI, server, __plugin, setTimeout*/
 function paramsToString( params ) {
   var result = '',
       paramNames = [],
@@ -82,7 +82,7 @@ function invokeLater( fn ){
     return;
   }
   if (__plugin.canary){
-    fn();
+    setTimeout(fn,20);
     return;
   }
 }
