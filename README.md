@@ -81,6 +81,14 @@ Minecraft.
 If you don't want to compile from source, you can [download the
 compiled plugin here][dl] and copy it to the CanaryMod plugins directory.
 
+# Docker 
+
+To launch a container with CanaryMod and ScriptCraft you can just do 
+
+      docker run -p 25565:25565 -it tclavier/scriptcraft
+
+You can find all files used to build this container in github project : [docker-scriptcraft](https://github.com/tclavier/docker-scriptcraft)
+
 # Post Install
 
 Once installed, a new scriptcraft/plugins directory is automatically
