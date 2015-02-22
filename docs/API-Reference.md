@@ -336,6 +336,7 @@ Walter Higgins
    * [Drone.box() method](#dronebox-method)
    * [Drone.box0() method](#dronebox0-method)
    * [Drone.boxa() method](#droneboxa-method)
+   * [Drone.boxr() method](#droneboxr-method)
    * [Chaining](#chaining)
    * [Drone Properties](#drone-properties)
    * [Extending Drone](#extending-drone)
@@ -3442,6 +3443,27 @@ Construct a rainbow-colored road 100 blocks long...
     boxa(rainbowColors,7,1,30);
 
 ![boxa example](img/boxaex1.png)
+
+### Drone.boxr() method
+
+Construct a cuboid using random choices from an array of blocks.
+
+#### Parameters
+
+ * blocks - An array of blocks - a block will be chosen from the array randomly each time a block is being placed.
+ * width
+ * height
+ * length
+
+#### Example
+
+Construct a wall containing a random mix of stone blocks...
+
+    var stoneBlocks = [blocks.stone, blocks.cobblestone, blocks.moss_stone];
+
+    boxr(stoneBlocks,8,8,1);
+
+![boxr example](img/boxrex1.png)
 
 ### Chaining
 
