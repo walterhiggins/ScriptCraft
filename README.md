@@ -138,6 +138,14 @@ ScriptCraft plugin...
 [ic]: http://canarymod.net/releases
 [cmapi]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/
 
+# Docker 
+
+To launch a container with CanaryMod and ScriptCraft you can just do 
+
+      docker run -p 25565:25565 -it tclavier/scriptcraft
+
+You can find all files used to build this container in github project : [docker-scriptcraft](https://github.com/tclavier/docker-scriptcraft)
+
 # Contributing
 
 If you would like to contribute source code and/or documentation changes please [read contributing.md][contrib]
