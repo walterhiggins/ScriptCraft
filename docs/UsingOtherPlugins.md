@@ -12,7 +12,7 @@ The following question gets asked a lot so I'm going to try to answer it here:
 
 The above question refers to using ScriptCraft for CraftBukkit so I'll answer that first:
 
-You can get the permissionsEx (or any other plugin) like this...
+You can get the permissionsEx (or any other Bukkit plugin) like this...
 ```javascript
 var pex = server.pluginManager.getPlugin('PermissionsEx');
 if (pex.getUser(player).inGroup('moderator') ) {
