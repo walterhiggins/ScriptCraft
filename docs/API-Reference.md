@@ -5345,7 +5345,7 @@ all of Javascript's Array goodness.
 #### Example
 
     var utils = require('utils');
-    var worlds = utils.array(server.worlds);
+    var worlds = utils.array(server.worldManager.getAllWorlds());
     
 ### utils.players() function
 

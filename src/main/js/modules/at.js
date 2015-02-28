@@ -50,7 +50,7 @@ at('06:00', wakeup, null, false);
 function at(time24hr, callback, pWorlds, repeat) {
   var timeParts = time24hr.split( ':' );
   var timeMins = (timeParts[0] * 60) + (timeParts[1] * 1);
-  if (!pWorlds || typeof pWorlds == 'undefined' ) {
+  if (!pWorlds ||  pWorlds === undefined ) {
     pWorlds = utils.worlds();
   }
   if (repeat === undefined){
@@ -68,8 +68,8 @@ var atTasks = {};
 function atMonitorFactory(world){
   var worldName = ''+ world.name;
   var lastRun = null;
-  return function(){
-    var timeMins = utils.getTime24(world);
+  return function atMonitorForWorld(){
+    var timeMins = utils.time24(world);
     if (timeMins === lastRun){
       return;
     }
@@ -120,3 +120,5 @@ addUnloadHandler(function(){
     clearInterval(atInterval);
   });
 });
+
+module.exports = at;
