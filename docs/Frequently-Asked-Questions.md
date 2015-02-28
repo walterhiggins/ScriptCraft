@@ -1,4 +1,4 @@
-# Using Other Plugins from ScriptCraft
+## Using Other Plugins from ScriptCraft
 The following question gets asked a lot so I'm going to try to answer it here:
 
 > How to use other bukkit plugins API?  
