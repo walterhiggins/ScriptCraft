@@ -39,7 +39,7 @@ function canHang( block ) {
   }
   if (__plugin.canary){
     if (block.typeId == blocks.air || 
-	block.typeid == blocks.vines ) {
+	block.typeId == blocks.vines ) {
 	return true;
     }
   }
