@@ -52,7 +52,7 @@ function teleport( entity, destination){
     entity.teleport( destination, bkTeleportCause.PLUGIN);
   }
   if (__plugin.canary){
-    entity['teleportTo(Location)'](destination);
+    entity.teleportTo(destination);
   }
 }
 module.exports = teleport;
