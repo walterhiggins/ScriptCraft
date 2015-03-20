@@ -91,7 +91,8 @@ if ( !sign ) {
 }
 ```
 
-[buksign]: http://jd.bukkit.org/dev/apidocs/org/bukkit/block/Sign.html
+[buksign]: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/Sign.html
+[bukle]: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/LivingEntity.html
 
 ***/
 function hasSign( block ){
