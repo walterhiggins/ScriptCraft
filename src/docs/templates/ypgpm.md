@@ -859,6 +859,7 @@ var utils = require('utils');
 var players = utils.players();
 utils.foreach( players, function( player ) { 
   player.capabilities.setMayFly(true);
+  player.updateCapabilities();
 } );
 ```
 
