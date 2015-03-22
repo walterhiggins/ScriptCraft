@@ -487,7 +487,7 @@ resorting to `for` or `while` loops.
 
 #### Parameters
 
- * numTimes (optional - default 2) : The number of times you want to repeat the preceding statements.
+ * numTimes : The number of times you want to repeat the preceding statements.
 
 #### Example
 
@@ -541,9 +541,6 @@ Another example: This statement creates a row of trees 2 by 3 ...
 
 ***/
 Drone.prototype.times = function( numTimes, commands ) {
-  if ( typeof numTimes == 'undefined' ) {
-    numTimes = 2;
-  }
   if ( typeof commands == 'undefined' ) {
     commands = this.history.concat();
   }
