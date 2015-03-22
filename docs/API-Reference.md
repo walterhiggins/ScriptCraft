@@ -391,6 +391,8 @@ Walter Higgins
    * [Examples](#examples)
  * [Fireworks Module](#fireworks-module)
    * [Examples](#examples-1)
+ * [Inventory Module](#inventory-module)
+   * [Usage](#usage-2)
  * [Classroom Plugin](#classroom-plugin)
    * [jsp classroom command](#jsp-classroom-command)
    * [classroom.allowScripting() function](#classroomallowscripting-function)
@@ -400,7 +402,7 @@ Walter Higgins
  * [Http Module](#http-module)
    * [http.request() function](#httprequest-function)
  * [sc-mqtt module](#sc-mqtt-module)
-   * [Usage](#usage-2)
+   * [Usage](#usage-3)
  * [Signs Module](#signs-module)
    * [signs.menu() function](#signsmenu-function)
    * [signs.getTargetedBy() function](#signsgettargetedby-function)
@@ -436,22 +438,22 @@ Walter Higgins
    * [watcher.unwatchFile() function](#watcherunwatchfile-function)
    * [watcher.unwatchDir() function](#watcherunwatchdir-function)
  * [Example Plugin #1 - A simple extension to Minecraft.](#example-plugin-1---a-simple-extension-to-minecraft)
-   * [Usage:](#usage-3)
- * [Example Plugin #2 - Making extensions available for all players.](#example-plugin-2---making-extensions-available-for-all-players)
    * [Usage:](#usage-4)
- * [Example Plugin #3 - Limiting use of commands to operators only.](#example-plugin-3---limiting-use-of-commands-to-operators-only)
+ * [Example Plugin #2 - Making extensions available for all players.](#example-plugin-2---making-extensions-available-for-all-players)
    * [Usage:](#usage-5)
- * [Example Plugin #4 - Using parameters in commands.](#example-plugin-4---using-parameters-in-commands)
+ * [Example Plugin #3 - Limiting use of commands to operators only.](#example-plugin-3---limiting-use-of-commands-to-operators-only)
    * [Usage:](#usage-6)
- * [Example Plugin #5 - Re-use - Using your own and others modules.](#example-plugin-5---re-use---using-your-own-and-others-modules)
+ * [Example Plugin #4 - Using parameters in commands.](#example-plugin-4---using-parameters-in-commands)
    * [Usage:](#usage-7)
- * [Example Plugin #6 - Re-use - Using 'utils' to get Player objects.](#example-plugin-6---re-use---using-utils-to-get-player-objects)
+ * [Example Plugin #5 - Re-use - Using your own and others modules.](#example-plugin-5---re-use---using-your-own-and-others-modules)
    * [Usage:](#usage-8)
+ * [Example Plugin #6 - Re-use - Using 'utils' to get Player objects.](#example-plugin-6---re-use---using-utils-to-get-player-objects)
+   * [Usage:](#usage-9)
  * [Example Plugin #7 - Listening for events, Greet players when they join the game.](#example-plugin-7---listening-for-events-greet-players-when-they-join-the-game)
  * [Arrows Plugin](#arrows-plugin)
-   * [Usage:](#usage-9)
+   * [Usage:](#usage-10)
  * [Spawn Plugin](#spawn-plugin)
-   * [Usage](#usage-10)
+   * [Usage](#usage-11)
  * [alias Plugin](#alias-plugin)
    * [Examples](#examples-2)
  * [Commando Plugin](#commando-plugin)
@@ -471,7 +473,7 @@ Walter Higgins
    * [Rules](#rules)
    * [Gameplay Mechanics](#gameplay-mechanics)
  * [Items module](#items-module)
-   * [Usage](#usage-11)
+   * [Usage](#usage-12)
 
 ## Modules in Scriptcraft
 
@@ -3570,7 +3572,7 @@ resorting to `for` or `while` loops.
 
 #### Parameters
 
- * numTimes (optional - default 2) : The number of times you want to repeat the preceding statements.
+ * numTimes : The number of times you want to repeat the preceding statements.
 
 #### Example
 
@@ -4565,6 +4567,44 @@ location. For example...
 
 ![firework example](img/firework.png)
 
+## Inventory Module
+This module provides functions to add items to, remove items from and check the 
+contents of a player or NPC's inventory. 
+
+### Usage
+The inventory module is best used in conjunction with the items module. See below for examples of usage.
+
+```javascript
+var inventory = require('inventory');
+var items = require('items');
+var utils = require('utils');
+
+// gives every player a cookie and a baked potatoe
+utils.players(function(player){
+  inventory(player)
+    .add( items.cookie(1) )
+    .add( items.bakedPotato(1) )
+});
+
+// give a player 6 cookies then take away 4 of them
+
+inventory(player)
+  .add( items.cookie(6) )
+  .remove ( items.cookie(4) )
+
+// check if a player has any cookies
+
+var hasCookies = inventory(player).contains( items.cookie(1) );
+
+```
+The inventory module exposes a single function which when passed a player or NPC will return an object with 3 methods:
+
+* add : Adds items to the inventory (Expects parameters of type `net.canarymod.api.inventory.Item` - I strongly recommend using the `items` module for constructing items)
+* remove : removes items from the inventory (Expects parameters of type `net.canarymod.api.inventory.Item` - I strongly recommend using the `items` module for constructing items)
+* contains : checks to see if there is the specified type and amount of item in the inventory (Expects parameters of type `net.canarymod.api.inventory.Item` - I strongly recommend using the `items` module for constructing items)
+
+The Inventory module currently only works with CanaryMod.
+
 ## Classroom Plugin
 
 The `classroom` object contains a couple of utility functions for use
@@ -4942,7 +4982,8 @@ if ( !sign ) {
 }
 ```
 
-[buksign]: http://jd.bukkit.org/dev/apidocs/org/bukkit/block/Sign.html
+[buksign]: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/Sign.html
+[bukle]: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/LivingEntity.html
 
 ## The slash Module
 
