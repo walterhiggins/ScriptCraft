@@ -169,4 +169,3 @@ function onCanaryArrowHit( event ) {
   }
 }
 events.projectileHit( __plugin.bukkit ? onBukkitArrowHit : onCanaryArrowHit);
-

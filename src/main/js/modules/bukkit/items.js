@@ -1,11 +1,12 @@
-var bkItemStack = org.bukkit.inventory.ItemStack;
-
+/*global require, module, Packages */
+var bkItemStack = Packages.org.bukkit.inventory.ItemStack;
+var bkMaterial = Packages.org.bukkit.Material;
 var items = function( material, amount ) {
   material = material.toUpperCase();
-  return new bkItemStack(bukkit.material[material],amount);
+  return new bkItemStack(bkMaterial[material],amount);
 };
 
-var materials = bukkit.material.values();
+var materials = bkMaterial.values();
 
 for (var i = 0;i < materials.length; i++ ){
   var name = (''+materials[i].name()).toLowerCase();

@@ -4603,8 +4603,6 @@ The inventory module exposes a single function which when passed a player or NPC
 * remove : removes items from the inventory (Expects parameters of type `net.canarymod.api.inventory.Item` - I strongly recommend using the `items` module for constructing items)
 * contains : checks to see if there is the specified type and amount of item in the inventory (Expects parameters of type `net.canarymod.api.inventory.Item` - I strongly recommend using the `items` module for constructing items)
 
-The Inventory module currently only works with CanaryMod.
-
 ## Classroom Plugin
 
 The `classroom` object contains a couple of utility functions for use

@@ -35,26 +35,9 @@ The inventory module exposes a single function which when passed a player or NPC
 * remove : removes items from the inventory (Expects parameters of type `net.canarymod.api.inventory.Item` - I strongly recommend using the `items` module for constructing items)
 * contains : checks to see if there is the specified type and amount of item in the inventory (Expects parameters of type `net.canarymod.api.inventory.Item` - I strongly recommend using the `items` module for constructing items)
 
-The Inventory module currently only works with CanaryMod.
-
 ***/
-function inventory(entity){
-  var inv = entity.inventory;
-  var result = {
-    add: function(items){
-      inv['addItem(net.canarymod.api.inventory.Item)'](items);
-      return result;
-    },
-    remove: function(items){
-      inv['decreaseItemStackSize(int, int)'](items.id, items.amount);
-      return result;
-    },
-    contains: function(items){
-      var type = items.type;
-      var amount = items.amount;
-      return inv['hasItemStack(ItemType, int )'](type, amount);
-    }
-  };
-  return result;
+if ( __plugin.canary ) {
+  module.exports = require('../canary/inventory');
+} else {
+  module.exports = require('../bukkit/inventory');
 }
-module.exports = inventory;
