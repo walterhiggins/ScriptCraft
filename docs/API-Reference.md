@@ -81,7 +81,6 @@ Walter Higgins
    * [events.dimensionSwitch()](#eventsdimensionswitch)
    * [events.foodLevel()](#eventsfoodlevel)
    * [events.bookEdit()](#eventsbookedit)
-   * [events.playerListEntry()](#eventsplayerlistentry)
    * [events.eat()](#eventseat)
    * [events.playerList()](#eventsplayerlist)
    * [events.playerIdle()](#eventsplayeridle)
@@ -97,6 +96,7 @@ Walter Higgins
    * [events.levelUp()](#eventslevelup)
    * [events.blockRightClick()](#eventsblockrightclick)
    * [events.itemDrop()](#eventsitemdrop)
+   * [events.itemFrameRotate()](#eventsitemframerotate)
    * [events.playerRespawning()](#eventsplayerrespawning)
    * [events.craft()](#eventscraft)
    * [events.experience()](#eventsexperience)
@@ -107,7 +107,9 @@ Walter Higgins
    * [events.preConnection()](#eventspreconnection)
    * [events.villagerTrade()](#eventsvillagertrade)
    * [events.returnFromIdle()](#eventsreturnfromidle)
+   * [events.armorStandModify()](#eventsarmorstandmodify)
    * [events.slotClick()](#eventsslotclick)
+   * [events.itemFrameSetItem()](#eventsitemframesetitem)
    * [events.entityRightClick()](#eventsentityrightclick)
    * [events.foodExhaustion()](#eventsfoodexhaustion)
    * [events.chat()](#eventschat)
@@ -1281,14 +1283,6 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
-### events.playerListEntry()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerListEntryHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerListEntryHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
 ### events.eat()
 
 #### Parameters 
@@ -1409,6 +1403,14 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
+### events.itemFrameRotate()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.ItemFrameRotateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ItemFrameRotateHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.playerRespawning()
 
 #### Parameters 
@@ -1489,11 +1491,27 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
+### events.armorStandModify()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.ArmorStandModifyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ArmorStandModifyHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.slotClick()
 
 #### Parameters 
 
  * callback - A function which is called whenever the [player.SlotClickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/SlotClickHook.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.itemFrameSetItem()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.ItemFrameSetItemHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ItemFrameSetItemHook.html) is fired
 
  * priority - optional - see events.on() for more information.
 
