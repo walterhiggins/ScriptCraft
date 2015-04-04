@@ -631,48 +631,70 @@ You can find out if you can Fly in minecraft by typing the following statement .
 fly or not. You can turn on and off your ability to fly by setting
 your `mayFly` property to `true` or `false`. Try it ...
 
-    /js self.getCapabilities().setMayFly(true)
+    /js self.capabilities.flying = true
     /js self.updateCapabilities()
 
-... Now you can fly! To turn off flight ...
+... Now you can fly! Double-press the space bar key to start flying. To turn off flight ...
 
-    /js self.getCapabilities().setMayFly(false)
-    /js self.setFlying(false)
+    /js self.capabilities.flying = false;
     /js self.updateCapabilities()
 
 ... and you come crashing down to earth. This is just one example of
 how `true` and `false` are used throughout ScriptCraft &ndash; these are
 called `boolean` values &ndash; named after [George Boole][boole], a 19th Century
 Maths Professor at University College Cork. There are plenty more
-examples of boolean values in Minecraft. You can find out if monsters
-are allowed in your minecraft world by typing the following
-statement ...
+examples of boolean values in Minecraft. You can find out if it's
+raining in your minecraft world by typing the following statement ...
 
-    /js self.location.world.allowMonsters
+    /js self.world.raining
 
-... The result of this statement will be either `false` (Phew!) or
-`true` (Yikes!) depending on how your server has been
-configured. However, typing the following statement doesn't work as
-expected...
+... The result of this statement will be either `false` (if it's not raining) or
+`true` (if it *is* raining). If it's raining, you can make it stop raining typing the following command:
 
-    /js self.location.world.allowMonsters = true
+    /js self.world.raining = false
 
-... This statement won't work as expected - it will give an Error
-message. This is because sometimes we can read variables but we can't
-change them the same way we read them (this is because of how
-Javascript, Java and the CanaryMod API work together). To turn on or
-off the spawning of monsters, type the following...
+... Similarly, to make it start raining you can issue the following command:
 
-    /js self.location.world.setSpawnFlags(false, true)
+    /js self.world.raining = true
 
-... the `setSpawnFlags()` method takes 2 parameters, the first
-parameter says whether or not monsters can spawn, and the 2nd says
-whether or not Animals can spawn. (SIDENOTE: You may be wondering how
-to change other aspects of the Minecraft game - pretty much all
+### Booleans and JavaBeans
+
+There are many *boolean* properties you can use to turn on or off
+certain game behaviours. For example, the *raining* behavior is turned
+on or off using the World's `raining` property.  The World object's
+properties and methods are [documented on the CanaryMod JavaDocs World
+page][cmworld]. When browsing the CanaryMod JavaDoc pages, whenever
+you see a method whose name begins with `is` such as `isRaining()` and
+a companion method `setRaining()`, these methods are called *JavaBean*
+methods - the *raining* property is a *JavaBean* property and there
+are two ways you can use JavaBean properties in Javascript. You can
+*get* and *set* the property using the methods provided by Java. To
+*get* the raining property you can call the JavaBean Method:
+
+    /js self.world.isRaining()
+
+... or you can get the property like this:
+
+    /js self.world.raining
+
+To *set* the raining property, you can call the JavaBean method:
+
+    /js self.world.setRaining( true )
+
+... or you can set the property like this:
+
+    /js self.world.raining = true
+
+Whatever approach you use, the result will be the same. 
+
+[cmworld]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/world/World.html
+
+### SIDENOTE
+You may be wondering how to change other aspects of the Minecraft game - pretty much all
 aspects of the game can be changed. Changes are made using what are
 called `API` calls - these are calls to functions and methods in
 Minecraft - you can read more about these on the [CanaryMod API
-Reference][cmapi].)
+Reference][cmapi].
 
 ## ...and Again, and Again, and Again,...
 
@@ -858,7 +880,7 @@ utils.foreach() function...
 var utils = require('utils');
 var players = utils.players();
 utils.foreach( players, function( player ) { 
-  player.capabilities.setMayFly(true);
+  player.capabilities.flying = true;
   player.updateCapabilities();
 } );
 ```
