@@ -9,10 +9,7 @@ var utils = require('utils'),
 /*********************************************************************
 ## Drone Plugin
 
-The Drone is a convenience class for building. It can be used for...
-
- 1. Building
- 2. Copying and Pasting
+The Drone is a convenience class for building.
 
 It uses a fluent interface which means all of the Drone's methods return `this` and can be chained together like so...
 
