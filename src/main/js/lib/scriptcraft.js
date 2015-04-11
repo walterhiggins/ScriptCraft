@@ -230,11 +230,12 @@ scload() will return the result of the last statement evaluated in the file.
 
 The scsave() function saves an in-memory javascript object to a
 specified file. Under the hood, scsave() uses JSON (specifically
-json2.js) to save the object. Again, there will usually be no need to
-call this function directly as all javascript plugins' state are saved
-automatically if they are declared using the `plugin()` function.  Any
-in-memory object saved using the `scsave()` function can later be
-restored using the `scload()` function.
+json2.js) to save the object. There will usually be no need to call
+this function directly - If you want to have a javascript object
+automatically loaded at startup and saved on shutdown then use the
+`persist()` module. The `persist()` module uses scsave and scload
+under the hood.  Any in-memory object saved using the `scsave()`
+function can later be restored using the `scload()` function.
 
 #### Parameters
 
@@ -259,6 +260,12 @@ scsave(myObject, 'johndoe.json');
 
 ### plugin() function
 
+#### Update April 2015 
+The `plugin()` function is deprecated. Please refer to [Anatomy of a
+ScriptCraft Plugin][anatomy] for an up-to-date step-by-step guide to
+creating a plugin which uses persistence (loading and saving data).
+
+#### Deprecated
 The `plugin()` function should be used to declare a javascript module
 whose state you want to have managed by ScriptCraft - that is - a
 Module whose state will be loaded at start up and saved at shut down.
