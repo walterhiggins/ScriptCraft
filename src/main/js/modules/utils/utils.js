@@ -192,7 +192,7 @@ Location object.
 ***/
 exports.locationFromJSON = function( json ) {
   var world;
-  if ( json.constuctor == Array ) { 
+  if ( json.constructor == Array ) { 
     // for support of legacy format
     world = _world( json[0] );
     return new bkLocation( world, json[1], json[2] , json[3] );
