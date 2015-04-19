@@ -16,12 +16,8 @@ import net.canarymod.commandsys.Command;
 import net.canarymod.commandsys.TabComplete;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.Canary;
-import net.canarymod.api.inventory.recipes.CraftingRecipe;
-import net.canarymod.api.inventory.recipes.RecipeRow;
-import net.canarymod.api.inventory.Item;
 // event help stuff
 import net.canarymod.hook.Dispatcher;
-import net.canarymod.plugin.PluginListener;
 import net.canarymod.hook.Hook;
 
 public class ScriptCraftPlugin extends Plugin implements PluginListener, CommandListener
@@ -31,6 +27,7 @@ public class ScriptCraftPlugin extends Plugin implements PluginListener, Command
     private String NO_JAVASCRIPT_MESSAGE = "No JavaScript Engine available. " + 
         "ScriptCraft will not work without Javascript.";
     protected ScriptEngine engine = null;
+
     @Override
     public void disable(){
         try { 
@@ -39,6 +36,7 @@ public class ScriptCraftPlugin extends Plugin implements PluginListener, Command
             this.getLogman().error(e.getMessage());
         }
     }
+
     @Override
     public boolean enable()
     {
@@ -62,11 +60,15 @@ public class ScriptCraftPlugin extends Plugin implements PluginListener, Command
             e.printStackTrace();
             this.getLogman().error(e.getMessage());
         }
+        
+        
         return true;
     }
+
     public static interface IDispatcher {
         public void execute(PluginListener listener, Hook hook);
     }
+
     public Dispatcher getDispatcher(final IDispatcher impl){
         return new Dispatcher(){
             public void execute(PluginListener listener, Hook hook){
@@ -74,6 +76,7 @@ public class ScriptCraftPlugin extends Plugin implements PluginListener, Command
             }
         };
     }
+
     static class ScriptCraftTask extends ServerTask {
         private Runnable runnable = null;
         public ScriptCraftTask(Runnable runnable, TaskOwner owner, long delay, boolean continuous){
@@ -91,8 +94,6 @@ public class ScriptCraftPlugin extends Plugin implements PluginListener, Command
     }
 
     private void executeCommand( MessageReceiver sender, String[] args) {
-        boolean result = false;
-        String javascriptCode = "";
         Object jsResult = null;
         if (this.engine == null){
             this.getLogman().error(NO_JAVASCRIPT_MESSAGE);
@@ -110,15 +111,17 @@ public class ScriptCraftPlugin extends Plugin implements PluginListener, Command
         }
         return;
     }
+
     @Command(
              aliases = { "js" },
              description = "Execute Javascript code",
              permissions = { "scriptcraft.evaluate" },
              toolTip = "/js javascript expression")
-             public void jsCommand(MessageReceiver sender, String[] args) {
+    public void jsCommand(MessageReceiver sender, String[] args) {
 
         executeCommand(sender, args);
     }
+
     /*
       groupmod permission add visitors canary.jsp
       groupmod permission add visitors canary.command.jsp
@@ -128,7 +131,7 @@ public class ScriptCraftPlugin extends Plugin implements PluginListener, Command
              description = "Run javascript-provided command",
              permissions = { "" },
              toolTip = "/jsp command")
-             public void jspCommand(MessageReceiver sender, String[] args) {
+    public void jspCommand(MessageReceiver sender, String[] args) {
 
         executeCommand(sender, args);
     }
@@ -148,10 +151,12 @@ public class ScriptCraftPlugin extends Plugin implements PluginListener, Command
         }
         return result;
     }
+    
     @TabComplete (commands = { "js" })
     public List<String> jsComplete(MessageReceiver sender, String[] args){
         return complete(sender, args, "js");
     }
+    
     @TabComplete (commands = { "jsp" })
     public List<String> jspComplete(MessageReceiver sender, String[] args){
         return complete(sender, args, "jsp");
