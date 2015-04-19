@@ -1,24 +1,29 @@
 package org.scriptcraftjs.canarymod;
 
 import java.io.InputStreamReader;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptEngine;
-import javax.script.Invocable;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-import net.canarymod.plugin.Plugin;
-import net.canarymod.plugin.PluginListener;
-import net.canarymod.tasks.ServerTask;
-import net.canarymod.tasks.TaskOwner;
-import net.canarymod.commandsys.CommandListener;
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+
+import net.canarymod.Canary;
+import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.Command;
+import net.canarymod.commandsys.CommandListener;
 import net.canarymod.commandsys.TabComplete;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.Canary;
 // event help stuff
 import net.canarymod.hook.Dispatcher;
 import net.canarymod.hook.Hook;
+import net.canarymod.plugin.Plugin;
+import net.canarymod.plugin.PluginListener;
+import net.canarymod.tasks.ServerTask;
+import net.canarymod.tasks.TaskOwner;
+
+import org.scriptcraftjs.webserver.ScriptCraftWebServer;
 
 public class ScriptCraftPlugin extends Plugin implements PluginListener, CommandListener
 {
@@ -28,8 +33,12 @@ public class ScriptCraftPlugin extends Plugin implements PluginListener, Command
         "ScriptCraft will not work without Javascript.";
     protected ScriptEngine engine = null;
 
+    protected ScriptCraftWebServer httpServer = new ScriptCraftWebServer();
+
     @Override
     public void disable(){
+        httpServer.stop();
+        this.getLogman().info("HTTP web server stopped");
         try { 
             ((Invocable)this.engine).invokeFunction("__onDisable", this.engine, this);
         }catch ( Exception e) {
@@ -56,12 +65,16 @@ public class ScriptCraftPlugin extends Plugin implements PluginListener, Command
             }
 
             Canary.commands().registerCommands(this, this, false);
+
+            httpServer.start();
+            this.getLogman().info(httpServer.getStartedLogMessage());
+            // httpServer.openURL();
+
         }catch(Exception e){
             e.printStackTrace();
             this.getLogman().error(e.getMessage());
         }
-        
-        
+
         return true;
     }
 
@@ -151,12 +164,12 @@ public class ScriptCraftPlugin extends Plugin implements PluginListener, Command
         }
         return result;
     }
-    
+
     @TabComplete (commands = { "js" })
     public List<String> jsComplete(MessageReceiver sender, String[] args){
         return complete(sender, args, "js");
     }
-    
+
     @TabComplete (commands = { "jsp" })
     public List<String> jspComplete(MessageReceiver sender, String[] args){
         return complete(sender, args, "jsp");

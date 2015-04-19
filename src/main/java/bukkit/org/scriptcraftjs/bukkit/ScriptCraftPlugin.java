@@ -1,16 +1,18 @@
 package org.scriptcraftjs.bukkit;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.scriptcraftjs.webserver.ScriptCraftWebServer;
 
 public class ScriptCraftPlugin extends JavaPlugin implements Listener
 {
@@ -21,6 +23,8 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
     //protected Map<CommandSender,ScriptCraftEvaluator> playerContexts = new HashMap<CommandSender,ScriptCraftEvaluator>();
     private String NO_JAVASCRIPT_MESSAGE = "No JavaScript Engine available. ScriptCraft will not work without Javascript.";
     protected ScriptEngine engine = null;
+
+    protected ScriptCraftWebServer httpServer = new ScriptCraftWebServer();
 
     @Override public void onEnable()
     {
@@ -37,12 +41,23 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
 				this.engine.eval(new InputStreamReader(this.getResource("boot.js")));
 				inv.invokeFunction("__scboot", this, engine);
 			}
+
+            httpServer.start();
+            this.getLogger().info(httpServer.getStartedLogMessage());
+            // httpServer.openURL();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.getLogger().severe(e.getMessage());
 		} finally {
 			currentThread.setContextClassLoader(previousClassLoader);
 		}
+    }
+
+    @Override public void onDisable() {
+	super.onDisable();
+        httpServer.stop();
+        this.getLogger().info("HTTP web server stopped");
     }
 
     public List<String> onTabComplete(CommandSender sender, Command cmd,

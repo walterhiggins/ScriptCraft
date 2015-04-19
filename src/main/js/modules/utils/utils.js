@@ -752,3 +752,67 @@ This function also contains values for each possible stat so you can get at stat
 ***/
 exports.stat = __plugin.canary ? getStatCanary: getStatBukkit;
 
+
+/************************************************************************
+### utils.watchFile() function
+
+Watches for changes to the given file or directory and calls the function provided
+when the file changes.
+
+#### Parameters
+
+ * File - the file to watch (can be a file or directory)
+ * Callback - The callback to invoke when the file has changed. The callback takes the
+   changed file as a parameter.
+
+#### Example
+
+```javascript
+var utils = require('utils');
+utils.watchFile( 'test.txt', function( file ) {
+   console.log( file + ' has changed');
+});
+```
+***/
+var filesWatched = {};
+exports.watchFile = function( file, callback ) {
+  if ( typeof file == 'string' ) {
+    file = new File(file);
+  }
+  filesWatched[file.canonicalPath] = {
+    callback: callback,
+    lastModified: file.lastModified()
+  };
+};
+/************************************************************************
+### utils.unwatchFile() function
+
+Removes a file from the watch list.
+
+#### Example
+```javascript
+var utils = require('utils');
+utils.unwatchFile( 'test.txt');
+```
+
+***/
+exports.unwatchFile = function( file, callback ) {
+  if ( typeof file == 'string' ) {
+    file = new File(file);
+  }
+  delete filesWatched[file.canonicalPath];
+};
+
+
+function fileWatcher() {
+  for (var file in filesWatched) {
+    var fileObject = new File(file);
+    var lm = fileObject.lastModified();
+    if ( lm != filesWatched[file].lastModified ) {
+      filesWatched[file].lastModified = lm;
+      filesWatched[file].callback(fileObject);
+    }
+  }
+  setTimeout( fileWatcher, 5000 );
+};
+setTimeout( fileWatcher, 5000 );

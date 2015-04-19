@@ -1,0 +1,39 @@
+<project name="blocklycraft" default="copy" basedir=".">
+
+    <property name="jquery.filename" value="jquery-1.11.2.min.js"/>
+
+	<target name="check">
+	    <available file="3rd-party/${jquery.filename}" property="jquery.present"/>
+	    <available file="3rd-party/google-blockly/blockly_compressed.js" property="blockly.present"/>
+	</target>
+	<target name="copy" depends="clean,check,get_blockly,get_jquery">
+		<copy todir="../media/" ><fileset dir="3rd-party/google-blockly/media/" /></copy>
+		<copy todir="../msg/" ><fileset dir="3rd-party/google-blockly/msg/" /></copy>
+		<copy todir="msg/" ><fileset dir="3rd-party/google-blockly/demos/code/msg/" /></copy>
+		<copy todir="../" ><fileset dir="3rd-party/google-blockly/demos/" ><include name="prettify.*" /></fileset></copy>
+	</target>
+	<target name="clean">
+		<delete dir="media" />
+		<delete dir="../msg" />
+		<delete dir="msg" />
+		<delete file="../prettify.*" />
+	</target>
+
+	<target name="get_jquery" unless="jquery.present">
+	    <get src="http://code.jquery.com/${jquery.filename}" verbose="true" dest="3rd-party/${jquery.filename}" skipexisting="true"/>
+	</target>
+	<target name="get_blockly" unless="blockly.present">
+		<property name="blockly.zip.filename" value="3rd-party/google-blockly-master.zip"/>
+	    <get src="https://github.com/google/blockly/zipball/master" verbose="true" dest="${blockly.zip.filename}" skipexisting="true"/>
+		<unzip dest="3rd-party/google-blockly/" src="${blockly.zip.filename}">
+			 <patternset>
+				<!-- Just to keep scriptcraft.jar file size down.. we actually only need the demos/code, but none of the others -->
+		        <exclude name="*/demos/plane/**"/>
+		        <exclude name="*/tests/**"/>
+		    </patternset>
+			<mapper>
+				<cutdirsmapper dirs="1" />
+		    </mapper>
+		</unzip>
+	</target>
+</project>

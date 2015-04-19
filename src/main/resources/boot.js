@@ -61,7 +61,7 @@ var __scboot = null;
   {
     var logger = plugin.canary ? plugin.logman : plugin.logger, 
       initScriptFile = new File(jsPlugins,initScript),
-      zips = ['lib','plugins','modules'],
+      zips = ['lib','plugins','modules', 'www'],
       i = 0,
       zis,
       len = zips.length;

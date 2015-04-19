@@ -7,6 +7,7 @@
        * Glowstone (which is bukkit-compatible)
        * Spigot (which is bukkit-compatible)
   -->
+  <property name="src.common" location="src/main/java/common"/>
   <property name="src.canary" location="src/main/java/canary"/>
   <property name="src.bukkit" location="src/main/java/bukkit"/>
 
@@ -60,7 +61,8 @@
     <get src="https://ci.visualillusionsent.net/job/CanaryMod/lastStableBuild/artifact/*zip*/archive.zip"
 	 maxtime="60"
 	 dest="target/canarymod.zip"
-	 verbose="true"/>
+	 verbose="true"
+     skipexisting="true" />
     <unzip src="target/canarymod.zip"
 	   dest="target/lib">
       <mapper type="glob" from="*.jar" to="canarymod.jar"/>
@@ -73,6 +75,7 @@
            target="1.6" 
            destdir="${build}" 
            debug="true">
+      <src path="${src.common}"/>
       <src path="${src.canary}"/>
       <src path="${src.bukkit}"/>
       <classpath>
@@ -189,7 +192,7 @@ Walter Higgins
    </concat>      
   </target>
 
-  <target name="zip_js" depends="zip_lib, zip_modules, zip_plugins">
+  <target name="zip_js" depends="zip_lib, zip_modules, zip_plugins, zip_www">
   </target>
 
   <target name="copy-js" depends="gen-events-helper-canary,gen-events-helper-bukkit,init">
@@ -202,7 +205,7 @@ Walter Higgins
     <delete file="${build}/lib.zip"/>
     <zip destfile="${build}/lib.zip" 
          basedir="${dist}/js" 
-         excludes="modules/**, plugins/**,">
+         excludes="modules/**, plugins/**, www/**">
     </zip>
   </target>
 
@@ -210,14 +213,15 @@ Walter Higgins
     <!-- download underscore -->
     <get src="http://underscorejs.org/underscore.js"
 	 verbose="true"
-	 dest="${dist}/js/modules/underscore.js"/>
+	 dest="${dist}/js/modules/underscore.js"
+     skipexisting="true"/>
   </target>
 
   <target name="zip_modules" depends="copy-js, get_underscore">
     <delete file="${build}/modules.zip"/>
     <zip destfile="${build}/modules.zip" 
          basedir="${dist}/js" 
-         excludes="lib/**, plugins/**,">
+         excludes="lib/**, plugins/**, www/**">
     </zip>
   </target>
 
@@ -225,11 +229,20 @@ Walter Higgins
     <delete file="${build}/plugins.zip"/>
     <zip destfile="${build}/plugins.zip" 
          basedir="${dist}/js"
-         excludes="lib/**, modules/**">
+         excludes="lib/**, modules/**, www/**">
     </zip>
   </target>
   
-  <target name="package" depends="gendocs,zip_js,compile-plugins" description="generate the distribution" >
+  <target name="zip_www" depends="copy-js">
+    <delete file="${build}/www.zip"/>
+    <zip destfile="${build}/www.zip"
+         basedir="${dist}/js"
+         excludes="lib/**, modules/**, plugins/**, www/blocklycraft/3rd-party/google-blockly-master.zip"
+	 level="9">
+    </zip>
+  </target>
+
+  <target name="package" depends="blockly,gendocs,zip_js,compile-plugins" description="generate the distribution" >
     <!-- ensure plugin.yml is always copied -->
     <delete file="${build}/plugin.yml" />
     <delete file="${build}/Canary.inf" />
@@ -261,5 +274,9 @@ Walter Higgins
     </delete>
     <mkdir dir="${minecraft.dir}/plugins" />
     <copy file="${dist}/${DSTAMP}/scriptcraft.jar" todir="${minecraft.dir}/plugins"/>
+  </target>
+
+  <target name="blockly">
+	<ant dir="src/main/js/www/blocklycraft/" />
   </target>
 </project>

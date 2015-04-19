@@ -1,6 +1,10 @@
 RELEASE NOTES
 =============
 
+TBD Release (2015 ? ?)
+--------------------------
+Added BlocklyMinecraft visual editor contributed by Lauro Canonica and Michael Vorburger.ch
+
 3.1.4 Release (2015 05 09)
 --------------------------
 Various bug fixes and new 'inventory' module.
