@@ -1,6 +1,5 @@
 import javax.script.*;
 import java.io.FileReader;
-import net.canarymod.api.Server;
 import net.canarymod.api.inventory.ItemType;
 
 public class jscript
