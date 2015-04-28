@@ -68,7 +68,7 @@ function paramsToString( params ) {
 }
 function invokeNow( fn ){
   if (__plugin.bukkit){
-    server.schedule.runTask( __plugin, fn);
+    server.scheduler.runTask( __plugin, fn);
     return;
   }
   if (__plugin.canary){
