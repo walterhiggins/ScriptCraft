@@ -56,16 +56,23 @@ var colors = ['black', 'blue', 'darkgreen', 'darkaqua', 'darkred',
               'brightgreen', 'aqua', 'red', 'pink',
               'yellow', 'white'];
 var colorCodes = {};
+var COLOR_CHAR = '\u00a7';
 for (var i =0;i < colors.length;i++) 
   colorCodes[colors[i]] = i.toString(16);
 
-events.asyncPlayerChat( function( evt ) {
+var addColor = function( evt ) {
   var player = evt.player;
   var playerChatColor = store.players[ player.name ];
   if ( playerChatColor ) {
-    evt.message = '&sect;' + colorCodes[ playerChatColor ] + evt.message;
+    evt.message = COLOR_CHAR + colorCodes[ playerChatColor ] + evt.message;
   }
-});
+};
+
+if (__plugin.bukkit) {
+  events.asyncPlayerChat(addColor);
+} else if (__plugin.canary) {
+   events.chat(addColor);
+};
 ```
         
 The next step is to declare a lookup table of colors / names and add an event 
@@ -124,16 +131,24 @@ var colors = ['black', 'blue', 'darkgreen', 'darkaqua', 'darkred',
               'brightgreen', 'aqua', 'red', 'pink',
               'yellow', 'white'];
 var colorCodes = {};
+var COLOR_CHAR = '\u00a7';
 for (var i =0;i < colors.length;i++) 
   colorCodes[colors[i]] = i.toString(16);
 
-events.asyncPlayerChat( function( evt ) {
+var addColor = function( evt ) {
   var player = evt.player;
   var playerChatColor = store.players[ player.name ];
   if ( playerChatColor ) {
-    evt.message = '&sect;' + colorCodes[ playerChatColor ] + evt.message;
+    evt.message = COLOR_CHAR + colorCodes[ playerChatColor ] + evt.message;
   }
-});
+};
+
+if (__plugin.bukkit) {
+  events.asyncPlayerChat(addColor);
+} else if (__plugin.canary) {
+   events.chat(addColor);
+};
+
 function chat_color( params, sender ){
   var color = params[0];
   if (colorCodes[color]){
@@ -143,6 +158,7 @@ function chat_color( params, sender ){
     echo(sender, 'valid colors: ' + colors.join(', '));
   }
 }
+
 command(chat_color, colors);
 ```
     
