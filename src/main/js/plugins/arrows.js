@@ -3,7 +3,7 @@
 /*************************************************************************
 ## Arrows Plugin
 
-The arrows mod adds fancy arrows to the game. Arrows which... 
+The arrows mod adds fancy arrows to the game. Arrows which ... 
 
  * Launch fireworks.
  * Explode on impact. 
@@ -19,7 +19,7 @@ The arrows mod adds fancy arrows to the game. Arrows which...
   * `/js arrows.flourish(self)` - makes a tree grow where the arrow lands.
   * `/js arrows.explosive(self)` - makes arrows explode.
   * `/js arrows.normal(self)` sets arrow type to normal.
-  * `/js arrows.sign(self)` turns a targeted sign into a Arrows menu
+  * `/js arrows.sign(self)` turns a targeted sign into an Arrows menu
 
 All of the above functions can take an optional player object or name
 as a parameter. For example: `/js arrows.explosive('player23')` makes
