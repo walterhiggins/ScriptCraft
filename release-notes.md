@@ -1,5 +1,14 @@
 RELEASE NOTES
 =============
+
+3.1.4 Release (2015 05 09)
+--------------------------
+Various bug fixes and new 'inventory' module.
+
+3.1.3 Release (2015 03 02)
+--------------------------
+Various bug fixes.
+
 3.1.2 Release (2015 02 16)
 --------------------------
 Bug fix release. Fixes bug #213 (http.request fixed for CanaryMod)

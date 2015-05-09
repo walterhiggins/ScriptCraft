@@ -4836,7 +4836,7 @@ The following example illustrates how to use http.request to make a request to a
 
 ```javascript
 var jsResponse;
-var http = require('http');
+var http = require('request');
 http.request('http://scriptcraftjs.org/sample.json',function(responseCode, responseBody){
   jsResponse = JSON.parse( responseBody );
 });
@@ -5792,7 +5792,7 @@ Minecraft. You can see [a full list of events here][cmEvtList].
 [cmEvtList]: #events-helper-module-canary-version
 ## Arrows Plugin
 
-The arrows mod adds fancy arrows to the game. Arrows which... 
+The arrows mod adds fancy arrows to the game. Arrows which ... 
 
  * Launch fireworks.
  * Explode on impact. 
@@ -5808,7 +5808,7 @@ The arrows mod adds fancy arrows to the game. Arrows which...
   * `/js arrows.flourish(self)` - makes a tree grow where the arrow lands.
   * `/js arrows.explosive(self)` - makes arrows explode.
   * `/js arrows.normal(self)` sets arrow type to normal.
-  * `/js arrows.sign(self)` turns a targeted sign into a Arrows menu
+  * `/js arrows.sign(self)` turns a targeted sign into an Arrows menu
 
 All of the above functions can take an optional player object or name
 as a parameter. For example: `/js arrows.explosive('player23')` makes
@@ -5827,7 +5827,9 @@ Allows in-game operators to easily spawn creatures at current location.
 This command supports TAB completion so to see a list of possible
 entitities, type `/jsp spawn ' at the in-game command prompt, then
 press TAB. Visit
-<http://jd.bukkit.org/beta/apidocs/org/bukkit/entity/EntityType.html>
+<https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html> (CanaryMod)
+or <http://docs.visualillusionsent.net/CanaryLib/1.0.0/net/canarymod/api/entity/EntityType.html> (Bukkit)
+
 for a list of possible entities (creatures) which can be spawned.
 
 ## alias Plugin
