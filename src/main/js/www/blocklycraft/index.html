@@ -14,7 +14,8 @@
   <script src="3rd-party/google-blockly/javascript_compressed.js"></script>
   <!-- <script src="3rd-party/google-blockly/python_compressed.js"></script> -->
   <!-- <script src="3rd-party/google-blockly/dart_compressed.js"></script> -->
-  <script src="3rd-party/google-blockly/demos/code/code.js"></script>
+  <script src="../msg/js/en.js"></script>  <!--load as default English Minecraft messages as default-->
+  <script src="3rd-party/google-blockly/demos/code/code.js"></script> <!--code.js is responsible for deciding where tha language files are-->
   <script src="3rd-party/jquery-1.11.2.min.js"></script> <!--ONLY used for $.post().. -->
   <script src="customblocks.js"></script>
   <script src="customblocks-javascript-generator.js"></script>
@@ -30,6 +31,24 @@
   ga('create', 'UA-62301621-1', {'cookieDomain': 'none'});
   ga('send', 'pageview');
 
+  // fix the message imports of codejs which are relatively misplaced
+  var menuMessages=document.createElement('script')
+  menuMessages.setAttribute("type","text/javascript")
+
+  // Load the Code demo's language strings.
+  menuMessages.setAttribute("src", "3rd-party/google-blockly/demos/code/msg/" + Code.LANG + ".js")
+  document.getElementsByTagName("head")[0].appendChild(menuMessages)
+
+  var textMessages=document.createElement('script')
+  textMessages.setAttribute("type","text/javascript")
+  
+  // Load Blockly's language strings.
+  textMessages.setAttribute("src", "3rd-party/google-blockly/msg/js/" + Code.LANG + ".js")
+  document.getElementsByTagName("head")[0].appendChild(textMessages)
+  
+
+
+  
 </script>
   <table width="100%" height="100%">
     <tr>

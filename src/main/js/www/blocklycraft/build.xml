@@ -8,14 +8,18 @@
 	</target>
 	<target name="copy" depends="clean,check,get_blockly,get_jquery">
 		<copy todir="../media/" ><fileset dir="3rd-party/google-blockly/media/" /></copy>
-		<copy todir="../msg/" ><fileset dir="3rd-party/google-blockly/msg/" /></copy>
+		<!--
+		<copy todir="../msg/" ><fileset dir="3rd-party/google-blockly/msg/" /></copy>  
 		<copy todir="msg/" ><fileset dir="3rd-party/google-blockly/demos/code/msg/" /></copy>
+		-->
 		<copy todir="../" ><fileset dir="3rd-party/google-blockly/demos/" ><include name="prettify.*" /></fileset></copy>
 	</target>
 	<target name="clean">
 		<delete dir="media" />
-		<delete dir="../msg" />
+		<!-- 
+		<delete dir="../msg" /> 
 		<delete dir="msg" />
+		-->
 		<delete file="../prettify.*" />
 	</target>
 
