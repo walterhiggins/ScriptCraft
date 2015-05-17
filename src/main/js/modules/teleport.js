@@ -52,7 +52,8 @@ function teleport( entity, destination){
     entity.teleport( destination, bkTeleportCause.PLUGIN);
   }
   if (__plugin.canary){
-    entity.teleportTo(destination);
+    var cmTeleportCause = Packages.net.canarymod.hook.player.TeleportHook.TeleportCause;
+    entity.teleportTo(destination, cmTeleportCause.PLUGIN);
   }
 }
 module.exports = teleport;
