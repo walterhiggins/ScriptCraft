@@ -26,16 +26,8 @@ var blocks = {
   grass: 2,
   dirt: 3,
   cobblestone: 4,
-  oak: 5,
-  spruce: '5:1',
-  birch: '5:2',
-  jungle: '5:3',
-  sapling: {
-    oak: 6,
-    spruce: '6:1',
-    birch: '6:2',
-    jungle: '6:3'
-  },
+  oak: 5, spruce: '5:1', birch: '5:2', jungle: '5:3',
+  sapling: { oak: 6, spruce: '6:1', birch: '6:2', jungle: '6:3' },
   bedrock: 7,
   water: 8,
   water_still: 9,
@@ -63,18 +55,59 @@ var blocks = {
   grass_tall: 31,
   dead_bush: 32,
   piston: 33,
-  piston_extn: 34,
-  wool: {
-    white: 35 // All other colors added below
-  },
-  dandelion: 37,
-  flower_yellow: 37,
-  rose: 38,
-  flower_red: 38,
+  piston_extn: 34, piston_head: 34,
+  wool: {  white: 35 /* All other colors added below */ },
+  piston_extended: 36,
+  dandelion: 37, flower_yellow: 37,
+  rose: 38, flower_red: 38,
   mushroom_brown: 39,
   mushroom_red: 40,
   gold: 41,
   iron: 42,
+  //http://minecraft.gamepedia.com/Data_values#Double_Stone_Slabs
+  double_slab: {
+    stone: 43,
+    sandstone: '43:1',
+    wooden: '43:2',
+    cobblestone: '43:3',
+    brick: '43:4',
+    stonebrick: '43:5',
+    netherbrick:'43:6',
+    quartz: '43:7',
+    smooth_stone: '43:8',
+    smooth_sandstone: '43:9',
+    tile_quartz: '43:15'
+  },
+  slab: {
+    sandstone: '44:1',
+    wooden: '44:2',
+    cobblestone: '44:3',
+    brick: '44:4',
+    stonebrick: '44:5',
+    netherbrick:'44:6',
+    quartz: '44:7',
+    upper: {
+      stone: '44:8',
+      sandstone: '44:9',
+      wooden: '44:10',
+      cobblestone: '44:11',
+      brick: '44:12',
+      stonebrick: '44:13',
+      netherbrick:'44:14',
+      quartz: '44:15',
+      oak: '126:8',
+      spruce: '126:9',
+      birch: '126:10',
+      jungle: '126:11'
+    },
+    snow: 78,
+    stone: 44,
+    oak: 126,
+    spruce: '126:1',
+    birch: '126:2',
+    jungle: '126:3'
+  },
+  // see brick.red 45
   tnt: 46,
   bookshelf: 47,
   moss_stone: 48,
@@ -168,49 +201,6 @@ var blocks = {
   dragon_egg: 122,
   redstone_lamp: 123,
   redstone_lamp_active: 124,
-  //http://minecraft.gamepedia.com/Data_values#Double_Stone_Slabs
-  double_slab: {
-    stone: 43,
-    sandstone: '43:1',
-    wooden: '43:2',
-    cobblestone: '43:3',
-    brick: '43:4',
-    stonebrick: '43:5',
-    netherbrick:'43:6',
-    quartz: '43:7',
-    smooth_stone: '43:8',
-    smooth_sandstone: '43:9',
-    tile_quartz: '43:15'
-  },
-  slab: {
-    snow: 78,
-    stone: 44,
-    sandstone: '44:1',
-    wooden: '44:2',
-    cobblestone: '44:3',
-    brick: '44:4',
-    stonebrick: '44:5',
-    netherbrick:'44:6',
-    quartz: '44:7',
-    oak: 126,
-    spruce: '126:1',
-    birch: '126:2',
-    jungle: '126:3',
-    upper: {
-      stone: '44:8',
-      sandstone: '44:9',
-      wooden: '44:10',
-      cobblestone: '44:11',
-      brick: '44:12',
-      stonebrick: '44:13',
-      netherbrick:'44:14',
-      quartz: '44:15',
-      oak: '126:8',
-      spruce: '126:9',
-      birch: '126:10',
-      jungle: '126:11'
-    }
-  },
   cocoa: 127,
   emerald_ore: 129,
   enderchest: 130,
@@ -224,7 +214,7 @@ var blocks = {
   carrots: 141,
   potatoes: 142,
   button_wood: 143,
-  mobhead: 144,
+  skull: 144, mobhead: 144, 
   anvil: 145,
   chest_trapped: 146,
   pressure_plate_weighted_light: 147,
@@ -233,13 +223,21 @@ var blocks = {
   redstone_comparator_active: 150,
   daylight_sensor: 151,
   redstone: 152,
-  netherquartzore: 153,
+  quartzore: 153, netherquartzore: 153,
   hopper: 154,
   quartz: 155,
+  quartz_chiseled: '155:1', 
+  quartz_pillar_vertical: '155:2',
+  quartz_pillar_horizontal: '155:3',
+  quartz_pillar_cap: '155:4',
+  // see stairs.quartz
   rail_activator: 157,
   dropper: 158,
   stained_clay: {
     white: 159 // All other colors added below
+  },
+  stained_glass_pane: {
+    white: 160 // all other colors added below
   },
   slime: 165,
   barrier: 166,
@@ -255,7 +253,7 @@ var blocks = {
   hardened_clay: 172,
   coal_block: 173,
   packed_ice: 174,
-  double_plant: 175,
+  double_plant: 175, 
   sunflower: 175,
   flower: {
     sunflower: 175,
@@ -274,6 +272,7 @@ var blocks = {
     standing: 176,
     wallmounted: 177
   },
+  daylight_sensor_inverted: 178,
   gate: {
     spruce: 183,
     birch: 184,
@@ -309,7 +308,13 @@ var colors = {
   red: ':14',
   black: ':15'
 };
-var colorized_blocks = ['wool', 'stained_clay', 'carpet', 'stained_glass'];
+var colorized_blocks = [
+  'wool', 
+  'stained_clay', 
+  'carpet', 
+  'stained_glass', 
+  'stained_glass_pane'
+];
 
 for (var i = 0, len = colorized_blocks.length; i < len; i++) {
   var block = colorized_blocks[i],

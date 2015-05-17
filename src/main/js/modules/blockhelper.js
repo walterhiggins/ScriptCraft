@@ -130,6 +130,7 @@ function applyColors( block, metadata ){
   case blocks.wool.white:
   case blocks.stained_clay.white:
   case blocks.stained_glass.white:
+  case blocks.stained_glass_pane.white:
   case blocks.carpet.white:
     property(block).set('color',metadata);
   }
@@ -142,7 +143,14 @@ function applyRotation( block, metadata ){
     }
   }
 }
-
+function applyVariant( block, metadata ){
+  var cmQuartzProperties = Packages.net.canarymod.api.world.blocks.properties.helpers.QuartzProperties;
+  switch (block.typeId){
+    case blocks.quartz:
+      cmQuartzProperties.applyVariant(block, cmQuartzProperties.Variant.valueOf(metadata));
+      break;
+  }
+}
 function applyProperties( block, metadata ){
   if (!bountiful){
     block.data = metadata;
@@ -154,5 +162,6 @@ function applyProperties( block, metadata ){
   applyFacing( block, metadata );
   applyColors( block, metadata );
   applyRotation( block, metadata );
+  applyVariant( block, metadata );
 }
 exports.applyProperties = applyProperties;
