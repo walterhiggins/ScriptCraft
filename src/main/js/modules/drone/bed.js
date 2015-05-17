@@ -37,7 +37,7 @@ module.exports = function(Drone){
       var head = this.setBlock(blocks.bed, bedDirections[this.dir] + 8, 0,0,1, false);
       if (Drone.bountiful){
 	var prop = require('blockhelper').property;
-	var BedHalf = Packages.net.canarymod.api.world.blocks.properties.BlockPropertyEnums.BedHalf;
+	var BedHalf = Packages.net.canarymod.api.world.blocks.properties.helpers.BedProperties.Half;
 	prop(foot)
 	  .set('facing',this.dir)
 	  .set('part', BedHalf.FOOT);
