@@ -20,6 +20,8 @@ approximations).
 The blocks module is globally exported by the Drone module.
 
 ***/
+var colors = require('./block-colors');
+
 var blocks = {
   air: 0,
   stone: 1,
@@ -291,23 +293,6 @@ var blocks = {
 
 // Add all available colors to colorized block collections
 
-var colors = {
-  orange: ':1',
-  magenta: ':2',
-  lightblue: ':3',
-  yellow: ':4',
-  lime: ':5',
-  pink: ':6',
-  gray: ':7',
-  lightgray: ':8',
-  cyan: ':9',
-  purple: ':10',
-  blue: ':11',
-  brown: ':12',
-  green: ':13',
-  red: ':14',
-  black: ':15'
-};
 var colorized_blocks = [
   'wool', 
   'stained_clay', 
@@ -321,7 +306,7 @@ for (var i = 0, len = colorized_blocks.length; i < len; i++) {
       data_value = blocks[block].white;
   
   for (var color in colors) {
-    blocks[block][color] = data_value + colors[color];
+    blocks[block][color] = data_value + ':' + colors[color];
   }
 };
 
@@ -338,6 +323,7 @@ blocks.rainbow = [
   blocks.stained_glass.lime,
   blocks.stained_glass.lightblue,
   blocks.stained_glass.blue,
-  blocks.stained_glass.purple];
+  blocks.stained_glass.purple
+];
 
 module.exports = blocks;

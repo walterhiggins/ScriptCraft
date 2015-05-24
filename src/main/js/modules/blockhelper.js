@@ -128,10 +128,15 @@ function applyFacing( block, metadata ){
 function applyColors( block, metadata ){
   switch( block.typeId){
   case blocks.wool.white:
+  case 35:
   case blocks.stained_clay.white:
+  case 159:
   case blocks.stained_glass.white:
+  case 95:
   case blocks.stained_glass_pane.white:
+  case 160:
   case blocks.carpet.white:
+  case 171:
     property(block).set('color',metadata);
   }
 }
