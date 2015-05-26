@@ -138,14 +138,6 @@ ScriptCraft plugin &hellip;
 [ic]: http://canarymod.net/releases
 [cmapi]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/
 
-# Docker 
-
-To launch a container with CanaryMod and ScriptCraft you can just do 
-
-      docker run -p 25565:25565 -it tclavier/scriptcraft
-
-You can find all files used to build this container in github project: [docker-scriptcraft](https://github.com/tclavier/docker-scriptcraft)
-
 # Contributing
 
 If you would like to contribute source code and/or documentation changes please [read contributing.md][contrib]
@@ -180,6 +172,7 @@ ScriptCraft has [its own website][website] with further information.
  * The ScriptCraft [API documentation][api].
  * To delve deeper into creating your own minecraft mod for use by others, read [Creating a complete Minecraft Mod in JavaScript][mm].
  * Take a look at some [examples][ex]
+ * Buy the Official ScriptCraft Book [A Beginner's Guide to Writing Minecraft Plugins in Javascript][book]
 
 You can find more information about [ScriptCraft on my blog][blog].
 
@@ -197,6 +190,15 @@ Developer Chris Cacciatore has created some interesting tools using ScriptCraft 
 
  * [A wolf-bot][wb]
  * [L-Systems (Large-scale fractal structures in Minecraft)][ls] 
+
+# Docker 
+
+To launch a container with CanaryMod and ScriptCraft you can just do 
+
+      docker run -p 25565:25565 -it tclavier/scriptcraft
+
+You can find all files used to build this container in github project: [docker-scriptcraft](https://github.com/tclavier/docker-scriptcraft)
+
  
 [wb]: https://github.com/cacciatc/wolfbot
 [ls]: https://github.com/cacciatc/scriptcraft-lsystems
@@ -213,3 +215,4 @@ Developer Chris Cacciatore has created some interesting tools using ScriptCraft 
 [ex]: src/main/js/plugins/examples
 [contrib]: contributing.md
 [sj]: http://cdathenry.wordpress.com/2013/10/12/modderdojo-week-2-moving-from-scratch-to-javascript/
+[book]: http://www.peachpit.com/store/beginners-guide-to-writing-minecraft-plugins-in-javascript-9780133930146
