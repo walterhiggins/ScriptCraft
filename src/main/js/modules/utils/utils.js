@@ -143,7 +143,7 @@ This can be useful if you write a plugin that needs to store location data since
 A JSON object in the above form.
  
 ***/
-var _locationToJSON = function( location ) {
+function _locationToJSON( location ) {
   var yaw = __plugin.bukkit ? location.yaw : (__plugin.canary ? location.rotation : 0);
   return { 
     world: ''+location.world.name, 
@@ -175,7 +175,7 @@ lookupTable[key] = player.name;
 ```
 
 ***/
-exports.locationToString = function( location ) {
+exports.locationToString = function locationToString( location ) {
   return JSON.stringify( _locationToJSON( location ) );
 };
 exports.locationToJSON = _locationToJSON;
@@ -190,7 +190,7 @@ returned by locationToJSON() and reconstructs and returns a bukkit
 Location object.
 
 ***/
-exports.locationFromJSON = function( json ) {
+exports.locationFromJSON = function locationFromJSON( json ) {
   var world;
   if ( json.constructor == Array ) { 
     // for support of legacy format
@@ -210,7 +210,7 @@ exports.locationFromJSON = function( json ) {
 
 exports.player = _player;
 
-exports.getPlayerObject = function( player ) {
+exports.getPlayerObject = function getPlayerObject( player ) {
   console.warn( 'utils.getPlayerObject() is deprecated. Use utils.player() instead.' );
   return _player(player);
 };
@@ -281,7 +281,7 @@ if (targetPos){
 ```
 
 ***/
-exports.getMousePos = function( player ) {
+exports.getMousePos = function getMousePos( player ) {
   
   player = _player(player);
   if ( !player ) {
@@ -366,20 +366,20 @@ utils.foreach (players, function( player ) {
 Java-style collection. This is important because many objects in the
 CanaryMod and Bukkit APIs use Java-style collections.
 ***/
-var _foreach = function( array, callback, context, delay, onCompletion ) {
+function _foreach( array, callback, context, delay, onCompletion ) {
   if ( array instanceof java.util.Collection ) {
     array = array.toArray();
   }
   var i = 0;
   var len = array.length;
+  function next() { 
+    callback(array[i], i, context, array); 
+    i++;
+  }
+  function hasNext() {
+    return i < len;
+  }
   if ( delay ) {
-    var next = function( ) { 
-      callback(array[i], i, context, array); 
-      i++;
-    };
-    var hasNext = function( ) {
-      return i < len;
-    };
     _nicely( next, hasNext, onCompletion, delay );
   } else {
     for ( ;i < len; i++ ) {
@@ -412,7 +412,7 @@ function and the start of the next `next()` function.
 See the source code to utils.foreach for an example of how utils.nicely is used.
 
 ***/
-var _nicely = function( next, hasNext, onDone, delay ) {
+function _nicely( next, hasNext, onDone, delay ) {
   if ( hasNext() ){
     next();
     setTimeout( function() {
@@ -426,11 +426,12 @@ var _nicely = function( next, hasNext, onDone, delay ) {
 };
 exports.nicely = _nicely;
 
-exports.at = function( time24hr, callback, pWorlds, repeat ) {
+function _at( time24hr, callback, pWorlds, repeat ) {
   console.warn("utils.at() is deprecated, use require('at') instead");
   var at = require('at');
   return at( time24hr, callback, pWorlds, repeat);
-};
+}
+exports.at = _at;
 /*************************************************************************
 ### utils.time( world ) function
 
@@ -501,27 +502,9 @@ var jsFiles = utils.find('./', function(dir,name){
 });  
 ```
 ***/
-exports.find = function( dir , filter ) {
-  var result = [];
-  var recurse = function( dir, store ) {
-    var files, dirfile = new File( dir );
-    
-    if ( typeof filter == 'undefined' ) {
-      files = dirfile.list();
-    } else {
-      files = dirfile.list(filter);
-    }
-    _foreach( files, function( file ) {
-      file = new File( dir + '/' + file );
-      if ( file.isDirectory() ) {
-        recurse( file.canonicalPath, store );
-      } else {
-        store.push( file.canonicalPath );
-      }
-    });
-  };
-  recurse( dir, result );
-  return result;
+exports.find = function( path, filter){
+  console.warn("utils.find() is deprecated, use require('find') instead");
+  return require('find')(path, filter);
 };
 /************************************************************************
 ### utils.serverAddress() function
@@ -534,7 +517,7 @@ var serverAddress = utils.serverAddress();
 console.log(serverAddress);
 ```
 ***/
-exports.serverAddress = function() {
+exports.serverAddress = function serverAddress() {
   var interfaces = java.net.NetworkInterface.getNetworkInterfaces();
   var current,
     addresses,
@@ -682,7 +665,7 @@ if (__plugin.canary){
 function getPlayerNames(){
   return getPlayers().map(function(p){ return p.name; });
 }
-exports.players = function(fn){
+exports.players = function players(fn){
   var result = getPlayers();
   if (fn){
     result.forEach(fn);

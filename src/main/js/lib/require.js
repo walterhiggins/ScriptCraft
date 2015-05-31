@@ -65,8 +65,20 @@ module specification, the '.js' suffix is optional.
   var File = java.io.File,
     FileReader = java.io.FileReader,
     BufferedReader = java.io.BufferedReader;
+
+  function fileExists( file ) {
+    if ( file.isDirectory() ) {
+      return readModuleFromDirectory( file );
+    } else {
+      return file;
+    }
+  }
+
+  function _canonize(file){ 
+    return "" + file.canonicalPath.replaceAll("\\\\","/"); 
+  }
     
-  var readModuleFromDirectory = function( dir ) {
+  function readModuleFromDirectory( dir ) {
 
     // look for a package.json file
     var pkgJsonFile = new File( dir, './package.json' );
@@ -87,19 +99,8 @@ module specification, the '.js' suffix is optional.
         return null;
       }
     }
-  };
+  }
 
-  var fileExists = function( file ) {
-    if ( file.isDirectory() ) {
-      return readModuleFromDirectory( file );
-    } else {
-      return file;
-    }
-  };
-
-  var _canonize = function(file){ 
-    return "" + file.canonicalPath.replaceAll("\\\\","/"); 
-  };
 
 /**********************************************************************
 ### module name resolution
@@ -135,7 +136,7 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     3.2 if no package.json file exists then look for an index.js file in the directory
 
 ***/
-  var resolveModuleToFile = function ( moduleName, parentDir ) {
+  function resolveModuleToFile( moduleName, parentDir ) {
     var file = new File(moduleName),
       i = 0,
       pathWithJSExt,
@@ -179,13 +180,11 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
       }
     }
     return null;
-  };
-  var _loadedModules = {};
-  var _format = java.lang.String.format;
+  }
   /*
    require() function implementation
    */
-  var _require = function( parentFile, path, options ) {
+  function _require( parentFile, path, options ) {
     var file,
         canonizedFilename,
         moduleInfo,
@@ -208,6 +207,29 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
                                 "in working directory '%s' ", [path, parentFile.canonicalPath]);
       if (! ( (''+path).match( /^\./ ) ) ) {
         errMsg = errMsg + ' and not found in paths ' + JSON.stringify(modulePaths);
+      }
+      var find = _require(parentFile, 'find').exports;
+      var allJS = [];
+      for (var i = 0;i < modulePaths.length; i++){
+	var js = find( modulePaths[i] );
+	for (var j = 0;j < js.length; j++){
+	  if (js[j].match(/\.js$/)){
+	    allJS.push( js[j].replace(modulePaths[i],'') );
+	  }
+	}
+      }
+      var pathL = path.toLowerCase();
+      var candidates = [];
+      for (i = 0;i < allJS.length;i++){
+	var filenameparts = allJS[i];
+	var candidate = filenameparts.replace(/\.js/,'') ;
+	var lastpart = candidate.toLowerCase();
+	if (pathL.indexOf(lastpart) > -1 || lastpart.indexOf(pathL) > -1){
+	  candidates.push(candidate);
+	}
+      }
+      if (candidates.length > 0){
+	errMsg += '\nBut found module/s named: ' + candidates.join(',') + ' - is this what you meant?';
       }
       throw new Error(errMsg);
     }
@@ -285,14 +307,16 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     }
     moduleInfo.loaded = true;
     return moduleInfo;
-  };
+  }
 
-  var _requireClosure = function( parent ) {
-    return function( path, options ) {
+  function _requireClosure( parent ) {
+    return function requireBoundToParent( path, options ) {
       var module = _require( parent, path , options);
       return module.exports;
     };
-  };
+  }
+  var _loadedModules = {};
+  var _format = java.lang.String.format;
   return _requireClosure( new java.io.File(rootDir) );
   // last line deliberately has no semicolon!
 })
