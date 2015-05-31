@@ -36,42 +36,22 @@ function which when invoked with a given
 [org.bukkit.block.Sign][buksign] object, will convert that sign into
 an interactive sign.
 
-#### Example: Create a sign which changes the time of day.
+#### Example: Create a sign which changes the time of day
 
-##### plugins/signs/time-of-day.js
-   
-```javascript 
-var utils = require('utils'),
-    signs = require('signs');
-
-var onTimeChoice = function(event){
-    var selectedIndex = event.number;
-    // convert to Minecraft time 0 = Dawn, 6000 = midday, 12000 = dusk, 18000 = midnight
-    var time = selectedIndex * 6000; 
-    event.player.location.world.setTime(time);
-};
-
-// signs.menu returns a function which can be called for one or more signs in the game.
-var convertToTimeMenu = signs.menu('Time of Day',
-    ['Dawn', 'Midday', 'Dusk', 'Midnight'],
-    onTimeChoice);
-        
-exports.time_sign = function( player ){
-    var sign = signs.getTargetedBy(player);
-    if ( !sign ) {
-        throw new Error('You must look at a sign');
-    } 
-    convertToTimeMenu(sign);
-};
-```
+Look up *plugins/signs/examples.js* in your local ScriptCraft installation or
+[examples.js on Github](https://github.com/walterhiggins/ScriptCraft/blob/master/src/main/js/plugins/signs/examples.js).
 
 To use the above function at the in-game prompt, look at an existing
-sign and type...
+sign and type &hellip;
 
-    /js time_sign(self);
+    /js signs.menu_time(self)
 
-... and the sign you're looking at will become an interactive sign
-which changes the time each time you interact (right-click) with it.
+&hellip; and the sign you're looking at will become an interactive sign
+which changes the time each time you interact with it by right-clicking.
+
+Also try out
+
+    /js signs.menu_food(self)
 
 ### signs.getTargetedBy() function
 
