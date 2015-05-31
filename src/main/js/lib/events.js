@@ -99,6 +99,10 @@ var helper;
 if (__plugin.canary){
   module.exports = require('events-canary');
   helper = require('events-helper-canary');
+  // backwards-compatibility with canarymod 1.7.9 for book listings
+  if (helper.connection && !helper.connect){
+    helper.connect = helper.connection;
+  }
 } else {
   module.exports = require('events-bukkit');
   helper = require('events-helper-bukkit');

@@ -1,6 +1,11 @@
 RELEASE NOTES
 =============
 
+3.1.5 Release (2015 05 31)
+--------------------------
+CanaryMod version : Add events.connect as synonym for events.connnection for backward-compatibility
+with 1.7.9 and book listings.
+
 3.1.4 Release (2015 05 09)
 --------------------------
 Various bug fixes and new 'inventory' module.
