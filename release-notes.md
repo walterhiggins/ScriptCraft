@@ -1,6 +1,11 @@
 RELEASE NOTES
 =============
 
+3.1.6 Release (2015 05 31)
+--------------------------
+Provide more helpful error messages when trying to require modules which don't exist e.g. 
+require('greetings') should fail but indicate if there's a 'greeting' module present instead.
+
 3.1.5 Release (2015 05 31)
 --------------------------
 CanaryMod version : Add events.connect as synonym for events.connnection for backward-compatibility
