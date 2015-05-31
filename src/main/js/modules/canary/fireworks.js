@@ -5,10 +5,13 @@ var Canary = Packages.net.canarymod.Canary;
 var cmFireworkHelper = Packages.net.canarymod.api.inventory.helper.FireworkHelper;
 var cmExplosionType = Packages.net.canarymod.api.inventory.helper.FireworkHelper.ExplosionType;
 var explosionTypes = ['STAR','BURST','CREEPER','LARGE','SMALL'];
+var cmDyeColor = Packages.net.canarymod.api.DyeColor;
 var entityFactory = Canary.factory().entityFactory;
 var cmEntityType = Packages.net.canarymod.api.entity.EntityType;
-var colors = [0xff0000, 0xffff00, 0x00ff00, 0x0000ff];
+var colors = [].concat(cmDyeColor.values());
+
 function canaryFirework( location ) {
+
   var firework = items.fireworkStar(1);
   var i1 = Math.floor(Math.random()* colors.length);
   var i2 = Math.floor(Math.random()* colors.length);
@@ -16,9 +19,10 @@ function canaryFirework( location ) {
   if (colorsToUse.length == 0){
     colorsToUse = colors;
   }
-  cmFireworkHelper.addStarColorsRaw(firework, colorsToUse);
-  cmFireworkHelper.setDoesFlicker( firework, true);
+  cmFireworkHelper.addStarColors( firework, colorsToUse );
+  cmFireworkHelper.setDoesFlicker( firework, true );
   cmFireworkHelper.setDoesTrail( firework, true );
+
   // use a random explosion type
   var rnd = Math.floor(Math.random() * explosionTypes.length);
   var type = explosionTypes[rnd];
@@ -29,6 +33,7 @@ function canaryFirework( location ) {
   var rocketEntity = entityFactory.newEntity(cmEntityType.FIREWORKROCKET, location);
   rocketEntity.item = rocket;
   rocketEntity.spawn();
+
 }
 
 module.exports = canaryFirework;
