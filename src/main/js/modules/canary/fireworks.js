@@ -8,18 +8,11 @@ var explosionTypes = ['STAR','BURST','CREEPER','LARGE','SMALL'];
 var cmDyeColor = Packages.net.canarymod.api.DyeColor;
 var entityFactory = Canary.factory().entityFactory;
 var cmEntityType = Packages.net.canarymod.api.entity.EntityType;
-var colors = [].concat(cmDyeColor.values());
 
 function canaryFirework( location ) {
 
   var firework = items.fireworkStar(1);
-  var i1 = Math.floor(Math.random()* colors.length);
-  var i2 = Math.floor(Math.random()* colors.length);
-  var colorsToUse = colors.slice(Math.min(i1,i2),Math.max(i1,i2));
-  if (colorsToUse.length == 0){
-    colorsToUse = colors;
-  }
-  cmFireworkHelper.addStarColors( firework, colorsToUse );
+  cmFireworkHelper.addStarColors( firework, cmDyeColor.values() );
   cmFireworkHelper.setDoesFlicker( firework, true );
   cmFireworkHelper.setDoesTrail( firework, true );
 
