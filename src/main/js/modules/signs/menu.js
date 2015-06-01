@@ -2,9 +2,7 @@
 /*global events, require, org, module, persist, __plugin*/
 var utils = require('utils'),
   stringExt = require('utils/string-exts'),
-  store = persist('signs',{}),
-  bkBukkit = org.bukkit.Bukkit,
-  bkSign = org.bukkit.block.Sign;
+  store = persist('signs',{});
 
 /*
   Define the signs module - signs are persistent 
