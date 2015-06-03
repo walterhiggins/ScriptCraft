@@ -11,7 +11,7 @@ demonstrates a couple of new features in ScriptCraft &hellip;
  * Persistence
  * Adding Player (non-operator) commands
 
-[homes]: src/main/js/plugins/homes/homes.js
+[homes]:  /src/main/js/plugins/homes/homes.js
 
 Here, I walk you through another useful plugin which lets players modify the color of the in-game chat.
 
