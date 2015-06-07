@@ -1,5 +1,11 @@
 RELEASE NOTES
 =============
+3.1.8 Release (2015 06 07)
+--------------------------
+Bug fix: Fixes drone on Spigot 1.8.7 with JDK 7 see 
+https://github.com/walterhiggins/ScriptCraft/issues/254
+
+
 3.1.7 Release (2015 06 07)
 --------------------------
 Added workaround for https://bugs.openjdk.java.net/browse/JDK-8072596 to recipes module.
