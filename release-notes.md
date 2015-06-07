@@ -1,10 +1,15 @@
 RELEASE NOTES
 =============
+3.1.7 Release (2015 06 07)
+--------------------------
+Added workaround for https://bugs.openjdk.java.net/browse/JDK-8072596 to recipes module.
 
 3.1.6 Release (2015 05 31)
 --------------------------
 Provide more helpful error messages when trying to require modules which don't exist e.g. 
 require('greetings') should fail but indicate if there's a 'greeting' module present instead.
+
+Fixes problem with Fireworks module on Mac OS.
 
 3.1.5 Release (2015 05 31)
 --------------------------
