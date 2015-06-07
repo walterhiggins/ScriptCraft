@@ -478,7 +478,7 @@ Drone.extend = function( name, func ) {
 /**************************************************************************
 ### Drone.times() Method
 
-The times() method makes building multiple copies of buildings
+The `times()` method makes building multiple copies of buildings
 easy. It's possible to create rows or grids of buildings without
 resorting to `for` or `while` loops.
 
@@ -486,53 +486,57 @@ resorting to `for` or `while` loops.
 
  * numTimes : The number of times you want to repeat the preceding statements.
 
+#### Limitation
+
+For now, don't use `times()` inside a Drone method implementation &ndash; only use it at the in-game prompt as a short-hand workaround for loops.
+
 #### Example
 
-Say you want to do the same thing over and over. You have a couple of options...
+Say you want to do the same thing over and over. You have a couple of options:
 
- * You can use a for loop...
+ * You can use a `for` loop &hellip;
 
-    d = new Drone(); for ( var i =0;i < 4; i++) {  d.cottage().right(8); }
+    d = new Drone(); for ( var i = 0; i < 4; i++ ) {  d.cottage().right(8); }
 
 While this will fit on the in-game prompt, it's awkward. You need to
-declare a new Drone object first, then write a for loop to create the
-4 cottages. It's also error prone, even the `for` loop is too much
+declare a new Drone object first, then write a `for` loop to create the
+4 cottages. It's also error prone &ndash; even the `for` loop is too much
 syntax for what should really be simple.
 
- * You can use a while loop...
+ * You can use a `while` loop &hellip;
    
-    d = new Drone(); var i=4; while (i--) {  d.cottage().right(8); }
+    d = new Drone(); var i=4; while (i--) { d.cottage().right(8); }
 
-... which is slightly shorter but still too much syntax. Each of the
+&hellip; which is slightly shorter but still too much syntax. Each of the
 above statements is fine for creating a 1-dimensional array of
 structures. But what if you want to create a 2-dimensional or
 3-dimensional array of structures? Enter the `times()` method.
 
 The `times()` method lets you repeat commands in a chain any number of
 times. So to create 4 cottages in a row you would use the following
-statement...
+statement:
 
     cottage().right(8).times(4);
 
-...which will build a cottage, then move right 8 blocks, then do it
+&hellip; which will build a cottage, then move right 8 blocks, then do it
 again 4 times over so that at the end you will have 4 cottages in a
-row. What's more the `times()` method can be called more than once in
+row. What's more, the `times()` method can be called more than once in
 a chain. So if you wanted to create a *grid* of 20 houses ( 4 x 5 ),
-you would do so using the following statement...
+you would do so using the following statement:
 
     cottage().right(8).times(4).fwd(8).left(32).times(5);
 
-... breaking it down...
+&hellip; breaking it down &hellip;
 
  1. The first 3 calls in the chain ( `cottage()`, `right(8)`, `times(4)` ) build a single row of 4 cottages.
 
- 2. The last 3 calls in the chain ( `fwd(8)`, `left(32)`, `times(5)` ) move the drone forward 8 then left 32 blocks (4 x 8) to return to the original x coordinate, then everything in the chain is repeated again 5 times so that in the end, we have a grid of 20 cottages, 4 x 5.  Normally this would require a nested loop but the `times()` method does away with the need for loops when repeating builds.
+ 2. The last 3 calls in the chain ( `fwd(8)`, `left(32)`, `times(5)` ) move the drone forward 8 then left 32 blocks (4 x 8) to return to the original X coordinate, then everything in the chain is repeated again 5 times so that in the end, we have a grid of 20 cottages, 4 x 5.  Normally this would require a nested loop but the `times()` method does away with the need for loops when repeating builds.
 
-Another example: This statement creates a row of trees 2 by 3 ...
+Another example: This statement creates a row of trees 2 by 3:
 
     oak().right(10).times(2).left(20).fwd(10).times(3)
 
-... You can see the results below.
+&hellip; You can see the results below.
 
 ![times example 1](img/times-trees.png)
 
