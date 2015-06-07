@@ -26,6 +26,14 @@ function createRecipe( recipe ){
       }
       rows.push( new cmRecipeRow(recipe.shape[i], rr) );
     }
+    /*
+      wph 20150607 short-term workaround for nashorn defect
+      https://bugs.openjdk.java.net/browse/JDK-8072596
+    */
+    if ( typeof Java !== 'undefined' && typeof Java.type === 'function' ) {
+      var RecipeRowArrayType = Java.type('net.canarymod.api.inventory.recipes.RecipeRow[]');
+      rows = Java.to( rows, RecipeRowArrayType );
+    }
     result = cmRecipe.createShapedRecipe( recipe.result, rows);
   } else { 
     result = cmRecipe.createShapelessRecipe( recipe.result, recipe.ingredients );
