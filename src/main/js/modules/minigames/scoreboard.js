@@ -49,8 +49,13 @@ function addPlayerToTeam( objectiveName, teamName, playerName ){
 }
 
 function updatePlayerScore( objectiveName, playerName, score ){
-  var sc = sb['getScore(String, ScoreObjective)']( playerName, sb.getScoreObjective( objectiveName) );
-  sc.score = score;
+  /*
+   wph 20150801 - this fails with CanaryMod 1.8.2 so use command instead - messy for ops but non-ops won't see messages
+   
+   var sc = sb['getScore(String, ScoreObjective)']( playerName, sb.getScoreObjective( objectiveName) );
+   sc.score = score;
+   */
+  execCommand('scoreboard players set ' + playerName + ' ' + objectiveName + score);
 }
 
 function removeTeamFromScoreboard( teamName ){

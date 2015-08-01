@@ -57,6 +57,13 @@
 
 
   <target name="get-canary" depends="init" description="Downloads canarymod jar" unless="canary.present">
+    <mkdir dir="target/lib/"/>
+    <get src="http://scriptcraftjs.org/download/latest/CanaryMod-1.8.0-1.2.1-SNAPSHOT-shaded.jar"
+	 maxtime="60"
+	 dest="target/lib/canarymod.jar"
+	 verbose="true"/>
+    <!--
+	wph 20150801 - CanaryMod is no longer being developed. Get the latest version from scriptcraftjs.org instead.
     <get src="https://ci.visualillusionsent.net/job/CanaryMod/lastStableBuild/artifact/*zip*/archive.zip"
 	 maxtime="60"
 	 dest="target/canarymod.zip"
@@ -65,6 +72,7 @@
 	   dest="target/lib">
       <mapper type="glob" from="*.jar" to="canarymod.jar"/>
     </unzip>
+    -->
   </target>
 
   <target name="compile-plugins" depends="init,get-canary" description="compile canary plugin source">

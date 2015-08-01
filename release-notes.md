@@ -1,5 +1,10 @@
 RELEASE NOTES
 =============
+3.1.9 Release (2015 08 01)
+--------------------------
+Bug fix: minigames/scoreboard.js module's updatePlayerScore() function did not work with latest version of CanaryMod. 
+Using /scoreboard command instead. See https://github.com/walterhiggins/ScriptCraft/issues/261
+
 3.1.8 Release (2015 06 07)
 --------------------------
 Bug fix: Fixes drone on Spigot 1.8.7 with JDK 7 see 
