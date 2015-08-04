@@ -399,6 +399,10 @@ function __onDisable ( __engine, __plugin ) {
   __onDisableImpl( __engine, __plugin);
 }
 function __onEnable ( __engine, __plugin, __script ) {
+  // The client will disconnect if more than 32767 bytes of JSON data are sent
+  // in a chat packet. For safety, the echo() function will truncate its argument
+  // after a (conservatively) set number of characters.
+  var MAX_ECHO_CHARS = 4000;
   function _echo( ) {
     var sender, msg;
     if (arguments.length == 2){
@@ -410,6 +414,11 @@ function __onEnable ( __engine, __plugin, __script ) {
       }
       sender = self;
       msg = arguments[0];
+    }
+    msg = String(msg);
+    if (msg.length > MAX_ECHO_CHARS) {
+      msg = msg.substring(0, MAX_ECHO_CHARS)
+        + ('\n...' + (msg.length - MAX_ECHO_CHARS) + ' characters truncated !').red();
     }
     if (__plugin.canary){
       sender.message( msg );
