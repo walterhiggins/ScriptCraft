@@ -642,7 +642,7 @@ function __onEnable ( __engine, __plugin, __script ) {
               echo(sender, jsResult);
             } else {
               var replacer = function replacer(key, value){
-                return this[key] instanceof java.lang.Object ? '' + this[key] : value;
+                return isJavaObject(value) ? '' + value : value;
               };
               echo(sender, JSON.stringify( jsResult, replacer, 2) );
             }
