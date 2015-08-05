@@ -567,6 +567,31 @@ function __onEnable ( __engine, __plugin, __script ) {
       unloadHandlers[i]( );
     }
   }
+
+  // cannot rely on native eval in jre7 and jre8
+  // because ...
+  // js var hearts
+  // js hearts
+  // ... throws an execption ('hearts' is not defined). vars are not sticky in native eval .
+  //
+  function _eval(expr) {
+    var result;
+    if ( nashorn ) {
+      // On Nashorn, we can use the native `load` function, which preserves return types better
+      // (`undefined` is not cast to `null`)
+      result = load( { script: expr, name: '<repl>' } );
+    } else {
+      result = __engine.eval( expr );
+
+      // engine eval will return null even if the result should be undefined
+      // this can be confusing so I think it's better to omit output for this case
+      if ( result === null ) {
+        result = undefined;
+      }
+    }
+    return result;
+  }
+
   function __onCommand() {
     var jsArgs = [],
       i = 0,
@@ -608,33 +633,21 @@ function __onEnable ( __engine, __plugin, __script ) {
 
       global.self = sender;
       global.__engine = __engine;
-      try { 
-        // cannot rely on native eval in jre7 and jre8 
-        // because ...
-        // js var hearts 
-        // js hearts
-        // ... throws an execption ('hearts' is not defined). vars are not sticky in native eval .
-        //
-        jsResult = __engine.eval( fnBody );
+      try {
+        jsResult = _eval(fnBody);
 
-        if ( typeof jsResult != 'undefined' ) { 
-          if ( jsResult == null) { 
-            // engine eval will return null even if the result should be undefined
-            // this can be confusing so I think it's better to omit output for this case
-            // sender.sendMessage('(null)');
-          } else { 
-            try { 
-              if ( isJavaObject(jsResult) || typeof jsResult === 'function') {
-                echo(sender, jsResult);
-              } else { 
-                var replacer = function replacer(key, value){
-                  return this[key] instanceof java.lang.Object ? '' + this[key] : value;
-                };
-                echo(sender, JSON.stringify( jsResult, replacer, 2) );
-              }
-            } catch ( displayError ) { 
-	      logError('Error while trying to display result: ' + jsResult + ', Error: '+ displayError) ;
+        if ( typeof jsResult != 'undefined' ) {
+          try {
+            if ( isJavaObject(jsResult) || typeof jsResult === 'function') {
+              echo(sender, jsResult);
+            } else {
+              var replacer = function replacer(key, value){
+                return this[key] instanceof java.lang.Object ? '' + this[key] : value;
+              };
+              echo(sender, JSON.stringify( jsResult, replacer, 2) );
             }
+          } catch ( displayError ) {
+            logError('Error while trying to display result: ' + jsResult + ', Error: '+ displayError) ;
           }
         } 
       } catch ( e ) {
