@@ -602,6 +602,10 @@ function __onEnable ( __engine, __plugin, __script ) {
     {
       result = true;
       fnBody = jsArgs.join(' ');
+
+      // The Minecraft chat interface does not echo user commands. It seems friendlier to do so.
+      echo(sender, ('> ' + fnBody).gray());
+
       global.self = sender;
       global.__engine = __engine;
       try { 
