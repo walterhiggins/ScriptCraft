@@ -653,7 +653,6 @@ function __onEnable ( __engine, __plugin, __script ) {
       } catch ( e ) {
         logError( 'Error while trying to evaluate javascript: ' + fnBody + ', Error: '+ e );
         echo( sender, 'Error while trying to evaluate javascript: ' + fnBody + ', Error: '+ e );
-        throw e;
       } finally {
         /*
          wph 20140312 don't delete self on nashorn until https://bugs.openjdk.java.net/browse/JDK-8034055 is fixed
