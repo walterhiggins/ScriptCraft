@@ -638,14 +638,7 @@ function __onEnable ( __engine, __plugin, __script ) {
 
         if ( typeof jsResult != 'undefined' ) {
           try {
-            if ( isJavaObject(jsResult) || typeof jsResult === 'function') {
-              echo(sender, jsResult);
-            } else {
-              var replacer = function replacer(key, value){
-                return isJavaObject(value) ? '' + value : value;
-              };
-              echo(sender, JSON.stringify( jsResult, replacer, 2) );
-            }
+            echo(sender, inspect(jsResult));
           } catch ( displayError ) {
             logError('Error while trying to display result: ' + jsResult + ', Error: '+ displayError) ;
           }
@@ -779,7 +772,7 @@ function __onEnable ( __engine, __plugin, __script ) {
    */
   require('persistence')( jsPluginsRootDir, global );
 
-  var isJavaObject = require('java-utils').isJavaObject;
+  var inspect = require('inspect');
 
   var cmdModule = require('command');
   global.command = cmdModule.command;
