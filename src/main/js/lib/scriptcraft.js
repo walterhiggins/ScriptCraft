@@ -576,6 +576,13 @@ function __onEnable ( __engine, __plugin, __script ) {
   //
   function _eval(expr) {
     var result;
+
+    try {
+      expr = require('coffee-script').CoffeeScript.compile(expr, { bare: true });
+      console.log('CoffeeScript compilation result:' + expr);
+    } catch(e) {
+    }
+
     if ( nashorn ) {
       // On Nashorn, we can use the native `load` function, which preserves return types better
       // (`undefined` is not cast to `null`)
