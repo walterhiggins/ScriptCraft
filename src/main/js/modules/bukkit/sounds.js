@@ -1,8 +1,7 @@
-var bkLocation = org.bukkit.Location,
+var bkLocation = Packages.org.bukkit.Location,
   i = 0,
-  bukkit = require('bukkit'),
   foreach = require('utils').foreach,
-  allSounds = bukkit.sound.values(),
+  allSounds = Packages.org.bukkit.Sound.values(),
   len = allSounds.length,
   sound,
   soundName;
