@@ -1,5 +1,10 @@
 RELEASE NOTES
 =============
+
+3.1.10 Release (2015 08 16)
+---------------------------
+Bug fix: modules/bukkit/sounds.js now works (fixed for Bukkit/SpigotMC/Glowstone)
+
 3.1.9 Release (2015 08 01)
 --------------------------
 Bug fix: minigames/scoreboard.js module's updatePlayerScore() function did not work with latest version of CanaryMod. 

@@ -71,7 +71,7 @@ while ( ( entry = zis.nextEntry) != null) {
     if (canary){
       fname = fname.replace(/Hook$/,'');
     }
-    var javaDoc = canary ? 'https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/' : 'http://jd.bukkit.org/rb/apidocs/org/bukkit/event/';
+    var javaDoc = canary ? 'https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/' : 'https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/';
     var comment = [
       '/*********************',
       '### events.' + fname + '()',

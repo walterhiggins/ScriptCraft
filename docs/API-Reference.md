@@ -200,8 +200,10 @@ Walter Higgins
    * [events.playerTeleport()](#eventsplayerteleport)
    * [events.playerBedEnter()](#eventsplayerbedenter)
    * [events.playerUnregisterChannel()](#eventsplayerunregisterchannel)
+   * [events.playerArmorStandManipulate()](#eventsplayerarmorstandmanipulate)
    * [events.playerChat()](#eventsplayerchat)
    * [events.playerShearEntity()](#eventsplayershearentity)
+   * [events.playerItemDamage()](#eventsplayeritemdamage)
    * [events.asyncPlayerChat()](#eventsasyncplayerchat)
    * [events.playerDropItem()](#eventsplayerdropitem)
    * [events.playerRegisterChannel()](#eventsplayerregisterchannel)
@@ -214,11 +216,13 @@ Walter Higgins
    * [events.playerAchievementAwarded()](#eventsplayerachievementawarded)
    * [events.playerToggleSneak()](#eventsplayertogglesneak)
    * [events.playerExpChange()](#eventsplayerexpchange)
+   * [events.playerResourcePackStatus()](#eventsplayerresourcepackstatus)
    * [events.playerPreLogin()](#eventsplayerprelogin)
    * [events.playerJoin()](#eventsplayerjoin)
    * [events.playerAnimation()](#eventsplayeranimation)
    * [events.playerEditBook()](#eventsplayereditbook)
    * [events.playerPickupItem()](#eventsplayerpickupitem)
+   * [events.playerInteractAtEntity()](#eventsplayerinteractatentity)
    * [events.playerChangedWorld()](#eventsplayerchangedworld)
    * [events.playerFish()](#eventsplayerfish)
    * [events.playerChatTabComplete()](#eventsplayerchattabcomplete)
@@ -272,6 +276,7 @@ Walter Higgins
    * [events.entityPortal()](#eventsentityportal)
    * [events.entityTarget()](#eventsentitytarget)
    * [events.entityDeath()](#eventsentitydeath-1)
+   * [events.entitySpawn()](#eventsentityspawn-1)
    * [events.sheepRegrowWool()](#eventssheepregrowwool)
    * [events.entityShootBow()](#eventsentityshootbow)
    * [events.creeperPower()](#eventscreeperpower)
@@ -289,6 +294,8 @@ Walter Higgins
    * [events.entityTargetLivingEntity()](#eventsentitytargetlivingentity)
    * [events.entityTeleport()](#eventsentityteleport)
    * [events.playerLeashEntity()](#eventsplayerleashentity)
+   * [events.spawnerSpawn()](#eventsspawnerspawn)
+   * [events.itemMerge()](#eventsitemmerge)
    * [events.slimeSplit()](#eventsslimesplit-1)
    * [events.pigZap()](#eventspigzap)
    * [events.potionSplash()](#eventspotionsplash)
@@ -298,6 +305,7 @@ Walter Higgins
    * [events.entityBlockForm()](#eventsentityblockform)
    * [events.blockSpread()](#eventsblockspread)
    * [events.blockMultiPlace()](#eventsblockmultiplace)
+   * [events.blockExplode()](#eventsblockexplode)
    * [events.notePlay()](#eventsnoteplay)
    * [events.blockFade()](#eventsblockfade)
    * [events.blockPlace()](#eventsblockplace-1)
@@ -2029,7 +2037,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [weather.WeatherChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/weather/WeatherChangeEvent.html) is fired
+ * callback - A function which is called whenever the [weather.WeatherChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/weather/WeatherChangeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2037,7 +2045,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [weather.LightningStrikeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/weather/LightningStrikeEvent.html) is fired
+ * callback - A function which is called whenever the [weather.LightningStrikeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/weather/LightningStrikeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2045,7 +2053,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [weather.ThunderChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/weather/ThunderChangeEvent.html) is fired
+ * callback - A function which is called whenever the [weather.ThunderChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/weather/ThunderChangeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2053,7 +2061,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleMoveEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleMoveEvent.html) is fired
+ * callback - A function which is called whenever the [vehicle.VehicleMoveEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleMoveEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2061,7 +2069,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleDestroyEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleDestroyEvent.html) is fired
+ * callback - A function which is called whenever the [vehicle.VehicleDestroyEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleDestroyEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2069,7 +2077,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleExitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleExitEvent.html) is fired
+ * callback - A function which is called whenever the [vehicle.VehicleExitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleExitEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2077,7 +2085,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleEntityCollisionEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleEntityCollisionEvent.html) is fired
+ * callback - A function which is called whenever the [vehicle.VehicleEntityCollisionEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleEntityCollisionEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2085,7 +2093,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleBlockCollisionEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleBlockCollisionEvent.html) is fired
+ * callback - A function which is called whenever the [vehicle.VehicleBlockCollisionEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleBlockCollisionEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2093,7 +2101,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleEnterEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleEnterEvent.html) is fired
+ * callback - A function which is called whenever the [vehicle.VehicleEnterEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleEnterEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2101,7 +2109,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleDamageEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleDamageEvent.html) is fired
+ * callback - A function which is called whenever the [vehicle.VehicleDamageEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleDamageEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2109,7 +2117,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleUpdateEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleUpdateEvent.html) is fired
+ * callback - A function which is called whenever the [vehicle.VehicleUpdateEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleUpdateEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2117,7 +2125,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleCreateEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/vehicle/VehicleCreateEvent.html) is fired
+ * callback - A function which is called whenever the [vehicle.VehicleCreateEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleCreateEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2125,7 +2133,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [painting.PaintingBreakEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/painting/PaintingBreakEvent.html) is fired
+ * callback - A function which is called whenever the [painting.PaintingBreakEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/painting/PaintingBreakEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2133,7 +2141,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [painting.PaintingBreakByEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/painting/PaintingBreakByEntityEvent.html) is fired
+ * callback - A function which is called whenever the [painting.PaintingBreakByEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/painting/PaintingBreakByEntityEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2141,7 +2149,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [painting.PaintingPlaceEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/painting/PaintingPlaceEvent.html) is fired
+ * callback - A function which is called whenever the [painting.PaintingPlaceEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/painting/PaintingPlaceEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2149,7 +2157,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [enchantment.EnchantItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/enchantment/EnchantItemEvent.html) is fired
+ * callback - A function which is called whenever the [enchantment.EnchantItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/enchantment/EnchantItemEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2157,7 +2165,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [enchantment.PrepareItemEnchantEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/enchantment/PrepareItemEnchantEvent.html) is fired
+ * callback - A function which is called whenever the [enchantment.PrepareItemEnchantEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/enchantment/PrepareItemEnchantEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2165,7 +2173,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerInteractEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerInteractEntityEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerInteractEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerInteractEntityEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2173,7 +2181,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerEggThrowEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerEggThrowEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerEggThrowEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerEggThrowEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2181,7 +2189,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerUnleashEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerUnleashEntityEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerUnleashEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerUnleashEntityEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2189,7 +2197,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerInventoryEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerInventoryEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerInventoryEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerInventoryEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2197,7 +2205,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerLevelChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerLevelChangeEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerLevelChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerLevelChangeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2205,7 +2213,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerPortalEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerPortalEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerPortalEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerPortalEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2213,7 +2221,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerItemConsumeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerItemConsumeEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerItemConsumeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerItemConsumeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2221,7 +2229,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerTeleportEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerTeleportEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerTeleportEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerTeleportEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2229,7 +2237,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerBedEnterEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerBedEnterEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerBedEnterEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerBedEnterEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2237,7 +2245,15 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerUnregisterChannelEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerUnregisterChannelEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerUnregisterChannelEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerUnregisterChannelEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerArmorStandManipulate()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerArmorStandManipulateEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerArmorStandManipulateEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2245,7 +2261,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerChatEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerChatEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerChatEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerChatEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2253,7 +2269,15 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerShearEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerShearEntityEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerShearEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerShearEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerItemDamage()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerItemDamageEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerItemDamageEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2261,7 +2285,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.AsyncPlayerChatEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/AsyncPlayerChatEvent.html) is fired
+ * callback - A function which is called whenever the [player.AsyncPlayerChatEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/AsyncPlayerChatEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2269,7 +2293,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerDropItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerDropItemEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerDropItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerDropItemEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2277,7 +2301,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerRegisterChannelEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerRegisterChannelEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerRegisterChannelEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerRegisterChannelEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2285,7 +2309,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerMoveEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerMoveEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerMoveEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerMoveEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2293,7 +2317,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerItemBreakEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerItemBreakEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerItemBreakEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerItemBreakEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2301,7 +2325,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerBucketEmptyEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerBucketEmptyEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerBucketEmptyEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerBucketEmptyEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2309,7 +2333,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerStatisticIncrementEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerStatisticIncrementEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerStatisticIncrementEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerStatisticIncrementEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2317,7 +2341,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerToggleFlightEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerToggleFlightEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerToggleFlightEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerToggleFlightEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2325,7 +2349,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerItemHeldEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerItemHeldEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerItemHeldEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerItemHeldEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2333,7 +2357,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerAchievementAwardedEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerAchievementAwardedEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerAchievementAwardedEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerAchievementAwardedEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2341,7 +2365,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerToggleSneakEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerToggleSneakEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerToggleSneakEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerToggleSneakEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2349,7 +2373,15 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerExpChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerExpChangeEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerExpChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerExpChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerResourcePackStatus()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerResourcePackStatusEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerResourcePackStatusEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2357,7 +2389,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerPreLoginEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerPreLoginEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerPreLoginEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerPreLoginEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2365,7 +2397,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerJoinEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerJoinEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerJoinEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerJoinEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2373,7 +2405,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerAnimationEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerAnimationEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerAnimationEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerAnimationEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2381,7 +2413,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerEditBookEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerEditBookEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerEditBookEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerEditBookEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2389,7 +2421,15 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerPickupItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerPickupItemEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerPickupItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerPickupItemEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerInteractAtEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerInteractAtEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerInteractAtEntityEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2397,7 +2437,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerChangedWorldEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerChangedWorldEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerChangedWorldEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerChangedWorldEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2405,7 +2445,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerFishEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerFishEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerFishEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerFishEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2413,7 +2453,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerChatTabCompleteEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerChatTabCompleteEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerChatTabCompleteEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerChatTabCompleteEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2421,7 +2461,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerRespawnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerRespawnEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerRespawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerRespawnEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2429,7 +2469,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerBedLeaveEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerBedLeaveEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerBedLeaveEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerBedLeaveEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2437,7 +2477,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.AsyncPlayerPreLoginEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/AsyncPlayerPreLoginEvent.html) is fired
+ * callback - A function which is called whenever the [player.AsyncPlayerPreLoginEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/AsyncPlayerPreLoginEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2445,7 +2485,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerInteractEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerInteractEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerInteractEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerInteractEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2453,7 +2493,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerBucketFillEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerBucketFillEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerBucketFillEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerBucketFillEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2461,7 +2501,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerVelocityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerVelocityEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerVelocityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerVelocityEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2469,7 +2509,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerQuitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerQuitEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerQuitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerQuitEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2477,7 +2517,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerLoginEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerLoginEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerLoginEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerLoginEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2485,7 +2525,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerKickEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerKickEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerKickEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerKickEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2493,7 +2533,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerToggleSprintEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerToggleSprintEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerToggleSprintEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerToggleSprintEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2501,7 +2541,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerCommandPreprocessEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerCommandPreprocessEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerCommandPreprocessEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerCommandPreprocessEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2509,7 +2549,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [player.PlayerGameModeChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerGameModeChangeEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerGameModeChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerGameModeChangeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2517,7 +2557,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.FurnaceSmeltEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/FurnaceSmeltEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.FurnaceSmeltEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/FurnaceSmeltEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2525,7 +2565,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.InventoryDragEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryDragEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.InventoryDragEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryDragEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2533,7 +2573,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.CraftItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/CraftItemEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.CraftItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/CraftItemEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2541,7 +2581,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.FurnaceBurnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/FurnaceBurnEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.FurnaceBurnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/FurnaceBurnEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2549,7 +2589,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.InventoryOpenEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryOpenEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.InventoryOpenEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryOpenEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2557,7 +2597,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.InventoryPickupItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryPickupItemEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.InventoryPickupItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryPickupItemEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2565,7 +2605,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.InventoryMoveItemEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryMoveItemEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.InventoryMoveItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryMoveItemEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2573,7 +2613,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.InventoryClickEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryClickEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.InventoryClickEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryClickEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2581,7 +2621,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.InventoryCloseEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryCloseEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.InventoryCloseEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryCloseEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2589,7 +2629,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.InventoryCreativeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryCreativeEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.InventoryCreativeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryCreativeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2597,7 +2637,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.InventoryEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/InventoryEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.InventoryEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2605,7 +2645,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.PrepareItemCraftEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/PrepareItemCraftEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.PrepareItemCraftEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/PrepareItemCraftEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2613,7 +2653,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.FurnaceExtractEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/FurnaceExtractEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.FurnaceExtractEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/FurnaceExtractEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2621,7 +2661,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.BrewEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/inventory/BrewEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.BrewEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/BrewEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2629,7 +2669,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.ServerCommandEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/ServerCommandEvent.html) is fired
+ * callback - A function which is called whenever the [server.ServerCommandEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/ServerCommandEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2637,7 +2677,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.ServerListPingEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/ServerListPingEvent.html) is fired
+ * callback - A function which is called whenever the [server.ServerListPingEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/ServerListPingEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2645,7 +2685,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.ServiceRegisterEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/ServiceRegisterEvent.html) is fired
+ * callback - A function which is called whenever the [server.ServiceRegisterEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/ServiceRegisterEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2653,7 +2693,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.PluginDisableEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/PluginDisableEvent.html) is fired
+ * callback - A function which is called whenever the [server.PluginDisableEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/PluginDisableEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2661,7 +2701,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.RemoteServerCommandEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/RemoteServerCommandEvent.html) is fired
+ * callback - A function which is called whenever the [server.RemoteServerCommandEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/RemoteServerCommandEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2669,7 +2709,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.MapInitializeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/MapInitializeEvent.html) is fired
+ * callback - A function which is called whenever the [server.MapInitializeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/MapInitializeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2677,7 +2717,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.ServiceUnregisterEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/ServiceUnregisterEvent.html) is fired
+ * callback - A function which is called whenever the [server.ServiceUnregisterEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/ServiceUnregisterEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2685,7 +2725,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.PluginEnableEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/server/PluginEnableEvent.html) is fired
+ * callback - A function which is called whenever the [server.PluginEnableEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/PluginEnableEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2693,7 +2733,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.PlayerDeathEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/PlayerDeathEvent.html) is fired
+ * callback - A function which is called whenever the [entity.PlayerDeathEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/PlayerDeathEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2701,7 +2741,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityCreatePortalEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityCreatePortalEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityCreatePortalEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityCreatePortalEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2709,7 +2749,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityCombustEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityCombustEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityCombustEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityCombustEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2717,7 +2757,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.SheepDyeWoolEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/SheepDyeWoolEvent.html) is fired
+ * callback - A function which is called whenever the [entity.SheepDyeWoolEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/SheepDyeWoolEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2725,7 +2765,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.ExpBottleEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ExpBottleEvent.html) is fired
+ * callback - A function which is called whenever the [entity.ExpBottleEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ExpBottleEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2733,7 +2773,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityTameEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityTameEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityTameEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityTameEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2741,7 +2781,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.ProjectileLaunchEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ProjectileLaunchEvent.html) is fired
+ * callback - A function which is called whenever the [entity.ProjectileLaunchEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ProjectileLaunchEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2749,7 +2789,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityDamageEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDamageEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityDamageEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2757,7 +2797,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.ItemSpawnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ItemSpawnEvent.html) is fired
+ * callback - A function which is called whenever the [entity.ItemSpawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ItemSpawnEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2765,7 +2805,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.ProjectileHitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ProjectileHitEvent.html) is fired
+ * callback - A function which is called whenever the [entity.ProjectileHitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ProjectileHitEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2773,7 +2813,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.FoodLevelChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/FoodLevelChangeEvent.html) is fired
+ * callback - A function which is called whenever the [entity.FoodLevelChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/FoodLevelChangeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2781,7 +2821,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.ItemDespawnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ItemDespawnEvent.html) is fired
+ * callback - A function which is called whenever the [entity.ItemDespawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ItemDespawnEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2789,7 +2829,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityPortalEnterEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityPortalEnterEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityPortalEnterEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityPortalEnterEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2797,7 +2837,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityPortalEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityPortalEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityPortalEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityPortalEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2805,7 +2845,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityTargetEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityTargetEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityTargetEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityTargetEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2813,7 +2853,15 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityDeathEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDeathEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityDeathEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDeathEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entitySpawn()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntitySpawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntitySpawnEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2821,7 +2869,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.SheepRegrowWoolEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/SheepRegrowWoolEvent.html) is fired
+ * callback - A function which is called whenever the [entity.SheepRegrowWoolEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/SheepRegrowWoolEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2829,7 +2877,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityShootBowEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityShootBowEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityShootBowEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityShootBowEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2837,7 +2885,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.CreeperPowerEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/CreeperPowerEvent.html) is fired
+ * callback - A function which is called whenever the [entity.CreeperPowerEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/CreeperPowerEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2845,7 +2893,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityCombustByBlockEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityCombustByBlockEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityCombustByBlockEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityCombustByBlockEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2853,7 +2901,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityBreakDoorEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityBreakDoorEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityBreakDoorEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityBreakDoorEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2861,7 +2909,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityDamageByEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDamageByEntityEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityDamageByEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageByEntityEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2869,7 +2917,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityUnleashEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityUnleashEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityUnleashEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityUnleashEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2877,7 +2925,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityExplodeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityExplodeEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityExplodeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityExplodeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2885,7 +2933,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityInteractEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityInteractEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityInteractEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityInteractEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2893,7 +2941,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.ExplosionPrimeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/ExplosionPrimeEvent.html) is fired
+ * callback - A function which is called whenever the [entity.ExplosionPrimeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ExplosionPrimeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2901,7 +2949,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.HorseJumpEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/HorseJumpEvent.html) is fired
+ * callback - A function which is called whenever the [entity.HorseJumpEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/HorseJumpEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2909,7 +2957,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.CreatureSpawnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/CreatureSpawnEvent.html) is fired
+ * callback - A function which is called whenever the [entity.CreatureSpawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/CreatureSpawnEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2917,7 +2965,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityCombustByEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityCombustByEntityEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityCombustByEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityCombustByEntityEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2925,7 +2973,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityDamageByBlockEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDamageByBlockEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityDamageByBlockEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageByBlockEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2933,7 +2981,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityTargetLivingEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityTargetLivingEntityEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityTargetLivingEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityTargetLivingEntityEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2941,7 +2989,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityTeleportEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityTeleportEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityTeleportEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityTeleportEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2949,7 +2997,23 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.PlayerLeashEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/PlayerLeashEntityEvent.html) is fired
+ * callback - A function which is called whenever the [entity.PlayerLeashEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/PlayerLeashEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.spawnerSpawn()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.SpawnerSpawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/SpawnerSpawnEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.itemMerge()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.ItemMergeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ItemMergeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2957,7 +3021,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.SlimeSplitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/SlimeSplitEvent.html) is fired
+ * callback - A function which is called whenever the [entity.SlimeSplitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/SlimeSplitEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2965,7 +3029,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.PigZapEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/PigZapEvent.html) is fired
+ * callback - A function which is called whenever the [entity.PigZapEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/PigZapEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2973,7 +3037,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.PotionSplashEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/PotionSplashEvent.html) is fired
+ * callback - A function which is called whenever the [entity.PotionSplashEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/PotionSplashEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2981,7 +3045,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityChangeBlockEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityChangeBlockEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityChangeBlockEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityChangeBlockEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2989,7 +3053,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityPortalExitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityPortalExitEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityPortalExitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityPortalExitEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2997,7 +3061,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [entity.EntityRegainHealthEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityRegainHealthEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityRegainHealthEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityRegainHealthEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3005,7 +3069,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.EntityBlockFormEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/EntityBlockFormEvent.html) is fired
+ * callback - A function which is called whenever the [block.EntityBlockFormEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/EntityBlockFormEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3013,7 +3077,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockSpreadEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockSpreadEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockSpreadEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockSpreadEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3021,7 +3085,15 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockMultiPlaceEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockMultiPlaceEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockMultiPlaceEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockMultiPlaceEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockExplode()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockExplodeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockExplodeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3029,7 +3101,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.NotePlayEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/NotePlayEvent.html) is fired
+ * callback - A function which is called whenever the [block.NotePlayEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/NotePlayEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3037,7 +3109,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockFadeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockFadeEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockFadeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockFadeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3045,7 +3117,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockPlaceEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockPlaceEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockPlaceEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockPlaceEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3053,7 +3125,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockPhysicsEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockPhysicsEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockPhysicsEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockPhysicsEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3061,7 +3133,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockIgniteEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockIgniteEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockIgniteEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockIgniteEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3069,7 +3141,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockBreakEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockBreakEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockBreakEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockBreakEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3077,7 +3149,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockBurnEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockBurnEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockBurnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockBurnEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3085,7 +3157,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockFromToEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockFromToEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockFromToEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockFromToEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3093,7 +3165,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockRedstoneEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockRedstoneEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockRedstoneEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockRedstoneEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3101,7 +3173,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockPistonRetractEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockPistonRetractEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockPistonRetractEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockPistonRetractEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3109,7 +3181,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockDispenseEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockDispenseEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockDispenseEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockDispenseEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3117,7 +3189,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.SignChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/SignChangeEvent.html) is fired
+ * callback - A function which is called whenever the [block.SignChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/SignChangeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3125,7 +3197,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockPistonExtendEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockPistonExtendEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockPistonExtendEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockPistonExtendEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3133,7 +3205,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockCanBuildEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockCanBuildEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockCanBuildEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockCanBuildEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3141,7 +3213,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockGrowEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockGrowEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockGrowEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockGrowEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3149,7 +3221,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.LeavesDecayEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/LeavesDecayEvent.html) is fired
+ * callback - A function which is called whenever the [block.LeavesDecayEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/LeavesDecayEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3157,7 +3229,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockExpEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockExpEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockExpEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockExpEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3165,7 +3237,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockFormEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockFormEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockFormEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockFormEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3173,7 +3245,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockDamageEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/block/BlockDamageEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockDamageEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockDamageEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3181,7 +3253,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [hanging.HangingPlaceEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/hanging/HangingPlaceEvent.html) is fired
+ * callback - A function which is called whenever the [hanging.HangingPlaceEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/hanging/HangingPlaceEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3189,7 +3261,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [hanging.HangingBreakByEntityEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/hanging/HangingBreakByEntityEvent.html) is fired
+ * callback - A function which is called whenever the [hanging.HangingBreakByEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/hanging/HangingBreakByEntityEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3197,7 +3269,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [hanging.HangingBreakEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/hanging/HangingBreakEvent.html) is fired
+ * callback - A function which is called whenever the [hanging.HangingBreakEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/hanging/HangingBreakEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3205,7 +3277,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.StructureGrowEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/StructureGrowEvent.html) is fired
+ * callback - A function which is called whenever the [world.StructureGrowEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/StructureGrowEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3213,7 +3285,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.SpawnChangeEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/SpawnChangeEvent.html) is fired
+ * callback - A function which is called whenever the [world.SpawnChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/SpawnChangeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3221,7 +3293,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.WorldLoadEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/WorldLoadEvent.html) is fired
+ * callback - A function which is called whenever the [world.WorldLoadEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/WorldLoadEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3229,7 +3301,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.WorldInitEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/WorldInitEvent.html) is fired
+ * callback - A function which is called whenever the [world.WorldInitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/WorldInitEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3237,7 +3309,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.WorldUnloadEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/WorldUnloadEvent.html) is fired
+ * callback - A function which is called whenever the [world.WorldUnloadEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/WorldUnloadEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3245,7 +3317,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.WorldSaveEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/WorldSaveEvent.html) is fired
+ * callback - A function which is called whenever the [world.WorldSaveEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/WorldSaveEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3253,7 +3325,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.ChunkUnloadEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ChunkUnloadEvent.html) is fired
+ * callback - A function which is called whenever the [world.ChunkUnloadEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/ChunkUnloadEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3261,7 +3333,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.ChunkPopulateEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ChunkPopulateEvent.html) is fired
+ * callback - A function which is called whenever the [world.ChunkPopulateEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/ChunkPopulateEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3269,7 +3341,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.PortalCreateEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/PortalCreateEvent.html) is fired
+ * callback - A function which is called whenever the [world.PortalCreateEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/PortalCreateEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3277,7 +3349,7 @@ The crucial difference is that the events module now has functions for each of t
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.ChunkLoadEvent event](http://jd.bukkit.org/rb/apidocs/org/bukkit/event/world/ChunkLoadEvent.html) is fired
+ * callback - A function which is called whenever the [world.ChunkLoadEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/ChunkLoadEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
