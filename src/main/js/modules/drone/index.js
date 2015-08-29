@@ -774,15 +774,16 @@ function getBlockIdAndMeta( b ) {
     // wph 20130414 - use sensible defaults for certain blocks e.g. stairs
     // should face the drone.
     switch (b) {
-      case blocks.stairs.oak:
-      case blocks.stairs.cobblestone:
+      case blocks.stairs.birch:
       case blocks.stairs.brick:
-      case blocks.stairs.stone:
+      case blocks.stairs.cobblestone:
+      case blocks.stairs.jungle:
       case blocks.stairs.nether:
+      case blocks.stairs.oak:
+      case blocks.stairs.quartz:
       case blocks.stairs.sandstone:
       case blocks.stairs.spruce:
-      case blocks.stairs.jungle:
-      case blocks.stairs.quartz:
+      case blocks.stairs.stone:
         defaultMeta = Drone.PLAYER_STAIRS_FACING[ this.dir % 4 ];
         break;
       case blocks.sign:
