@@ -766,29 +766,20 @@ Drone.prototype.debug = function( ) {
 
 function getBlockIdAndMeta( b ) { 
   var defaultMeta = 0,
-    i = 0,
-    bs,
-    md,
-    sp;
+      i = 0,
+      bs,
+      md,
+      sp;
   if (typeof b === 'number' || /^[0-9]+$/.test(b)) {
     // wph 20130414 - use sensible defaults for certain blocks e.g. stairs
     // should face the drone.
-    switch (b) {
-      case blocks.stairs.birch:
-      case blocks.stairs.brick:
-      case blocks.stairs.cobblestone:
-      case blocks.stairs.jungle:
-      case blocks.stairs.nether:
-      case blocks.stairs.oak:
-      case blocks.stairs.quartz:
-      case blocks.stairs.sandstone:
-      case blocks.stairs.spruce:
-      case blocks.stairs.stone:
-        defaultMeta = Drone.PLAYER_STAIRS_FACING[ this.dir % 4 ];
-        break;
+    if ( blocks.isStair(b) ) {
+      defaultMeta = Drone.PLAYER_STAIRS_FACING[ this.dir % 4 ];
+    } else { 
+      switch (b) {
       case blocks.sign:
       case blocks.ladder:
-      // bug: furnace, chest, dispenser don't always use the right metadata
+	// bug: furnace, chest, dispenser don't always use the right metadata
       case blocks.furnace:  
       case blocks.furnace_burning: 
       case blocks.chest:
@@ -799,6 +790,7 @@ function getBlockIdAndMeta( b ) {
       case blocks.sign_post:
 	defaultMeta = ( 12 + ( ( this.dir + 2 ) * 4 ) ) % 16;
 	break;
+      }
     }
     return [ b, defaultMeta ];
   }

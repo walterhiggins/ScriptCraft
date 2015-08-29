@@ -325,5 +325,12 @@ blocks.rainbow = [
   blocks.stained_glass.blue,
   blocks.stained_glass.purple
 ];
-
+blocks.isStair = function(id){
+  var p;
+  for (p in this.stairs){
+    if (this.stairs[p] == id)
+      return true;
+  }
+  return false;
+};
 module.exports = blocks;

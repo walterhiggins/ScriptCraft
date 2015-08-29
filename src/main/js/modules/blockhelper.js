@@ -98,31 +98,24 @@ function applyFacing( block, metadata ){
   function face(direction){
     property(block).set('facing', lookup.facing[direction]);
   }
-  switch( block.typeId ){
-  case blocks.stairs.oak:
-  case blocks.stairs.cobblestone:
-  case blocks.stairs.brick:
-  case blocks.stairs.stone:
-  case blocks.stairs.nether:
-  case blocks.stairs.sandstone:
-  case blocks.stairs.spruce:
-  case blocks.stairs.jungle:
-  case blocks.stairs.quartz:
-    face( ['east','west','south','north'][metadata] );
-    break;
-  case blocks.sign:
-  case blocks.ladder:
-    // bug: furnace, chest, dispenser don't always use the right metadata
-  case blocks.furnace:  
-  case blocks.furnace_burning: 
-  case blocks.chest:
-  case blocks.enderchest:
-  case blocks.dispenser:
-    face( [null,null,'north','south','west','east'][metadata] );
-    break;
-  case blocks.torch:
-    face( ['up'/* default */,'east','west','south','north','up'][metadata] );
-    break;
+  if ( blocks.isStair(block.typeId) ){
+    face( ['east','west','south','north'] [metadata] );
+  } else {
+    switch( block.typeId ){
+    case blocks.sign:
+    case blocks.ladder:
+      // bug: furnace, chest, dispenser don't always use the right metadata
+    case blocks.furnace:  
+    case blocks.furnace_burning: 
+    case blocks.chest:
+    case blocks.enderchest:
+    case blocks.dispenser:
+      face( [null,null,'north','south','west','east'][metadata] );
+      break;
+    case blocks.torch:
+      face( ['up'/* default */,'east','west','south','north','up'][metadata] );
+      break;
+    }
   }
 }
 function applyColors( block, metadata ){
