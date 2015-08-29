@@ -166,8 +166,19 @@ function grantScripting( player ) {
   console.log('Enabling scripting for player ' + player.name);
   var playerName = '' + player.name;
   playerName = playerName.replace(/[^a-zA-Z0-9_\-]/g,'');
+
   var playerDir = new File( playersDir + playerName );
-  playerDir.mkdirs();
+  if (!playerDir.exists()) {
+    playerDir.mkdirs();
+    var exampleJs = "//Try running this function from Minecraft with: /js $username.hi( self )\n" +
+        "//Remember to use your real username instead of $username!\n" +
+        "//So if you had username 'walterh', you would run: /js walterh.hi( self )\n" +
+        "exports.hi = function( player ){\n" +
+        "\techo( player, 'Hi ' + player.name);\n" +
+        "};"
+    createFile(playerDir, 'greet.js', exampleJs);
+  }
+
   if (__plugin.bukkit){
     player.addAttachment( __plugin, 'scriptcraft.*', true );
   }
@@ -187,6 +198,12 @@ function grantScripting( player ) {
     } 
     autoloadTime[playerName] = currentTime;
   });
+
+  function createFile(fileDir, fileName, fileContent) {
+    var out = new java.io.PrintWriter(new File(fileDir, fileName));
+    out.println(fileContent);
+    out.close();
+  }
 
 /*
   echo( player, 'Create your own minecraft mods by adding javascript (.js) files');
