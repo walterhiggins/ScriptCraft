@@ -14,7 +14,7 @@ module.exports = function( rootDir, $ ) {
 
   _dataDir = new java.io.File( rootDir, 'data' );
 
-  $.persist = function( name, data, write ) {
+  $.persist = function( name, data, write, saveInterval ) {
     var i, 
       dataFromFile;
     if ( typeof data == 'undefined' ) {
@@ -33,6 +33,11 @@ module.exports = function( rootDir, $ ) {
     } else {
       // flush data to file
       _save( name, data );
+    }
+    if( saveInterval ) {
+      setInterval( function() {
+        _save( name, data );
+      }, saveInterval);
     }
     _persistentData[name] = data;
     return data;
