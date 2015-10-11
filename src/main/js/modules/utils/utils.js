@@ -610,8 +610,9 @@ This function returns a javascript array of player names (as javascript strings)
 ***/
 function getPlayersBukkit(){
   var result = [];
-  for (var i = 0; i < server.onlinePlayers.length; i++){
-    result.push(server.onlinePlayers[i]);
+  var players = server.getOnlinePlayers();
+  for (var i = 0; i < players.size(); i++){
+    result.push(players.get(i));
   }
   return result;
 }
