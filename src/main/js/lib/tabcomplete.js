@@ -72,18 +72,10 @@ var _getProperties = function( o ) {
     }
     for ( i in o ) {
       if ( i.match( /^[^_0-9]/ ) ) {
-        if ( typeof o[i] == 'function'){ 
-          if ( ! (o[i] instanceof java.lang.Object) ) {
-            try {
-              if (o[i].constructor){} // throws error for java objects in jre7 
-              result.push(i + '()');
-            } catch (e ){
-              result.push(i);
-            }
-            
-          }else {
-           result.push( i );
-          }
+        propValue = o[i];
+        if ( typeof propValue === 'function'
+            && ! isJavaObject(propValue) ) {
+          result.push( i + '()' );
         } else {
           result.push( i );
         }
