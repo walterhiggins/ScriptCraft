@@ -71,7 +71,7 @@ var _getProperties = function( o ) {
       return result;
     }
     for ( i in o ) {
-      if ( i.match( /^[^_]/ ) ) {
+      if ( i.match( /^[^_0-9]/ ) ) {
         if ( typeof o[i] == 'function'){ 
           if ( ! (o[i] instanceof java.lang.Object) ) {
             try {
