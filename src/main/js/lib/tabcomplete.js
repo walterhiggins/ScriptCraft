@@ -158,6 +158,9 @@ var onTabCompleteJS = function( ) {
     parts = lastSymbol.split(/\./);
     name = parts[0];
 
+    if ( ! name )
+      return;
+
     symbol = global[name];
 
     //print('DEBUG: name=' + name + ',symbol=' + symbol);
