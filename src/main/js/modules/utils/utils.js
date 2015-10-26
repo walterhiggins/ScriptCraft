@@ -300,12 +300,7 @@ exports.getMousePos = function getMousePos( player ) {
     if ( !player.getTargetBlock ) {
       return null;
     }
-    try {
-      targetedBlock = player.getTargetBlock( null, 5 );
-    }catch (e){
-      // spigot 1.8.7 adds new overload which causes problems with JDK 7
-      targetedBlock = player['getTargetBlock(java.util.Set,int)'](null, 5 );
-    }
+    targetedBlock = player['getTargetBlock(java.util.Set,int)'](null, 120);
     if ( targetedBlock == null || targetedBlock.isEmpty() ) {
       return null;
     }
