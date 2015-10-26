@@ -314,6 +314,10 @@ function getDirFromRotation( location ) {
     return 0; // east
   return 1; // south
 }
+
+/* Block types that a drone cannot place or replace */
+Drone.FORBIDDEN_BLOCKS = [ blocks.bedrock ];
+
 /*
  low-level function to place a block in the world - all drone methods which 
  place blocks ultimately invoke this function.
@@ -323,6 +327,11 @@ function putBlock( x, y, z, blockId, metadata, world, update ) {
     metadata = 0;
   }
   var block = world.getBlockAt( x, y, z );
+
+  if (Drone.FORBIDDEN_BLOCKS.indexOf( blockId ) >= 0
+      || Drone.FORBIDDEN_BLOCKS.indexOf( block.type.id ) >= 0) {
+    return block;
+  }
 
   if (__plugin.canary) {
     var BlockType = Packages.net.canarymod.api.world.blocks.BlockType;
