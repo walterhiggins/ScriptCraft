@@ -794,8 +794,14 @@ function getBlockIdAndMeta( b ) {
       case blocks.chest:
       case blocks.enderchest:
       case blocks.dispenser:
+      case blocks.redstone_repeater:
+      case blocks.redstone_comparator:
 	defaultMeta = Drone.PLAYER_SIGN_FACING[ this.dir % 4 ];
 	break;
+      case blocks.button_wood:
+      case blocks.stone_button:
+        defaultMeta = Drone.PLAYER_TORCH_FACING[ this.dir % 4 ];
+        break;
       case blocks.sign_post:
 	defaultMeta = ( 12 + ( ( this.dir + 2 ) * 4 ) ) % 16;
 	break;
