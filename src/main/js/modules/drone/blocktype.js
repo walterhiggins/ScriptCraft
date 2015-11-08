@@ -294,6 +294,18 @@ var bitmaps = {
             '   '+
             '   '+
             '   ',
+
+       '(': '  #  '+
+            ' #   '+
+            ' #   '+
+            ' #   '+
+            '  #  ',
+
+       ')': '  #  '+
+            '   # '+
+            '   # '+
+            '   # '+
+            '  #  ',
         
         ' ':'   '+
             '   '+
@@ -352,7 +364,7 @@ function blocktype( message, fg, bg, immediate ) {
   if ( typeof bg != 'undefined' ) {
     bmbg = this.getBlockIdAndMeta( bg );
   }
-  lines = message.split( '\n' );
+  lines = (''+ message).split( '\n' );
   lineCount = lines.length;    
 
   for ( h = 0; h < lineCount; h++) {
