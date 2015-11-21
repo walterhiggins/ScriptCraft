@@ -1,5 +1,22 @@
 RELEASE NOTES
 =============
+3.1.11 Release (2015 11 21)
+---------------------------
+
+Added new modules
+
+* entities
+* spawn
+
+And new Drone function `spawn()` 
+
+To use:
+Point at a block then type...
+```
+/js spawn('ZOMBIE').fwd().times(5).right().back(5).times(6)
+```
+
+... unleash a horde of zombies (in 5x6 grid formation).
 
 3.1.10 Release (2015 08 16)
 ---------------------------

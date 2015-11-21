@@ -21,23 +21,12 @@ or <http://docs.visualillusionsent.net/CanaryLib/1.0.0/net/canarymod/api/entity/
 for a list of possible entities (creatures) which can be spawned.
 
 ***/
-var entities = [],
-  entityType = null,
-  entitytypes,
-  t;
-if (__plugin.bukkit) {
-  entityType = org.bukkit.entity.EntityType;
+var entities = require('entities'),
+    spawn = require('spawn');
+var entityNames = [];
+for (var name in entities){
+  entityNames.push(name);
 }
-if (__plugin.canary) {
-  entityType = Packages.net.canarymod.api.entity.EntityType;
-}
-entitytypes = entityType.values();
-for (t in entitytypes) {
-  if (entitytypes[t] && entitytypes[t].ordinal) {
-    entities.push(entitytypes[t].name());
-  }
-}
-
 command('spawn', function (parameters, sender) {
   if (!isOp(sender)) {
     echo(sender, 'Only operators can perform this command');
@@ -48,14 +37,6 @@ command('spawn', function (parameters, sender) {
     echo(sender, 'You have no location. This command only works in-game.');
     return;
   }
-  var world = location.world || sender.world,
-    type = ('' + parameters[0]).toUpperCase();
-  if (__plugin.bukkit) {
-    world.spawnEntity(location, entityType[type]);
-  }
-  if (__plugin.canary) {
-    var Canary = Packages.net.canarymod.Canary,
-      entity = Canary.factory().entityFactory.newEntity(entityType[type], location);
-    entity.spawn();
-  }
-}, entities);
+  var name = ('' + parameters[0]).toUpperCase();
+  spawn( name, sender.location);
+}, entityNames);
