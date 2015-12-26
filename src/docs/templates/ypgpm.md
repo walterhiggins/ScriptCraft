@@ -1281,7 +1281,7 @@ Reference][cmapi] provides lots of valuable information about the
 different objects and methods available for use by ScriptCraft.
 
 
-[cmadmin]: http://canarymod.net/books/canarymod-admin-guide
+[cmadmin]: https://github.com/walterhiggins/canarymod-admin-guide/
 [dlbuk2]: http://dl.bukkit.org/downloads/craftbukkit/
 [dlcm]: http://canarymod.net/releases
 [bii]: http://wiki.bukkit.org/Setting_up_a_server
