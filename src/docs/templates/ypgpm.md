@@ -81,8 +81,8 @@ For more information on CanaryMod's Permissions and Groups see the following:
  * [Permissions and Groups][cmPerms]
  * [List of Permissions][cmPermsList]
 
-[cmPerms]: http://canarymod.net/books/canarymod-admin-guide/permissions-and-groups
-[cmPermsList]: http://canarymod.net/books/canarymod-admin-guide/list-permissions
+[cmPerms]: https://github.com/walterhiggins/canarymod-admin-guide#permissions-and-groups-1
+[cmPermsList]: https://github.com/walterhiggins/canarymod-admin-guide#list-of-permissions-1
 
 ## Configuring your Server (optional)
 
