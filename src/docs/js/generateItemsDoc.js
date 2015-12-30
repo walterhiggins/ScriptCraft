@@ -4,7 +4,7 @@ var out = java.lang.System.out,
   err = java.lang.System.err,
   entry = null;
 var content = [
-  '/*********************',
+  '',
   '## Items module',
   'The Items module provides a suite of functions - one for each possible item.',
   'See https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/inventory/ItemType.html for a list of possible items',
@@ -35,7 +35,6 @@ for (var i = 0;i < materials.length; i++ ){
 enumVals.sort();
 content = content.concat(enumVals);
 content.push('');
-content.push('***/');
 for (var i = 0; i< content.length; i++){
   out.println(content[i]);
 }
