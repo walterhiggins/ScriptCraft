@@ -407,12 +407,14 @@ Walter Higgins
    * [jsp classroom command](#jsp-classroom-command)
    * [classroom.allowScripting() function](#classroomallowscripting-function)
  * [Asynchronous Input Module](#asynchronous-input-module)
+ * [Lightning module](#lightning-module)
+   * [Usage](#usage-3)
  * [The recipes module](#the-recipes-module)
    * [Example](#example-1)
  * [Http Module](#http-module)
    * [http.request() function](#httprequest-function)
  * [sc-mqtt module](#sc-mqtt-module)
-   * [Usage](#usage-3)
+   * [Usage](#usage-4)
  * [Signs Module](#signs-module)
    * [signs.menu() function](#signsmenu-function)
    * [signs.getTargetedBy() function](#signsgettargetedby-function)
@@ -448,22 +450,22 @@ Walter Higgins
    * [watcher.unwatchFile() function](#watcherunwatchfile-function)
    * [watcher.unwatchDir() function](#watcherunwatchdir-function)
  * [Example Plugin #1 - A simple extension to Minecraft.](#example-plugin-1---a-simple-extension-to-minecraft)
-   * [Usage:](#usage-4)
- * [Example Plugin #2 - Making extensions available for all players.](#example-plugin-2---making-extensions-available-for-all-players)
    * [Usage:](#usage-5)
- * [Example Plugin #3 - Limiting use of commands to operators only.](#example-plugin-3---limiting-use-of-commands-to-operators-only)
+ * [Example Plugin #2 - Making extensions available for all players.](#example-plugin-2---making-extensions-available-for-all-players)
    * [Usage:](#usage-6)
- * [Example Plugin #4 - Using parameters in commands.](#example-plugin-4---using-parameters-in-commands)
+ * [Example Plugin #3 - Limiting use of commands to operators only.](#example-plugin-3---limiting-use-of-commands-to-operators-only)
    * [Usage:](#usage-7)
- * [Example Plugin #5 - Re-use - Using your own and others modules.](#example-plugin-5---re-use---using-your-own-and-others-modules)
+ * [Example Plugin #4 - Using parameters in commands.](#example-plugin-4---using-parameters-in-commands)
    * [Usage:](#usage-8)
- * [Example Plugin #6 - Re-use - Using 'utils' to get Player objects.](#example-plugin-6---re-use---using-utils-to-get-player-objects)
+ * [Example Plugin #5 - Re-use - Using your own and others modules.](#example-plugin-5---re-use---using-your-own-and-others-modules)
    * [Usage:](#usage-9)
+ * [Example Plugin #6 - Re-use - Using 'utils' to get Player objects.](#example-plugin-6---re-use---using-utils-to-get-player-objects)
+   * [Usage:](#usage-10)
  * [Example Plugin #7 - Listening for events, Greet players when they join the game.](#example-plugin-7---listening-for-events-greet-players-when-they-join-the-game)
  * [Arrows Plugin](#arrows-plugin)
-   * [Usage:](#usage-10)
+   * [Usage:](#usage-11)
  * [Spawn Plugin](#spawn-plugin)
-   * [Usage](#usage-11)
+   * [Usage](#usage-12)
  * [alias Plugin](#alias-plugin)
    * [Examples](#examples-2)
  * [Commando Plugin](#commando-plugin)
@@ -483,7 +485,9 @@ Walter Higgins
    * [Rules](#rules)
    * [Gameplay Mechanics](#gameplay-mechanics)
  * [Items module](#items-module)
-   * [Usage](#usage-12)
+   * [Usage](#usage-13)
+ * [Entities module](#entities-module)
+   * [Usage](#usage-14)
 
 ## Modules in Scriptcraft
 
@@ -4854,6 +4858,23 @@ The callback function as well as being bound to an object with the above propert
 
 The `value` parameter will be the same as `this.value`, the `repeat` parameter will be the same as `this.repeat` and so on.
 
+## Lightning module
+
+Causes a bolt of lightning to strike.
+
+### Usage
+```javascript
+// strike lightning wherever a player's arrow lands
+var lightning = require('lightning');
+events.projectileHit( function( event ){
+  if ( entities.arrow( event.projectile ) // it's an arrow
+       && entities.player( event.projectile.owner ) // it was shot by a player
+     ) {
+    lightning( event.projectile ); // strike lightning at the arrow location
+  }
+});
+```
+
 ## The recipes module
 
 The Recipes module provides convenience functions for adding and removing recipes
@@ -6693,5 +6714,86 @@ The following functions are provided:
  * yellowGlassPane()
  * yellowStainedClay()
  * zombieHead()
+
+***/
+/*********************
+## Entities module
+The Entities module provides a suite of functions - one for each possible entity type.
+
+### Usage
+
+    entities.zombie(); // returns a canaryMod/Bukkit EntityType.ZOMBIE enum value
+    entities.zombie( mob ); // compares the entity's type to a zombie, returns true if mob type is zombie, false otherwise
+    entities.player( self ); // at the in-game prompt this should return true (compares self to a player entity type)
+    entities.rabbit( self ); // at the in-game prompt this should return false (compares self to a rabbit entity type)
+
+The following functions are provided:
+
+ * aRMOR_STAND()
+ * aRROW()
+ * bAT()
+ * bLAZE()
+ * bOAT()
+ * cAVE_SPIDER()
+ * cHICKEN()
+ * cOMPLEX_PART()
+ * cOW()
+ * cREEPER()
+ * dROPPED_ITEM()
+ * eGG()
+ * eNDERMAN()
+ * eNDERMITE()
+ * eNDER_CRYSTAL()
+ * eNDER_DRAGON()
+ * eNDER_PEARL()
+ * eNDER_SIGNAL()
+ * eXPERIENCE_ORB()
+ * fALLING_BLOCK()
+ * fIREBALL()
+ * fIREWORK()
+ * fISHING_HOOK()
+ * gHAST()
+ * gIANT()
+ * gUARDIAN()
+ * hORSE()
+ * iRON_GOLEM()
+ * iTEM_FRAME()
+ * lEASH_HITCH()
+ * lIGHTNING()
+ * mAGMA_CUBE()
+ * mINECART()
+ * mINECART_CHEST()
+ * mINECART_COMMAND()
+ * mINECART_FURNACE()
+ * mINECART_HOPPER()
+ * mINECART_MOB_SPAWNER()
+ * mINECART_TNT()
+ * mUSHROOM_COW()
+ * oCELOT()
+ * pAINTING()
+ * pIG()
+ * pIG_ZOMBIE()
+ * pLAYER()
+ * pRIMED_TNT()
+ * rABBIT()
+ * sHEEP()
+ * sILVERFISH()
+ * sKELETON()
+ * sLIME()
+ * sMALL_FIREBALL()
+ * sNOWBALL()
+ * sNOWMAN()
+ * sPIDER()
+ * sPLASH_POTION()
+ * sQUID()
+ * tHROWN_EXP_BOTTLE()
+ * uNKNOWN()
+ * vILLAGER()
+ * wEATHER()
+ * wITCH()
+ * wITHER()
+ * wITHER_SKULL()
+ * wOLF()
+ * zOMBIE()
 
 ***/

@@ -89,15 +89,23 @@
 	     err="${dist}/gen-api-error.log">
       <arg value="${dist}/js"/>      
     </jscript>
+
     <jscript src="src/docs/js/generateItemsDoc.js" 
 	     out="${dist}/items.md" 
 	     err="${dist}/gen-items-error.log" />
+
+    <jscript src="src/docs/js/generateEntitiesDoc.js" 
+	     out="${dist}/entities.md" 
+	     err="${dist}/gen-entities-error.log" />
+
     <concat destfile="${dist}/apiref-con.md">
       <fileset file="${dist}/apiref.md" />
       <fileset file="${dist}/items.md" />
+      <fileset file="${dist}/entities.md" />
     </concat>
 
   </target>
+
 
   <target name="gen-events-helper-canary" depends="compile-docs,init">
     <mkdir dir="${dist}/js/lib"/>

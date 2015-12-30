@@ -3,8 +3,10 @@
 var entities = require('entities');
 
 module.exports = function(entityType, location){
+  var entityTypeFn;
   if (typeof entityType === 'string'){
-    entityType = entities[entityType];
+    entityTypeFn = entities[entityType.toLowerCase()];
+    entityType = entityTypeFn();
   }
   var world = location.world;
   if (__plugin.bukkit){
