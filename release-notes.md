@@ -1,5 +1,22 @@
 RELEASE NOTES
 =============
+3.1.12 Release (2015 12 30)
+---------------------------
+
+Added new modules 
+
+* lightning
+
+The entities module and lightning module are now documented.
+
+To make lightning strikes when and where any arrow lands:
+
+    var lightning = require('lightning');
+    events.projectileHit( function( event ) {
+      if (entities.arrow( event.projectile ) 
+        lightning( event.projectile );
+    });
+
 3.1.11 Release (2015 11 21)
 ---------------------------
 
