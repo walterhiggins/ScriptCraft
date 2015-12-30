@@ -135,8 +135,10 @@ Once you've installed CanaryMod, depending on your specific needs,
 you might want to consider setting the following properties in the `server.cfg` or `config/worlds/<worldName>/<worldName>.cfg` files ...
 
     # completely flat worlds are best for building from scratch
-    world-type=FLAT
+    # bukkit/spigotmc
     level-type=FLAT
+    # canarymod
+    world-type=FLAT
     generate-structures=false
     
     # creative mode
