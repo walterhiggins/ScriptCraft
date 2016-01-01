@@ -36,37 +36,23 @@ ScriptCraft uses Java's [String.format()][strfmt] so any string substitution ide
 [webcons]: https://developer.mozilla.org/en-US/docs/Web/API/console
 
 ***/
-function argsToArray( args ) {
-  var result = [];
-  for ( var i =0; i < args.length; i++ ) {
-    result.push(args[i]);
-  }
-  return result;
-}
-function consMsg(params){
-  var args = argsToArray(params);
-  if ( args.length > 1 ) {
-    return java.lang.String.format( args[0], args.slice(1) );
-  } else {
-    return args[0];
-  }
-}
+var util = require("util");
 
 module.exports = function(logger){
 
   function bukkitLog( level, restOfArgs ) {
     logger['log(java.util.logging.Level,java.lang.String)']( 
       java.util.logging.Level[level], 
-      consMsg(restOfArgs) 
+      util.format.apply(null, restOfArgs) 
     );
   }
 
   if (__plugin.canary){
     return {
-      log: function( ) { logger.info( consMsg(arguments) ); },
-      info: function( ) { logger.info( consMsg(arguments) ); },
-      warn: function( ) { logger.warn( consMsg(arguments) ); },
-      error: function( ) { logger.error( consMsg(arguments) ); }
+      log: function( ) { logger.info( util.format.apply(arguments) ); },
+      info: function( ) { logger.info( util.format.apply(arguments) ); },
+      warn: function( ) { logger.warn( util.format.apply(arguments) ); },
+      error: function( ) { logger.error( util.format.apply(arguments) ); }
     };
   } else {
     return {
