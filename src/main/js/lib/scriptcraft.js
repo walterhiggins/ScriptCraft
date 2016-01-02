@@ -366,10 +366,17 @@ The refresh() function can be used to only reload the ScriptCraft plugin (it's l
 
 1. Disable the ScriptCraft plugin.
 2. Unload all event listeners associated with the ScriptCraft plugin.
+3. Cancel all timed tasks (created by `setInterval` & `setTimeout`)
 3. Enable the ScriptCraft plugin.
 
 ... refresh() can be used during development to reload only scriptcraft javascript files.
 See [issue #69][issue69] for more information.
+
+By default, if `self` is defined at runtime, it checks, whether `self` is server operator, otherwise fails with message. This behavivor can be modified using `skipOpCheck` parameter (useful, if you are doing some custom premission checks before calling this function).
+
+#### Parameters
+
+ * skipOpCheck (boolean - optional) : If true, the function won't check if `self` is server operator.
 
 [issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
 
@@ -529,19 +536,20 @@ function __onEnable ( __engine, __plugin, __script ) {
       return sender.op;
     }
   }
-  function _refresh( ) {
-    if ( typeof self !== 'undefined' ) {
-      if ( !_isOp(self) ) {
-        echo( self, 'Only operators can refresh()');
-        return;
-      }
+  function _refresh( skipOpCheck ) {
+    if (!skipOpCheck && typeof self !== 'undefined') {
+      if (!_isOp(self))
+        return echo(self, 'Only operators can refresh()');
     }
+
     if (__plugin.canary){
       var pluginName = __plugin.name;
       Canary.manager().disablePlugin( pluginName );
       Canary.manager().enablePlugin( pluginName );
     } else {
       __plugin.pluginLoader.disablePlugin( __plugin );
+      org.bukkit.event.HandlerList["unregisterAll(org.bukkit.plugin.Plugin)"]( __plugin );
+      server.scheduler.cancelTasks( __plugin );
       __plugin.pluginLoader.enablePlugin( __plugin );
     }
   } // end _refresh()
