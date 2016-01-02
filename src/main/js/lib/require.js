@@ -160,23 +160,12 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
         }
       }
     } else {
-      // it's of the form ./path
-      file = new File(parentDir, moduleName);
-      if ( file.exists() ) {
+      if ((file = new File(parentDir, moduleName)).exists()) {
         return fileExists(file);
-      } else { 
-        // try appending a .js to the end
-        pathWithJSExt = file.canonicalPath + '.js';
-        file = new File( parentDir, pathWithJSExt );
-        if (file.exists()) {
-          return file;
-        } else {
-          file = new File(pathWithJSExt);
-          if ( file.exists() ) {
-            return file;
-          }
-        }
-        
+      } else if ((file = new File(parentDir, moduleName + ".js")).exists()) { // try .js extension
+        return file;
+      } else if ((file = new File(parentDir, moduleName + ".json")).exists()) { // try .json extension
+        return file;
       }
     }
     return null;
@@ -250,6 +239,9 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     }
     buffered.close(); // close the stream so there's no file locks
 
+    if(canonizedFilename.toLowerCase().substring(canonizedFilename.length - 5) === ".json") // patch code when it is json
+      code = "module.exports = (" + code + ");";
+    
     moduleInfo = {
       loaded: false,
       id: canonizedFilename,
