@@ -853,10 +853,17 @@ The refresh() function can be used to only reload the ScriptCraft plugin (it's l
 
 1. Disable the ScriptCraft plugin.
 2. Unload all event listeners associated with the ScriptCraft plugin.
+3. Cancel all timed tasks (created by `setInterval` & `setTimeout`)
 3. Enable the ScriptCraft plugin.
 
 ... refresh() can be used during development to reload only scriptcraft javascript files.
 See [issue #69][issue69] for more information.
+
+By default, if `self` is defined at runtime, it checks, whether `self` is server operator, otherwise fails with message. This behavivor can be modified using `skipOpCheck` parameter (useful, if you are doing some custom premission checks before calling this function).
+
+#### Parameters
+
+ * skipOpCheck (boolean - optional) : If true, the function won't check if `self` is server operator.
 
 [issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
 
