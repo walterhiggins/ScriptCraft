@@ -301,11 +301,18 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     return moduleInfo;
   }
 
-  function _requireClosure( parent ) {
-    return function requireBoundToParent( path, options ) {
-      var module = _require( parent, path , options);
+  function _requireClosure( parentFile ) {
+    var _boundRequire = function requireBoundToParent( path, options ) {
+      var module = _require( parentFile, path , options);
       return module.exports;
     };
+
+    _boundRequire.resolve = function resolveBoundToParent ( path ) {
+      return resolveModuleToFile(path, parentFile);
+    };
+    _boundRequire.cache = _loadedModules;
+
+    return _boundRequire;
   }
   var _loadedModules = {};
   var _format = java.lang.String.format;
