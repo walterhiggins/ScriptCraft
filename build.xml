@@ -38,6 +38,22 @@
     </sequential>
   </macrodef>
 
+  <macrodef name="jscript-verbose">
+    <attribute name="src"/>
+    <element name="js-args" implicit="yes" optional="true"/>
+    <sequential>
+      <java classname="jscript" failonerror="true" fork="true">
+        <classpath>
+          <pathelement path="${build}"/>
+          <pathelement path="${lib.canary}"/>
+          <pathelement path="${lib.bukkit}"/>
+        </classpath>
+        <arg value="@{src}"/>
+        <js-args/>
+      </java>
+    </sequential>
+  </macrodef>
+
   <target name="init">
     <property file="build.local.properties"/>
     <tstamp>
@@ -51,8 +67,8 @@
     <available file="${dist}/js/modules/underscore.js" property="underscore.present"/>
   </target>
 
-  <target name="test" depends="package" description="Perform unit tests">
-    
+  <target name="test" description="Perform unit tests">
+    <jscript-verbose src="src/test/js/runtests.js" />
   </target>
 
 

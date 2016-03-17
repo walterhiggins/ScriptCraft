@@ -89,12 +89,7 @@ while ( ( entry = zis.nextEntry) != null) {
       out.println(comment[i]);
     }
     out.println('exports.' + fname + ' = function(callback,priority){ ');
-    if (args[0] == 'canary'){
-      out.println('  return events.on(Packages.' + name + ',callback,priority);');
-    }
-    if (args[0] == 'bukkit'){
-      out.println('  return events.on(' + name + ',callback,priority);');
-    }
+    out.println('  return this.on(Packages.' + name + ',callback,priority);');
     out.println('};');
   }
 }

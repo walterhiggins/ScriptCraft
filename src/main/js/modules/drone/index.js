@@ -314,6 +314,10 @@ function getDirFromRotation( location ) {
     return 0; // east
   return 1; // south
 }
+
+/* Block types that a drone cannot place or replace */
+Drone.FORBIDDEN_BLOCKS = [ blocks.bedrock ];
+
 /*
  low-level function to place a block in the world - all drone methods which 
  place blocks ultimately invoke this function.
@@ -323,6 +327,11 @@ function putBlock( x, y, z, blockId, metadata, world, update ) {
     metadata = 0;
   }
   var block = world.getBlockAt( x, y, z );
+
+  if (Drone.FORBIDDEN_BLOCKS.indexOf( blockId ) >= 0
+      || Drone.FORBIDDEN_BLOCKS.indexOf( block.type.id ) >= 0) {
+    return block;
+  }
 
   if (__plugin.canary) {
     var BlockType = Packages.net.canarymod.api.world.blocks.BlockType;
@@ -348,23 +357,27 @@ function putBlock( x, y, z, blockId, metadata, world, update ) {
 function Drone( x, y, z, dir, world ) {
   this.record = false;
   var usePlayerCoords = false;
-  var player = (typeof self !== 'undefined' ? self : null);
-  var playerPos;
-  if ( x.location && x.name) {
+  var player = null;
+  if ( x && x.location && x.name) {
     player = x;
-  } 
-  playerPos = x.location;
+  }
+  else {
+    if (typeof self !== 'undefined')  {
+      player = self;
+    }
+  }
 
-  var that = this;
+  var drone = this;
   var populateFromLocation = function( loc ) {
-    that.x = loc.x;
-    that.y = loc.y;
-    that.z = loc.z;
-    that.dir = getDirFromRotation(loc);
-    that.world = loc.world;
+    drone.x = loc.x;
+    drone.y = loc.y;
+    drone.z = loc.z;
+    drone.dir = getDirFromRotation(loc);
+    drone.world = loc.world;
   };
-  var mp = utils.getMousePos( player );
-  if ( typeof x == 'undefined' || x.location ) {
+  if (player != null) {
+    var mp = utils.getMousePos( player );
+    var playerPos = player.location;
     if ( mp ) {
       populateFromLocation( mp );
       if ( playerPos ) {
@@ -785,8 +798,14 @@ function getBlockIdAndMeta( b ) {
       case blocks.chest:
       case blocks.enderchest:
       case blocks.dispenser:
+      case blocks.redstone_repeater:
+      case blocks.redstone_comparator:
 	defaultMeta = Drone.PLAYER_SIGN_FACING[ this.dir % 4 ];
 	break;
+      case blocks.button_wood:
+      case blocks.stone_button:
+        defaultMeta = Drone.PLAYER_TORCH_FACING[ this.dir % 4 ];
+        break;
       case blocks.sign_post:
 	defaultMeta = ( 12 + ( ( this.dir + 2 ) * 4 ) ) % 16;
 	break;

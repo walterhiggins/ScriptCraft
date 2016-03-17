@@ -71,19 +71,11 @@ var _getProperties = function( o ) {
       return result;
     }
     for ( i in o ) {
-      if ( i.match( /^[^_]/ ) ) {
-        if ( typeof o[i] == 'function'){ 
-          if ( ! (o[i] instanceof java.lang.Object) ) {
-            try {
-              if (o[i].constructor){} // throws error for java objects in jre7 
-              result.push(i + '()');
-            } catch (e ){
-              result.push(i);
-            }
-            
-          }else {
-           result.push( i );
-          }
+      if ( i.match( /^[^_0-9]/ ) ) {
+        propValue = o[i];
+        if ( typeof propValue === 'function'
+            && ! isJavaObject(propValue) ) {
+          result.push( i + '()' );
         } else {
           result.push( i );
         }
@@ -165,6 +157,9 @@ var onTabCompleteJS = function( ) {
     //
     parts = lastSymbol.split(/\./);
     name = parts[0];
+
+    if ( ! name )
+      return;
 
     symbol = global[name];
 

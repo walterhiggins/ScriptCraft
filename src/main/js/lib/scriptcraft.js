@@ -406,6 +406,10 @@ function __onDisable ( __engine, __plugin ) {
   __onDisableImpl( __engine, __plugin);
 }
 function __onEnable ( __engine, __plugin, __script ) {
+  // The client will disconnect if more than 32767 bytes of JSON data are sent
+  // in a chat packet. For safety, the echo() function will truncate its argument
+  // after a (conservatively) set number of characters.
+  var MAX_ECHO_CHARS = 4000;
   function _echo( ) {
     var sender, msg;
     if (arguments.length == 2){
@@ -417,6 +421,11 @@ function __onEnable ( __engine, __plugin, __script ) {
       }
       sender = self;
       msg = arguments[0];
+    }
+    msg = String(msg);
+    if (msg.length > MAX_ECHO_CHARS) {
+      msg = msg.substring(0, MAX_ECHO_CHARS)
+        + ('\n...' + (msg.length - MAX_ECHO_CHARS) + ' characters truncated !').red();
     }
     if (__plugin.canary){
       sender.message( msg );
@@ -566,6 +575,38 @@ function __onEnable ( __engine, __plugin, __script ) {
       unloadHandlers[i]( );
     }
   }
+
+  // cannot rely on native eval in jre7 and jre8
+  // because ...
+  // js var hearts
+  // js hearts
+  // ... throws an execption ('hearts' is not defined). vars are not sticky in native eval .
+  //
+  function _eval(expr) {
+    var result;
+
+    try {
+      expr = require('coffee-script').CoffeeScript.compile(expr, { bare: true });
+      console.log('CoffeeScript compilation result:' + expr);
+    } catch(e) {
+    }
+
+    if ( nashorn ) {
+      // On Nashorn, we can use the native `load` function, which preserves return types better
+      // (`undefined` is not cast to `null`)
+      result = load( { script: expr, name: '<repl>' } );
+    } else {
+      result = __engine.eval( expr );
+
+      // engine eval will return null even if the result should be undefined
+      // this can be confusing so I think it's better to omit output for this case
+      if ( result === null ) {
+        result = undefined;
+      }
+    }
+    return result;
+  }
+
   function __onCommand() {
     var jsArgs = [],
       i = 0,
@@ -601,41 +642,25 @@ function __onEnable ( __engine, __plugin, __script ) {
     {
       result = true;
       fnBody = jsArgs.join(' ');
+
+      // The Minecraft chat interface does not echo user commands. It seems friendlier to do so.
+      echo(sender, ('> ' + fnBody).gray());
+
       global.self = sender;
       global.__engine = __engine;
-      try { 
-        // cannot rely on native eval in jre7 and jre8 
-        // because ...
-        // js var hearts 
-        // js hearts
-        // ... throws an execption ('hearts' is not defined). vars are not sticky in native eval .
-        //
-        jsResult = __engine.eval( fnBody );
+      try {
+        jsResult = _eval(fnBody);
 
-        if ( typeof jsResult != 'undefined' ) { 
-          if ( jsResult == null) { 
-            // engine eval will return null even if the result should be undefined
-            // this can be confusing so I think it's better to omit output for this case
-            // sender.sendMessage('(null)');
-          } else { 
-            try { 
-              if ( isJavaObject(jsResult) || typeof jsResult === 'function') {
-                echo(sender, jsResult);
-              } else { 
-                var replacer = function replacer(key, value){
-                  return this[key] instanceof java.lang.Object ? '' + this[key] : value;
-                };
-                echo(sender, JSON.stringify( jsResult, replacer, 2) );
-              }
-            } catch ( displayError ) { 
-	      logError('Error while trying to display result: ' + jsResult + ', Error: '+ displayError) ;
-            }
+        if ( typeof jsResult != 'undefined' ) {
+          try {
+            echo(sender, inspect(jsResult));
+          } catch ( displayError ) {
+            logError('Error while trying to display result: ' + jsResult + ', Error: '+ displayError) ;
           }
         } 
       } catch ( e ) {
         logError( 'Error while trying to evaluate javascript: ' + fnBody + ', Error: '+ e );
         echo( sender, 'Error while trying to evaluate javascript: ' + fnBody + ', Error: '+ e );
-        throw e;
       } finally {
         /*
          wph 20140312 don't delete self on nashorn until https://bugs.openjdk.java.net/browse/JDK-8034055 is fixed
@@ -761,7 +786,7 @@ function __onEnable ( __engine, __plugin, __script ) {
    */
   require('persistence')( jsPluginsRootDir, global );
 
-  var isJavaObject = require('java-utils').isJavaObject;
+  var inspect = require('inspect');
 
   var cmdModule = require('command');
   global.command = cmdModule.command;

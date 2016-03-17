@@ -158,7 +158,6 @@ var blocks = {
   clay: 82,
   sugar_cane: 83,
   jukebox: 84,
-  fence: 85,
   pumpkin: 86,
   netherrack: 87,
   soulsand: 88,
@@ -192,7 +191,6 @@ var blocks = {
   mycelium: 110,
   lily_pad: 111,
   nether: 112,
-  nether_fence: 113,
   netherwart: 115,
   table_enchantment: 116,
   brewing_stand: 117,
@@ -283,11 +281,13 @@ var blocks = {
     acacia: 187
   },
   fence: {
+    oak: 85,
     spruce: 188,
     birch: 189,
     jungle: 190,
-    oak: 191,
-    acacia: 192
+    dark_oak: 191,
+    acacia: 192,
+    netherbrick: 113
   }
 };
 
