@@ -56,8 +56,8 @@ var logger = {
 }());
 
 function assertEqual(expected, actual) {
-  expected = JSON.stringify(expected);
-  actual = JSON.stringify(actual);
+  var expected = JSON.stringify(expected);
+  var actual = JSON.stringify(actual);
   if (actual !== expected) {
     throw new Error("Expected " + expected + ", got " + actual + " instead.");
   }
@@ -95,6 +95,12 @@ function runTests() {
 
 var Drone = require("src/main/js/modules/drone/index.js");
 
+function testDroneWithoutArgumentUsesSelfAsPlayer() {
+  global.self = {name: 'joe', location:{ x:10, y:15, z:20 }};
+  var drone = new Drone();
+  assertEqual([10, 15, 23], [drone.x, drone.y, drone.z]);
+}
+
 function testDroneGivenAPlayerWithoutMouseNorDirectionTakesLocationFromPlayerAndAdds3ToZ() {
   var player = {name: 'joe', location:{ x:10, y:15, z:20 }};
   var drone = new Drone(player);
@@ -102,7 +108,8 @@ function testDroneGivenAPlayerWithoutMouseNorDirectionTakesLocationFromPlayerAnd
 }
 
 function testDroneGivenAPlayerWithoutMouseLookingNorthTakesLocationFromPlayerAndSubtracts3FromZ() {
-  var player = {name: 'joe', location:{ x:10, y:15, z:20, yaw: 180 }};
+  var anAngleThatLookNorth = 180;
+  var player = {name: 'joe', location:{ x:10, y:15, z:20, yaw: anAngleThatLookNorth }};
   var drone = new Drone(player);
   assertEqual([10, 15, 17], [drone.x, drone.y, drone.z]);
 }
