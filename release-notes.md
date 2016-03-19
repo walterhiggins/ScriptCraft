@@ -1,5 +1,12 @@
 RELEASE NOTES
 =============
+3.2.0 Release (2016 03 20)
+--------------------------
+
+Bug fixes and updated from Spigot 1.8.8 to Spigot 1.9
+ 
+Fixed issues #256 and #287
+
 3.1.12 Release (2015 12 30)
 ---------------------------
 

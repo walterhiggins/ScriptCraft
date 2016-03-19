@@ -185,9 +185,6 @@ Walter Higgins
    * [events.vehicleDamage()](#eventsvehicledamage-1)
    * [events.vehicleUpdate()](#eventsvehicleupdate)
    * [events.vehicleCreate()](#eventsvehiclecreate)
-   * [events.paintingBreak()](#eventspaintingbreak)
-   * [events.paintingBreakByEntity()](#eventspaintingbreakbyentity)
-   * [events.paintingPlace()](#eventspaintingplace)
    * [events.enchantItem()](#eventsenchantitem)
    * [events.prepareItemEnchant()](#eventsprepareitemenchant)
    * [events.playerInteractEntity()](#eventsplayerinteractentity)
@@ -234,11 +231,13 @@ Walter Higgins
    * [events.playerVelocity()](#eventsplayervelocity)
    * [events.playerQuit()](#eventsplayerquit)
    * [events.playerLogin()](#eventsplayerlogin)
+   * [events.playerSwapHandItems()](#eventsplayerswaphanditems)
    * [events.playerKick()](#eventsplayerkick)
    * [events.playerToggleSprint()](#eventsplayertogglesprint)
    * [events.playerCommandPreprocess()](#eventsplayercommandpreprocess)
    * [events.playerGameModeChange()](#eventsplayergamemodechange)
    * [events.furnaceSmelt()](#eventsfurnacesmelt)
+   * [events.prepareAnvil()](#eventsprepareanvil)
    * [events.inventoryDrag()](#eventsinventorydrag)
    * [events.craftItem()](#eventscraftitem)
    * [events.furnaceBurn()](#eventsfurnaceburn)
@@ -260,6 +259,7 @@ Walter Higgins
    * [events.mapInitialize()](#eventsmapinitialize)
    * [events.serviceUnregister()](#eventsserviceunregister)
    * [events.pluginEnable()](#eventspluginenable-1)
+   * [events.villagerAcquireTrade()](#eventsvillageracquiretrade)
    * [events.playerDeath()](#eventsplayerdeath-1)
    * [events.entityCreatePortal()](#eventsentitycreateportal)
    * [events.entityCombust()](#eventsentitycombust)
@@ -272,6 +272,7 @@ Walter Higgins
    * [events.projectileHit()](#eventsprojectilehit-1)
    * [events.foodLevelChange()](#eventsfoodlevelchange)
    * [events.itemDespawn()](#eventsitemdespawn)
+   * [events.villagerReplenishTrade()](#eventsvillagerreplenishtrade)
    * [events.entityPortalEnter()](#eventsentityportalenter)
    * [events.entityPortal()](#eventsentityportal)
    * [events.entityTarget()](#eventsentitytarget)
@@ -286,6 +287,7 @@ Walter Higgins
    * [events.entityUnleash()](#eventsentityunleash)
    * [events.entityExplode()](#eventsentityexplode)
    * [events.entityInteract()](#eventsentityinteract)
+   * [events.entityToggleGlide()](#eventsentitytoggleglide)
    * [events.explosionPrime()](#eventsexplosionprime)
    * [events.horseJump()](#eventshorsejump)
    * [events.creatureSpawn()](#eventscreaturespawn)
@@ -298,6 +300,7 @@ Walter Higgins
    * [events.itemMerge()](#eventsitemmerge)
    * [events.slimeSplit()](#eventsslimesplit-1)
    * [events.pigZap()](#eventspigzap)
+   * [events.fireworkExplode()](#eventsfireworkexplode-1)
    * [events.potionSplash()](#eventspotionsplash)
    * [events.entityChangeBlock()](#eventsentitychangeblock)
    * [events.entityPortalExit()](#eventsentityportalexit)
@@ -307,6 +310,7 @@ Walter Higgins
    * [events.blockMultiPlace()](#eventsblockmultiplace)
    * [events.blockExplode()](#eventsblockexplode)
    * [events.notePlay()](#eventsnoteplay)
+   * [events.cauldronLevelChange()](#eventscauldronlevelchange)
    * [events.blockFade()](#eventsblockfade)
    * [events.blockPlace()](#eventsblockplace-1)
    * [events.blockPhysics()](#eventsblockphysics-1)
@@ -2140,30 +2144,6 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
-### events.paintingBreak()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [painting.PaintingBreakEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/painting/PaintingBreakEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.paintingBreakByEntity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [painting.PaintingBreakByEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/painting/PaintingBreakByEntityEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.paintingPlace()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [painting.PaintingPlaceEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/painting/PaintingPlaceEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
 ### events.enchantItem()
 
 #### Parameters 
@@ -2532,6 +2512,14 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
+### events.playerSwapHandItems()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerSwapHandItemsEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerSwapHandItemsEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.playerKick()
 
 #### Parameters 
@@ -2569,6 +2557,14 @@ The crucial difference is that the events module now has functions for each of t
 #### Parameters 
 
  * callback - A function which is called whenever the [inventory.FurnaceSmeltEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/FurnaceSmeltEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.prepareAnvil()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [inventory.PrepareAnvilEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/PrepareAnvilEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2740,6 +2736,14 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
+### events.villagerAcquireTrade()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.VillagerAcquireTradeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/VillagerAcquireTradeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.playerDeath()
 
 #### Parameters 
@@ -2833,6 +2837,14 @@ The crucial difference is that the events module now has functions for each of t
 #### Parameters 
 
  * callback - A function which is called whenever the [entity.ItemDespawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ItemDespawnEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.villagerReplenishTrade()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.VillagerReplenishTradeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/VillagerReplenishTradeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2948,6 +2960,14 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
+### events.entityToggleGlide()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityToggleGlideEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityToggleGlideEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.explosionPrime()
 
 #### Parameters 
@@ -3044,6 +3064,14 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
+### events.fireworkExplode()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.FireworkExplodeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/FireworkExplodeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.potionSplash()
 
 #### Parameters 
@@ -3113,6 +3141,14 @@ The crucial difference is that the events module now has functions for each of t
 #### Parameters 
 
  * callback - A function which is called whenever the [block.NotePlayEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/NotePlayEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.cauldronLevelChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.CauldronLevelChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/CauldronLevelChangeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -6735,6 +6771,7 @@ The Entities module provides a suite of functions - one for each possible entity
 
 The following functions are provided:
 
+ * area_effect_cloud()
  * armor_stand()
  * arrow()
  * bat()
@@ -6745,6 +6782,7 @@ The following functions are provided:
  * complex_part()
  * cow()
  * creeper()
+ * dragon_fireball()
  * dropped_item()
  * egg()
  * ender_crystal()
@@ -6766,6 +6804,7 @@ The following functions are provided:
  * item_frame()
  * leash_hitch()
  * lightning()
+ * lingering_potion()
  * magma_cube()
  * minecart()
  * minecart_chest()
@@ -6783,16 +6822,20 @@ The following functions are provided:
  * primed_tnt()
  * rabbit()
  * sheep()
+ * shulker()
+ * shulker_bullet()
  * silverfish()
  * skeleton()
  * slime()
  * small_fireball()
  * snowball()
  * snowman()
+ * spectral_arrow()
  * spider()
  * splash_potion()
  * squid()
  * thrown_exp_bottle()
+ * tipped_arrow()
  * unknown()
  * villager()
  * weather()
