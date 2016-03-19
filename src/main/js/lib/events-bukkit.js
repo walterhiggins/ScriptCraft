@@ -69,7 +69,7 @@ exports.on = function(
    The workaround is to make the ScriptCraftPlugin java class a Listener.
    Should only unregister() registered plugins in ScriptCraft js code.
    */
-  regd = new bkRegisteredListener( __plugin, eventExecutor, priority, __plugin, true );
+  regd = new bkRegisteredListener( __plugin, eventExecutor, priority, __plugin, false );
   handlerList.register( regd );
   result.unregister = function(){
     handlerList.unregister( regd );
