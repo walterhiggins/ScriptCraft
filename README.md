@@ -171,8 +171,8 @@ ScriptCraft has [its own website][website] with further information.
  * To get started using ScriptCraft to Learn JavaScript, read [The Young Person's Guide to Programming in Minecraft][yp].
  * The ScriptCraft [API documentation][api].
  * To delve deeper into creating your own minecraft mod for use by others, read [Creating a complete Minecraft Mod in JavaScript][mm].
- * Take a look at some [examples][ex]
- * Buy the Official ScriptCraft Book [A Beginner's Guide to Writing Minecraft Plugins in Javascript][book]
+ * Take a look at some [examples][ex].
+ * Buy the Official ScriptCraft Book [A Beginner's Guide to Writing Minecraft Plugins in Javascript][book].
 
 <a href="http://www.amazon.co.uk/gp/product/0133930149/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0133930149&linkCode=as2&tag=walthigg-21&linkId=P3LLGB3WTATW57AZ"><img border="0" src="http://ws-eu.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=0133930149&Format=_SL250_&ID=AsinImage&MarketPlace=GB&ServiceVersion=20070822&WS=1&tag=walthigg-21" ></a><img src="http://ir-uk.amazon-adsystem.com/e/ir?t=walthigg-21&l=as2&o=2&a=0133930149" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
 
@@ -191,7 +191,7 @@ I highly recommend the series of [tutorials provided by CoderDojo Athenry][cda].
 Developer Chris Cacciatore has created some interesting tools using ScriptCraft &hellip;
 
  * [A wolf-bot][wb]
- * [L-Systems (Large-scale fractal structures in Minecraft)][ls] 
+ * [L-Systems (Large-scale fractal structures in Minecraft)][ls]
 
 # Docker 
 
