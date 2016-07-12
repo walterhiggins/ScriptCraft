@@ -55,7 +55,7 @@ function updatePlayerScore( objectiveName, playerName, score ){
    var sc = sb['getScore(String, ScoreObjective)']( playerName, sb.getScoreObjective( objectiveName) );
    sc.score = score;
    */
-  execCommand('scoreboard players set ' + playerName + ' ' + objectiveName + score);
+  execCommand('scoreboard players set ' + playerName + ' ' + objectiveName + ' ' + score);
 }
 
 function removeTeamFromScoreboard( teamName ){
