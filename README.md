@@ -91,6 +91,7 @@ Before installing ScriptCraft you must first install SpigotMC which is a special
 ## Installing and Running SpigotMC
 
 Follow these steps to download and install SpigotMC on your machine.
+
 1. Download Spigot's [BuildTools.jar][spigotdl] 
 2. Save the BuildTools.jar file to a new directory called spigotmc.
 3. Open a terminal (Mac and Linux) or command prompt (windows) window and type `java -jar BuildTools.jar`. This will kick off a long series of commands to "build" SpigotMC.
