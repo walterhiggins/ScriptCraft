@@ -1,6 +1,13 @@
 # Let's begin &hellip;
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/walterhiggins/ScriptCraft?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+ScriptCraft lets you write Minecraft Mods using Javascript - a
+programming language that's relatively easy to learn and use.
+ScriptCraft is a Minecraft Server plugin which means it must be used
+with a Minecraft server. Once you've downloaded and installed the
+Minecraft Server, then installed the ScriptCraft Plugin you can write
+your own Minecraft mods using Javascript.
+
 I created ScriptCraft to make it easier for younger programmers to
 create their own Minecraft Mods. Mods are written using the
 JavaScript programming language. Once the ScriptCraft mod is
@@ -28,7 +35,7 @@ At the in-game prompt, type:
 /js greet(self)
 ```
 
-Anything you can do using the CanaryMod or CraftBukkit APIs in Java,
+Anything you can do using the Spigot or CanaryMod APIs in Java,
 you can do using ScriptCraft in JavaScript.
 
 # Description
@@ -36,20 +43,21 @@ you can do using ScriptCraft in JavaScript.
 ScriptCraft is a plugin for Minecraft Servers which lets operators,
 administrators and plug-in authors customize the game using
 JavaScript.  ScriptCraft makes it easier to create your own mods. Mods
-can be written in Javscript and can use the full [CanaryMod API][cm]
-or [Bukkit API][bukkit]. ScriptCraft works with all of the following Minecraft Server software:
+can be written in Javscript and can use the full [SpigotMC
+API][spigot] or [CanaryMod API][cm]. ScriptCraft works with all of the
+following Minecraft Server software:
 
-* [CanaryMod][cm] (Recommended)
-* [SpigotMC][spigot] (Bukkit-compatible)
-* [GlowStone][gs] (Bukkit-compatible)
+* [SpigotMC][spigot] (Recommended)
+* [GlowStone][gs] 
+* [CanaryMod][cm] 
 
 [spigot]: http://www.spigotmc.org/
 [gs]: http://www.glowstone.net/
 
-I recommend using CanaryMod because CraftBukkit is no longer being
-actively developed due to a legal dispute. The ScriptCraft mod also
-lets you enter javascript commands at the in-game prompt.  To bring up
-the in-game prompt press the `/` key then type `js ` followed by any
+I recommend using SpigotMC because both CanaryMod and CraftBukkit are
+no longer being actively developed. The ScriptCraft mod also lets you
+enter javascript commands at the in-game prompt.  To bring up the
+in-game prompt press the `/` key then type `js ` followed by any
 javascript statement.  For example: `/js 1 + 1` will print 2.
 
 ScriptCraft also includes many objects and functions to make building
@@ -67,19 +75,32 @@ Minecraft.
 
 # Prerequisites
 
-* You will need to have Java version 6 or later installed on your
+* You will need to have Java version 7 or later installed on your
   machine. Check the version by typing `java -version` at a command
   prompt.
 
-* You will need to [install CanaryMod][ic] on your
-  machine. CanaryMod is a customized version of Minecraft Server that
+* You will need to [install SpigotMC][spigot] on your
+  machine. SpigotMC is a customized version of Minecraft Server that
   makes it easy to install plugins and customize Minecraft.  You can
-  [download the CanaryMod server here.][ic]
+  [download the SpigotMC server here.][spigotdl]
 
 # Installation
 
-If you don't want to compile from source, you can [download the
-compiled plugin here][dl] and copy it to the CanaryMod plugins directory.
+Before installing ScriptCraft you must first install SpigotMC which is a special version of Minecraft Server that makes it easy to customize the game.
+
+## Installing and Running SpigotMC
+
+Follow these steps to download and install SpigotMC on your machine.
+1. Download Spigot's [BuildTools.jar][spigotdl] 
+2. Save the BuildTools.jar file to a new directory called spigotmc.
+3. Open a terminal (Mac and Linux) or command prompt (windows) window and type `java -jar BuildTools.jar`. This will kick off a long series of commands to "build" SpigotMC.
+4. When the build is done, there will be a new file beginning with `spigot` and ending in `.jar` in the spigotmc directory. Run this file by typing `java -jar spigot-1.10.2.jar` (it might not be that exact name - you can list files in the directory by typing `dir` (Windows) or `ls` (Mac and Linux).
+5. The server will start up then shut down very shortly afterwards. You'll need to edit a file called `eula.txt` - change `eula=false` to `eula=true` and save the file.
+6. Run the `java -jar spigot-1.10.2.jar` command again - this time the server will start up. Shut it down by typing `exit` at the server prompt.
+7. Download the [scriptcraft.jar][dl] plugin and save it to the `plugins` directory and restart the server by typing `java -jar spigot-1.10.2.jar`.
+9. At the server prompt type `js 1 + 1` and hit enter. The result `2` should be displayed. 
+
+Congratulations - you've just installed your Custom Minecraft Server and are ready to begin writing your first mod!
 
 # Post Install
 
@@ -114,29 +135,31 @@ started writing your own mod, take a look at some of the
 
 # Additional information
 
-Because the CanaryMod API is open, all of the CanaryMod API is accessible
+Because the SpigotMC API is open, all of the SpigotMC API is accessible
 via javascript once the ScriptCraft plugin is loaded. There are a
 couple of useful Java objects exposed via javascript in the
 ScriptCraft plugin &hellip;
 
  * `__plugin` &ndash; the ScriptCraft Plugin itself. This is a useful
-   starting point for accessing other CanaryMod objects. The `__plugin`
-   object is of type [net.canarymod.plugin.Plugin][api] and all
+   starting point for accessing other SpigotMC objects. The `__plugin`
+   object is of type [org.bukkit.plugin.Plugin][api] and all
    of its properties and methods are accessible. For example &hellip; `js
    __plugin.name` returns the plugin's name
    (JavaScript is more concise than the equivalent Java code:
    `__plugin.getName()` ).
 
- * `server` &ndash; The top-level net.canarymod.Server object. See the [CanaryMod API docs][cmapi] for reference.
+ * `server` &ndash; The top-level org.bukkit.Server object. See the [SpigotMC API docs][spigotapi] for reference.
 
  * `self` &ndash; The player/command-block or server console operator who
    invoked the `/js` command. Again, this is a good jumping off point for
-   diving into the CanaryMod API.
+   diving into the SpigotMC API.
 
 [dl]: http://scriptcraftjs.org/download/latest
-[api]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/
+[api]: https://hub.spigotmc.org/javadocs/spigot/
 [ic]: http://canarymod.net/releases
+[spigotdl]: https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
 [cmapi]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/
+[spigotapi]: https://hub.spigotmc.org/javadocs/spigot/
 
 # Contributing
 
@@ -149,7 +172,7 @@ If you would like to contribute source code and/or documentation changes please 
 # Bukkit Configuration 
 ## (You can ignore this if using CanaryMod)
 
-ScriptCraft also works with Bukkit Plugin and uses the Bukkit Configuration
+ScriptCraft works with Bukkit Plugin and uses the Bukkit Configuration
 API. On first loading, ScriptCraft will create a config.yml file in
 the plugins/scriptcraft/ directory. This file looks like this &hellip;
 
