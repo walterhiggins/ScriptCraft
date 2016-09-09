@@ -188,6 +188,7 @@ Walter Higgins
    * [events.enchantItem()](#eventsenchantitem)
    * [events.prepareItemEnchant()](#eventsprepareitemenchant)
    * [events.playerInteractEntity()](#eventsplayerinteractentity)
+   * [events.playerPickupArrow()](#eventsplayerpickuparrow)
    * [events.playerEggThrow()](#eventsplayereggthrow)
    * [events.playerUnleashEntity()](#eventsplayerunleashentity)
    * [events.playerInventory()](#eventsplayerinventory)
@@ -235,6 +236,7 @@ Walter Higgins
    * [events.playerKick()](#eventsplayerkick)
    * [events.playerToggleSprint()](#eventsplayertogglesprint)
    * [events.playerCommandPreprocess()](#eventsplayercommandpreprocess)
+   * [events.playerChangedMainHand()](#eventsplayerchangedmainhand)
    * [events.playerGameModeChange()](#eventsplayergamemodechange)
    * [events.furnaceSmelt()](#eventsfurnacesmelt)
    * [events.prepareAnvil()](#eventsprepareanvil)
@@ -257,10 +259,14 @@ Walter Higgins
    * [events.pluginDisable()](#eventsplugindisable-1)
    * [events.remoteServerCommand()](#eventsremoteservercommand)
    * [events.mapInitialize()](#eventsmapinitialize)
+   * [events.tabComplete()](#eventstabcomplete)
    * [events.serviceUnregister()](#eventsserviceunregister)
    * [events.pluginEnable()](#eventspluginenable-1)
    * [events.villagerAcquireTrade()](#eventsvillageracquiretrade)
+   * [events.entityBreed()](#eventsentitybreed)
+   * [events.entityAirChange()](#eventsentityairchange)
    * [events.playerDeath()](#eventsplayerdeath-1)
+   * [events.enderDragonChangePhase()](#eventsenderdragonchangephase)
    * [events.entityCreatePortal()](#eventsentitycreateportal)
    * [events.entityCombust()](#eventsentitycombust)
    * [events.sheepDyeWool()](#eventssheepdyewool)
@@ -274,10 +280,12 @@ Walter Higgins
    * [events.itemDespawn()](#eventsitemdespawn)
    * [events.villagerReplenishTrade()](#eventsvillagerreplenishtrade)
    * [events.entityPortalEnter()](#eventsentityportalenter)
+   * [events.areaEffectCloudApply()](#eventsareaeffectcloudapply)
    * [events.entityPortal()](#eventsentityportal)
    * [events.entityTarget()](#eventsentitytarget)
    * [events.entityDeath()](#eventsentitydeath-1)
    * [events.entitySpawn()](#eventsentityspawn-1)
+   * [events.lingeringPotionSplash()](#eventslingeringpotionsplash)
    * [events.sheepRegrowWool()](#eventssheepregrowwool)
    * [events.entityShootBow()](#eventsentityshootbow)
    * [events.creeperPower()](#eventscreeperpower)
@@ -2168,6 +2176,14 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
+### events.playerPickupArrow()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerPickupArrowEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerPickupArrowEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.playerEggThrow()
 
 #### Parameters 
@@ -2544,6 +2560,14 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
+### events.playerChangedMainHand()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerChangedMainHandEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerChangedMainHandEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.playerGameModeChange()
 
 #### Parameters 
@@ -2720,6 +2744,14 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
+### events.tabComplete()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.TabCompleteEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/TabCompleteEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.serviceUnregister()
 
 #### Parameters 
@@ -2744,11 +2776,35 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
+### events.entityBreed()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityBreedEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityBreedEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityAirChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityAirChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityAirChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.playerDeath()
 
 #### Parameters 
 
  * callback - A function which is called whenever the [entity.PlayerDeathEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/PlayerDeathEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.enderDragonChangePhase()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EnderDragonChangePhaseEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EnderDragonChangePhaseEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2856,6 +2912,14 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
+### events.areaEffectCloudApply()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.AreaEffectCloudApplyEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/AreaEffectCloudApplyEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.entityPortal()
 
 #### Parameters 
@@ -2885,6 +2949,14 @@ The crucial difference is that the events module now has functions for each of t
 #### Parameters 
 
  * callback - A function which is called whenever the [entity.EntitySpawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntitySpawnEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.lingeringPotionSplash()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.LingeringPotionSplashEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/LingeringPotionSplashEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -6819,6 +6891,7 @@ The following functions are provided:
  * pig()
  * pig_zombie()
  * player()
+ * polar_bear()
  * primed_tnt()
  * rabbit()
  * sheep()
