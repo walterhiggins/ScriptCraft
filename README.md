@@ -97,7 +97,7 @@ Follow these steps to download and install SpigotMC on your machine.
 3. Open a terminal (Mac and Linux) or command prompt (windows) window and type `java -jar BuildTools.jar`. This will kick off a long series of commands to "build" SpigotMC.
 4. When the build is done, there will be a new file beginning with `spigot` and ending in `.jar` in the spigotmc directory. Run this file by typing `java -jar spigot-1.10.2.jar` (it might not be that exact name - you can list files in the directory by typing `dir` (Windows) or `ls` (Mac and Linux).
 5. The server will start up then shut down very shortly afterwards. You'll need to edit a file called `eula.txt` - change `eula=false` to `eula=true` and save the file.
-6. Run the `java -jar spigot-1.10.2.jar` command again - this time the server will start up. Shut it down by typing `exit` at the server prompt.
+6. Run the `java -jar spigot-1.10.2.jar` command again - this time the server will start up. Shut it down by typing `stop` at the server prompt.
 7. Download the [scriptcraft.jar][dl] plugin and save it to the `plugins` directory and restart the server by typing `java -jar spigot-1.10.2.jar`.
 9. At the server prompt type `js 1 + 1` and hit enter. The result `2` should be displayed. 
 
@@ -109,8 +109,9 @@ Once installed, a new scriptcraft/plugins directory is automatically
 created.  All files in the scriptcraft/plugins directory will be
 automatically loaded when the server starts.  *Only players who are
 ops can use this plugin.* You can grant a player `op` privileges by
-typing 'op <username>' at the server console prompt or by adding the
-player's username to the ops.txt file in your server directory.
+typing 'op <username>' (replacing <username> with your own Minecraft
+user name) at the server console prompt or by adding the player's
+username to the ops.txt file in your server directory.
 
 Launch the server, then launch the Minecraft client and create a new
 server connection. The IP address will be `localhost` . Once you've
@@ -122,13 +123,27 @@ ground-level block and type &hellip;
 &hellip; This will create a black monolith structure 4 blocks wide by 9
 blocks high by 1 block long.  Take a look at the
 src/main/javascript/drone/drone.js file to see what ScriptCraft's
-drone can do.  If you're interested in customizing minecraft beyond
-just creating new buildings, take a look at [the homes mod][homes] for an example of how to create a more fully-featured JavaScript plugin for Minecraft.
+drone can do.  
+
+If you're interested in customizing minecraft beyond just creating new buildings, take a look at [the homes mod][homes] for an example of how to create a more fully-featured JavaScript plugin for Minecraft.
+
+## Your first mod - Howling blocks
+Listed below is a simple mod that will make blocks 'Howl' when they're broken. 
+
+``` javascript
+// copy and paste this code to a new file named 'scriptcraft/plugins/howling-blocks.js'
+var sounds = require('sounds');
+function howl(event){
+  sounds.entityWolfHowl( event.block );
+}
+events.blockBreak( howl );
+``` 
 
 A JavaScript mod for minecraft is just a JavaScript source file (.js)
 located in the scriptcraft/plugins directory. All .js files in this
-directory will be automatically loaded when the server starts. To get
-started writing your own mod, take a look at some of the
+directory will be automatically loaded when the server starts. 
+
+To get started writing your own mod, take a look at some of the
 [examples][examples].
 
 [homes]: src/main/js/plugins/homes/homes.js
