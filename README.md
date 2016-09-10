@@ -139,6 +139,8 @@ function howl(event){
 events.blockBreak( howl );
 ``` 
 
+If you're using CanaryMod instead of SpigotMC you can [download the equivalent code](https://gist.github.com/walterhiggins/69cddd15160d803fb096).
+
 A JavaScript mod for minecraft is just a JavaScript source file (.js)
 located in the scriptcraft/plugins directory. All .js files in this
 directory will be automatically loaded when the server starts. 
