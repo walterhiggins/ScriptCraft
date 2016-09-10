@@ -10,7 +10,7 @@ var content = [
   '',
   '### Usage',
   '',
-  '    entities.zombie(); // returns a canaryMod/Bukkit EntityType.ZOMBIE enum value',
+  '    entities.zombie(); // returns a SpigotMC/CanaryMod EntityType.ZOMBIE enum value',
   '    entities.zombie( mob ); // compares the entity\'s type to a zombie, returns true if mob type is zombie, false otherwise',
   '    entities.player( self ); // at the in-game prompt this should return true (compares self to a player entity type)',
   '    entities.rabbit( self ); // at the in-game prompt this should return false (compares self to a rabbit entity type)',
