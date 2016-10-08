@@ -1,4 +1,5 @@
-# Let's begin &hellip;
+## ScriptCraft - Modding Minecraft with Javascript
+
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/walterhiggins/ScriptCraft?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ScriptCraft lets you write Minecraft Mods using Javascript - a
@@ -20,7 +21,7 @@ files in a directory.
    then [Start Here][cda].
  * Watch some [demos][ytpl] of what you can do with ScriptCraft.
 
-This is a simple mod in a file called greet.js in the scriptcraft/plugins directory &hellip;
+This is a simple mod in a file called greet.js in the scriptcraft/plugins directory:
 
 ```javascript
 function greet( player ) {
@@ -53,6 +54,7 @@ following Minecraft Server software:
 
 [spigot]: http://www.spigotmc.org/
 [gs]: http://www.glowstone.net/
+[cm]: http://canarymod.net/
 
 I recommend using SpigotMC because both CanaryMod and CraftBukkit are
 no longer being actively developed. The ScriptCraft mod also lets you
@@ -71,26 +73,24 @@ Minecraft.
 [cottage]: https://github.com/walterhiggins/ScriptCraft/tree/master/src/main/js/plugins/drone/contrib/cottage.js
 [temple]: https://github.com/walterhiggins/ScriptCraft/blob/master/src/main/js/plugins/drone/contrib/temple.js
 [bukkit]: http://dl.bukkit.org/
-[cm]: http://canarymod.net/
 
 # Prerequisites
 
-* You will need to have Java version 7 or later installed on your
-  machine. Check the version by typing `java -version` at a command
-  prompt.
-
-* You will need to [install SpigotMC][spigot] on your
-  machine. SpigotMC is a customized version of Minecraft Server that
-  makes it easy to install plugins and customize Minecraft.  You can
-  [download the SpigotMC server here.][spigotdl]
+ScriptCraft is a Minecraft Server Mod which only works with Minecraft
+for Personal computers (Windows, Mac and Linux). It does not work with
+X-BOX, Playstation or WiiU versions of the game. You will need to have
+Java version 7 or later installed. Check the version by typing `java 
+-version` at a command prompt.
 
 # Installation
 
-Before installing ScriptCraft you must first install SpigotMC which is a special version of Minecraft Server that makes it easy to customize the game.
+Before installing ScriptCraft you must first install SpigotMC which is
+a special version of Minecraft Server that makes it easy to customize
+the game.
 
 ## Installing and Running SpigotMC
 
-Follow these steps to download and install SpigotMC on your machine.
+Follow these steps to download and install SpigotMC.
 
 1. Download Spigot's [BuildTools.jar][spigotdl] 
 2. Save the BuildTools.jar file to a new directory called spigotmc.
@@ -98,8 +98,13 @@ Follow these steps to download and install SpigotMC on your machine.
 4. When the build is done, there will be a new file beginning with `spigot` and ending in `.jar` in the spigotmc directory. Run this file by typing `java -jar spigot-1.10.2.jar` (it might not be that exact name - you can list files in the directory by typing `dir` (Windows) or `ls` (Mac and Linux).
 5. The server will start up then shut down very shortly afterwards. You'll need to edit a file called `eula.txt` - change `eula=false` to `eula=true` and save the file.
 6. Run the `java -jar spigot-1.10.2.jar` command again - this time the server will start up. Shut it down by typing `stop` at the server prompt.
-7. Download the [scriptcraft.jar][dl] plugin and save it to the `plugins` directory and restart the server by typing `java -jar spigot-1.10.2.jar`.
-9. At the server prompt type `js 1 + 1` and hit enter. The result `2` should be displayed. 
+
+## Installing ScriptCraft
+
+Follow these steps to download and install ScriptCraft.
+
+1. Download the [scriptcraft.jar][dl] plugin and save it to the `plugins` directory and restart the server by typing `java -jar spigot-1.10.2.jar`.
+2. At the server prompt type `js 1 + 1` and hit enter. The result `2` should be displayed. 
 
 Congratulations - you've just installed your Custom Minecraft Server and are ready to begin writing your first mod!
 
@@ -116,7 +121,7 @@ username to the ops.txt file in your server directory.
 Launch the server, then launch the Minecraft client and create a new
 server connection. The IP address will be `localhost` . Once you've
 connected to your server and have entered the game, look at a
-ground-level block and type &hellip;
+ground-level block and type:
 
     /js up().box( blocks.wool.black, 4, 9, 1 )
 
@@ -156,12 +161,12 @@ To get started writing your own mod, take a look at some of the
 Because the SpigotMC API is open, all of the SpigotMC API is accessible
 via javascript once the ScriptCraft plugin is loaded. There are a
 couple of useful Java objects exposed via javascript in the
-ScriptCraft plugin &hellip;
+ScriptCraft plugin:
 
  * `__plugin` &ndash; the ScriptCraft Plugin itself. This is a useful
    starting point for accessing other SpigotMC objects. The `__plugin`
    object is of type [org.bukkit.plugin.Plugin][api] and all
-   of its properties and methods are accessible. For example &hellip; `js
+   of its properties and methods are accessible. For example: `js
    __plugin.name` returns the plugin's name
    (JavaScript is more concise than the equivalent Java code:
    `__plugin.getName()` ).
@@ -192,7 +197,7 @@ If you would like to contribute source code and/or documentation changes please 
 
 ScriptCraft works with Bukkit Plugin and uses the Bukkit Configuration
 API. On first loading, ScriptCraft will create a config.yml file in
-the plugins/scriptcraft/ directory. This file looks like this &hellip;
+the plugins/scriptcraft/ directory. This file looks like this:
 
     extract-js:
       plugins: true
@@ -229,7 +234,7 @@ programs and how to do the same thing in JavaScript.
 
 I highly recommend the series of [tutorials provided by CoderDojo Athenry][cda].
 
-Developer Chris Cacciatore has created some interesting tools using ScriptCraft &hellip;
+Developer Chris Cacciatore has created some interesting tools using ScriptCraft:
 
  * [A wolf-bot][wb]
  * [L-Systems (Large-scale fractal structures in Minecraft)][ls]

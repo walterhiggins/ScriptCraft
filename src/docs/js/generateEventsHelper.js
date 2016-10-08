@@ -3,6 +3,7 @@ args = Array.prototype.slice.call(args,1);
 var File = java.io.File,
   FileReader = java.io.FileReader,
   FileInputStream = java.io.FileInputStream,
+  FRAMEWORK = args[0],
   out = java.lang.System.out,
   err = java.lang.System.err,
   Modifier = java.lang.reflect.Modifier,
@@ -12,7 +13,7 @@ var File = java.io.File,
   entry = null;
 var content = [
   '/*********************',
-  '## Events Helper Module (' + args[0] + ' version)',
+  '## Events Helper Module (' + FRAMEWORK + ' version)',
   'The Events helper module provides a suite of functions - one for each possible event.',
   'For example, the events.' + args[2] + '() function is just a wrapper function which calls events.on(' + args[3] + ', callback, priority)',
   'This module is a convenience wrapper for easily adding new event handling functions in Javascript. ',
@@ -30,7 +31,7 @@ var content = [
   '***/'
 ];
 var canary = false;
-if (args[0] == 'canary'){
+if (FRAMEWORK == 'CanaryMod'){
   canary = true;
 }
 
@@ -89,10 +90,9 @@ while ( ( entry = zis.nextEntry) != null) {
       out.println(comment[i]);
     }
     out.println('exports.' + fname + ' = function(callback,priority){ ');
-    if (args[0] == 'canary'){
+    if (canary){
       out.println('  return events.on(Packages.' + name + ',callback,priority);');
-    }
-    if (args[0] == 'bukkit'){
+    } else { 
       out.println('  return events.on(' + name + ',callback,priority);');
     }
     out.println('};');

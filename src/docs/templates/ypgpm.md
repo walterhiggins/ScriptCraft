@@ -1,4 +1,3 @@
-
 ## Introduction
 
 Minecraft is an open-ended 3D game where you can build and craft
@@ -18,82 +17,40 @@ players connect to a Minecraft Server on the internet or locally
 
 ![Cottages created using ScriptCraft in MineCraft][img_cr]
 
-## Installation
+# Installation
 
-CanaryMod is a version of the Minecraft server software which allows
-easy addition of 'Mods' and extensions to Minecraft. ScriptCraft is a
-'Mod' for use with CanaryMod.  Adding Mods to Minecraft can be
-difficult but CanaryMod makes it easy.  Follow these steps to
-Install ScriptCraft on your computer...
+Before installing ScriptCraft you must first install SpigotMC which is
+a special version of Minecraft Server that makes it easy to customize
+the game.
 
-1. [Download and install CanaryMod][dlcm] then follow the [CanaryMod
-   Installation Instructions][cmadmin]. 
+## Installing and Running SpigotMC
 
-2. Start the CanaryMod server, then once it has started up, stop it
-   by typing 'stop'. If you go to the CanaryMod folder (see step 1) you
-   should see some new files and subfolders.
+Follow these steps to download and install SpigotMC.
 
-3. [Download the latest version of the ScriptCraft Mod][sc-plugin]. Then copy the ScriptCraft.jar file to the
-   `plugins` folder (This folder won't be created until you run CanaryMod for the first time (see previous step).
+1. Download Spigot's [BuildTools.jar][spigotdl] 
+2. Save the BuildTools.jar file to a new directory called spigotmc.
+3. Open a terminal (Mac and Linux) or command prompt (windows) window and type `java -jar BuildTools.jar`. This will kick off a long series of commands to "build" SpigotMC.
+4. When the build is done, there will be a new file beginning with `spigot` and ending in `.jar` in the spigotmc directory. Run this file by typing `java -jar spigot-1.10.2.jar` (it might not be that exact name - you can list files in the directory by typing `dir` (Windows) or `ls` (Mac and Linux).
+5. The server will start up then shut down very shortly afterwards. You'll need to edit a file called `eula.txt` - change `eula=false` to `eula=true` and save the file.
+6. Run the `java -jar spigot-1.10.2.jar` command again - this time the server will start up. Shut it down by typing `stop` at the server prompt.
 
-4. Start up the CanaryMod server again (see [instructions for starting the server][cmadmin]).
+## Installing ScriptCraft
 
-5. In the CanaryMod command window type `op {your_username}` and hit
-   enter, replacing {your_username} with your own minecraft
-   username. This will give you `operator` access meaning you can perform
-   more commands than are normally available in Minecraft.  You should
-   make yourself a server operator (Server operators have full privileges
-   for the server) permanently by editing the ops.txt file
-   and adding your username (one username per line).
+Follow these steps to download and install ScriptCraft.
 
-6. In the CanaryMod command window type `js 1 + 1` and hit enter. You should see `> 2` .
+1. Download the [scriptcraft.jar][dl] plugin and save it to the `plugins` directory and restart the server by typing `java -jar spigot-1.10.2.jar`.
+2. At the server prompt type `js 1 + 1` and hit enter. The result `2` should be displayed. 
 
-... Congratulations! You just installed your own Minecraft Server with 
-the ScriptCraft Mod and are now ready to begin programming in Minecraft.
-
-Normally, Minecraft Mods are written in Java. This makes writing your 
-own extension or game rules difficult because you must first learn Java. 
-Java is different enough from Javascript. With the ScriptCraft plug-in 
-installed, you don't have to learn Java, you can extend and customize 
-Minecraft your way using Javascript. Javascript is easier to learn than 
-Java but it's also more flexible and powerful and is used for creating 
-interactive web sites and many other applications.
-
-## CanaryMod and Permissions
-CanaryMod works slightly differently to CraftBukkit in how it handles
-permissions and groups.  By default, there are 4 groups: visitors,
-players, mods and admins. Each player who joins the game is added to the
-'visitors' group.  This group has no permissions by default so
-visitors can't break or place blocks. If you would like to change this
-behaviour then issue the following command at the console window:
-
-    groupmod permission add visitors canary.world.build
-
-If you would like all admins to have scripting ability then issue the
-following command:
-
-    groupmod permission add admins scriptcraft.evaluate
-
-This will enable all admins on your server to issue javascript statements.
-All operators can issue any command (including the `/js` command to evaluate javascript). 
-For more information on CanaryMod's Permissions and Groups see the following:
-
- * [Permissions and Groups][cmPerms]
- * [List of Permissions][cmPermsList]
-
-[cmPerms]: https://github.com/walterhiggins/canarymod-admin-guide#permissions-and-groups-1
-[cmPermsList]: https://github.com/walterhiggins/canarymod-admin-guide#list-of-permissions-1
+Congratulations - you've just installed your Custom Minecraft Server and are ready to begin writing your first mod!
 
 ## Configuring your Server (optional)
 
-Once you've installed CanaryMod, depending on your specific needs,
-you might want to consider setting the following properties in the `server.cfg` or `config/worlds/<worldName>/<worldName>.cfg` files ...
+Once you've installed SpigotMC, depending on your specific needs,
+you might want to consider setting the following properties in the `server.properties` file:
 
     # completely flat worlds are best for building from scratch
     # bukkit/spigotmc
     level-type=FLAT
-    # canarymod
-    world-type=FLAT
     generate-structures=false
     
     # creative mode
@@ -628,19 +585,17 @@ compare the ages of your friends or siblings to your own age.
 
 You can find out if you can Fly in minecraft by typing the following statement ...
 
-    /js self.getCapabilities().mayFly()
+    /js self.allowFlight
 
 ... the result will be `true` or `false` depending on whether you can
 fly or not. You can turn on and off your ability to fly by setting
-your `mayFly` property to `true` or `false`. Try it ...
+your `allowFlight` property to `true` or `false`. Try it ...
 
-    /js self.capabilities.flying = true
-    /js self.updateCapabilities()
+    /js self.allowFlight = true; 
 
 ... Now you can fly! Double-press the space bar key to start flying. To turn off flight ...
 
-    /js self.capabilities.flying = false;
-    /js self.updateCapabilities()
+    /js self.allowFlight = false;
 
 ... and you come crashing down to earth. This is just one example of
 how `true` and `false` are used throughout ScriptCraft &ndash; these are
@@ -649,55 +604,56 @@ Maths Professor at University College Cork. There are plenty more
 examples of boolean values in Minecraft. You can find out if it's
 raining in your minecraft world by typing the following statement ...
 
-    /js self.world.raining
+    /js self.world.hasStorm()
 
 ... The result of this statement will be either `false` (if it's not raining) or
 `true` (if it *is* raining). If it's raining, you can make it stop raining typing the following command:
 
-    /js self.world.raining = false
+    /js self.world.setStorm(false)
 
 ... Similarly, to make it start raining you can issue the following command:
 
-    /js self.world.raining = true
+    /js self.world.setStorm( true )
 
 ### Booleans and JavaBeans
 
 There are many *boolean* properties you can use to turn on or off
-certain game behaviours. For example, the *raining* behavior is turned
-on or off using the World's `raining` property.  The World object's
-properties and methods are [documented on the CanaryMod JavaDocs World
-page][cmworld]. When browsing the CanaryMod JavaDoc pages, whenever
-you see a method whose name begins with `is` such as `isRaining()` and
-a companion method `setRaining()`, these methods are called *JavaBean*
-methods - the *raining* property is a *JavaBean* property and there
+certain game behaviours. For example, the *thundering* behavior is turned
+on or off using the World's `thundering` property.  The World object's
+properties and methods are [documented on the SpigotMC JavaDocs World
+page][spworld]. When browsing the SpigotMC JavaDoc pages, whenever
+you see a method whose name begins with `is` such as `isThundering()` and
+a companion method `setThundering()`, these methods are called *JavaBean*
+methods - the *thundering* property is a *JavaBean* property and there
 are two ways you can use JavaBean properties in Javascript. You can
 *get* and *set* the property using the methods provided by Java. To
-*get* the raining property you can call the JavaBean Method:
+*get* the thundering property you can call the JavaBean Method:
 
-    /js self.world.isRaining()
+    /js self.world.isThundering()
 
 ... or you can get the property like this:
 
-    /js self.world.raining
+    /js self.world.thundering
 
-To *set* the raining property, you can call the JavaBean method:
+To *set* the thundering property, you can call the JavaBean method:
 
-    /js self.world.setRaining( true )
+    /js self.world.setThundering( true )
 
 ... or you can set the property like this:
 
-    /js self.world.raining = true
+    /js self.world.thundering = true
 
 Whatever approach you use, the result will be the same. 
 
 [cmworld]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/world/World.html
+[spworld]: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/World.html
 
 ### SIDENOTE
 You may be wondering how to change other aspects of the Minecraft game - pretty much all
 aspects of the game can be changed. Changes are made using what are
 called `API` calls - these are calls to functions and methods in
-Minecraft - you can read more about these on the [CanaryMod API
-Reference][cmapi].
+Minecraft - you can read more about these on the [SpigotMC API
+Reference][spigotapi].
 
 ## ...and Again, and Again, and Again,...
 
@@ -898,8 +854,10 @@ var utils = require('utils');
 var players = utils.players();
 var sounds = require('sounds');
 utils.foreach( players, function( player ) { 
-  sounds.catMeow( player ); // canarymod
   sounds.entityCatAmbient( player ); // spigot 1.9
+  /* canarymod only
+    sounds.catMeow( player ); 
+  */
 } );
 ```
 
@@ -1021,7 +979,7 @@ This time no message should appear on your screen.
 The `if` statement tests to see if something is `true` or `false` and
 if `true` then the block of code between the curly braces ( `{` and
 `}` ) is executed - but only if the condition is true.  The condition
-in the above example is `!self.onGround` (self is not on ground) which
+in the above example is `!self.onGround` (self is _not_ on ground) which
 will be `true` if you are currently flying or `false` if you aren't.
 
 What if you wanted to display a message only if a condition is *not*
@@ -1077,29 +1035,29 @@ following code sends a message to any player who breaks a block in the
 game...
 
 ```javascript
-function myBlockDestroyHook( event ){
+function myBlockBreakHook( event ){
   var breaker = event.player;
   echo( breaker, 'You broke a block');
 }
-events.blockDestroy( myBlockDestroyHook );
+events.blockBreak( myBlockBreakHook );
 ```
 
-The `events.blockDestroy()` function is just one of the many `events` functions which can be used to *register* a function to be called whenever a particular type of event occurs. In the
-above code the blockDestroy function takes as a parameter a function
+The `events.blockBreak()` function is just one of the many `events` functions which can be used to *register* a function to be called whenever a particular type of event occurs. In the
+above code the blockBreak function takes as a parameter a function
 I want to be called when that event occurs. The function I want called
 in turn takes 1 parameter. The `event` object has all the information
 about the event which just occurred. I can tell who broke the block
 and send a message to the player. The important thing to note is that
-the `myBlockDestroyHook` function defined above will not be called until a player breaks a
+the `myBlockBreakHook` function defined above will not be called until a player breaks a
 block. Try it - save the above code in a new file in the
 `scriptcraft/plugins` directory then type `/js refresh()` to reload
 scriptcraft. Then break a block in the game and you should see the
 message 'You broke a block'.
 
 There are many types of events you can listen for in Minecraft. You can
-browse [all possible event registration functions][cmevts2] in the API Reference. 
+browse [all possible event registration functions][spevts2] in the API Reference. 
 
-For custom events (events which aren't in the net.canarymod.hook tree)
+For custom events (events which aren't in the org.bukkit.event tree)
 just specify the fully qualified class name instead. E.g. ...
 
     events.on ( net.yourdomain.events.YourEvent, function( event ) {
@@ -1111,12 +1069,12 @@ just specify the fully qualified class name instead. E.g. ...
 If you want an event handler to only execute once, you can remove the handler like this...
 
 ```javascript
-function myBlockDestroyHook( evt ) { 
+function myBlockBreakHook( evt ) { 
   var breaker = evt.player;
   echo( breaker, 'You broke a block');
   this.unregister();
 } 
-events.blockDestroy( myBlockDestroyHook );
+events.blockBreak( myBlockBreakHook );
 ```
 
 The `this.unregister();` statement will remove this function from the
@@ -1128,11 +1086,11 @@ to stop listening for events.
 To unregister a listener *outside* of the listener function...
 
 ```javascript    
-function myBlockDestroyHook( evt ){
+function myBlockBreakHook( evt ){
   var breaker = evt.player;
   echo( breaker, 'You broke a block');
 }
-var myBlockBreakListener = events.blockDestroy( myBlockDestroyHook );
+var myBlockBreakListener = events.blockBreak( myBlockBreakHook );
 ...
 myBlockBreakListener.unregister();
 ```
@@ -1252,7 +1210,7 @@ var breaks = {};
 function initializeBreakCount( event ){
   breaks[event.player.name] = 0;	 
 }
-events.connection( initializeBreakCount );
+events.playerJoin( initializeBreakCount );
 
 /* 
   every time a player breaks a block increase their block-break-count
@@ -1262,7 +1220,7 @@ function incrementBreakCount( event ){
   var breakCount = breaks[event.player.name];
   echo( event.player, 'You broke ' + breakCount + ' blocks');
 }
-events.blockDestroy( incrementBreakCount );
+events.blockBreak( incrementBreakCount );
 ```
 
 With a little more work, you could turn this into a game where players
@@ -1280,8 +1238,8 @@ minecraft, I recommend reading the accompanying [ScriptCraft API
 reference][api] which covers all of the ScriptCraft functions, objects
 and methods. I also recommend reading the source code to some of the
 existing scriptcraft plugins, followed by
-[Anatomy of a ScriptCraft Plug-in][ap].  The online [CanaryMod API
-Reference][cmapi] provides lots of valuable information about the
+[Anatomy of a ScriptCraft Plug-in][ap].  The online [SpigotMC API
+Reference][spigotapi] provides lots of valuable information about the
 different objects and methods available for use by ScriptCraft.
 
 
@@ -1295,6 +1253,7 @@ different objects and methods available for use by ScriptCraft.
 [np]: http://notepad-plus-plus.org/
 [cbapi]: http://jd.bukkit.org/beta/apidocs/
 [cmapi]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/
+[spigotapi]: https://hub.spigotmc.org/javadocs/spigot/
 [boole]: http://en.wikipedia.org/wiki/George_Boole
 [soundapi]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/world/effects/SoundEffect.Type.html
 [ap]: Anatomy-of-a-Plugin.md
@@ -1303,6 +1262,7 @@ different objects and methods available for use by ScriptCraft.
 [bkevts]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/package-summary.html
 [cmevts]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/package-summary.html
 [cmevts2]: API-Reference.md#events-helper-module-canary-version
+[spevts2]: API-Reference.md#events-helper-module-spigotmc-version
 [img_echo_date]: img/ypgpm_echo_date.png
 [img_3d_shapes]: img/ypgpm_3dshapes.jpg
 [img_whd]: img/ypgpm_whd.jpg
