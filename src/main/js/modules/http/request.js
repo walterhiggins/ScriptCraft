@@ -30,7 +30,7 @@ The following example illustrates how to use http.request to make a request to a
 
 ```javascript
 var jsResponse;
-var http = require('request');
+var http = require('http');
 http.request('http://scriptcraftjs.org/sample.json',function(responseCode, responseBody){
   jsResponse = JSON.parse( responseBody );
 });
