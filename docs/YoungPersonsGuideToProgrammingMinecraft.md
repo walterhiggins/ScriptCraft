@@ -43,6 +43,7 @@ If you would like to make changes, change file src/docs/templates/ypgpm.md inste
  * [Keeping Score - Lookup tables in Javascript](#keeping-score---lookup-tables-in-javascript)
  * [Counting block break events for each player](#counting-block-break-events-for-each-player)
  * [Next Steps](#next-steps)
+
 ## Introduction
 
 Minecraft is an open-ended 3D game where you can build and craft
