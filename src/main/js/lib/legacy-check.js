@@ -11,8 +11,7 @@ module.exports = function( jsPluginsRootDir ) {
   }
   var legacyExists = false,
       legacyDirs = [
-	new File( mcServerDir, 'js-plugins' ),
-	new File( mcServerDir, 'plugins/scriptcraft' )
+	new File( mcServerDir, 'js-plugins' )
       ];
 
   for ( var i = 0; i < legacyDirs.length; i++ ) {
@@ -27,7 +26,7 @@ module.exports = function( jsPluginsRootDir ) {
     }
   }
   if ( legacyExists ) {
-    console.info( 'Please note that the working directory for %s is %s', 
+    console.info( 'The working directory for %s is %s', 
 		  __plugin, jsPluginsRootDir.canonicalPath );
   }
 };
