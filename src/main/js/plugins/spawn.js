@@ -15,8 +15,8 @@ Allows in-game operators to easily spawn creatures at current location.
 This command supports TAB completion so to see a list of possible
 entitities, type `/jsp spawn ' at the in-game command prompt, then
 press TAB. Visit
-<https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html> (CanaryMod)
-or <http://docs.visualillusionsent.net/CanaryLib/1.0.0/net/canarymod/api/entity/EntityType.html> (Bukkit)
+<https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html> (Bukkit/SpigotMC)
+or <http://docs.visualillusionsent.net/CanaryLib/1.0.0/net/canarymod/api/entity/EntityType.html> (CanaryMod)
 
 for a list of possible entities (creatures) which can be spawned.
 

@@ -8,6 +8,9 @@ module.exports = function(entityType, location){
     entityTypeFn = entities[entityType.toLowerCase()];
     entityType = entityTypeFn();
   }
+  if (typeof entityType === 'function'){
+    entityType = entityType();
+  }
   var world = location.world;
   if (__plugin.bukkit){
     world.spawnEntity( location, entityType);
