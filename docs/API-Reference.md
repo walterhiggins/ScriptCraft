@@ -435,9 +435,12 @@ Walter Higgins
    * [The slash() function](#the-slash-function)
  * [Sounds Module](#sounds-module)
    * [Usage (Bukkit) :](#usage-bukkit-)
- * [Teleport Module](#teleport-module)
+ * [Spawn Module](#spawn-module)
    * [Parameters](#parameters)
    * [Example](#example-2)
+ * [Teleport Module](#teleport-module)
+   * [Parameters](#parameters-1)
+   * [Example](#example-3)
  * [Utilities Module](#utilities-module)
    * [utils.player() function](#utilsplayer-function)
    * [utils.world( worldName ) function](#utilsworld-worldname--function)
@@ -492,7 +495,7 @@ Walter Higgins
    * [Administration options](#administration-options)
  * [NumberGuess mini-game:](#numberguess-mini-game)
    * [Description](#description-1)
-   * [Example](#example-3)
+   * [Example](#example-4)
  * [Cow Clicker Mini-Game](#cow-clicker-mini-game)
    * [How to Play](#how-to-play)
    * [Rules](#rules)
@@ -5289,6 +5292,31 @@ In addition, a play function is provided for each possible sound using the follo
     sounds.villagerNo(); // plays VILLAGER_NO sound for all players online.
 
 These methods are provided for convenience to help beginners explore sounds using TAB completion.
+## Spawn Module
+
+Provides a single function to 'spawn' an entity at a given location.
+
+### Parameters
+
+ * entityType - <String|Object> The type of entity to spawn. This can be a string (see entities module for reference) or a framework-specific object type (see https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). A list of [all possible entities][ents] functions (equivalent to the EntityType enum).
+
+ * location - where the entity should be spawned.
+
+[ents]: #entities-module
+
+### Example
+
+Using the entities module as a helper, spawn a new polar bear at the world's default spawn location:
+
+```javascript
+var entities = require('entities'),
+    spawn = require('spawn');
+...
+var spawnLocation = world.spawnLocation;
+spawn(entities.polar_bear(), spawnLocation);
+``` 
+
+This module is in turn used by the Drone's `spawn()` method and the `jsp spawn` command.
 String class extensions
 -----------------------
 The following chat-formatting methods are added to the javascript String class..
@@ -7303,7 +7331,14 @@ The following functions are provided:
 
 
 ## Entities module
-The Entities module provides a suite of functions - one for each possible entity type.
+The Entities module provides a suite of functions - one for each possible entity type. 
+It acts as a helper or enumerated module to assist in use with the `spawn` module and command. 
+This module is useful for TAB-completion at the in-game prompt. 
+
+When each function is called with no parameters, it will return the appropriate EntityType object. 
+For example `entities.polar_bear()` will return an `EntityType.POLAR_BEAR` object. 
+
+When each function is called with a single parameter - an entity - the entity's type will be compared and return true or false. 
 
 ### Usage
 
