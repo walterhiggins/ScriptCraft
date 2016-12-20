@@ -241,7 +241,7 @@ Developer Chris Cacciatore has created some interesting tools using ScriptCraft:
 
 # Docker 
 
-To launch a container with CanaryMod and ScriptCraft you can just do 
+To launch a container with SpigotMC and ScriptCraft you can just do 
 
       docker run -p 25565:25565 -it tclavier/scriptcraft
 
