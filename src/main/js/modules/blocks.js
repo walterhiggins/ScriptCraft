@@ -28,8 +28,8 @@ var blocks = {
   grass: 2,
   dirt: 3,
   cobblestone: 4,
-  oak: 5, spruce: '5:1', birch: '5:2', jungle: '5:3',
-  sapling: { oak: 6, spruce: '6:1', birch: '6:2', jungle: '6:3' },
+  oak: 5, spruce: '5:1', birch: '5:2', jungle: '5:3', acacia: '5:4', dark_oak: '5:5',
+  sapling: { oak: 6, spruce: '6:1', birch: '6:2', jungle: '6:3', acacia: '6:4', dark_oak: '6:5' },
   bedrock: 7,
   water: 8,
   water_still: 9,
@@ -43,11 +43,17 @@ var blocks = {
   wood: 17,
   leaves: 18,
   sponge: 19,
+  sponge_wet: '19:1',
   glass: 20,
   lapis_lazuli_ore: 21,
   lapis_lazuli_block: 22,
   dispenser: 23,
   sandstone: 24,
+  sandstone_chiseled: '24:1',
+  sandstone_smooth: '24:2',
+  sandstone_red: 179,
+  sandstone_red_chiseled: '179:1',
+  sandstone_red_smooth: '179:2',
   note: 25,
   bed: 26,
   powered_rail: 27,
@@ -70,7 +76,17 @@ var blocks = {
   double_slab: {
     stone: 43,
     sandstone: '43:1',
+    sandstone_red: 181,,
+    sandstone_red_smooth: '181:8',
     wooden: '43:2',
+	wood: {
+	  oak: 125,
+	  spruce: '125:1',
+	  birch: '125:2',
+	  jungle: '125:3',
+	  acacia: '125:4',
+	  dark_oak: '125:5'
+	},
     cobblestone: '43:3',
     brick: '43:4',
     stonebrick: '43:5',
@@ -78,9 +94,11 @@ var blocks = {
     quartz: '43:7',
     smooth_stone: '43:8',
     smooth_sandstone: '43:9',
-    tile_quartz: '43:15'
+    tile_quartz: '43:15',
+    purpur: 204,
   },
   slab: {
+    stone: '44:0',
     sandstone: '44:1',
     wooden: '44:2',
     cobblestone: '44:3',
@@ -91,6 +109,7 @@ var blocks = {
     upper: {
       stone: '44:8',
       sandstone: '44:9',
+      sandstone_red: '182:8',
       wooden: '44:10',
       cobblestone: '44:11',
       brick: '44:12',
@@ -100,14 +119,20 @@ var blocks = {
       oak: '126:8',
       spruce: '126:9',
       birch: '126:10',
-      jungle: '126:11'
+      jungle: '126:11',
+	  acacia: '126:12',
+	  dark_oak: '126:13'
     },
     snow: 78,
     stone: 44,
     oak: 126,
     spruce: '126:1',
     birch: '126:2',
-    jungle: '126:3'
+    jungle: '126:3',
+	acacia: '126:4',
+	dark_oak: '126:5'
+    sandstone_red: 182,
+    purpur: 205,
   },
   // see brick.red 45
   tnt: 46,
@@ -127,7 +152,11 @@ var blocks = {
     spruce: 134,
     birch: 135,
     jungle: 136,
-    quartz: 156
+    quartz: 156,
+	acacia: 163,
+	dark_oak: 164,
+    sandstone_red: 180,
+    purpur: 203,
   },
   chest: 54,
   redstone_wire: 55,
@@ -167,7 +196,7 @@ var blocks = {
   jackolantern: 91,
   cake: 92,
   redstone_repeater: 93,
-  redeston_repeater_active: 94,
+  redstone_repeater_active: 94,
   stained_glass: { 
     white: 95 // all other colors added below
   },
@@ -215,6 +244,7 @@ var blocks = {
   flowerpot: 140,
   carrots: 141,
   potatoes: 142,
+  beetroot: 207,
   button_wood: 143,
   skull: 144, mobhead: 144, 
   anvil: 145,
@@ -257,6 +287,8 @@ var blocks = {
   packed_ice: 174,
   double_plant: 175, 
   sunflower: 175,
+  purpur: 201,
+  purpur_pillar: 202,
   flower: {
     sunflower: 175,
     lilac: '175:1',
@@ -267,7 +299,16 @@ var blocks = {
     yellow: 37,
     dandelion: 37,
     rose: 38,
-    red: 38
+    red: 38,
+	poppy: 38,
+    blueorchid: '38:1',
+    allium: '38:2',
+    azure_bluet: '38:3',
+    red_tulip: '38:4',
+    orange_tulip: '38:5',
+    white_tulip: '38:6',
+    pink_tulip: '38:7',
+    oxeye_daisy: '38:8'
   },
   bonemeal: '351:15',
   banner: {
