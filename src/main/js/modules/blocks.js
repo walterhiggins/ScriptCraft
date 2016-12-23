@@ -76,7 +76,7 @@ var blocks = {
   double_slab: {
     stone: 43,
     sandstone: '43:1',
-    sandstone_red: 181,,
+    sandstone_red: 181,
     sandstone_red_smooth: '181:8',
     wooden: '43:2',
     wood: {
@@ -130,7 +130,7 @@ var blocks = {
     birch: '126:2',
     jungle: '126:3',
     acacia: '126:4',
-    dark_oak: '126:5'
+    dark_oak: '126:5',
     sandstone_red: 182,
     purpur: 205,
   },
