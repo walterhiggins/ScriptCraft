@@ -6568,6 +6568,7 @@ The following functions are provided:
  * ironHoe()
  * ironIngot()
  * ironLeggings()
+ * ironNugget()
  * ironOre()
  * ironPickaxe()
  * ironPlate()
