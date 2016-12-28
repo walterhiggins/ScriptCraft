@@ -76,17 +76,17 @@ var blocks = {
   double_slab: {
     stone: 43,
     sandstone: '43:1',
-    sandstone_red: 181,,
+    sandstone_red: 181,
     sandstone_red_smooth: '181:8',
     wooden: '43:2',
-	wood: {
-	  oak: 125,
-	  spruce: '125:1',
-	  birch: '125:2',
-	  jungle: '125:3',
-	  acacia: '125:4',
-	  dark_oak: '125:5'
-	},
+    wood: {
+      oak: 125,
+      spruce: '125:1',
+      birch: '125:2',
+      jungle: '125:3',
+      acacia: '125:4',
+      dark_oak: '125:5'
+    },
     cobblestone: '43:3',
     brick: '43:4',
     stonebrick: '43:5',
@@ -120,8 +120,8 @@ var blocks = {
       spruce: '126:9',
       birch: '126:10',
       jungle: '126:11',
-	  acacia: '126:12',
-	  dark_oak: '126:13'
+      acacia: '126:12',
+      dark_oak: '126:13'
     },
     snow: 78,
     stone: 44,
@@ -129,8 +129,8 @@ var blocks = {
     spruce: '126:1',
     birch: '126:2',
     jungle: '126:3',
-	acacia: '126:4',
-	dark_oak: '126:5'
+    acacia: '126:4',
+    dark_oak: '126:5',
     sandstone_red: 182,
     purpur: 205,
   },
@@ -153,8 +153,8 @@ var blocks = {
     birch: 135,
     jungle: 136,
     quartz: 156,
-	acacia: 163,
-	dark_oak: 164,
+    acacia: 163,
+    dark_oak: 164,
     sandstone_red: 180,
     purpur: 203,
   },
@@ -300,7 +300,7 @@ var blocks = {
     dandelion: 37,
     rose: 38,
     red: 38,
-	poppy: 38,
+    poppy: 38,
     blueorchid: '38:1',
     allium: '38:2',
     azure_bluet: '38:3',
@@ -352,11 +352,11 @@ for (var i = 0, len = colorized_blocks.length; i < len; i++) {
 };
 
 /*
- rainbow colors - a convenience
- Color aliased properties that were a direct descendant of the blocks
- object are no longer used to avoid confusion with carpet and stained
- clay blocks.
- */
+  rainbow colors - a convenience
+  Color aliased properties that were a direct descendant of the blocks
+  object are no longer used to avoid confusion with carpet and stained
+  clay blocks.
+*/
 blocks.rainbow = [
   blocks.stained_glass.red,
   blocks.stained_glass.orange,

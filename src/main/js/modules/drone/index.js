@@ -208,7 +208,7 @@ Alternatively if you provide just a function as a parameter, then the function n
 
     // submitted by [edonaldson][edonaldson]
     var Drone = require('drone'); 
-    Drone.extend('pyramid', function( block,height) { 
+    Drone.extend('pyramid', function( block, height ) { 
         this.chkpt('pyramid');
         for ( var i = height; i > 0; i -= 2) {
             this.box(block, i, 1, i).up().right().fwd();
@@ -219,7 +219,7 @@ Alternatively if you provide just a function as a parameter, then the function n
 #### Example 2 Using just a named function as a parameter
 
     var Drone = require('drone'); 
-    function pyramid( block,height) { 
+    function pyramid( block, height ) { 
         this.chkpt('pyramid');
         for ( var i = height; i > 0; i -= 2) {
             this.box(block, i, 1, i).up().right().fwd();
@@ -276,6 +276,22 @@ Used when placing torches. By default torches will be placed facing up. If you w
 If you want to place a torch so it faces _away_ from the drone:
 
     drone.box( blocks.torch + ':' + Drone.PLAYER_TORCH_FACING[(drone.dir + 2) % 4]);
+
+#### Drone.MAX_SIDE
+
+Specifies the maximum length (in any dimension) when calling the Drone.cuboidX (box) method.
+The default value is 1,000 blocks.
+
+If you see an error message in the console `Build too big!` It's because the width, height or length paramete was greater than the Drone.MAX_SIDE value.
+
+#### Drone.MAX_VOLUME
+
+Specifies the maximum value for any call to Drone.cuboidX (box) method.
+The default value is 1,000,000 (1 million) blocks.
+
+If the volume (width X height X length) of any single call to the Drone.cuboidX() method exceeds this value, you will see an error message in the console `Build too big!` .
+
+The values of both the `Drone.MAX_SiDE` and `Drone.MAX_VOLUME` variables _can_ be overridden but it's not recommended.
 
 ***/
 
@@ -656,7 +672,7 @@ Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite) {
 Drone.MAX_VOLUME = 1 * MILLION;
 Drone.MAX_SIDE = 1 * THOUSAND;
 
-var tooBig = function(w, h, d ) {
+function isTooBig(w, h, d ) {
   return ( w * h * d ) >= Drone.MAX_VOLUME || 
     ( w >= Drone.MAX_SIDE ) || 
     ( h >= Drone.MAX_SIDE ) ||
@@ -677,7 +693,7 @@ Drone.prototype.cuboidX = function( blockType, meta, w, h, d, immediate ) {
   if ( typeof w == 'undefined' ) {
     w = 1;
   }
-  if ( tooBig( w, h, d ) ) {
+  if ( isTooBig( w, h, d ) ) {
     this.sign([
       'Build too Big!',
       'width:' + w,

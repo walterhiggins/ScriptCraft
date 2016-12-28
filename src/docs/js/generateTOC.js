@@ -48,26 +48,3 @@ for (var i = 0; i < contents.length; i++){
         java.lang.System.out.println('   * [' + h3 + '](#' + link + ')');
     }
 }
-
-/**
- * // tg 20161022 Sort secondary topics, with some exceptions
- * // Still work in progress. Ignore
- * var sortedContents =[];
- * var sortedTemp = [];
- * 
- * for (var i = 0; i < contents.length; i++) {
- *   line = contents[i];
- *   if(line.match(/^##\s+/)) {
- *     if (sortedTemp.length > 0) {
- *       sortedContents.push(sortedTemp.sort());
- *       sortedContents.push(line);
- *     } else {
- *       if (line.match(/^###\s+/)) {
- *         sortedTemp.push(line);
- *       } else {
- *         sortedContents.push(line);
- *       }
- *     }
- *   }
- * contents = sortedContents;
- */

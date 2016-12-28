@@ -12,8 +12,7 @@
 
   <!-- compiles against these libraries -->
   <property name="lib.canary" location="lib/canarymod-1.8.0.jar"/>
-  <!--property name="lib.bukkit" location="lib/spigot-1.9.jar"/-->
-  <property name="lib.bukkit" location="lib/spigot-1.10.2.jar"/>
+  <property name="lib.bukkit" location="lib/spigot-1.11.2.jar"/>
 
   <property name="build" location="target/classes"/>
   <property name="dist" location="target/" />
