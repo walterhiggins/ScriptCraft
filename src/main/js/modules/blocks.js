@@ -1,32 +1,29 @@
 /************************************************************************
 ## Blocks Module
-
 You hate having to lookup [Data Values][dv] when you use ScriptCraft's
 Drone() functions. So do I.  So I created this blocks object which is
 a helper object for use in construction.
-
 ### Examples
-
     box( blocks.oak ); // creates a single oak wood block
     box( blocks.sand, 3, 2, 1 ); // creates a block of sand 3 wide x 2 high x 1 long
     box( blocks.wool.green, 2 ); // creates a block of green wool 2 blocks wide
-
 Color aliased properties that were a direct descendant of the blocks
 object are no longer used to avoid confusion with carpet and stained
 clay blocks. In addition, there's a convenience array `blocks.rainbow`
 which is an array of the 7 colors of the rainbow (or closest
 approximations).
-
 The blocks module is globally exported by the Drone module.
-
 ***/
 var colors = require('./block-colors');
 
 var blocks = {
   air: 0,
-  stone: 1,
+  stone: 1, 
+  granite: '1:1', polished_granite: '1:2', 
+  diorite: '1:3', polished_diorite: '1:4',
+  andesite: '1:5', polished_andesite: '1:6',
   grass: 2,
-  dirt: 3,
+  dirt: 3, coarse_dirt: '3:1', podzol: '3:2',
   cobblestone: 4,
   oak: 5, spruce: '5:1', birch: '5:2', jungle: '5:3', acacia: '5:4', dark_oak: '5:5',
   sapling: { oak: 6, spruce: '6:1', birch: '6:2', jungle: '6:3', acacia: '6:4', dark_oak: '6:5' },
@@ -40,8 +37,8 @@ var blocks = {
   gold_ore: 14,
   iron_ore: 15,
   coal_ore: 16,
-  wood: 17,
-  leaves: 18,
+  wood: 17, spruce_wood: '17:1', birch_wood: '17:2', jungle_wood: '17:3',
+  leaves: 18, spruce_leaves: '18:1', birch_leaves: '18:2', jungle_leaves: '18:3',
   sponge: 19,
   sponge_wet: '19:1',
   glass: 20,
