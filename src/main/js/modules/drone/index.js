@@ -158,6 +158,27 @@ Construct a rainbow-colored road 100 blocks long...
 
 ![boxa example](img/boxaex1.png)
 
+### Drone.boxr() method
+
+Construct a cuboid using random choices from an array of blocks.
+
+#### Parameters
+
+ * blocks - An array of blocks - a block will be chosen from the array randomly each time a block is being placed.
+ * width
+ * height
+ * length
+
+#### Example
+
+Construct a wall containing a random mix of stone blocks...
+
+    var stoneBlocks = [blocks.stone, blocks.cobblestone, blocks.moss_stone];
+
+    boxr(stoneBlocks,8,8,1);
+
+![boxr example](img/boxrex1.png)
+
 ### Chaining
 
 All of the Drone methods return a Drone object, which means methods can be 'chained' together so instead of writing this...
@@ -669,6 +690,36 @@ Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite) {
   });
   return this;
 };
+Drone.prototype.cuboidr = function(/* Array */ blocks, w, h, d, overwrite) {
+  if ( typeof overwrite == 'undefined' ) {
+    overwrite = true;
+  }
+  if ( typeof h == 'undefined' ) {
+    h = 1;
+  }
+  if ( typeof d == 'undefined' ) {
+    d = 1;
+  }
+  if ( typeof w == 'undefined' ) {
+    w = 1;
+  }
+  //
+  // wph 20140823 make a copy because don't want to modify array in background
+  //
+  var blocksForBuild = blocks.slice();
+  var len = blocksForBuild.length,
+  i = 0;
+  for ( ; i < len; i++ ) {
+    blocksForBuild[i] = this.getBlockIdAndMeta( blocksForBuild[ i ] );
+  }
+  this.then(function(){
+    traverseDHW( this, d,h,w, function traverseWidthCallback( ) {
+      var properBlock = blocksForBuild[ Math.floor( Math.random() * len ) ];
+      this.setBlock(properBlock[0], properBlock[1]);
+    });
+  });
+  return this;
+};
 Drone.MAX_VOLUME = 1 * MILLION;
 Drone.MAX_SIDE = 1 * THOUSAND;
 
@@ -768,6 +819,7 @@ Drone.PLAYER_TORCH_FACING = [ 2, 4, 1, 3 ];
 Drone.extend('box', Drone.prototype.cuboid );
 Drone.extend('box0',Drone.prototype.cuboid0 );
 Drone.extend('boxa',Drone.prototype.cuboida );
+Drone.extend('boxr',Drone.prototype.cuboidr );
 //
 // show the Drone's position and direction 
 //
