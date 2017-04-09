@@ -157,6 +157,7 @@ function reloadPlayerModules( playerContext, playerDir ){
   var newOn = function( eventType, fn, priority){
     var handler = oldOn(eventType, fn, priority);
     eventHandlers.push(handler);
+    return handler;
   };
   events.on = newOn;
   autoload( playerContext, playerDir, { cache: false });
