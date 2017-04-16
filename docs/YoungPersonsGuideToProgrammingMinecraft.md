@@ -5,6 +5,8 @@ Contributors: This file is generated from source file src/docs/templates/ypgpm.m
 If you would like to make changes, change file src/docs/templates/ypgpm.md instead
 -->
 # The Young Person's Guide to Programming in Minecraft
+Printable version is http://www.greenbushlabs.com/ProgrammingMinecraftWithScriptcraft.pdf
+
 ## Table of Contents
  * [Introduction](#introduction)
  * [Installing and Running SpigotMC](#installing-and-running-spigotmc)
