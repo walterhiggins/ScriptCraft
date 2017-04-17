@@ -3764,6 +3764,10 @@ An array which can be used when constructing stairs facing in the Drone's direct
 
 ... will construct a single oak stair block facing the drone.
 
+Upside down stairs can be created by adding 4 to the value after the colon, like...
+
+    d.box(blocks.stairs.oak + ':' + (Drone.PLAYER_STAIRS_FACING[d.dir] + 4));
+
 #### Drone.PLAYER_SIGN_FACING
 
 An array which can be used when placing signs so they face in a given direction. This is used internally by the Drone.sign() method. It should also be used for placing any of the following blocks...
