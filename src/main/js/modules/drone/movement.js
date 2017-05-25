@@ -93,6 +93,9 @@ function turn( n ) {
   }
   this.dir += n;
   this.dir %=4;
+  if (this.dir < 0) {
+    this.dir += 4;
+  }
 }
 function chkpt( name ) {
   this._checkpoints[ name ] = { x:this.x, y:this.y, z:this.z, dir:this.dir };
