@@ -4138,7 +4138,7 @@ no parameter is given, the default is 1.
 
 To change direction use the `turn()` method which also takes a single
 optional parameter (numTurns) - the number of 90 degree turns to
-make. Turns are always clock-wise. If the drone is facing north, then
+make. Turns are clockwise unless numTurns is negative in which case they are counterclockwise. If the drone is facing north, then
 drone.turn() will make the turn face east. If the drone is facing east
 then drone.turn(2) will make the drone turn twice so that it is facing
 west.
