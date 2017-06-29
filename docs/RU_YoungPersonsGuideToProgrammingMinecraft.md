@@ -24,7 +24,7 @@ If you would like to make changes, change file src/docs/templates/ypgpm.md inste
    * [Упражнение - Строим простую конструкцию](#Упражнение---строим-простую-конструкцию)
    * [Запомним где мы начали](#запомним-где-мы-начали)
  * [Сохраним нашу работу](#Сохраним-нашу-работу)
- * [Ваш первый Minecraft Мод](#Ваш первый Minecraft Мод)
+ * [Ваш первый Minecraft Мод](#Ваш-первый-minecraft-Мод)
  * [Параметры](#Параметры)
  * [true или false](#true-или-false)
  * [Еще `true` или `false`](#Еще-true-или-false)
