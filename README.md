@@ -1,13 +1,13 @@
-# ScriptCraft - Modding Minecraft with Javascript
+# ScriptCraft - Modding Minecraft with JavaScript
 
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/walterhiggins/ScriptCraft?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-ScriptCraft lets you write Minecraft Mods using Javascript - a
+ScriptCraft lets you write Minecraft Mods using JavaScript - a
 programming language that's relatively easy to learn and use.
 ScriptCraft is a Minecraft Server plugin which means it must be used
 with a Minecraft server. Once you've downloaded and installed the
 Minecraft Server, then installed the ScriptCraft Plugin you can write
-your own Minecraft mods using Javascript.
+your own Minecraft mods using JavaScript.
 
 I created ScriptCraft to make it easier for younger programmers to
 create their own Minecraft Mods. Mods are written using the
@@ -44,7 +44,7 @@ you can do using ScriptCraft in JavaScript.
 ScriptCraft is a plugin for Minecraft Servers which lets operators,
 administrators and plug-in authors customize the game using
 JavaScript.  ScriptCraft makes it easier to create your own mods. Mods
-can be written in Javscript and can use the full [SpigotMC
+can be written in JavaScript and can use the full [SpigotMC
 API][spigot] or [CanaryMod API][cm]. ScriptCraft works with all of the
 following Minecraft Server software:
 
