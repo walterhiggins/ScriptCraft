@@ -1,5 +1,13 @@
 # ScriptCraft - Modding Minecraft with Javascript
 
+Branch "Anxious-Villager" is the first of several catch-up branches intended to move forward from production version 3.2.0 from 2016. Watch the branch updates here for details of changes.
+
+# This is NOT a production release and should NOT be installed #
+
+Please post all ScriptCraft issues to the [official repo][repo]
+
+[repo]: https://github.com/walterhiggins/ScriptCraft/issues
+
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/walterhiggins/ScriptCraft?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ScriptCraft lets you write Minecraft Mods using Javascript - a
