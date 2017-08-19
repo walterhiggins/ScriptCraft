@@ -5,7 +5,7 @@ var Drone = require('drone'),
 /************************************************************************
 ### Drone.logojs() method
 
-Constructs a large Javascript Logo (black JS on Yellow background)
+Constructs a large JavaScript Logo (black JS on Yellow background)
 See: https://raw.github.com/voodootikigod/logo.js/master/js.png
 
 #### Parameters

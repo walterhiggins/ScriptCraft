@@ -24,7 +24,7 @@ once they have access to ScriptCraft).
 
 The goal of this module is not so much to enforce restrictions
 (security or otherwise) but to make it easier for tutors to setup a
-shared server so students can learn Javascript. When scripting is
+shared server so students can learn JavaScript. When scripting is
 turned on, every player who joins the server will have a dedicated
 directory into which they can save scripts. All scripts in such
 directories are automatically watched and loaded into a global
@@ -87,7 +87,7 @@ to every student in a Minecraft classroom environment.
 Whenever any file is added/edited or removed from any of the players/
 directories the contents are automatically reloaded. This is to
 facilitate quick turnaround time for students getting to grips with
-Javascript.
+JavaScript.
 
 #### Parameters
 

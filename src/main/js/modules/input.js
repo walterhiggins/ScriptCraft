@@ -2,7 +2,7 @@
 ## Asynchronous Input Module
 
 The `input` module provides a simple way to prompt players for input at the 
-in-game prompt. In Javascript browser environments the `prompt()` function provides
+in-game prompt. In JavaScript browser environments the `prompt()` function provides
 a way to block execution and ask the user for input. Execution is blocked until the user
 provides input using the modal dialog and clicks OK. Unfortunately Minecraft provides no 
 equivalent modal dialog which can be used to gather player text input. The only way to gather text 

@@ -4,7 +4,7 @@ version: [[version]]
 commands:
    js:
       description: Evaluate javascript.
-      usage: /<command> Javascript code
+      usage: /<command> JavaScript code
       permission: scriptcraft.evaluate
       permission-message: You don't have <permission> permission. 
    jsp:

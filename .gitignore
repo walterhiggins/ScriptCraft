@@ -1,4 +1,3 @@
-target
 *.class
 *.js~
 *.js#
@@ -11,15 +10,18 @@ target
 *.idea
 .DS_Store
 build.local.properties
+/build
 /src/main/javascript/lib/.#tabcomplete.js
 /src/main/javascript/plugins/.#example-1.js
-/nbproject/private/private.xml
+/nbproject/private/
 /nbproject/project.xml
 /src/docs/nbproject/private/
-/src/docs/build//#build.xml#
-/#build.xml#
 /src/docs/build/classes/generateApiDocs.js
 /src/docs/build/classes/generateTOC.js
 /src/docs/build/classes/hello.js
 /src/docs/build/classes/.netbeans_automatic_build
 /src/docs/build/classes/.netbeans_update_resources
+/target
+/_unused/
+/lib/CopyLibs
+/lib/nblibraries.properties

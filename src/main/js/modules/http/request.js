@@ -18,7 +18,7 @@ main thread of execution.
 
    - url: The URL of the request.
    - method: Should be one of the standard HTTP methods, GET, POST, PUT, DELETE (defaults to GET).
-   - params: A Javascript object with name-value pairs. This is for supplying parameters to the server.
+   - params: A JavaScript object with name-value pairs. This is for supplying parameters to the server.
 
  * callback: The function to be called when the Web request has completed. This function takes the following parameters...
    - responseCode: The numeric response code from the server. If the server did not respond with 200 OK then the response parameter will be undefined.

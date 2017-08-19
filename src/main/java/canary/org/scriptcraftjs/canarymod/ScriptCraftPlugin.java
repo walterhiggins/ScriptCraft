@@ -14,7 +14,7 @@ import net.canarymod.tasks.TaskOwner;
 import net.canarymod.commandsys.CommandListener;
 import net.canarymod.commandsys.Command;
 import net.canarymod.commandsys.TabComplete;
-import net.canarymod.chat.MessageReceiver;
+import net.canarymod.chat.MessageReceiver; // Chat module removed ... temporarily?
 import net.canarymod.Canary;
 // event help stuff
 import net.canarymod.hook.Dispatcher;
@@ -25,7 +25,7 @@ public class ScriptCraftPlugin extends Plugin implements PluginListener, Command
     public boolean canary = true;
     public boolean bukkit = false;
     private String NO_JAVASCRIPT_MESSAGE = "No JavaScript Engine available. " + 
-        "ScriptCraft will not work without Javascript.";
+        "ScriptCraft will not work without JavaScript.";
     protected ScriptEngine engine = null;
 
     @Override
@@ -114,7 +114,7 @@ public class ScriptCraftPlugin extends Plugin implements PluginListener, Command
 
     @Command(
              aliases = { "js" },
-             description = "Execute Javascript code",
+             description = "Execute JavaScript code",
              permissions = { "scriptcraft.evaluate" },
              toolTip = "/js javascript expression")
     public void jsCommand(MessageReceiver sender, String[] args) {

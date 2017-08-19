@@ -1,14 +1,14 @@
-# Using Java APIs in Javascript
+# Using Java APIs in JavaScript
 
-ScriptCraft uses the Javascript Engine bundled with Java 6 and later
+ScriptCraft uses the JavaScript Engine bundled with Java 6 and later
 versions. This means that all of the core Java classes can be used
 from within ScriptCraft. In addition, all of the Bukkit API can be
-used from Javascript too. There are some things to consider when using
-Java classes in Javascript...
+used from JavaScript too. There are some things to consider when using
+Java classes in JavaScript...
 
 ## Using Java Beans
 
-The Javascript Engine bundled with Java comes with a handy notation
+The JavaScript Engine bundled with Java comes with a handy notation
 for accessing and modifying Java Beans. A Java Bean is any Java class
 which uses a `get{Property}()` method to retrieve an object's property
 and a `set{Property}()` method to set the object's property. One
@@ -22,7 +22,7 @@ to obtain the walking speed...
 
     float walkingSpeed = player.getWalkSpeed();
 
-... however, in Javascript you can access the walking-speed property
+... however, in JavaScript you can access the walking-speed property
 using the more succinct...
 
     var walkingspeed = player.walkSpeed;
@@ -33,7 +33,7 @@ using the more succinct...
 
 ... I personally prefer to use the simpler `player.walkSpeed` because
 it is easier to read. The important thing to remember when using the
-Bukkit (or any Java API) from Javascript is that for any Java Bean, a
+Bukkit (or any Java API) from JavaScript is that for any Java Bean, a
 property called `propertyName` will have a getter called
 `getPropertyName()` and a setter called `setPropertyName()`. From this
 rule you can infer what any Bukkit class properties are. For example,
@@ -76,7 +76,7 @@ In Java the following code will print out the `user.dir` and
 
 ... In Java, any classes in the `java.lang` package don't need to be
 prefixed with the package so the `java.lang.System` class can simply
-be written as `System`. However, in Javascript classes in the
+be written as `System`. However, in JavaScript classes in the
 `java.lang` package need to be fully qualified so you need to write...
 
     println( java.lang.System.getProperty( "user.dir" ) );
@@ -106,7 +106,7 @@ names before classes. For example...
 available for use without having to use the `java.util`
 prefix. However, importing the `java.lang` package is not recommended
 as some of the java.lang classes (e.g. String, Object) conflict with
-Javascript Object types.
+JavaScript Object types.
 
 ## Summary
 
@@ -114,8 +114,8 @@ When writing modules or plugins in ScriptCraft, you can access and
 change JavaBean properties using a simple .{propertyName} notation
 instead of using the Java .get{PropertyName}() and .set{PropertyName()
 methods. This results in more concise code. This simpler notation is
-provided by the Javascript Engine embedded in Java 6 and later
-versions. Javascript does not have access to private members, the
+provided by the JavaScript Engine embedded in Java 6 and later
+versions. JavaScript does not have access to private members, the
 .{propertyName} notation is automagically converted to the appropriate
 .get{PropertyName}() or .set{PropertyName}() method by Java.
 

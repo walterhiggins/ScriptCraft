@@ -546,8 +546,8 @@ exports.serverAddress = function serverAddress() {
 /**************************************************************************
 ### utils.array() function
 
-Converts Java collection objects to type Javascript array so they can avail of
-all of Javascript's Array goodness.
+Converts Java collection objects to type JavaScript array so they can avail of
+all of JavaScript's Array goodness.
  
 #### Example
 

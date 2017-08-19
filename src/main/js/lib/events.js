@@ -5,7 +5,7 @@
 The Events module provides a thin wrapper around CanaryMod's or
 Bukkit's Event-handling API.  The Java-based CanaryMod and Bukkit
 Events APIs make use of Java Annotations which are not available in
-Javascript, so this module provides a simple way to listen to
+JavaScript, so this module provides a simple way to listen to
 minecraft events in javascript.
 
 ### events.on() static method

@@ -50,8 +50,8 @@ others.
 ### Important
 
 Although ScriptCraft now supports Node.js style modules, it does not
-support node modules. Node.js and Rhino are two very different
-Javascript environments. ScriptCraft uses Rhino Javascript, not
+support node modules. Node.js and Nashorn are two very different
+JavaScript environments. ScriptCraft uses Nashorn JavaScript (formerly Rhino), not
 Node.js. Standard Node.js modules such as `'fs'` are not available in ScriptCraft.
 
 Modules can be loaded using relative or absolute paths. Per the CommonJS
@@ -74,10 +74,10 @@ module specification, the '.js' suffix is optional.
     }
   }
 
-  function _canonize(file){ 
-    return "" + file.canonicalPath.replaceAll("\\\\","/"); 
+  function _canonize(file){
+    return "" + file.canonicalPath.replaceAll("\\\\","/");
   }
-    
+
   function readModuleFromDirectory( dir ) {
 
     // look for a package.json file
@@ -95,7 +95,7 @@ module specification, the '.js' suffix is optional.
       var indexJsFile = new File( dir, './index.js' );
       if ( indexJsFile.exists() ) {
         return indexJsFile;
-      } else { 
+      } else {
         return null;
       }
     }
@@ -110,29 +110,29 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
  1. if the module does not begin with './' or '/' then ...
 
     1.1 Look in the 'scriptcraft/lib' directory. If it's not there then...
-    1.2 Look in the 'scriptcraft/modules' directory. If it's not there then 
+    1.2 Look in the 'scriptcraft/modules' directory. If it's not there then
         Throw an Error.
 
  2. If the module begins with './' or '/' then ...
-    
-    2.1 if the module begins with './' then it's treated as a file path. File paths are 
+
+    2.1 if the module begins with './' then it's treated as a file path. File paths are
         always relative to the module from which the require() call is being made.
 
     2.2 If the module begins with '/' then it's treated as an absolute path.
 
-    If the module does not have a '.js' suffix, and a file with the same name and a .js sufix exists, 
+    If the module does not have a '.js' suffix, and a file with the same name and a .js sufix exists,
     then the file will be loaded.
 
  3. If the module name resolves to a directory then...
-    
+
     3.1 look for a package.json file in the directory and load the `main` property e.g.
-    
+
     // package.json located in './some-library/'
     {
       "main": './some-lib.js',
       "name": 'some-library'
     }
-    
+
     3.2 if no package.json file exists then look for an index.js file in the directory
 
 ***/
@@ -182,9 +182,9 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
         code = '',
         line = null;
 
-    if ( typeof options == 'undefined' ) { 
+    if ( typeof options == 'undefined' ) {
       options = { cache: true };
-    } else { 
+    } else {
       if ( typeof options.cache == 'undefined' ) {
         options.cache = true;
       }
@@ -192,7 +192,7 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
 
     file = resolveModuleToFile(path, parentFile);
     if ( !file ) {
-      var errMsg = '' + _format("require() failed to find matching file for module '%s' " + 
+      var errMsg = '' + _format("require() failed to find matching file for module '%s' " +
                                 "in working directory '%s' ", [path, parentFile.canonicalPath]);
       if (! ( (''+path).match( /^\./ ) ) ) {
         errMsg = errMsg + ' and not found in paths ' + JSON.stringify(modulePaths);
@@ -223,10 +223,10 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
       throw new Error(errMsg);
     }
     canonizedFilename = _canonize(file);
-  
+
     moduleInfo = _loadedModules[canonizedFilename];
     if ( moduleInfo ) {
-      if ( options.cache ) { 
+      if ( options.cache ) {
         return moduleInfo;
       }
     }
@@ -241,7 +241,7 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
 
     if(canonizedFilename.toLowerCase().substring(canonizedFilename.length - 5) === ".json") // patch code when it is json
       code = "module.exports = (" + code + ");";
-    
+
     moduleInfo = {
       loaded: false,
       id: canonizedFilename,
@@ -260,7 +260,7 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     } catch (e) {
       /*
        wph 20140313 JRE8 (nashorn) gives misleading linenumber of evaluating code not evaluated code.
-       This can be fixed by instead using __engine.eval 
+       This can be fixed by instead using __engine.eval
        */
       throw new Error( "Error evaluating module " + path
           + " line #" + e.lineNumber
@@ -277,7 +277,7 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     try {
       compiledWrapper
         .apply(moduleInfo.exports,  /* this */
-               parameters);   
+               parameters);
     } catch (e) {
       var snippet = '';
       if ((''+e.lineNumber).match(/[0-9]/)){
@@ -294,7 +294,7 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
         + " line #" + e.lineNumber
         + " : " + e.message + (snippet?('\n' + snippet):''), canonizedFilename, e.lineNumber );
     }
-    if ( hooks ) { 
+    if ( hooks ) {
       hooks.loaded( canonizedFilename );
     }
     moduleInfo.loaded = true;
