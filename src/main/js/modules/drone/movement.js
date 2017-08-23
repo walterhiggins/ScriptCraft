@@ -21,10 +21,12 @@ no parameter is given, the default is 1.
 
 To change direction use the `turn()` method which also takes a single
 optional parameter (numTurns) - the number of 90 degree turns to
-make. Turns are always clock-wise. If the drone is facing north, then
+make. Turns are always clockwise unless numTurns is negative in which
+case they are counterclockwise. If the drone is facing north, then
 drone.turn() will make the turn face east. If the drone is facing east
 then drone.turn(2) will make the drone turn twice so that it is facing
-west.
+west. If the drone is facing north, then drone.turn(-1) will make the
+turn face west.
 
 ### Drone Positional Info
 
@@ -56,8 +58,8 @@ Markers are created and returned to using the followng two methods...
     //
     // the drone can now go off on a long excursion
     //
-    for ( i = 0; i< 100; i++) {  
-        drone.fwd(12).box(6); 
+    for ( i = 0; i< 100; i++) {
+        drone.fwd(12).box(6);
     }
     //
     // return to the point before the excursion
@@ -93,6 +95,9 @@ function turn( n ) {
   }
   this.dir += n;
   this.dir %=4;
+  if (this.dir < 0) {
+    this.dir += 4;
+  }
 }
 function chkpt( name ) {
   this._checkpoints[ name ] = { x:this.x, y:this.y, z:this.z, dir:this.dir };
@@ -112,7 +117,7 @@ function move( ) {
       this.y = coords.y;
       this.z = coords.z;
       this.dir = coords.dir%4;
-    }            
+    }
   } else {
     // expect x,y,z,dir
     switch( arguments.length ) {
@@ -127,48 +132,48 @@ function move( ) {
     }
   }
 }
-function right( n ) { 
+function right( n ) {
   if ( typeof n == 'undefined' ) {
     n = 1;
   }
-  _movements[ this.dir ].right( this, n ); 
+  _movements[ this.dir ].right( this, n );
 }
-function left( n ) { 
-  if ( typeof n == 'undefined') { 
+function left( n ) {
+  if ( typeof n == 'undefined') {
     n = 1;
   }
   _movements[ this.dir ].left( this, n );
 }
-function fwd( n ) { 
+function fwd( n ) {
   if ( typeof n == 'undefined' ) {
     n = 1;
   }
   _movements[ this.dir ].fwd( this, n );
 }
-function back( n ) { 
-  if ( typeof n == 'undefined' ) { 
+function back( n ) {
+  if ( typeof n == 'undefined' ) {
     n = 1;
   }
   _movements[ this.dir ].back( this, n );
 }
-function up( n ) { 
+function up( n ) {
   if ( typeof n == 'undefined' ) {
     n = 1;
   }
-  this.y+= n; 
+  this.y+= n;
 }
-function down( n ) { 
+function down( n ) {
   if ( typeof n == 'undefined' ) {
     n = 1;
   }
-  this.y-= n; 
+  this.y-= n;
 }
 function getLocation( ) {
   if (__plugin.canary) {
     var cmLocation = Packages.net.canarymod.api.world.position.Location;
     return new cmLocation( this.world, this.x, this.y, this.z, 0, 0);
   }
-  if (__plugin.bukkit) { 
+  if (__plugin.bukkit) {
     var bkLocation = org.bukkit.Location;
     return new bkLocation( this.world, this.x, this.y, this.z );
   }

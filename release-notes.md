@@ -5,10 +5,24 @@ Visit the [Gitter Chatroom](https://gitter.im/walterhiggins/ScriptCraft?utm_sour
 Or visit the [ScriptCraft forum][scforum].
 To keep up with changes, see [Tony's blog][blogt].
 
+2017 08 23
+
+1. Spaces added in code formatting cause doc generation to fail. generateTOC.js now allows 0+ spaces in code comments for ## and ### doc headers.
+1. Corrected a few more typos, 'minecraft' to 'Minecraft', and a few ScriptCraft to ScriptCraftJS.
+1. Verified completion of issue #338, closed pull request. Contribution by rmariuzzo.
+1. Drone can now turn in a counter-clockwise direction with a negative count. Contribution by AndersBillLinden in pull #336.
+1. Added doc information about how to create upside down stairs. Contribution by AndersBillLinden in pull #331.
+1. In classroom mode, students can now unregister their listeners from outside the listener function. Contribution by cgmartin in pull #327.
+1. The Drone constructor now accepts another Drone object, which includes all of the parameters required to clone to new Drone. Contribution by softwaremaverick in pull #323.
+1. Started new Installation.md with more up-to-date notes on initial installation.
+1. Started new Dependencies.md which explains the history of Canary, Bukkit, Spigot, etc and why we do or do not support various packages. (File is not yet included in this build.)
+
+FIX: Issue with variable causes install to fail. **Do not install.**
+
 3.2.2bz Release (2017 08 18)
 --------------------------
-Work in Progress : ~~"Anxious-Villager"~~ "Bad-Zombie" 
-(Not for beta/production use!)  
+Work in Progress : ~~"Anxious-Villager"~~ "Bad-Zombie"
+(Not for beta/production use!)
 **This build has not been run in even a test environment yet!**
 
 1. Bug fixes and updated from Spigot 1.11.2 to Spigot 1.12.1.

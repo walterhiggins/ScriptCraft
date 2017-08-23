@@ -1,4 +1,4 @@
-name: scriptcraft
+name: ScriptcraftJS
 main: org.scriptcraftjs.bukkit.ScriptCraftPlugin
 version: [[version]]
 commands:

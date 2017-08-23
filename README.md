@@ -157,7 +157,7 @@ events.blockBreak( howl );
 ```
 
 If you're using CanaryMod instead of SpigotMC you can [download the equivalent code](https://gist.github.com/walterhiggins/69cddd15160d803fb096).
-(Note that ScriptCraft will not support CanaryMod in an upcoming major release.)
+(Note that ScriptCraft will not support CanaryMod in the v4.0 release.)
 
 A JavaScript plugin for Minecraft is just a JavaScript source file (.js)
 located in the `scriptcraft/plugins` directory. All .js files in this
@@ -205,7 +205,7 @@ If you would like to contribute source code and/or documentation changes please 
 
 Travis build status disabled for this repo. See .md comments.
 
-<!-- 
+<!--
 [![Travis Build Status](https://api.travis-ci.org/walterhiggins/ScriptCraft.png)](http://travis-ci.org/walterhiggins/ScriptCraft)
 -->
 
@@ -233,7 +233,7 @@ ScriptCraft has [its own website][website] with further information.
 
  * To get started using ScriptCraft to Learn JavaScript, read [The Young Person's Guide to Programming in Minecraft][yp].
  * The ScriptCraft [API documentation][api].
- * To delve deeper into creating your own minecraft mod for use by others, read [Creating a complete Minecraft Mod in JavaScript][mm].
+ * To delve deeper into creating your own Minecraft mod for use by others, read [Creating a complete Minecraft Mod in JavaScript][mm].
  * Take a look at some [examples][ex].
  * Buy the Official ScriptCraft Book [A Beginner's Guide to Writing Minecraft Plugins in JavaScript][book].
 

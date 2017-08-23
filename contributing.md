@@ -1,8 +1,8 @@
 # Status
 
-Travis build status disabled for this repo. See .md comments.
+Travis build status for this repo has been disabled for a while. See .md comments.
 
-<!-- 
+<!--
 [![Travis Build Status](https://api.travis-ci.org/walterhiggins/ScriptCraft.png)](http://travis-ci.org/walterhiggins/ScriptCraft)
 -->
 

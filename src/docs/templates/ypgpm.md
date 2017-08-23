@@ -4,9 +4,9 @@ Minecraft is an open-ended 3D game where you can build and craft
 anything you like. Minecraft can be extended and enhanced using 'Mods'
 (short for 'modifications') - additional bits of code that are added
 to the Game. ScriptCraft is one such Mod - it lets you program in
-Javacript right within the game, making it possible to ...
+JavaScript right within the game, making it possible to ...
 
- * Build using simple javascript statements.
+ * Build using simple JavaScript statements.
  * Extend the game in other interesting ways - add new Items, change
    the game behaviour and create mini-games.
 
@@ -49,7 +49,7 @@ Once you've installed SpigotMC, depending on your specific needs,
 you might want to consider setting the following properties in the `server.properties` file:
 
     # completely flat worlds are best for building from scratch
-    # bukkit/spigotmc
+    # For SpigotMC:
     level-type=FLAT
     generate-structures=false
 
@@ -247,7 +247,7 @@ rely on it to never return the same value twice.
 Now we get to the fun stuff - creating structures and buildings in
 Minecraft. Building by hand is fun but tedious when you want to build
 big - Towers, Castles and Fortresses. That's where ScriptCraft comes in.
-ScriptCraft comes with a couple of javascript functions that can be
+ScriptCraft comes with a couple of JavaScript functions that can be
 combined to build interesting things. Let's start small though to get a
 feel for how ScriptCraft's building functions work. The function you'll
 probably use most for building is called `box()` and - as its name
@@ -472,12 +472,12 @@ loaded. Try it out by typing this command...
     Hi {your-username-here}
 
 ... where {your-username-here} will be replaced with your own
-minecraft username. Congratulations - You've just written your very
+Minecraft username. Congratulations - You've just written your very
 first Minecraft Mod! With ScriptCraft installed, writing Minecraft
-Mods is as simple as writing a new javascript function and saving it
+Mods is as simple as writing a new JavaScript function and saving it
 in a file in the scriptcraft/plugins
 directory. This function will now be avaible every time you launch
-minecraft. This is a deliberately trivial minecraft mod but the
+Minecraft. This is a deliberately trivial Minecraft mod but the
 principles are the same when creating more complex mods.
 
 The `exports` variable is a special variable you can use in your mod
@@ -498,7 +498,7 @@ exports.yo = function(player){
 }
 ```
 
-... is a plugin which provides 2 javascript functions called `boo()`
+... is a plugin which provides 2 JavaScript functions called `boo()`
 and `yo()` which can be invoked from the in-game prompt like
 this `/js boo(self)` or `/js yo(self)`.
 
@@ -520,7 +520,7 @@ exports.greet = function ( greeting , player) {
 ```
 
 ... Save your greet.js file and issue the `/js refresh()` command in
-minecraft. Now enter the following command in Minecraft...
+Minecraft. Now enter the following command in Minecraft...
 
     greet('Hello ',self);
 
@@ -540,7 +540,7 @@ changing the behaviour of MineCraft.
 ## true or false
 
 Try entering each of the following statements and make a note of the
-answers given by minecraft...
+answers given by Minecraft...
 
     /js 1 < 2
 
@@ -583,7 +583,7 @@ compare the ages of your friends or siblings to your own age.
 
 ## More fun with `true` or `false`
 
-You can find out if you can Fly in minecraft by typing the following statement ...
+You can find out if you can Fly in Minecraft by typing the following statement ...
 
     /js self.allowFlight
 
@@ -602,7 +602,7 @@ how `true` and `false` are used throughout ScriptCraft &ndash; these are
 called `boolean` values &ndash; named after [George Boole][boole], a 19th Century
 Maths Professor at University College Cork. There are plenty more
 examples of boolean values in Minecraft. You can find out if it's
-raining in your minecraft world by typing the following statement ...
+raining in your Minecraft world by typing the following statement ...
 
     /js self.world.hasStorm()
 
@@ -712,14 +712,14 @@ for (var i = 0;i < players.length; i++) {
 
 ... On the 2nd line, a new variable `players` is created and assigned a value by calling utils.players().
 On the next line, the for loop is declared, a counter variable `i` is set
-to 0 (zero - arrays in javascript start at 0 not 1) and each time
+to 0 (zero - arrays in JavaScript start at 0 not 1) and each time
 around the loop is tested to see if it's less than the number of
 players online. At the end of each run around the loop the `i`
 variable is incremented (increased by 1) so that the next player can
 be messaged.  Inside the body of the for loop (everything between the
 opening `{` and closing `}` curly braces) the `players[i]` expression
 refers to the player in the players array at position[i].  Imagine
-there are 4 players online on a minecraft server, the `players` array
+there are 4 players online on a Minecraft server, the `players` array
 might look like this...
 
  * players[0] = 'CrafterJohn'
@@ -806,16 +806,16 @@ loop over Arrays.
 ## `utils.foreach()` - Yet another way to process Arrays
 
 Both the `for` statement and `while` statement are standard commonly
-used javascript statements used for looping. ScriptCraft also comes
+used JavaScript statements used for looping. ScriptCraft also comes
 with a special function for looping called `utils.foreach()`.
 utils.foreach() is a convenience function, you don't have to use it if
-you prefer the syntax of javascript's `for` and `while`
+you prefer the syntax of JavaScript's `for` and `while`
 loops. utils.foreach() takes two parameters...
 
  1. An array
  2. A function which will be called for each item in the array.
 
-...that's right, you can pass functions as parameters in javascript!
+...that's right, you can pass functions as parameters in JavaScript!
 Let's see it in action, the following code will `console.log()` (print) the
 name of each online player in the server console window...
 
@@ -871,7 +871,7 @@ played, load the sounds module at the in-game prompt using the following stateme
 ... then type `/js sounds.` and press the TAB key to see a list of all possible sounds.
 
 Loops are a key part of programming in any language. JavaScript
-provides `for` and `while` statements for looping and many javascript
+provides `for` and `while` statements for looping and many JavaScript
 libraries also provide their own custom looping functions. You should
 use what you feel most comfortable with.
 
@@ -957,7 +957,7 @@ as real-world densely populated areas so let your imagination go wild.
 All the programs we have seen so far have been fairly predictable - they went
 straight through the statements, and then went back to the beginning again. This is
 not very useful. In practice the computer would be expected to make decisions and
-act accordingly. The javascript statement used for making decisions is `if`.
+act accordingly. The JavaScript statement used for making decisions is `if`.
 While standing on the ground in-game, type the following at the command prompt:
 
     /js if ( self.onGround ) { echo('You are not flying!'); }
@@ -1023,7 +1023,7 @@ file) ? This is where *Event-Driven Programming* comes
 in. Event-Driven Programming is just a fancy way of saying 'Do this
 when that happens' where 'this' is a function you define, and 'that'
 is some event which occurs. There are hundreds of events in the
-minecraft game...
+Minecraft game...
 
  * Every time someone joins the server - that's an event!
  * Every time someone breaks a block - that's an event!
@@ -1099,8 +1099,8 @@ myBlockBreakListener.unregister();
 In the *Event-Driven Programming* section, I defined a function which
 displayed a message to players every time they broke a block. Imagine
 if I wanted to keep a count of how many blocks each player has broken?
-This is where JavaScript's Objecct literals come in handy. An object
-literal in javascript is simply a way of creating a new Object
+This is where JavaScript's Object literals come in handy. An object
+literal in JavaScript is simply a way of creating a new Object
 on-the-fly in your code. This is an example...
 
     var myNewObject = { name: 'walter', country: 'Ireland' };
@@ -1234,7 +1234,7 @@ modding Minecraft using the JavaScript Programming Language.
 JavaScript is a very powerful and widely-used programming language and
 there are many more aspects and features of the language which are not
 covered here. If you want to dive deeper into programming and modding
-minecraft, I recommend reading the accompanying [ScriptCraft API
+Minecraft, I recommend reading the accompanying [ScriptCraft API
 reference][api] which covers all of the ScriptCraft functions, objects
 and methods. I also recommend reading the source code to some of the
 existing scriptcraft plugins, followed by

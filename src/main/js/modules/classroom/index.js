@@ -48,7 +48,7 @@ naming collisions.
 It's strongly recommended that the
 `scriptcraft/players/` directory is shared so that
 others can connect to it and drop .js files into their student
-directories. On Ubuntu, select the folder in Nautilus (the default
+directories. On Linux, select the folder in Nautilus (the default
 file browser) then right-click and choose *Sharing Options*, check the
 *Share this folder* checkbox and the *Allow others to create and
 delete files* and *Guest access* checkboxes. Click *Create Share*
@@ -81,7 +81,7 @@ programmatically enabling or disabling classroom mode.
 ### classroom.allowScripting() function
 
 Allow or disallow anyone who connects to the server (or is already
-connected) to use ScriptCraft. This function is preferable to granting 'ops' privileges 
+connected) to use ScriptCraft. This function is preferable to granting 'ops' privileges
 to every student in a Minecraft classroom environment.
 
 Whenever any file is added/edited or removed from any of the players/
@@ -104,14 +104,14 @@ To disallow scripting (and prevent players who join the server from using the co
 
     /js classroom.allowScripting( false, self )
 
-Only ops users can run the classroom.allowScripting() function - this is so that students 
+Only ops users can run the classroom.allowScripting() function - this is so that students
 don't try to bar themselves and each other from scripting.
 
 ***/
 var store = persist('classroom', { enableScripting: false }),
   File = java.io.File;
 
-function revokeScripting ( player ) { 
+function revokeScripting ( player ) {
   if (__plugin.bukkit){
     foreach( player.getEffectivePermissions(), function( perm ) {
       if ( (''+perm.permission).indexOf( 'scriptcraft.' ) == 0 ) {
@@ -122,7 +122,7 @@ function revokeScripting ( player ) {
     });
   }
   if (__plugin.canary){
-    // 
+    //
     var Canary = Packages.net.canarymod.Canary;
     Canary.permissionManager().removePlayerPermission('scriptcraft.evaluate',player);
   }
@@ -157,6 +157,7 @@ function reloadPlayerModules( playerContext, playerDir ){
   var newOn = function( eventType, fn, priority){
     var handler = oldOn(eventType, fn, priority);
     eventHandlers.push(handler);
+    return handler;
   };
   events.on = newOn;
   autoload( playerContext, playerDir, { cache: false });
@@ -191,11 +192,11 @@ function grantScripting( player ) {
   watchDir( playerDir, function( changedDir ){
     var currentTime = new java.util.Date().getTime();
     //this check is here because this callback might get called multiple times for the watch interval
-    //one call for the file change and another for directory change 
+    //one call for the file change and another for directory change
     //(this happens only in Linux because in Windows the folder lastModifiedTime is not changed)
     if (currentTime - autoloadTime[playerName]>1000 ) {
       reloadPlayerModules(playerContext, playerDir );
-    } 
+    }
     autoloadTime[playerName] = currentTime;
   });
 
@@ -237,19 +238,19 @@ var _classroom = {
     });
     store.enableScripting = canScript;
 
-    echo( sender, 'Scripting turned ' + ( canScript ? 'on' : 'off' ) + 
+    echo( sender, 'Scripting turned ' + ( canScript ? 'on' : 'off' ) +
       ' for all players on server ' + serverAddress);
   }
 };
 
 if (__plugin.canary){
-  events.connection( function( event ) { 
+  events.connection( function( event ) {
     if ( store.enableScripting ) {
       grantScripting(event.player);
     }
   }, 'CRITICAL');
 } else {
-  events.playerJoin( function( event ) { 
+  events.playerJoin( function( event ) {
     if ( store.enableScripting ) {
       grantScripting(event.player);
     }
