@@ -57,17 +57,16 @@ Minecraft. You can see [a full list of events here][cmEvtList].
 
 [cmEvtList]: #events-helper-module-canary-version
 ***/
-
 // wph 20140927 - event handler registration differs depending on framework.
-function onJoin( event ) {
-  if ( isOp(event.player) ) {
-    echo( event.player, 'Welcome to ' + __plugin );
-  }
+function onJoin(event) {
+    if(isOp(event.player)) {
+        echo(event.player, 'Welcome to ' + __plugin);
+    }
 }
-if (__plugin.canary){
-  // canarymod
-  events.connection( onJoin );
+if(__plugin.canary) {
+    // canarymod
+    events.connection(onJoin);
 } else {
-  // bukkit
-  events.playerJoin( onJoin );
+    // bukkit
+    events.playerJoin(onJoin);
 }

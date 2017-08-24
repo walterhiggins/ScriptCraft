@@ -1,4 +1,4 @@
 {
-    name: 'signs',
-    main: './signs.js'
+    "name": "signs",
+    "main": "./signs.js"
 }

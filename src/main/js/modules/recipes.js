@@ -27,8 +27,8 @@ To add an EnderBow to the game (assumes there's an enchanted Item variable calle
     server.removeRemove( addedRecipe );
 
 ***/
-if (__plugin.canary) {
-  module.exports = require('./canary/recipes');
+if(__plugin.canary) {
+    module.exports = require('./canary/recipes');
 } else {
-  module.exports = require('./bukkit/recipes');
+    module.exports = require('./bukkit/recipes');
 }

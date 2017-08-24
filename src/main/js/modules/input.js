@@ -1,18 +1,18 @@
 /*************************************************************************
 ## Asynchronous Input Module
 
-The `input` module provides a simple way to prompt players for input at the 
+The `input` module provides a simple way to prompt players for input at the
 in-game prompt. In JavaScript browser environments the `prompt()` function provides
 a way to block execution and ask the user for input. Execution is blocked until the user
-provides input using the modal dialog and clicks OK. Unfortunately Minecraft provides no 
-equivalent modal dialog which can be used to gather player text input. The only way to gather text 
-input from the player in Minecraft is to do so asynchronously. That is - a prompt message can be 
+provides input using the modal dialog and clicks OK. Unfortunately Minecraft provides no
+equivalent modal dialog which can be used to gather player text input. The only way to gather text
+input from the player in Minecraft is to do so asynchronously. That is - a prompt message can be
 sent to the player but the player is not obliged to provide input immediately, nor does the program
 execution block until the player does so.
 
-So ScriptCraft has no `prompt()` implementation because `prompt()` is a synchronous function and 
-Minecraft's API provides no equivalent functions or classes which can be used to implement this synchronously. 
-The Minecraft API does however have a 'Conversation' API which allows for prompting of the player and asynchronously gathering text input from the player. 
+So ScriptCraft has no `prompt()` implementation because `prompt()` is a synchronous function and
+Minecraft's API provides no equivalent functions or classes which can be used to implement this synchronously.
+The Minecraft API does however have a 'Conversation' API which allows for prompting of the player and asynchronously gathering text input from the player.
 
 This new `input()` function is best illustrated by example. The following code is for a number-guessing game:
 
@@ -24,7 +24,7 @@ exports.numberguess = function(player){
     if ( guess == 'q'){
       return;
     }
-    if ( +guess !== randomNumber ) { 
+    if ( +guess !== randomNumber ) {
       if (+guess < randomNumber ) {
         echo( guesser, 'Too low - guess again');
       }
@@ -39,7 +39,7 @@ exports.numberguess = function(player){
 };
 ```
 
-The `input()` function takes 3 parameters, the player, a prompt message and a callback which will be invoked when the player has entered some text at the in-game command prompt. 
+The `input()` function takes 3 parameters, the player, a prompt message and a callback which will be invoked when the player has entered some text at the in-game command prompt.
 The callback is bound to an object which has the following properties:
 
  * sender : The player who input the text
@@ -56,8 +56,8 @@ The callback function as well as being bound to an object with the above propert
 The `value` parameter will be the same as `this.value`, the `repeat` parameter will be the same as `this.repeat` and so on.
 
 ***/
-if (__plugin.canary) {
-  module.exports = require('./canary/input');
+if(__plugin.canary) {
+    module.exports = require('./canary/input');
 } else {
-  module.exports = require('./bukkit/input');
+    module.exports = require('./bukkit/input');
 }

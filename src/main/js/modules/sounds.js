@@ -11,7 +11,7 @@ a simpler way to play sounds. All of the org.bukkit.Sound Enum values are attach
     sounds.play( bukkit.sound.VILLAGER_NO , self );       // same as previous statement
 
 The play() function takes either a Location object or any object which has a location.
-The volume parameter is in the range 0 to 1 and the pitch parameter is in the range 0 to 4.    
+The volume parameter is in the range 0 to 1 and the pitch parameter is in the range 0 to 4.
 
 In addition, a play function is provided for each possible sound using the following rules:
 
@@ -25,8 +25,8 @@ In addition, a play function is provided for each possible sound using the follo
 
 These methods are provided for convenience to help beginners explore sounds using TAB completion.
 ***/
-if (__plugin.canary) { 
-  module.exports = require('./canary/sounds');
+if(__plugin.canary) {
+    module.exports = require('./canary/sounds');
 } else {
-  module.exports = require('./bukkit/sounds');
+    module.exports = require('./bukkit/sounds');
 }

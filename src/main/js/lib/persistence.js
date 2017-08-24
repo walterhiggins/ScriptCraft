@@ -1,32 +1,27 @@
 var _dataDir = null,
-        _persistentData = {};
-
-module.exports = function (rootDir, $) {
-
-    var _load = function (name) {
+    _persistentData = {};
+module.exports = function(rootDir, $) {
+    var _load = function(name) {
         var result = $.scloadJSON(_dataDir.canonicalPath + '/' + name + '-store.json');
         return result;
     };
-
-    var _save = function (name, objToSave) {
+    var _save = function(name, objToSave) {
         $.scsave(objToSave, _dataDir.canonicalPath + '/' + name + '-store.json');
     };
-
     _dataDir = new java.io.File(rootDir, 'data');
-
-    $.persist = function (name, data, write) {
+    $.persist = function(name, data, write) {
         var i,
-                dataFromFile;
-        if (typeof data == 'undefined') {
+            dataFromFile;
+        if(typeof data == 'undefined') {
             data = {};
         }
-        if (typeof write == 'undefined') {
+        if(typeof write == 'undefined') {
             write = false;
         }
-        if (!write) {
+        if(!write) {
             dataFromFile = _load(name);
-            if (typeof dataFromFile != 'undefined') {
-                for (i in dataFromFile) {
+            if(typeof dataFromFile != 'undefined') {
+                for(i in dataFromFile) {
                     data[i] = dataFromFile[i];
                 }
             }
@@ -40,13 +35,12 @@ module.exports = function (rootDir, $) {
     /*
      persist on shutdown
      */
-    $.addUnloadHandler(function ( ) {
+    $.addUnloadHandler(function() {
         var name,
-                data;
-        for (name in _persistentData) {
+            data;
+        for(name in _persistentData) {
             data = _persistentData[name];
             _save(name, data);
         }
     });
 };
-

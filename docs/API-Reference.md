@@ -47,7 +47,6 @@ Tony Gravagno (blog)[https://tonygravagno.tumblr.com/tagged/ScriptCraftJS)
    * [inc.js](#incjs)
    * [program.js](#programjs)
    * [Important](#important)
-   * [module name resolution](#module-name-resolution)
  * [events Module](#events-module)
    * [events.on() static method](#eventson-static-method)
  * [Events Helper Module (CanaryMod version)](#events-helper-module-canarymod-version)
@@ -1021,7 +1020,6 @@ Tony Gravagno (blog)[https://tonygravagno.tumblr.com/tagged/ScriptCraftJS)
  [anatomy]: ./Anatomy-of-a-Plugin.md
 
  ***/
-
 /*
  wph 20130124 - make self, plugin and server public - these are far more useful now that tab-complete works.
  */
@@ -1033,25 +1031,27 @@ var CORE_UNKNOWN = 'Unrecognized Minecraft core. Bukkit/Spiggot and Canary are s
  private implementation
  */
 var __onDisableImpl;
+
 function __onDisable(__engine, __plugin) {
     __onDisableImpl(__engine, __plugin);
 }
+
 function __onEnable(__engine, __plugin, __script) {
-    function _echo( ) {
+    function _echo() {
         var sender, msg;
-        if (arguments.length == 2) {
+        if(arguments.length == 2) {
             sender = arguments[0];
             msg = arguments[1];
         } else {
-            if (typeof self == 'undefined') {
+            if(typeof self == 'undefined') {
                 return;
             }
             sender = self;
             msg = arguments[0];
         }
-        if (__plugin.canary) {
+        if(__plugin.canary) {
             sender.message(msg);
-        } else if (__plugin.bukkit) {
+        } else if(__plugin.bukkit) {
             sender.sendMessage(msg);
         } else {
             // CORE_UNKNOWN
@@ -1061,16 +1061,15 @@ function __onEnable(__engine, __plugin, __script) {
         return '' + file.getCanonicalPath().replaceAll('\\\\', '/');
     }
     /*
-     Save a JavaScript object to a file (saves using JSON notation)
+     Save a javascript object to a file (saves using JSON notation)
      */
     function _save(objToSave, filename) {
         var objectToStr = null,
-                f,
-                out;
+            f,
+            out;
         try {
             objectToStr = JSON.stringify(objToSave, null, 2);
-
-        } catch (e) {
+        } catch(e) {
             console.error('ERROR: ' + e.getMessage() + ' while saving ' + filename);
             return;
         }
@@ -1079,34 +1078,33 @@ function __onEnable(__engine, __plugin, __script) {
         out.println(objectToStr);
         out.close();
     }
+
     function _loadJSON(filename) {
         var result = null,
-                file = filename,
-                r,
-                reader,
-                br,
-                contents;
-
-        if (!(filename instanceof File)) {
+            file = filename,
+            r,
+            reader,
+            br,
+            contents;
+        if(!(filename instanceof File)) {
             file = new File(filename);
         }
         var canonizedFilename = _canonize(file);
-
-        if (file.exists()) {
+        if(file.exists()) {
             reader = new FileReader(file);
             br = new BufferedReader(reader);
             contents = '';
             try {
-                while ((r = br.readLine()) !== null) {
+                while((r = br.readLine()) !== null) {
                     contents += r + '\n';
                 }
                 result = JSON.parse(contents);
-            } catch (e) {
+            } catch(e) {
                 logError('Error evaluating ' + canonizedFilename + ', ' + e);
             } finally {
                 try {
                     reader.close();
-                } catch (re) {
+                } catch(re) {
                     // fail silently on reader close error
                 }
             }
@@ -1116,70 +1114,65 @@ function __onEnable(__engine, __plugin, __script) {
     /*
      Load the contents of the file and evaluate as javascript
      */
-    function _load(filename, warnOnFileNotFound)
-    {
+    function _load(filename, warnOnFileNotFound) {
         var result = null,
-                file = filename,
-                r,
-                parent,
-                reader,
-                br,
-                code,
-                wrappedCode;
-
-        if (!(filename instanceof File)) {
+            file = filename,
+            r,
+            parent,
+            reader,
+            br,
+            code,
+            wrappedCode;
+        if(!(filename instanceof File)) {
             file = new File(filename);
         }
         var canonizedFilename = _canonize(file);
-
-        if (file.exists()) {
+        if(file.exists()) {
             reader = new FileReader(file);
             br = new BufferedReader(reader);
             code = '';
             try {
-                while ((r = br.readLine()) !== null) {
+                while((r = br.readLine()) !== null) {
                     code += r + '\n';
                 }
                 wrappedCode = '(' + code + ')';
                 result = __engine.eval(wrappedCode);
                 // issue #103 avoid side-effects of || operator on Mac Rhino
-            } catch (e) {
+            } catch(e) {
                 logError('Error evaluating ' + canonizedFilename + ', ' + e);
             } finally {
                 try {
                     reader.close();
-                } catch (re) {
+                } catch(re) {
                     // fail silently on reader close error
                 }
             }
         } else {
-            if (warnOnFileNotFound) {
+            if(warnOnFileNotFound) {
                 logWarn(canonizedFilename + ' not found');
             }
         }
         return result;
     } // end _load()
-
     function _isOp(sender) {
-        if (__plugin.canary) {
+        if(__plugin.canary) {
             return sender.receiverType.name() == 'SERVER' || Canary.ops().isOpped(sender);
-        } else if (__plugin.bukkit) {
+        } else if(__plugin.bukkit) {
             return sender.op;
         } else {
             // CORE_UNKNOWN
         }
     }
-    function _refresh(skipOpCheck) {
-        if (!skipOpCheck && typeof self !== 'undefined') {
-            if (!_isOp(self))
-                return echo(self, 'Only operators can refresh()');
-        }
 
-        if (__plugin.canary) {
+    function _refresh(skipOpCheck) {
+        if(!skipOpCheck && typeof self !== 'undefined') {
+            if(!_isOp(self)) return echo(self, 'Only operators can refresh()');
+        }
+        if(__plugin.canary) {
             var pluginName = __plugin.name;
             Canary.manager().disablePlugin(pluginName);
             Canary.manager().enablePlugin(pluginName);
-        } else if (__plugin.bukkit) {
+        } else if(__plugin.bukkit) {
             __plugin.pluginLoader.disablePlugin(__plugin);
             org.bukkit.event.HandlerList["unregisterAll(org.bukkit.plugin.Plugin)"](__plugin);
             server.scheduler.cancelTasks(__plugin);
@@ -1193,49 +1186,49 @@ function __onEnable(__engine, __plugin, __script) {
         _save(global.config, new File(jsPluginsRootDir, 'data/global-config.json'));
         _runUnloadHandlers();
     }
+
     function _addUnloadHandler(f) {
         unloadHandlers.push(f);
     }
+
     function _runUnloadHandlers() {
-        for (var i = 0; i < unloadHandlers.length; i++) {
-            unloadHandlers[i]( );
+        for(var i = 0; i < unloadHandlers.length; i++) {
+            unloadHandlers[i]();
         }
     }
+
     function __onCommand() {
         var jsArgs = [],
-                i = 0,
-                jsResult,
-                result,
-                cmdName,
-                sender,
-                args,
-                cmd,
-                label,
-                fnBody;
-
-        if (__plugin.canary) {
+            i = 0,
+            jsResult,
+            result,
+            cmdName,
+            sender,
+            args,
+            cmd,
+            label,
+            fnBody;
+        if(__plugin.canary) {
             sender = arguments[0];
             args = arguments[1];
             cmdName = ('' + args[0]).toLowerCase().replace(/^\//, '');
-            for (i = 1; i < args.length; i++) {
+            for(i = 1; i < args.length; i++) {
                 jsArgs.push('' + args[i]);
             }
-        } else if (__plugin.bukkit) {
+        } else if(__plugin.bukkit) {
             sender = arguments[0];
             cmd = arguments[1];
             label = arguments[2];
             args = arguments[3];
             cmdName = ('' + cmd.name).toLowerCase();
-            for (; i < args.length; i++) {
+            for(; i < args.length; i++) {
                 jsArgs.push('' + args[i]);
             }
         } else {
             // CORE_UNKNOWN
         }
         result = false;
-
-        if (cmdName == 'js')
-        {
+        if(cmdName == 'js') {
             result = true;
             fnBody = jsArgs.join(' ');
             global.self = sender;
@@ -1248,15 +1241,14 @@ function __onEnable(__engine, __plugin, __script) {
                 // ... throws an execption ('hearts' is not defined). vars are not sticky in native eval .
                 //
                 jsResult = __engine.eval(fnBody);
-
-                if (typeof jsResult != 'undefined') {
-                    if (jsResult == null) {
+                if(typeof jsResult != 'undefined') {
+                    if(jsResult == null) {
                         // engine eval will return null even if the result should be undefined
                         // this can be confusing so I think it's better to omit output for this case
                         // sender.sendMessage('(null)');
                     } else {
                         try {
-                            if (isJavaObject(jsResult) || typeof jsResult === 'function') {
+                            if(isJavaObject(jsResult) || typeof jsResult === 'function') {
                                 echo(sender, jsResult);
                             } else {
                                 var replacer = function replacer(key, value) {
@@ -1264,68 +1256,67 @@ function __onEnable(__engine, __plugin, __script) {
                                 };
                                 echo(sender, JSON.stringify(jsResult, replacer, 2));
                             }
-                        } catch (displayError) {
+                        } catch(displayError) {
                             logError('Error while trying to display result: ' + jsResult + ', Error: ' + displayError);
                         }
                     }
                 }
-            } catch (e) {
+            } catch(e) {
                 logError('Error while trying to evaluate javascript: ' + fnBody + ', Error: ' + e);
                 echo(sender, 'Error while trying to evaluate javascript: ' + fnBody + ', Error: ' + e);
                 throw e;
             } finally {
                 /*
                  wph 20140312 don't delete self on nashorn until https://bugs.openjdk.java.net/browse/JDK-8034055 is fixed
-                 tg  20170823 this was fixed in JDK v8u20, 2014, will test to verify
                  */
-                if (!nashorn) {
+                if(!nashorn) {
                     delete global.self;
                     delete global.__engine;
                 }
             }
         }
-        if (cmdName == 'jsp') {
+        if(cmdName == 'jsp') {
             cmdModule.exec(jsArgs, sender);
             result = true;
         }
         return result;
     } // end __onCommand() function
-
     var Bukkit = null;
     var Canary = null;
     var logger = null;
-
-    if (__plugin.canary) {
+    if(__plugin.canary) {
         Canary = Packages.net.canarymod.Canary;
         server = Canary.server;
         logger = __plugin.logman;
-    } else if (__plugin.bukkit) {
+    } else if(__plugin.bukkit) {
         Bukkit = Packages.org.bukkit.Bukkit;
         server = Bukkit.server;
         logger = __plugin.logger;
     } else {
         // CORE_UNKNOWN
     }
+
     function logError(msg) {
         __plugin.canary ? logger.error(msg) : logger.severe(msg);
     }
+
     function logWarn(msg) {
         __plugin.canary ? logger.warn(msg) : logger.warning(msg);
     }
     var File = java.io.File,
-            FileReader = java.io.FileReader,
-            BufferedReader = java.io.BufferedReader,
-            PrintWriter = java.io.PrintWriter,
-            FileWriter = java.io.FileWriter,
-            // assumes scriptcraft.js is in mcserver/plugins/scriptcraft/lib directory
-            jsPluginsRootDir = __script.parentFile.parentFile,
-            jsPluginsRootDirName = _canonize(jsPluginsRootDir),
-            unloadHandlers = [];
+        FileReader = java.io.FileReader,
+        BufferedReader = java.io.BufferedReader,
+        PrintWriter = java.io.PrintWriter,
+        FileWriter = java.io.FileWriter,
+        // assumes scriptcraft.js is in mcserver/plugins/scriptcraft/lib directory
+        jsPluginsRootDir = __script.parentFile.parentFile,
+        jsPluginsRootDirName = _canonize(jsPluginsRootDir),
+        unloadHandlers = [];
     /*
      make sure eval is present: it's present on JRE 6, 7, and 8 on Linux
      */
-    if (typeof eval == 'undefined') {
-        global.eval = function (str) {
+    if(typeof eval == 'undefined') {
+        global.eval = function(str) {
             return __engine.eval(str);
         };
     }
@@ -1336,8 +1327,10 @@ function __onEnable(__engine, __plugin, __script) {
     configFile.mkdirs();
     configFile = new File(configFile, 'global-config.json');
     var config = _load(configFile);
-    if (!config) {
-        config = {verbose: false};
+    if(!config) {
+        config = {
+            verbose: false
+        };
     }
     global.config = config;
     global.__plugin = __plugin;
@@ -1345,11 +1338,10 @@ function __onEnable(__engine, __plugin, __script) {
      wph 20131229 Issue #103 JSON is not bundled with javax.scripting / Rhino on Mac.
      // TODO: Is this still necessary with Java 1.8+?
      */
-    (function () {
+    (function() {
         var jsonFileReader = new FileReader(new File(jsPluginsRootDirName + '/lib/json2.js'));
         var jsonLoaded = __engine['eval(java.io.Reader)'](jsonFileReader);
     }());
-
     global.addUnloadHandler = _addUnloadHandler;
     global.refresh = _refresh;
     global.echo = _echo;
@@ -1363,58 +1355,47 @@ function __onEnable(__engine, __plugin, __script) {
      setup paths to search for modules
      */
     var modulePaths = [jsPluginsRootDirName + '/lib/',
-        jsPluginsRootDirName + '/modules/'];
-
-    if (config.verbose) {
+        jsPluginsRootDirName + '/modules/'
+    ];
+    if(config.verbose) {
         logger.info('Setting up CommonJS-style module system. Root Directory: ' + jsPluginsRootDirName);
         logger.info('Module paths: ' + JSON.stringify(modulePaths));
     }
     var requireHooks = {
-        loading: function (path) {
-            if (config.verbose) {
+        loading: function(path) {
+            if(config.verbose) {
                 logger.info('loading ' + path);
             }
         },
-        loaded: function (path) {
-            if (config.verbose) {
+        loaded: function(path) {
+            if(config.verbose) {
                 logger.info('loaded  ' + path);
             }
         }
     };
-    global.require = configRequire(
-            jsPluginsRootDirName,
-            modulePaths,
-            requireHooks,
-            function (code) {
-                return __engine.eval(code);
-            }
-    );
-
+    global.require = configRequire(jsPluginsRootDirName, modulePaths, requireHooks, function(code) {
+        return __engine.eval(code);
+    });
     var testJSPatch = require('js-patch')(global);
     var console = require('console')(logger);
     global.console = console;
     testJSPatch(console);
-
     /*
      setup persistence
      */
     require('persistence')(jsPluginsRootDir, global);
-
     var isJavaObject = require('java-utils').isJavaObject;
-
     var cmdModule = require('command');
     global.command = cmdModule.command;
     var plugins = require('plugin');
     global.__onTabComplete = require('tabcomplete');
     global.plugin = plugins.plugin;
-
     var events = require('events');
-// wph 20131226 - make events global as it is used by many plugins/modules
+    // wph 20131226 - make events global as it is used by many plugins/modules
     global.events = events;
-
-    if (__plugin.canary) {
+    if(__plugin.canary) {
         // canary plugin doesn't get to handle its own plugin disable event
-    } else if (__plugin.bukkit) {
+    } else if(__plugin.bukkit) {
         events.pluginDisable(_onDisable);
     } else {
         //CORE_UNKNOWN
@@ -1484,38 +1465,6 @@ module specification, the '.js' suffix is optional.
 
 [cjsmodules]: http://wiki.commonjs.org/wiki/Modules/1.1.1.
 
-### module name resolution
-
-When resolving module names to file paths, ScriptCraft uses the following rules...
-
- 1. if the module does not begin with './' or '/' then ...
-
-    1.1 Look in the 'scriptcraft/lib' directory. If it's not there then...
-    1.2 Look in the 'scriptcraft/modules' directory. If it's not there then
-        Throw an Error.
-
- 2. If the module begins with './' or '/' then ...
-
-    2.1 if the module begins with './' then it's treated as a file path. File paths are
-        always relative to the module from which the require() call is being made.
-
-    2.2 If the module begins with '/' then it's treated as an absolute path.
-
-    If the module does not have a '.js' suffix, and a file with the same name and a .js sufix exists,
-    then the file will be loaded.
-
- 3. If the module name resolves to a directory then...
-
-    3.1 look for a package.json file in the directory and load the `main` property e.g.
-
-    // package.json located in './some-library/'
-    {
-      "main": './some-lib.js',
-      "name": 'some-library'
-    }
-
-    3.2 if no package.json file exists then look for an index.js file in the directory
-
 ## events Module
 
 The Events module provides a thin wrapper around CanaryMod's or
@@ -1526,11 +1475,11 @@ minecraft events in javascript.
 
 ### events.on() static method
 
-This method is used to register event listeners. This method is called by all of the Event Helper methods. 
+This method is used to register event listeners. This method is called by all of the Event Helper methods.
 The `events` object has functions for registering listeners for each type of event. For example, you can register a block-break listener using events.on:
 
 ```javascript
-events.on( Packages.net.canarymod.hook.player.BlockDestroyHook, function( evt, cancel ) { 
+events.on( Packages.net.canarymod.hook.player.BlockDestroyHook, function( evt, cancel ) {
   echo(evt.player, evt.player.name + ' broke a block!');
 } );
 ```
@@ -1538,7 +1487,7 @@ events.on( Packages.net.canarymod.hook.player.BlockDestroyHook, function( evt, c
 or you can (and probably should) use the more succinct:
 
 ```javascript
-events.blockDestroy( function( evt, cancel ) { 
+events.blockDestroy( function( evt, cancel ) {
   echo(evt.player, evt.player.name + ' broke a block!');
 } );
 ```
@@ -1549,41 +1498,41 @@ events and can also be used to register non-standard events - that is
 
 #### Parameters
 
- * eventType - A Java class. See the [CanaryMod Hook API][cmEvtApi] or [Bukkit Event API][buk] for details of the many event types.  
+ * eventType - A Java class. See the [CanaryMod Hook API][cmEvtApi] or [Bukkit Event API][buk] for details of the many event types.
 
  * callback - A function which will be called whenever the event
-   fires. The callback in turn takes 2 parameters: 
-   
+   fires. The callback in turn takes 2 parameters:
+
    - event : the event  fired
    - cancel : a function which if invoked will cancel the  event - not all event types are cancelable; this function only cancels cancelable events).
 
- * priority (optional - default: "CRITICAL" for CanaryMod or "HIGHEST" for Bukkit) - 
-   The priority the listener/callback takes over other listeners to the same event. 
+ * priority (optional - default: "CRITICAL" for CanaryMod or "HIGHEST" for Bukkit) -
+   The priority the listener/callback takes over other listeners to the same event.
    Possible values for CanaryMod are "CRITICAL", "HIGH", "LOW", "NORMAL" and "PASSIVE".
-   For an explanation of what the different CanaryMod Hook priorities 
-   mean, refer to CanaryMod's [Hook Priority class][cmPriority]. 
-   Possible values for Bukkit are "HIGH", "HIGHEST", "LOW", "LOWEST", "NORMAL", "MONITOR". 
-   For an explanation of what the different Bukkit Event priorities 
-   mean, refer to bukkit's [Event API Reference][buk2]. 
+   For an explanation of what the different CanaryMod Hook priorities
+   mean, refer to CanaryMod's [Hook Priority class][cmPriority].
+   Possible values for Bukkit are "HIGH", "HIGHEST", "LOW", "LOWEST", "NORMAL", "MONITOR".
+   For an explanation of what the different Bukkit Event priorities
+   mean, refer to bukkit's [Event API Reference][buk2].
 
 #### Returns
 
-An object which can be used to unregister the listener. 
+An object which can be used to unregister the listener.
 
 #### Example:
 
 The following code will print a message on screen every time a block is broken in the game
 
 ```javascript
-events.on( Packages.net.canarymod.hook.player.BlockDestroyHook, function( evt, cancel ) { 
+events.on( Packages.net.canarymod.hook.player.BlockDestroyHook, function( evt, cancel ) {
   echo(evt.player, evt.player.name + ' broke a block!');
 } );
 ```
 
 To handle an event only once and unregister from further events...
 
-```javascript    
-events.on( Packages.net.canarymod.hook.player.BlockDestroyHook, function( evt, cancel ) { 
+```javascript
+events.on( Packages.net.canarymod.hook.player.BlockDestroyHook, function( evt, cancel ) {
   echo( evt.player, evt.player.name + ' broke a block!');
   this.unregister();
 } );
@@ -1598,7 +1547,7 @@ method is only available from within the event handling function.
 
 To unregister a listener *outside* of the listener function...
 
-```javascript    
+```javascript
 var myBlockBreakListener = events.on( Packages.net.canarymod.hook.player.BlockDestroyHook, function( evt ) { ... } );
 ...
 myBlockBreakListener.unregister();
@@ -4068,56 +4017,51 @@ The crucial difference is that the events module now has functions for each of t
  ***/
 function argsToArray(args) {
     var result = [];
-    for (var i = 0; i < args.length; i++) {
+    for(var i = 0; i < args.length; i++) {
         result.push(args[i]);
     }
     return result;
 }
+
 function consMsg(params) {
     var args = argsToArray(params);
-    if (args.length > 1) {
+    if(args.length > 1) {
         return java.lang.String.format(args[0], args.slice(1));
     } else {
         return args[0];
     }
 }
-
-module.exports = function (logger) {
-
+module.exports = function(logger) {
     function bukkitLog(level, restOfArgs) {
-        logger['log(java.util.logging.Level,java.lang.String)'](
-                java.util.logging.Level[level],
-                consMsg(restOfArgs)
-                );
+        logger['log(java.util.logging.Level,java.lang.String)'](java.util.logging.Level[level], consMsg(restOfArgs));
     }
-
-    if (__plugin.canary) {
+    if(__plugin.canary) {
         return {
-            log: function ( ) {
+            log: function() {
                 logger.info(consMsg(arguments));
             },
-            info: function ( ) {
+            info: function() {
                 logger.info(consMsg(arguments));
             },
-            warn: function ( ) {
+            warn: function() {
                 logger.warn(consMsg(arguments));
             },
-            error: function ( ) {
+            error: function() {
                 logger.error(consMsg(arguments));
             }
         };
-    } else if (__plugin.bukkit) { // TG how did we go so long with that as 'plugin'?
+    } else if(__plugin.bukkit) { // TG how did we go so long with that as 'plugin'?
         return {
-            log: function () {
+            log: function() {
                 bukkitLog('INFO', arguments);
             },
-            info: function () {
+            info: function() {
                 bukkitLog('INFO', arguments);
             },
-            warn: function ( ) {
+            warn: function() {
                 bukkitLog('WARNING', arguments);
             },
-            error: function ( ) {
+            error: function() {
                 bukkitLog('SEVERE', arguments);
             }
         };
@@ -4127,223 +4071,211 @@ module.exports = function (logger) {
 };
 /*global Java, exports, org, __plugin */
 var bkEventPriority = org.bukkit.event.EventPriority,
-  bkEventExecutor = org.bukkit.plugin.EventExecutor,
-  bkRegisteredListener = org.bukkit.plugin.RegisteredListener,
-  bkEventPackage = 'org.bukkit.event.';
-
+    bkEventExecutor = org.bukkit.plugin.EventExecutor,
+    bkRegisteredListener = org.bukkit.plugin.RegisteredListener,
+    bkEventPackage = 'org.bukkit.event.';
 var nashorn = (typeof Java != 'undefined');
 
-function getHandlerListForEventType( eventType ){
-  var result = null;
-  var clazz = null;
-  if (nashorn) {
-    
-    //Nashorn doesn't like when getHandlerList is in a superclass of your event
-    //so to avoid this problem, call getHandlerList using java.lang.reflect
-    //methods
-    clazz = eventType['class'];
-    result = clazz.getMethod("getHandlerList").invoke(null);
-    
-  } else { 
-    result = eventType.getHandlerList();
-  }
-
-  return result;
+function getHandlerListForEventType(eventType) {
+    var result = null;
+    var clazz = null;
+    if(nashorn) {
+        //Nashorn doesn't like when getHandlerList is in a superclass of your event
+        //so to avoid this problem, call getHandlerList using java.lang.reflect
+        //methods
+        clazz = eventType['class'];
+        result = clazz.getMethod("getHandlerList").invoke(null);
+    } else {
+        result = eventType.getHandlerList();
+    }
+    return result;
 }
-exports.on = function( 
-  /* Java Class */
-  eventType, 
-  /* function( registeredListener, event) */ 
-  handler,   
-  /* (optional) String (HIGH, HIGHEST, LOW, LOWEST, NORMAL, MONITOR), */
-  priority   ) {
-  var handlerList,
-    regd,
-    eventExecutor;
-
-  if ( typeof priority == 'undefined' ) {
-    priority = bkEventPriority.HIGHEST;
-  } else {
-    priority = bkEventPriority[priority.toUpperCase().trim()];
-  }
-  handlerList = getHandlerListForEventType (eventType);
-
-  var result = { };
-  eventExecutor = new bkEventExecutor( {
-    execute: function( l, evt ) {
-      function cancel(){
-        if (evt instanceof org.bukkit.event.Cancellable){
-          evt.setCancelled(true);
+exports.on = function(
+    /* Java Class */
+    eventType,
+    /* function( registeredListener, event) */
+    handler,
+    /* (optional) String (HIGH, HIGHEST, LOW, LOWEST, NORMAL, MONITOR), */
+    priority) {
+    var handlerList,
+        regd,
+        eventExecutor;
+    if(typeof priority == 'undefined') {
+        priority = bkEventPriority.HIGHEST;
+    } else {
+        priority = bkEventPriority[priority.toUpperCase().trim()];
+    }
+    handlerList = getHandlerListForEventType(eventType);
+    var result = {};
+    eventExecutor = new bkEventExecutor({
+        execute: function(l, evt) {
+            function cancel() {
+                if(evt instanceof org.bukkit.event.Cancellable) {
+                    evt.setCancelled(true);
+                }
+            }
+            /*
+             let handlers use this.cancel() to cancel the current event
+             or this.unregister() to unregister from future events.
+             */
+            var bound = {};
+            for(var i in result) {
+                bound[i] = result[i];
+            }
+            bound.cancel = cancel;
+            handler.call(bound, evt, cancel);
         }
-      }
-      /*
-       let handlers use this.cancel() to cancel the current event
-       or this.unregister() to unregister from future events.
-       */
-      var bound = {};
-      for (var i in result){
-        bound[i] = result[i];
-      }
-      bound.cancel = cancel;
-      handler.call( bound, evt, cancel );
-    } 
-  } );
-  /* 
-   wph 20130222 issue #64 bad interaction with Essentials plugin
-   if another plugin tries to unregister a Listener (not a Plugin or a RegisteredListener)
-   then BOOM! the other plugin will throw an error because Rhino can't coerce an
-   equals() method from an Interface.
-   The workaround is to make the ScriptCraftPlugin java class a Listener.
-   Should only unregister() registered plugins in ScriptCraft js code.
-   */
-  regd = new bkRegisteredListener( __plugin, eventExecutor, priority, __plugin, false );
-  handlerList.register( regd );
-  result.unregister = function(){
-    handlerList.unregister( regd );
-  };
-  return result;
+    });
+    /*
+     wph 20130222 issue #64 bad interaction with Essentials plugin
+     if another plugin tries to unregister a Listener (not a Plugin or a RegisteredListener)
+     then BOOM! the other plugin will throw an error because Rhino can't coerce an
+     equals() method from an Interface.
+     The workaround is to make the ScriptCraftPlugin java class a Listener.
+     Should only unregister() registered plugins in ScriptCraft js code.
+     */
+    regd = new bkRegisteredListener(__plugin, eventExecutor, priority, __plugin, false);
+    handlerList.register(regd);
+    result.unregister = function() {
+        handlerList.unregister(regd);
+    };
+    return result;
 };
 /*global nashorn, exports, require, Packages, __plugin*/
 var cmPriority = Packages.net.canarymod.plugin.Priority,
-  cmCanary = Packages.net.canarymod.Canary,
-  cmDispatcher = Packages.net.canarymod.hook.Dispatcher,
-  cmRegisteredPluginListener = Packages.net.canarymod.plugin.RegisteredPluginListener,
-  cmPluginListener = Packages.net.canarymod.plugin.PluginListener;
+    cmCanary = Packages.net.canarymod.Canary,
+    cmDispatcher = Packages.net.canarymod.hook.Dispatcher,
+    cmRegisteredPluginListener = Packages.net.canarymod.plugin.RegisteredPluginListener,
+    cmPluginListener = Packages.net.canarymod.plugin.PluginListener;
 var cmHookExecutor = cmCanary.hooks();
-
-exports.on = function( 
-  /* Java Class */
-  eventType, 
-  /* function( registeredListener, event) */ 
-  handler,   
-  /* (optional) String (CRITICAL, HIGH, NORMAL, LOW, PASSIVE), */
-  priority   ) {
-  var handlerList,
-    regd,
-    eventExecutor;
-
-  if ( typeof priority == 'undefined' ) {
-    priority = cmPriority.NORMAL;
-  } else {
-    priority = cmPriority[priority.toUpperCase().trim()];
-  }
-  
-  var result = { };
-  eventExecutor = __plugin.getDispatcher( function(l,e){ 
-    function cancel(){
-      if (e.setCanceled){
-        e.setCanceled();
-      }
+exports.on = function(
+    /* Java Class */
+    eventType,
+    /* function( registeredListener, event) */
+    handler,
+    /* (optional) String (CRITICAL, HIGH, NORMAL, LOW, PASSIVE), */
+    priority) {
+    var handlerList,
+        regd,
+        eventExecutor;
+    if(typeof priority == 'undefined') {
+        priority = cmPriority.NORMAL;
+    } else {
+        priority = cmPriority[priority.toUpperCase().trim()];
     }
+    var result = {};
+    eventExecutor = __plugin.getDispatcher(function(l, e) {
+        function cancel() {
+            if(e.setCanceled) {
+                e.setCanceled();
+            }
+        }
+        /*
+         let handlers use this.cancel() to cancel the current event
+         or this.unregister() to unregister from future events.
+         */
+        var bound = {};
+        for(var i in result) {
+            bound[i] = result[i];
+        }
+        bound.cancel = cancel;
+        try {
+            handler.call(bound, e, cancel);
+        } catch(error) {
+            console.log('Error while executing handler:' + handler + ' for event type:' + eventType + ' error: ' + error);
+        }
+    });
     /*
-     let handlers use this.cancel() to cancel the current event
-     or this.unregister() to unregister from future events.
+     wph 20130222 issue #64 bad interaction with Essentials plugin
+     if another plugin tries to unregister a Listener (not a Plugin or a RegisteredListener)
+     then BOOM! the other plugin will throw an error because Rhino can't coerce an
+     equals() method from an Interface.
+     The workaround is to make the ScriptCraftPlugin java class a Listener.
+     Should only unregister() registered plugins in ScriptCraft js code.
      */
-    var bound = {};
-    for (var i in result){
-      bound[i] = result[i];
+    if(nashorn) {
+        // nashorn
+        eventType = require('nashorn-type')(eventType);
     }
-    bound.cancel = cancel;
-    try { 
-      handler.call(bound, e, cancel); 
-    } catch ( error ){
-      console.log('Error while executing handler:' + handler + 
-                  ' for event type:' + eventType + 
-                  ' error: ' + error);
-    }
-  });
-  /* 
-   wph 20130222 issue #64 bad interaction with Essentials plugin
-   if another plugin tries to unregister a Listener (not a Plugin or a RegisteredListener)
-   then BOOM! the other plugin will throw an error because Rhino can't coerce an
-   equals() method from an Interface.
-   The workaround is to make the ScriptCraftPlugin java class a Listener.
-   Should only unregister() registered plugins in ScriptCraft js code.
-   */
-  if (nashorn){
-    // nashorn
-    eventType = require('nashorn-type')(eventType);
-  } 
-  regd = new cmPluginListener({});
-  cmHookExecutor.registerHook(regd, __plugin, eventType, eventExecutor, priority);
-  result.unregister = function(){
-    cmHookExecutor.unregisterPluginListener(regd);
-  };
-  return result;
+    regd = new cmPluginListener({});
+    cmHookExecutor.registerHook(regd, __plugin, eventType, eventExecutor, priority);
+    result.unregister = function() {
+        cmHookExecutor.unregisterPluginListener(regd);
+    };
+    return result;
 };
 'use strict';
 var File = java.io.File;
 module.exports = function find(dir, filter) {
-  var result = [];
-  function recurse( dir, store ) {
-    var files, 
-	len,
-	i,
-	file,
-	dirfile = new File( dir );
-    
-    if ( typeof filter == 'undefined' ) {
-      files = dirfile.list();
-    } else {
-      files = dirfile.list(filter);
-    }
-    len = files.length; i = 0;
-    for (; i < len; i++){
-      file = new File( dir + '/' + files[i] );
-      if ( file.isDirectory() ) {
-        recurse( file.canonicalPath, store );
-      } else {
-        store.push( ('' + file.canonicalPath).replace(/\\\\/g,'/') );
-      }
-    }
-  }
-  recurse( dir, result );
-  return result;
-};
-exports.isJavaObject = function( o ) {
-  if (o === global){
-    return false;
-  }
-  if (o !== undefined && o !== null){
-    try { 
-      // this throws error for java objects in jre7
-      if (typeof o.constructor === 'function'){
-        return false;
-      }
-    } catch (e){
-      return true;
-    }
-    try {
-      var result = o.getClass ? true : false; // throws error for Enums/Class in jre7
-      if (result == true){
-        return result;
-      }
-    }catch (e2){
-      // fail silently and move on to next test
-    }
-    // java classes don't have a getClass so just because .getClass isn't present
-    // doesn't mean it's not a Java Enum or Class (.getClass only works for object instances?)
-    if (o instanceof java.lang.Object){
-      return true;
-    }
-  }
-  return o instanceof java.lang.Object;
-};
-module.exports = function ($) {
+    var result = [];
 
+    function recurse(dir, store) {
+        var files,
+            len,
+            i,
+            file,
+            dirfile = new File(dir);
+        if(typeof filter == 'undefined') {
+            files = dirfile.list();
+        } else {
+            files = dirfile.list(filter);
+        }
+        len = files.length;
+        i = 0;
+        for(; i < len; i++) {
+            file = new File(dir + '/' + files[i]);
+            if(file.isDirectory()) {
+                recurse(file.canonicalPath, store);
+            } else {
+                store.push(('' + file.canonicalPath).replace(/\\\\/g, '/'));
+            }
+        }
+    }
+    recurse(dir, result);
+    return result;
+};
+exports.isJavaObject = function(o) {
+    if(o === global) {
+        return false;
+    }
+    if(o !== undefined && o !== null) {
+        try {
+            // this throws error for java objects in jre7
+            if(typeof o.constructor === 'function') {
+                return false;
+            }
+        } catch(e) {
+            return true;
+        }
+        try {
+            var result = o.getClass ? true : false; // throws error for Enums/Class in jre7
+            if(result == true) {
+                return result;
+            }
+        } catch(e2) {
+            // fail silently and move on to next test
+        }
+        // java classes don't have a getClass so just because .getClass isn't present
+        // doesn't mean it's not a Java Enum or Class (.getClass only works for object instances?)
+        if(o instanceof java.lang.Object) {
+            return true;
+        }
+    }
+    return o instanceof java.lang.Object;
+};
+module.exports = function($) {
     // wph 20140105 trim not available in String on Mac OS.
     // TODO: Should re-verify
-    if (typeof String.prototype.trim == 'undefined') {
-        String.prototype.trim = function ( ) {
+    if(typeof String.prototype.trim == 'undefined') {
+        String.prototype.trim = function() {
             return this.replace(/^\s+|\s+$/g, '');
         };
     }
-
     // wph 20140316 Java 1.6.0_65 on mac does not have Function.prototype.bind
     // code from http://webreflection.blogspot.ie/2010/02/functionprototypebind.html
     // TODO: Should re-verify but can't hurt to leave check
-    if (typeof Function.prototype.bind == 'undefined') {
-        Function.prototype.bind = (function (slice) {
+    if(typeof Function.prototype.bind == 'undefined') {
+        Function.prototype.bind = (function(slice) {
             // (C) WebReflection - MIT Style License
             function bind(context) {
                 var self = this; // "trapped" function reference
@@ -4351,23 +4283,21 @@ module.exports = function ($) {
                 // we are interested into more complex operations
                 // this will speed up common bind creation
                 // avoiding useless slices over arguments
-                if (1 < arguments.length) {
+                if(1 < arguments.length) {
                     // extra arguments to send by default
                     var $arguments = slice.call(arguments, 1);
-                    return function () {
-                        return self.apply(
-                                context,
-                                // thanks @kangax for this suggestion
-                                arguments.length ?
-                                // concat arguments with those received
-                                $arguments.concat(slice.call(arguments)) :
-                                // send just arguments, no concat, no slice
-                                $arguments
-                                );
+                    return function() {
+                        return self.apply(context,
+                            // thanks @kangax for this suggestion
+                            arguments.length ?
+                            // concat arguments with those received
+                            $arguments.concat(slice.call(arguments)) :
+                            // send just arguments, no concat, no slice
+                            $arguments);
                     };
                 }
                 // optimized callback
-                return function () {
+                return function() {
                     // speed up when function is called without arguments
                     return arguments.length ? self.apply(context, arguments) : self.call(context);
                 };
@@ -4376,40 +4306,36 @@ module.exports = function ($) {
             return bind;
         }(Array.prototype.slice));
     }
-
-    if (__plugin.canary) {
+    if(__plugin.canary) {
         require('task-canary')($);
-    } else if (__plugin.bukkit) {
+    } else if(__plugin.bukkit) {
         require('task-bukkit')($);
     } else {
         // CORE_UNKNOWN
     }
-
     return function unitTest(console) {
         /*
          sanity tests
          */
-        $.setTimeout(function () {
+        $.setTimeout(function() {
             console.log('js-patch setTimeout() test complete');
         }, 100);
-        var clearMe = $.setTimeout(function () {
+        var clearMe = $.setTimeout(function() {
             console.error('js-patch clearTimeout() test failed');
         }, 100);
         $.clearTimeout(clearMe);
-
         var runs = 3;
-        var clearAfterRuns = $.setInterval(function () {
+        var clearAfterRuns = $.setInterval(function() {
             runs--;
-            if (runs == 0) {
+            if(runs == 0) {
                 $.clearInterval(clearAfterRuns);
             }
-            if (runs < 0) {
+            if(runs < 0) {
                 console.error('js-patch clearInterval test failed.');
             }
         }, 100);
     };
 };
-
 /*
     json2.js
     2013-05-26
@@ -4557,282 +4483,196 @@ module.exports = function ($) {
     This is a reference implementation. You are free to copy, modify, or
     redistribute.
 */
-
 /*jslint evil: true, regexp: true */
-
 /*members "", "\b", "\t", "\n", "\f", "\r", "\"", JSON, "\\", apply,
     call, charCodeAt, getUTCDate, getUTCFullYear, getUTCHours,
     getUTCMinutes, getUTCMonth, getUTCSeconds, hasOwnProperty, join,
     lastIndex, length, parse, prototype, push, replace, slice, stringify,
     test, toJSON, toString, valueOf
 */
-
-
 // Create a JSON object only if one does not already exist. We create the
 // methods in a closure to avoid creating global variables.
-
-if (typeof JSON !== 'object') {
+if(typeof JSON !== 'object') {
     JSON = {};
 }
-
-(function () {
+(function() {
     'use strict';
 
     function f(n) {
         // Format integers to have at least two digits.
         return n < 10 ? '0' + n : n;
     }
-
-    if (typeof Date.prototype.toJSON !== 'function') {
-
-        Date.prototype.toJSON = function () {
-
-            return isFinite(this.valueOf())
-                ? this.getUTCFullYear()     + '-' +
-                    f(this.getUTCMonth() + 1) + '-' +
-                    f(this.getUTCDate())      + 'T' +
-                    f(this.getUTCHours())     + ':' +
-                    f(this.getUTCMinutes())   + ':' +
-                    f(this.getUTCSeconds())   + 'Z'
-                : null;
+    if(typeof Date.prototype.toJSON !== 'function') {
+        Date.prototype.toJSON = function() {
+            return isFinite(this.valueOf()) ? this.getUTCFullYear() + '-' + f(this.getUTCMonth() + 1) + '-' + f(this.getUTCDate()) + 'T' + f(this.getUTCHours()) + ':' + f(this.getUTCMinutes()) + ':' + f(this.getUTCSeconds()) + 'Z' : null;
         };
-
-        String.prototype.toJSON      =
-            Number.prototype.toJSON  =
-            Boolean.prototype.toJSON = function () {
-                return this.valueOf();
-            };
+        String.prototype.toJSON = Number.prototype.toJSON = Boolean.prototype.toJSON = function() {
+            return this.valueOf();
+        };
     }
-
     var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
         escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
         gap,
         indent,
-        meta = {    // table of character substitutions
+        meta = { // table of character substitutions
             '\b': '\\b',
             '\t': '\\t',
             '\n': '\\n',
             '\f': '\\f',
             '\r': '\\r',
-            '"' : '\\"',
+            '"': '\\"',
             '\\': '\\\\'
         },
         rep;
 
-
     function quote(string) {
-
-// If the string contains no control characters, no quote characters, and no
-// backslash characters, then we can safely slap some quotes around it.
-// Otherwise we must also replace the offending characters with safe escape
-// sequences.
-
+        // If the string contains no control characters, no quote characters, and no
+        // backslash characters, then we can safely slap some quotes around it.
+        // Otherwise we must also replace the offending characters with safe escape
+        // sequences.
         escapable.lastIndex = 0;
-        return escapable.test(string) ? '"' + string.replace(escapable, function (a) {
+        return escapable.test(string) ? '"' + string.replace(escapable, function(a) {
             var c = meta[a];
-            return typeof c === 'string'
-                ? c
-                : '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+            return typeof c === 'string' ? c : '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
         }) + '"' : '"' + string + '"';
     }
 
-
     function str(key, holder) {
-
-// Produce a string from holder[key].
-
-        var i,          // The loop counter.
-            k,          // The member key.
-            v,          // The member value.
+        // Produce a string from holder[key].
+        var i, // The loop counter.
+            k, // The member key.
+            v, // The member value.
             length,
             mind = gap,
             partial,
             value = holder[key];
-
-// If the value has a toJSON method, call it to obtain a replacement value.
-
-        if (value && typeof value === 'object' &&
-                typeof value.toJSON === 'function') {
+        // If the value has a toJSON method, call it to obtain a replacement value.
+        if(value && typeof value === 'object' && typeof value.toJSON === 'function') {
             value = value.toJSON(key);
         }
-
-// If we were called with a replacer function, then call the replacer to
-// obtain a replacement value.
-
-        if (typeof rep === 'function') {
+        // If we were called with a replacer function, then call the replacer to
+        // obtain a replacement value.
+        if(typeof rep === 'function') {
             value = rep.call(holder, key, value);
         }
-
-// What happens next depends on the value's type.
-
-        switch (typeof value) {
-        case 'string':
-            return quote(value);
-
-        case 'number':
-
-// JSON numbers must be finite. Encode non-finite numbers as null.
-
-            return isFinite(value) ? String(value) : 'null';
-
-        case 'boolean':
-        case 'null':
-
-// If the value is a boolean or null, convert it to a string. Note:
-// typeof null does not produce 'null'. The case is included here in
-// the remote chance that this gets fixed someday.
-
-            return String(value);
-
-// If the type is 'object', we might be dealing with an object or an array or
-// null.
-
-        case 'object':
-
-// Due to a specification blunder in ECMAScript, typeof null is 'object',
-// so watch out for that case.
-
-            if (!value) {
-                return 'null';
-            }
-
-// Make an array to hold the partial results of stringifying this object value.
-
-            gap += indent;
-            partial = [];
-
-// Is the value an array?
-
-            if (Object.prototype.toString.apply(value) === '[object Array]') {
-
-// The value is an array. Stringify every element. Use null as a placeholder
-// for non-JSON values.
-
-                length = value.length;
-                for (i = 0; i < length; i += 1) {
-                    partial[i] = str(i, value) || 'null';
+        // What happens next depends on the value's type.
+        switch(typeof value) {
+            case 'string':
+                return quote(value);
+            case 'number':
+                // JSON numbers must be finite. Encode non-finite numbers as null.
+                return isFinite(value) ? String(value) : 'null';
+            case 'boolean':
+            case 'null':
+                // If the value is a boolean or null, convert it to a string. Note:
+                // typeof null does not produce 'null'. The case is included here in
+                // the remote chance that this gets fixed someday.
+                return String(value);
+                // If the type is 'object', we might be dealing with an object or an array or
+                // null.
+            case 'object':
+                // Due to a specification blunder in ECMAScript, typeof null is 'object',
+                // so watch out for that case.
+                if(!value) {
+                    return 'null';
                 }
-
-// Join all of the elements together, separated with commas, and wrap them in
-// brackets.
-
-                v = partial.length === 0
-                    ? '[]'
-                    : gap
-                    ? '[\n' + gap + partial.join(',\n' + gap) + '\n' + mind + ']'
-                    : '[' + partial.join(',') + ']';
+                // Make an array to hold the partial results of stringifying this object value.
+                gap += indent;
+                partial = [];
+                // Is the value an array?
+                if(Object.prototype.toString.apply(value) === '[object Array]') {
+                    // The value is an array. Stringify every element. Use null as a placeholder
+                    // for non-JSON values.
+                    length = value.length;
+                    for(i = 0; i < length; i += 1) {
+                        partial[i] = str(i, value) || 'null';
+                    }
+                    // Join all of the elements together, separated with commas, and wrap them in
+                    // brackets.
+                    v = partial.length === 0 ? '[]' : gap ? '[\n' + gap + partial.join(',\n' + gap) + '\n' + mind + ']' : '[' + partial.join(',') + ']';
+                    gap = mind;
+                    return v;
+                }
+                // If the replacer is an array, use it to select the members to be stringified.
+                if(rep && typeof rep === 'object') {
+                    length = rep.length;
+                    for(i = 0; i < length; i += 1) {
+                        if(typeof rep[i] === 'string') {
+                            k = rep[i];
+                            v = str(k, value);
+                            if(v) {
+                                partial.push(quote(k) + (gap ? ': ' : ':') + v);
+                            }
+                        }
+                    }
+                } else {
+                    // Otherwise, iterate through all of the keys in the object.
+                    for(k in value) {
+                        if(Object.prototype.hasOwnProperty.call(value, k)) {
+                            v = str(k, value);
+                            if(v) {
+                                partial.push(quote(k) + (gap ? ': ' : ':') + v);
+                            }
+                        }
+                    }
+                }
+                // Join all of the member texts together, separated with commas,
+                // and wrap them in braces.
+                v = partial.length === 0 ? '{}' : gap ? '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}' : '{' + partial.join(',') + '}';
                 gap = mind;
                 return v;
-            }
-
-// If the replacer is an array, use it to select the members to be stringified.
-
-            if (rep && typeof rep === 'object') {
-                length = rep.length;
-                for (i = 0; i < length; i += 1) {
-                    if (typeof rep[i] === 'string') {
-                        k = rep[i];
-                        v = str(k, value);
-                        if (v) {
-                            partial.push(quote(k) + (gap ? ': ' : ':') + v);
-                        }
-                    }
-                }
-            } else {
-
-// Otherwise, iterate through all of the keys in the object.
-
-                for (k in value) {
-                    if (Object.prototype.hasOwnProperty.call(value, k)) {
-                        v = str(k, value);
-                        if (v) {
-                            partial.push(quote(k) + (gap ? ': ' : ':') + v);
-                        }
-                    }
-                }
-            }
-
-// Join all of the member texts together, separated with commas,
-// and wrap them in braces.
-
-            v = partial.length === 0
-                ? '{}'
-                : gap
-                ? '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}'
-                : '{' + partial.join(',') + '}';
-            gap = mind;
-            return v;
         }
     }
-
-// If the JSON object does not yet have a stringify method, give it one.
-
-    if (typeof JSON.stringify !== 'function') {
-        JSON.stringify = function (value, replacer, space) {
-
-// The stringify method takes a value and an optional replacer, and an optional
-// space parameter, and returns a JSON text. The replacer can be a function
-// that can replace values, or an array of strings that will select the keys.
-// A default replacer method can be provided. Use of the space parameter can
-// produce text that is more easily readable.
-
+    // If the JSON object does not yet have a stringify method, give it one.
+    if(typeof JSON.stringify !== 'function') {
+        JSON.stringify = function(value, replacer, space) {
+            // The stringify method takes a value and an optional replacer, and an optional
+            // space parameter, and returns a JSON text. The replacer can be a function
+            // that can replace values, or an array of strings that will select the keys.
+            // A default replacer method can be provided. Use of the space parameter can
+            // produce text that is more easily readable.
             var i;
             gap = '';
             indent = '';
-
-// If the space parameter is a number, make an indent string containing that
-// many spaces.
-
-            if (typeof space === 'number') {
-                for (i = 0; i < space; i += 1) {
+            // If the space parameter is a number, make an indent string containing that
+            // many spaces.
+            if(typeof space === 'number') {
+                for(i = 0; i < space; i += 1) {
                     indent += ' ';
                 }
-
-// If the space parameter is a string, it will be used as the indent string.
-
-            } else if (typeof space === 'string') {
+                // If the space parameter is a string, it will be used as the indent string.
+            } else if(typeof space === 'string') {
                 indent = space;
             }
-
-// If there is a replacer, it must be a function or an array.
-// Otherwise, throw an error.
-
+            // If there is a replacer, it must be a function or an array.
+            // Otherwise, throw an error.
             rep = replacer;
-            if (replacer && typeof replacer !== 'function' &&
-                    (typeof replacer !== 'object' ||
-                    typeof replacer.length !== 'number')) {
+            if(replacer && typeof replacer !== 'function' && (typeof replacer !== 'object' || typeof replacer.length !== 'number')) {
                 throw new Error('JSON.stringify');
             }
-
-// Make a fake root object containing our value under the key of ''.
-// Return the result of stringifying the value.
-
-            return str('', {'': value});
+            // Make a fake root object containing our value under the key of ''.
+            // Return the result of stringifying the value.
+            return str('', {
+                '': value
+            });
         };
     }
-
-
-// If the JSON object does not yet have a parse method, give it one.
-
-    if (typeof JSON.parse !== 'function') {
-        JSON.parse = function (text, reviver) {
-
-// The parse method takes a text and an optional reviver function, and returns
-// a JavaScript value if the text is a valid JSON text.
-
+    // If the JSON object does not yet have a parse method, give it one.
+    if(typeof JSON.parse !== 'function') {
+        JSON.parse = function(text, reviver) {
+            // The parse method takes a text and an optional reviver function, and returns
+            // a JavaScript value if the text is a valid JSON text.
             var j;
 
             function walk(holder, key) {
-
-// The walk method is used to recursively walk the resulting structure so
-// that modifications can be made.
-
+                // The walk method is used to recursively walk the resulting structure so
+                // that modifications can be made.
                 var k, v, value = holder[key];
-                if (value && typeof value === 'object') {
-                    for (k in value) {
-                        if (Object.prototype.hasOwnProperty.call(value, k)) {
+                if(value && typeof value === 'object') {
+                    for(k in value) {
+                        if(Object.prototype.hasOwnProperty.call(value, k)) {
                             v = walk(value, k);
-                            if (v !== undefined) {
+                            if(v !== undefined) {
                                 value[k] = v;
                             } else {
                                 delete value[k];
@@ -4842,129 +4682,102 @@ if (typeof JSON !== 'object') {
                 }
                 return reviver.call(holder, key, value);
             }
-
-
-// Parsing happens in four stages. In the first stage, we replace certain
-// Unicode characters with escape sequences. JavaScript handles many characters
-// incorrectly, either silently deleting them, or treating them as line endings.
-
+            // Parsing happens in four stages. In the first stage, we replace certain
+            // Unicode characters with escape sequences. JavaScript handles many characters
+            // incorrectly, either silently deleting them, or treating them as line endings.
             text = String(text);
             cx.lastIndex = 0;
-            if (cx.test(text)) {
-                text = text.replace(cx, function (a) {
-                    return '\\u' +
-                        ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+            if(cx.test(text)) {
+                text = text.replace(cx, function(a) {
+                    return '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
                 });
             }
-
-// In the second stage, we run the text against regular expressions that look
-// for non-JSON patterns. We are especially concerned with '()' and 'new'
-// because they can cause invocation, and '=' because it can cause mutation.
-// But just to be safe, we want to reject all unexpected forms.
-
-// We split the second stage into 4 regexp operations in order to work around
-// crippling inefficiencies in IE's and Safari's regexp engines. First we
-// replace the JSON backslash pairs with '@' (a non-JSON character). Second, we
-// replace all simple value tokens with ']' characters. Third, we delete all
-// open brackets that follow a colon or comma or that begin the text. Finally,
-// we look to see that the remaining characters are only whitespace or ']' or
-// ',' or ':' or '{' or '}'. If that is so, then the text is safe for eval.
-
-            if (/^[\],:{}\s]*$/
-                    .test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@')
-                        .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
-                        .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-
-// In the third stage we use the eval function to compile the text into a
-// JavaScript structure. The '{' operator is subject to a syntactic ambiguity
-// in JavaScript: it can begin a block or an object literal. We wrap the text
-// in parens to eliminate the ambiguity.
-
+            // In the second stage, we run the text against regular expressions that look
+            // for non-JSON patterns. We are especially concerned with '()' and 'new'
+            // because they can cause invocation, and '=' because it can cause mutation.
+            // But just to be safe, we want to reject all unexpected forms.
+            // We split the second stage into 4 regexp operations in order to work around
+            // crippling inefficiencies in IE's and Safari's regexp engines. First we
+            // replace the JSON backslash pairs with '@' (a non-JSON character). Second, we
+            // replace all simple value tokens with ']' characters. Third, we delete all
+            // open brackets that follow a colon or comma or that begin the text. Finally,
+            // we look to see that the remaining characters are only whitespace or ']' or
+            // ',' or ':' or '{' or '}'. If that is so, then the text is safe for eval.
+            if(/^[\],:{}\s]*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+                // In the third stage we use the eval function to compile the text into a
+                // JavaScript structure. The '{' operator is subject to a syntactic ambiguity
+                // in JavaScript: it can begin a block or an object literal. We wrap the text
+                // in parens to eliminate the ambiguity.
                 j = eval('(' + text + ')');
-
-// In the optional fourth stage, we recursively walk the new structure, passing
-// each name/value pair to a reviver function for possible transformation.
-
-                return typeof reviver === 'function'
-                    ? walk({'': j}, '')
-                    : j;
+                // In the optional fourth stage, we recursively walk the new structure, passing
+                // each name/value pair to a reviver function for possible transformation.
+                return typeof reviver === 'function' ? walk({
+                    '': j
+                }, '') : j;
             }
-
-// If the text is not JSON parseable, then a SyntaxError is thrown.
-
+            // If the text is not JSON parseable, then a SyntaxError is thrown.
             throw new SyntaxError('JSON.parse');
         };
     }
 }());
 var File = java.io.File;
 /*
- wph 20140102 - warn if legacy 'mcserver/js-plugins' or 
+ wph 20140102 - warn if legacy 'mcserver/js-plugins' or
  'mcserver/plugins/scriptcraft' directories are present
  */
-module.exports = function( jsPluginsRootDir ) {
-  var mcServerDir = new File(jsPluginsRootDir.canonicalPath).parentFile;
-  if (mcServerDir == null){
-    console.warn('Could not find parent directory for ' + jsPluginsRootDir.canonicalPath);
-    return;
-  }
-  var legacyExists = false,
-      legacyDirs = [
-	new File( mcServerDir, 'js-plugins' )
-      ];
-
-  for ( var i = 0; i < legacyDirs.length; i++ ) {
-    if ( legacyDirs[i].exists() 
-         && legacyDirs[i].isDirectory() ) {
-
-      legacyExists = true; 
-
-      console.warn('Legacy ScriptCraft directory %s was found. This directory is no longer used.',
-	legacyDirs[i].canonicalPath);
-      console.warn('Please put plugins in the ' + jsPluginsRootDir.canonicalPath + '/plugins directory');
+module.exports = function(jsPluginsRootDir) {
+    var mcServerDir = new File(jsPluginsRootDir.canonicalPath).parentFile;
+    if(mcServerDir == null) {
+        console.warn('Could not find parent directory for ' + jsPluginsRootDir.canonicalPath);
+        return;
     }
-  }
-  if ( legacyExists ) {
-    console.info( 'The working directory for %s is %s', 
-		  __plugin, jsPluginsRootDir.canonicalPath );
-  }
+    var legacyExists = false,
+        legacyDirs = [
+            new File(mcServerDir, 'js-plugins')
+        ];
+    for(var i = 0; i < legacyDirs.length; i++) {
+        if(legacyDirs[i].exists() && legacyDirs[i].isDirectory()) {
+            legacyExists = true;
+            console.warn('Legacy ScriptCraft directory %s was found. This directory is no longer used.', legacyDirs[i].canonicalPath);
+            console.warn('Please put plugins in the ' + jsPluginsRootDir.canonicalPath + '/plugins directory');
+        }
+    }
+    if(legacyExists) {
+        console.info('The working directory for %s is %s', __plugin, jsPluginsRootDir.canonicalPath);
+    }
 };
 /*
- The .class operator causes problems for non-nashorn Java on Mac OS X and some other 
+ The .class operator causes problems for non-nashorn Java on Mac OS X and some other
  environments. So need to have it in a separate module which should only be loaded in
  nashorn environment.
 */
-module.exports = function(t){
-  return t.class;
+module.exports = function(t) {
+    return t.class;
 };
 var _dataDir = null,
-        _persistentData = {};
-
-module.exports = function (rootDir, $) {
-
-    var _load = function (name) {
+    _persistentData = {};
+module.exports = function(rootDir, $) {
+    var _load = function(name) {
         var result = $.scloadJSON(_dataDir.canonicalPath + '/' + name + '-store.json');
         return result;
     };
-
-    var _save = function (name, objToSave) {
+    var _save = function(name, objToSave) {
         $.scsave(objToSave, _dataDir.canonicalPath + '/' + name + '-store.json');
     };
-
     _dataDir = new java.io.File(rootDir, 'data');
-
-    $.persist = function (name, data, write) {
+    $.persist = function(name, data, write) {
         var i,
-                dataFromFile;
-        if (typeof data == 'undefined') {
+            dataFromFile;
+        if(typeof data == 'undefined') {
             data = {};
         }
-        if (typeof write == 'undefined') {
+        if(typeof write == 'undefined') {
             write = false;
         }
-        if (!write) {
+        if(!write) {
             dataFromFile = _load(name);
-            if (typeof dataFromFile != 'undefined') {
-                for (i in dataFromFile) {
+            if(typeof dataFromFile != 'undefined') {
+                for(i in dataFromFile) {
                     data[i] = dataFromFile[i];
                 }
             }
@@ -4978,324 +4791,287 @@ module.exports = function (rootDir, $) {
     /*
      persist on shutdown
      */
-    $.addUnloadHandler(function ( ) {
+    $.addUnloadHandler(function() {
         var name,
-                data;
-        for (name in _persistentData) {
+            data;
+        for(name in _persistentData) {
             data = _persistentData[name];
             _save(name, data);
         }
     });
 };
-
 'use strict';
 var _commands = require('command').commands;
 /*
   Tab completion for the /jsp commmand
 */
-var __onTabCompleteJSP = function( result, cmdArgs ) {
-  var cmdInput = cmdArgs[0],
-    opts,
-    cmd,
-    len,
-    i;
-  cmd = _commands[cmdInput];
-  if ( cmd ) {
-    if (typeof cmd.options === 'function'){
-      opts = cmd.options();
-    } else {
-      opts = cmd.options;
-    }
-    len = opts.length;
-    if ( cmdArgs.length > 1 ) {
-      // partial e.g. /jsp chat_color dar
-      for ( i = 0; i < len; i++ ) {
-        if ( opts[i].indexOf( cmdArgs[1] ) == 0 ) {
-          result.add( opts[i] );
+var __onTabCompleteJSP = function(result, cmdArgs) {
+    var cmdInput = cmdArgs[0],
+        opts,
+        cmd,
+        len,
+        i;
+    cmd = _commands[cmdInput];
+    if(cmd) {
+        if(typeof cmd.options === 'function') {
+            opts = cmd.options();
+        } else {
+            opts = cmd.options;
         }
-      }
-    }
-  } else {
-    if ( cmdArgs.length == 0 ) {
-      for ( i in _commands ) { 
-        result.add( i );
-      }
-    } else {
-      // partial e.g. /jsp ho
-      // should tabcomplete to home
-      //
-      for ( i in _commands ) {
-        if ( i.indexOf( cmdInput ) == 0 ) {
-          result.add( i );
+        len = opts.length;
+        if(cmdArgs.length > 1) {
+            // partial e.g. /jsp chat_color dar
+            for(i = 0; i < len; i++) {
+                if(opts[i].indexOf(cmdArgs[1]) == 0) {
+                    result.add(opts[i]);
+                }
+            }
         }
-      }
+    } else {
+        if(cmdArgs.length == 0) {
+            for(i in _commands) {
+                result.add(i);
+            }
+        } else {
+            // partial e.g. /jsp ho
+            // should tabcomplete to home
+            //
+            for(i in _commands) {
+                if(i.indexOf(cmdInput) == 0) {
+                    result.add(i);
+                }
+            }
+        }
     }
-  }
-  return result;
+    return result;
 };
 module.exports = __onTabCompleteJSP;
-
-
 'use strict';
 var tabCompleteJSP = require('tabcomplete-jsp'),
-  isJavaObject = require('java-utils').isJavaObject;
-
+    isJavaObject = require('java-utils').isJavaObject;
 /*
   Tab Completion of the /js and /jsp commands
 */
-var _javaLangObjectMethods = [
-  'equals'
-  ,'getClass'
-  ,'class'
-  ,'getClass'
-  ,'hashCode'
-  ,'notify'
-  ,'notifyAll'
-  ,'toString'
-  ,'wait'
-  ,'clone'
-  ,'finalize'
-];
-
-var _getProperties = function( o ) {
-  var result = [], 
-    i,
-    j,
-    isObjectMethod,
-    propValue,
-    typeofProperty;
-
-  if ( isJavaObject( o ) ) {
-    /*
-     fix for issue #115 - java objects are not iterable
-     see: http://mail.openjdk.java.net/pipermail/nashorn-dev/2014-March/002790.html
-     */
-    if ( typeof Object.bindProperties === 'function' ) { 
-      var placeholder = {};
-      Object.bindProperties(placeholder, o);
-      o = placeholder;
-    }
-    propertyLoop:
-    for ( i in o ) {
-      //
-      // don't include standard Object methods
-      //
-      isObjectMethod = false;
-      for ( j = 0; j < _javaLangObjectMethods.length; j++ ) {
-        if ( _javaLangObjectMethods[j] == i ) {
-          continue propertyLoop;
+var _javaLangObjectMethods = ['equals', 'getClass', 'class', 'getClass', 'hashCode', 'notify', 'notifyAll', 'toString', 'wait', 'clone', 'finalize'];
+var _getProperties = function(o) {
+    var result = [],
+        i,
+        j,
+        isObjectMethod,
+        propValue,
+        typeofProperty;
+    if(isJavaObject(o)) {
+        /*
+         fix for issue #115 - java objects are not iterable
+         see: http://mail.openjdk.java.net/pipermail/nashorn-dev/2014-March/002790.html
+         */
+        if(typeof Object.bindProperties === 'function') {
+            var placeholder = {};
+            Object.bindProperties(placeholder, o);
+            o = placeholder;
         }
-      }
-      typeofProperty = null;
-      try { 
-	propValue = o[i];
-        typeofProperty = typeof propValue;
-      } catch( e ) {
-        if ( e.message == 'java.lang.IllegalStateException: Entity not leashed' ) {
-          // wph 20131020 fail silently for Entity leashing in craftbukkit
-        } else {
-	  // don't throw an error during tab completion just make a best effort to 
-	  // do the job.
-        }
-      }
-      if ( typeofProperty == 'function' ) {
-        result.push( i+'()' );
-      } else {
-        result.push( i );
-      }
-    }
-  } else {
-    if ( o.constructor == Array ) {
-      return result;
-    }
-    for ( i in o ) {
-      if ( i.match( /^[^_]/ ) ) {
-        if ( typeof o[i] == 'function'){ 
-          if ( ! (o[i] instanceof java.lang.Object) ) {
+        propertyLoop: for(i in o) {
+            //
+            // don't include standard Object methods
+            //
+            isObjectMethod = false;
+            for(j = 0; j < _javaLangObjectMethods.length; j++) {
+                if(_javaLangObjectMethods[j] == i) {
+                    continue propertyLoop;
+                }
+            }
+            typeofProperty = null;
             try {
-              if (o[i].constructor){} // throws error for java objects in jre7 
-              result.push(i + '()');
-            } catch (e ){
-              result.push(i);
+                propValue = o[i];
+                typeofProperty = typeof propValue;
+            } catch(e) {
+                if(e.message == 'java.lang.IllegalStateException: Entity not leashed') {
+                    // wph 20131020 fail silently for Entity leashing in craftbukkit
+                } else {
+                    // don't throw an error during tab completion just make a best effort to
+                    // do the job.
+                }
             }
-            
-          }else {
-           result.push( i );
-          }
-        } else {
-          result.push( i );
-        }
-      }
-    }
-  }
-  return result.sort();
-};
-
-var onTabCompleteJS = function( ) {
-
-  var _globalSymbols,
-    lastArg,
-    propsOfLastArg,
-    statement,
-    statementSyms,
-    lastSymbol,
-    parts, 
-    name,
-    symbol,
-    lastGoodSymbol,
-    lastArgProp,
-    i,
-    objectProps,
-    candidate,
-    re,
-    li,
-    possibleCompletion,
-    result,
-    cmdSender,
-    pluginCmd,
-    cmdArgs;
-
-  result = arguments[0];
-  cmdSender = arguments[1];
-  if (__plugin.bukkit){
-    pluginCmd = arguments[2].name;
-    cmdArgs = arguments[4];
-  }
-  if (__plugin.canary){
-    cmdArgs = arguments[2];
-    pluginCmd = arguments[3];
-  }
-  cmdArgs = Array.prototype.slice.call( cmdArgs, 0 );
-
-  if (__plugin.canary){
-    // if 1st element is 'js' then splice
-    // there's probably a better way to do this
-    if (cmdArgs[0] == 'js'){ 
-      cmdArgs = cmdArgs.slice(1);
-    }
-  }
-  if ( pluginCmd == 'jsp' ) {
-    return tabCompleteJSP( result, cmdArgs );
-  }
-
-  global.self = cmdSender; // bring in self just for autocomplete
-
-  _globalSymbols = _getProperties(global);
-
-  lastArg = cmdArgs.length ? cmdArgs[ cmdArgs.length - 1 ] + '' : null;
-  propsOfLastArg = [];
-  statement = cmdArgs.join(' ');
-  
-  statement = statement.replace(/^\s+/,'').replace(/\s+$/,'');
-  
-  if ( statement.length == 0 ) { 
-    propsOfLastArg = _globalSymbols;
-  } else {
-    if (statement.match(/\)$/)){
-      return;
-    }
-    statementSyms = statement.split(/[^\$a-zA-Z0-9_\.]/);
-
-    lastSymbol = statementSyms[statementSyms.length-1];
-    //print('DEBUG: lastSymbol=[' + lastSymbol + ']');
-    //
-    // try to complete the object ala java IDEs.
-    //
-    parts = lastSymbol.split(/\./);
-    name = parts[0];
-
-    symbol = global[name];
-
-    //print('DEBUG: name=' + name + ',symbol=' + symbol);
-
-    lastGoodSymbol = symbol;
-    if ( typeof symbol !== 'undefined' ) {
-      for ( i = 1; i < parts.length; i++ ) {
-        name = parts[i];
-        if ( !name ) { // fix issue #115
-          break;
-        }
-        try {
-          // this causes problems in jre if symbol is an enum and name is partial-match
-          symbol = symbol[name]; // this causes problem in jre8 if name is ''
-	} catch (e){
-          symbol = null;
-          break;
-        }
-        if ( typeof symbol == 'undefined' ) {
-          break;
-        }
-        // nashorn - object[missingProperty] returns null not undefined
-        if ( symbol == null ) {
-          break;
-        }
-        lastGoodSymbol = symbol;
-      }
-      if ( typeof symbol == 'undefined' || symbol === null) {
-        //
-        // look up partial matches against last good symbol
-        //
-        objectProps = _getProperties( lastGoodSymbol );
-        if ( name == '' ) {
-          // if the last symbol looks like this.. 
-          // server.
-          //
-          //print('debug:case Y1: server.');
-          
-          for ( i = 0; i < objectProps.length; i++ ) {
-            candidate = lastSymbol + objectProps[i];
-            re = new RegExp( lastSymbol + '$', 'g' );
-            propsOfLastArg.push( lastArg.replace( re, candidate ) );
-          }
-          
-        } else {
-          // it looks like this..
-          // server.wo
-          //
-          //print('debug:case Y2: server.wo');
-          
-          li = statement.lastIndexOf(name);
-          for ( i = 0; i < objectProps.length; i++ ) {
-            if ( objectProps[i].indexOf(name) == 0 ) {
-              candidate = lastSymbol.substring( 0, lastSymbol.lastIndexOf( name ) );
-              candidate = candidate + objectProps[i];
-              re = new RegExp( lastSymbol + '$', 'g' );
-              propsOfLastArg.push( lastArg.replace( re, candidate ) );
+            if(typeofProperty == 'function') {
+                result.push(i + '()');
+            } else {
+                result.push(i);
             }
-          }
         }
-      } else {
-	//print('debug:case Y3: server');
-        objectProps = _getProperties( symbol );
-        for ( i = 0; i < objectProps.length; i++ ) {
-          re = new RegExp( lastSymbol+ '$', 'g' );
-          lastArgProp = lastArg.replace( re, lastSymbol + '.' + objectProps[i] ) ;
-          lastArgProp = lastArgProp.replace(/\.\./g,'.');
-          propsOfLastArg.push( lastArgProp );
-        }
-      }
     } else {
-      for ( i = 0; i < _globalSymbols.length; i++ ) {
-        if ( _globalSymbols[i].indexOf(lastSymbol) == 0 ) {
-          possibleCompletion = _globalSymbols[i];
-          re = new RegExp( lastSymbol+ '$', 'g' );
-          propsOfLastArg.push( lastArg.replace( re, possibleCompletion ) );
+        if(o.constructor == Array) {
+            return result;
         }
-      }
+        for(i in o) {
+            if(i.match(/^[^_]/)) {
+                if(typeof o[i] == 'function') {
+                    if(!(o[i] instanceof java.lang.Object)) {
+                        try {
+                            if(o[i].constructor) {} // throws error for java objects in jre7
+                            result.push(i + '()');
+                        } catch(e) {
+                            result.push(i);
+                        }
+                    } else {
+                        result.push(i);
+                    }
+                } else {
+                    result.push(i);
+                }
+            }
+        }
     }
-  }
-  for ( i = 0; i < propsOfLastArg.length; i++ ) {
-    result.add( propsOfLastArg[i] );
-  }
-
-  delete global.self; // delete self when no longer needed for autocomplete
+    return result.sort();
+};
+var onTabCompleteJS = function() {
+    var _globalSymbols,
+        lastArg,
+        propsOfLastArg,
+        statement,
+        statementSyms,
+        lastSymbol,
+        parts,
+        name,
+        symbol,
+        lastGoodSymbol,
+        lastArgProp,
+        i,
+        objectProps,
+        candidate,
+        re,
+        li,
+        possibleCompletion,
+        result,
+        cmdSender,
+        pluginCmd,
+        cmdArgs;
+    result = arguments[0];
+    cmdSender = arguments[1];
+    if(__plugin.bukkit) {
+        pluginCmd = arguments[2].name;
+        cmdArgs = arguments[4];
+    }
+    if(__plugin.canary) {
+        cmdArgs = arguments[2];
+        pluginCmd = arguments[3];
+    }
+    cmdArgs = Array.prototype.slice.call(cmdArgs, 0);
+    if(__plugin.canary) {
+        // if 1st element is 'js' then splice
+        // there's probably a better way to do this
+        if(cmdArgs[0] == 'js') {
+            cmdArgs = cmdArgs.slice(1);
+        }
+    }
+    if(pluginCmd == 'jsp') {
+        return tabCompleteJSP(result, cmdArgs);
+    }
+    global.self = cmdSender; // bring in self just for autocomplete
+    _globalSymbols = _getProperties(global);
+    lastArg = cmdArgs.length ? cmdArgs[cmdArgs.length - 1] + '' : null;
+    propsOfLastArg = [];
+    statement = cmdArgs.join(' ');
+    statement = statement.replace(/^\s+/, '').replace(/\s+$/, '');
+    if(statement.length == 0) {
+        propsOfLastArg = _globalSymbols;
+    } else {
+        if(statement.match(/\)$/)) {
+            return;
+        }
+        statementSyms = statement.split(/[^\$a-zA-Z0-9_\.]/);
+        lastSymbol = statementSyms[statementSyms.length - 1];
+        //print('DEBUG: lastSymbol=[' + lastSymbol + ']');
+        //
+        // try to complete the object ala java IDEs.
+        //
+        parts = lastSymbol.split(/\./);
+        name = parts[0];
+        symbol = global[name];
+        //print('DEBUG: name=' + name + ',symbol=' + symbol);
+        lastGoodSymbol = symbol;
+        if(typeof symbol !== 'undefined') {
+            for(i = 1; i < parts.length; i++) {
+                name = parts[i];
+                if(!name) { // fix issue #115
+                    break;
+                }
+                try {
+                    // this causes problems in jre if symbol is an enum and name is partial-match
+                    symbol = symbol[name]; // this causes problem in jre8 if name is ''
+                } catch(e) {
+                    symbol = null;
+                    break;
+                }
+                if(typeof symbol == 'undefined') {
+                    break;
+                }
+                // nashorn - object[missingProperty] returns null not undefined
+                if(symbol == null) {
+                    break;
+                }
+                lastGoodSymbol = symbol;
+            }
+            if(typeof symbol == 'undefined' || symbol === null) {
+                //
+                // look up partial matches against last good symbol
+                //
+                objectProps = _getProperties(lastGoodSymbol);
+                if(name == '') {
+                    // if the last symbol looks like this..
+                    // server.
+                    //
+                    //print('debug:case Y1: server.');
+                    for(i = 0; i < objectProps.length; i++) {
+                        candidate = lastSymbol + objectProps[i];
+                        re = new RegExp(lastSymbol + '$', 'g');
+                        propsOfLastArg.push(lastArg.replace(re, candidate));
+                    }
+                } else {
+                    // it looks like this..
+                    // server.wo
+                    //
+                    //print('debug:case Y2: server.wo');
+                    li = statement.lastIndexOf(name);
+                    for(i = 0; i < objectProps.length; i++) {
+                        if(objectProps[i].indexOf(name) == 0) {
+                            candidate = lastSymbol.substring(0, lastSymbol.lastIndexOf(name));
+                            candidate = candidate + objectProps[i];
+                            re = new RegExp(lastSymbol + '$', 'g');
+                            propsOfLastArg.push(lastArg.replace(re, candidate));
+                        }
+                    }
+                }
+            } else {
+                //print('debug:case Y3: server');
+                objectProps = _getProperties(symbol);
+                for(i = 0; i < objectProps.length; i++) {
+                    re = new RegExp(lastSymbol + '$', 'g');
+                    lastArgProp = lastArg.replace(re, lastSymbol + '.' + objectProps[i]);
+                    lastArgProp = lastArgProp.replace(/\.\./g, '.');
+                    propsOfLastArg.push(lastArgProp);
+                }
+            }
+        } else {
+            for(i = 0; i < _globalSymbols.length; i++) {
+                if(_globalSymbols[i].indexOf(lastSymbol) == 0) {
+                    possibleCompletion = _globalSymbols[i];
+                    re = new RegExp(lastSymbol + '$', 'g');
+                    propsOfLastArg.push(lastArg.replace(re, possibleCompletion));
+                }
+            }
+        }
+    }
+    for(i = 0; i < propsOfLastArg.length; i++) {
+        result.add(propsOfLastArg[i]);
+    }
+    delete global.self; // delete self when no longer needed for autocomplete
 };
 module.exports = onTabCompleteJS;
 'use strict';
 /*global __plugin, module, server*/
 /*
  JavaScript programmers familiar with setTimeout know that it expects
- a delay in milliseconds. However, Minecraft's scheduler expects a delay in ticks 
+ a delay in milliseconds. However, Minecraft's scheduler expects a delay in ticks
  (where 1 tick = 1/20th second)
  */
 function bukkitSetTimeout(callback, delayInMillis) {
@@ -5303,18 +5079,21 @@ function bukkitSetTimeout(callback, delayInMillis) {
     var task = server.scheduler.runTaskLater(__plugin, callback, delay);
     return task;
 }
+
 function bukkitClearTimeout(task) {
     task.cancel();
 }
+
 function bukkitSetInterval(callback, intervalInMillis) {
     var delay = Math.ceil(intervalInMillis / 50);
     var task = server.scheduler.runTaskTimer(__plugin, callback, delay, delay);
     return task;
 }
+
 function bukkitClearInterval(bukkitTask) {
     bukkitTask.cancel();
 }
-module.exports = function ($) {
+module.exports = function($) {
     $.setTimeout = bukkitSetTimeout;
     $.clearTimeout = bukkitClearTimeout;
     $.setInterval = bukkitSetInterval;
@@ -5324,7 +5103,7 @@ module.exports = function ($) {
 /*global Packages, __plugin, module*/
 /*
  JavaScript programmers familiar with setTimeout know that it expects
- a delay in milliseconds. However, Minecraft's scheduler expects a delay in ticks 
+ a delay in milliseconds. However, Minecraft's scheduler expects a delay in ticks
  (where 1 tick = 1/20th second)
  */
 function canarySetTimeout(callback, delayInMillis) {
@@ -5334,10 +5113,12 @@ function canarySetTimeout(callback, delayInMillis) {
     cmTaskManager.addTask(task);
     return task;
 }
+
 function canaryClearTimeout(task) {
     var cmTaskManager = Packages.net.canarymod.tasks.ServerTaskManager;
     cmTaskManager.removeTask(task);
 }
+
 function canarySetInterval(callback, intervalInMillis) {
     var cmTaskManager = Packages.net.canarymod.tasks.ServerTaskManager;
     var delay = Math.ceil(intervalInMillis / 50);
@@ -5345,11 +5126,12 @@ function canarySetInterval(callback, intervalInMillis) {
     cmTaskManager.addTask(task);
     return task;
 }
+
 function canaryClearInterval(task) {
     var cmTaskManager = Packages.net.canarymod.tasks.ServerTaskManager;
     cmTaskManager.removeTask(task);
 }
-module.exports = function ($) {
+module.exports = function($) {
     $.setTimeout = canarySetTimeout;
     $.clearTimeout = canaryClearTimeout;
     $.setInterval = canarySetInterval;
@@ -5361,8 +5143,6 @@ var utils = require('utils'),
     blocks = require('blocks'),
     THOUSAND = 1000,
     MILLION = THOUSAND * THOUSAND;
-
-
 ## Drone Plugin
 
 The Drone is a convenience class for building.
@@ -5751,12 +5531,12 @@ arc() takes a single parameter - an object with the following named properties..
 To draw a 1/4 circle (top right quadrant only) with a radius of 10 and
 stroke width of 2 blocks ...
 
-    arc({blockType: blocks.iron, 
-         meta: 0, 
+    arc({blockType: blocks.iron,
+         meta: 0,
          radius: 10,
          strokeWidth: 2,
          quadrants: { topright: true },
-         orientation: 'vertical', 
+         orientation: 'vertical',
          stack: 1,
          fill: false
          } );
@@ -5785,13 +5565,13 @@ this
   .fwd(3)
   .bed()
   .back(3)
-```     
+```
 ### Drone.blocktype() method
 
 Creates the text out of blocks. Useful for large-scale in-game signs.
 
 #### Parameters
- 
+
  * message - The message to create - (use `\n` for newlines)
  * foregroundBlock (default: black wool) - The block to use for the foreground
  * backgroundBlock (default: none) - The block to use for the background
@@ -5814,9 +5594,9 @@ A drone can be used to copy and paste areas of the game world.
 As of January 10 2015 the copy-paste functions in Drone are no longer
 supported. Copy/Paste is:
 
-1. Difficult to do correctly in a way which works for both Minecraft 1.7 and 1.8 
+1. Difficult to do correctly in a way which works for both Minecraft 1.7 and 1.8
    due to how blocks changed in 1.8
-2. Not aligned with the purpose of ScriptCraft's Drone module which is to provide 
+2. Not aligned with the purpose of ScriptCraft's Drone module which is to provide
    a simple set of functions for scripting and in-game building.
 
 ### Drone.copy() method
@@ -5856,7 +5636,7 @@ A convenience method for building cylinders. Building begins radius blocks to th
 #### Parameters
 
  * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
- * radius 
+ * radius
  * height
 
 #### Example
@@ -5958,7 +5738,7 @@ Creates a ladder extending skyward.
 
 #### Parameters
 
- * height (optional - default 1) 
+ * height (optional - default 1)
 
 #### Example
 
@@ -5967,13 +5747,13 @@ To create a ladder extending 10 blocks high:
     var drone = new Drone(self);
     drone.ladder(10)
 
-At the in-game prompt, look at a block and then type:    
+At the in-game prompt, look at a block and then type:
 
     /js ladder(10)
 
 A ladder 10 blocks high will be created at the point you were looking at.
 
-#### Since 
+#### Since
 ##### 3.0.3
 ### Drone Movement
 
@@ -6045,7 +5825,7 @@ Creates a prism. This is useful for roofs on houses.
 
 #### Parameters
 
- * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
+ * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling.
    Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
  * width - the width of the prism
  * length - the length of the prism (will be 2 time its height)
@@ -6069,16 +5849,16 @@ rand takes either an array (if each blockid has the same chance of occurring) or
 
 place random blocks stone, mossy stone and cracked stone (each block has the same chance of being picked)
 
-    rand( [blocks.brick.stone, blocks.brick.mossy, blocks.brick.cracked ],w,d,h) 
+    rand( [blocks.brick.stone, blocks.brick.mossy, blocks.brick.cracked ],w,d,h)
 
-to place random blocks stone has a 50% chance of being picked, 
+to place random blocks stone has a 50% chance of being picked,
 
     var distribution = {};
     distribution[ blocks.brick.stone ] = 5;
     distribution[ blocks.brick.mossy ] = 3;
     distribution[ blocks.brick.cracked ] = 2;
 
-    rand( distribution, width, height, depth) 
+    rand( distribution, width, height, depth)
 
 regular stone has a 50% chance, mossy stone has a 30% chance and cracked stone has just a 20% chance of being picked.
 
@@ -6098,7 +5878,7 @@ Creates a wall sign (A sign attached to a wall)
 
 ### Drone.signpost() method
 
-Creates a free-standing signpost 
+Creates a free-standing signpost
 
 #### Parameters
 
@@ -6118,7 +5898,7 @@ Signs must use block 63 (stand-alone signs) or 68 (signs on walls)
 
 #### Parameters
 
- * message -  can be a string or an array of strings. 
+ * message -  can be a string or an array of strings.
  * block - can be 63 or 68
 
 #### Example
@@ -6140,7 +5920,7 @@ To create a free-standing sign...
 Creates a sphere.
 
 #### Parameters
- 
+
  * block - The block the sphere will be made of.
  * radius - The radius of the sphere.
 
@@ -6160,7 +5940,7 @@ server to be very busy for a couple of minutes while doing so.
 Creates an empty sphere.
 
 #### Parameters
- 
+
  * block - The block the sphere will be made of.
  * radius - The radius of the sphere.
 
@@ -6215,7 +5995,7 @@ The stairs() function will build a flight of stairs
 
 #### Parameters
 
- * blockType - should be one of the following: 
+ * blockType - should be one of the following:
 
    * blocks.stairs.oak
    * blocks.stairs.cobblestone
@@ -6235,7 +6015,7 @@ The stairs() function will build a flight of stairs
 
 To build an oak staircase 3 blocks wide and 5 blocks tall:
 
-    /js stairs(blocks.stairs.oak, 3, 5) 
+    /js stairs(blocks.stairs.oak, 3, 5)
 
 Staircases do not have any blocks beneath them.
 
@@ -6266,11 +6046,11 @@ grow.
 
 ### Drone.castle() method
 
-Creates a Castle. A castle is just a big wide fort with 4 taller forts at each corner. 
+Creates a Castle. A castle is just a big wide fort with 4 taller forts at each corner.
 See also Drone.fort() method.
 
 #### Parameters
- 
+
  * side - How many blocks wide and long the castle will be (default: 24. Must be greater than 19)
  * height - How tall the castle will be (default: 10. Must be geater than 7)
 
@@ -6342,7 +6122,7 @@ d.cottage();
 Creates a tree-lined avenue with cottages on both sides.
 
 #### Parameters
- 
+
  * numberOfCottages: The number of cottages to build in total (optional: default 6)
 
 #### Example
@@ -6366,7 +6146,7 @@ Create an animated dance floor of colored tiles some of which emit light.
 The tiles change color every second creating a strobe-lit dance-floor effect.
 See it in action here [http://www.youtube.com/watch?v=UEooBt6NTFo][ytdance]
 
-#### Parameters 
+#### Parameters
 
  * width - how wide the dancefloor should be (optional: default 5)
  * length - how long the dancefloor should be (optional: default 5)
@@ -6394,7 +6174,7 @@ d.dancefloor();
 Constructs a medieval fort.
 
 #### Parameters
- 
+
  * side - How many blocks whide and long the fort will be (default: 18 . Must be greater than 9)
  * height - How tall the fort will be (default: 6 . Must be greater than 3)
 
@@ -6518,7 +6298,7 @@ At the in-game prompt you can create a rainbow by looking at a block and typing:
 
 Alternatively you can create a new Drone object from a Player or Location object and call the rainbow() method.
 
-```javascript    
+```javascript
 var d = new Drone(player);
 d.rainbow(30);
 ```
@@ -6557,7 +6337,7 @@ To construct a spiral staircase 5 floors high made of oak...
 Constructs a mayan temple.
 
 #### Parameters
- 
+
  * side - How many blocks wide and long the temple will be (default: 20)
 
 #### Example
@@ -6579,11 +6359,11 @@ d.temple();
 ## The at Module
 
 The at module provides a single function `at()` which can be used to schedule
-repeating (or non-repeating) tasks to be done at a particular time. 
+repeating (or non-repeating) tasks to be done at a particular time.
 
 ### at() function
 
-The utils.at() function will perform a given task at a given time in the 
+The utils.at() function will perform a given task at a given time in the
 (minecraft) day.
 
 #### Parameters
@@ -6656,7 +6436,7 @@ Example....
 
 ... creates a single firework, while ....
 
-    /js firework().fwd(3).times(5) 
+    /js firework().fwd(3).times(5)
 
 ... creates 5 fireworks in a row. Fireworks have also been added as a
 possible option for the `arrow` module. To have a firework launch
@@ -6673,8 +6453,8 @@ location. For example...
 ![firework example](img/firework.png)
 
 ## Inventory Module
-This module provides functions to add items to, remove items from and check the 
-contents of a player or NPC's inventory. 
+This module provides functions to add items to, remove items from and check the
+contents of a player or NPC's inventory.
 
 ### Usage
 The inventory module is best used in conjunction with the items module. See below for examples of usage.
@@ -6807,18 +6587,18 @@ don't try to bar themselves and each other from scripting.
 
 ## Asynchronous Input Module
 
-The `input` module provides a simple way to prompt players for input at the 
+The `input` module provides a simple way to prompt players for input at the
 in-game prompt. In JavaScript browser environments the `prompt()` function provides
 a way to block execution and ask the user for input. Execution is blocked until the user
-provides input using the modal dialog and clicks OK. Unfortunately Minecraft provides no 
-equivalent modal dialog which can be used to gather player text input. The only way to gather text 
-input from the player in Minecraft is to do so asynchronously. That is - a prompt message can be 
+provides input using the modal dialog and clicks OK. Unfortunately Minecraft provides no
+equivalent modal dialog which can be used to gather player text input. The only way to gather text
+input from the player in Minecraft is to do so asynchronously. That is - a prompt message can be
 sent to the player but the player is not obliged to provide input immediately, nor does the program
 execution block until the player does so.
 
-So ScriptCraft has no `prompt()` implementation because `prompt()` is a synchronous function and 
-Minecraft's API provides no equivalent functions or classes which can be used to implement this synchronously. 
-The Minecraft API does however have a 'Conversation' API which allows for prompting of the player and asynchronously gathering text input from the player. 
+So ScriptCraft has no `prompt()` implementation because `prompt()` is a synchronous function and
+Minecraft's API provides no equivalent functions or classes which can be used to implement this synchronously.
+The Minecraft API does however have a 'Conversation' API which allows for prompting of the player and asynchronously gathering text input from the player.
 
 This new `input()` function is best illustrated by example. The following code is for a number-guessing game:
 
@@ -6830,7 +6610,7 @@ exports.numberguess = function(player){
     if ( guess == 'q'){
       return;
     }
-    if ( +guess !== randomNumber ) { 
+    if ( +guess !== randomNumber ) {
       if (+guess < randomNumber ) {
         echo( guesser, 'Too low - guess again');
       }
@@ -6845,7 +6625,7 @@ exports.numberguess = function(player){
 };
 ```
 
-The `input()` function takes 3 parameters, the player, a prompt message and a callback which will be invoked when the player has entered some text at the in-game command prompt. 
+The `input()` function takes 3 parameters, the player, a prompt message and a callback which will be invoked when the player has entered some text at the in-game command prompt.
 The callback is bound to an object which has the following properties:
 
  * sender : The player who input the text
@@ -6987,16 +6767,16 @@ present in the CraftBukkit classpath. To use this module, you should
     Craftbukkit. You can now begin using this module to send and receive
     messages to/from a Net-enabled Arduino or any other device which uses
     the [MQTT protocol][mqtt]
-  
+
     ```javascript
     var mqtt = require('sc-mqtt');
     // create a new client
     var client = mqtt.client( 'tcp://localhost:1883', 'uniqueClientId' );
-    // connect to the broker 
+    // connect to the broker
     client.connect( { keepAliveInterval: 15 } );
     //  publish a message to the broker
     client.publish( 'minecraft', 'loaded' );
-    // subscribe to messages on 'arduino' topic 
+    // subscribe to messages on 'arduino' topic
     client.subscribe( 'arduino' );
     //  do something when an incoming message arrives...
     client.onMessageArrived( function( topic, message ) {
@@ -7026,8 +6806,8 @@ existing sign in the game world.
 #### Parameters
 
  * Label : A string which will be displayed in the topmost line of the
-   sign. This label is not interactive.  
- * options : An array of strings which can be selected on the sign by 
+   sign. This label is not interactive.
+ * options : An array of strings which can be selected on the sign by
    right-clicking/interacting.
  * callback : A function which will be called whenever a player
    interacts (changes selection) on a sign. This callback in turn
@@ -7037,7 +6817,7 @@ existing sign in the game world.
    * sign : The [org.bukkit.block.Sign][buksign] which the player interacted with.
    * text : The text for the currently selected option on the sign.
    * number : The index of the currently selected option on the sign.
- 
+
  * selectedIndex : optional: A number (starting at 0) indicating which
    of the options should be selected by default. 0 is the default.
 
@@ -7050,15 +6830,15 @@ an interactive sign.
 #### Example: Create a sign which changes the time of day.
 
 ##### plugins/signs/time-of-day.js
-   
-```javascript 
+
+```javascript
 var utils = require('utils'),
     signs = require('signs');
 
 var onTimeChoice = function(event){
     var selectedIndex = event.number;
     // convert to Minecraft time 0 = Dawn, 6000 = midday, 12000 = dusk, 18000 = midnight
-    var time = selectedIndex * 6000; 
+    var time = selectedIndex * 6000;
     event.player.location.world.setTime(time);
 };
 
@@ -7066,12 +6846,12 @@ var onTimeChoice = function(event){
 var convertToTimeMenu = signs.menu('Time of Day',
     ['Dawn', 'Midday', 'Dusk', 'Midnight'],
     onTimeChoice);
-        
+
 exports.time_sign = function( player ){
     var sign = signs.getTargetedBy(player);
     if ( !sign ) {
         throw new Error('You must look at a sign');
-    } 
+    }
     convertToTimeMenu(sign);
 };
 ```
@@ -7092,12 +6872,12 @@ the entity has targeted. It is a utility function for use by plugin authors.
 
 #### Example
 
-```javascript 
+```javascript
 var signs = require('signs'),
     utils = require('utils');
 var player = utils.player('tom1234');
 var sign = signs.getTargetedBy( player );
-if ( !sign ) { 
+if ( !sign ) {
     echo( player, 'Not looking at a sign');
 }
 ```
@@ -7153,7 +6933,7 @@ a simpler way to play sounds. All of the org.bukkit.Sound Enum values are attach
     sounds.play( bukkit.sound.VILLAGER_NO , self );       // same as previous statement
 
 The play() function takes either a Location object or any object which has a location.
-The volume parameter is in the range 0 to 1 and the pitch parameter is in the range 0 to 4.    
+The volume parameter is in the range 0 to 1 and the pitch parameter is in the range 0 to 4.
 
 In addition, a play function is provided for each possible sound using the following rules:
 
@@ -7188,7 +6968,7 @@ var entities = require('entities'),
 ...
 var spawnLocation = world.spawnLocation;
 spawn(entities.polar_bear(), spawnLocation);
-``` 
+```
 
 This module is in turn used by the Drone's `spawn()` method and the `jsp spawn` command.
 String class extensions
@@ -7230,11 +7010,11 @@ Example
     /js var boldGoldText = "Hello World".bold().gold();
     /js echo(self, boldGoldText );
 
-<p style="color:gold;font-weight:bold">Hello World</p>    
+<p style="color:gold;font-weight:bold">Hello World</p>
 
 ## Teleport Module
 
-This module provides a function to teleport entities (Players or NPCs). 
+This module provides a function to teleport entities (Players or NPCs).
 
 ### Parameters
 
@@ -7242,14 +7022,14 @@ This module provides a function to teleport entities (Players or NPCs).
  * destination - The location to which they should be teleported. If not of type Location but is a Player, Block or any
    object which has a `location` property then that works too. If of type String, then it's assumed that the destination is the player with that name.
 
-### Example 
+### Example
 
 The following code will teleport each player back to their spawn position.
 
 ```javascript
 var teleport = require('teleport'),
     utils = require('utils'),
-    players = utils.players(), 
+    players = utils.players(),
     i = 0;
 for ( ; i < players.length; i++ ) {
   teleport( players[i], players[i].spawnPosition );
@@ -7260,7 +7040,7 @@ The following code will teleport 'tom' to 'jane's location.
 
 ```javascript
 var teleport = require('teleport');
-teleport('tom' , 'jane'); 
+teleport('tom' , 'jane');
 ```
 ## Utilities Module
 
@@ -7279,7 +7059,7 @@ String, then it tries to find the player with that name.
 #### Parameters
 
  * playerName : A String or Player object. If no parameter is provided
-   then player() will try to return the `self` variable . It is 
+   then player() will try to return the `self` variable . It is
    strongly recommended to provide a parameter.
 
 #### Example
@@ -7297,7 +7077,7 @@ if ( player ) {
 
 [bkpl]: http://jd.bukkit.org/dev/apidocs/org/bukkit/entity/Player.html
 [cmpl]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/entity/living/humanoid/Player.html
-[cmloc]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/world/position/Location.html 
+[cmloc]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/world/position/Location.html
 [bkloc]: http://jd.bukkit.org/dev/apidocs/org/bukkit/Location.html
 
 ### utils.world( worldName ) function
@@ -7323,13 +7103,13 @@ utils.locationToJSON() returns a [Location][cmloc] object in JSON form...
 This can be useful if you write a plugin that needs to store location data since bukkit's Location object is a Java object which cannot be serialized to JSON by default.
 
 #### Parameters
- 
+
  * location: An object of type [Location][cmloc]
 
 #### Returns
 
 A JSON object in the above form.
- 
+
 ### utils.locationToString() function
 
 The utils.locationToString() function returns a
@@ -7342,7 +7122,7 @@ keys in a lookup table.
 
 #### Example
 
-```javascript    
+```javascript
 var utils = require('utils');
 ...
 var key = utils.locationToString(player.location);
@@ -7394,8 +7174,8 @@ var targetPos = utils.getMousePos(playerName);
 if (targetPos){
   if (__plugin.canary){
     targetPos.world.makeLightningBolt(targetPos);
-  }  
-  if (__plugin.bukkit){ 
+  }
+  if (__plugin.bukkit){
     targetPos.world.strikeLightning(targetPos);
   }
 }
@@ -7433,8 +7213,8 @@ processing of arrays.
  * delayInMilliseconds (optional, numeric) : If a delay is specified then the processing will be scheduled so that
    each item will be processed in turn with a delay between the completion of each
    item and the start of the next. This is recommended for any CPU-intensive process.
- * onDone (optional, function) : A function to be executed when all processing 
-   is complete. This parameter is only used when the processing is delayed. (It's optional even if a 
+ * onDone (optional, function) : A function to be executed when all processing
+   is complete. This parameter is only used when the processing is delayed. (It's optional even if a
    delay parameter is supplied).
 
 If called with a delay parameter then foreach() will return
@@ -7450,7 +7230,7 @@ The following example illustrates how to use foreach for immediate processing of
 ```javascript
 var utils = require('utils');
 var players = utils.players();
-utils.foreach (players, function( player ) { 
+utils.foreach (players, function( player ) {
   echo( player , 'Hi ' + player);
 });
 ```
@@ -7468,7 +7248,7 @@ function and the start of the next `next()` function.
 
 #### Parameters
 
- * next : A function which will be called if processing is to be done. 
+ * next : A function which will be called if processing is to be done.
  * hasNext : A function which is called to determine if the `next`
    callback should be invoked. This should return a boolean value -
    true if the `next` function should be called (processing is not
@@ -7483,7 +7263,7 @@ See the source code to utils.foreach for an example of how utils.nicely is used.
 ### utils.time( world ) function
 
 Returns the timeofday (in minecraft ticks) for the given world. This function is necessary because
-canarymod and bukkit differ in how the timeofday is calculated. 
+canarymod and bukkit differ in how the timeofday is calculated.
 
 See http://minecraft.gamepedia.com/Day-night_cycle#Conversions
 
@@ -7515,7 +7295,7 @@ a given directory and recursiving trawling all sub-directories.
 var utils = require('utils');
 var jsFiles = utils.find('./', function(dir,name){
     return name.match(/\.js$/);
-});  
+});
 ```
 ### utils.serverAddress() function
 
@@ -7530,12 +7310,12 @@ console.log(serverAddress);
 
 Converts Java collection objects to type JavaScript array so they can avail of
 all of JavaScript's Array goodness.
- 
+
 #### Example
 
     var utils = require('utils');
     var worlds = utils.array(server.worldManager.getAllWorlds());
-    
+
 ### utils.players() function
 
 This function returns a javascript array of all online players on the
@@ -7560,35 +7340,35 @@ This function returns a numeric value for a given player statistic.
 #### Parameters
 
  * Player - The player object (optional - if only the statistic name parameter is provided then the statistic object is returned)
- * Statistic - A string whose value should be one of the following (CanaryMod) 
-   * ANIMALSBRED 
-   * BOATONECM 
-   * CLIMBONECM 
-   * CROUCHONECM 
-   * DAMAGEDEALT 
-   * DAMAGETAKEN 
-   * DEATHS 
-   * DRIVEONECM 
-   * DROP 
-   * FALLONECM 
-   * FISHCAUGHT 
-   * FLYONECM 
-   * HORSEONECM 
-   * JUMP 
-   * JUNKFISHED 
-   * LEAVEGAME 
-   * MINECARTONECM 
-   * MOBKILLS 
-   * PIGONECM 
-   * PLAYERKILLS 
-   * PLAYONEMINUTE 
-   * SPRINTONECM 
-   * SWIMONECM 
-   * TALKEDTOVILLAGER 
-   * TIMESINCEDEATH 
-   * TRADEDWITHVILLAGER 
-   * TREASUREFISHED 
-   * WALKONECM 
+ * Statistic - A string whose value should be one of the following (CanaryMod)
+   * ANIMALSBRED
+   * BOATONECM
+   * CLIMBONECM
+   * CROUCHONECM
+   * DAMAGEDEALT
+   * DAMAGETAKEN
+   * DEATHS
+   * DRIVEONECM
+   * DROP
+   * FALLONECM
+   * FISHCAUGHT
+   * FLYONECM
+   * HORSEONECM
+   * JUMP
+   * JUNKFISHED
+   * LEAVEGAME
+   * MINECARTONECM
+   * MOBKILLS
+   * PIGONECM
+   * PLAYERKILLS
+   * PLAYONEMINUTE
+   * SPRINTONECM
+   * SWIMONECM
+   * TALKEDTOVILLAGER
+   * TIMESINCEDEATH
+   * TRADEDWITHVILLAGER
+   * TREASUREFISHED
+   * WALKONECM
 
 See [CanaryMod's Statistic][cmstat] class for an up-to-date list of possible stat values
 
@@ -7620,16 +7400,16 @@ Watches for changes to the given file or directory and calls the function provid
 when the file changes.
 
 #### Parameters
- 
+
  * File - the file to watch (can be a file or directory)
- * Callback - The callback to invoke when the file has changed. The callback takes the 
+ * Callback - The callback to invoke when the file has changed. The callback takes the
    changed file as a parameter.
 
 #### Example
 
 ```javascript
 var watcher = require('watcher');
-watcher.watchFile( 'test.txt', function( file ) { 
+watcher.watchFile( 'test.txt', function( file ) {
   console.log( file + ' has changed');
 });
 ```
@@ -7640,18 +7420,18 @@ when the directory changes. It works by calling watchFile/watchDir for each
 file/subdirectory.
 
 #### Parameters
- 
+
  * Dir - the file to watch (can be a file or directory)
- * Callback - The callback to invoke when the directory has changed. 
-              The callback takes the changed file as a parameter. 
-              For each change inside the directory the callback will also 
+ * Callback - The callback to invoke when the directory has changed.
+              The callback takes the changed file as a parameter.
+              For each change inside the directory the callback will also
               be called.
 
 #### Example
 
 ```javascript
 var watcher = require('watcher');
-watcher.watchDir( 'players/_ial', function( dir ) { 
+watcher.watchDir( 'players/_ial', function( dir ) {
   console.log( dir + ' has changed');
 });
 ```
@@ -7675,7 +7455,7 @@ are also "unwatched"
 var watcher = require('watcher');
 watcher.unwatchDir ('players/_ial');
 ```
-Would cause also 
+Would cause also
 ```javascript
 watcher.unwatchFile (file);
 ```
@@ -7685,21 +7465,21 @@ for each file inside directory (and unwatchDir for each directory inside it)
 
 A simple minecraft plugin. The most basic module.
 
-### Usage: 
+### Usage:
 
 At the in-game prompt type ...
-  
+
     /js hello(self)
 
 ... and a message `Hello {player-name}` will appear (where
   {player-name} is replaced by your own name).
-  
+
 This example demonstrates the basics of adding new functionality which
 is only usable by server operators or users with the
 scriptcraft.evaluate permission. By default, only ops are granted this
 permission.
-  
-The `hello` function below is only usable by players with the scriptcraft.evaluate 
+
+The `hello` function below is only usable by players with the scriptcraft.evaluate
 permission since it relies on the `/js` command to execute.
 
     exports.hello = function(player){
@@ -7710,22 +7490,22 @@ permission since it relies on the `/js` command to execute.
 
 A simple minecraft plugin. Commands for other players.
 
-### Usage: 
+### Usage:
 
 At the in-game prompt type ...
-  
+
     /jsp hello
 
-... and a message `Hello {player-name}` will appear (where {player-name} is 
+... and a message `Hello {player-name}` will appear (where {player-name} is
 replaced by your own name).
-  
+
 This example demonstrates the basics of adding new functionality
 which is usable all players or those with the scriptcraft.proxy
 permission.  By default, all players are granted this permission.
-  
+
 This differs from example 1 in that a new 'jsp ' command extension
 is defined. Since all players can use the `jsp` command, all players
-can use the new extension. Unlike the previous example, the `jsp hello` 
+can use the new extension. Unlike the previous example, the `jsp hello`
 command does not evaluate javascript code so this command is much more secure.
 
     command('hello', function (parameters, player) {
@@ -7736,21 +7516,21 @@ command does not evaluate javascript code so this command is much more secure.
 
 A simple minecraft plugin. Commands for operators only.
 
-### Usage: 
+### Usage:
 
 At the in-game prompt type ...
-  
+
     /jsp op-hello
 
-... and a message `Hello {player-name}` will appear (where {player-name} is 
+... and a message `Hello {player-name}` will appear (where {player-name} is
 replaced by your own name).
-  
+
 This example demonstrates the basics of adding new functionality
 which is usable all players or those with the scriptcraft.proxy
 permission. By default, all players are granted this permission. In
 this command though, the function checks to see if the player is an
 operator and if they aren't will return immediately.
- 
+
 This differs from example 2 in that the function will only print a
 message for operators.
 
@@ -7765,19 +7545,19 @@ message for operators.
 
 A simple minecraft plugin. Handling parameters.
 
-### Usage: 
+### Usage:
 
 At the in-game prompt type ...
-  
+
     /jsp hello-params Hi
-    /jsp hello-params Saludos 
+    /jsp hello-params Saludos
     /jsp hello-params Greetings
 
 ... and a message `Hi {player-name}` or `Saludos {player-name}` etc
 will appear (where {player-name} is replaced by your own name).
-  
+
 This example demonstrates adding and using parameters in commands.
-  
+
 This differs from example 3 in that the greeting can be changed from
 a fixed 'Hello ' to anything you like by passing a parameter.
 
@@ -7790,15 +7570,15 @@ a fixed 'Hello ' to anything you like by passing a parameter.
 
 A simple minecraft plugin. Using Modules.
 
-### Usage: 
+### Usage:
 
 At the in-game prompt type ...
-  
+
     /jsp hello-module
 
-... and a message `Hello {player-name}` will appear (where {player-name} is 
+... and a message `Hello {player-name}` will appear (where {player-name} is
 replaced by your own name).
-  
+
 This example demonstrates the use of modules. In
 example-1-hello-module.js we created a new javascript module. In
 this example, we use that module...
@@ -7811,7 +7591,7 @@ this example, we use that module...
    directory.
 
  * We assign the loaded module to a variable (`greetings`) and then
-   use the module's `hello` method to display the message. 
+   use the module's `hello` method to display the message.
 
 Source Code...
 
@@ -7824,26 +7604,26 @@ Source Code...
 
 A simple minecraft plugin. Finding players by name.
 
-### Usage: 
+### Usage:
 
 At the in-game prompt type ...
-  
+
     /jsp hello-byname {player-name}
 
 ... substituting {player-name} with the name of a player currently
 online and a message `Hello ...` will be sent to the named
 player.
-  
+
 This example builds on example-5 and also introduces a new concept -
 use of shared modules. That is : modules which are not specific to
 any one plugin or set of plugins but which can be used by all
 plugins. Shared modules should be placed in the
 `scriptcraft/modules` directory.
-  
+
  * The utils module is used. Because the 'utils' module is
    located in the modules folder we don't need to specify an exact
-   path, just 'utils' will do. 
- 
+   path, just 'utils' will do.
+
  * The `utils.player()` function is used to obtain a player object
    matching the player name. Once a player object is obtained, a
    message is sent to that player.
@@ -7920,15 +7700,15 @@ Minecraft. You can see [a full list of events here][cmEvtList].
 [cmEvtList]: #events-helper-module-canary-version
 ## Arrows Plugin
 
-The arrows mod adds fancy arrows to the game. Arrows which ... 
+The arrows mod adds fancy arrows to the game. Arrows which ...
 
  * Launch fireworks.
- * Explode on impact. 
+ * Explode on impact.
  * Force Lightning to strike where they land.
  * Teleport the player to the landing spot.
  * Spawn Trees at the landing spot.
 
-### Usage: 
+### Usage:
 
   * `/js arrows.firework(self)` - A firework launches where the the arrow lands.
   * `/js arrows.lightning(self)` - lightning strikes where the arrow lands.
@@ -7941,7 +7721,7 @@ The arrows mod adds fancy arrows to the game. Arrows which ...
 All of the above functions can take an optional player object or name
 as a parameter. For example: `/js arrows.explosive('player23')` makes
 player23's arrows explosive.
- 
+
 ## Spawn Plugin
 
 Allows in-game operators to easily spawn creatures at current location.
@@ -7982,10 +7762,10 @@ it called `cw` (short for set Clock and Weather) which when invoked...
     /time set 4000
     /weather sun
 
-Aliases can use paramters as above. On the right hand side of the `=`, the 
+Aliases can use paramters as above. On the right hand side of the `=`, the
 `{1}` refers to the first parameter provided with the `cw` alias, `{2}`
-refers to the second parameter and so on. So `cw 4000 sun` is converted to 
-`time set 4000` and `weather sun`. 
+refers to the second parameter and so on. So `cw 4000 sun` is converted to
+`time set 4000` and `weather sun`.
 
 To set a global command alias usable by all (only operators can create
 such an alias)...
@@ -8020,7 +7800,7 @@ commands as extensions to the jsp command. For example, to create a
 new simple command for use by all players...
 
     /js command('hi', function(args,player){ echo( player, 'Hi ' + player.name); });
-  
+
 ... then players can use this command by typing...
 
     /jsp hi
@@ -8062,7 +7842,7 @@ of the ScriptCraft core.
 
 ...Displays a greeting to any player who issues the `/hi` command.
 
-### Example - timeofday-command.js 
+### Example - timeofday-command.js
 
     var times = {Dawn: 0, Midday: 6000, Dusk: 12000, Midnight:18000};
     commando('timeofday', function(params,player){
@@ -8095,7 +7875,7 @@ player's homes.
 This module is a good example of how to create a javascript-based
 minecraft mod which provides...
 
- * A programmatic interface (API) and 
+ * A programmatic interface (API) and
  * A command extension which uses that API to provide new functionality for players.
 
 The module uses the `plugin()` function to specify an object and
@@ -8115,7 +7895,7 @@ The `jsp home` command has the following options...
 
  * `/jsp home` ..command will return you to your home, if you have set one.
 
- * `/jsp home {player}` Will take you to the home of {player} (where 
+ * `/jsp home {player}` Will take you to the home of {player} (where
    {player} is the name of the player whose home you wish to visit.
 
  * `/jsp home delete` Deletes your home location from the location
@@ -8145,7 +7925,7 @@ The following administration options can only be used by server operators...
    the world, it simply removes the location from the database. No
    blocks are destroyed by this command.
 
-## NumberGuess mini-game: 
+## NumberGuess mini-game:
 
 ### Description
 This is a very simple number guessing game. Minecraft will ask you to
@@ -8154,7 +7934,7 @@ hight or too low when you guess wrong. The purpose of this mini-game
 code is to demonstrate use of Bukkit's Conversation API.
 
 ### Example
-    
+
     /js Game_NumberGuess.start(self)
 
 Once the game begins, guess a number by typing the `/` character
@@ -8189,7 +7969,7 @@ API][bukscore]. There are many things you'll want to consider when constructing
 your own mini-game...
 
  * Is the game itself a long-lived game - that is - should players and
-   scores be persisted (stored) between server restarts?  
+   scores be persisted (stored) between server restarts?
 
  * What should happen when a player quits the server - should this also be
    understood as quitting the mini-game?

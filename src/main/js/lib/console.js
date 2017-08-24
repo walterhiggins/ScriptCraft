@@ -37,56 +37,51 @@
  ***/
 function argsToArray(args) {
     var result = [];
-    for (var i = 0; i < args.length; i++) {
+    for(var i = 0; i < args.length; i++) {
         result.push(args[i]);
     }
     return result;
 }
+
 function consMsg(params) {
     var args = argsToArray(params);
-    if (args.length > 1) {
+    if(args.length > 1) {
         return java.lang.String.format(args[0], args.slice(1));
     } else {
         return args[0];
     }
 }
-
-module.exports = function (logger) {
-
+module.exports = function(logger) {
     function bukkitLog(level, restOfArgs) {
-        logger['log(java.util.logging.Level,java.lang.String)'](
-                java.util.logging.Level[level],
-                consMsg(restOfArgs)
-                );
+        logger['log(java.util.logging.Level,java.lang.String)'](java.util.logging.Level[level], consMsg(restOfArgs));
     }
-
-    if (__plugin.canary) {
+    if(__plugin.canary) {
         return {
-            log: function ( ) {
+            log: function() {
                 logger.info(consMsg(arguments));
             },
-            info: function ( ) {
+            info: function() {
                 logger.info(consMsg(arguments));
             },
-            warn: function ( ) {
+            warn: function() {
                 logger.warn(consMsg(arguments));
             },
-            error: function ( ) {
+            error: function() {
                 logger.error(consMsg(arguments));
             }
         };
-    } else if (__plugin.bukkit) { // TG how did we go so long with that as 'plugin'?
+    } else if(__plugin.bukkit) { // TG how did we go so long with that as 'plugin'?
         return {
-            log: function () {
+            log: function() {
                 bukkitLog('INFO', arguments);
             },
-            info: function () {
+            info: function() {
                 bukkitLog('INFO', arguments);
             },
-            warn: function ( ) {
+            warn: function() {
                 bukkitLog('WARNING', arguments);
             },
-            error: function ( ) {
+            error: function() {
                 bukkitLog('SEVERE', arguments);
             }
         };
