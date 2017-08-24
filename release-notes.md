@@ -8,6 +8,10 @@ To keep up with changes, see [Tony's blog][blogt].
 [gitchat]: https://gitter.im/walterhiggins/ScriptCraft
 [blogt]: https://tonygravagno.tumblr.com/post/164339922687/what-is-scriptcraftjs-answer-1
 
+3.2.2.5 ("Bad Zombie")-2017-08-24
+--------------------------
+Cosmetic change : All .js JavaScript files have been formatted consistently. As noted below this might not be preferable formatting for everyone, but it is completely standardized throughout the app now.
+
 3.2.2.4 ("Bad Zombie")-2017-08-23
 --------------------------
 
