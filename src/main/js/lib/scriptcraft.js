@@ -483,12 +483,12 @@
  Please refer to [Anatomy of a ScriptCraft Plugin][anatomy] for an up-to-date
  step-by-step guide to creating a plugin which uses persistence (loading and saving data).
 
- The `plugin()` function is used internally to declare a javascript module
+ The `plugin()` function is used internally to declare a JavaScript module
  whose state you want to have managed by ScriptCraft - that is - a
  Module whose state will be loaded at start up and saved at shut down.
- A plugin is just a regular javascript object whose state is managed by
- ScriptCraft.  The only member of the plugin which whose persistence is
- managed by Scriptcraft is `store` - this special member will be
+ A plugin is just a regular JavaScript object whose state is managed by
+ ScriptCraft. The only member of the plugin which whose persistence is
+ managed by ScriptCraft is `store` - this special member will be
  automatically saved at shutdown and loaded at startup by
  ScriptCraft. This makes it easier to write plugins which need to
  persist data.
@@ -544,7 +544,7 @@ function __onEnable(__engine, __plugin, __script) {
         }
         if (__plugin.canary) {
             sender.message(msg);
-        } else if (plugin.bukkit) {
+        } else if (__plugin.bukkit) {
             sender.sendMessage(msg);
         } else {
             // CORE_UNKNOWN

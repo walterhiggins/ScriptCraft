@@ -1,11 +1,38 @@
 RELEASE NOTES
 =============
 
-Visit the [Gitter Chatroom](https://gitter.im/walterhiggins/ScriptCraft?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) to discuss this plugin.
+Visit the [Gitter Chatroom][gitchat] to discuss this plugin.
 Or visit the [ScriptCraft forum][scforum].
 To keep up with changes, see [Tony's blog][blogt].
 
+[gitchat]: https://gitter.im/walterhiggins/ScriptCraft
+[blogt]: https://tonygravagno.tumblr.com/post/164339922687/what-is-scriptcraftjs-answer-1
+
+3.2.2.4 ("Bad Zombie")-2017-08-23
+--------------------------
+
+1. Fixed issue where install/startup failed due to variable issue.
+1. Fixed regression where plugins folder got new folder "ScriptCraftJS" rather than long-time documented "scriptcraft". (Would be nice not to be forced to stay this way, see resources/plugin.yml)
+1. This release is now Nashorn-specific and will not work with Rhino, JDK 1.7, or Canary.
+1. New issue has somehow been introduced where documentation includes the full scriptcraft.js file.
+1. Coding and building with NetBeans 8.2, I've re-fit the IDE with a new JavaScript code formatter that doesn't destroy the in-line comments. The next builds will have a lot of code formatting differences. These will be appealing for some, disagreeable to others, but I believe the code base is better with frequent formatting, we can discuss the nuances of style sometime later.
+
+Status: At least it installs and runs. This release can be installed in a new environment:
+
+1. You must be running Java 1.8 with Spigot 1.12.1.
+1. **Get a full backup!** This alpha build is not for someone who is worried about a damaged world or lost scripts.
+1. Stop your server
+1. Delete plugins/scripcraft folder
+1. Delete root /scriptcraft folder
+1. Overwrite plugins/scriptcraft.jar with the file from this repo: /latest_jar/scriptcraft.jar
+1. Start your server
+1. Watch the console and please copy/paste/report issues.
+1. In the console, try "js 2+2". If the console window shows "4", it's working. Go ahead and see what breaks.
+
+
+--------------------------
 2017 08 23
+--------------------------
 
 1. Spaces added in code formatting cause doc generation to fail. generateTOC.js now allows 0+ spaces in code comments for ## and ### doc headers.
 1. Corrected a few more typos, 'minecraft' to 'Minecraft', and a few ScriptCraft to ScriptCraftJS.
@@ -17,7 +44,7 @@ To keep up with changes, see [Tony's blog][blogt].
 1. Started new Installation.md with more up-to-date notes on initial installation.
 1. Started new Dependencies.md which explains the history of Canary, Bukkit, Spigot, etc and why we do or do not support various packages. (File is not yet included in this build.)
 
-FIX: Issue with variable causes install to fail. **Do not install.**
+~~FIX: Issue with variable causes install to fail. **Do not install.**~~
 
 3.2.2bz Release (2017 08 18)
 --------------------------

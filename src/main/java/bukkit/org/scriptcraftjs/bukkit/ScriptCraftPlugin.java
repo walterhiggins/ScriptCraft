@@ -11,20 +11,20 @@ import javax.script.ScriptEngineManager;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import jdk.nashorn.api.scripting.NashornScriptEngine;
 
 public class ScriptCraftPlugin extends JavaPlugin implements Listener {
 
     public boolean canary = false;
     public boolean bukkit = true;
-    
+
     // right now all ops share the same JS context/scope
     // need to look at possibly having context/scope per operator
     //protected Map<CommandSender,ScriptCraftEvaluator> playerContexts = new HashMap<CommandSender,ScriptCraftEvaluator>();
     // See Example 8:
     // https://docs.oracle.com/javase/8/docs/technotes/guides/scripting/prog_guide/api.html
-    
     private String NO_JAVASCRIPT_MESSAGE = "No JavaScript Engine available. ScriptCraft will not work without JavaScript.";
-    protected ScriptEngine engine = null;
+    protected NashornScriptEngine engine = null;
 
     @Override
     public void onEnable() {
@@ -33,7 +33,7 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener {
         currentThread.setContextClassLoader(getClassLoader());
         try {
             ScriptEngineManager factory = new ScriptEngineManager();
-            this.engine = factory.getEngineByName("JavaScript");
+            this.engine = (NashornScriptEngine) factory.getEngineByName("nashorn");
             if (this.engine == null) {
                 this.getLogger().severe(NO_JAVASCRIPT_MESSAGE);
             } else {

@@ -990,12 +990,12 @@ Tony Gravagno (blog)[https://tonygravagno.tumblr.com/tagged/ScriptCraftJS)
  Please refer to [Anatomy of a ScriptCraft Plugin][anatomy] for an up-to-date
  step-by-step guide to creating a plugin which uses persistence (loading and saving data).
 
- The `plugin()` function is used internally to declare a javascript module
+ The `plugin()` function is used internally to declare a JavaScript module
  whose state you want to have managed by ScriptCraft - that is - a
  Module whose state will be loaded at start up and saved at shut down.
- A plugin is just a regular javascript object whose state is managed by
- ScriptCraft.  The only member of the plugin which whose persistence is
- managed by Scriptcraft is `store` - this special member will be
+ A plugin is just a regular JavaScript object whose state is managed by
+ ScriptCraft. The only member of the plugin which whose persistence is
+ managed by ScriptCraft is `store` - this special member will be
  automatically saved at shutdown and loaded at startup by
  ScriptCraft. This makes it easier to write plugins which need to
  persist data.
@@ -1051,7 +1051,7 @@ function __onEnable(__engine, __plugin, __script) {
         }
         if (__plugin.canary) {
             sender.message(msg);
-        } else if (plugin.bukkit) {
+        } else if (__plugin.bukkit) {
             sender.sendMessage(msg);
         } else {
             // CORE_UNKNOWN
@@ -1061,7 +1061,7 @@ function __onEnable(__engine, __plugin, __script) {
         return '' + file.getCanonicalPath().replaceAll('\\\\', '/');
     }
     /*
-     Save a javascript object to a file (saves using JSON notation)
+     Save a JavaScript object to a file (saves using JSON notation)
      */
     function _save(objToSave, filename) {
         var objectToStr = null,
@@ -1276,6 +1276,7 @@ function __onEnable(__engine, __plugin, __script) {
             } finally {
                 /*
                  wph 20140312 don't delete self on nashorn until https://bugs.openjdk.java.net/browse/JDK-8034055 is fixed
+                 tg  20170823 this was fixed in JDK v8u20, 2014, will test to verify
                  */
                 if (!nashorn) {
                     delete global.self;
@@ -1320,7 +1321,6 @@ function __onEnable(__engine, __plugin, __script) {
             jsPluginsRootDir = __script.parentFile.parentFile,
             jsPluginsRootDirName = _canonize(jsPluginsRootDir),
             unloadHandlers = [];
-
     /*
      make sure eval is present: it's present on JRE 6, 7, and 8 on Linux
      */
@@ -1329,7 +1329,6 @@ function __onEnable(__engine, __plugin, __script) {
             return __engine.eval(str);
         };
     }
-
     /*
      now that load is defined, use it to load a global config object
      */
@@ -4033,39 +4032,39 @@ The crucial difference is that the events module now has functions for each of t
  * priority - optional - see events.on() for more information.
 
 ## console global variable
- 
+
  ScriptCraft provides a `console` global variable with the followng methods...
- 
- * log()  
- * info() 
+
+ * log()
+ * info()
  * warn()
  * error()
- 
+
  The ScriptCraft console methods work like the [Web API implementation][webcons].
- 
-### Example 
- 
+
+### Example
+
  console.log('Hello %s', 'world');
- 
+
  Basic variable substitution is supported (ScriptCraft's implementation
  of console uses the Bukkit Plugin [Logger][lgr] or Canary Plugin [Logman][cmlgr] under the hood and
  uses [java.lang.String.format()][strfmt] for variable
  substitution. All output will be sent to the server console (not in-game).
- 
+
 ### Using string substitutions
- 
- ScriptCraft uses Java's [String.format()][strfmt] so any string substitution identifiers supported by 
+
+ ScriptCraft uses Java's [String.format()][strfmt] so any string substitution identifiers supported by
  `java.lang.String.format()` are supported (e.g. %s , %d etc).
- 
+
  for (var i=0; i<5; i++) {
  console.log("Hello, %s. You've called me %d times.", "Bob", i+1);
  }
- 
+
  [lgr]: http://jd.bukkit.org/beta/apidocs/org/bukkit/plugin/PluginLogger.html
  [cmlgr]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/logger/Logman.html
  [strfmt]: http://docs.oracle.com/javase/6/docs/api/java/lang/String.html#format(java.lang.String, java.lang.Object...)
  [webcons]: https://developer.mozilla.org/en-US/docs/Web/API/console
- 
+
  ***/
 function argsToArray(args) {
     var result = [];
@@ -4107,7 +4106,7 @@ module.exports = function (logger) {
                 logger.error(consMsg(arguments));
             }
         };
-    } else if (plugin.bukkit) {
+    } else if (__plugin.bukkit) { // TG how did we go so long with that as 'plugin'?
         return {
             log: function () {
                 bukkitLog('INFO', arguments);
@@ -4388,7 +4387,7 @@ module.exports = function ($) {
 
     return function unitTest(console) {
         /*
-         sanity tests 
+         sanity tests
          */
         $.setTimeout(function () {
             console.log('js-patch setTimeout() test complete');

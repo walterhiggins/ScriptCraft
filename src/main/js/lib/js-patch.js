@@ -56,7 +56,7 @@ module.exports = function ($) {
 
     return function unitTest(console) {
         /*
-         sanity tests 
+         sanity tests
          */
         $.setTimeout(function () {
             console.log('js-patch setTimeout() test complete');
