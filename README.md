@@ -1,12 +1,18 @@
 # ScriptCraft - Modding Minecraft with JavaScript
 
-Branch ~~"Anxious-Villager"~~ "Bad-Zombie" is the first of several v3.2+ catch-up branches intended to move forward from production version 3.2.0 from 2016. Watch the branch updates here for details of changes. (Anxious-Villager got broken in the repo...)
+Branch ~~"Anxious-Villager"~~ "Bad-Zombie" is the general working name of the first of several v3.2+ catch-up branches intended to move forward from production version 3.2.0 from 2016. Watch the branch updates here for details of changes. While the branch remains "Bad Zombie", the point-releases are moving through 3.2.2.X. When this release goes production after beta and adequate feedback, this will become the new v3.2.3.
 
-### This is NOT a production release and should NOT be installed #
+### This is NOT a production release #
 
-Please post all ScriptCraft issues to the [official repo][repo]
+Please post all issues with the production ScriptCraft release to the [official repo][repo]
+
+However this release is now alpha quality and may be installed in test environments.
+**Please do not run on a production server yet.**
+If you do install and run this, please post all feedback to the [Issue tracker here][tgtracker].
 
 [repo]: https://github.com/walterhiggins/ScriptCraft/issues
+[tgtracker]: https://github.com/TonyGravagno/ScriptCraft/issues
+[scforum]: https://groups.google.com/forum/?fromgroups=#!forum/scriptcraft---scripting-minecraft
 
 Visit the [Gitter Chatroom](https://gitter.im/walterhiggins/ScriptCraft?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) to discuss this plugin.
 Or visit the [ScriptCraft forum][scforum].
@@ -106,7 +112,7 @@ Follow these steps to download and install SpigotMC v1.12.1+.
 
 1. Download Spigot's [BuildTools.jar][spigotdl]
 2. Save the BuildTools.jar file to a new directory called spigotmc.
-3. Open a terminal (Mac and Linux) or command prompt (windows) window and type `java -jar BuildTools.jar`. This will kick off a long series of commands to "build" SpigotMC.
+3. Open a terminal (Mac and Linux) or command prompt (Windows) window and type `java -jar BuildTools.jar`. This will kick off a long series of commands to "build" SpigotMC.
 4. When the build is done, there will be a new file beginning with `spigot` and ending in `.jar` in the spigotmc directory. Run this file by typing `java -jar spigot.jar` (it might not be that exact name - you can list files in the directory by typing `dir` (Windows) or `ls` (Mac and Linux).
 5. The server will start up then shut down very shortly afterwards. You'll need to edit a file called `eula.txt` - change `eula=false` to `eula=true` and save the file.
 6. Run the `java -jar spigot.jar` command again - this time the server will start up. Shut it down by typing `stop` at the server prompt.
@@ -115,8 +121,8 @@ Follow these steps to download and install SpigotMC v1.12.1+.
 
 Follow these steps to download and install ScriptCraft.
 
-1. Download the [scriptcraft.jar][dl] plugin and save it to the `plugins` directory and restart the server by typing `java -jar spigot.jar`.
-2. At the server prompt type `js 1 + 1` and hit enter. The result `2` should be displayed.
+1. Download the [scriptcraft.jar][dl] plugin. Save it to the `plugins` directory. Restart the server by typing `java -jar spigot.jar`.
+2. At the server prompt type `js 1 + 1` and hit enter. The result `"2"` should be displayed.
 
 Congratulations - you've just installed your Custom Minecraft Server and are ready to begin writing your first mod!
 
@@ -178,7 +184,7 @@ ScriptCraft plugin:
 
  * `__plugin` &ndash; the ScriptCraft Plugin itself. This is a useful
    starting point for accessing other SpigotMC objects. The `__plugin`
-   object is of type [org.bukkit.plugin.Plugin][api] and all
+   object is of type [org.bukkit.plugin.Plugin][spigotapi] and all
    of its properties and methods are accessible. For example: `js
    __plugin.name` returns the plugin's name
    (JavaScript is more concise than the equivalent Java code:
@@ -191,7 +197,6 @@ ScriptCraft plugin:
    diving into the SpigotMC API.
 
 [dl]: http://scriptcraftjs.org/download/latest
-[api]: https://hub.spigotmc.org/javadocs/spigot/
 [ic]: http://canarymod.net/releases
 [spigotdl]: https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
 [cmapi]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/
@@ -262,7 +267,7 @@ To launch a container with SpigotMC and ScriptCraft you can just do
 
       docker run -p 25565:25565 -it tclavier/scriptcraft
 
-You can find all files used to build this container in github project: [docker-scriptcraft](https://github.com/tclavier/docker-scriptcraft)
+You can find all files used to build this container in github project: [docker-scriptcraft](https://github.com/tclavier/docker-scriptcraft) )( At this time that container includes an older version of Spigot 1.11 and ScriptCraft 3.2.1. The current platform is v1.12.1 with v3.2.2.X ("Bad Zombie").
 
 
 [wb]: https://github.com/cacciatc/wolfbot
