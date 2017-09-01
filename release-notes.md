@@ -8,17 +8,32 @@ To keep up with changes, see [Tony's blog][blogt].
 [gitchat]: https://gitter.im/walterhiggins/ScriptCraft
 [blogt]: https://tonygravagno.tumblr.com/post/164339922687/what-is-scriptcraftjs-answer-1
 
+
+3.2.2.6 ("Bad Zombie")-2017-09-01
+---------------------------------
+
+1. Added/updated **many** documentation pages.
+    * Installation.md
+    * UNInstallation.md
+    * Help.md
+    * StartStop.md
+    * Permissions.md
+1. Removed startup messages added for testing.
+1. Changed messages in scripts from "not Yet supported for Canary" to simply "not supported for Canary" ... if it's not supported now for Canary then it will not be since support for Canary will be removed in v4.0.
+1. Fixed issue where script formatting broke generated documentation.
+
 3.2.2.5 ("Bad Zombie")-2017-08-24
---------------------------
+---------------------------------
+
 Cosmetic change : All .js JavaScript files have been formatted consistently. As noted below this might not be preferable formatting for everyone, but it is completely standardized throughout the app now.
 
 3.2.2.4 ("Bad Zombie")-2017-08-23
---------------------------
+---------------------------------
 
 1. Fixed issue where install/startup failed due to variable issue.
 1. Fixed regression where plugins folder got new folder "ScriptCraftJS" rather than long-time documented "scriptcraft". (Would be nice not to be forced to stay this way, see resources/plugin.yml)
 1. This release is now Nashorn-specific and will not work with Rhino, JDK 1.7, or Canary.
-1. New issue has somehow been introduced where documentation includes the full scriptcraft.js file.
+1. ~~New issue has somehow been introduced where documentation includes the full scriptcraft.js file.~~
 1. Coding and building with NetBeans 8.2, I've re-fit the IDE with a new JavaScript code formatter that doesn't destroy the in-line comments. The next builds will have a lot of code formatting differences. These will be appealing for some, disagreeable to others, but I believe the code base is better with frequent formatting, we can discuss the nuances of style sometime later.
 
 Status: At least it installs and runs. This release can be installed in a new environment:
@@ -33,10 +48,8 @@ Status: At least it installs and runs. This release can be installed in a new en
 1. Watch the console and please copy/paste/report issues.
 1. In the console, try "js 2+2". If the console window shows "4", it's working. Go ahead and see what breaks.
 
-
---------------------------
-2017 08 23
---------------------------
+3.2.2bz Release (2017 08 23)
+----------------------------
 
 1. Spaces added in code formatting cause doc generation to fail. generateTOC.js now allows 0+ spaces in code comments for ## and ### doc headers.
 1. Corrected a few more typos, 'minecraft' to 'Minecraft', and a few ScriptCraft to ScriptCraftJS.
@@ -52,6 +65,7 @@ Status: At least it installs and runs. This release can be installed in a new en
 
 3.2.2bz Release (2017 08 18)
 --------------------------
+
 Work in Progress : ~~"Anxious-Villager"~~ "Bad-Zombie"
 (Not for beta/production use!)
 **This build has not been run in even a test environment yet!**

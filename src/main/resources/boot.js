@@ -2,6 +2,7 @@
  This file is the first and only file executed directly from the Java Plugin.
  */
 var __scboot = null;
+// This is global
 var CORE_UNKNOWN = 'Unrecognized Minecraft core. Bukkit/Spiggot and Canary are supported.';
 /*
  *  The anonymous function below encompasses the entire file.
@@ -100,10 +101,8 @@ var CORE_UNKNOWN = 'Unrecognized Minecraft core. Bukkit/Spiggot and Canary are s
                 logger.info(CORE_UNKNOWN);
             }
         }
-        logger.info("Going to plugin.saveDefaultConfig()");
         if(plugin.bukkit) {
             plugin.saveDefaultConfig();
-            logger.info("Back from plugin.saveDefaultConfig()");
         }
         try {
             // attempt to read the file /scriptcraft/lib/scriptcraft.js into
@@ -111,16 +110,12 @@ var CORE_UNKNOWN = 'Unrecognized Minecraft core. Bukkit/Spiggot and Canary are s
             // here as though it's right in this same file. It is because it's all
             // in the currently executing engine.
             // If it does not exist an error will be thrown.
-            logger.info("attempt to read the file /scriptcraft/lib/scriptcraft.js");
             engine.eval(new FileReader(initScriptFile));
-            logger.info("success");
             // If we're here, file exists and has been loaded.
             // Continue handling the Java plugin onEnable method by invoking the
             // __onEnable function. That executes a lot of initialization code and
             // defines many common functions used throughout ScriptCraft.
-            logger.info("set __onEnable(engine, plugin, initScriptFile)");
             __onEnable(engine, plugin, initScriptFile);
-            logger.info("success");
             // When done, fall back through here and exit, OnEnable has been handled.
         } catch(e) {
             var msg = 'Error evaluating ' + initScriptFile + ': ' + e;

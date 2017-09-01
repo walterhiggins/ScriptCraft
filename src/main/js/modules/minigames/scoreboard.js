@@ -9,7 +9,7 @@ if(__plugin.canary) {
     var Canary = Packages.net.canarymod.Canary;
     sb = Canary.scoreboards().getScoreboard();
 } else {
-    console.warn('Scoreboard not yet supported in CraftBukkit');
+    console.warn('Scoreboard not yet supported in CraftBukkit or Spigot');
     return;
 }
 

@@ -513,14 +513,13 @@
 
  [anatomy]: ./Anatomy-of-a-Plugin.md
 
- ***/
+***/
 /*
  wph 20130124 - make self, plugin and server public - these are far more useful now that tab-complete works.
  */
 var global = this;
 var server;
 global.nashorn = typeof Java !== 'undefined';
-var CORE_UNKNOWN = 'Unrecognized Minecraft core. Bukkit/Spiggot and Canary are supported.';
 /*
  private implementation
  */
@@ -548,7 +547,7 @@ function __onEnable(__engine, __plugin, __script) {
         } else if(__plugin.bukkit) {
             sender.sendMessage(msg);
         } else {
-            // CORE_UNKNOWN
+            logger.info(CORE_UNKNOWN);
         }
     } // end echo()
     function _canonize(file) {
@@ -654,7 +653,7 @@ function __onEnable(__engine, __plugin, __script) {
         } else if(__plugin.bukkit) {
             return sender.op;
         } else {
-            // CORE_UNKNOWN
+            logger.info(CORE_UNKNOWN);
         }
     }
 
@@ -672,7 +671,7 @@ function __onEnable(__engine, __plugin, __script) {
             server.scheduler.cancelTasks(__plugin);
             __plugin.pluginLoader.enablePlugin(__plugin);
         } else {
-            // CORE_UNKNOWN
+            logger.info(CORE_UNKNOWN);
         }
     } // end _refresh()
     function _onDisable(evt) {
@@ -719,7 +718,7 @@ function __onEnable(__engine, __plugin, __script) {
                 jsArgs.push('' + args[i]);
             }
         } else {
-            // CORE_UNKNOWN
+            logger.info(CORE_UNKNOWN);
         }
         result = false;
         if(cmdName == 'js') {
@@ -787,7 +786,7 @@ function __onEnable(__engine, __plugin, __script) {
         server = Bukkit.server;
         logger = __plugin.logger;
     } else {
-        // CORE_UNKNOWN
+        logger.info(CORE_UNKNOWN);
     }
 
     function logError(msg) {
@@ -892,7 +891,7 @@ function __onEnable(__engine, __plugin, __script) {
     } else if(__plugin.bukkit) {
         events.pluginDisable(_onDisable);
     } else {
-        //CORE_UNKNOWN
+        logger.info(CORE_UNKNOWN);
     }
     __onDisableImpl = _onDisable;
     global.__onCommand = __onCommand;

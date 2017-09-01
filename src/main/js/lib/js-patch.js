@@ -46,7 +46,7 @@ module.exports = function($) {
     } else if(__plugin.bukkit) {
         require('task-bukkit')($);
     } else {
-        // CORE_UNKNOWN
+        logger.info(CORE_UNKNOWN);
     }
     return function unitTest(console) {
         /*

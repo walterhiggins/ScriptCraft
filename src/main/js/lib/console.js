@@ -34,7 +34,7 @@
  [strfmt]: http://docs.oracle.com/javase/6/docs/api/java/lang/String.html#format(java.lang.String, java.lang.Object...)
  [webcons]: https://developer.mozilla.org/en-US/docs/Web/API/console
 
- ***/
+***/
 function argsToArray(args) {
     var result = [];
     for(var i = 0; i < args.length; i++) {
@@ -86,6 +86,6 @@ module.exports = function(logger) {
             }
         };
     } else {
-        // CORE_UNKNOWN
+        logger.info(CORE_UNKNOWN);
     }
 };

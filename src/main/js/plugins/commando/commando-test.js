@@ -3,7 +3,7 @@
   Adds a new `/js-time` command with 4 possible options: Dawn, Midday, Dusk, Midnight
 */
 if(__plugin.canary) {
-    console.warn('commando-test not yet supported in CanaryMod');
+    console.warn('commando-test not supported in CanaryMod');
     return;
 }
 var commando = require('./commando').commando,

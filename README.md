@@ -76,9 +76,9 @@ following Minecraft Server software:
 
 I recommend using SpigotMC because both CanaryMod and CraftBukkit are
 no longer being actively developed. The ScriptCraft mod also lets you
-enter javascript commands at the in-game prompt.  To bring up the
+enter JavaScript commands at the in-game prompt.  To bring up the
 in-game prompt press the `/` key then type `js ` followed by any
-javascript statement.  For example: `/js 1 + 1` will print 2.
+JavaScript statement.  For example: `/js 1 + 1` will print 2.
 
 ScriptCraft also includes many objects and functions to make building
 and modding easier using JavaScript. The JavaScript `Drone` object

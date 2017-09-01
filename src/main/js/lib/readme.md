@@ -9,5 +9,8 @@ This directory contains core ScriptCraftJS files and modules.
 
 When `require('modulename')` is called, if a file in the current working directory called 'modulename' is not found then the `lib` folder is the first location that `require()` looks for modules.
 
+See the [Help][help] page for more tips.
+
 [njsmod]: http://nodejs.org/api/modules.html
+[help]: ../../docs/Help.md
 

@@ -54,7 +54,7 @@ Drones can be created in any of the following ways...
         |
         D---->
 
-    For convenience you can use a _corner stone_ to begin building. The corner stone should be located just above ground level. If the cross-hair is point at or into ground level when you create a new Drone() with either a player or location given as a parameter, then building begins at the location the player was looking at or at the location. You can get around this by pointing at a 'corner stone' just above ground level or alternatively use the following statement...
+    For convenience you can use a _corner stone_ to begin building. The corner stone should be located just above ground level. If the cross-hair is pointed at or into ground level when you create a new Drone() with either a player or location given as a parameter, then building begins at the location the player was looking at or at the location. You can get around this by pointing at a 'corner stone' just above ground level or alternatively use the following statement...
 
         d = new Drone(self).up();
 
@@ -138,7 +138,7 @@ Another convenience method - this one creates 4 walls with no floor or ceiling.
 
 #### Example
 
-To create a stone building with the insided hollowed out 7 wide by 3 tall by 6 long...
+To create a stone building with the inside hollowed out 7 wide by 3 tall by 6 long...
 
     box0( blocks.stone, 7, 3, 6);
 

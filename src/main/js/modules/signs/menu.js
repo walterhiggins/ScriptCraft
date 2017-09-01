@@ -158,12 +158,6 @@ function signMenu(label, options, callback, selectedIndex) {
     }
     return convertToMenuSign;
 };
-/*
-if (__plugin.canary){
-  console.warn('signs/menu is not yet supported in CanaryMod');
-  return;
-}
-*/
 if(__plugin.canary) {
     events.blockRightClick(function(event) {
         var sign = hasSign(event.blockClicked);

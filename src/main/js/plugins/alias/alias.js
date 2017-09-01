@@ -209,7 +209,7 @@ var _intercept = function(msg, invoker, exec) {
   command about to be issued matches an alias.
 */
 if(__plugin.canary) {
-    console.warn('alias plugin is not yet supported in CanaryMod');
+    console.warn('alias plugin is not supported in CanaryMod');
     return;
 }
 events.playerCommandPreprocess(function(evt) {

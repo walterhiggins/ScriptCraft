@@ -77,7 +77,7 @@ global commands for a plugin, please let me know.
 
 ***/
 if(__plugin.canary) {
-    console.warn('commando plugin is not yet supported in CanaryMod');
+    console.warn('commando plugin is not supported in CanaryMod');
     return;
 }
 var commands = {};
