@@ -4,10 +4,20 @@ RELEASE NOTES
 Visit the [Gitter Chatroom][gitchat] to discuss this plugin.
 Or visit the [ScriptCraft forum][scforum].
 To keep up with changes, see [Tony's blog][blogt].
+See the new [Help][help] doc!
 
 [gitchat]: https://gitter.im/walterhiggins/ScriptCraft
 [blogt]: https://tonygravagno.tumblr.com/post/164339922687/what-is-scriptcraftjs-answer-1
+[help]: Help.md
 
+3.2.2.7 ("Bad Zombie")-2017-09-03
+---------------------------------
+
+1. More doc updates.
+1. Added support for blocking out doc text using BEGIN/END comments
+1. CanaryMod sections are no longer in docs, using above BEGIN/END, Canary will be removed in v4.
+1. Cow-Clicker from docs using above BEGIN/END, needs to be tested in Spigot for next release.
+1. Added conditionals in build.xml to skip some processing related to CanaryMod.
 
 3.2.2.6 ("Bad Zombie")-2017-09-01
 ---------------------------------

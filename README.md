@@ -1,37 +1,26 @@
 # ScriptCraft - Modding Minecraft with JavaScript
 
-Branch ~~"Anxious-Villager"~~ "Bad-Zombie" is the general working name of the first of several v3.2+ catch-up branches intended to move forward from production version 3.2.0 from 2016. Watch the branch updates here for details of changes. While the branch remains "Bad Zombie", the point-releases are moving through 3.2.2.X. When this release goes production after beta and adequate feedback, this will become the new v3.2.3.
+Branch "Bad-Zombie" is the working name of the first of several v3.2+ catch-up branches intended to move forward from production version 3.2.0 from 2016. Watch the branch updates here for details of changes. While the branch remains "Bad Zombie", the point-releases are moving through 3.2.2.X. When this release goes production after beta and adequate feedback, this will become the new v3.2.3.
 
-### This is NOT a production release #
+### This is NOT a production release
+### Please do not run on a production server yet.
 
-Please post all issues with the production ScriptCraft release to the [official repo][repo]
-
+Please post all issues with the production ScriptCraft release to the [official repo][repo].
 However this release is now alpha quality and may be installed in test environments.
-**Please do not run on a production server yet.**
 If you do install and run this, please post all feedback to the [Issue tracker here][tgtracker].
 
-[repo]: https://github.com/walterhiggins/ScriptCraft/issues
-[tgtracker]: https://github.com/TonyGravagno/ScriptCraft/issues
-[scforum]: https://groups.google.com/forum/?fromgroups=#!forum/scriptcraft---scripting-minecraft
+CanaryMod docs have been removed from this release. CanaryMod is no longer available. There are still many references to CanaryMod but Bukkit/CraftBukkit/Spigot is the only server currently supported.
 
-Visit the [Gitter Chatroom](https://gitter.im/walterhiggins/ScriptCraft?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) to discuss this plugin.
+Visit the [Gitter Chatroom][gitchat] to discuss this plugin.
 Or visit the [ScriptCraft forum][scforum].
 To keep up with changes, see [Tony's blog][blogt].
+See the new and updated [documentation][docs]
 
 ### Introduction
 
-ScriptCraft, also known as ScriptCraftJS, lets you write Minecraft plugins using JavaScript - a
-programming language that's relatively easy to learn and use.
-ScriptCraft is a Minecraft Server plugin which means it must be used
-with a Minecraft server. Once you've downloaded and installed the
-Minecraft Server, then installed the ScriptCraft Plugin, you can write
-your own Minecraft plugins using JavaScript.
+ScriptCraft, also known as ScriptCraftJS, lets you write Minecraft plugins using JavaScript - a programming language that's relatively easy to learn and use. ScriptCraft is a Minecraft Server plugin which means it must be used with a Minecraft server. Once you've downloaded and installed the Minecraft Server, then installed the ScriptCraft Plugin, you can write your own Minecraft plugins using JavaScript.
 
-Walter Higgins created ScriptCraft to make it easier for younger programmers to
-create their own Minecraft Mods/Plugins. Mods are written using the
-JavaScript programming language. Once the ScriptCraft plugin is
-installed, you can add your own new plugins by adding JavaScript (.js)
-files in a directory.
+Walter Higgins created ScriptCraft to make it easier for younger programmers to create their own Minecraft Mods/Plugins. Mods are written using the JavaScript programming language. Once the ScriptCraft plugin is installed, you can add your own new plugins by adding JavaScript (.js) files in a directory.
 
  * If you're new to programming and want to start modding Minecraft, then [Start Here][yp].
  * If you've already used [Scratch][scr], have attended a few
@@ -54,57 +43,27 @@ At the in-game prompt, type:
 /js greet(self)
 ```
 
-Anything you can do using the Spigot or CanaryMod APIs in Java,
-you can do using ScriptCraft in JavaScript.
+Anything you can do using the Spigot or CanaryMod APIs in Java,you can do using ScriptCraft in JavaScript.
 
 # Description
 
-ScriptCraft is a plugin for Minecraft Servers which lets operators,
-administrators and plug-in authors customize the game using
-JavaScript.  ScriptCraft makes it easier to create your own mods. Mods
-can be written in JavaScript and can use the full [SpigotMC
-API][spigot] or [CanaryMod API][cm]. ScriptCraft works with all of the
-following Minecraft Server software:
+ScriptCraft is a plugin for Minecraft Servers which lets operators, administrators and plug-in authors customize the game using JavaScript.  ScriptCraft makes it easier to create your own mods. Mods can be written in JavaScript and can use the full [SpigotMC API][spigot] or [CanaryMod API][cm]. ScriptCraft works with all of the following Minecraft Server software:
 
-* [SpigotMC][spigot] (Recommended)
-* [GlowStone][gs]
-* [CanaryMod][cm]
+* [SpigotMC][spigot] (Currently only supported server)
+* [GlowStone][gs] (Not tested for Minecraft v1.12.1)
+* [CanaryMod][cm] (No longer supported, will be removed in ScriptCraftJS v4)
 
-[spigot]: http://www.spigotmc.org/
-[gs]: http://www.glowstone.net/
-[cm]: http://canarymod.net/
+I recommend using SpigotMC because both CanaryMod and CraftBukkit are no longer being actively developed. The ScriptCraft mod also lets you enter JavaScript commands at the in-game prompt.  To bring up the in-game prompt press the `/` key then type `js ` followed by any JavaScript statement.  For example: `/js 1 + 1` will print 2.
 
-I recommend using SpigotMC because both CanaryMod and CraftBukkit are
-no longer being actively developed. The ScriptCraft mod also lets you
-enter JavaScript commands at the in-game prompt.  To bring up the
-in-game prompt press the `/` key then type `js ` followed by any
-JavaScript statement.  For example: `/js 1 + 1` will print 2.
-
-ScriptCraft also includes many objects and functions to make building
-and modding easier using JavaScript. The JavaScript `Drone` object
-bundled with ScriptCraft provides an easy way to build at-scale in
-Minecraft. See the attached [temple.js][temple] file for an example
-of how you can use the sample Drone plugin to create new buildings in
-Minecraft.
-
-[drone]: https://github.com/walterhiggins/ScriptCraft/tree/master/src/main/javascript/drone/drone.js
-[cottage]: https://github.com/walterhiggins/ScriptCraft/tree/master/src/main/js/plugins/drone/contrib/cottage.js
-[temple]: https://github.com/walterhiggins/ScriptCraft/blob/master/src/main/js/plugins/drone/contrib/temple.js
-[bukkit]: http://dl.bukkit.org/
+ScriptCraft also includes many objects and functions to make building and modding easier using JavaScript. The JavaScript `Drone` object bundled with ScriptCraft provides an easy way to build at-scale in Minecraft. See the attached [temple.js][temple] file for an example of how you can use the sample Drone plugin to create new buildings in Minecraft.
 
 # Prerequisites
 
-ScriptCraft is a Minecraft Server Mod which only works with Minecraft
-for Personal computers (Windows, Mac and Linux). It does not work with
-X-BOX, Playstation, mobile, Windows10, or WiiU versions of the game.
-You will need to have Java version 1.8 or later installed. Check the
-version by typing `java -version` at a command prompt.
+ScriptCraft is a Minecraft Server Mod which only works with Minecraft for Personal computers (Windows, Mac and Linux). It does not work with X-BOX, Playstation, mobile, Windows10, or WiiU versions of the game. You will need to have Java version 1.8 or later installed. Check the version by typing `java -version` at a command prompt.
 
 # Installation
 
-Before installing ScriptCraft you must first install SpigotMC which is
-a special version of Minecraft Server that makes it easy to customize
-the game.
+Before installing ScriptCraft you must first install SpigotMC which is a special version of Minecraft Server that makes it easy to customize the game.
 
 ## Installing and Running SpigotMC
 
@@ -119,6 +78,7 @@ Follow these steps to download and install SpigotMC v1.12.1+.
 
 ## Installing ScriptCraft
 
+(See new [Installation][installation] doc.)
 Follow these steps to download and install ScriptCraft.
 
 1. Download the [scriptcraft.jar][dl] plugin. Save it to the `plugins` directory. Restart the server by typing `java -jar spigot.jar`.
@@ -128,25 +88,15 @@ Congratulations - you've just installed your Custom Minecraft Server and are rea
 
 # Post Install
 
-Once installed, a new `scriptcraft/plugins` directory is automatically
-created.  All files in the `scriptcraft/plugins` directory will be
-automatically loaded when the server starts.  *Only players who are
-ops can use this plugin.* You can grant a player `op` privileges by
-typing 'op <username>' (replacing <username> with your own Minecraft
-user name) at the server console prompt or by adding the player's
-username to the ops.txt file in your server directory.
+(See new [Permissions][permissions] doc.)
+Once installed, a new `scriptcraft/plugins` directory is automatically created.  All files in the `scriptcraft/plugins` directory will be automatically loaded when the server starts.  *Only players who are ops can use this plugin.* You can grant a player `op` privileges by typing 'op <username>' (replacing <username> with your own Minecraft user name) at the server console prompt or by adding the player's username to the ops.txt file in your server directory.
 
-Launch the server, then launch the Minecraft client and create a new
-server connection. The IP address will be `localhost` . Once you've
-connected to your server and have entered the game, look at a
-ground-level block and type:
+Launch the server, then launch the Minecraft client and create a new server connection. The IP address will be `localhost` . Once you've connected to your server and have entered the game, look at a ground-level block and type:
 
     /js up().box( blocks.wool.black, 4, 9, 1 )
 
-&hellip; This will create a black monolith structure 4 blocks wide by 9
-blocks high by 1 block long.  Take a look at the
-`src/main/javascript/drone/drone.js` file to see what ScriptCraft's
-drone can do.
+&hellip; This will create a black monolith structure 4 blocks wide by 9 blocks high by 1 block long.  Take a look at the
+`src/main/javascript/drone/drone.js` file to see what ScriptCraft's drone can do.
 
 If you're interested in customizing Minecraft beyond just creating new buildings, take a look at [the homes mod][homes] for an example of how to create a more fully-featured JavaScript plugin for Minecraft.
 
@@ -165,22 +115,13 @@ events.blockBreak( howl );
 If you're using CanaryMod instead of SpigotMC you can [download the equivalent code](https://gist.github.com/walterhiggins/69cddd15160d803fb096).
 (Note that ScriptCraft will not support CanaryMod in the v4.0 release.)
 
-A JavaScript plugin for Minecraft is just a JavaScript source file (.js)
-located in the `scriptcraft/plugins` directory. All .js files in this
-directory will be automatically loaded when the server starts.
+A JavaScript plugin for Minecraft is just a JavaScript source file (.js) located in the `scriptcraft/plugins` directory. All .js files in this directory will be automatically loaded when the server starts.
 
-To get started writing your own plugin, take a look at some of the
-[examples][examples].
-
-[homes]: src/main/js/plugins/homes/homes.js
-[examples]: src/main/js/plugins/examples/
+To get started writing your own plugin, take a look at some of the [examples][examples].
 
 # Additional information
 
-Because the SpigotMC API is open, all of the SpigotMC API is accessible
-via JavaScript once the ScriptCraft plugin is loaded. There are a
-couple of useful Java objects exposed via JavaScript in the
-ScriptCraft plugin:
+Because the SpigotMC API is open, all of the SpigotMC API is accessible via JavaScript once the ScriptCraft plugin is loaded. There are a couple of useful Java objects exposed via JavaScript in the ScriptCraft plugin:
 
  * `__plugin` &ndash; the ScriptCraft Plugin itself. This is a useful
    starting point for accessing other SpigotMC objects. The `__plugin`
@@ -196,12 +137,6 @@ ScriptCraft plugin:
    invoked the `/js` command. Again, this is a good jumping off point for
    diving into the SpigotMC API.
 
-[dl]: http://scriptcraftjs.org/download/latest
-[ic]: http://canarymod.net/releases
-[spigotdl]: https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
-[cmapi]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/
-[spigotapi]: https://hub.spigotmc.org/javadocs/spigot/
-
 # Contributing
 
 If you would like to contribute source code and/or documentation changes please [read contributing.md][contrib]
@@ -215,22 +150,15 @@ Travis build status disabled for this repo. See .md comments.
 -->
 
 # Bukkit Configuration
-## (You can ignore this if using CanaryMod ... but CanaryMod will no longer be supported in an upcoming major release of ScriptCraft.)
 
-ScriptCraft works with the Bukkit/Spigot Mod and uses the Bukkit Configuration
-API. On first loading, ScriptCraft will create a `config.yml` file in
-the `plugins/scriptcraft` directory. This file looks like this:
+ScriptCraft works with the Bukkit/Spigot Mod and uses the Bukkit Configuration API. On first loading, ScriptCraft will create a `config.yml` file in the `plugins/scriptcraft` directory. This file looks like this:
 
     extract-js:
       plugins: true
       modules: true
       lib: true
 
-This file allows ScriptCraft admins to turn on or off re-unzipping of the `modules`,
-`plugins` and `lib` folders when deploying a new version of
-ScriptCraft. It's strongly recommended that the `lib` directory always
-be set to true to get the latest core ScriptCraft code . The modules
-and plugins directories are optional and not part of ScriptCraft core.
+This file allows ScriptCraft admins to turn on or off re-unzipping of the `modules`, `plugins` and `lib` folders when deploying a new version of ScriptCraft. It's strongly recommended that the `lib` directory always be set to true to get the latest core ScriptCraft code . The modules and plugins directories are optional and not part of ScriptCraft core.
 
 # Further Reading
 
@@ -248,11 +176,7 @@ You can find more information about [ScriptCraft on Walter's blog][blogw] and on
 
 # Additional Resources
 
-CoderDojo Athenry have some [excellent tutorials][cda] for younger
-programmers who have used [Scratch][scr] and are interested in Modding
-Minecraft using JavaScript.  In particular, they have an excellent
-[Scratch - to - JavaScript][sj] tutorial which explains Scratch
-programs and how to do the same thing in JavaScript.
+CoderDojo Athenry have some [excellent tutorials][cda] for younger programmers who have used [Scratch][scr] and are interested in Modding Minecraft using JavaScript.  In particular, they have an excellent [Scratch - to - JavaScript][sj] tutorial which explains Scratch programs and how to do the same thing in JavaScript.
 
 The series of [tutorials provided by CoderDojo Athenry][cda] is highly recommended.
 
@@ -269,21 +193,41 @@ To launch a container with SpigotMC and ScriptCraft you can just do
 
 You can find all files used to build this container in github project: [docker-scriptcraft](https://github.com/tclavier/docker-scriptcraft) )( At this time that container includes an older version of Spigot 1.11 and ScriptCraft 3.2.1. The current platform is v1.12.1 with v3.2.2.X ("Bad Zombie").
 
-
-[wb]: https://github.com/cacciatc/wolfbot
-[ls]: https://github.com/cacciatc/scriptcraft-lsystems
-
-[blogw]: http://walterhiggins.net/blog/cat-index-scriptcraft.html
-[blogt]: https://tonygravagno.tumblr.com/post/164339922687/what-is-scriptcraftjs-answer-1
-[yp]: docs/YoungPersonsGuideToProgrammingMinecraft.md
-[mm]: docs/Anatomy-of-a-Plugin.md
 [api]: docs/API-Reference.md
-[website]: http://scriptcraftjs.org/
-[cd]: http://coderdojo.com/
-[scr]: http://scratch.mit.edu/
-[cda]: http://cdathenry.wordpress.com/category/modderdojo/
-[ytpl]: http://www.youtube.com/watch?v=DDp20SKm43Y&list=PL4Tw0AgXQZH5BiFHqD2hXyXQi0-qFbGp_
-[ex]: src/main/js/plugins/examples
-[contrib]: contributing.md
-[sj]: http://cdathenry.wordpress.com/2013/10/12/modderdojo-week-2-moving-from-scratch-to-javascript/
+[blogt]: https://tonygravagno.tumblr.com/post/164339922687/what-is-scriptcraftjs-answer-1
+[blogw]: http://walterhiggins.net/blog/cat-index-scriptcraft.html
 [book]: http://www.peachpit.com/store/beginners-guide-to-writing-minecraft-plugins-in-javascript-9780133930146
+[bukkit]: http://dl.bukkit.org/
+[cd]: http://coderdojo.com/
+[cda]: http://cdathenry.wordpress.com/category/modderdojo/
+[cm]: http://canarymod.net/
+[cmapi]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/
+[contrib]: contributing.md
+[cottage]: https://github.com/walterhiggins/ScriptCraft/tree/master/src/main/js/plugins/drone/contrib/cottage.js
+[dl]: latest_jar
+<!-- [dl]: http://scriptcraftjs.org/download/latest -->
+[docs]: docs
+[drone]: https://github.com/walterhiggins/ScriptCraft/tree/master/src/main/javascript/drone/drone.js
+[ex]: src/main/js/plugins/examples
+[examples]: src/main/js/plugins/examples/
+[gitchat]: https://gitter.im/walterhiggins/ScriptCraft
+[gs]: http://www.glowstone.net/
+[homes]: src/main/js/plugins/homes/homes.js
+[ic]: http://canarymod.net/releases
+[installation]: docs/Installation.md
+[ls]: https://github.com/cacciatc/scriptcraft-lsystems
+[mm]: docs/Anatomy-of-a-Plugin.md
+[permissions]: docs/Permissions.md
+[repo]: https://github.com/walterhiggins/ScriptCraft/issues
+[scforum]: https://groups.google.com/forum/?fromgroups=#!forum/scriptcraft---scripting-minecraft
+[scr]: http://scratch.mit.edu/
+[sj]: http://cdathenry.wordpress.com/2013/10/12/modderdojo-week-2-moving-from-scratch-to-javascript/
+[spigot]: http://www.spigotmc.org/
+[spigotapi]: https://hub.spigotmc.org/javadocs/spigot/
+[spigotdl]: https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+[temple]: https://github.com/walterhiggins/ScriptCraft/blob/master/src/main/js/plugins/drone/contrib/temple.js
+[tgtracker]: https://github.com/TonyGravagno/ScriptCraft/issues
+[wb]: https://github.com/cacciatc/wolfbot
+[website]: http://scriptcraftjs.org/
+[yp]: docs/YoungPersonsGuideToProgrammingMinecraft.md
+[ytpl]: http://www.youtube.com/watch?v=DDp20SKm43Y&list=PL4Tw0AgXQZH5BiFHqD2hXyXQi0-qFbGp

@@ -1,4 +1,5 @@
 /*global load, args, Packages*/
+var showCanary = false;
 /*
  This script is run at build time to generate api.md - a single Markdown document containing documentation for ScriptCraft's API
  */
@@ -22,10 +23,12 @@ function find(dir, store, re) {
             find(file, store, re);
         } else {
             if (typeof re == "undefined") {
-                store.push(filename);
+                if (showCanary || (!showCanary && filename.toLowerCase().indexOf("canary") < 0))
+                    store.push(filename);
             } else {
                 if (filename.match(re) != null) {
-                    store.push(filename);
+                    if (showCanary || (!showCanary && filename.toLowerCase().indexOf("canary") < 0))
+                        store.push(filename);
                 }
             }
         }
@@ -41,8 +44,8 @@ function sorter(precedence) {
     {
         // convert from Java string to JS string
         // TG : Convert all Windows slashes to Unix format for the rest of this code
-        a = ('' + a).replace(/\\/g,"/");
-        b = ('' + b).replace(/\\/g,"/");
+        a = ('' + a).replace(/\\/g, "/");
+        b = ('' + b).replace(/\\/g, "/");
         var aparts = a.split(/\//);
         var bparts = b.split(/\//);
         var adir = aparts.slice(3, aparts.length - 1).join('/');
@@ -97,12 +100,13 @@ var File = io.File;
 var store = [];
 find(new io.File(dir), store, /[/\\][a-zA-Z0-9_\-]+\.js$/); // TG accommodate forward/backward slashes in path
 
+// removed from below: showCanary is false
+// /lib\/events\-helper\-canary/,
 store.sort(sorter([
     /lib\/scriptcraft\.js$/,
     /lib\/require\.js$/,
     /lib\/plugin\.js$/,
     /lib\/events\.js$/,
-    /lib\/events\-helper\-canary/,
     /lib\/events\-helper\-bukkit/,
     /lib\//,
     /modules\/drone\/index\.js/,
@@ -125,18 +129,22 @@ var len = contents.length;
 var writeComment = false;
 var startComment = /^\/\*{10}/;
 var endComment = /^\*{3}\//;
-
+// TG: 3.2.2.x enhancement to avoid docs within special comment blocks.
+// added for Canary now, can be used for something else later.
+// just add lines <!-- BEGIN: NO anything here --> and <!-- END: NO anything here -->
 for (var i = 0; i < contents.length; i++) {
     var line = contents[i];
     if (line.match(startComment)) {
         writeComment = true;
         i++;
     }
+    if(writeComment && line.startsWith("<!-- BEGIN: NO")) writeComment = false;
     if (line.match(endComment)) {
         writeComment = false;
     }
     if (writeComment) {
         java.lang.System.out.println(contents[i]);
     }
+    if((!writeComment && line.startsWith("<!-- END: NO"))) writeComment = true;
 }
 

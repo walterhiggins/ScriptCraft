@@ -67,6 +67,10 @@ In the above example, to remove the ability of a player to say anything in-game:
 
 With that permission removed, the player using /say will get a message that they cannot perform the command.
 
+### ScriptCraft Classroom Plugin
+
+In a classroom/codecamp environment an instructor may (as experience has proven) want some help to manage the environment. For this there is a built-in Classroom plugin. See the [API Reference][api] for details.
+
 ### Summary
 
 That's really all we need to cover in this section. Moving forward, if you want to give or deny a player access to specific functionality, use a search engine to get information on 'vanilla', 'spigot', 'bukkit', or a specific plugin, look for the feature or command, and you will usually find the related permission name nearby.
@@ -82,9 +86,9 @@ That's really all we need to cover in this section. Moving forward, if you want 
 - How do I change to another permissions system?
     - Search around for permissions plugins, uninstall PEX, install something else.
 
-
 [pex]: https://github.com/PEXPlugins/PermissionsEx
 [pextut]: https://github.com/PEXPlugins/PermissionsEx/blob/master/doc/Tutorial.md
 [pexcommands]: https://github.com/PEXPlugins/PermissionsEx/wiki/Commands#users-permission-management
 [pexdownload]: https://dev.bukkit.org/projects/permissionsex
 [installdoc]: Installation.md
+[api]: API-Reference.md

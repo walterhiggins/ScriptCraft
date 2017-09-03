@@ -8,9 +8,10 @@ If you would like to make changes, change the comments in the src/main/js/* file
 # ScriptCraft API Reference
 
 Walter Higgins [walter.higgins@gmail.com][email]
-Tony Gravagno (blog)[https://tonygravagno.tumblr.com/tagged/ScriptCraftJS)
+Tony Gravagno [blog][blogt]
 
 [email]: mailto:walter.higgins@gmail.com?subject=ScriptCraft_API_Reference
+[blogt]: https://tonygravagno.tumblr.com/post/164339922687/what-is-scriptcraftjs-answer-1
 
 ## Table of Contents
  * [Modules in Scriptcraft](#modules-in-scriptcraft)
@@ -49,129 +50,8 @@ Tony Gravagno (blog)[https://tonygravagno.tumblr.com/tagged/ScriptCraftJS)
    * [Important](#important)
  * [events Module](#events-module)
    * [events.on() static method](#eventson-static-method)
- * [Events Helper Module (CanaryMod version)](#events-helper-module-canarymod-version)
-   * [Usage](#usage)
-   * [events.minecartActivate()](#eventsminecartactivate)
-   * [events.villagerTradeUnlock()](#eventsvillagertradeunlock)
-   * [events.mobTarget()](#eventsmobtarget)
-   * [events.chickenLayEgg()](#eventschickenlayegg)
-   * [events.potionEffectFinish()](#eventspotioneffectfinish)
-   * [events.entityMove()](#eventsentitymove)
-   * [events.hangingEntityDestroy()](#eventshangingentitydestroy)
-   * [events.vehicleCollision()](#eventsvehiclecollision)
-   * [events.potionEffectApplied()](#eventspotioneffectapplied)
-   * [events.vehicleDestroy()](#eventsvehicledestroy)
-   * [events.vehicleEnter()](#eventsvehicleenter)
-   * [events.damage()](#eventsdamage)
-   * [events.entityMount()](#eventsentitymount)
-   * [events.slimeSplit()](#eventsslimesplit)
-   * [events.endermanDropBlock()](#eventsendermandropblock)
-   * [events.itemTouchGround()](#eventsitemtouchground)
-   * [events.entitySpawn()](#eventsentityspawn)
-   * [events.endermanPickupBlock()](#eventsendermanpickupblock)
-   * [events.vehicleDamage()](#eventsvehicledamage)
-   * [events.entityLightningStruck()](#eventsentitylightningstruck)
-   * [events.entityDespawn()](#eventsentitydespawn)
-   * [events.vehicleMove()](#eventsvehiclemove)
-   * [events.projectileHit()](#eventsprojectilehit)
-   * [events.entityDeath()](#eventsentitydeath)
-   * [events.entityTame()](#eventsentitytame)
-   * [events.vehicleExit()](#eventsvehicleexit)
-   * [events.dimensionSwitch()](#eventsdimensionswitch)
-   * [events.foodLevel()](#eventsfoodlevel)
-   * [events.bookEdit()](#eventsbookedit)
-   * [events.eat()](#eventseat)
-   * [events.playerList()](#eventsplayerlist)
-   * [events.playerIdle()](#eventsplayeridle)
-   * [events.enchant()](#eventsenchant)
-   * [events.playerArmSwing()](#eventsplayerarmswing)
-   * [events.teleport()](#eventsteleport)
-   * [events.anvilUse()](#eventsanviluse)
-   * [events.portalUse()](#eventsportaluse)
-   * [events.foodSaturation()](#eventsfoodsaturation)
-   * [events.connection()](#eventsconnection)
-   * [events.playerRespawned()](#eventsplayerrespawned)
-   * [events.armorBroken()](#eventsarmorbroken)
-   * [events.levelUp()](#eventslevelup)
-   * [events.blockRightClick()](#eventsblockrightclick)
-   * [events.itemDrop()](#eventsitemdrop)
-   * [events.itemFrameRotate()](#eventsitemframerotate)
-   * [events.playerRespawning()](#eventsplayerrespawning)
-   * [events.craft()](#eventscraft)
-   * [events.experience()](#eventsexperience)
-   * [events.signChange()](#eventssignchange)
-   * [events.healthChange()](#eventshealthchange)
-   * [events.disconnection()](#eventsdisconnection)
-   * [events.gameModeChange()](#eventsgamemodechange)
-   * [events.preConnection()](#eventspreconnection)
-   * [events.villagerTrade()](#eventsvillagertrade)
-   * [events.returnFromIdle()](#eventsreturnfromidle)
-   * [events.armorStandModify()](#eventsarmorstandmodify)
-   * [events.slotClick()](#eventsslotclick)
-   * [events.itemFrameSetItem()](#eventsitemframesetitem)
-   * [events.entityRightClick()](#eventsentityrightclick)
-   * [events.foodExhaustion()](#eventsfoodexhaustion)
-   * [events.chat()](#eventschat)
-   * [events.itemPickup()](#eventsitempickup)
-   * [events.bedExit()](#eventsbedexit)
-   * [events.blockPlace()](#eventsblockplace)
-   * [events.heldItemChange()](#eventshelditemchange)
-   * [events.toolBroken()](#eventstoolbroken)
-   * [events.kick()](#eventskick)
-   * [events.playerDeath()](#eventsplayerdeath)
-   * [events.blockLeftClick()](#eventsblockleftclick)
-   * [events.blockDestroy()](#eventsblockdestroy)
-   * [events.bedEnter()](#eventsbedenter)
-   * [events.signShow()](#eventssignshow)
-   * [events.inventory()](#eventsinventory)
-   * [events.playerMove()](#eventsplayermove)
-   * [events.itemUse()](#eventsitemuse)
-   * [events.ban()](#eventsban)
-   * [events.statGained()](#eventsstatgained)
-   * [events.smeltBegin()](#eventssmeltbegin)
-   * [events.treeGrow()](#eventstreegrow)
-   * [events.chunkCreated()](#eventschunkcreated)
-   * [events.liquidDestroy()](#eventsliquiddestroy)
-   * [events.chunkLoaded()](#eventschunkloaded)
-   * [events.pistonRetract()](#eventspistonretract)
-   * [events.smelt()](#eventssmelt)
-   * [events.blockUpdate()](#eventsblockupdate)
-   * [events.portalDestroy()](#eventsportaldestroy)
-   * [events.ignition()](#eventsignition)
-   * [events.redstoneChange()](#eventsredstonechange)
-   * [events.weatherChange()](#eventsweatherchange)
-   * [events.chunkCreation()](#eventschunkcreation)
-   * [events.hopperTransfer()](#eventshoppertransfer)
-   * [events.chunkUnload()](#eventschunkunload)
-   * [events.blockGrow()](#eventsblockgrow)
-   * [events.dispense()](#eventsdispense)
-   * [events.blockDropXp()](#eventsblockdropxp)
-   * [events.fireworkExplode()](#eventsfireworkexplode)
-   * [events.leafDecay()](#eventsleafdecay)
-   * [events.pistonExtend()](#eventspistonextend)
-   * [events.noteBlockPlay()](#eventsnoteblockplay)
-   * [events.lightningStrike()](#eventslightningstrike)
-   * [events.decorate()](#eventsdecorate)
-   * [events.explosion()](#eventsexplosion)
-   * [events.tNTActivate()](#eventstntactivate)
-   * [events.timeChange()](#eventstimechange)
-   * [events.flow()](#eventsflow)
-   * [events.portalCreate()](#eventsportalcreate)
-   * [events.blockPhysics()](#eventsblockphysics)
-   * [events.playerCommand()](#eventsplayercommand)
-   * [events.consoleCommand()](#eventsconsolecommand)
-   * [events.commandBlockCommand()](#eventscommandblockcommand)
-   * [events.loadWorld()](#eventsloadworld)
-   * [events.permissionCheck()](#eventspermissioncheck)
-   * [events.serverGuiStart()](#eventsserverguistart)
-   * [events.unloadWorld()](#eventsunloadworld)
-   * [events.pluginDisable()](#eventsplugindisable)
-   * [events.pluginEnable()](#eventspluginenable)
-   * [events.serverTick()](#eventsservertick)
-   * [events.serverListPing()](#eventsserverlistping)
-   * [events.serverShutdown()](#eventsservershutdown)
  * [Events Helper Module (SpigotMC version)](#events-helper-module-spigotmc-version)
-   * [Usage](#usage-1)
+   * [Usage](#usage)
    * [events.playerArmorStandManipulate()](#eventsplayerarmorstandmanipulate)
    * [events.playerBedLeave()](#eventsplayerbedleave)
    * [events.playerLevelChange()](#eventsplayerlevelchange)
@@ -180,7 +60,7 @@ Tony Gravagno (blog)[https://tonygravagno.tumblr.com/tagged/ScriptCraftJS)
    * [events.playerPreLogin()](#eventsplayerprelogin)
    * [events.playerInteractAtEntity()](#eventsplayerinteractatentity)
    * [events.playerChangedMainHand()](#eventsplayerchangedmainhand)
-   * [events.playerMove()](#eventsplayermove-1)
+   * [events.playerMove()](#eventsplayermove)
    * [events.playerResourcePackStatus()](#eventsplayerresourcepackstatus)
    * [events.playerUnleashEntity()](#eventsplayerunleashentity)
    * [events.playerLogin()](#eventsplayerlogin)
@@ -224,20 +104,20 @@ Tony Gravagno (blog)[https://tonygravagno.tumblr.com/tagged/ScriptCraftJS)
    * [events.playerUnregisterChannel()](#eventsplayerunregisterchannel)
    * [events.playerInteractEntity()](#eventsplayerinteractentity)
    * [events.playerPickupArrow()](#eventsplayerpickuparrow)
-   * [events.vehicleMove()](#eventsvehiclemove-1)
+   * [events.vehicleMove()](#eventsvehiclemove)
    * [events.vehicleBlockCollision()](#eventsvehicleblockcollision)
    * [events.vehicleUpdate()](#eventsvehicleupdate)
-   * [events.vehicleExit()](#eventsvehicleexit-1)
-   * [events.vehicleDamage()](#eventsvehicledamage-1)
-   * [events.vehicleEnter()](#eventsvehicleenter-1)
-   * [events.vehicleDestroy()](#eventsvehicledestroy-1)
+   * [events.vehicleExit()](#eventsvehicleexit)
+   * [events.vehicleDamage()](#eventsvehicledamage)
+   * [events.vehicleEnter()](#eventsvehicleenter)
+   * [events.vehicleDestroy()](#eventsvehicledestroy)
    * [events.vehicleCreate()](#eventsvehiclecreate)
    * [events.vehicleEntityCollision()](#eventsvehicleentitycollision)
    * [events.mapInitialize()](#eventsmapinitialize)
-   * [events.pluginEnable()](#eventspluginenable-1)
-   * [events.serverListPing()](#eventsserverlistping-1)
+   * [events.pluginEnable()](#eventspluginenable)
+   * [events.serverListPing()](#eventsserverlistping)
    * [events.serverCommand()](#eventsservercommand)
-   * [events.pluginDisable()](#eventsplugindisable-1)
+   * [events.pluginDisable()](#eventsplugindisable)
    * [events.serviceUnregister()](#eventsserviceunregister)
    * [events.serviceRegister()](#eventsserviceregister)
    * [events.tabComplete()](#eventstabcomplete)
@@ -245,12 +125,12 @@ Tony Gravagno (blog)[https://tonygravagno.tumblr.com/tagged/ScriptCraftJS)
    * [events.enchantItem()](#eventsenchantitem)
    * [events.prepareItemEnchant()](#eventsprepareitemenchant)
    * [events.blockFromTo()](#eventsblockfromto)
-   * [events.blockPlace()](#eventsblockplace-1)
-   * [events.blockPhysics()](#eventsblockphysics-1)
-   * [events.blockGrow()](#eventsblockgrow-1)
+   * [events.blockPlace()](#eventsblockplace)
+   * [events.blockPhysics()](#eventsblockphysics)
+   * [events.blockGrow()](#eventsblockgrow)
    * [events.blockCanBuild()](#eventsblockcanbuild)
    * [events.blockForm()](#eventsblockform)
-   * [events.signChange()](#eventssignchange-1)
+   * [events.signChange()](#eventssignchange)
    * [events.blockFade()](#eventsblockfade)
    * [events.blockSpread()](#eventsblockspread)
    * [events.leavesDecay()](#eventsleavesdecay)
@@ -272,22 +152,22 @@ Tony Gravagno (blog)[https://tonygravagno.tumblr.com/tagged/ScriptCraftJS)
    * [events.worldSave()](#eventsworldsave)
    * [events.worldUnload()](#eventsworldunload)
    * [events.spawnChange()](#eventsspawnchange)
-   * [events.portalCreate()](#eventsportalcreate-1)
+   * [events.portalCreate()](#eventsportalcreate)
    * [events.worldInit()](#eventsworldinit)
    * [events.chunkLoad()](#eventschunkload)
    * [events.chunkPopulate()](#eventschunkpopulate)
-   * [events.chunkUnload()](#eventschunkunload-1)
+   * [events.chunkUnload()](#eventschunkunload)
    * [events.structureGrow()](#eventsstructuregrow)
    * [events.hangingBreakByEntity()](#eventshangingbreakbyentity)
    * [events.hangingPlace()](#eventshangingplace)
    * [events.hangingBreak()](#eventshangingbreak)
    * [events.thunderChange()](#eventsthunderchange)
-   * [events.lightningStrike()](#eventslightningstrike-1)
-   * [events.weatherChange()](#eventsweatherchange-1)
+   * [events.lightningStrike()](#eventslightningstrike)
+   * [events.weatherChange()](#eventsweatherchange)
    * [events.brew()](#eventsbrew)
    * [events.inventoryOpen()](#eventsinventoryopen)
    * [events.prepareItemCraft()](#eventsprepareitemcraft)
-   * [events.inventory()](#eventsinventory-1)
+   * [events.inventory()](#eventsinventory)
    * [events.inventoryMoveItem()](#eventsinventorymoveitem)
    * [events.prepareAnvil()](#eventsprepareanvil)
    * [events.furnaceSmelt()](#eventsfurnacesmelt)
@@ -304,7 +184,7 @@ Tony Gravagno (blog)[https://tonygravagno.tumblr.com/tagged/ScriptCraftJS)
    * [events.entityResurrect()](#eventsentityresurrect)
    * [events.entityTeleport()](#eventsentityteleport)
    * [events.lingeringPotionSplash()](#eventslingeringpotionsplash)
-   * [events.playerDeath()](#eventsplayerdeath-1)
+   * [events.playerDeath()](#eventsplayerdeath)
    * [events.itemMerge()](#eventsitemmerge)
    * [events.horseJump()](#eventshorsejump)
    * [events.villagerAcquireTrade()](#eventsvillageracquiretrade)
@@ -313,16 +193,16 @@ Tony Gravagno (blog)[https://tonygravagno.tumblr.com/tagged/ScriptCraftJS)
    * [events.creeperPower()](#eventscreeperpower)
    * [events.entityCombustByEntity()](#eventsentitycombustbyentity)
    * [events.entityShootBow()](#eventsentityshootbow)
-   * [events.projectileHit()](#eventsprojectilehit-1)
+   * [events.projectileHit()](#eventsprojectilehit)
    * [events.entityPortal()](#eventsentityportal)
    * [events.creatureSpawn()](#eventscreaturespawn)
-   * [events.entitySpawn()](#eventsentityspawn-1)
-   * [events.entityDeath()](#eventsentitydeath-1)
+   * [events.entitySpawn()](#eventsentityspawn)
+   * [events.entityDeath()](#eventsentitydeath)
    * [events.entityDamageByBlock()](#eventsentitydamagebyblock)
    * [events.entityRegainHealth()](#eventsentityregainhealth)
    * [events.potionSplash()](#eventspotionsplash)
    * [events.entityDamageByEntity()](#eventsentitydamagebyentity)
-   * [events.slimeSplit()](#eventsslimesplit-1)
+   * [events.slimeSplit()](#eventsslimesplit)
    * [events.itemSpawn()](#eventsitemspawn)
    * [events.villagerReplenishTrade()](#eventsvillagerreplenishtrade)
    * [events.entityCreatePortal()](#eventsentitycreateportal)
@@ -335,7 +215,7 @@ Tony Gravagno (blog)[https://tonygravagno.tumblr.com/tagged/ScriptCraftJS)
    * [events.spawnerSpawn()](#eventsspawnerspawn)
    * [events.entityAirChange()](#eventsentityairchange)
    * [events.entityPortalEnter()](#eventsentityportalenter)
-   * [events.fireworkExplode()](#eventsfireworkexplode-1)
+   * [events.fireworkExplode()](#eventsfireworkexplode)
    * [events.expBottle()](#eventsexpbottle)
    * [events.enderDragonChangePhase()](#eventsenderdragonchangephase)
    * [events.entityPortalExit()](#eventsentityportalexit)
@@ -349,7 +229,7 @@ Tony Gravagno (blog)[https://tonygravagno.tumblr.com/tagged/ScriptCraftJS)
    * [events.pigZap()](#eventspigzap)
    * [events.entityTargetLivingEntity()](#eventsentitytargetlivingentity)
    * [events.playerLeashEntity()](#eventsplayerleashentity)
-   * [events.entityTame()](#eventsentitytame-1)
+   * [events.entityTame()](#eventsentitytame)
    * [events.itemDespawn()](#eventsitemdespawn)
    * [events.entityCombust()](#eventsentitycombust)
  * [console global variable](#console-global-variable)
@@ -416,19 +296,19 @@ Tony Gravagno (blog)[https://tonygravagno.tumblr.com/tagged/ScriptCraftJS)
  * [Fireworks Module](#fireworks-module)
    * [Examples](#examples-1)
  * [Inventory Module](#inventory-module)
-   * [Usage](#usage-2)
+   * [Usage](#usage-1)
  * [Classroom Plugin](#classroom-plugin)
    * [jsp classroom command](#jsp-classroom-command)
    * [classroom.allowScripting() function](#classroomallowscripting-function)
  * [Asynchronous Input Module](#asynchronous-input-module)
  * [Lightning module](#lightning-module)
-   * [Usage](#usage-3)
+   * [Usage](#usage-2)
  * [The recipes module](#the-recipes-module)
    * [Example](#example-1)
  * [Http Module](#http-module)
    * [http.request() function](#httprequest-function)
  * [sc-mqtt module](#sc-mqtt-module)
-   * [Usage](#usage-4)
+   * [Usage](#usage-3)
  * [Signs Module](#signs-module)
    * [signs.menu() function](#signsmenu-function)
    * [signs.getTargetedBy() function](#signsgettargetedby-function)
@@ -467,22 +347,22 @@ Tony Gravagno (blog)[https://tonygravagno.tumblr.com/tagged/ScriptCraftJS)
    * [watcher.unwatchFile() function](#watcherunwatchfile-function)
    * [watcher.unwatchDir() function](#watcherunwatchdir-function)
  * [Example Plugin #1 - A simple extension to Minecraft.](#example-plugin-1---a-simple-extension-to-minecraft)
-   * [Usage:](#usage-5)
+   * [Usage:](#usage-4)
  * [Example Plugin #2 - Making extensions available for all players.](#example-plugin-2---making-extensions-available-for-all-players)
-   * [Usage:](#usage-6)
+   * [Usage:](#usage-5)
  * [Example Plugin #3 - Limiting use of commands to operators only.](#example-plugin-3---limiting-use-of-commands-to-operators-only)
-   * [Usage:](#usage-7)
+   * [Usage:](#usage-6)
  * [Example Plugin #4 - Using parameters in commands.](#example-plugin-4---using-parameters-in-commands)
-   * [Usage:](#usage-8)
+   * [Usage:](#usage-7)
  * [Example Plugin #5 - Re-use - Using your own and others modules.](#example-plugin-5---re-use---using-your-own-and-others-modules)
-   * [Usage:](#usage-9)
+   * [Usage:](#usage-8)
  * [Example Plugin #6 - Re-use - Using 'utils' to get Player objects.](#example-plugin-6---re-use---using-utils-to-get-player-objects)
-   * [Usage:](#usage-10)
+   * [Usage:](#usage-9)
  * [Example Plugin #7 - Listening for events, Greet players when they join the game.](#example-plugin-7---listening-for-events-greet-players-when-they-join-the-game)
  * [Arrows Plugin](#arrows-plugin)
-   * [Usage:](#usage-11)
+   * [Usage:](#usage-10)
  * [Spawn Plugin](#spawn-plugin)
-   * [Usage](#usage-12)
+   * [Usage](#usage-11)
  * [alias Plugin](#alias-plugin)
    * [Examples](#examples-2)
  * [Commando Plugin](#commando-plugin)
@@ -497,16 +377,10 @@ Tony Gravagno (blog)[https://tonygravagno.tumblr.com/tagged/ScriptCraftJS)
  * [NumberGuess mini-game:](#numberguess-mini-game)
    * [Description](#description-1)
    * [Example](#example-4)
- * [Cow Clicker Mini-Game](#cow-clicker-mini-game)
-   * [How to Play](#how-to-play)
-   * [Rules](#rules)
-   * [Gameplay Mechanics](#gameplay-mechanics)
  * [Items module (SpigotMC version)](#items-module-spigotmc-version)
-   * [Usage](#usage-13)
- * [Items module (CanaryMod version)](#items-module-canarymod-version)
-   * [Usage](#usage-14)
+   * [Usage](#usage-12)
  * [Entities module](#entities-module)
-   * [Usage](#usage-15)
+   * [Usage](#usage-13)
 
 ## Modules in Scriptcraft
 
@@ -1171,973 +1045,6 @@ myBlockBreakListener.unregister();
 [buk]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/event/Event.html
 [cmEvtApi]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/Hook.html
 [cmPriority]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/plugin/Priority.html
-
-## Events Helper Module (CanaryMod version)
-The Events helper module provides a suite of functions - one for each possible event.
-For example, the events.blockDestroy() function is just a wrapper function which calls events.on(net.canarymod.hook.player.BlockDestroyHook, callback, priority)
-This module is a convenience wrapper for easily adding new event handling functions in JavaScript. 
-At the in-game or server-console prompt, players/admins can type `events.` and use TAB completion 
-to choose from any of the approx. 160 different event types to listen to.
-
-### Usage
-
-    events.blockDestroy( function( event ) { 
-      echo( event.player, 'You broke a block!'); 
-    });
-
-The crucial difference is that the events module now has functions for each of the built-in events. The functions are accessible via TAB-completion so will help beginning programmers to explore the events at the server console window.
-
-### events.minecartActivate()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.MinecartActivateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/MinecartActivateHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.villagerTradeUnlock()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.VillagerTradeUnlockHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VillagerTradeUnlockHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.mobTarget()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.MobTargetHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/MobTargetHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.chickenLayEgg()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ChickenLayEggHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/ChickenLayEggHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.potionEffectFinish()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.PotionEffectFinishHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/PotionEffectFinishHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityMove()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityMoveHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityMoveHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.hangingEntityDestroy()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.HangingEntityDestroyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/HangingEntityDestroyHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleCollision()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.VehicleCollisionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleCollisionHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.potionEffectApplied()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.PotionEffectAppliedHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/PotionEffectAppliedHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleDestroy()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.VehicleDestroyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleDestroyHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleEnter()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.VehicleEnterHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleEnterHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.damage()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.DamageHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/DamageHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityMount()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityMountHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityMountHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.slimeSplit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.SlimeSplitHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/SlimeSplitHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.endermanDropBlock()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EndermanDropBlockHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EndermanDropBlockHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.itemTouchGround()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ItemTouchGroundHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/ItemTouchGroundHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entitySpawn()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntitySpawnHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntitySpawnHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.endermanPickupBlock()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EndermanPickupBlockHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EndermanPickupBlockHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleDamage()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.VehicleDamageHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleDamageHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityLightningStruck()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityLightningStruckHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityLightningStruckHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityDespawn()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityDespawnHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityDespawnHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleMove()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.VehicleMoveHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleMoveHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.projectileHit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ProjectileHitHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/ProjectileHitHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityDeath()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityDeathHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityDeathHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityTame()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityTameHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityTameHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleExit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.VehicleExitHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleExitHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.dimensionSwitch()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.DimensionSwitchHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/DimensionSwitchHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.foodLevel()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.FoodLevelHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/FoodLevelHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.bookEdit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.BookEditHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BookEditHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.eat()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.EatHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/EatHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerList()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerListHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerListHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerIdle()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerIdleHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerIdleHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.enchant()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.EnchantHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/EnchantHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerArmSwing()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerArmSwingHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerArmSwingHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.teleport()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.TeleportHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/TeleportHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.anvilUse()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.AnvilUseHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/AnvilUseHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.portalUse()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PortalUseHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PortalUseHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.foodSaturation()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.FoodSaturationHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/FoodSaturationHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.connection()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ConnectionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ConnectionHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerRespawned()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerRespawnedHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerRespawnedHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.armorBroken()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ArmorBrokenHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ArmorBrokenHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.levelUp()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.LevelUpHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/LevelUpHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockRightClick()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.BlockRightClickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BlockRightClickHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.itemDrop()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ItemDropHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ItemDropHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.itemFrameRotate()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ItemFrameRotateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ItemFrameRotateHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerRespawning()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerRespawningHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerRespawningHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.craft()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.CraftHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/CraftHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.experience()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ExperienceHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ExperienceHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.signChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.SignChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/SignChangeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.healthChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.HealthChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/HealthChangeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.disconnection()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.DisconnectionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/DisconnectionHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.gameModeChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.GameModeChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/GameModeChangeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.preConnection()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PreConnectionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PreConnectionHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.villagerTrade()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.VillagerTradeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/VillagerTradeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.returnFromIdle()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ReturnFromIdleHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ReturnFromIdleHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.armorStandModify()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ArmorStandModifyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ArmorStandModifyHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.slotClick()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.SlotClickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/SlotClickHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.itemFrameSetItem()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ItemFrameSetItemHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ItemFrameSetItemHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityRightClick()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.EntityRightClickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/EntityRightClickHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.foodExhaustion()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.FoodExhaustionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/FoodExhaustionHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.chat()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ChatHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ChatHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.itemPickup()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ItemPickupHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ItemPickupHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.bedExit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.BedExitHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BedExitHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockPlace()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.BlockPlaceHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BlockPlaceHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.heldItemChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.HeldItemChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/HeldItemChangeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.toolBroken()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ToolBrokenHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ToolBrokenHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.kick()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.KickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/KickHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerDeath()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerDeathHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerDeathHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockLeftClick()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.BlockLeftClickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BlockLeftClickHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockDestroy()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.BlockDestroyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BlockDestroyHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.bedEnter()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.BedEnterHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BedEnterHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.signShow()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.SignShowHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/SignShowHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.inventory()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.InventoryHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/InventoryHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerMove()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerMoveHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerMoveHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.itemUse()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ItemUseHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ItemUseHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.ban()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.BanHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BanHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.statGained()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.StatGainedHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/StatGainedHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.smeltBegin()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.SmeltBeginHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/SmeltBeginHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.treeGrow()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.TreeGrowHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/TreeGrowHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.chunkCreated()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.ChunkCreatedHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/ChunkCreatedHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.liquidDestroy()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.LiquidDestroyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/LiquidDestroyHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.chunkLoaded()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.ChunkLoadedHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/ChunkLoadedHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.pistonRetract()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.PistonRetractHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/PistonRetractHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.smelt()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.SmeltHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/SmeltHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockUpdate()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.BlockUpdateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/BlockUpdateHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.portalDestroy()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.PortalDestroyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/PortalDestroyHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.ignition()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.IgnitionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/IgnitionHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.redstoneChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.RedstoneChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/RedstoneChangeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.weatherChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.WeatherChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/WeatherChangeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.chunkCreation()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.ChunkCreationHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/ChunkCreationHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.hopperTransfer()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.HopperTransferHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/HopperTransferHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.chunkUnload()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.ChunkUnloadHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/ChunkUnloadHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockGrow()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.BlockGrowHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/BlockGrowHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.dispense()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.DispenseHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/DispenseHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockDropXp()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.BlockDropXpHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/BlockDropXpHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.fireworkExplode()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.FireworkExplodeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/FireworkExplodeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.leafDecay()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.LeafDecayHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/LeafDecayHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.pistonExtend()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.PistonExtendHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/PistonExtendHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.noteBlockPlay()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.NoteBlockPlayHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/NoteBlockPlayHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.lightningStrike()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.LightningStrikeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/LightningStrikeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.decorate()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.DecorateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/DecorateHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.explosion()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.ExplosionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/ExplosionHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.tNTActivate()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.TNTActivateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/TNTActivateHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.timeChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.TimeChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/TimeChangeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.flow()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.FlowHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/FlowHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.portalCreate()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.PortalCreateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/PortalCreateHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockPhysics()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.BlockPhysicsHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/BlockPhysicsHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerCommand()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [command.PlayerCommandHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/command/PlayerCommandHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.consoleCommand()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [command.ConsoleCommandHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/command/ConsoleCommandHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.commandBlockCommand()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [command.CommandBlockCommandHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/command/CommandBlockCommandHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.loadWorld()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.LoadWorldHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/LoadWorldHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.permissionCheck()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.PermissionCheckHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/PermissionCheckHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.serverGuiStart()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.ServerGuiStartHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/ServerGuiStartHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.unloadWorld()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.UnloadWorldHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/UnloadWorldHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.pluginDisable()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.PluginDisableHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/PluginDisableHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.pluginEnable()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.PluginEnableHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/PluginEnableHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.serverTick()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.ServerTickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/ServerTickHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.serverListPing()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.ServerListPingHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/ServerListPingHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.serverShutdown()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.ServerShutdownHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/ServerShutdownHook.html) is fired
-
- * priority - optional - see events.on() for more information.
 
 ## Events Helper Module (SpigotMC version)
 The Events helper module provides a suite of functions - one for each possible event.
@@ -6425,6 +5332,7 @@ code is to demonstrate use of Bukkit's Conversation API.
 Once the game begins, guess a number by typing the `/` character
 followed by a number between 1 and 10.
 
+<!-- BEGIN: NOT FOR RELEASE ->
 ## Cow Clicker Mini-Game
 
 ### How to Play
@@ -6464,7 +5372,7 @@ your own mini-game...
    mini-game?
 
 [bukscore]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scoreboard/package-summary.html
-
+<!-- END: NOT FOR RELEASE ->
 
 ## Items module (SpigotMC version)
 The Items module provides a suite of functions - one for each possible item.
@@ -6941,552 +5849,6 @@ The following functions are provided:
  * yellowFlower()
  * yellowGlazedTerracotta()
  * yellowShulkerBox()
-
-
-## Items module (CanaryMod version)
-The Items module provides a suite of functions - one for each possible item.
-See https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/inventory/ItemType.html for a list of possible items
-
-### Usage
-
-    items.book(); // returns net.canarymod.api.inventory.ItemType.Book
-    items.book(2); // returns a new net.canarymod.api.inventory.Item object with an amount 2 (2 books)
-    items.book( itemType ); // compares itemType parameter to ItemType.Book or an Item of type book
-
-The following functions are provided:
-
- * acaciaDoor()
- * acaciaFence()
- * acaciaFenceGate()
- * acaciaLeaves()
- * acaciaLog()
- * acaciaSapling()
- * acaciaStairs()
- * acaciaWood()
- * acaciaWoodSlab()
- * activatorRail()
- * allium()
- * andesite()
- * anvil()
- * apple()
- * armorStand()
- * arrow()
- * azureBluet()
- * bakedPotato()
- * banner()
- * beacon()
- * bed()
- * bedrock()
- * birchDoor()
- * birchFence()
- * birchFenceGate()
- * birchLeaves()
- * birchLog()
- * birchSapling()
- * birchWood()
- * birchWoodSlab()
- * birchWoodStairs()
- * blackCarpet()
- * blackGlass()
- * blackGlassPane()
- * blackStainedClay()
- * blazePowder()
- * blazeRod()
- * blocksRecord()
- * blueCarpet()
- * blueGlass()
- * blueGlassPane()
- * blueOrchid()
- * blueStainedClay()
- * boat()
- * bone()
- * bonemeal()
- * book()
- * bookAndQuill()
- * bookshelf()
- * bottleOEnchanting()
- * bow()
- * bowl()
- * bread()
- * brewingStand()
- * brickBlock()
- * brickSlab()
- * brickStairs()
- * brownCarpet()
- * brownGlass()
- * brownGlassPane()
- * brownMushroom()
- * brownStainedClay()
- * bucket()
- * burningFurnace()
- * cactus()
- * cactusGreen()
- * cake()
- * carrot()
- * carrotOnAStick()
- * carrots()
- * cauldron()
- * chainmailBoots()
- * chainmailChestplate()
- * chainmailHelmet()
- * chainmailLeggings()
- * charcoal()
- * chest()
- * chirpRecord()
- * clay()
- * clayBall()
- * clayBrick()
- * clownFish()
- * coal()
- * coalBlock()
- * coalOre()
- * coarseDirt()
- * cobble()
- * cobbleSilverFishBlock()
- * cobbleSlab()
- * cobbleStairs()
- * cobblestoneWall()
- * cocoaBeans()
- * cocoaPlant()
- * commandBlock()
- * compass()
- * cookedChicken()
- * cookedClownFish()
- * cookedFish()
- * cookedMutton()
- * cookedPufferFish()
- * cookedRabbit()
- * cookedSalmon()
- * cookie()
- * crackedSilverFishBlock()
- * crackedStoneBrick()
- * creeperHead()
- * cyanCarpet()
- * cyanDye()
- * cyanGlass()
- * cyanGlassPane()
- * cyanStainedClay()
- * dandelionYellow()
- * darkOakDoor()
- * darkOakFence()
- * darkOakFenceGate()
- * darkOakLeaves()
- * darkOakLog()
- * darkOakSapling()
- * darkOakStairs()
- * darkOakWood()
- * darkOakWoodSlab()
- * daylightSensor()
- * deadBush()
- * detectorRail()
- * diamond()
- * diamondAxe()
- * diamondBlock()
- * diamondBoots()
- * diamondChestplate()
- * diamondHelmet()
- * diamondHoe()
- * diamondHorseArmor()
- * diamondLeggings()
- * diamondOre()
- * diamondPickaxe()
- * diamondSpade()
- * diamondSword()
- * diorite()
- * dirt()
- * dispenser()
- * doubleAcaciaWoodSlab()
- * doubleBirchWoodSlab()
- * doubleBrickBlockSlab()
- * doubleCobbleSlab()
- * doubleDarkOakWoodSlab()
- * doubleGrass()
- * doubleJungleWoodSlab()
- * doubleNetherBrickSlab()
- * doubleOakWoodSlab()
- * doubleOrnateStoneSlab()
- * doubleQuartzSlab()
- * doubleRedSandstoneSlab()
- * doubleSandStoneTrimSlab()
- * doubleSandstoneSlab()
- * doubleSpruceWoodSlab()
- * doubleStoneBricksSlab()
- * doubleStoneSlab()
- * doubleWoodSlab()
- * dropper()
- * egg()
- * elevenRecord()
- * emerald()
- * emeraldBlock()
- * emeraldOre()
- * emptyMap()
- * enchantedBook()
- * enchantmentTable()
- * endPortal()
- * endPortalFrame()
- * endStone()
- * enderChest()
- * enderDragonEgg()
- * enderPearl()
- * eyeofEnder()
- * farRecord()
- * feather()
- * fence()
- * fenceGate()
- * fermentedSpiderEye()
- * fireBlock()
- * fireCharge()
- * fireworkRocket()
- * fireworkStar()
- * fishingRod()
- * flint()
- * flintAndSteel()
- * flowerPot()
- * furnace()
- * ghastTear()
- * glass()
- * glassBottle()
- * glassPane()
- * glisteringMelon()
- * glowStone()
- * glowstoneDust()
- * goldAxe()
- * goldBlock()
- * goldBoots()
- * goldChestplate()
- * goldHelmet()
- * goldHoe()
- * goldHorseArmor()
- * goldIngot()
- * goldLeggings()
- * goldNugget()
- * goldOre()
- * goldPickaxe()
- * goldRecord()
- * goldSpade()
- * goldSword()
- * goldenApple()
- * goldenCarrot()
- * granite()
- * grass()
- * gravel()
- * grayCarpet()
- * grayDye()
- * grayGlass()
- * grayGlassPane()
- * grayStainedClay()
- * greenCarpet()
- * greenGlass()
- * greenGlassPane()
- * greenRecord()
- * greenStainedClay()
- * grilledPork()
- * gunpowder()
- * hardenedClay()
- * hayBale()
- * heavyWeightedPressurePlate()
- * hopper()
- * hugeBrownMushroom()
- * hugeRedMushroom()
- * humanHead()
- * ice()
- * inkSack()
- * ironAxe()
- * ironBars()
- * ironBlock()
- * ironBoots()
- * ironChestplate()
- * ironDoor()
- * ironHelmet()
- * ironHoe()
- * ironHorseArmor()
- * ironIngot()
- * ironLeggings()
- * ironOre()
- * ironPickaxe()
- * ironSpade()
- * ironSword()
- * itemFrame()
- * jackOLantern()
- * jukebox()
- * jungleDoor()
- * jungleFence()
- * jungleFenceGate()
- * jungleLeaves()
- * jungleLog()
- * jungleSapling()
- * jungleWood()
- * jungleWoodSlab()
- * jungleWoodStairs()
- * ladder()
- * lapisBlock()
- * lapisLazuli()
- * lapislazuliOre()
- * largeFern()
- * lava()
- * lavaBucket()
- * lavaFlowing()
- * lead()
- * leather()
- * leatherBoots()
- * leatherChestplate()
- * leatherHelmet()
- * leatherLeggings()
- * lever()
- * lightBlueCarpet()
- * lightBlueDye()
- * lightBlueGlass()
- * lightBlueGlassPane()
- * lightBlueStainedClay()
- * lightGrayCarpet()
- * lightGrayDye()
- * lightGrayGlass()
- * lightGrayGlassPane()
- * lightGrayStainedClay()
- * lightWeightedPressurePlate()
- * lilac()
- * lilypad()
- * limeCarpet()
- * limeDye()
- * limeGlass()
- * limeGlassPane()
- * limeStainedClay()
- * magentaCarpet()
- * magentaDye()
- * magentaGlass()
- * magentaGlassPane()
- * magentaStainedClay()
- * magmaCream()
- * mallRecord()
- * map()
- * mellohiRecord()
- * melon()
- * melonSeeds()
- * melonSlice()
- * milkBucket()
- * minecart()
- * minecartCommandBlock()
- * minecartHopper()
- * minecartTNT()
- * mobSpawner()
- * mossyBrickSilverFishBlock()
- * mossyCobble()
- * mossyCobbleWall()
- * mossyStoneBrick()
- * mushroomSoup()
- * mycelium()
- * nameTag()
- * netherBrick()
- * netherBrickFence()
- * netherBrickStairs()
- * netherBricks()
- * netherBricksSlab()
- * netherQuartz()
- * netherQuartzOre()
- * netherStar()
- * netherWart()
- * netherrack()
- * noteBlock()
- * oakLeaves()
- * oakLog()
- * oakSapling()
- * oakWood()
- * oakWoodSlab()
- * obsidian()
- * orangeCarpet()
- * orangeDye()
- * orangeGlass()
- * orangeGlassPane()
- * orangeStainedClay()
- * orangeTulip()
- * ornateQuartzBlock()
- * ornateSilverFishBlock()
- * ornateStoneBrick()
- * ornateStoneSlab()
- * oxeyeDaisy()
- * packedIce()
- * painting()
- * paper()
- * peony()
- * pineLeaves()
- * pineLog()
- * pineWoodStairs()
- * pinkCarpet()
- * pinkDye()
- * pinkGlass()
- * pinkGlassPane()
- * pinkStainedClay()
- * pinkTulip()
- * piston()
- * podzol()
- * poisonousPotato()
- * polishedAndesite()
- * polishedDiorite()
- * polishedGranite()
- * poppy()
- * pork()
- * portal()
- * potato()
- * potatoes()
- * potion()
- * poweredMinecart()
- * poweredRail()
- * prismarineCrystals()
- * prismarineShard()
- * pufferFish()
- * pumpkin()
- * pumpkinPie()
- * pumpkinSeeds()
- * purpleCarpet()
- * purpleDye()
- * purpleGlass()
- * purpleGlassPane()
- * purpleStainedClay()
- * quartzBlock()
- * quartzPillarCap()
- * quartzPillarHorizontal()
- * quartzPillarVertical()
- * quartzSlab()
- * quartzStairs()
- * rabbitFoot()
- * rabbitHide()
- * rabbitStew()
- * rail()
- * rawBeef()
- * rawChicken()
- * rawFish()
- * rawMutton()
- * rawRabbit()
- * rawSalmon()
- * redCarpet()
- * redGlass()
- * redGlassPane()
- * redMushroom()
- * redSandstone()
- * redSandstoneBlank()
- * redSandstoneOrnate()
- * redSandstoneSlab()
- * redSandstoneStairs()
- * redStainedClay()
- * redStone()
- * redTulip()
- * redstoneBlock()
- * redstoneComparator()
- * redstoneLampOff()
- * redstoneOre()
- * redstoneRepeater()
- * redstoneTorchOn()
- * reed()
- * roseBush()
- * roseRed()
- * rottenFlesh()
- * saddle()
- * sand()
- * sandStoneTrimSlab()
- * sandstone()
- * sandstoneBlank()
- * sandstoneOrnate()
- * sandstoneSlab()
- * sandstoneStairs()
- * seeds()
- * shears()
- * shrub()
- * sign()
- * skeletonHead()
- * slimeBall()
- * snow()
- * snowBall()
- * snowBlock()
- * soil()
- * soulSand()
- * spawnEgg()
- * spiderEye()
- * spiderWeb()
- * sponge()
- * spruceDoor()
- * spruceFence()
- * spruceFenceGate()
- * spruceSapling()
- * spruceWood()
- * spruceWoodSlab()
- * stalRecord()
- * steak()
- * stick()
- * stickyPiston()
- * stone()
- * stoneAxe()
- * stoneBrick()
- * stoneBrickSilverFishBlock()
- * stoneBrickStairs()
- * stoneBricksSlab()
- * stoneButton()
- * stoneHoe()
- * stonePickaxe()
- * stonePlate()
- * stoneSilverFishBlock()
- * stoneSlab()
- * stoneSpade()
- * stoneSword()
- * storageMinecart()
- * stradRecord()
- * string()
- * sugar()
- * sunflower()
- * tallFern()
- * tallGrass()
- * tnt()
- * torch()
- * trapdoor()
- * trappedChest()
- * tripwireHook()
- * vines()
- * waitRecord()
- * wardRecord()
- * watch()
- * water()
- * waterBucket()
- * waterFlowing()
- * wheat()
- * whiteCarpet()
- * whiteGlass()
- * whiteGlassPane()
- * whiteStainedClay()
- * whiteTulip()
- * witherSkeletonHead()
- * woodAxe()
- * woodDoor()
- * woodHoe()
- * woodPickaxe()
- * woodPlate()
- * woodSlab()
- * woodSpade()
- * woodSword()
- * woodenButton()
- * woodenStairs()
- * woolBlack()
- * woolBlue()
- * woolBrown()
- * woolCyan()
- * woolDarkGreen()
- * woolGray()
- * woolLightBlue()
- * woolLightGray()
- * woolLightGreen()
- * woolMagenta()
- * woolOrange()
- * woolPink()
- * woolPurple()
- * woolRed()
- * woolWhite()
- * woolYellow()
- * workbench()
- * writtenBook()
- * yellowCarpet()
- * yellowFlower()
- * yellowGlass()
- * yellowGlassPane()
- * yellowStainedClay()
- * zombieHead()
 
 
 ## Entities module

@@ -1,4 +1,5 @@
 /*************************************************************************
+<!-- BEGIN: NOT FOR RELEASE ->
 ## Cow Clicker Mini-Game
 
 ### How to Play
@@ -38,7 +39,7 @@ your own mini-game...
    mini-game?
 
 [bukscore]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scoreboard/package-summary.html
-
+<!-- END: NOT FOR RELEASE ->
 ***/
 if(__plugin.canary || __plugin.bukkit) {
     console.warn('cow-clicker minigame is not yet supported');

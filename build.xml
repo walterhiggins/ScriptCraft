@@ -1,4 +1,6 @@
 <project name="scriptcraft" default="package" basedir=".">
+    <!-- not used yet
+         xmlns:if="ant:if" xmlns:unless="ant:unless" -->
     <property file="build.properties"/>
     <description>Builds the scriptcraft.jar file - a plugin for Bukkit</description>
     <!-- ScriptCraft works with:
@@ -7,6 +9,9 @@
          * Glowstone (which is bukkit-compatible)
          * Spigot (which is bukkit-compatible)
     -->
+    <!-- with the following value not set, docs for CanaryMod won't be generated.
+    <property name="process.canary" value="doesnt matter" />
+     -->
     <property name="src.canary" location="src/main/java/canary"/>
     <property name="src.bukkit" location="src/main/java/bukkit"/>
 
@@ -100,7 +105,9 @@
         <echo>!! gendocs: ${gendocs.desc}</echo>
     </target>
 
-    <target name="compile-canary-docs" depends="init" description="${compile-canary-docs.desc}">
+    <target name="compile-canary-docs" depends="init" description="${compile-canary-docs.desc}"
+    if="process.canary"
+    >
         <echo>!! compile-canary-docs: ${compile-canary-docs.desc}</echo>
         <javac includeantruntime="false" srcdir="src/docs/java" destdir="${build}">
             <classpath>
@@ -109,7 +116,7 @@
         </javac>
     </target>
 
-<!--   <arg value="${dist}/js"/> -->
+    <!--   <arg value="${dist}/js"/> -->
     <target name="generate-api-ref-entries" depends="copy-js,compile-canary-docs,init" description="${generate-api-ref-entries.desc}">
         <echo>!! generate-api-ref-entries: ${generate-api-ref-entries.desc}</echo>
 
@@ -136,7 +143,9 @@
     </target>
 
 
-    <target name="gen-events-helper-canary" depends="compile-canary-docs,init" description="${gen-events-helper-canary.desc}">
+    <target name="gen-events-helper-canary" depends="compile-canary-docs,init" description="${gen-events-helper-canary.desc}"
+        if="process.canary"
+    >
         <echo>!! gen-events-helper-canary: ${gen-events-helper-canary.desc}</echo>
         <mkdir dir="${dist}/js/lib"/>
         <jscript src="src/docs/js/generateEventsHelper.js"
@@ -176,9 +185,10 @@
                 # ScriptCraft API Reference
 
                 Walter Higgins [walter.higgins@gmail.com][email]
-                Tony Gravagno (blog)[https://tonygravagno.tumblr.com/tagged/ScriptCraftJS)
+                Tony Gravagno [blog][blogt]
 
                 [email]: mailto:walter.higgins@gmail.com?subject=ScriptCraft_API_Reference
+                [blogt]: https://tonygravagno.tumblr.com/post/164339922687/what-is-scriptcraftjs-answer-1
 
             </header>
             <fileset file="${dist}/toc-apiref.md" />
@@ -294,7 +304,7 @@
         <delete dir="${dist}"/>
     </target>
 
-<!-- Formerly update-live-cb. Name changed because ... what's "cb"? -->
+    <!-- Formerly update-live-cb. Name changed because ... what's "cb"? -->
     <target name="update-minecraft-plugins-folder" depends="package" description="${update-minecraft-plugins-folder.desc}">
         <echo>!! update-minecraft-plugins-folder ${update-minecraft-plugins-folder.desc}</echo>
         <mkdir dir="${minecraft.dir}/plugins" />
