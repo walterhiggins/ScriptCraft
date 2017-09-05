@@ -17,15 +17,14 @@ As of September 2017, here is where you can get help for ScriptCraftJS:
 * Look under /scriptcraft/plugins/drone/contrib for features and examples contributed by others.
 * Look under /scriptcraft/examples for simple code examples.
 
+[anatomydoc]: Anatomy-of-a-Plugin.md
+[api]: API-Reference.md
+[blogt]: https://tonygravagno.tumblr.com/post/164339922687/what-is-scriptcraftjs-answer-1
+[contrib]: ../contributing.md
+[faqdoc]: Frequently-Asked-Questions.md
+[gitchat]: https://gitter.im/walterhiggins/ScriptCraft?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+[installdoc]: Installation.md
+[javaapidoc]: Using-Java-APIs-In-Javascript.md
+[permdoc]: Permissions.md
 [repo]: https://github.com/walterhiggins/ScriptCraft/issues
 [scforum]: https://groups.google.com/forum/?fromgroups=#!forum/scriptcraft---scripting-minecraft
-[gitchat]: https://gitter.im/walterhiggins/ScriptCraft?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
-[blogt]: https://tonygravagno.tumblr.com/post/164339922687/what-is-scriptcraftjs-answer-1
-[installdoc]: Installation.md
-[anatomydoc]: Anatomy-of-a-Plugin.md
-[faqdoc]: Frequently-Asked-Questions.md
-[javaapidoc]: Using-Java-APIs-In-Javascript.md
-[api]: API-Reference.md
-[contrib]: contributing.md
-[permdoc]: Permissions.md
-

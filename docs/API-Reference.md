@@ -7,7 +7,7 @@ If you would like to make changes, change the comments in the src/main/js/* file
 
 # ScriptCraft API Reference
 
-Walter Higgins [walter.higgins@gmail.com][email]
+Walter Higgins [walter.higgins@gmail.com][email]  
 Tony Gravagno [blog][blogt]
 
 [email]: mailto:walter.higgins@gmail.com?subject=ScriptCraft_API_Reference

@@ -1,4 +1,4 @@
-## Permissions in ScriptCraft
+# Permissions in ScriptCraft
 
 Players can be given and denied permissions in Minecraft. The owner of a server can play as the Operator or as a less-privileged user. On logging in, the game doesn't know whether any given player is the Operator or just a visitor, unless it's told. This section describes how to give and deny specific players access to specific features.
 
