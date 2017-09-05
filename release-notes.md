@@ -10,6 +10,13 @@ See the new [Help][help] doc!
 [blogt]: https://tonygravagno.tumblr.com/post/164339922687/what-is-scriptcraftjs-answer-1
 [help]: Help.md
 
+3.2.2.8 ("Bad Zombie")-2017-09-06
+---------------------------------
+
+1. Updated contributing.md.
+1. Spigot.jar removed from the published repo. The documentation is now adequate for building a new/current .jar.
+1. CanaryMod 1.8 removed from the published repo. It won't won't with this release and has been removed to avoid confusion.
+
 3.2.2.7 ("Bad Zombie")-2017-09-03
 ---------------------------------
 

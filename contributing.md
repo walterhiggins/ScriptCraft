@@ -23,34 +23,50 @@ This project uses a Maven-like directory structure...
                         (core JavaScript code goes here. Modules in this directory
                          should not be 'require'd by plugin or module authors)
                    modules +
-                            (this is where module authors should put modules for
-                             use by others)
+                        (this is where module authors should put modules for
+                         use by others)
                    plugins +
-                           (this is where plugins - scriptcraft extensions for use by
-                            operators and players should go)
+                        (this is where plugins - scriptcraft extensions for use by
+                         operators and players should go)
                resources +
-                          plugin.yml
+                        plugin.yml
          docs +
                templates +
-                          (documentation templates go here. If you want to make
-                           changes to the young persons guide should be made to ypgpm.md)
-                          ypgpm.md
-               JavaScript +
-                          (JavaScript source used to build the API reference and
-                           table of contents for the API reference and Programming Guide
-                           is located here)
+                        (documentation templates go here. If you want to make
+                         changes to the young persons guide should be made to ypgpm.md)
+                        ypgpm.md
+               java +
+                        (Contains a single Java program invoked by the build process to
+                         generate some CanaryMod documentation)
+                        jscript.java
+               js +
+                        (JavaScript source used to build the API reference and
+                         table of contents for the API reference and Programming Guide
+                         is located here)
     docs +
            (the following files should not be edited directly because they are constructed
             during the build process - yeah I know they strictly shouldn't be under source control but
-            it's nice to have the markdown docs on github for reading by non-contributors)
+            it's nice to have the markdown docs on GitHub for reading by non-contributors)
 
            API-Reference.md
            Young-Persons-Guide.md
 
-    (this project is build using Ant, type `ant` at the command line to build.)
+This project is build using Ant. If your ID does not support Ant,
+type `ant` at the command line to build.
 
     build.xml
     build.properties
+
+If you are not familiar with Ant, trust that everything builds correctly
+with the current `build.xml` file. That file/process is key to rebuilding
+documentation in the right order from all source files.
+
+The `build.properties` file must be manually updated with the
+"scriptcraft-version" that identifies the current build. This version
+appears in the console on Minecraft server startup.
+
+For the v3.2.x+ development effort, NetBeans has been used, so the project
+has been littered with artifacts related to NetBeans.
 
 ## Core JavaScript modules
 
