@@ -105,9 +105,7 @@
         <echo>!! gendocs: ${gendocs.desc}</echo>
     </target>
 
-    <target name="compile-canary-docs" depends="init" description="${compile-canary-docs.desc}"
-    if="process.canary"
-    >
+    <target name="compile-canary-docs" depends="init" description="${compile-canary-docs.desc}">
         <echo>!! compile-canary-docs: ${compile-canary-docs.desc}</echo>
         <javac includeantruntime="false" srcdir="src/docs/java" destdir="${build}">
             <classpath>
