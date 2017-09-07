@@ -1,13 +1,11 @@
 /*************************************************************************
 ## require - Node.js-style module loading in ScriptCraft
 
-Node.js is a server-side javascript environment with an excellent
+Node.js is a server-side JavaScript environment with an excellent
 module loading system based on CommonJS. Modules in Node.js are really
 simple. Each module is in its own javascript file and all variables
 and functions within the file are private to that file/module only.
-There is a very concise explanation of CommonJS modules at...
-
-[http://wiki.commonjs.org/wiki/Modules/1.1.1.][cjsmodules]
+[Here][cjsmodules] is a very concise explanation of CommonJS modules
 
 Node.js also has good documentation on [Modules][njsmod].
 
@@ -57,8 +55,9 @@ Node.js. Standard Node.js modules such as `'fs'` are not available in ScriptCraf
 Modules can be loaded using relative or absolute paths. Per the CommonJS
 module specification, the '.js' suffix is optional.
 
-[cjsmodules]: http://wiki.commonjs.org/wiki/Modules/1.1.1.
-
+[cjsmodules]: http://www.commonjs.org/specs/modules/1.0/
+[njsmod]: http://nodejs.org/api/modules.html
+<!-- website was re-worked, change to URL required -->
 ***/
 (function(rootDir, modulePaths, hooks, evaluate) {
     var File = java.io.File,

@@ -25,3 +25,4 @@ build.local.properties
 /_unused/
 /lib/CopyLibs
 /lib/nblibraries.properties
+/lib/spigot.jar

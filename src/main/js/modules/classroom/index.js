@@ -202,7 +202,7 @@ function grantScripting(player) {
         out.close();
     }
     /*
-      echo( player, 'Create your own minecraft mods by adding javascript (.js) files');
+      echo( player, 'Create your own minecraft mods by adding JavaScript (.js) files');
       echo( player, ' Windows:   Open Explorer, go to \\\\' + serverAddress + '\\players\\' + player.name);
       echo( player, ' Macintosh: Open Finder, Go to smb://' + serverAddress + '/players/' + player.name);
       echo( player, ' Linux: Open Nautilus, Go to smb://' + serverAddress + '/players/' + player.name);

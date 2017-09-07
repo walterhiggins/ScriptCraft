@@ -214,7 +214,7 @@
         </jscript>
     </target>
 
-    <!-- Piece together the Young persons' guide from template and generated table of contents -->
+    <!-- Piece together the Young person's guide from template and generated table of contents -->
     <target name="construct-ypgpm" depends="gen-toc-ypgpm,init" description="${construct-ypgpm.desc}">
         <echo>!! construct-ypgpm: ${construct-ypgpm.desc}</echo>
         <concat destfile="docs/YoungPersonsGuideToProgrammingMinecraft.md">
@@ -297,6 +297,7 @@
 
         <jar jarfile="${dist}/${DSTAMP}/scriptcraft.jar" basedir="${build}"/>
         <copy file="${dist}/${DSTAMP}/scriptcraft.jar" tofile="${dist}/scriptcraft.jar"/>
+        <copy file="${dist}/${DSTAMP}/scriptcraft.jar" tofile="latest_jar/scriptcraft.jar"/>
     </target>
 
     <target name="clean" description="${clean.desc}">

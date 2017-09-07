@@ -16,7 +16,7 @@
  ```javascript
  var circle = require('./circle.js');
  console.log( 'The area of a circle of radius 4 is '
- + circle.area(4));
+             + circle.area(4));
  ```
 
  The contents of circle.js:
@@ -24,10 +24,10 @@
  ```javascript
  var PI = Math.PI;
  exports.area = function (r) {
- return PI * r * r;
+   return PI * r * r;
  };
  exports.circumference = function (r) {
- return 2 * PI * r;
+   return 2 * PI * r;
  };
  ```
 
@@ -60,7 +60,7 @@
 ### The `plugins` directory
 
  At server startup the ScriptCraft Java plugin is loaded and begins
- automatically loading and executing all of the modules (javascript
+ automatically loading and executing all of the modules (JavaScript
  files with the extension `.js`) it finds in the `scriptcraft/plugins`
  directory. All modules in the plugins directory are automatically
  loaded into the `global` namespace. What this means is that anything a
@@ -70,7 +70,7 @@
 
  ```javascript
  exports.greet = function(player) {
- echo(player, 'Hello ' + player.name);
+   echo(player, 'Hello ' + player.name);
  };
  ```
 
@@ -79,13 +79,13 @@
 
  /js greet(self)
 
- ... This differs from how modules (in NodeJS and commonJS
+ ... This differs from how modules (in NodeJS and CommonJS
  environments) normally work. If you want your module to be exported
  globally, put it in the `plugins` directory. If you don't want your
  module to be exported globally but only want it to be used by other
  modules, then put it in the `modules` directory instead. If you've
  used previous versions of ScriptCraft and have put your custom
- javascript modules in the `js-plugins` directory, then put them in the
+ JavaScript modules in the `js-plugins` directory, then put them in the
  `scriptcraft/plugins` directory. To summarise, modules in this directory are ...
 
  * Automatically loaded and run at server startup.
@@ -94,13 +94,13 @@
 ### The `modules` directory
 
  The `scriptcraft/modules` directory is where you should place your modules if you
- don't want to export globally. In javascript, it's considered best
+ don't want to export globally. In JavaScript, it's considered best
  practice not to have too many global variables, so if you want to
  develop modules for others to use, or want to develop more complex
  mods then your modules should be placed in the `modules` directory.
  *Modules in the `modules` directory are not automatically loaded at
  startup*, instead, they are loaded and used by other modules/plugins
- using the standard `require()` function.  This is the key difference
+ using the standard `require()` function. This is the key difference
  between modules in the `plugins` directory and modules in the
  `modules` directory. Modules in the `plugins` directory are
  automatically loaded and exported in to the global namespace at server
@@ -140,7 +140,7 @@
 
 ## Global variables
 
- There are a few special javascript variables available in ScriptCraft...
+ There are a few special JavaScript variables available in ScriptCraft...
 
 ### `__plugin` variable
  The ScriptCraft JavaPlugin object.
@@ -156,7 +156,7 @@
 
  `/js console.log(self.name)`
 
- ... but not in any javascript module you create yourself or in any
+ ... but not in any JavaScript module you create yourself or in any
  event handling code. `self` is a temporary short-lived variable which
  only exists in the context of the in-game or server command prompts.
 
@@ -213,19 +213,19 @@
 
 ### command() function
 
- The `command()` function is used to expose javascript functions for use by
+ The `command()` function is used to expose JavaScript functions for use by
  non-operators (regular players). Only operators should be allowed use raw
- javascript using the `/js` command because it is too powerful for use by
+ JavaScript using the `/js` command because it is too powerful for use by
  regular players and can be easily abused. However, the command() function and
  the `/jsp` command let you (the operator / server administrator / plugin author)
- safely expose javascript functions for use by players.
+ safely expose JavaScript functions for use by players.
 
 #### Parameters
 
  In prior versions there were three parameters: Name, Options, Intercepts.
  There are now optionally four parameters: Name, Function, Options, Intercepts.
 
- * Name : The named javascript function which will be invoked when the
+ * Name : The named JavaScript function which will be invoked when the
  command is invoked by a player. In earlier versions, without the second Function
  parameter, the name of the function would be used as the command name. So it
  was important to name the function accordingly.
@@ -255,7 +255,7 @@
  ```javascript
  // javascript code
  function boo( params, sender) {
- echo( sender, params[0] );
+   echo( sender, params[0] );
  }
  command( boo );
  ```
@@ -269,10 +269,10 @@
  ```javascript
  var utils = require('utils');
  function boo( params, sender ) {
- var receiver = server.getPlayer( params[0] );
- if ( receiver ){
- echo( receiver, sender.name + ' says boo!');
- }
+   var receiver = server.getPlayer( params[0] );
+   if ( receiver ){
+     echo( receiver, sender.name + ' says boo!');
+   }
  }
  command( boo, utils.playerNames );
  ```
@@ -282,7 +282,7 @@
  ```javascript
  function hello(args,invoker) { echo( invoker, 'Hi Back'); }
  var myCmd = command( 'hi',
- function(  params, invoker ) { echo( invoker, 'Hi Back'); }
+   function(  params, invoker ) { echo( invoker, 'Hi Back'); }
  );
  ```
 
@@ -297,10 +297,10 @@
 
  ```javascript
  function handleit(args,invoker) {
- // decide whether to
- return true;
- // or
- return false;
+   // decide whether to
+   return true;
+   // or
+   return false;
  }
  command(handleit,'',true); // no name so other params shift down one
  ```
@@ -319,8 +319,8 @@
 
 ### setTimeout() function
 
- This function mimics the setTimeout() function used in browser-based javascript. However,
- the function will only accept a function reference, not a string of javascript code.
+ This function mimics the setTimeout() function used in browser-based JavaScript. However,
+ the function will only accept a function reference, not a string of JavaScript code.
  Where setTimeout() in the browser returns a numeric value which can be subsequently
  passed to clearTimeout(), this implementation returns an object which can be subsequently
  passed to ScriptCraft's own clearTimeout() implementation.
@@ -334,8 +334,8 @@
  // start a storm in 5 seconds
  //
  setTimeout( function() {
- var world = server.worlds.get(0);
- world.setStorm(true);
+   var world = server.worlds.get(0);
+   world.setStorm(true);
  }, 5000);
  ```
 
@@ -345,8 +345,8 @@
 
 ### setInterval() function
 
- This function mimics the setInterval() function used in browser-based javascript. However,
- the function will only accept a function reference, not a string of javascript code.
+ This function mimics the setInterval() function used in browser-based JavaScript. However,
+ the function will only accept a function reference, not a string of JavaScript code.
  Where setInterval() in the browser returns a numeric value which can be subsequently
  passed to clearInterval(), this implementation returns an object which can be subsequently
  passed to ScriptCraft's own clearInterval() implementation.
@@ -421,19 +421,18 @@
 
 #### Example
 
- scload("myFile.js"); // loads a javascript file and evaluates it.
+ scload("myFile.js"); // loads a JavaScript file and evaluates it.
 
- var myData = scload("myData.json"); // loads a javascript file and evaluates it - eval'd contents are returned.
+ var myData = scload("myData.json"); // loads a JavaScript file and evaluates it - eval'd contents are returned.
 
 ##### myData.json contents...
 
  { players: {
- walterh: {
- h: ["jsp home {1}"],
- sunny:["time set 0",
- "weather clear"]
- }
- }
+     walterh: {
+       h: ["jsp home {1}"],
+       sunny:["time set 0","weather clear"]
+     }
+   }
  }
 
  **Remember: Use persistence for loading and saving data, not scload() or scsave().**
@@ -443,10 +442,10 @@
 #### Deprecated
  No longer recommended for use by Plugin/Module developers.
 
- The scsave() function saves an in-memory javascript object to a
+ The scsave() function saves an in-memory JavaScript object to a
  specified file. Under the hood, scsave() uses JSON (specifically
  json2.js) to save the object. There will usually be no need to call
- this function directly - If you want to have a javascript object
+ this function directly - If you want to have a JavaScript object
  automatically loaded at startup and saved on shutdown then use the
  `persist()` module. The `persist()` module uses scsave and scload
  under the hood.  Any in-memory object saved using the `scsave()`
@@ -461,16 +460,16 @@
 
  ```javascript
  var myObject = { name: 'John Doe',
- aliases: ['John Ray', 'John Mee'],
- date_of_birth: '1982/01/31' };
+                  aliases: ['John Ray', 'John Mee'],
+                  date_of_birth: '1982/01/31' };
  scsave(myObject, 'johndoe.json');
  ```
 
 ##### johndoe.json contents...
 
  { "name": "John Doe",
- "aliases": ["John Ray", "John Mee"],
- "date_of_birth": "1982/01/31"
+   "aliases": ["John Ray", "John Mee"],
+   "date_of_birth": "1982/01/31"
  };
 
  **Remember: Use persistence for loading and saving data, not scload() or scsave().**
@@ -554,7 +553,7 @@ function __onEnable(__engine, __plugin, __script) {
         return '' + file.getCanonicalPath().replaceAll('\\\\', '/');
     }
     /*
-     Save a javascript object to a file (saves using JSON notation)
+     Save a JavaScript object to a file (saves using JSON notation)
      */
     function _save(objToSave, filename) {
         var objectToStr = null,
@@ -605,7 +604,7 @@ function __onEnable(__engine, __plugin, __script) {
         return result;
     }
     /*
-     Load the contents of the file and evaluate as javascript
+     Load the contents of the file and evaluate as JavaScript
      */
     function _load(filename, warnOnFileNotFound) {
         var result = null,
@@ -755,8 +754,8 @@ function __onEnable(__engine, __plugin, __script) {
                     }
                 }
             } catch(e) {
-                logError('Error while trying to evaluate javascript: ' + fnBody + ', Error: ' + e);
-                echo(sender, 'Error while trying to evaluate javascript: ' + fnBody + ', Error: ' + e);
+                logError('Error while trying to evaluate JavaScript: ' + fnBody + ', Error: ' + e);
+                echo(sender, 'Error while trying to evaluate JavaScript: ' + fnBody + ', Error: ' + e);
                 throw e;
             } finally {
                 /*

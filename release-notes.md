@@ -1,21 +1,31 @@
 RELEASE NOTES
 =============
 
-Visit the [Gitter Chatroom][gitchat] to discuss this plugin.
-Or visit the [ScriptCraft forum][scforum].
-To keep up with changes, see [Tony's blog][blogt].
-See the new [Help][help] doc!
+* Visit the [Gitter Chatroom][gitchat] to discuss this plugin.
+* Or visit the [ScriptCraft Google Group/Forum][scforum].
+* [Facebook][facebook]
+* [Twitter][twitter] (Use hashtags #Minecraft and #JavaScript, and reference @ScriptCraftJS!)
+* To keep up with changes, see [Tony's blog][blogt].
+* See the new [Help][help] doc!
 
-[gitchat]: https://gitter.im/walterhiggins/ScriptCraft
 [blogt]: https://tonygravagno.tumblr.com/post/164339922687/what-is-scriptcraftjs-answer-1
+[facebook]: https://facebook.com/ScriptCraftJS
+[gitchat]: https://gitter.im/walterhiggins/ScriptCraft
 [help]: Help.md
+[twitter]: https://twitter.com/ScriptCraftJS
 
-3.2.2.8 ("Bad Zombie")-2017-09-06
+3.2.2.8 ("Bad Zombie")-2017-09-07
 ---------------------------------
 
-1. Updated contributing.md.
+1. *Developers!* : The root-level `contributing.md` doc has been updated and promoted to a first-class citizen and now resides in /doc as `Contributing.md`.
+1. Added Dependencies.md.
 1. Spigot.jar removed from the published repo. The documentation is now adequate for building a new/current .jar.
-1. CanaryMod 1.8 removed from the published repo. It won't won't with this release and has been removed to avoid confusion.
+1. Removed CanaryMod jar in last commit but replaced it for now just to build.
+1. Fixed some doc notes that lost formatting with default JS code formatting, also trivial typos.
+1. The Drone.MAX_VOLUME value has been temporarily reduced from 1 million to 216 thousand due to server crashes. See comments in src/main/js/modules/drone/index.js and change if your server can support it. See [issue](https://github.com/walterhiggins/ScriptCraft/issues/337).
+1. The final scriptcraft.jar file is now auto-copied to the /latest_jar folder. This is the file to drop into /plugins to install ScriptCraftJS.
+1. Re-arranged README a bit, reduced size (cuz no one likes a long README), moved some info to Installation.md doc and elsewhere.
+1. Other small changes.
 
 3.2.2.7 ("Bad Zombie")-2017-09-03
 ---------------------------------
@@ -103,12 +113,9 @@ Work in Progress : ~~"Anxious-Villager"~~ "Bad-Zombie"
 **TODO for Bad-Zombie:**
 
 1. Check build.local.properties.
-1. Re-integrate with Travis.
 1. Check docker info in README.txt
 1. Do we need CopyLibs?
-1. Automate copying scriptcraft.jar to 'latest_jar' folder.
 1. Look at FAQ
-1. Process GH issues, pull requests, etc.
 
 3.2.1 Release (2016 12 23)
 --------------------------

@@ -71,7 +71,7 @@ The game doesn't know that you typed that. It just knows that the message is com
 
 In-game, try "/say hi". The response begins "I'm sorry, but you do not have permission to perform this command..." To send a message in-game we use the default command "t" for Tell. Try "thello". The initial "t" means tell, which opens the in-game command window, and the text hello becomes a message broadcasted to everyone. In the console you'll see something like this:
 
-[17:29:54 INFO]: <YourName> hello
+[17:29:54 INFO]: \<YourName> hello
 
 So the server console also sees what people type in-game.
 

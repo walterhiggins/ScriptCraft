@@ -3,7 +3,8 @@
 var utils = require('utils'),
     blocks = require('blocks'),
     THOUSAND = 1000,
-    MILLION = THOUSAND * THOUSAND;
+    MILLION = THOUSAND * THOUSAND,
+    SIXTY_CUBIC_BLOCKS = 60*60*60; // 216000
 /*********************************************************************
 ## Drone Plugin
 
@@ -93,8 +94,8 @@ For more complex building projects where more than one drone is desired, this is
 #### Parameters
 
  * Player : If a player reference is given as the sole parameter then the block the player was looking at will be used as the starting point for the drone. If the player was not looking at a block then the player's location will be used as the starting point. If a `Player` object is provided as a parameter then it should be the only parameter.
- * location  : *NB* If a `Location` object is provided as a parameter, then it should be the only parameter.
- * x : The x coordinate of the Drone (x,y,z,direction and world are not needed if either a player or location parameter is provided)
+ * location  : *NB* If a `Location` or `Drone` object is provided as a parameter, then it should be the only parameter.
+ * x : The x coordinate of the Drone (x,y,z,direction and world are not needed if either a player, a location or another drone parameter is provided)
  * y : The y coordinate of the Drone
  * z : The z coordinate of the Drone
  * direction : The direction in which the Drone is facing. Possible values are 0 (east), 1 (south), 2 (west) or 3 (north)
@@ -102,7 +103,7 @@ For more complex building projects where more than one drone is desired, this is
 
 ### Drone.box() method
 
-the box() method is a convenience method for building things. (For the more performance-oriented method - see cuboid)
+The box() method is a convenience method for building things. (For the more performance-oriented method - see cuboid)
 
 #### parameters
 
@@ -195,7 +196,7 @@ The Drone object uses a [Fluent Interface][fl] to make ScriptCraft scripts more 
  * x - The Drone's position along the west-east axis (x increases as you move east)
  * y - The Drone's position along the vertical axis (y increses as you move up)
  * z - The Drone's position along the north-south axis (z increases as you move south)
- * dir - The Drone's direction 0 is east, 1 is south , 2 is west and 3 is north.
+ * dir - The Drone's direction 0 is east, 1 is south, 2 is west, and 3 is north.
 
 ### Extending Drone
 
@@ -298,13 +299,10 @@ If you see an error message in the console `Build too big!` It's because the wid
 
 #### Drone.MAX_VOLUME
 
-Specifies the maximum value for any call to Drone.cuboidX (box) method.
-The default value is 1,000,000 (1 million) blocks.
+Specifies the maximum value for any call to Drone.cuboidX (box) method. If the volume (width X height X length) of any single call to the Drone.cuboidX() method exceeds this value, you will see an error message in the console `Build too big!`
+Prior to v3.3 the default value was 1,000,000 (1 million) blocks. An issue report in GitHub verifies that with a cuboid of about 60x60x60 the drone works will, but beyond that, like at 70x70x70, the server crashes. For this reason in v3.3 the Drone.MAX_VOLUME has been set to SIXTY_CUBIC_BLOCKS, or 60x60x60.
 
-If the volume (width X height X length) of any single call to the Drone.cuboidX() method exceeds this value, you will see an error message in the console `Build too big!` .
-
-The values of both the `Drone.MAX_SiDE` and `Drone.MAX_VOLUME` variables _can_ be overridden but it's not recommended.
-
+The values of both the `Drone.MAX_SiDE` and `Drone.MAX_VOLUME` variables _can_ be overridden but it's not recommended. If you need to create a larger box, change the value of MAX_VOLUME, and/or consider using the cuboid rather than the box.
 ***/
 //
 // Implementation
@@ -662,7 +660,7 @@ Drone.prototype.cuboida = function( /* Array */ blocks, w, h, d, overwrite) {
     });
     return this;
 };
-Drone.MAX_VOLUME = 1 * MILLION;
+Drone.MAX_VOLUME = 1 * SIXTY_CUBIC_BLOCKS; // was MILLION, FIX for v4.
 Drone.MAX_SIDE = 1 * THOUSAND;
 
 function isTooBig(w, h, d) {
