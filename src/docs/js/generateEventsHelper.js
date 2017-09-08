@@ -11,6 +11,7 @@ var File = java.io.File,
         ZipInputStream = java.util.zip.ZipInputStream,
         zis = new ZipInputStream(new FileInputStream(args[1])),
         entry = null;
+    out.println("Variables initialized");
 var content = [
     '/*********************',
     '## Events Helper Module (' + FRAMEWORK + ' version)',
@@ -30,14 +31,17 @@ var content = [
     '',
     '***/'
 ];
+    out.println("Checking for Canary");
 var canary = false;
 if (FRAMEWORK == 'CanaryMod') {
     canary = true;
 }
 
+    out.println("Looping through content");
 for (var i = 0; i < content.length; i++) {
     out.println(content[i]);
 }
+    out.println("Going through zis");
 while ((entry = zis.nextEntry) != null) {
     var name = new String(entry.name);
     var re1 = /org\/bukkit\/event\/.+Event\.class$/;
