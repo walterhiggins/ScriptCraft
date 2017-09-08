@@ -14,7 +14,7 @@ RELEASE NOTES
 [help]: Help.md
 [twitter]: https://twitter.com/ScriptCraftJS
 
-3.2.2.8 ("Bad Zombie")-2017-09-07
+3.2.2.8a ("Bad Zombie")-2017-09-07
 ---------------------------------
 
 1. *Developers!* : The root-level `contributing.md` doc has been updated and promoted to a first-class citizen and now resides in /doc as `Contributing.md`.
@@ -26,6 +26,10 @@ RELEASE NOTES
 1. The final scriptcraft.jar file is now auto-copied to the /latest_jar folder. This is the file to drop into /plugins to install ScriptCraftJS.
 1. Re-arranged README a bit, reduced size (cuz no one likes a long README), moved some info to Installation.md doc and elsewhere.
 1. Other small changes.
+1. Travis:
+    1. On submitting the pull request to Walter's repo, Travis CI kicked in. While I was getting a good build in my (Tony) repo, Travis failed in Walter's. This happens when the Spigot.jar is removed. Rather than getting Travis to build a new Spigot.jar, or putting the file back into the repo, Travis is now pulling from a hard-coded DropBox file. So the repo still doesn't have the file, but Travis still gets a good build. That temporary solution will be modified later.
+    1. Modified Travis CI to use latest JDK8 from Oracle and OpenJDK.
+    1. If there is a failure, Travis will dump the .log files so we can see what went wrong.
 
 3.2.2.7 ("Bad Zombie")-2017-09-03
 ---------------------------------
