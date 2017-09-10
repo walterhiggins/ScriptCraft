@@ -5,6 +5,10 @@ See the new [Help][help] doc for links to a large number of information resource
 
 [help]: docs/Help.md
 
+3.2.3.2 ("Bad Zombie BETA")-2017-09-10
+---------------------------------
+
+1. Fix: removed diagnostic output generated into helper .js code. Release bump required to get new JAR to unpack/load in server.
 
 3.2.3.1 ("Bad Zombie BETA")-2017-09-10
 ---------------------------------
