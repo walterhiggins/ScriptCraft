@@ -20,16 +20,21 @@ For example the [Player.getWalkSpeed()][bukplws] can be used to get a
 player's walking speed. In Java you would have to write code like this
 to obtain the walking speed...
 
-    float walkingSpeed = player.getWalkSpeed();
-
+```java
+float walkingSpeed = player.getWalkSpeed();
+```
 ... however, in JavaScript you can access the walking-speed property
 using the more succinct...
 
-    var walkingspeed = player.walkSpeed;
+```javascript
+var walkingspeed = player.walkSpeed;
+```
 
 ... or if you prefer to use Java-style access...
 
-    var walkingspeed = player.getWalkSpeed();
+```javascript
+var walkingspeed = player.getWalkSpeed();
+```
 
 ... I personally prefer to use the simpler `player.walkSpeed` because
 it is easier to read. The important thing to remember when using the
@@ -71,16 +76,20 @@ inherited from interface org.bukkit.entity.Entity** in the
 In Java the following code will print out the `user.dir` and
 `user.timezone` properties...
 
-    System.out.println( System.getProperty( "user.dir" ) );
-    System.out.println( System.getProperty( "user.timezone" ) );
+```java
+System.out.println( System.getProperty( "user.dir" ) );
+System.out.println( System.getProperty( "user.timezone" ) );
+```
 
 ... In Java, any classes in the `java.lang` package don't need to be
 prefixed with the package so the `java.lang.System` class can simply
 be written as `System`. However, in JavaScript classes in the
 `java.lang` package need to be fully qualified so you need to write...
 
-    println( java.lang.System.getProperty( "user.dir" ) );
-    println( java.lang.System.getProperty( "user.timezone" ) );
+```javascript
+println( java.lang.System.getProperty( "user.dir" ) );
+println( java.lang.System.getProperty( "user.timezone" ) );
+```
 
 ... the `println()` function is one of the default functions provided
 by the JS Engine in Java so there is no need to add the class name
@@ -90,17 +99,21 @@ System class in a number of statements you can save yourself some
 typing by declaring a System variable and using that instead of the
 fully-qualified package and class name...
 
-    var System = java.lang.System;
-    println( System.getProperty( "user.dir" ) );
-    println( System.getProperty( "user.timezone" ) );
+```javascript
+var System = java.lang.System;
+println( System.getProperty( "user.dir" ) );
+println( System.getProperty( "user.timezone" ) );
+```
 
 The JS Engine provides an `importPackage()` function which can be used
 to import packages. This also saves you having to type full package
 names before classes. For example...
 
-    importPackage(java.util);
-    var hMap = new HashMap();
-    hMap.put('name','Walter');
+```javascript
+importPackage(java.util);
+var hMap = new HashMap();
+hMap.put('name','Walter');
+```
 
 ... makes all of the classes in the Java Library's `java.util` package
 available for use without having to use the `java.util`

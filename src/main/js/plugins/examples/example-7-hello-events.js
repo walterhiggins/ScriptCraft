@@ -53,9 +53,9 @@ function responsible for adding new *connection* event handlers - that
 is - functions which should be invoked when there's a new *connection*
 event in the game. A new *connection* event is fired whenever a player
 joins the game. There are many other types of events you can handle in
-Minecraft. You can see [a full list of events here][cmEvtList].
+Minecraft. You can see [a full list of events here][evtList].
 
-[cmEvtList]: #events-helper-module-canary-version
+[evtList]: #events-helper-module
 ***/
 // wph 20140927 - event handler registration differs depending on framework.
 function onJoin(event) {

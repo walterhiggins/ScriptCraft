@@ -5,7 +5,8 @@ A dependency is something that other things depend upon. Children depend on pare
 - Your plugins!
 - ScriptCraft
 - Another layer of software ( this is what we're interested in here )
-- Minecraft server software
+- Minecraft server software = SpigotMC
+- Java
 - An Operating System (OS) like Windows, Mac, or Linux
 - Hardware
 
@@ -29,7 +30,7 @@ Technically, we don't **need** Mods. You can happily run a Minecraft multi-playe
 
 A mod is required when we want to run a plugin. Essentially we connect our plugin into the mod and it connects to Minecraft. But we're here to talk about the ScriptCraft plugin and writing our own plugins, so for our purposes we **do** need a mod.
 
-*Note:* Yes, we know this is a Plugin, and Mods are different. For our immediate purposes we are describing how modders can modify their game with mods. We can discuss Plugins vs Mods later.
+*Note:* Yes, we know this is a Plugin, and Mods are different. We are describing how modders can modify their game with modifications. The subtlety of definitions between Plugin and Mod isn't important for this purpose.
 
 ## Bukkit
 
@@ -55,7 +56,7 @@ Let's talk about specific Bukkit implementations.
 
 CraftBukkit is a mod, a server, an implementation of the Bukkit API. This used to be the main implementation that most people used ... but it is no longer supported. Now plugins written for CraftBukkit run over Spigot. This is what happened to CraftBukkit...
 
-> ScriptCraft is Free and Open Source Software (FOSS). The word Free in English means both Liberty and No-Cost. FOSS is both cost-free and we have the liberty to see, modify, and distribute it. However, not all software is completely free (liberty or cost). Problems arise when free software includes any bit of software that is owned by someone else and not considered "free". This situation occurred in 2014 with CraftBukkit, and led to what is now referred to as the DMCA era. That forced everyone to stop downloading, developing, and sharing the code, and it forced plugin developers to stop writing their code which depended on CraftBukkit.
+ScriptCraft is Free and Open Source Software (FOSS). The word Free in English means both Liberty and No-Cost. FOSS is both cost-free and we have the liberty to see, modify, and distribute it. However, not all software is completely free (liberty or cost). Problems arise when free software includes any bit of software that is owned by someone else and not considered "free". This situation occurred in 2014 with CraftBukkit, and led to what is now referred to as the DMCA era. That forced everyone to stop downloading, developing, and sharing the code, and it forced plugin developers to stop writing their code which depended on CraftBukkit.
 
 #### Spigot
 
@@ -63,13 +64,29 @@ Spigot (also called SpigotMC to emphasize MineCraft) is a fork of CraftBukkit. I
 
 So, knowing that SpigotMC implements Bukkit, and CraftBukkit no longer actually exists, you should now understand why there are references to both Spigot and Bukkit used here like they are the same thing, and no current references to CraftBukkit.
 
-### Paper
+##### Paper
 
-Huh? What's this? From the [Paper][paper] website:
+From the [Paper][paper] website:
 
 > Paper is a high performance fork of the Spigot Minecraft Server that aims to fix gameplay and mechanics inconsistencies and improve performance. Paper contains numerous unique features and changes, including many performance improvements not found in Spigot.
 
 At this time, ScriptCraft does not technically support Paper (PaperMC). However, ScriptCraft supports Bukkit ... and since Paper is a fork of Spigot, it implements Bukkit, so we "should" be able to run ScriptCraft over a Paper server. There is no plan yet to "officially" test ScriptCraft with Paper, but anyone is welcome to try it and share their experiences.
+
+#### GlowstoneMC
+
+Glowstone is defined as follows in the [project README][glowstone]:
+
+> The main goals of the project are to provide a lightweight implementation of the Bukkit API and Minecraft server where exact vanilla functionality is not needed or higher performance is desired than the official software can deliver.
+
+Also on that page:
+
+> Glowstone is not finished. Nothing is guaranteed to work, though many things are likely to.
+
+As with Paper, this means ScriptCraft "should" support GlowstoneMC, but since that project ventures away from standards, and it's not yet finished, we have not tested, will not support, and discourage usage of ScriptCraft with GlowstoneMC.
+
+Also as above, if you like GlowstoneMC or Paper, you're welcome to create a new release of ScriptCraft that supports either of those Bukkit implementations. But please wait for those projects to stabilize.
+
+We're also concerned about other Bukkit implementations being partially supported and then left for other ScriptCraft developers to work around or possibly remove. Please discuss your desire to support other Bukkit implementations with the community before beginning such an effort.
 
 ## CanaryLib
 
@@ -95,6 +112,8 @@ At this time Sponge is still in development. So as we focus on the current relea
 
 There are other server projects to add an API over Minecraft. Mojang/Microsoft may eventually publish their own. As with Sponge, we'll keep an eye on these to see what's popular, what's in demand, and to decide if it makes sense to support yet another platform.
 
+See question #6 in the [FAQ][faq] on that specific topic.
+
 ## Client-side mods/plugins?
 
 When you connect into the Minecraft server, you are using "client" software. This is a client/server environment. You execute code on your device which shows worlds and that code connects to the server to set data, so that other people in the same world see the same thing. There are client-side plugins for Minecraft which add things to the display, or which read/write data in the communications to make the game do things for you that other people might not see unless they have the same plugin.
@@ -105,4 +124,6 @@ At this time, ScriptCraftJS is entirely server-based. It does not support develo
 [blockstate]: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/BlockState.html
 [book]: http://www.peachpit.com/store/beginners-guide-to-writing-minecraft-plugins-in-javascript-9780133930146
 [bukkitapi]: https://hub.spigotmc.org/javadocs/bukkit/
+[faq]: Frequently-Asked-Questions.md
+[glowstone]: https://github.com/GlowstoneMC/Glowstone
 [paper]: https://paper.readthedocs.io/en/paper-1.11/

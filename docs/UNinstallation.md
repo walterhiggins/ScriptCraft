@@ -10,4 +10,4 @@ It's very simple to completely remove all traces of ScriptCraft from your system
 
 See the [Help][help] page for more tips.
 
-[help]: ../../docs/Help.md
+[help]: Help.md

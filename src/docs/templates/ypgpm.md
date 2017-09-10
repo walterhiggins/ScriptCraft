@@ -10,15 +10,12 @@ JavaScript right within the game, making it possible to ...
  * Extend the game in other interesting ways - add new Items, change
    the game behaviour and create mini-games.
 
-
-*Note:* Yes, we know this is a Plugin, and Mods are different. For our immediate purposes we are describing how modders can modify their game with mods. We can discuss Plugins vs Mods later.
+*Note:* Yes, we know this is a Plugin, and Mods are different. We are describing how modders can modify their game with modifications. The subtlety of definitions between Plugin and Mod isn't important for this purpose.
 
 Minecraft can be played in single-player or multi-player mode (with
 friends). Most people play Minecraft in Multi-player mode where
 players connect to a Minecraft Server on the Internet or locally
 (running on the player's computer).
-
-
 
 ![Cottages created using ScriptCraft in MineCraft][img_cr]
 
@@ -28,118 +25,39 @@ Software is built upon layers where each layer depends on the layer below it. Th
 
 - Your plugins!
 - ScriptCraft
-- Another layer of software
-- Minecraft server software
+- Another layer of software ( this is what we're interested in here )
+- Minecraft server software = SpigotMC
 - Java
 - An Operating System (OS) like Windows, Mac, or Linux
 - Hardware
 
-We trust you have hardware and an OS loaded at the bottom layers. Our goal here is to move up the lit, and describe how to make the rest of the layers work.
+We trust you have hardware and an OS loaded at the bottom layers. Our goal here is to move up the list, and describe how to make the rest of the layers work.
+
+A separate document goes into more depth on [Dependencies][deps]. That detail is not required but it does provide a lot of background information about how and why we use some of these components.
 
 ## Java
 
-Java is a programming language and "framework" for other code that works above it. It might already be on your system. If not, it's required for Minecraft, so you will need to install it. Download the Java Runtime Environment version 1.8 (JRE 8) from [here][jre8] - get the right version for your OS. This is an easy step, and instructions and help for doing this are easy to find.
+Java is a programming language and "framework" for other code that works above it. It might already be on your system. If not, see the [Installation][installdoc] documentation.
 
 *Tip:* You'll see the term JAR here. This is a Java ARchive file that looks like `name.jar`. This is a single file that has many other files inside it, like a `name.zip` file.
 
 ## Minecraft and SpigotMC
 
-Before installing ScriptCraft you must first install SpigotMC, often just called Spigot. This is a special version of the Minecraft Server that makes it easy to customize the game. Without this extra layer, the unmodified Minecraft game is called "Vanilla". While internally Spigot is a layer above Minecraft, when we install Spigot we **are** installing Minecraft. So this is just one step. In other words, you don't need to install Minecraft and then install Spigot above it like other layers.
+Before installing ScriptCraft you must first install SpigotMC, often just called Spigot. This is a special version of the Minecraft server that makes it easy to customize the game. Without this extra layer, the unmodified Minecraft game is called "Vanilla". While internally Spigot is a layer above Minecraft, when we install Spigot we **are** installing Minecraft. Spigot is more of a wrapper around Minecraft, like skin on a fruit or vegetable that makes it easy to handle. So this is just one step. In other words, you don't need to install Minecraft and then install Spigot above it like other layers.
 
 ### Installing SpigotMC
 
-Frankly, it may not be easy to install SpigotMC. Learning JavaScript afterward is the easy part. Due to some business issues it's not legal to simply download Spigot. We need to "build" it ourselves. The information below describes the process. This information comes from the SpigotMC [wiki][spigotbuild] and other sources.
+There are many steps to install SpigotMC. Learning JavaScript afterward is the easy part. Due to some business issues it's not legal to simply download Spigot. We need to "build" it ourselves. To build and install SpigotMC, see the [Installation][installdoc] documentation.
 
 Rather than building it ourselves, another way to get Spigot is to subscribe to a hosting service where they provide Spigot for their users. Then you just need to install ScriptCraft, which is very easy.
 
-Our intent here is to give you information about how to get started on your own. But for some details you may need to follow the links and do more reading, or find someone who can help with this part of the process.
+When you have SpigotMC installed, Congratulations! Let's continue!
 
-Follow these steps to build and install SpigotMC:
+### Installing ScriptCraft
 
-#### On Windows
+Assuming you now have your SpigotMC/Minecraft server started, follow the [Installation][installdoc] documentation for installing ScriptCraft.
 
-There are at least two ways to do this in Windows: One is the easy way and the other is a bit harder.
-
-The easy way is to use software that has been created for the purpose. The following comes from the SpigotMC wiki page [on this specific topic][spigotbuildgui]:
-
-> **BuildToolsGUI by DemonWav**
-> BuildToolsGUI is a user interface wrapper for BuildTools for Windows. It is compatible with Windows 7, 8, 8.1, and 10. It handles all of the dependencies to run BuildTools automatically. To use BuildToolsGUI you need to have .NET 4.5 installed on your Windows computer. If you have used your computer for a while, you probably already have it. If not, click [here][dotnet45] to install it. BuildToolsGUI will automatically check for updates every time you run it. You can **download it and find updates [here][buildguidl]**.
-
-So that's the easy way: Download BuildToolsGUI and execute it. It will download everything for you and do everything that's required.
-
-For a more nerdy approach... This also comes from the SpigotMC wiki page:
-
-> Git - In order for BuildTools to run on Windows, you will need to install Git. For Windows it is distributed via git-scm, which can be downloaded [here][gitdl]. Install it where you like, it will provide git bash, which will be used to run the BuildTools jar. Just keep hitting Next when running the installer.
-
-So either get BuildToolsGUI or install Git.
-
-#### On Linux
-
-Direct from the wiki:
-
-> Both git and Java, as well as util commands, can be installed using a single command via your package manager.
-Debian/Ubuntu: sudo apt-get install git openjdk-7-jre-headless
-CentOS/RHEL: sudo yum install git java-1.7.0-openjdk-devel
-Arch: pacman -S jdk8-openjdk git
-
-#### On Mac
-
-> Git can be downloaded from: http://sourceforge.net/projects/git-osx-installer/files/
-> Java may need to be updated from the Apple distributed version, and even if previously updated, may need to be linked for shell use.
-Please follow steps found here: https://gist.github.com/johan/10590467
-
-#### Now for all platforms
-
-1. Download Spigot's [BuildTools.jar][spigotdl]. This file contains instructions that will download all of the components necessary to build the Spigot software.
-1. Save the BuildTools.jar file to a new directory. **C:\Temp\spigotmc** is a good choice. The path cannot include spaces.
-1. Do the build:
-    1. Mac and Linux: Open a terminal window and type `java -jar BuildTools.jar`.
-    1. In Windows:
-        1. Open the Command window and enter `git bash`. That opens another window with the git command-line.
-        1. Type `java -jar BuildTools.jar`.
-
-That will kick off a long series of commands to "build" SpigotMC.
-
-1. When the build is done, there will be a new file beginning with `spigot` and ending in `.jar` in the spigotmc directory. Run this file by typing `java -jar spigot.jar` (That might not be that exact name - you can list files in the directory by typing `dir` (Windows) or `ls` (Mac and Linux).
-1. The server will start up then shut down very shortly afterwards. You'll need to edit a file called `eula.txt`,change `eula=false` to `eula=true`, and save the file.
-1. Before continuing, see below, **Configuring your Server (optional)**
-1. Run the `java -jar spigot.jar` command again (for v1.12.1 the actual name is spigot-1.12.1.jar). This time the server will start up and will eventually stop at a **>** prompt - that's the Minecraft Operator's command line.
-1. Stop your Minecraft server: type `stop` at the "ops" prompt.
-
-You are probably used to starting Minecraft with a desktop icon and a launcher. For now we're doing the same thing but from the OS command-line. This will be explained soon.
-
-## Configuring your Server (optional)
-
-Once you've installed SpigotMC, depending on your specific needs, you might want to consider setting the following properties in the `server.properties` file.
-
-    # completely flat worlds are best for building from scratch
-    # For SpigotMC:
-    level-type=FLAT
-    generate-structures=false
-
-    # creative mode
-    gamemode=1
-    pvp=false
-
-    # turns off authentication (for classroom environments)
-    online-mode=false
-    spawn-npcs=false
-    spawn-monsters=false
-
-    # give your server a name that YOU like
-    motd=My Cool ScriptCraftJS Server
-
-## Installing ScriptCraft
-
-Follow these steps to download and install ScriptCraft.
-
-1. Download the [scriptcraft.jar][dl] plugin and save it to the `plugins` directory.
-1. Restart the server by typing `java -jar spigot-1.12.1.jar`.
-1. You may get a security alert because Minecraft attempts to make network connections.
-1. At the bottom of the stream of output from the server you'll see the ops prompt. Type `js 1 + 1` and hit enter. The result `"2"` should be displayed (1+1=2, right?). (That command will be explained soon.)
-1. Leave the server running at the ops prompt.
-
-Congratulations - you've just installed your Custom Minecraft Server and are ready to begin writing your first mod!
+And assuming you've done that, Congratulations again! You've just customized your Minecraft server and are ready to begin writing your first mod!
 
 ## Learning JavaScript
 
@@ -147,11 +65,11 @@ To begin creating cool stuff in Minecraft using ScriptCraft, you don't
 *need* to know much JavaScript. ScriptCraft comes with lots of functions
 to help you create buildings of any size allowed in the game, and lets you experiment while
 you play. However, as you learn JavaScript you will be able to create
-cooler stuff in Minecraft - not just buildings, you'll be able to add
-new rules and items to the game - even create mini-games for you and
+cooler stuff in Minecraft, not just buildings. You'll be able to add
+new rules and items to the game, even create mini-games for you and
 your friends. If you want to get started learning JavaScript, check out
-this [fun JavaScript Tutorial][ce]. If you want to dive right in to
-ScriptCraft, read on...
+the fun JavaScript Tutorial on [this site][ce] (or others). If you want
+to dive right in to ScriptCraft, read on...
 
 ## First Steps
 
@@ -173,9 +91,7 @@ Minecraft profile in your client. Profiles let you decide which
 version of Minecraft client you want to run so that your client and
 server are compatible.
 
-# FIX numbering
-
-1. Once you've joined the game, press the "slash" `/` key located at the bottom
+6\. Once you've joined the game, press the "slash" `/` key located at the bottom
 right of your keyboard. A prompt will appear. Type the following then
 press enter: `js 1 + 1` The number 2 should be displayed. 1+1=2, right?
 
@@ -388,7 +304,7 @@ You can create a single wooden block using the numeric values or the `blocks` va
 blocks.oak )` because it's easier to remember. For reference, here is
 a chart of all of the blocks (not items) in the Minecraft world...
 
-**TODO** UPDATE
+**Note: This image needs to be updated**
 ![Minecraft Data Values][img_dv]
 
 ## Dimensions
@@ -407,7 +323,9 @@ away you want something to extend.
 
 ## More shapes
 
-**TODO** Is it time to deprecate name0 functions and start using \_empty?
+<!-- TODO: See discussion about deprecating the name0 functions
+https://github.com/walterhiggins/ScriptCraft/issues/344
+-->
 
  * `box0( block, width, height, depth )` - creates an empty box (with the
  insides hollowed out - perfect for dwellings. `box0` will remove both
@@ -424,7 +342,7 @@ away you want something to extend.
 
 > Note: As we continue here we use both the terms Mod (short for Modification) and
 > Plugin to mean the same thing. Yes, there is a technical difference between the two.
-> But for our purpose, you're modifying the game with a plugin - that makes you a modder.
+> But for our purposes, you're modifying the game with a plugin - that makes you a modder.
 > So for now we'll use both terms for this same concept.
 
 ScriptCraft is a Minecraft plugin that lets you execute JavaScript code
@@ -536,7 +454,6 @@ Here is an example with variables:
     box(boxSize).fwd(spaces)
     move(myCheckPointName)
     up(3).box(boxSize)
-
 
 ## Saving your work
 
@@ -688,7 +605,7 @@ things...
  * `>`  Is greater than ?
  * `==`  Is equal to ?
  * `<=`  Is less than or equal to ?
- * `>=`  Is greather than or equal to ?
+ * `>=`  Is greater than or equal to ?
  * `!=` Is not equal to ?
 
 ... try comparing some more numbers yourself - say for example,
@@ -711,8 +628,8 @@ your `allowFlight` property to `true` or `false`. Try it ...
     /js self.allowFlight = false;
 
 ... and you come crashing down to earth. This is just one example of
-how `true` and `false` are used throughout ScriptCraft &ndash; these are
-called `boolean` values &ndash; named after [George Boole][boole], a 19th Century
+how `true` and `false` are used throughout ScriptCraft - these are
+called `boolean` values - named after [George Boole][boole], a 19th Century
 Maths Professor at University College Cork. There are plenty more
 examples of boolean values in Minecraft. You can find out if it's
 raining in your Minecraft world by typing the following statement ...
@@ -798,7 +715,6 @@ The `for` statement is useful when you want to repeat something over and over. I
  and does basically the same thing.
  4. The body - everything that appears between the `{` and `}` (opening and closing curly braces).
 
-
 `for` loops becomes very useful when you combine it with Arrays -
 remember, an Array is just a list of things, for example - the players
 connnected to a server, the worlds of a server and so on.
@@ -843,7 +759,7 @@ might look like this...
 ... in this case `players.length` will be 4 (since there are 4 online
 players), the for-loop will go around 4 times starting from position 0
 and going all the way up to position 3, sending a message to each of
-the players in the array. It's time for a new scriptcraft
+the players in the array. It's time for a new ScriptCraft
 function. Open the `hi.js` file you created earlier (using NotePad++ ,
 TextWrangler or your editor of choice) and add the following code at
 the bottom of the file...
@@ -891,7 +807,7 @@ following code...
 
     /js var i = 1; while (i <= 100){ echo( i ); }
 
-The code above will contine printing out the number 1 until the end of
+The code above will continue printing out the number 1 until the end of
 time (or until you unplug your computer). That's because the `i`
 variable is never incremented (remember - incrementing just means
 adding 1 to it) so i will always be 1 and never changes meaning the
@@ -932,9 +848,11 @@ loops. utils.foreach() takes two parameters...
 Let's see it in action, the following code will `console.log()` (print) the
 name of each online player in the server console window...
 
-    var utils = require('utils');
-    var players = utils.players;
-    utils.foreach( players, console.log );
+```javascript
+var utils = require('utils');
+var players = utils.players;
+utils.foreach( players, console.log );
+```
 
 ... in the above example, the list of online players is processed one
 at a time and each item (player) is passed to the `console.log`
@@ -1164,7 +1082,7 @@ and send a message to the player. The important thing to note is that
 the `myBlockBreakHook` function defined above will not be called until a player breaks a
 block. Try it - save the above code in a new file in the
 `scriptcraft/plugins` directory then type `/js refresh()` to reload
-scriptcraft. Then break a block in the game and you should see the
+ScriptCraft. Then break a block in the game and you should see the
 message 'You broke a block'.
 
 There are many types of events you can listen for in Minecraft. You can
@@ -1173,9 +1091,11 @@ browse [all possible event registration functions][spevts2] in the API Reference
 For custom events (events which aren't in the org.bukkit.event tree)
 just specify the fully qualified class name instead. E.g. ...
 
-    events.on ( net.yourdomain.events.YourEvent, function( event ) {
-        ...
-    });
+```javascript
+events.on( net.yourdomain.events.YourEvent, function( event ) {
+    ...
+});
+```
 
 ### Stop listening to events.
 
@@ -1216,7 +1136,9 @@ This is where JavaScript's Object literals come in handy. An object
 literal in JavaScript is simply a way of creating a new Object
 on-the-fly in your code. This is an example...
 
-    var myNewObject = { name: 'walter', country: 'Ireland' };
+```javascript
+var myNewObject = { name: 'walter', country: 'Ireland' };
+```
 
 ... I created a new object with two properties 'name' and
 'country'. The notation used to create this object is called JSON
@@ -1224,11 +1146,15 @@ which is short for JavaScript Object Notation. If I want to find out
 the 'country' property of the myNewObject variable there are a few
 ways I can do it...
 
-    var playerCountry = myNewObject.country;
+```javascript
+var playerCountry = myNewObject.country;
+```
 
 ... or ...
 
-    var playerCountry = myNewObject['country']
+```javascript
+var playerCountry = myNewObject['country']
+```
 
 ... JavaScript lets you access any object property using either
 dot-notation ( `object.property` ) or by index ( `object['property']`
@@ -1236,9 +1162,10 @@ dot-notation ( `object.property` ) or by index ( `object['property']`
 'Ireland'. When accessing the object by indexing, the property doesn't
 even have to be a string literal - it can be a variable like this...
 
-    var propertyName = 'country';
-    var propertyValue = myNewObject[propertyName];
-
+```javascript
+var propertyName = 'country';
+var propertyValue = myNewObject[propertyName];
+```
 ... in the above example, the propertyName variable is used when
 indexing. What this means is that every object in JavaScript can act
 like a lookup table. What's a lookup table? A table you 'look up' of
@@ -1280,7 +1207,7 @@ function getScore(player){
 var janesScore = getScore('jane'); // returns 8
 ```
 
-... putting it all together, a hypothetical scoreboard.js mdoule might
+... putting it all together, a hypothetical scoreboard.js module might
 look something like this...
 
 ```javascript
@@ -1350,39 +1277,29 @@ covered here. If you want to dive deeper into programming and modding
 Minecraft, I recommend reading the accompanying [ScriptCraft API
 reference][api] which covers all of the ScriptCraft functions, objects
 and methods. I also recommend reading the source code to some of the
-existing scriptcraft plugins, followed by
+existing ScriptCraft plugins, followed by
 [Anatomy of a ScriptCraft Plug-in][ap].  The online [SpigotMC API
 Reference][spigotapi] provides lots of valuable information about the
 different objects and methods available for use by ScriptCraft.
 
-
-[cmadmin]: https://github.com/walterhiggins/canarymod-admin-guide/
-[dlbuk2]: http://dl.bukkit.org/downloads/craftbukkit/
-[dlcm]: http://canarymod.net/releases
+[ap]: Anatomy-of-a-Plugin.md
+[api]: API-Reference.md
 [bii]: http://wiki.bukkit.org/Setting_up_a_server
-[sc-plugin]: http://scriptcraftjs.org/download/
+[bkevts]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/package-summary.html
+[boole]: http://en.wikipedia.org/wiki/George_Boole
 [ce]: http://www.codecademy.com/
+[deps]: docs/Dependencies.md
+[dlbuk2]: http://dl.bukkit.org/downloads/craftbukkit/
+[installdoc]: Installation.md
 [mcdv]: http://www.minecraftwiki.net/wiki/Data_values
 [np]: http://notepad-plus-plus.org/
 [cbapi]: http://jd.bukkit.org/beta/apidocs/
-[cmapi]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/
+[sc-plugin]: http://scriptcraftjs.org/download/
 [spigotapi]: https://hub.spigotmc.org/javadocs/spigot/
-[spigotbuildgui]: https://www.spigotmc.org/wiki/buildtools/#buildtoolsgui-by-demonwav
-[spigotbuild]: https://www.spigotmc.org/wiki/buildtools/
-[boole]: http://en.wikipedia.org/wiki/George_Boole
 [soundapi]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/world/effects/SoundEffect.Type.html
-[ap]: Anatomy-of-a-Plugin.md
-[api]: API-Reference.md
-[twl]: http://www.barebones.com/products/textwrangler/
-[bkevts]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/package-summary.html
-[cmevts]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/package-summary.html
-[spigotdl]: https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
-[buildguidl]: https://www.spigotmc.org/resources/buildtoolsgui.22267/
-[dotnet45]: https://www.microsoft.com/en-us/download/details.aspx?id=30653
-[jre8]: http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html
-[gitdl]: http://msysgit.github.io/
-[cmevts2]: API-Reference.md#events-helper-module-canary-version
 [spevts2]: API-Reference.md#events-helper-module-spigotmc-version
+[spigotdl]: https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+[twl]: http://www.barebones.com/products/textwrangler/
 [img_echo_date]: img/ypgpm_echo_date.png
 [img_3d_shapes]: img/ypgpm_3dshapes.jpg
 [img_whd]: img/ypgpm_whd.jpg

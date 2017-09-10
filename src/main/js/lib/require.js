@@ -57,7 +57,8 @@ module specification, the '.js' suffix is optional.
 
 [cjsmodules]: http://www.commonjs.org/specs/modules/1.0/
 [njsmod]: http://nodejs.org/api/modules.html
-<!-- website was re-worked, change to URL required -->
+<!-- website was re-worked, a change to the URL was required -->
+
 ***/
 (function(rootDir, modulePaths, hooks, evaluate) {
     var File = java.io.File,

@@ -98,11 +98,13 @@ Your game screen will show "Connection lost ... Server closed". And if you go ba
 
 ### Starting Minecraft in Singleplayer Server Mode
 
+**This section will be updated**
+<!-- TODO check singleplayer -->
 This is normal single-player mode but you want to use the local server code where the plugins folder has a sub-folder for ScriptCraft. In this mode you don't need to start the server, the game does that for you, but you need to tell the game where to go so that it starts the right server code and so that it loads ScriptCraft.
 
 If you have the Windows (CMD) command line open, you can close it. It's not needed here. If Minecraft is open, close it all down. Restart the launcher.
 
-On the launcher screen there is a green selector for which Client version of Minecraft that you want to use. Click the arrow to see a list of the available options. If you had to connect to a v1.11 multiplayer server, you would use the v1.11 client software, so your client and server versions match.
+On the launcher screen there is a green selector for which Client version of Minecraft that you want to use. Click the arrow to see a list of the available options. If you connect to a v1.12 multiplayer server, you would use the v1.12 client software, so your client and server versions match.
 
 In the top right corner, under Help, there is an icon to open a menu - it has three lines. This is called a "hamburger menu". Click that.
 

@@ -128,7 +128,7 @@
  * commando folder - commando is a plugin which can be used to add completely new commands
  to Minecraft. Be sure the look at the documentation and code for commando.
  * drone - Contains the drone module and drone extensions. Drone was the first
- scriptcraft module. Note that there is a drone folder under plugins, which is loaded
+ ScriptCraft module. Note that there is a drone folder under plugins, which is loaded
  at startup, and another drone folder with scripts that get loaded only as required.
  * arrows - The arrows.js file contains a module that changes the behaviour of
  Arrows: Explosive, Fireworks, Teleportation etc.
@@ -204,8 +204,7 @@
  - An absolute file path (with or without `.js` suffix)
  - A relative directory path (uses node.js rules for directories)
  - An absolute directory path (uses node.js rules for directories)
- - A name of the form `'events'` - in which case the `lib` directory and `modules` directories are searched for the module.
- //TODO Last line requires explanation
+ - A name of the form `'events'` (quoted name) - in which case the `lib` directory and `modules` directories are searched for the module.
 
 #### Return
 
@@ -260,7 +259,8 @@
  command( boo );
  ```
 
-# in-game execution
+##### in-game execution
+
  /jsp boo Hi!
  > Hi!
 

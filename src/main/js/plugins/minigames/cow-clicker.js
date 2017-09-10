@@ -1,6 +1,8 @@
 /*************************************************************************
-<!-- BEGIN: NOT FOR RELEASE ->
+
 ## Cow Clicker Mini-Game
+
+**NOTE: This mini-game has not been verified in the current release and has been disabled in the code. The documentation has been left here in anticipation that the code will be verified and re-enabled.**
 
 ### How to Play
 
@@ -39,8 +41,9 @@ your own mini-game...
    mini-game?
 
 [bukscore]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scoreboard/package-summary.html
-<!-- END: NOT FOR RELEASE ->
+
 ***/
+
 if(__plugin.canary || __plugin.bukkit) {
     console.warn('cow-clicker minigame is not yet supported');
     return;

@@ -39,11 +39,11 @@ The PEX project is [here][pex]. Here is a [tutorial][pextut]. Here are details f
 
 [Download][pexdownload] the latest release - it's a .jar file just like the scriptcraft.jar.
 
-Install [just like ScriptCraftJS][installdoc]:
+Install [similar to the documentation under "Installing ScriptCraftJS"][installdoc] :
 
 - Stop the Minecraft server process.
 - Put the "PermissionsEx-1.x.y.jar" file into your plugins folder.
-- Start the Minecraft server.
+- Start the Minecraft server. (See [StartStop][startstop] doc for local server.)
 
 That's all!
 
@@ -86,9 +86,10 @@ That's really all we need to cover in this section. Moving forward, if you want 
 - How do I change to another permissions system?
     - Search around for permissions plugins, uninstall PEX, install something else.
 
+[api]: API-Reference.md
+[installdoc]: Installation.md
 [pex]: https://github.com/PEXPlugins/PermissionsEx
-[pextut]: https://github.com/PEXPlugins/PermissionsEx/blob/master/doc/Tutorial.md
 [pexcommands]: https://github.com/PEXPlugins/PermissionsEx/wiki/Commands#users-permission-management
 [pexdownload]: https://dev.bukkit.org/projects/permissionsex
-[installdoc]: Installation.md
-[api]: API-Reference.md
+[pextut]: https://github.com/PEXPlugins/PermissionsEx/blob/master/doc/Tutorial.md
+[startstop]: StartStop.md

@@ -1,18 +1,19 @@
 RELEASE NOTES
 =============
 
-* Visit the [Gitter Chatroom][gitchat] to discuss this plugin.
-* Or visit the [ScriptCraft Google Group/Forum][scforum].
-* [Facebook][facebook]
-* [Twitter][twitter] (Use hashtags #Minecraft and #JavaScript, and reference @ScriptCraftJS!)
-* To keep up with changes, see [Tony's blog][blogt].
-* See the new [Help][help] doc!
+See the new [Help][help] doc for links to a large number of information resources.
 
-[blogt]: https://tonygravagno.tumblr.com/post/164339922687/what-is-scriptcraftjs-answer-1
-[facebook]: https://facebook.com/ScriptCraftJS
-[gitchat]: https://gitter.im/walterhiggins/ScriptCraft
-[help]: Help.md
-[twitter]: https://twitter.com/ScriptCraftJS
+[help]: docs/Help.md
+
+
+3.2.3.1 ("Bad Zombie BETA")-2017-09-10
+---------------------------------
+
+v3.2.3 begins the Release Candidate process. Changes are now frozen except for doc updates, minor typos, fixes reported during this BETA process. From 3.2.3.x the production release will be 3.3.0.
+
+1. Lots of doc changes, link additions and corrections. Details in the commit diffs.
+1. Significant FAQ update.
+1. Moved installation details from YPG to Installation doc. (Need to test to ensure that links in all docs are accessible in various use cases.)
 
 3.2.2.8a ("Bad Zombie")-2017-09-07
 ---------------------------------
