@@ -48,6 +48,8 @@ If you already have Spigot installed on a hosted server, skip to [Installing Scr
 
 Follow these steps to download and install SpigotMC v1.12.1+. This information comes from the SpigotMC [wiki][spigotbuild] and other sources. Separate instructions are provided for Windows, Linux, and Mac.
 
+    TIP: There are several mentions of the Git software here. Git is a tool for interacting with software version-control systems. Once you have Git on your system you can use it to download and upload code from GitHub and other repositories. For Windows there is a Git GUI that's a little cryptic but it's worth knowing.
+
 ### On Windows
 
 There are at least two ways to do this in Windows: One is the easy way and the other is ... for nerds.
@@ -67,7 +69,9 @@ This also comes from the SpigotMC wiki page:
 
 > Git - In order for BuildTools to run on Windows, you will need to install Git. For Windows it is distributed via git-scm, which can be downloaded [here][gitdl]. Install it where you like, it will provide git bash, which will be used to run the BuildTools jar. Just keep hitting Next when running the installer.
 
-So if you want to see how this all happens, download Git and then skip to [For All Platforms](#for-all-platforms).
+So if you want to see how this all happens, [download Git][gitdl] and then skip to [For All Platforms](#for-all-platforms).
+
+Note: The [git-scm.com][gitscm] website has downloads for all platforms and all information that you could want on the topic.
 
 ### On Linux
 
@@ -95,19 +99,18 @@ The java-1.8.0-openjdk package contains just the Java Runtime Environment. If yo
 
 ### On Mac
 
-Git can be downloaded [here][macgit].
+Git can be downloaded [here][macgit] and from the [git-scm.com][gitscm] website.
 
 ### For All Platforms
 
 1. Download Spigot's [BuildTools.jar][spigotdl] This file contains instructions that will download all of the components necessary to build the Spigot software.
 1. Save the BuildTools.jar file to a new directory. **C:\Temp\spigotmc** (or similar for Linux or Mac) is a good choice. The path cannot include spaces.
 1. Do the build:
-    1. Mac and Linux: Open a terminal window and type `java -jar BuildTools.jar`.
-    1. In Windows:
-        1. Open the Command window and enter `git bash`. That opens another window with the git command-line.
-        1. Type `java -jar BuildTools.jar`.
+    1. Mac and Linux: Open a terminal window and click on the prompt in that window.
+    1. In Windows: Open the Command window and enter `"C:\program file\git\git-bash"`. Use the quotes because the path has a space. That opens another window with the git command-line. Click on the prompt in that window. If git is in your path then you don't need the path here, just `git-bash`, and adjust the command if git is installed elsewhere.
+    1. In the open window, type `java -jar BuildTools.jar`.
 That will kick off a long series of commands to "build" SpigotMC.
-1. When the build is done, there will be a new file beginning with `spigot` and ending in `.jar` in the spigotmc directory. Get that file name by typing `dir` (Windows) or `ls` (Mac and Linux).
+1. After many minutes, when the build is done, there will be a new file beginning with `spigot` and ending in `.jar` in the spigotmc directory. Get that file name by typing `dir` (Windows) or `ls` (Mac and Linux).
 1. Run this file by typing `java -jar spigot_file_name.jar` ... using the correct name of course.
 1. The server will start up then quickly shut down by itself. You'll need to edit a file called `eula.txt` - change `eula=false` to `eula=true` and save the file.
 1. Run the `java -jar spigot_file_name.jar` command again. This time the server will start up.
@@ -118,6 +121,8 @@ That will kick off a long series of commands to "build" SpigotMC.
 If there are no errors .... Congratulations! Your Spigot Minecraft server is installed!
 
 You are probably used to starting Minecraft with a desktop icon and a launcher. We're doing the same thing but from the OS command-line. This will be explained soon.
+
+    TIP: If you ever get a Minecraft console error: "Error, this build is outdated", the reason is that you have built your Spigot JAR from a development build. If the game starts and it's over three days past the build date, that error displays. Just rebuild, stop the server, re-upload your new JAR, and restart the server. Now THAT is nerdy.
 
 ## Configuring your Server
 
@@ -202,6 +207,7 @@ If you're interested in customizing Minecraft beyond just creating new buildings
 [dl]: ../latest_jar/
 [dotnet45]: https://www.microsoft.com/en-us/download/details.aspx?id=30653
 [gitdl]: https://git-for-windows.github.io/
+[gitscm]: https://git-scm.com/downloads
 [help]: Help.md
 [homes]: ../src/main/js/plugins/homes/homes.js
 [jre8]: http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html
@@ -211,4 +217,5 @@ If you're interested in customizing Minecraft beyond just creating new buildings
 [permissions]: Permissions.md
 [spigotbuild]: https://www.spigotmc.org/wiki/buildtools/
 [spigotbuildgui]: https://www.spigotmc.org/wiki/buildtools/#buildtoolsgui-by-demonwav
+[spigotdl]: https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
 [startstop]: StartStop.md

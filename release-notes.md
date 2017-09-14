@@ -5,6 +5,11 @@ See the new [Help][help] doc for links to a large number of information resource
 
 [help]: docs/Help.md
 
+3.2.3.3 ("Bad Zombie BETA")-2017-09-14
+---------------------------------
+
+1. Corrections/improvements in Installation.md and FAQ.
+
 3.2.3.2 ("Bad Zombie BETA")-2017-09-10
 ---------------------------------
 

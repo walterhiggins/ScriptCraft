@@ -84,6 +84,7 @@ Please see the [Dependencies][deps] doc which has many notes about whether Scrip
 
 
 [contrib]: Contributing.md
+[deps]: Dependencies.md
 [help]: Help.md
 [pex]: https://www.google.com/search?q=minecraft+api+permissionsex
 [website]: http://scriptcraftjs.org/
