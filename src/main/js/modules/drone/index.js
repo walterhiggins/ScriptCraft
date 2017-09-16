@@ -398,6 +398,12 @@ function Drone( x, y, z, dir, world ) {
       }
       populateFromLocation( playerPos );
     }
+  } else if ( x instanceof Drone ) {
+    this.x = x.x;
+    this.y = x.y;
+    this.z = x.z;
+    this.dir = x.dir;
+    this.world = x.world;
   } else {
     if ( arguments[0].x && arguments[0].y && arguments[0].z ) {
       populateFromLocation( arguments[ 0 ] );
