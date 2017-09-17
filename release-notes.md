@@ -5,6 +5,12 @@ See the new [Help][help] doc for links to a large number of information resource
 
 [help]: docs/Help.md
 
+3.2.3.4 ("Bad Zombie BETA")-2017-09-16
+---------------------------------
+
+1. Added blocks, PR#326 by CGMartin.
+2. Fix to watcher, PR#328 by CGMartin.
+
 3.2.3.3 ("Bad Zombie BETA")-2017-09-14
 ---------------------------------
 

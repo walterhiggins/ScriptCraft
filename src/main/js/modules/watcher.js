@@ -143,7 +143,7 @@ function fileWatcher(calledCallbacks) {
     for(var file in filesWatched) {
         var fileObject = new File(file);
         var lm = fileObject.lastModified();
-        if(lm != filesWatched[file].lastModified) {
+        if ( String(lm) != String(filesWatched[file].lastModified) ) { //https://github.com/walterhiggins/ScriptCraft/pull/328
             filesWatched[file].lastModified = lm;
             filesWatched[file].callback(fileObject);
             if(!fileObject.exists()) {
@@ -160,7 +160,7 @@ function dirWatcher(calledCallbacks) {
         var dirObject = new File(dir);
         var lm = dirObject.lastModified();
         var dw = dirsWatched[dir];
-        if(lm != dirsWatched[dir].lastModified) {
+        if ( String(lm) != String(dirsWatched[dir].lastModified) ) { /https://github.com/walterhiggins/ScriptCraft/pull/328
             dirsWatched[dir].lastModified = lm;
             dirsWatched[dir].callback(dirObject);
             exports.unwatchDir(dir, dw.callback);
