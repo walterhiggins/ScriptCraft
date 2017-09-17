@@ -3,15 +3,15 @@
 
 A simple minecraft plugin. Using Modules.
 
-### Usage: 
+### Usage:
 
 At the in-game prompt type ...
-  
+
     /jsp hello-module
 
-... and a message `Hello {player-name}` will appear (where {player-name} is 
+... and a message `Hello {player-name}` will appear (where {player-name} is
 replaced by your own name).
-  
+
 This example demonstrates the use of modules. In
 example-1-hello-module.js we created a new javascript module. In
 this example, we use that module...
@@ -24,7 +24,7 @@ this example, we use that module...
    directory.
 
  * We assign the loaded module to a variable (`greetings`) and then
-   use the module's `hello` method to display the message. 
+   use the module's `hello` method to display the message.
 
 Source Code...
 
@@ -35,7 +35,6 @@ Source Code...
 
 ***/
 var greetings = require('./example-1-hello-module');
-
-command( 'hello-module', function( parameters, player ) {
-  greetings.hello( player );
+command('hello-module', function(parameters, player) {
+    greetings.hello(player);
 });

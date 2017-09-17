@@ -1,6 +1,5 @@
 'use strict';
 /*global require,__plugin, module, Packages, org*/
-
 /************************************************************************
 ### Drone Movement
 
@@ -21,10 +20,12 @@ no parameter is given, the default is 1.
 
 To change direction use the `turn()` method which also takes a single
 optional parameter (numTurns) - the number of 90 degree turns to
-make. Turns are always clock-wise. If the drone is facing north, then
+make. Turns are always clockwise unless numTurns is negative in which
+case they are counterclockwise. If the drone is facing north, then
 drone.turn() will make the turn face east. If the drone is facing east
 then drone.turn(2) will make the drone turn twice so that it is facing
-west.
+west. If the drone is facing north, then drone.turn(-1) will make the
+turn face west.
 
 ### Drone Positional Info
 
@@ -56,8 +57,8 @@ Markers are created and returned to using the followng two methods...
     //
     // the drone can now go off on a long excursion
     //
-    for ( i = 0; i< 100; i++) {  
-        drone.fwd(12).box(6); 
+    for ( i = 0; i< 100; i++) {
+        drone.fwd(12).box(6);
     }
     //
     // return to the point before the excursion
@@ -65,12 +66,24 @@ Markers are created and returned to using the followng two methods...
     drone.move('town-square');
 
 ***/
-var _movements = [{},{},{},{}];
+var _movements = [{}, {}, {}, {}];
 // east
-_movements[0].right = function( drone,n ) {  drone.z +=n; return drone;};
-_movements[0].left = function( drone,n ) {  drone.z -=n; return drone;};
-_movements[0].fwd = function( drone,n ) {  drone.x +=n; return drone;};
-_movements[0].back = function( drone,n ) {  drone.x -= n; return drone;};
+_movements[0].right = function(drone, n) {
+    drone.z += n;
+    return drone;
+};
+_movements[0].left = function(drone, n) {
+    drone.z -= n;
+    return drone;
+};
+_movements[0].fwd = function(drone, n) {
+    drone.x += n;
+    return drone;
+};
+_movements[0].back = function(drone, n) {
+    drone.x -= n;
+    return drone;
+};
 // south
 _movements[1].right = _movements[0].back;
 _movements[1].left = _movements[0].fwd;
@@ -87,103 +100,119 @@ _movements[3].left = _movements[0].back;
 _movements[3].fwd = _movements[0].left;
 _movements[3].back = _movements[0].right;
 
-function turn( n ) {
-  if ( typeof n == 'undefined' ) {
-    n = 1;
-  }
-  this.dir += n;
-  this.dir %=4;
-}
-function chkpt( name ) {
-  this._checkpoints[ name ] = { x:this.x, y:this.y, z:this.z, dir:this.dir };
-}
-function move( ) {
-  var Drone = this.constructor;
-  if ( arguments[0].x && arguments[0].y && arguments[0].z) {
-    this.x = arguments[0].x;
-    this.y = arguments[0].y;
-    this.z = arguments[0].z;
-    this.dir = Drone.getDirFromRotation(arguments[0] );
-    this.world = arguments[0].world;
-  } else if ( typeof arguments[0] === 'string' ) {
-    var coords = this._checkpoints[arguments[0]];
-    if ( coords ) {
-      this.x = coords.x;
-      this.y = coords.y;
-      this.z = coords.z;
-      this.dir = coords.dir%4;
-    }            
-  } else {
-    // expect x,y,z,dir
-    switch( arguments.length ) {
-    case 4:
-      this.dir = arguments[3];
-    case 3:
-      this.z = arguments[2];
-    case 2:
-      this.y = arguments[1];
-    case 1:
-      this.x = arguments[0];
+function turn(n) {
+    if(typeof n == 'undefined') {
+        n = 1;
     }
-  }
+    this.dir += n;
+    this.dir %= 4;
+    if(this.dir < 0) {
+        this.dir += 4;
+    }
 }
-function right( n ) { 
-  if ( typeof n == 'undefined' ) {
-    n = 1;
-  }
-  _movements[ this.dir ].right( this, n ); 
-}
-function left( n ) { 
-  if ( typeof n == 'undefined') { 
-    n = 1;
-  }
-  _movements[ this.dir ].left( this, n );
-}
-function fwd( n ) { 
-  if ( typeof n == 'undefined' ) {
-    n = 1;
-  }
-  _movements[ this.dir ].fwd( this, n );
-}
-function back( n ) { 
-  if ( typeof n == 'undefined' ) { 
-    n = 1;
-  }
-  _movements[ this.dir ].back( this, n );
-}
-function up( n ) { 
-  if ( typeof n == 'undefined' ) {
-    n = 1;
-  }
-  this.y+= n; 
-}
-function down( n ) { 
-  if ( typeof n == 'undefined' ) {
-    n = 1;
-  }
-  this.y-= n; 
-}
-function getLocation( ) {
-  if (__plugin.canary) {
-    var cmLocation = Packages.net.canarymod.api.world.position.Location;
-    return new cmLocation( this.world, this.x, this.y, this.z, 0, 0);
-  }
-  if (__plugin.bukkit) { 
-    var bkLocation = org.bukkit.Location;
-    return new bkLocation( this.world, this.x, this.y, this.z );
-  }
-}
-module.exports = function(Drone){
-  Drone.prototype._checkpoints = {};
-  Drone.prototype.getLocation = getLocation;
-  Drone.extend( chkpt );
-  Drone.extend( move );
-  Drone.extend( turn );
-  Drone.extend( right );
-  Drone.extend( left );
-  Drone.extend( fwd );
-  Drone.extend( back );
-  Drone.extend( up );
-  Drone.extend( down );
-};
 
+function chkpt(name) {
+    this._checkpoints[name] = {
+        x: this.x,
+        y: this.y,
+        z: this.z,
+        dir: this.dir
+    };
+}
+
+function move() {
+    var Drone = this.constructor;
+    if(arguments[0].x && arguments[0].y && arguments[0].z) {
+        this.x = arguments[0].x;
+        this.y = arguments[0].y;
+        this.z = arguments[0].z;
+        this.dir = Drone.getDirFromRotation(arguments[0]);
+        this.world = arguments[0].world;
+    } else if(typeof arguments[0] === 'string') {
+        var coords = this._checkpoints[arguments[0]];
+        if(coords) {
+            this.x = coords.x;
+            this.y = coords.y;
+            this.z = coords.z;
+            this.dir = coords.dir % 4;
+        }
+    } else {
+        // expect x,y,z,dir
+        switch(arguments.length) {
+            case 4:
+                this.dir = arguments[3];
+            case 3:
+                this.z = arguments[2];
+            case 2:
+                this.y = arguments[1];
+            case 1:
+                this.x = arguments[0];
+        }
+    }
+}
+
+function right(n) {
+    if(typeof n == 'undefined') {
+        n = 1;
+    }
+    _movements[this.dir].right(this, n);
+}
+
+function left(n) {
+    if(typeof n == 'undefined') {
+        n = 1;
+    }
+    _movements[this.dir].left(this, n);
+}
+
+function fwd(n) {
+    if(typeof n == 'undefined') {
+        n = 1;
+    }
+    _movements[this.dir].fwd(this, n);
+}
+
+function back(n) {
+    if(typeof n == 'undefined') {
+        n = 1;
+    }
+    _movements[this.dir].back(this, n);
+}
+
+function up(n) {
+    if(typeof n == 'undefined') {
+        n = 1;
+    }
+    this.y += n;
+}
+
+function down(n) {
+    if(typeof n == 'undefined') {
+        n = 1;
+    }
+    this.y -= n;
+}
+
+function getLocation() {
+    if(__plugin.canary) {
+        var cmLocation = Packages.net.canarymod.api.world.position.Location;
+        return new cmLocation(this.world, this.x, this.y, this.z, 0, 0);
+    }
+    if(__plugin.bukkit) {
+        var bkLocation = org.bukkit.Location;
+        return new bkLocation(this.world, this.x, this.y, this.z);
+    }
+}
+module.exports = function(Drone) {
+    Drone.prototype._checkpoints = {};
+    Drone.prototype.getLocation = getLocation;
+    Drone.extend(chkpt);
+    Drone.extend(move);
+    Drone.extend(turn);
+    Drone.extend(right);
+    Drone.extend(left);
+    Drone.extend(fwd);
+    Drone.extend(back);
+    Drone.extend(up);
+    Drone.extend(down);
+};

@@ -24,23 +24,23 @@ var entities = require('entities'),
 ...
 var spawnLocation = world.spawnLocation;
 spawn(entities.polar_bear(), spawnLocation);
-``` 
+```
 
 This module is in turn used by the Drone's `spawn()` method and the `jsp spawn` command.
 ***/
-module.exports = function(entityType, location){
-  var entityTypeFn;
-  if (typeof entityType === 'string'){
-    entityTypeFn = entities[entityType.toLowerCase()];
-    entityType = entityTypeFn();
-  }
-  var world = location.world;
-  if (__plugin.bukkit){
-    world.spawnEntity( location, entityType);
-  }
-  if (__plugin.canary){
-    var Canary = Packages.net.canarymod.Canary,
-      entityInstance = Canary.factory().entityFactory.newEntity(entityType, location);
-    entityInstance.spawn();
-  }
+module.exports = function(entityType, location) {
+    var entityTypeFn;
+    if(typeof entityType === 'string') {
+        entityTypeFn = entities[entityType.toLowerCase()];
+        entityType = entityTypeFn();
+    }
+    var world = location.world;
+    if(__plugin.bukkit) {
+        world.spawnEntity(location, entityType);
+    }
+    if(__plugin.canary) {
+        var Canary = Packages.net.canarymod.Canary,
+            entityInstance = Canary.factory().entityFactory.newEntity(entityType, location);
+        entityInstance.spawn();
+    }
 };

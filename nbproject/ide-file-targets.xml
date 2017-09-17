@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir=".." name="ScriptCraftJS-IDE">
+    <!-- TODO: edit the following target according to your needs -->
+    <!-- (more info: http://www.netbeans.org/kb/articles/freeform-config.html#debugj2se) -->
+
+    <target name="debug-nb">
+        <path id="cp">
+            <!-- TODO configure the runtime classpath for your project here: -->
+            <pathelement path="build/classes" />
+        </path>
+        <nbjpdastart addressproperty="jpda.address" name="ScriptCraftJS" transport="dt_socket">
+            <classpath refid="cp"/>
+        </nbjpdastart>
+        <java classname="jscript" failonerror="true" fork="true">
+            <classpath refid="cp"/>
+            <arg value="dist/js"/>
+            <jvmarg value="-Xdebug"/>
+            <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
+        </java>
+    </target>
+</project>

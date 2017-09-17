@@ -1,262 +1,316 @@
 <project name="scriptcraft" default="package" basedir=".">
-  <property file="build.properties"/>
-  <description>Builds the scriptcraft.jar file - a plugin for bukkit</description>
-  <!-- ScriptCraft works with:
-       * CanaryMod
-       * Bukkit
-       * Glowstone (which is bukkit-compatible)
-       * Spigot (which is bukkit-compatible)
-  -->
-  <property name="src.canary" location="src/main/java/canary"/>
-  <property name="src.bukkit" location="src/main/java/bukkit"/>
+    <!-- not used yet
+         xmlns:if="ant:if" xmlns:unless="ant:unless" -->
+    <property file="build.properties"/>
+    <description>Builds the scriptcraft.jar file - a plugin for Bukkit</description>
+    <!-- ScriptCraft works with:
+         * CanaryMod
+         * Bukkit
+         * Glowstone (which is bukkit-compatible)
+         * Spigot (which is bukkit-compatible)
+    -->
+    <!-- with the following value not set, docs for CanaryMod won't be generated.
+    <property name="process.canary" value="doesnt matter" />
+     -->
+    <property name="src.canary" location="src/main/java/canary"/>
+    <property name="src.bukkit" location="src/main/java/bukkit"/>
 
-  <!-- compiles against these libraries -->
-  <property name="lib.canary" location="lib/canarymod-1.8.0.jar"/>
-  <property name="lib.bukkit" location="lib/spigot-1.11.2.jar"/>
+    <!-- compiles against these libraries (Spigot is MC 1.12 -->
+    <property name="lib.canary" location="lib/canarymod-1.8.0.jar"/>
+    <property name="lib.bukkit" location="lib/Spigot.jar"/>
 
-  <property name="build" location="target/classes"/>
-  <property name="dist" location="target/" />
-  <property name="minecraft.dir" location="${dist}/minecraft" />
-  <property name="js-plugins-dir" value="scriptcraft"/>
-  <property name="http.agent" value="'Walter'" />
+    <property name="build" location="target/classes"/>
+    <property name="dist" location="target/" />
+    <property name="minecraft.dir" location="${dist}/minecraft" />
+    <property name="js-plugins-dir" value="scriptcraft"/>
+    <property name="http.agent" value="'Walter'" />
 
-  <macrodef name="jscript">
-    <attribute name="src"/>
-    <attribute name="out"/>
-    <attribute name="err"/>
-    <element name="js-args" implicit="yes" optional="true"/>
-    <sequential>
-      <java classname="jscript" failonerror="true" fork="true" output="@{out}"  error="@{err}">
-	<classpath>
-          <pathelement path="${build}"/>      
-	  <pathelement path="${lib.canary}"/>
-	  <pathelement path="${lib.bukkit}"/>
-	</classpath>
-      <arg value="@{src}"/>
-      <js-args/>
-      </java>
-    </sequential>
-  </macrodef>
+    <!-- This block of properties allows descriptions to be displayed in
+    ant output window without duplicating text in the Echo. -->
+    <property name="clean.desc" value="Just removes the dist folder" />
+    <property name="compile-canary-docs.desc" value="Generates Inventory docs for Canary" />
+    <property name="compile-plugins.desc" value="Compile ScriptCraftPlugin.java for Canary and Bukkit." />
+    <property name="construct-api-ref.desc" value="Set API Xref header, add toc-apiref.md and apiref-con.md." />
+    <property name="construct-ypgpm.desc" value="Build YoungPersonsGuideToProgrammingMinecraft.md TOC and apiref-con.md content." />
+    <property name="copy-js.desc" value="Copies JavaScriptfolders and files to dist." />
+    <property name="gen-events-helper-bukkit.desc" value="Creates events-helper-bukkit.js from online Javadoc." />
+    <property name="gen-events-helper-canary.desc" value="Creates events-helper-canary.js from online Javadoc." />
+    <property name="gen-toc-apiref.desc" value="Use generateTOC.js to generate toc-apiref.md from apiref-con.md" />
+    <property name="gen-toc-ypgpm.desc" value="Use generateTOC.js to generate toc-ypgpm.md from ypgpm.md" />
+    <property name="gendocs.desc" value="Parent for Generating all API documentation, runs construct-ypgpm and construct-api-ref." />
+    <property name="generate-api-ref-entries.desc" value="Executes scripts to pull markup from scripts and build apiref-con.md." />
+    <property name="get_underscore.desc" value="Downloads latest underscore.js for many helper functions." />
+    <property name="init.desc" value="Gets local properties and creates build folder." />
+    <property name="package.desc" value="Last thing done, gathers everything in build to create final /dist/scriptcraft.jar." />
+    <property name="test.desc" value="Perform unit tests. Currently does nothing." />
+    <property name="update-minecraft-plugins-folder.desc" value="Copy the built plugin to the local minecraft\plugins for testing." />
+    <property name="zip_js.desc" value="Parent for building zip files of everything." />
+    <property name="zip_lib.desc" value="Zips dist/js/lib into lib.zip." />
+    <property name="zip_modules.desc" value="Zips dist/js/modules into modules.zip." />
+    <property name="zip_plugins.desc" value="Zips dist/js/plugins into plugins.zip." />
 
-  <target name="init">
-    <property file="build.local.properties"/>
-    <tstamp>
-      <format property="DSTAMP"
-              pattern="yyyy-MM-dd"
-              locale="en,UK"/>
-    </tstamp>
-    <mkdir dir="${build}"/>
+    <!-- TG: implicit below was 'yes', now 'true' -->
+    <macrodef name="jscript">
+        <attribute name="src"/>
+        <attribute name="out"/>
+        <attribute name="err"/>
+        <element name="js-args" implicit="true" optional="true"/>
+        <sequential>
+            <java classname="jscript" failonerror="true" fork="true" output="@{out}"  error="@{err}">
+                <classpath>
+                    <pathelement path="${build}"/>
+                    <pathelement path="${lib.canary}"/>
+                    <pathelement path="${lib.bukkit}"/>
+                </classpath>
+                <arg value="@{src}"/>
+                <js-args/>
+            </java>
+        </sequential>
+    </macrodef>
 
-    <available file="${lib.canary}" property="canary.present"/>
-    <available file="${dist}/js/modules/underscore.js" property="underscore.present"/>
-  </target>
+    <target name="init" description="${init.desc}">
+        <echo>!! init: ${init.desc}</echo>
+        <property file="build.local.properties"/>
+        <tstamp>
+            <format property="DSTAMP"
+                    pattern="yyyy-MM-dd"
+                    locale="en,UK"/>
+        </tstamp>
+        <mkdir dir="${build}"/>
+        <mkdir dir="${dist}"/> <!-- TG needed to be added -->
 
-  <target name="test" depends="package" description="Perform unit tests">
-    
-  </target>
+        <available file="${lib.canary}" property="canary.present"/>
+        <available file="${dist}/js/modules/underscore.js" property="underscore.present"/>
+    </target>
+
+    <target name="test" depends="package" description="${test.desc}">
+        <echo>!! test: ${test.desc}</echo>
+    </target>
+
+    <target name="compile-plugins" depends="init" description="${compile-plugins.desc}">
+        <echo>!! compile-plugins: ${compile-plugins.desc}</echo>
+        <javac includeantruntime="false"
+               destdir="${build}"
+               debug="true">
+            <src path="${src.canary}"/>
+            <src path="${src.bukkit}"/>
+            <classpath>
+                <pathelement path="${lib.canary}" />
+                <pathelement path="${lib.bukkit}" />
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="gendocs" depends="construct-ypgpm, construct-api-ref" description="${gendocs.desc}">
+        <echo>!! gendocs: ${gendocs.desc}</echo>
+    </target>
+
+    <target name="compile-canary-docs" depends="init" description="${compile-canary-docs.desc}">
+        <echo>!! compile-canary-docs: ${compile-canary-docs.desc}</echo>
+        <javac includeantruntime="false" srcdir="src/docs/java" destdir="${build}">
+            <classpath>
+                <pathelement path="${lib.canary}"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <!--   <arg value="${dist}/js"/> -->
+    <target name="generate-api-ref-entries" depends="copy-js,compile-canary-docs,init" description="${generate-api-ref-entries.desc}">
+        <echo>!! generate-api-ref-entries: ${generate-api-ref-entries.desc}</echo>
+
+        <jscript src="src/docs/js/generateApiDocs.js"
+                 out="${dist}/apiref.md"
+                 err="${dist}/gen-api-error.log">
+            <arg value="${dist}/js"/>
+        </jscript>
+
+        <jscript src="src/docs/js/generateItemsDoc.js"
+                 out="${dist}/items.md"
+                 err="${dist}/gen-items-error.log" />
+
+        <jscript src="src/docs/js/generateEntitiesDoc.js"
+                 out="${dist}/entities.md"
+                 err="${dist}/gen-entities-error.log" />
+
+        <concat destfile="${dist}/apiref-con.md">
+            <fileset file="${dist}/apiref.md" />
+            <fileset file="${dist}/items.md" />
+            <fileset file="${dist}/entities.md" />
+        </concat>
+
+    </target>
 
 
-  <target name="compile-plugins" depends="init" description="compile canary plugin source">
-    <javac includeantruntime="false" 
-           source="1.6" 
-           target="1.6" 
-           destdir="${build}" 
-           debug="true">
-      <src path="${src.canary}"/>
-      <src path="${src.bukkit}"/>
-      <classpath>
-	<pathelement path="${lib.canary}" />
-	<pathelement path="${lib.bukkit}" />
-      </classpath>
-    </javac>
-  </target>
-    
-  <target name="gendocs" depends="construct-ypgpm, construct-api-ref" description="Generate API documentation">
-  </target>
+    <target name="gen-events-helper-canary" depends="compile-canary-docs,init" description="${gen-events-helper-canary.desc}"
+        if="process.canary"
+    >
+        <echo>!! gen-events-helper-canary: ${gen-events-helper-canary.desc}</echo>
+        <mkdir dir="${dist}/js/lib"/>
+        <jscript src="src/docs/js/generateEventsHelper.js"
+                 out="${dist}/js/lib/events-helper-canary.js"
+                 err="${dist}/gen-events-canary-error.log">
+            <arg value="CanaryMod"/>
+            <arg value="${lib.canary}"/>
+            <arg value="blockDestroy"/>
+            <arg value="net.canarymod.hook.player.BlockDestroyHook"/>
+        </jscript>
+    </target>
 
-  <target name="compile-docs" depends="init">
-    <javac includeantruntime="false" srcdir="src/docs/java" destdir="${build}">
-      <classpath>
-	<pathelement path="${lib.canary}"/>
-      </classpath>
-    </javac>
-  </target>
+    <target name="gen-events-helper-bukkit" depends="compile-canary-docs,init" description="${gen-events-helper-bukkit.desc}">
+        <echo>!! gen-events-helper-bukkit: ${gen-events-helper-bukkit.desc}</echo>
+        <mkdir dir="${dist}/js/lib"/>
+        <jscript src="src/docs/js/generateEventsHelper.js"
+                 out="${dist}/js/lib/events-helper-bukkit.js"
+                 err="${dist}/gen-events-bukkit-error.log">
+            <arg value="SpigotMC"/>
+            <arg value="${lib.bukkit}"/>
+            <arg value="blockBreak"/>
+            <arg value="org.bukkit.event.block.BlockBreakEvent"/>
+        </jscript>
+    </target>
 
-  <target name="generate-api-ref-entries" depends="copy-js,compile-docs,init">
+    <target name="construct-api-ref" depends="gen-toc-apiref,init" description="${construct-api-ref.desc}">
+        <echo>!! construct-api-ref: ${construct-api-ref.desc}</echo>
 
-    <jscript src="src/docs/js/generateApiDocs.js" 
-	     out="${dist}/apiref.md" 
-	     err="${dist}/gen-api-error.log">
-      <arg value="${dist}/js"/>      
-    </jscript>
+        <concat destfile="docs/API-Reference.md">
+            <header filtering="no" trimleading="yes">&lt;!--
+                IMPORTANT NOTE FOR CONTRIBUTORS
+                -------------------------------
+                Contributors: This file is generated from comments in javascript source files src/main/js/*
+                If you would like to make changes, change the comments in the src/main/js/* files instead.
+                --&gt;
 
-    <jscript src="src/docs/js/generateItemsDoc.js" 
-	     out="${dist}/items.md" 
-	     err="${dist}/gen-items-error.log" />
+                # ScriptCraft API Reference
 
-    <jscript src="src/docs/js/generateEntitiesDoc.js" 
-	     out="${dist}/entities.md" 
-	     err="${dist}/gen-entities-error.log" />
+                Walter Higgins [walter.higgins@gmail.com][email]
+                Tony Gravagno [blog][blogt]
 
-    <concat destfile="${dist}/apiref-con.md">
-      <fileset file="${dist}/apiref.md" />
-      <fileset file="${dist}/items.md" />
-      <fileset file="${dist}/entities.md" />
-    </concat>
+                [email]: mailto:walter.higgins@gmail.com?subject=ScriptCraft_API_Reference
+                [blogt]: https://tonygravagno.tumblr.com/post/164339922687/what-is-scriptcraftjs-answer-1
 
-  </target>
+            </header>
+            <fileset file="${dist}/toc-apiref.md" />
+            <fileset file="${dist}/apiref-con.md" />
+        </concat>
+    </target>
 
+    <target name="gen-toc-apiref" depends="compile-canary-docs,generate-api-ref-entries, init" description="${gen-toc-apiref.desc}">
+        <echo>!! gen-toc-apiref: ${gen-toc-apiref.desc}</echo>
+        <jscript src="src/docs/js/generateTOC.js"
+                 out="${dist}/toc-apiref.md"
+                 err="${dist}/gen-toc-error.log">
+            <arg value="${dist}/apiref-con.md"/>
+        </jscript>
+    </target>
 
-  <target name="gen-events-helper-canary" depends="compile-docs,init">
-    <mkdir dir="${dist}/js/lib"/>
-    <jscript src="src/docs/js/generateEventsHelper.js" 
-	     out="${dist}/js/lib/events-helper-canary.js" 
-	     err="${dist}/gen-events-canary-error.log">
-      <arg value="CanaryMod"/>
-      <arg value="${lib.canary}"/>
-      <arg value="blockDestroy"/>
-      <arg value="net.canarymod.hook.player.BlockDestroyHook"/>
-    </jscript>
-  </target>
+    <target name="gen-toc-ypgpm" depends="compile-canary-docs,init" description="${gen-toc-ypgpm.desc}">
+        <echo>!! gen-toc-ypgpm: ${gen-toc-ypgpm.desc}</echo>
+        <jscript src="src/docs/js/generateTOC.js"
+                 out="${dist}/toc-ypgpm.md"
+                 err="${dist}/gen-ypgpm-error.log">
+            <arg value="src/docs/templates/ypgpm.md"/>
+        </jscript>
+    </target>
 
-  <target name="gen-events-helper-bukkit" depends="compile-docs,init">
-    <mkdir dir="${dist}/js/lib"/>
-    <jscript src="src/docs/js/generateEventsHelper.js" 
-	     out="${dist}/js/lib/events-helper-bukkit.js" 
-	     err="${dist}/gen-events-bukkit-error.log">
-      <arg value="SpigotMC"/>
-      <arg value="${lib.bukkit}"/>
-      <arg value="blockBreak"/>
-      <arg value="org.bukkit.event.block.BlockBreakEvent"/>
-    </jscript>
-  </target>
+    <!-- Piece together the Young person's guide from template and generated table of contents -->
+    <target name="construct-ypgpm" depends="gen-toc-ypgpm,init" description="${construct-ypgpm.desc}">
+        <echo>!! construct-ypgpm: ${construct-ypgpm.desc}</echo>
+        <concat destfile="docs/YoungPersonsGuideToProgrammingMinecraft.md">
+            <header filtering="no" trimleading="yes">&lt;!--
+                IMPORTANT NOTE FOR CONTRIBUTORS
+                -------------------------------
+                Contributors: This file is generated from source file src/docs/templates/ypgpm.md
+                If you would like to make changes, change file src/docs/templates/ypgpm.md instead
+                --&gt;
 
-  <target name="construct-api-ref" depends="gen-toc-apiref,init">
+                # The Young Person's Guide to Programming in Minecraft
+            </header>
+            <fileset file="${dist}/toc-ypgpm.md" />
+            <fileset file="src/docs/templates/ypgpm.md" />
+        </concat>
+    </target>
 
-    <concat destfile="docs/API-Reference.md">
-      <header filtering="no" trimleading="yes">&lt;!-- 
-IMPORTANT NOTE FOR CONTRIBUTORS
--------------------------------
-Contributors: This file is generated from comments in javascript source files src/main/js/*
-If you would like to make changes, change the comments in the src/main/js/* files instead.
---&gt;
-# ScriptCraft API Reference
+    <target name="zip_js" depends="zip_lib, zip_modules, zip_plugins" description="${zip_js.desc}">
+        <echo>!! zip_js: ${zip_js.desc}</echo>
+    </target>
 
-Walter Higgins
+    <target name="copy-js" depends="gen-events-helper-bukkit,gen-events-helper-canary,init" description="${copy-js.desc}">
+        <echo>!! copy-js ${copy-js.desc}</echo>
+        <copy todir="${dist}/js">
+            <fileset dir="src/main/js"/>
+        </copy>
+    </target>
 
-[walter.higgins@gmail.com][email]
+    <target name="zip_lib" depends="copy-js" description="${zip_lib.desc}">
+        <echo>!! zip_lib: ${zip_lib.desc}</echo>
+        <delete file="${build}/lib.zip"/>
+        <zip destfile="${build}/lib.zip"
+             basedir="${dist}/js"
+             excludes="modules/**, plugins/**,">
+        </zip>
+    </target>
 
-[email]: mailto:walter.higgins@gmail.com?subject=ScriptCraft_API_Reference
+    <target name="get_underscore" depends="copy-js" unless="underscore.present" description="${get_underscore.desc}">
+        <echo>!! get_underscore ${get_underscore.desc}</echo>
+        <get src="http://underscorejs.org/underscore.js"
+             verbose="true"
+             dest="${dist}/js/modules/underscore.js"/>
+    </target>
 
-      </header>
-      <fileset file="${dist}/toc-apiref.md" />
-      <fileset file="${dist}/apiref-con.md" />
-   </concat>      
-  </target>
-  
-  <target name="gen-toc-apiref" depends="compile-docs,generate-api-ref-entries, init" description="Generate Table of Contents for API Reference">
-    <jscript src="src/docs/js/generateTOC.js" 
-	     out="${dist}/toc-apiref.md"  
-	     err="${dist}/gen-toc-error.log">
-      <arg value="${dist}/apiref-con.md"/>
-    </jscript>
-  </target>
+    <target name="zip_modules" depends="copy-js, get_underscore" description="${zip_modules.desc}">
+        <echo>!! zip_modules: ${zip_modules.desc}</echo>
+        <delete file="${build}/modules.zip"/>
+        <zip destfile="${build}/modules.zip"
+             basedir="${dist}/js"
+             excludes="lib/**, plugins/**,">
+        </zip>
+    </target>
 
-  <target name="gen-toc-ypgpm" depends="compile-docs,init" description="Generate Table of Contents for Young Programmers Guide">
-    <jscript src="src/docs/js/generateTOC.js" 
-	     out="${dist}/toc-ypgpm.md" 
-	     err="${dist}/gen-ypgpm-error.log">
-      <arg value="src/docs/templates/ypgpm.md"/>
-    </jscript>
-  </target>
+    <target name="zip_plugins" depends="copy-js" description="${zip_plugins.desc}">
+        <echo>!! zip_plugins: ${zip_plugins.desc}</echo>
+        <delete file="${build}/plugins.zip"/>
+        <zip destfile="${build}/plugins.zip"
+             basedir="${dist}/js"
+             excludes="lib/**, modules/**">
+        </zip>
+    </target>
 
-  <!-- Piece together the Young persons' guide from template and generated table of contents -->
-  <target name="construct-ypgpm" depends="gen-toc-ypgpm,init">
-    <concat destfile="docs/YoungPersonsGuideToProgrammingMinecraft.md">
-      <header filtering="no" trimleading="yes">&lt;!-- 
-  IMPORTANT NOTE FOR CONTRIBUTORS
-  -------------------------------
-  Contributors: This file is generated from source file src/docs/templates/ypgpm.md
-  If you would like to make changes, change file src/docs/templates/ypgpm.md instead
---&gt;
-# The Young Person's Guide to Programming in Minecraft
-      </header>
-      <fileset file="${dist}/toc-ypgpm.md" />
-      <fileset file="src/docs/templates/ypgpm.md" />
-   </concat>      
-  </target>
+    <target name="package" depends="gendocs,zip_js,compile-plugins" description="${package.desc}">
+        <echo>!! package: ${package.desc}</echo>
+        <!-- ensure plugin.yml is always copied -->
+        <delete file="${build}/plugin.yml" />
+        <delete file="${build}/Canary.inf" />
+        <copy todir="${build}">
+            <fileset dir="src/main/resources"/>
+        </copy>
+        <replace file="${build}/plugin.yml" value="${scriptcraft-version}-${DSTAMP}">
+            <replacetoken>[[version]]</replacetoken>
+        </replace>
+        <replace file="${build}/Canary.inf" value="${scriptcraft-version}-${DSTAMP}">
+            <replacetoken>[[version]]</replacetoken>
+        </replace>
 
-  <target name="zip_js" depends="zip_lib, zip_modules, zip_plugins">
-  </target>
+        <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+        <mkdir dir="${dist}/${DSTAMP}" />
 
-  <target name="copy-js" depends="gen-events-helper-bukkit,gen-events-helper-canary,init">
-    <copy todir="${dist}/js">
-      <fileset dir="src/main/js"/>
-    </copy>
-  </target>
+        <jar jarfile="${dist}/${DSTAMP}/scriptcraft.jar" basedir="${build}"/>
+        <copy file="${dist}/${DSTAMP}/scriptcraft.jar" tofile="${dist}/scriptcraft.jar"/>
+        <copy file="${dist}/${DSTAMP}/scriptcraft.jar" tofile="latest_jar/scriptcraft.jar"/>
+    </target>
 
-  <target name="zip_lib" depends="copy-js">
-    <delete file="${build}/lib.zip"/>
-    <zip destfile="${build}/lib.zip" 
-         basedir="${dist}/js" 
-         excludes="modules/**, plugins/**,">
-    </zip>
-  </target>
+    <target name="clean" description="${clean.desc}">
+        <echo>!! clean: ${clean.desc}</echo>
+        <delete dir="${dist}"/>
+    </target>
 
-  <target name="get_underscore" depends="copy-js" unless="underscore.present">
-    <!-- download underscore -->
-    <get src="http://underscorejs.org/underscore.js"
-	 verbose="true"
-	 dest="${dist}/js/modules/underscore.js"/>
-  </target>
-
-  <target name="zip_modules" depends="copy-js, get_underscore">
-    <delete file="${build}/modules.zip"/>
-    <zip destfile="${build}/modules.zip" 
-         basedir="${dist}/js" 
-         excludes="lib/**, plugins/**,">
-    </zip>
-  </target>
-
-  <target name="zip_plugins" depends="copy-js">
-    <delete file="${build}/plugins.zip"/>
-    <zip destfile="${build}/plugins.zip" 
-         basedir="${dist}/js"
-         excludes="lib/**, modules/**">
-    </zip>
-  </target>
-  
-  <target name="package" depends="gendocs,zip_js,compile-plugins" description="generate the distribution" >
-    <!-- ensure plugin.yml is always copied -->
-    <delete file="${build}/plugin.yml" />
-    <delete file="${build}/Canary.inf" />
-    <copy todir="${build}">
-      <fileset dir="src/main/resources"/>
-    </copy>
-    <replace file="${build}/plugin.yml" value="${scriptcraft-version}-${DSTAMP}">
-      <replacetoken>[[version]]</replacetoken>
-    </replace>
-    <replace file="${build}/Canary.inf" value="${scriptcraft-version}-${DSTAMP}">
-      <replacetoken>[[version]]</replacetoken>
-    </replace>
-    
-    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-    <mkdir dir="${dist}/${DSTAMP}" />
-    
-    <jar jarfile="${dist}/${DSTAMP}/scriptcraft.jar" basedir="${build}"/>
-    <copy file="${dist}/${DSTAMP}/scriptcraft.jar" tofile="${dist}/scriptcraft.jar"/>
-  </target>
-
-  <target name="clean" description="clean up" >
-    <delete dir="${dist}"/>
-  </target>
-
-  <target name="update-live-cb" depends="package" description="Copy the built plugin to the live folder for testing.">
-    <mkdir dir="${minecraft.dir}/plugins" />
-    <delete>
-      <fileset dir="${minecraft.dir}/plugins/" includes="scriptcraft*.*"/>
-    </delete>
-    <mkdir dir="${minecraft.dir}/plugins" />
-    <copy file="${dist}/${DSTAMP}/scriptcraft.jar" todir="${minecraft.dir}/plugins"/>
-  </target>
+    <!-- Formerly update-live-cb. Name changed because ... what's "cb"? -->
+    <target name="update-minecraft-plugins-folder" depends="package" description="${update-minecraft-plugins-folder.desc}">
+        <echo>!! update-minecraft-plugins-folder ${update-minecraft-plugins-folder.desc}</echo>
+        <mkdir dir="${minecraft.dir}/plugins" />
+        <delete>
+            <fileset dir="${minecraft.dir}/plugins/" includes="scriptcraft*.*"/>
+        </delete>
+        <mkdir dir="${minecraft.dir}/plugins" />
+        <copy file="${dist}/${DSTAMP}/scriptcraft.jar" todir="${minecraft.dir}/plugins"/>
+    </target>
 </project>

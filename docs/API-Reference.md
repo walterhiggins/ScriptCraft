@@ -1,39 +1,37 @@
-<!-- 
+<!--
 IMPORTANT NOTE FOR CONTRIBUTORS
 -------------------------------
 Contributors: This file is generated from comments in javascript source files src/main/js/*
 If you would like to make changes, change the comments in the src/main/js/* files instead.
 -->
+
 # ScriptCraft API Reference
 
-Walter Higgins
-
-[walter.higgins@gmail.com][email]
+Walter Higgins [walter.higgins@gmail.com][email]
+Tony Gravagno [blog][blogt]
 
 [email]: mailto:walter.higgins@gmail.com?subject=ScriptCraft_API_Reference
+[blogt]: https://tonygravagno.tumblr.com/post/164339922687/what-is-scriptcraftjs-answer-1
 
 ## Table of Contents
  * [Modules in Scriptcraft](#modules-in-scriptcraft)
  * [Module Loading](#module-loading)
-   * [The plugins directory](#the-plugins-directory)
-   * [The modules directory](#the-modules-directory)
-   * [The lib directory](#the-lib-directory)
-   * [plugins sub-directories](#plugins-sub-directories)
+   * [The `plugins` directory](#the-plugins-directory)
+   * [The `modules` directory](#the-modules-directory)
+   * [The `lib` directory](#the-lib-directory)
+   * [The `plugins` directory contents](#the-plugins-directory-contents)
  * [Global variables](#global-variables)
-   * [__plugin variable](#__plugin-variable)
-   * [server variable](#server-variable)
-   * [self variable](#self-variable)
-   * [config variable](#config-variable)
-   * [events variable](#events-variable)
+   * [`__plugin` variable](#__plugin-variable)
+   * [`server` variable](#server-variable)
+   * [`self` variable](#self-variable)
+   * [`config` variable](#config-variable)
+   * [`events` variable](#events-variable)
  * [Module variables](#module-variables)
-   * [&#95;&#95;filename variable](#__filename-variable)
-   * [&#95;&#95;dirname variable](#__dirname-variable)
+   * [`__filename` variable](#__filename-variable)
+   * [`__dirname` variable](#__dirname-variable)
  * [Global functions](#global-functions)
-   * [echo function](#echo-function)
-   * [require() function](#require-function)
-   * [scload() function](#scload-function)
-   * [scsave() function](#scsave-function)
-   * [plugin() function](#plugin-function)
+   * [`echo()` function](#echo-function)
+   * [`require()` function](#require-function)
    * [command() function](#command-function)
    * [setTimeout() function](#settimeout-function)
    * [clearTimeout() function](#cleartimeout-function)
@@ -42,315 +40,198 @@ Walter Higgins
    * [refresh() function](#refresh-function)
    * [addUnloadHandler() function](#addunloadhandler-function)
    * [isOp() function](#isop-function)
+   * [`scload()` function](#scload-function)
+   * [`scsave()` function](#scsave-function)
+   * [`plugin()` function](#plugin-function)
  * [require - Node.js-style module loading in ScriptCraft](#require---nodejs-style-module-loading-in-scriptcraft)
    * [math.js](#mathjs)
    * [inc.js](#incjs)
    * [program.js](#programjs)
    * [Important](#important)
-   * [module name resolution](#module-name-resolution)
  * [events Module](#events-module)
    * [events.on() static method](#eventson-static-method)
- * [Events Helper Module (CanaryMod version)](#events-helper-module-canarymod-version)
-   * [Usage](#usage)
-   * [events.minecartActivate()](#eventsminecartactivate)
-   * [events.villagerTradeUnlock()](#eventsvillagertradeunlock)
-   * [events.mobTarget()](#eventsmobtarget)
-   * [events.chickenLayEgg()](#eventschickenlayegg)
-   * [events.potionEffectFinish()](#eventspotioneffectfinish)
-   * [events.entityMove()](#eventsentitymove)
-   * [events.hangingEntityDestroy()](#eventshangingentitydestroy)
-   * [events.vehicleCollision()](#eventsvehiclecollision)
-   * [events.potionEffectApplied()](#eventspotioneffectapplied)
-   * [events.vehicleDestroy()](#eventsvehicledestroy)
-   * [events.vehicleEnter()](#eventsvehicleenter)
-   * [events.damage()](#eventsdamage)
-   * [events.entityMount()](#eventsentitymount)
-   * [events.slimeSplit()](#eventsslimesplit)
-   * [events.endermanDropBlock()](#eventsendermandropblock)
-   * [events.itemTouchGround()](#eventsitemtouchground)
-   * [events.entitySpawn()](#eventsentityspawn)
-   * [events.endermanPickupBlock()](#eventsendermanpickupblock)
-   * [events.vehicleDamage()](#eventsvehicledamage)
-   * [events.entityLightningStruck()](#eventsentitylightningstruck)
-   * [events.entityDespawn()](#eventsentitydespawn)
-   * [events.vehicleMove()](#eventsvehiclemove)
-   * [events.projectileHit()](#eventsprojectilehit)
-   * [events.entityDeath()](#eventsentitydeath)
-   * [events.entityTame()](#eventsentitytame)
-   * [events.vehicleExit()](#eventsvehicleexit)
-   * [events.dimensionSwitch()](#eventsdimensionswitch)
-   * [events.foodLevel()](#eventsfoodlevel)
-   * [events.bookEdit()](#eventsbookedit)
-   * [events.eat()](#eventseat)
-   * [events.playerList()](#eventsplayerlist)
-   * [events.playerIdle()](#eventsplayeridle)
-   * [events.enchant()](#eventsenchant)
-   * [events.playerArmSwing()](#eventsplayerarmswing)
-   * [events.teleport()](#eventsteleport)
-   * [events.anvilUse()](#eventsanviluse)
-   * [events.portalUse()](#eventsportaluse)
-   * [events.foodSaturation()](#eventsfoodsaturation)
-   * [events.connection()](#eventsconnection)
-   * [events.playerRespawned()](#eventsplayerrespawned)
-   * [events.armorBroken()](#eventsarmorbroken)
-   * [events.levelUp()](#eventslevelup)
-   * [events.blockRightClick()](#eventsblockrightclick)
-   * [events.itemDrop()](#eventsitemdrop)
-   * [events.itemFrameRotate()](#eventsitemframerotate)
-   * [events.playerRespawning()](#eventsplayerrespawning)
-   * [events.craft()](#eventscraft)
-   * [events.experience()](#eventsexperience)
-   * [events.signChange()](#eventssignchange)
-   * [events.healthChange()](#eventshealthchange)
-   * [events.disconnection()](#eventsdisconnection)
-   * [events.gameModeChange()](#eventsgamemodechange)
-   * [events.preConnection()](#eventspreconnection)
-   * [events.villagerTrade()](#eventsvillagertrade)
-   * [events.returnFromIdle()](#eventsreturnfromidle)
-   * [events.armorStandModify()](#eventsarmorstandmodify)
-   * [events.slotClick()](#eventsslotclick)
-   * [events.itemFrameSetItem()](#eventsitemframesetitem)
-   * [events.entityRightClick()](#eventsentityrightclick)
-   * [events.foodExhaustion()](#eventsfoodexhaustion)
-   * [events.chat()](#eventschat)
-   * [events.itemPickup()](#eventsitempickup)
-   * [events.bedExit()](#eventsbedexit)
-   * [events.blockPlace()](#eventsblockplace)
-   * [events.heldItemChange()](#eventshelditemchange)
-   * [events.toolBroken()](#eventstoolbroken)
-   * [events.kick()](#eventskick)
-   * [events.playerDeath()](#eventsplayerdeath)
-   * [events.blockLeftClick()](#eventsblockleftclick)
-   * [events.blockDestroy()](#eventsblockdestroy)
-   * [events.bedEnter()](#eventsbedenter)
-   * [events.signShow()](#eventssignshow)
-   * [events.inventory()](#eventsinventory)
-   * [events.playerMove()](#eventsplayermove)
-   * [events.itemUse()](#eventsitemuse)
-   * [events.ban()](#eventsban)
-   * [events.statGained()](#eventsstatgained)
-   * [events.smeltBegin()](#eventssmeltbegin)
-   * [events.treeGrow()](#eventstreegrow)
-   * [events.chunkCreated()](#eventschunkcreated)
-   * [events.liquidDestroy()](#eventsliquiddestroy)
-   * [events.chunkLoaded()](#eventschunkloaded)
-   * [events.pistonRetract()](#eventspistonretract)
-   * [events.smelt()](#eventssmelt)
-   * [events.blockUpdate()](#eventsblockupdate)
-   * [events.portalDestroy()](#eventsportaldestroy)
-   * [events.ignition()](#eventsignition)
-   * [events.redstoneChange()](#eventsredstonechange)
-   * [events.weatherChange()](#eventsweatherchange)
-   * [events.chunkCreation()](#eventschunkcreation)
-   * [events.hopperTransfer()](#eventshoppertransfer)
-   * [events.chunkUnload()](#eventschunkunload)
-   * [events.blockGrow()](#eventsblockgrow)
-   * [events.dispense()](#eventsdispense)
-   * [events.blockDropXp()](#eventsblockdropxp)
-   * [events.fireworkExplode()](#eventsfireworkexplode)
-   * [events.leafDecay()](#eventsleafdecay)
-   * [events.pistonExtend()](#eventspistonextend)
-   * [events.noteBlockPlay()](#eventsnoteblockplay)
-   * [events.lightningStrike()](#eventslightningstrike)
-   * [events.decorate()](#eventsdecorate)
-   * [events.explosion()](#eventsexplosion)
-   * [events.tNTActivate()](#eventstntactivate)
-   * [events.timeChange()](#eventstimechange)
-   * [events.flow()](#eventsflow)
-   * [events.portalCreate()](#eventsportalcreate)
-   * [events.blockPhysics()](#eventsblockphysics)
-   * [events.playerCommand()](#eventsplayercommand)
-   * [events.consoleCommand()](#eventsconsolecommand)
-   * [events.commandBlockCommand()](#eventscommandblockcommand)
-   * [events.loadWorld()](#eventsloadworld)
-   * [events.permissionCheck()](#eventspermissioncheck)
-   * [events.serverGuiStart()](#eventsserverguistart)
-   * [events.unloadWorld()](#eventsunloadworld)
-   * [events.pluginDisable()](#eventsplugindisable)
-   * [events.pluginEnable()](#eventspluginenable)
-   * [events.serverTick()](#eventsservertick)
-   * [events.serverListPing()](#eventsserverlistping)
-   * [events.serverShutdown()](#eventsservershutdown)
  * [Events Helper Module (SpigotMC version)](#events-helper-module-spigotmc-version)
-   * [Usage](#usage-1)
-   * [events.blockFade()](#eventsblockfade)
-   * [events.blockFromTo()](#eventsblockfromto)
-   * [events.notePlay()](#eventsnoteplay)
-   * [events.blockPlace()](#eventsblockplace-1)
-   * [events.blockGrow()](#eventsblockgrow-1)
-   * [events.entityBlockForm()](#eventsentityblockform)
-   * [events.blockPistonExtend()](#eventsblockpistonextend)
-   * [events.blockPistonRetract()](#eventsblockpistonretract)
-   * [events.blockSpread()](#eventsblockspread)
-   * [events.blockBurn()](#eventsblockburn)
-   * [events.blockDamage()](#eventsblockdamage)
-   * [events.leavesDecay()](#eventsleavesdecay)
-   * [events.blockDispense()](#eventsblockdispense)
-   * [events.blockForm()](#eventsblockform)
-   * [events.blockMultiPlace()](#eventsblockmultiplace)
-   * [events.blockIgnite()](#eventsblockignite)
-   * [events.blockPhysics()](#eventsblockphysics-1)
-   * [events.blockRedstone()](#eventsblockredstone)
-   * [events.cauldronLevelChange()](#eventscauldronlevelchange)
-   * [events.blockCanBuild()](#eventsblockcanbuild)
-   * [events.signChange()](#eventssignchange-1)
-   * [events.blockExp()](#eventsblockexp)
-   * [events.blockExplode()](#eventsblockexplode)
-   * [events.blockBreak()](#eventsblockbreak)
-   * [events.prepareAnvil()](#eventsprepareanvil)
-   * [events.brew()](#eventsbrew)
-   * [events.inventoryClose()](#eventsinventoryclose)
-   * [events.inventoryDrag()](#eventsinventorydrag)
-   * [events.inventoryCreative()](#eventsinventorycreative)
-   * [events.prepareItemCraft()](#eventsprepareitemcraft)
-   * [events.craftItem()](#eventscraftitem)
-   * [events.inventoryClick()](#eventsinventoryclick)
-   * [events.brewingStandFuel()](#eventsbrewingstandfuel)
-   * [events.inventoryPickupItem()](#eventsinventorypickupitem)
-   * [events.furnaceExtract()](#eventsfurnaceextract)
-   * [events.inventory()](#eventsinventory-1)
-   * [events.furnaceBurn()](#eventsfurnaceburn)
-   * [events.furnaceSmelt()](#eventsfurnacesmelt)
-   * [events.inventoryOpen()](#eventsinventoryopen)
-   * [events.inventoryMoveItem()](#eventsinventorymoveitem)
-   * [events.hangingPlace()](#eventshangingplace)
-   * [events.hangingBreak()](#eventshangingbreak)
-   * [events.hangingBreakByEntity()](#eventshangingbreakbyentity)
-   * [events.entityToggleGlide()](#eventsentitytoggleglide)
-   * [events.itemSpawn()](#eventsitemspawn)
-   * [events.spawnerSpawn()](#eventsspawnerspawn)
-   * [events.foodLevelChange()](#eventsfoodlevelchange)
-   * [events.lingeringPotionSplash()](#eventslingeringpotionsplash)
-   * [events.entityShootBow()](#eventsentityshootbow)
-   * [events.entityTargetLivingEntity()](#eventsentitytargetlivingentity)
-   * [events.entityCombust()](#eventsentitycombust)
-   * [events.entityBreed()](#eventsentitybreed)
-   * [events.expBottle()](#eventsexpbottle)
-   * [events.slimeSplit()](#eventsslimesplit-1)
-   * [events.entityDeath()](#eventsentitydeath-1)
-   * [events.entityAirChange()](#eventsentityairchange)
-   * [events.projectileLaunch()](#eventsprojectilelaunch)
-   * [events.entityPortal()](#eventsentityportal)
-   * [events.horseJump()](#eventshorsejump)
-   * [events.fireworkExplode()](#eventsfireworkexplode-1)
-   * [events.entityExplode()](#eventsentityexplode)
-   * [events.itemMerge()](#eventsitemmerge)
-   * [events.entitySpawn()](#eventsentityspawn-1)
-   * [events.projectileHit()](#eventsprojectilehit-1)
-   * [events.creatureSpawn()](#eventscreaturespawn)
-   * [events.entityPortalExit()](#eventsentityportalexit)
-   * [events.entityTame()](#eventsentitytame-1)
-   * [events.entityPortalEnter()](#eventsentityportalenter)
-   * [events.playerLeashEntity()](#eventsplayerleashentity)
-   * [events.entityDamage()](#eventsentitydamage)
-   * [events.pigZap()](#eventspigzap)
-   * [events.entityCombustByEntity()](#eventsentitycombustbyentity)
-   * [events.entityChangeBlock()](#eventsentitychangeblock)
-   * [events.areaEffectCloudApply()](#eventsareaeffectcloudapply)
-   * [events.creeperPower()](#eventscreeperpower)
-   * [events.sheepDyeWool()](#eventssheepdyewool)
-   * [events.playerDeath()](#eventsplayerdeath-1)
-   * [events.villagerReplenishTrade()](#eventsvillagerreplenishtrade)
-   * [events.entityCombustByBlock()](#eventsentitycombustbyblock)
-   * [events.entityResurrect()](#eventsentityresurrect)
-   * [events.villagerAcquireTrade()](#eventsvillageracquiretrade)
-   * [events.enderDragonChangePhase()](#eventsenderdragonchangephase)
-   * [events.entityCreatePortal()](#eventsentitycreateportal)
-   * [events.sheepRegrowWool()](#eventssheepregrowwool)
-   * [events.entityRegainHealth()](#eventsentityregainhealth)
-   * [events.entityInteract()](#eventsentityinteract)
-   * [events.potionSplash()](#eventspotionsplash)
-   * [events.entityTarget()](#eventsentitytarget)
-   * [events.entityBreakDoor()](#eventsentitybreakdoor)
-   * [events.entityUnleash()](#eventsentityunleash)
-   * [events.entityDamageByBlock()](#eventsentitydamagebyblock)
-   * [events.entityTeleport()](#eventsentityteleport)
-   * [events.itemDespawn()](#eventsitemdespawn)
-   * [events.explosionPrime()](#eventsexplosionprime)
-   * [events.entityDamageByEntity()](#eventsentitydamagebyentity)
-   * [events.portalCreate()](#eventsportalcreate-1)
-   * [events.worldSave()](#eventsworldsave)
-   * [events.worldLoad()](#eventsworldload)
-   * [events.chunkLoad()](#eventschunkload)
-   * [events.chunkPopulate()](#eventschunkpopulate)
-   * [events.chunkUnload()](#eventschunkunload-1)
-   * [events.structureGrow()](#eventsstructuregrow)
-   * [events.worldInit()](#eventsworldinit)
-   * [events.spawnChange()](#eventsspawnchange)
-   * [events.worldUnload()](#eventsworldunload)
-   * [events.playerShearEntity()](#eventsplayershearentity)
-   * [events.playerVelocity()](#eventsplayervelocity)
-   * [events.playerBucketFill()](#eventsplayerbucketfill)
-   * [events.playerFish()](#eventsplayerfish)
-   * [events.playerGameModeChange()](#eventsplayergamemodechange)
-   * [events.playerCommandPreprocess()](#eventsplayercommandpreprocess)
-   * [events.playerInteract()](#eventsplayerinteract)
-   * [events.playerInteractAtEntity()](#eventsplayerinteractatentity)
-   * [events.playerPortal()](#eventsplayerportal)
-   * [events.playerPreLogin()](#eventsplayerprelogin)
-   * [events.playerMove()](#eventsplayermove-1)
-   * [events.playerQuit()](#eventsplayerquit)
-   * [events.playerToggleSneak()](#eventsplayertogglesneak)
-   * [events.playerPickupArrow()](#eventsplayerpickuparrow)
-   * [events.playerBedLeave()](#eventsplayerbedleave)
-   * [events.playerChangedMainHand()](#eventsplayerchangedmainhand)
-   * [events.playerEditBook()](#eventsplayereditbook)
-   * [events.playerAnimation()](#eventsplayeranimation)
-   * [events.playerResourcePackStatus()](#eventsplayerresourcepackstatus)
-   * [events.playerItemDamage()](#eventsplayeritemdamage)
-   * [events.playerBucketEmpty()](#eventsplayerbucketempty)
-   * [events.playerExpChange()](#eventsplayerexpchange)
-   * [events.asyncPlayerChat()](#eventsasyncplayerchat)
-   * [events.playerItemBreak()](#eventsplayeritembreak)
-   * [events.playerUnleashEntity()](#eventsplayerunleashentity)
-   * [events.playerRespawn()](#eventsplayerrespawn)
-   * [events.playerDropItem()](#eventsplayerdropitem)
-   * [events.playerItemHeld()](#eventsplayeritemheld)
-   * [events.playerTeleport()](#eventsplayerteleport)
-   * [events.playerInteractEntity()](#eventsplayerinteractentity)
-   * [events.playerEggThrow()](#eventsplayereggthrow)
-   * [events.playerChat()](#eventsplayerchat)
-   * [events.playerRegisterChannel()](#eventsplayerregisterchannel)
-   * [events.playerSwapHandItems()](#eventsplayerswaphanditems)
-   * [events.playerChangedWorld()](#eventsplayerchangedworld)
-   * [events.playerLevelChange()](#eventsplayerlevelchange)
-   * [events.playerPickupItem()](#eventsplayerpickupitem)
-   * [events.asyncPlayerPreLogin()](#eventsasyncplayerprelogin)
-   * [events.playerUnregisterChannel()](#eventsplayerunregisterchannel)
-   * [events.playerStatisticIncrement()](#eventsplayerstatisticincrement)
-   * [events.playerBedEnter()](#eventsplayerbedenter)
-   * [events.playerKick()](#eventsplayerkick)
-   * [events.playerToggleSprint()](#eventsplayertogglesprint)
-   * [events.playerAchievementAwarded()](#eventsplayerachievementawarded)
-   * [events.playerJoin()](#eventsplayerjoin)
-   * [events.playerToggleFlight()](#eventsplayertoggleflight)
+   * [Usage](#usage)
    * [events.playerArmorStandManipulate()](#eventsplayerarmorstandmanipulate)
-   * [events.playerLogin()](#eventsplayerlogin)
-   * [events.playerItemConsume()](#eventsplayeritemconsume)
+   * [events.playerBedLeave()](#eventsplayerbedleave)
+   * [events.playerLevelChange()](#eventsplayerlevelchange)
+   * [events.playerKick()](#eventsplayerkick)
    * [events.playerChatTabComplete()](#eventsplayerchattabcomplete)
-   * [events.weatherChange()](#eventsweatherchange-1)
-   * [events.thunderChange()](#eventsthunderchange)
-   * [events.lightningStrike()](#eventslightningstrike-1)
-   * [events.vehicleMove()](#eventsvehiclemove-1)
-   * [events.vehicleDamage()](#eventsvehicledamage-1)
-   * [events.vehicleDestroy()](#eventsvehicledestroy-1)
+   * [events.playerPreLogin()](#eventsplayerprelogin)
+   * [events.playerInteractAtEntity()](#eventsplayerinteractatentity)
+   * [events.playerChangedMainHand()](#eventsplayerchangedmainhand)
+   * [events.playerMove()](#eventsplayermove)
+   * [events.playerResourcePackStatus()](#eventsplayerresourcepackstatus)
+   * [events.playerUnleashEntity()](#eventsplayerunleashentity)
+   * [events.playerLogin()](#eventsplayerlogin)
+   * [events.playerDropItem()](#eventsplayerdropitem)
+   * [events.asyncPlayerChat()](#eventsasyncplayerchat)
+   * [events.playerToggleSneak()](#eventsplayertogglesneak)
+   * [events.playerShearEntity()](#eventsplayershearentity)
+   * [events.playerEggThrow()](#eventsplayereggthrow)
+   * [events.playerJoin()](#eventsplayerjoin)
+   * [events.playerVelocity()](#eventsplayervelocity)
+   * [events.playerBucketEmpty()](#eventsplayerbucketempty)
+   * [events.playerItemConsume()](#eventsplayeritemconsume)
+   * [events.playerLocaleChange()](#eventsplayerlocalechange)
+   * [events.playerEditBook()](#eventsplayereditbook)
+   * [events.playerRespawn()](#eventsplayerrespawn)
+   * [events.playerToggleSprint()](#eventsplayertogglesprint)
+   * [events.playerAnimation()](#eventsplayeranimation)
+   * [events.playerItemBreak()](#eventsplayeritembreak)
+   * [events.playerTeleport()](#eventsplayerteleport)
+   * [events.playerRegisterChannel()](#eventsplayerregisterchannel)
+   * [events.playerExpChange()](#eventsplayerexpchange)
+   * [events.playerBucketFill()](#eventsplayerbucketfill)
+   * [events.playerStatisticIncrement()](#eventsplayerstatisticincrement)
+   * [events.playerChangedWorld()](#eventsplayerchangedworld)
+   * [events.playerItemHeld()](#eventsplayeritemheld)
+   * [events.playerAdvancementDone()](#eventsplayeradvancementdone)
+   * [events.asyncPlayerPreLogin()](#eventsasyncplayerprelogin)
+   * [events.playerAchievementAwarded()](#eventsplayerachievementawarded)
+   * [events.playerBedEnter()](#eventsplayerbedenter)
+   * [events.playerToggleFlight()](#eventsplayertoggleflight)
+   * [events.playerPickupItem()](#eventsplayerpickupitem)
+   * [events.playerItemDamage()](#eventsplayeritemdamage)
+   * [events.playerCommandPreprocess()](#eventsplayercommandpreprocess)
+   * [events.playerGameModeChange()](#eventsplayergamemodechange)
+   * [events.playerFish()](#eventsplayerfish)
+   * [events.playerChat()](#eventsplayerchat)
+   * [events.playerInteract()](#eventsplayerinteract)
+   * [events.playerPortal()](#eventsplayerportal)
+   * [events.playerSwapHandItems()](#eventsplayerswaphanditems)
+   * [events.playerQuit()](#eventsplayerquit)
+   * [events.playerUnregisterChannel()](#eventsplayerunregisterchannel)
+   * [events.playerInteractEntity()](#eventsplayerinteractentity)
+   * [events.playerPickupArrow()](#eventsplayerpickuparrow)
+   * [events.vehicleMove()](#eventsvehiclemove)
+   * [events.vehicleBlockCollision()](#eventsvehicleblockcollision)
    * [events.vehicleUpdate()](#eventsvehicleupdate)
+   * [events.vehicleExit()](#eventsvehicleexit)
+   * [events.vehicleDamage()](#eventsvehicledamage)
+   * [events.vehicleEnter()](#eventsvehicleenter)
+   * [events.vehicleDestroy()](#eventsvehicledestroy)
    * [events.vehicleCreate()](#eventsvehiclecreate)
    * [events.vehicleEntityCollision()](#eventsvehicleentitycollision)
-   * [events.vehicleBlockCollision()](#eventsvehicleblockcollision)
-   * [events.vehicleEnter()](#eventsvehicleenter-1)
-   * [events.vehicleExit()](#eventsvehicleexit-1)
-   * [events.prepareItemEnchant()](#eventsprepareitemenchant)
-   * [events.enchantItem()](#eventsenchantitem)
-   * [events.pluginDisable()](#eventsplugindisable-1)
-   * [events.serverListPing()](#eventsserverlistping-1)
-   * [events.serviceRegister()](#eventsserviceregister)
-   * [events.serverCommand()](#eventsservercommand)
-   * [events.remoteServerCommand()](#eventsremoteservercommand)
-   * [events.pluginEnable()](#eventspluginenable-1)
-   * [events.serviceUnregister()](#eventsserviceunregister)
-   * [events.tabComplete()](#eventstabcomplete)
    * [events.mapInitialize()](#eventsmapinitialize)
+   * [events.pluginEnable()](#eventspluginenable)
+   * [events.serverListPing()](#eventsserverlistping)
+   * [events.serverCommand()](#eventsservercommand)
+   * [events.pluginDisable()](#eventsplugindisable)
+   * [events.serviceUnregister()](#eventsserviceunregister)
+   * [events.serviceRegister()](#eventsserviceregister)
+   * [events.tabComplete()](#eventstabcomplete)
+   * [events.remoteServerCommand()](#eventsremoteservercommand)
+   * [events.enchantItem()](#eventsenchantitem)
+   * [events.prepareItemEnchant()](#eventsprepareitemenchant)
+   * [events.blockFromTo()](#eventsblockfromto)
+   * [events.blockPlace()](#eventsblockplace)
+   * [events.blockPhysics()](#eventsblockphysics)
+   * [events.blockGrow()](#eventsblockgrow)
+   * [events.blockCanBuild()](#eventsblockcanbuild)
+   * [events.blockForm()](#eventsblockform)
+   * [events.signChange()](#eventssignchange)
+   * [events.blockFade()](#eventsblockfade)
+   * [events.blockSpread()](#eventsblockspread)
+   * [events.leavesDecay()](#eventsleavesdecay)
+   * [events.cauldronLevelChange()](#eventscauldronlevelchange)
+   * [events.blockRedstone()](#eventsblockredstone)
+   * [events.blockIgnite()](#eventsblockignite)
+   * [events.blockBurn()](#eventsblockburn)
+   * [events.blockDamage()](#eventsblockdamage)
+   * [events.blockPistonExtend()](#eventsblockpistonextend)
+   * [events.blockMultiPlace()](#eventsblockmultiplace)
+   * [events.blockBreak()](#eventsblockbreak)
+   * [events.blockExp()](#eventsblockexp)
+   * [events.blockDispense()](#eventsblockdispense)
+   * [events.blockExplode()](#eventsblockexplode)
+   * [events.notePlay()](#eventsnoteplay)
+   * [events.blockPistonRetract()](#eventsblockpistonretract)
+   * [events.entityBlockForm()](#eventsentityblockform)
+   * [events.worldLoad()](#eventsworldload)
+   * [events.worldSave()](#eventsworldsave)
+   * [events.worldUnload()](#eventsworldunload)
+   * [events.spawnChange()](#eventsspawnchange)
+   * [events.portalCreate()](#eventsportalcreate)
+   * [events.worldInit()](#eventsworldinit)
+   * [events.chunkLoad()](#eventschunkload)
+   * [events.chunkPopulate()](#eventschunkpopulate)
+   * [events.chunkUnload()](#eventschunkunload)
+   * [events.structureGrow()](#eventsstructuregrow)
+   * [events.hangingBreakByEntity()](#eventshangingbreakbyentity)
+   * [events.hangingPlace()](#eventshangingplace)
+   * [events.hangingBreak()](#eventshangingbreak)
+   * [events.thunderChange()](#eventsthunderchange)
+   * [events.lightningStrike()](#eventslightningstrike)
+   * [events.weatherChange()](#eventsweatherchange)
+   * [events.brew()](#eventsbrew)
+   * [events.inventoryOpen()](#eventsinventoryopen)
+   * [events.prepareItemCraft()](#eventsprepareitemcraft)
+   * [events.inventory()](#eventsinventory)
+   * [events.inventoryMoveItem()](#eventsinventorymoveitem)
+   * [events.prepareAnvil()](#eventsprepareanvil)
+   * [events.furnaceSmelt()](#eventsfurnacesmelt)
+   * [events.inventoryClick()](#eventsinventoryclick)
+   * [events.furnaceBurn()](#eventsfurnaceburn)
+   * [events.furnaceExtract()](#eventsfurnaceextract)
+   * [events.inventoryPickupItem()](#eventsinventorypickupitem)
+   * [events.inventoryClose()](#eventsinventoryclose)
+   * [events.brewingStandFuel()](#eventsbrewingstandfuel)
+   * [events.inventoryDrag()](#eventsinventorydrag)
+   * [events.inventoryCreative()](#eventsinventorycreative)
+   * [events.craftItem()](#eventscraftitem)
+   * [events.areaEffectCloudApply()](#eventsareaeffectcloudapply)
+   * [events.entityResurrect()](#eventsentityresurrect)
+   * [events.entityTeleport()](#eventsentityteleport)
+   * [events.lingeringPotionSplash()](#eventslingeringpotionsplash)
+   * [events.playerDeath()](#eventsplayerdeath)
+   * [events.itemMerge()](#eventsitemmerge)
+   * [events.horseJump()](#eventshorsejump)
+   * [events.villagerAcquireTrade()](#eventsvillageracquiretrade)
+   * [events.sheepDyeWool()](#eventssheepdyewool)
+   * [events.entityCombustByBlock()](#eventsentitycombustbyblock)
+   * [events.creeperPower()](#eventscreeperpower)
+   * [events.entityCombustByEntity()](#eventsentitycombustbyentity)
+   * [events.entityShootBow()](#eventsentityshootbow)
+   * [events.projectileHit()](#eventsprojectilehit)
+   * [events.entityPortal()](#eventsentityportal)
+   * [events.creatureSpawn()](#eventscreaturespawn)
+   * [events.entitySpawn()](#eventsentityspawn)
+   * [events.entityDeath()](#eventsentitydeath)
+   * [events.entityDamageByBlock()](#eventsentitydamagebyblock)
+   * [events.entityRegainHealth()](#eventsentityregainhealth)
+   * [events.potionSplash()](#eventspotionsplash)
+   * [events.entityDamageByEntity()](#eventsentitydamagebyentity)
+   * [events.slimeSplit()](#eventsslimesplit)
+   * [events.itemSpawn()](#eventsitemspawn)
+   * [events.villagerReplenishTrade()](#eventsvillagerreplenishtrade)
+   * [events.entityCreatePortal()](#eventsentitycreateportal)
+   * [events.entityUnleash()](#eventsentityunleash)
+   * [events.entityTarget()](#eventsentitytarget)
+   * [events.foodLevelChange()](#eventsfoodlevelchange)
+   * [events.entityToggleGlide()](#eventsentitytoggleglide)
+   * [events.entityExplode()](#eventsentityexplode)
+   * [events.entityBreed()](#eventsentitybreed)
+   * [events.spawnerSpawn()](#eventsspawnerspawn)
+   * [events.entityAirChange()](#eventsentityairchange)
+   * [events.entityPortalEnter()](#eventsentityportalenter)
+   * [events.fireworkExplode()](#eventsfireworkexplode)
+   * [events.expBottle()](#eventsexpbottle)
+   * [events.enderDragonChangePhase()](#eventsenderdragonchangephase)
+   * [events.entityPortalExit()](#eventsentityportalexit)
+   * [events.entityChangeBlock()](#eventsentitychangeblock)
+   * [events.sheepRegrowWool()](#eventssheepregrowwool)
+   * [events.projectileLaunch()](#eventsprojectilelaunch)
+   * [events.explosionPrime()](#eventsexplosionprime)
+   * [events.entityBreakDoor()](#eventsentitybreakdoor)
+   * [events.entityInteract()](#eventsentityinteract)
+   * [events.entityDamage()](#eventsentitydamage)
+   * [events.pigZap()](#eventspigzap)
+   * [events.entityTargetLivingEntity()](#eventsentitytargetlivingentity)
+   * [events.playerLeashEntity()](#eventsplayerleashentity)
+   * [events.entityTame()](#eventsentitytame)
+   * [events.itemDespawn()](#eventsitemdespawn)
+   * [events.entityCombust()](#eventsentitycombust)
  * [console global variable](#console-global-variable)
    * [Example](#example)
    * [Using string substitutions](#using-string-substitutions)
@@ -414,20 +295,20 @@ Walter Higgins
    * [Examples](#examples)
  * [Fireworks Module](#fireworks-module)
    * [Examples](#examples-1)
+ * [Inventory Module](#inventory-module)
+   * [Usage](#usage-1)
  * [Classroom Plugin](#classroom-plugin)
    * [jsp classroom command](#jsp-classroom-command)
    * [classroom.allowScripting() function](#classroomallowscripting-function)
- * [Inventory Module](#inventory-module)
-   * [Usage](#usage-2)
  * [Asynchronous Input Module](#asynchronous-input-module)
  * [Lightning module](#lightning-module)
-   * [Usage](#usage-3)
+   * [Usage](#usage-2)
  * [The recipes module](#the-recipes-module)
    * [Example](#example-1)
  * [Http Module](#http-module)
    * [http.request() function](#httprequest-function)
  * [sc-mqtt module](#sc-mqtt-module)
-   * [Usage](#usage-4)
+   * [Usage](#usage-3)
  * [Signs Module](#signs-module)
    * [signs.menu() function](#signsmenu-function)
    * [signs.getTargetedBy() function](#signsgettargetedby-function)
@@ -466,22 +347,22 @@ Walter Higgins
    * [watcher.unwatchFile() function](#watcherunwatchfile-function)
    * [watcher.unwatchDir() function](#watcherunwatchdir-function)
  * [Example Plugin #1 - A simple extension to Minecraft.](#example-plugin-1---a-simple-extension-to-minecraft)
-   * [Usage:](#usage-5)
+   * [Usage:](#usage-4)
  * [Example Plugin #2 - Making extensions available for all players.](#example-plugin-2---making-extensions-available-for-all-players)
-   * [Usage:](#usage-6)
+   * [Usage:](#usage-5)
  * [Example Plugin #3 - Limiting use of commands to operators only.](#example-plugin-3---limiting-use-of-commands-to-operators-only)
-   * [Usage:](#usage-7)
+   * [Usage:](#usage-6)
  * [Example Plugin #4 - Using parameters in commands.](#example-plugin-4---using-parameters-in-commands)
-   * [Usage:](#usage-8)
+   * [Usage:](#usage-7)
  * [Example Plugin #5 - Re-use - Using your own and others modules.](#example-plugin-5---re-use---using-your-own-and-others-modules)
-   * [Usage:](#usage-9)
+   * [Usage:](#usage-8)
  * [Example Plugin #6 - Re-use - Using 'utils' to get Player objects.](#example-plugin-6---re-use---using-utils-to-get-player-objects)
-   * [Usage:](#usage-10)
+   * [Usage:](#usage-9)
  * [Example Plugin #7 - Listening for events, Greet players when they join the game.](#example-plugin-7---listening-for-events-greet-players-when-they-join-the-game)
  * [Arrows Plugin](#arrows-plugin)
-   * [Usage:](#usage-11)
+   * [Usage:](#usage-10)
  * [Spawn Plugin](#spawn-plugin)
-   * [Usage](#usage-12)
+   * [Usage](#usage-11)
  * [alias Plugin](#alias-plugin)
    * [Examples](#examples-2)
  * [Commando Plugin](#commando-plugin)
@@ -501,209 +382,417 @@ Walter Higgins
    * [Rules](#rules)
    * [Gameplay Mechanics](#gameplay-mechanics)
  * [Items module (SpigotMC version)](#items-module-spigotmc-version)
-   * [Usage](#usage-13)
- * [Items module (CanaryMod version)](#items-module-canarymod-version)
-   * [Usage](#usage-14)
+   * [Usage](#usage-12)
  * [Entities module](#entities-module)
-   * [Usage](#usage-15)
+   * [Usage](#usage-13)
 
 ## Modules in Scriptcraft
 
-ScriptCraft has a simple module loading system. In ScriptCraft, files
-and modules are in one-to-one correspondence. As an example, foo.js
-loads the module circle.js in the same directory. 
-*ScriptCraft now uses the same module system as Node.js - see [Node.js Modules][njsmod] for more details.*
+ ScriptCraft has a simple module loading system. In ScriptCraft, files
+ and modules are in one-to-one correspondence. As an example, foo.js
+ loads the module circle.js in the same directory.
+ *ScriptCraft now uses the same module system as Node.js - see [Node.js Modules][njsmod] for more details.*
 
-[njsmod]: http://nodejs.org/api/modules.html
+ [njsmod]: http://nodejs.org/api/modules.html
 
-The contents of foo.js:
+ The contents of foo.js:
 
-```javascript
-var circle = require('./circle.js');
-console.log( 'The area of a circle of radius 4 is '
+ ```javascript
+ var circle = require('./circle.js');
+ console.log( 'The area of a circle of radius 4 is '
              + circle.area(4));
-```
+ ```
 
-The contents of circle.js:
+ The contents of circle.js:
 
-```javascript
-var PI = Math.PI;
-exports.area = function (r) {
-    return PI * r * r;
-};
-exports.circumference = function (r) {
-    return 2 * PI * r;
-};
-```
+ ```javascript
+ var PI = Math.PI;
+ exports.area = function (r) {
+   return PI * r * r;
+ };
+ exports.circumference = function (r) {
+   return 2 * PI * r;
+ };
+ ```
 
-The module circle.js has exported the functions area() and
-circumference(). To add functions and objects to the root of your
-module, you can add them to the special exports object.
+ The module circle.js has exported the functions area() and
+ circumference(). To add functions and objects to the root of your
+ module, you can add them to the special exports object.
 
-Variables local to the module will be private, as though the module
-was wrapped in a function. In this example the variable PI is private
-to circle.js.
+ Variables local to the module will be private, as though the module
+ was wrapped in a function. In this example the variable PI is private
+ to circle.js.
 
-If you want the root of your module's export to be a function (such as
-a constructor) or if you want to export a complete object in one
-assignment instead of building it one property at a time, assign it to
-module.exports instead of exports.
+ If you want the root of your module's export to be a function (such as
+ a constructor) or if you want to export a complete object in one
+ assignment instead of building it one property at a time, assign it to
+ module.exports instead of exports.
 
 ## Module Loading
 
-When the ScriptCraft Java plugin is first installed, a new
-`scriptcraft` subdirectory is created. If your minecraft server
-directory is called 'mcserver' then the new subdirectories will be ...
+ When the ScriptCraft Java plugin is first installed, a new
+ `scriptcraft` subdirectory is created. If your minecraft server
+ directory is called 'mcserver' then the new subdirectories will be ...
 
  * mcserver/scriptcraft/
  * mcserver/scriptcraft/plugins
  * mcserver/scriptcraft/modules
  * mcserver/scriptcraft/lib
 
-... The `plugins`, `modules` and `lib` directories each serve a different purpose.
+ ... The `plugins`, `modules` and `lib` directories each serve a different purpose.
 
-### The plugins directory
+### The `plugins` directory
 
-At server startup the ScriptCraft Java plugin is loaded and begins
-automatically loading and executing all of the modules (javascript
-files with the extension `.js`) it finds in the `scriptcraft/plugins`
-directory. All modules in the plugins directory are automatically
-loaded into the `global` namespace. What this means is that anything a
-module in the `plugins` directory exports becomes a global
-variable. For example, if you have a module greeting.js in the plugins
-directory....
+ At server startup the ScriptCraft Java plugin is loaded and begins
+ automatically loading and executing all of the modules (JavaScript
+ files with the extension `.js`) it finds in the `scriptcraft/plugins`
+ directory. All modules in the plugins directory are automatically
+ loaded into the `global` namespace. What this means is that anything a
+ module in the `plugins` directory exports becomes a global
+ variable. For example, if you have a module greeting.js in the plugins
+ directory....
 
-```javascript
-exports.greet = function(player) {
-    echo(player, 'Hello ' + player.name);
-};
-```
+ ```javascript
+ exports.greet = function(player) {
+   echo(player, 'Hello ' + player.name);
+ };
+ ```
 
-... then `greet` becomes a global function and can be used at the
-in-game (or server) command prompt like so...
+ ... then `greet` becomes a global function and can be used at the
+ in-game (or server) command prompt like so...
 
-    /js greet(self)
+ /js greet(self)
 
-... This differs from how modules (in NodeJS and commonJS
-environments) normally work. If you want your module to be exported
-globally, put it in the `plugins` directory. If you don't want your
-module to be exported globally but only want it to be used by other
-modules, then put it in the `modules` directory instead. If you've
-used previous versions of ScriptCraft and have put your custom
-javascript modules in the `js-plugins` directory, then put them in the
-`scriptcraft/plugins` directory. To summarise, modules in this directory are ...
+ ... This differs from how modules (in NodeJS and CommonJS
+ environments) normally work. If you want your module to be exported
+ globally, put it in the `plugins` directory. If you don't want your
+ module to be exported globally but only want it to be used by other
+ modules, then put it in the `modules` directory instead. If you've
+ used previous versions of ScriptCraft and have put your custom
+ JavaScript modules in the `js-plugins` directory, then put them in the
+ `scriptcraft/plugins` directory. To summarise, modules in this directory are ...
 
  * Automatically loaded and run at server startup.
  * Anything exported by modules becomes a global variable.
 
-### The modules directory
+### The `modules` directory
 
-The module directory is where you should place your modules if you
-don't want to export globally. In javascript, it's considered best
-practice not to have too many global variables, so if you want to
-develop modules for others to use, or want to develop more complex
-mods then your modules should be placed in the `modules` directory.
-*Modules in the `modules` directory are not automatically loaded at
-startup*, instead, they are loaded and used by other modules/plugins
-using the standard `require()` function.  This is the key difference
-between modules in the `plugins` directory and modules in the
-`modules` directory. Modules in the `plugins` directory are
-automatically loaded and exported in to the global namespace at server
-startup, modules in the `modules` directory are not.
+ The `scriptcraft/modules` directory is where you should place your modules if you
+ don't want to export globally. In JavaScript, it's considered best
+ practice not to have too many global variables, so if you want to
+ develop modules for others to use, or want to develop more complex
+ mods then your modules should be placed in the `modules` directory.
+ *Modules in the `modules` directory are not automatically loaded at
+ startup*, instead, they are loaded and used by other modules/plugins
+ using the standard `require()` function. This is the key difference
+ between modules in the `plugins` directory and modules in the
+ `modules` directory. Modules in the `plugins` directory are
+ automatically loaded and exported in to the global namespace at server
+ startup, modules in the `modules` directory are not.
 
-### The lib directory
+ To be clear, the modules and plugins directories don't contain scripts based
+ on what they do, but based on when they are required to load. When looking for
+ the source code for specific functionality, look in both directories for related files.
+ Some functionality, like the Drone, is split into *both* `plugins` and `modules`.
 
-Modules in the `lib` directory are for use by ScriptCraft and some
-core functions for use by module and plugin developers are also
-provided. The `lib` directory is for internal use by ScriptCraft.
-Modules in this directory are not automatically loaded nor are they
-globally exported.
+### The `lib` directory
 
-### plugins sub-directories
+ Modules in the `scriptcraft/lib` directory are for use by ScriptCraft and some
+ core functions for use by module and plugin developers are also
+ provided. The `lib` directory is for internal use by ScriptCraft.
+ Modules in this directory are not automatically loaded nor are they
+ globally exported.
 
-As of December 24 2013, the `scriptcraft/plugins` directory has the following sub-directories...
+### The `plugins` directory contents
 
- * drone - Contains the drone module and drone extensions. Drone was the first scriptcraft module.
- * mini-games - Contains mini-games 
- * arrows - The arrows module - Changes the behaviour of Arrows: Explosive, Fireworks, Teleportation etc.
- * signs - The signs module (includes example signs) - create interactive signs.
- * chat - The chat plugin/module 
- * alias - The alias plugin/module - for creating custom aliases for commonly-used commands.
- * home - The home module - for setting homes and visiting other homes.
+ The `scriptcraft/plugins` directory includes the following sub-directories and
+ individual .js files.
+
+ * alias folder - For creating custom aliases for commonly-used commands.
+ * commando folder - commando is a plugin which can be used to add completely new commands
+ to Minecraft. Be sure the look at the documentation and code for commando.
+ * drone - Contains the drone module and drone extensions. Drone was the first
+ ScriptCraft module. Note that there is a drone folder under plugins, which is loaded
+ at startup, and another drone folder with scripts that get loaded only as required.
+ * arrows - The arrows.js file contains a module that changes the behaviour of
+ Arrows: Explosive, Fireworks, Teleportation etc.
+ * homes - For setting homes and visiting other homes.
+ * mini-games - Currently contains NumberGuess and cow-clicker. Look at the code and have some
+ fun while learning how the code works.
+ * signs - Contains examples for the signs functionality defined in
+ * scriptcraft/modules/signs.
 
 ## Global variables
 
-There are a couple of special javascript variables available in ScriptCraft...
- 
-### __plugin variable
-The ScriptCraft JavaPlugin object.
+ There are a few special JavaScript variables available in ScriptCraft...
 
-### server variable
-The Minecraft Server object
+### `__plugin` variable
+ The ScriptCraft JavaPlugin object.
 
-### self variable
-The current player. (Note - this value should not be used in multi-threaded scripts or event-handling code - it's not thread-safe). This variable is only safe to use at the in-game prompt and should *never* be used in modules. For example you can use it here...
+### `server` variable
+ The Minecraft Server object
 
-    /js console.log(self.name)
+### `self` variable
+ The current player. (Note - this value should not be used in multi-threaded scripts
+ or event-handling code - it's not thread-safe). This variable is only safe to use
+ at the in-game prompt and should *never* be used in modules. For example you
+ can use it here...
 
-... but not in any javascript module you create yourself or in any
-event handling code. `self` is a temporary short-lived variable which
-only exists in the context of the in-game or server command prompts.
+ `/js console.log(self.name)`
 
-### config variable
-ScriptCraft configuration - this object is loaded and saved at startup/shutdown.
+ ... but not in any JavaScript module you create yourself or in any
+ event handling code. `self` is a temporary short-lived variable which
+ only exists in the context of the in-game or server command prompts.
 
-### events variable
-The events object is used to add new event handlers to Minecraft.
+### `config` variable
+ ScriptCraft configuration - this JSON object is loaded and saved at startup/shutdown.
+
+### `events` variable
+ The events object is used to add new event handlers to Minecraft.
 
 ## Module variables
-The following variables are available only within the context of Modules. (not available at in-game prompt).
+ The following variables are available only within the context of Modules. (not available at in-game prompt).
 
-### &#95;&#95;filename variable
-The current file - this variable is only relevant from within the context of a Javascript module.
+### `__filename` variable
+ The name of the current .js file - this variable is only relevant from within the context of a JavaScript module.
 
-### &#95;&#95;dirname variable
-The current directory - this variable is only relevant from within the context of a Javascript module.
+### `__dirname` variable
+ The current directory - this variable is only relevant from within the context of a JavaScript module.
 
 ## Global functions
 
-ScripCraft provides some global functions which can be used by all plugins/modules...
+ ScriptCraft provides some global functions which can be used by all plugins/modules...
 
-### echo function
+### `echo()` function
 
-The `echo()` function displays a message on the in-game screen. 
+ The `echo()` function displays a message on the in-game screen.
 
 #### Example
 
-    /js echo( self, 'Hello World')
+ /js echo( self, 'Hello World')
 
-For programmers familiar with Javascript web programming, an `alert`
-function is also provided.  `alert` works exactly the same as `echo`
-e.g. `alert( self, 'Hello World')`.
+ For programmers familiar with JavaScript web programming, an `alert`
+ function is also provided.  `alert` works exactly the same as `echo`
+ e.g. `alert( self, 'Hello World')`.
 
-### require() function
+### `require()` function
 
-ScriptCraft's `require()` function is used to load modules. The `require()` function takes a module name as a parameter and will try to load the named module.
+ ScriptCraft's `require()` function is used to load modules. The `require()`
+ function takes a module name as a parameter and will try to load the named module.
 
 #### Parameters
 
  * modulename - The name of the module to be loaded. Can be one of the following...
 
-   - A relative file path (with or without `.js` suffix)
-   - An absolute file path (with or without `.js` suffix)
-   - A relative directory path (uses node.js rules for directories)
-   - An absolute directory path (uses node.js rules for directories)
-   - A name of the form `'events'` - in which case the `lib` directory and `modules` directories are searched for the module.
+ - A relative file path (with or without `.js` suffix)
+ - An absolute file path (with or without `.js` suffix)
+ - A relative directory path (uses node.js rules for directories)
+ - An absolute directory path (uses node.js rules for directories)
+ - A name of the form `'events'` (quoted name) - in which case the `lib` directory and `modules` directories are searched for the module.
 
 #### Return
 
-require() will return the loaded module's exports.
+ require() will return the loaded module's exports.
 
-### scload() function 
+### command() function
 
-#### No longer recommended for use by Plugin/Module developers (deprecated)
+ The `command()` function is used to expose JavaScript functions for use by
+ non-operators (regular players). Only operators should be allowed use raw
+ JavaScript using the `/js` command because it is too powerful for use by
+ regular players and can be easily abused. However, the command() function and
+ the `/jsp` command let you (the operator / server administrator / plugin author)
+ safely expose JavaScript functions for use by players.
 
-scload() should only be used to load .json data.
+#### Parameters
+
+ In prior versions there were three parameters: Name, Options, Intercepts.
+ There are now optionally four parameters: Name, Function, Options, Intercepts.
+
+ * Name : The named JavaScript function which will be invoked when the
+ command is invoked by a player. In earlier versions, without the second Function
+ parameter, the name of the function would be used as the command name. So it
+ was important to name the function accordingly.
+ * Function : If the second option is a Function (in-line anonymous, or reference),
+ then this function will be called when the Name is requested. See the example below.
+ * Options (Array|Function - optional) : An array of command options/parameters
+ which the player can supply (It's useful to supply an array so that Tab-Completion
+ works for the `/jsp` commands. If a function is supplied instead of an array then
+ the function will be invoked at TAB-completion time and should return an array of strings.
+ * Intercepts (boolean - optional) : If this option is true, then the function goes into
+ a list of backup handlers. When an unrecognized /jsp command is entered, all of the
+ intercept functions are executed in the order in which they were registered. Any or all
+ of these functions can return a value of true to indicate that they processed the command.
+ All intercepts are executed regardless of whether any of them returned a true value. See
+ the example below.
+
+#### The callback function
+
+ When the `/jsp` command is invoked, the callback function itself takes 2 parameters...
+
+ * params : An Array of type String - the list of parameters passed to the command.
+ * sender : The [CommandSender][bukcs] object that invoked the command (this is
+ usually a Player object but can be a Block ([BlockCommandSender][bukbcs]).
+
+#### Examples
+
+ ```javascript
+ // javascript code
+ function boo( params, sender) {
+   echo( sender, params[0] );
+ }
+ command( boo );
+ ```
+
+##### in-game execution
+
+ /jsp boo Hi!
+ > Hi!
+
+ To use a callback for options (TAB-Completion) ...
+
+ ```javascript
+ var utils = require('utils');
+ function boo( params, sender ) {
+   var receiver = server.getPlayer( params[0] );
+   if ( receiver ){
+     echo( receiver, sender.name + ' says boo!');
+   }
+ }
+ command( boo, utils.playerNames );
+ ```
+
+ Anonymous function with different name:
+
+ ```javascript
+ function hello(args,invoker) { echo( invoker, 'Hi Back'); }
+ var myCmd = command( 'hi',
+   function(  params, invoker ) { echo( invoker, 'Hi Back'); }
+ );
+ ```
+
+ Function with different name:
+
+ ```javascript
+ function hello(args,invoker) { echo( invoker, 'Hi Back'); }
+ var myCmd = command( 'hi', hello,'',false);
+ ```
+
+ Intercept example:
+
+ ```javascript
+ function handleit(args,invoker) {
+   // decide whether to
+   return true;
+   // or
+   return false;
+ }
+ command(handleit,'',true); // no name so other params shift down one
+ ```
+
+ Now if a player enters "/jsp BLAH aaa bbb ccc". There is no callback named BLAH,
+ so all intercepts are executed. The handleit function is a registered intercept and
+ will get the arguments from the command line as well as the player object. If this
+ function doesn't know what to do with the data, it can return false. If all intercepts
+ return false, then the player will see 'Command BLAH is not recognised'. If any of
+ the interecepts return true then no extra message is returned. It is up to the developer
+ and/or server administrator to decide which intercepts handle various kinds of requests,
+ and related intercepts might need a way to exchange data to ensure more than one does
+ not handle a single request, if that is in line with the desired functionality.
+
+ See alias/alias.js or homes/homes.js for more examples of how to use the `command()` function.
+
+### setTimeout() function
+
+ This function mimics the setTimeout() function used in browser-based JavaScript. However,
+ the function will only accept a function reference, not a string of JavaScript code.
+ Where setTimeout() in the browser returns a numeric value which can be subsequently
+ passed to clearTimeout(), this implementation returns an object which can be subsequently
+ passed to ScriptCraft's own clearTimeout() implementation.
+
+ If Node.js supports setTimeout() then it's probably good for ScriptCraft to support it too.
+
+#### Example
+
+ ```javascript
+ //
+ // start a storm in 5 seconds
+ //
+ setTimeout( function() {
+   var world = server.worlds.get(0);
+   world.setStorm(true);
+ }, 5000);
+ ```
+
+### clearTimeout() function
+
+ A ScriptCraft implementation of clearTimeout().
+
+### setInterval() function
+
+ This function mimics the setInterval() function used in browser-based JavaScript. However,
+ the function will only accept a function reference, not a string of JavaScript code.
+ Where setInterval() in the browser returns a numeric value which can be subsequently
+ passed to clearInterval(), this implementation returns an object which can be subsequently
+ passed to ScriptCraft's own clearInterval() implementation.
+
+### clearInterval() function
+
+ A ScriptCraft implementation of clearInterval().
+
+### refresh() function
+
+ The refresh() function can be used to only reload the ScriptCraft plugin (it's like
+ the `reload` command except it only reloads ScriptCraft). The refresh() function will ...
+
+ 1. Disable the ScriptCraft plugin.
+ 2. Unload all event listeners associated with the ScriptCraft plugin.
+ 3. Cancel all timed tasks (created by `setInterval` & `setTimeout`)
+ 4. Enable the ScriptCraft plugin.
+
+ ... refresh() can be used during development to reload only ScriptCraft JavaScript files.
+ See [issue #69][issue69] for more information.
+
+ By default, if `self` is defined at runtime, it checks, whether `self` is server
+ operator, otherwise fails with message. This behavivor can be modified using
+ `skipOpCheck` parameter (useful, if you are doing some custom premission checks
+ before calling this function).
+
+#### Parameters
+
+ * skipOpCheck (boolean - optional) : If true, the function won't check if `self` is a server operator.
+
+ [issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
+
+### addUnloadHandler() function
+
+ The addUnloadHandler() function takes a callback function as a parameter. The
+ callback will be called when the ScriptCraft plugin is unloaded (usually as a
+ result of a a `reload` command or server shutdown).
+
+ This function provides a way for ScriptCraft modules to do any required
+ cleanup/housekeeping just prior to the ScriptCraft Plugin unloading.
+
+### isOp() function
+
+ This function takes a single parameter and returns true if it's an operator or has operator-level privileges.
+
+
+# Deprecated functions
+
+ "Deprecated" means "no longer used". The code remains and may even work but it is no
+ longer maintained and should not be used for future development. Deprecated code
+ may be removed in the future causing old code that used it to break.
+
+ The documentation here describes how the code works/worked because there is still old
+ code in the field that will be found with these functions. Authors are encouraged
+ to replace deprecated code wherever it is found with the latest supported functionality.
+
+### `scload()` function
+
+#### Deprecated
+ No longer recommended for use by Plugin/Module developers.
+
+ scload() was only used to load .json data.
 
 #### Parameters
 
@@ -712,35 +801,39 @@ scload() should only be used to load .json data.
 
 #### Returns
 
-scload() will return the result of the last statement evaluated in the file.
+ scload() will return the result of the last statement evaluated in the file.
 
 #### Example
 
-    scload("myFile.js"); // loads a javascript file and evaluates it.
+ scload("myFile.js"); // loads a JavaScript file and evaluates it.
 
-    var myData = scload("myData.json"); // loads a javascript file and evaluates it - eval'd contents are returned.
+ var myData = scload("myData.json"); // loads a JavaScript file and evaluates it - eval'd contents are returned.
 
 ##### myData.json contents...
 
-    { players: {
-        walterh: {
-          h: ["jsp home {1}"],
-          sunny:["time set 0",
-                 "weather clear"]
-        }
-      }
-    }
+ { players: {
+     walterh: {
+       h: ["jsp home {1}"],
+       sunny:["time set 0","weather clear"]
+     }
+   }
+ }
 
-### scsave() function
+ **Remember: Use persistence for loading and saving data, not scload() or scsave().**
 
-The scsave() function saves an in-memory javascript object to a
-specified file. Under the hood, scsave() uses JSON (specifically
-json2.js) to save the object. There will usually be no need to call
-this function directly - If you want to have a javascript object
-automatically loaded at startup and saved on shutdown then use the
-`persist()` module. The `persist()` module uses scsave and scload
-under the hood.  Any in-memory object saved using the `scsave()`
-function can later be restored using the `scload()` function.
+### `scsave()` function
+
+#### Deprecated
+ No longer recommended for use by Plugin/Module developers.
+
+ The scsave() function saves an in-memory JavaScript object to a
+ specified file. Under the hood, scsave() uses JSON (specifically
+ json2.js) to save the object. There will usually be no need to call
+ this function directly - If you want to have a JavaScript object
+ automatically loaded at startup and saved on shutdown then use the
+ `persist()` module. The `persist()` module uses scsave and scload
+ under the hood.  Any in-memory object saved using the `scsave()`
+ function can later be restored using the `scload()` function.
 
 #### Parameters
 
@@ -749,161 +842,67 @@ function can later be restored using the `scload()` function.
 
 #### Example
 
-```javascript
-var myObject = { name: 'John Doe',
-                 aliases: ['John Ray', 'John Mee'],
-                 date_of_birth: '1982/01/31' };
-scsave(myObject, 'johndoe.json');
-```
+ ```javascript
+ var myObject = { name: 'John Doe',
+                  aliases: ['John Ray', 'John Mee'],
+                  date_of_birth: '1982/01/31' };
+ scsave(myObject, 'johndoe.json');
+ ```
 
 ##### johndoe.json contents...
 
-    { "name": "John Doe", 
-      "aliases": ["John Ray", "John Mee"], 
-      "date_of_birth": "1982/01/31" 
-    };
+ { "name": "John Doe",
+   "aliases": ["John Ray", "John Mee"],
+   "date_of_birth": "1982/01/31"
+ };
 
-### plugin() function
+ **Remember: Use persistence for loading and saving data, not scload() or scsave().**
 
-#### Update April 2015 
-The `plugin()` function is deprecated. Please refer to [Anatomy of a
-ScriptCraft Plugin][anatomy] for an up-to-date step-by-step guide to
-creating a plugin which uses persistence (loading and saving data).
+### `plugin()` function
 
-#### Deprecated
-The `plugin()` function should be used to declare a javascript module
-whose state you want to have managed by ScriptCraft - that is - a
-Module whose state will be loaded at start up and saved at shut down.
-A plugin is just a regular javascript object whose state is managed by
-ScriptCraft.  The only member of the plugin which whose persistence is
-managed by Scriptcraft is `store` - this special member will be
-automatically saved at shutdown and loaded at startup by
-ScriptCraft. This makes it easier to write plugins which need to
-persist data.
+#### Internal Use Only
+ No longer recommended for use by Plugin/Module developers.
+
+ Please refer to [Anatomy of a ScriptCraft Plugin][anatomy] for an up-to-date
+ step-by-step guide to creating a plugin which uses persistence (loading and saving data).
+
+ The `plugin()` function is used internally to declare a JavaScript module
+ whose state you want to have managed by ScriptCraft - that is - a
+ Module whose state will be loaded at start up and saved at shut down.
+ A plugin is just a regular JavaScript object whose state is managed by
+ ScriptCraft. The only member of the plugin which whose persistence is
+ managed by ScriptCraft is `store` - this special member will be
+ automatically saved at shutdown and loaded at startup by
+ ScriptCraft. This makes it easier to write plugins which need to
+ persist data.
 
 #### Parameters
- 
+
  * pluginName (String) : The name of the plugin - this becomes a global variable.
  * pluginDefinition (Object) : The various functions and members of the plugin object.
  * isPersistent (boolean - optional) : Specifies whether or not the
-   plugin/object state should be loaded and saved by ScriptCraft.
+ plugin/object state should be loaded and saved by ScriptCraft.
 
 #### Example
 
-See chat/color.js for an example of a simple plugin - one which lets
-players choose a default chat color. See also [Anatomy of a
-ScriptCraft Plugin][anatomy].
- 
-[anatomy]: ./Anatomy-of-a-Plugin.md
+ See also [Anatomy of a ScriptCraft Plugin][anatomy].
 
-### command() function
+ // TODO Need example
 
-The `command()` function is used to expose javascript functions for use by non-operators (regular players). Only operators should be allowed use raw javascript using the `/js ` command because it is too powerful for use by regular players and can be easily abused. However, the `/jsp ` command lets you (the operator / server administrator / plugin author) safely expose javascript functions for use by players.
+ The chat/color.js was an example here of a simple plugin - one which lets
+ players choose a default chat color. that module has temporarily (?) been removed.
 
-#### Parameters
- 
- * commandFunction: The named javascript function which will be invoked when the command is invoked by a player. The name of the function will be used as the command name so name this function accordingly. The callback function in turn takes 2 parameters...
+ **Remember: Use persistence for loading and saving data.**
 
-   * params : An Array of type String - the list of parameters passed to the command.
-   * sender : The [CommandSender][bukcs] object that invoked the command (this is usually a Player object but can be a Block ([BlockCommandSender][bukbcs]).
-
- * options (Array|Function - optional) : An array of command options/parameters which the player can supply (It's useful to supply an array so that Tab-Completion works for the `/jsp ` commands. If a function is supplied instead of an array then the function will be invoked at TAB-completion time and should return an array of strings.
- * intercepts (boolean - optional) : Indicates whether this command can intercept Tab-Completion of the `/jsp ` command - advanced usage - see alias/alias.js for example.
-
-#### Example
-
-    // javascript code
-    function boo( params, sender) {
-        echo( sender, params[0] );
-    }
-    command( boo );
-    
-    # in-game execution
-    /jsp boo Hi!
-    > Hi!
-
-To use a callback for options (TAB-Completion) ...
-
-    var utils = require('utils');
-    function boo( params, sender ) {
-       var receiver = server.getPlayer( params[0] );
-       if ( receiver ){
-          echo( receiver, sender.name + ' says boo!');
-       }
-    }
-    command( boo, utils.playerNames );
-
-See chat/colors.js or alias/alias.js or homes/homes.js for more examples of how to use the `command()` function.
-
-### setTimeout() function
-
-This function mimics the setTimeout() function used in browser-based javascript. However, the function will only accept a function reference, not a string of javascript code.  Where setTimeout() in the browser returns a numeric value which can be subsequently passed to clearTimeout(), This implementation returns an object which can be subsequently passed to ScriptCraft's own clearTimeout() implementation.
-
-If Node.js supports setTimeout() then it's probably good for ScriptCraft to support it too.
-
-#### Example
-
-```javascript
-//
-// start a storm in 5 seconds
-//    
-setTimeout( function() {
-    var world = server.worlds.get(0);
-    world.setStorm(true);
-}, 5000);
-```
-
-### clearTimeout() function
-
-A scriptcraft implementation of clearTimeout().
-
-### setInterval() function
-
-This function mimics the setInterval() function used in browser-based javascript. However, the function will only accept a function reference, not a string of javascript code.  Where setInterval() in the browser returns a numeric value which can be subsequently passed to clearInterval(), This implementation returns an object which can be subsequently passed to ScriptCraft's own clearInterval() implementation.
-
-### clearInterval() function
-
-A scriptcraft implementation of clearInterval().
-
-### refresh() function
-
-The refresh() function can be used to only reload the ScriptCraft plugin (it's like the `reload` command except it only reloads ScriptCraft). The refresh() function will ...
-
-1. Disable the ScriptCraft plugin.
-2. Unload all event listeners associated with the ScriptCraft plugin.
-3. Cancel all timed tasks (created by `setInterval` & `setTimeout`)
-3. Enable the ScriptCraft plugin.
-
-... refresh() can be used during development to reload only scriptcraft javascript files.
-See [issue #69][issue69] for more information.
-
-By default, if `self` is defined at runtime, it checks, whether `self` is server operator, otherwise fails with message. This behavivor can be modified using `skipOpCheck` parameter (useful, if you are doing some custom premission checks before calling this function).
-
-#### Parameters
-
- * skipOpCheck (boolean - optional) : If true, the function won't check if `self` is server operator.
-
-[issue69]: https://github.com/walterhiggins/ScriptCraft/issues/69
-
-### addUnloadHandler() function
-
-The addUnloadHandler() function takes a callback function as a parameter. The callback will be called when the ScriptCraft plugin is unloaded (usually as a result of a a `reload` command or server shutdown).
-
-This function provides a way for ScriptCraft modules to do any required cleanup/housekeeping just prior to the ScriptCraft Plugin unloading.
-
-### isOp() function
-
-This function takes a single parameter and returns true if it's an operator or has operator-level privileges. 
+ [anatomy]: ./Anatomy-of-a-Plugin.md
 
 ## require - Node.js-style module loading in ScriptCraft
 
-Node.js is a server-side javascript environment with an excellent
+Node.js is a server-side JavaScript environment with an excellent
 module loading system based on CommonJS. Modules in Node.js are really
 simple. Each module is in its own javascript file and all variables
 and functions within the file are private to that file/module only.
-There is a very concise explanation of CommonJS modules at...
-
-[http://wiki.commonjs.org/wiki/Modules/1.1.1.][cjsmodules]
+[Here][cjsmodules] is a very concise explanation of CommonJS modules
 
 Node.js also has good documentation on [Modules][njsmod].
 
@@ -946,62 +945,32 @@ others.
 ### Important
 
 Although ScriptCraft now supports Node.js style modules, it does not
-support node modules. Node.js and Rhino are two very different
-Javascript environments. ScriptCraft uses Rhino Javascript, not
+support node modules. Node.js and Nashorn are two very different
+JavaScript environments. ScriptCraft uses Nashorn JavaScript (formerly Rhino), not
 Node.js. Standard Node.js modules such as `'fs'` are not available in ScriptCraft.
 
 Modules can be loaded using relative or absolute paths. Per the CommonJS
 module specification, the '.js' suffix is optional.
 
-[cjsmodules]: http://wiki.commonjs.org/wiki/Modules/1.1.1.
-
-### module name resolution
-
-When resolving module names to file paths, ScriptCraft uses the following rules...
-
- 1. if the module does not begin with './' or '/' then ...
-
-    1.1 Look in the 'scriptcraft/lib' directory. If it's not there then...
-    1.2 Look in the 'scriptcraft/modules' directory. If it's not there then 
-        Throw an Error.
-
- 2. If the module begins with './' or '/' then ...
-    
-    2.1 if the module begins with './' then it's treated as a file path. File paths are 
-        always relative to the module from which the require() call is being made.
-
-    2.2 If the module begins with '/' then it's treated as an absolute path.
-
-    If the module does not have a '.js' suffix, and a file with the same name and a .js sufix exists, 
-    then the file will be loaded.
-
- 3. If the module name resolves to a directory then...
-    
-    3.1 look for a package.json file in the directory and load the `main` property e.g.
-    
-    // package.json located in './some-library/'
-    {
-      "main": './some-lib.js',
-      "name": 'some-library'
-    }
-    
-    3.2 if no package.json file exists then look for an index.js file in the directory
+[cjsmodules]: http://www.commonjs.org/specs/modules/1.0/
+[njsmod]: http://nodejs.org/api/modules.html
+<!-- website was re-worked, a change to the URL was required -->
 
 ## events Module
 
 The Events module provides a thin wrapper around CanaryMod's or
 Bukkit's Event-handling API.  The Java-based CanaryMod and Bukkit
 Events APIs make use of Java Annotations which are not available in
-Javascript, so this module provides a simple way to listen to
+JavaScript, so this module provides a simple way to listen to
 minecraft events in javascript.
 
 ### events.on() static method
 
-This method is used to register event listeners. This method is called by all of the Event Helper methods. 
+This method is used to register event listeners. This method is called by all of the Event Helper methods.
 The `events` object has functions for registering listeners for each type of event. For example, you can register a block-break listener using events.on:
 
 ```javascript
-events.on( Packages.net.canarymod.hook.player.BlockDestroyHook, function( evt, cancel ) { 
+events.on( Packages.net.canarymod.hook.player.BlockDestroyHook, function( evt, cancel ) {
   echo(evt.player, evt.player.name + ' broke a block!');
 } );
 ```
@@ -1009,7 +978,7 @@ events.on( Packages.net.canarymod.hook.player.BlockDestroyHook, function( evt, c
 or you can (and probably should) use the more succinct:
 
 ```javascript
-events.blockDestroy( function( evt, cancel ) { 
+events.blockDestroy( function( evt, cancel ) {
   echo(evt.player, evt.player.name + ' broke a block!');
 } );
 ```
@@ -1020,41 +989,41 @@ events and can also be used to register non-standard events - that is
 
 #### Parameters
 
- * eventType - A Java class. See the [CanaryMod Hook API][cmEvtApi] or [Bukkit Event API][buk] for details of the many event types.  
+ * eventType - A Java class. See the [CanaryMod Hook API][cmEvtApi] or [Bukkit Event API][buk] for details of the many event types.
 
  * callback - A function which will be called whenever the event
-   fires. The callback in turn takes 2 parameters: 
-   
+   fires. The callback in turn takes 2 parameters:
+
    - event : the event  fired
    - cancel : a function which if invoked will cancel the  event - not all event types are cancelable; this function only cancels cancelable events).
 
- * priority (optional - default: "CRITICAL" for CanaryMod or "HIGHEST" for Bukkit) - 
-   The priority the listener/callback takes over other listeners to the same event. 
+ * priority (optional - default: "CRITICAL" for CanaryMod or "HIGHEST" for Bukkit) -
+   The priority the listener/callback takes over other listeners to the same event.
    Possible values for CanaryMod are "CRITICAL", "HIGH", "LOW", "NORMAL" and "PASSIVE".
-   For an explanation of what the different CanaryMod Hook priorities 
-   mean, refer to CanaryMod's [Hook Priority class][cmPriority]. 
-   Possible values for Bukkit are "HIGH", "HIGHEST", "LOW", "LOWEST", "NORMAL", "MONITOR". 
-   For an explanation of what the different Bukkit Event priorities 
-   mean, refer to bukkit's [Event API Reference][buk2]. 
+   For an explanation of what the different CanaryMod Hook priorities
+   mean, refer to CanaryMod's [Hook Priority class][cmPriority].
+   Possible values for Bukkit are "HIGH", "HIGHEST", "LOW", "LOWEST", "NORMAL", "MONITOR".
+   For an explanation of what the different Bukkit Event priorities
+   mean, refer to bukkit's [Event API Reference][buk2].
 
 #### Returns
 
-An object which can be used to unregister the listener. 
+An object which can be used to unregister the listener.
 
 #### Example:
 
 The following code will print a message on screen every time a block is broken in the game
 
 ```javascript
-events.on( Packages.net.canarymod.hook.player.BlockDestroyHook, function( evt, cancel ) { 
+events.on( Packages.net.canarymod.hook.player.BlockDestroyHook, function( evt, cancel ) {
   echo(evt.player, evt.player.name + ' broke a block!');
 } );
 ```
 
 To handle an event only once and unregister from further events...
 
-```javascript    
-events.on( Packages.net.canarymod.hook.player.BlockDestroyHook, function( evt, cancel ) { 
+```javascript
+events.on( Packages.net.canarymod.hook.player.BlockDestroyHook, function( evt, cancel ) {
   echo( evt.player, evt.player.name + ' broke a block!');
   this.unregister();
 } );
@@ -1069,7 +1038,7 @@ method is only available from within the event handling function.
 
 To unregister a listener *outside* of the listener function...
 
-```javascript    
+```javascript
 var myBlockBreakListener = events.on( Packages.net.canarymod.hook.player.BlockDestroyHook, function( evt ) { ... } );
 ...
 myBlockBreakListener.unregister();
@@ -1080,977 +1049,10 @@ myBlockBreakListener.unregister();
 [cmEvtApi]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/Hook.html
 [cmPriority]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/plugin/Priority.html
 
-## Events Helper Module (CanaryMod version)
-The Events helper module provides a suite of functions - one for each possible event.
-For example, the events.blockDestroy() function is just a wrapper function which calls events.on(net.canarymod.hook.player.BlockDestroyHook, callback, priority)
-This module is a convenience wrapper for easily adding new event handling functions in Javascript. 
-At the in-game or server-console prompt, players/admins can type `events.` and use TAB completion 
-to choose from any of the approx. 160 different event types to listen to.
-
-### Usage
-
-    events.blockDestroy( function( event ) { 
-      echo( event.player, 'You broke a block!'); 
-    });
-
-The crucial difference is that the events module now has functions for each of the built-in events. The functions are accessible via TAB-completion so will help beginning programmers to explore the events at the server console window.
-
-### events.minecartActivate()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.MinecartActivateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/MinecartActivateHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.villagerTradeUnlock()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.VillagerTradeUnlockHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VillagerTradeUnlockHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.mobTarget()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.MobTargetHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/MobTargetHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.chickenLayEgg()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ChickenLayEggHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/ChickenLayEggHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.potionEffectFinish()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.PotionEffectFinishHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/PotionEffectFinishHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityMove()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityMoveHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityMoveHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.hangingEntityDestroy()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.HangingEntityDestroyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/HangingEntityDestroyHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleCollision()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.VehicleCollisionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleCollisionHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.potionEffectApplied()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.PotionEffectAppliedHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/PotionEffectAppliedHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleDestroy()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.VehicleDestroyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleDestroyHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleEnter()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.VehicleEnterHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleEnterHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.damage()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.DamageHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/DamageHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityMount()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityMountHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityMountHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.slimeSplit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.SlimeSplitHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/SlimeSplitHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.endermanDropBlock()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EndermanDropBlockHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EndermanDropBlockHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.itemTouchGround()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ItemTouchGroundHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/ItemTouchGroundHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entitySpawn()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntitySpawnHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntitySpawnHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.endermanPickupBlock()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EndermanPickupBlockHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EndermanPickupBlockHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleDamage()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.VehicleDamageHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleDamageHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityLightningStruck()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityLightningStruckHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityLightningStruckHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityDespawn()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityDespawnHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityDespawnHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleMove()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.VehicleMoveHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleMoveHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.projectileHit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ProjectileHitHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/ProjectileHitHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityDeath()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityDeathHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityDeathHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityTame()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityTameHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/EntityTameHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.vehicleExit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.VehicleExitHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/VehicleExitHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.dimensionSwitch()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.DimensionSwitchHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/entity/DimensionSwitchHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.foodLevel()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.FoodLevelHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/FoodLevelHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.bookEdit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.BookEditHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BookEditHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.eat()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.EatHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/EatHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerList()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerListHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerListHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerIdle()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerIdleHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerIdleHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.enchant()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.EnchantHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/EnchantHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerArmSwing()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerArmSwingHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerArmSwingHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.teleport()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.TeleportHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/TeleportHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.anvilUse()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.AnvilUseHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/AnvilUseHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.portalUse()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PortalUseHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PortalUseHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.foodSaturation()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.FoodSaturationHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/FoodSaturationHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.connection()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ConnectionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ConnectionHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerRespawned()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerRespawnedHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerRespawnedHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.armorBroken()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ArmorBrokenHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ArmorBrokenHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.levelUp()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.LevelUpHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/LevelUpHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockRightClick()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.BlockRightClickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BlockRightClickHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.itemDrop()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ItemDropHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ItemDropHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.itemFrameRotate()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ItemFrameRotateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ItemFrameRotateHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerRespawning()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerRespawningHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerRespawningHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.craft()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.CraftHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/CraftHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.experience()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ExperienceHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ExperienceHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.signChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.SignChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/SignChangeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.healthChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.HealthChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/HealthChangeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.disconnection()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.DisconnectionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/DisconnectionHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.gameModeChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.GameModeChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/GameModeChangeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.preConnection()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PreConnectionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PreConnectionHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.villagerTrade()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.VillagerTradeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/VillagerTradeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.returnFromIdle()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ReturnFromIdleHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ReturnFromIdleHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.armorStandModify()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ArmorStandModifyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ArmorStandModifyHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.slotClick()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.SlotClickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/SlotClickHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.itemFrameSetItem()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ItemFrameSetItemHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ItemFrameSetItemHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityRightClick()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.EntityRightClickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/EntityRightClickHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.foodExhaustion()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.FoodExhaustionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/FoodExhaustionHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.chat()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ChatHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ChatHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.itemPickup()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ItemPickupHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ItemPickupHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.bedExit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.BedExitHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BedExitHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockPlace()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.BlockPlaceHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BlockPlaceHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.heldItemChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.HeldItemChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/HeldItemChangeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.toolBroken()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ToolBrokenHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ToolBrokenHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.kick()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.KickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/KickHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerDeath()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerDeathHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerDeathHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockLeftClick()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.BlockLeftClickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BlockLeftClickHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockDestroy()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.BlockDestroyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BlockDestroyHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.bedEnter()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.BedEnterHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BedEnterHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.signShow()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.SignShowHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/SignShowHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.inventory()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.InventoryHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/InventoryHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerMove()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerMoveHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/PlayerMoveHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.itemUse()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.ItemUseHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/ItemUseHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.ban()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.BanHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/BanHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.statGained()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.StatGainedHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/player/StatGainedHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.smeltBegin()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.SmeltBeginHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/SmeltBeginHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.treeGrow()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.TreeGrowHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/TreeGrowHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.chunkCreated()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.ChunkCreatedHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/ChunkCreatedHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.liquidDestroy()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.LiquidDestroyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/LiquidDestroyHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.chunkLoaded()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.ChunkLoadedHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/ChunkLoadedHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.pistonRetract()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.PistonRetractHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/PistonRetractHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.smelt()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.SmeltHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/SmeltHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockUpdate()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.BlockUpdateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/BlockUpdateHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.portalDestroy()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.PortalDestroyHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/PortalDestroyHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.ignition()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.IgnitionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/IgnitionHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.redstoneChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.RedstoneChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/RedstoneChangeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.weatherChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.WeatherChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/WeatherChangeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.chunkCreation()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.ChunkCreationHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/ChunkCreationHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.hopperTransfer()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.HopperTransferHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/HopperTransferHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.chunkUnload()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.ChunkUnloadHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/ChunkUnloadHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockGrow()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.BlockGrowHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/BlockGrowHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.dispense()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.DispenseHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/DispenseHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockDropXp()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.BlockDropXpHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/BlockDropXpHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.fireworkExplode()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.FireworkExplodeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/FireworkExplodeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.leafDecay()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.LeafDecayHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/LeafDecayHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.pistonExtend()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.PistonExtendHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/PistonExtendHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.noteBlockPlay()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.NoteBlockPlayHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/NoteBlockPlayHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.lightningStrike()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.LightningStrikeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/LightningStrikeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.decorate()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.DecorateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/DecorateHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.explosion()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.ExplosionHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/ExplosionHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.tNTActivate()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.TNTActivateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/TNTActivateHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.timeChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.TimeChangeHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/TimeChangeHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.flow()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.FlowHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/FlowHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.portalCreate()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.PortalCreateHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/PortalCreateHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockPhysics()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.BlockPhysicsHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/world/BlockPhysicsHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerCommand()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [command.PlayerCommandHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/command/PlayerCommandHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.consoleCommand()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [command.ConsoleCommandHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/command/ConsoleCommandHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.commandBlockCommand()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [command.CommandBlockCommandHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/command/CommandBlockCommandHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.loadWorld()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.LoadWorldHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/LoadWorldHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.permissionCheck()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.PermissionCheckHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/PermissionCheckHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.serverGuiStart()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.ServerGuiStartHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/ServerGuiStartHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.unloadWorld()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.UnloadWorldHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/UnloadWorldHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.pluginDisable()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.PluginDisableHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/PluginDisableHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.pluginEnable()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.PluginEnableHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/PluginEnableHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.serverTick()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.ServerTickHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/ServerTickHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.serverListPing()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.ServerListPingHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/ServerListPingHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.serverShutdown()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [system.ServerShutdownHook event](https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/hook/system/ServerShutdownHook.html) is fired
-
- * priority - optional - see events.on() for more information.
-
 ## Events Helper Module (SpigotMC version)
 The Events helper module provides a suite of functions - one for each possible event.
 For example, the events.blockBreak() function is just a wrapper function which calls events.on(org.bukkit.event.block.BlockBreakEvent, callback, priority)
-This module is a convenience wrapper for easily adding new event handling functions in Javascript. 
+This module is a convenience wrapper for easily adding new event handling functions in JavaScript. 
 At the in-game or server-console prompt, players/admins can type `events.` and use TAB completion 
 to choose from any of the approx. 160 different event types to listen to.
 
@@ -2062,11 +1064,579 @@ to choose from any of the approx. 160 different event types to listen to.
 
 The crucial difference is that the events module now has functions for each of the built-in events. The functions are accessible via TAB-completion so will help beginning programmers to explore the events at the server console window.
 
-### events.blockFade()
+### events.playerArmorStandManipulate()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockFadeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockFadeEvent.html) is fired
+ * callback - A function which is called whenever the [player.PlayerArmorStandManipulateEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerArmorStandManipulateEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerBedLeave()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerBedLeaveEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerBedLeaveEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerLevelChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerLevelChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerLevelChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerKick()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerKickEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerKickEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerChatTabComplete()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerChatTabCompleteEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerChatTabCompleteEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerPreLogin()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerPreLoginEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerPreLoginEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerInteractAtEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerInteractAtEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerInteractAtEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerChangedMainHand()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerChangedMainHandEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerChangedMainHandEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerMove()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerMoveEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerMoveEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerResourcePackStatus()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerResourcePackStatusEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerResourcePackStatusEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerUnleashEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerUnleashEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerUnleashEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerLogin()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerLoginEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerLoginEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerDropItem()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerDropItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerDropItemEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.asyncPlayerChat()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.AsyncPlayerChatEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/AsyncPlayerChatEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerToggleSneak()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerToggleSneakEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerToggleSneakEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerShearEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerShearEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerShearEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerEggThrow()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerEggThrowEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerEggThrowEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerJoin()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerJoinEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerJoinEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerVelocity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerVelocityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerVelocityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerBucketEmpty()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerBucketEmptyEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerBucketEmptyEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerItemConsume()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerItemConsumeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerItemConsumeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerLocaleChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerLocaleChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerLocaleChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerEditBook()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerEditBookEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerEditBookEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerRespawn()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerRespawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerRespawnEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerToggleSprint()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerToggleSprintEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerToggleSprintEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerAnimation()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerAnimationEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerAnimationEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerItemBreak()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerItemBreakEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerItemBreakEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerTeleport()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerTeleportEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerTeleportEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerRegisterChannel()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerRegisterChannelEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerRegisterChannelEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerExpChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerExpChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerExpChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerBucketFill()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerBucketFillEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerBucketFillEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerStatisticIncrement()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerStatisticIncrementEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerStatisticIncrementEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerChangedWorld()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerChangedWorldEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerChangedWorldEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerItemHeld()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerItemHeldEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerItemHeldEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerAdvancementDone()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerAdvancementDoneEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerAdvancementDoneEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.asyncPlayerPreLogin()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.AsyncPlayerPreLoginEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/AsyncPlayerPreLoginEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerAchievementAwarded()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerAchievementAwardedEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerAchievementAwardedEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerBedEnter()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerBedEnterEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerBedEnterEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerToggleFlight()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerToggleFlightEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerToggleFlightEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerPickupItem()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerPickupItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerPickupItemEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerItemDamage()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerItemDamageEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerItemDamageEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerCommandPreprocess()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerCommandPreprocessEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerCommandPreprocessEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerGameModeChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerGameModeChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerGameModeChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerFish()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerFishEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerFishEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerChat()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerChatEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerChatEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerInteract()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerInteractEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerInteractEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerPortal()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerPortalEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerPortalEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerSwapHandItems()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerSwapHandItemsEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerSwapHandItemsEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerQuit()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerQuitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerQuitEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerUnregisterChannel()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerUnregisterChannelEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerUnregisterChannelEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerInteractEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerInteractEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerInteractEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerPickupArrow()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [player.PlayerPickupArrowEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerPickupArrowEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleMove()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleMoveEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleMoveEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleBlockCollision()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleBlockCollisionEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleBlockCollisionEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleUpdate()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleUpdateEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleUpdateEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleExit()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleExitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleExitEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleDamage()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleDamageEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleDamageEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleEnter()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleEnterEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleEnterEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleDestroy()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleDestroyEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleDestroyEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleCreate()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleCreateEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleCreateEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.vehicleEntityCollision()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [vehicle.VehicleEntityCollisionEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleEntityCollisionEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.mapInitialize()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.MapInitializeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/MapInitializeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.pluginEnable()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.PluginEnableEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/PluginEnableEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.serverListPing()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.ServerListPingEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/ServerListPingEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.serverCommand()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.ServerCommandEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/ServerCommandEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.pluginDisable()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.PluginDisableEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/PluginDisableEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.serviceUnregister()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.ServiceUnregisterEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/ServiceUnregisterEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.serviceRegister()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.ServiceRegisterEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/ServiceRegisterEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.tabComplete()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.TabCompleteEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/TabCompleteEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.remoteServerCommand()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [server.RemoteServerCommandEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/RemoteServerCommandEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.enchantItem()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [enchantment.EnchantItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/enchantment/EnchantItemEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.prepareItemEnchant()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [enchantment.PrepareItemEnchantEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/enchantment/PrepareItemEnchantEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2078,19 +1648,19 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
-### events.notePlay()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.NotePlayEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/NotePlayEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
 ### events.blockPlace()
 
 #### Parameters 
 
  * callback - A function which is called whenever the [block.BlockPlaceEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockPlaceEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockPhysics()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockPhysicsEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockPhysicsEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2102,27 +1672,35 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
-### events.entityBlockForm()
+### events.blockCanBuild()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.EntityBlockFormEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/EntityBlockFormEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockCanBuildEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockCanBuildEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.blockPistonExtend()
+### events.blockForm()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockPistonExtendEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockPistonExtendEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockFormEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockFormEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.blockPistonRetract()
+### events.signChange()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockPistonRetractEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockPistonRetractEvent.html) is fired
+ * callback - A function which is called whenever the [block.SignChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/SignChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockFade()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockFadeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockFadeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2131,6 +1709,38 @@ The crucial difference is that the events module now has functions for each of t
 #### Parameters 
 
  * callback - A function which is called whenever the [block.BlockSpreadEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockSpreadEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.leavesDecay()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.LeavesDecayEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/LeavesDecayEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.cauldronLevelChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.CauldronLevelChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/CauldronLevelChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockRedstone()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockRedstoneEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockRedstoneEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.blockIgnite()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockIgniteEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockIgniteEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2150,27 +1760,11 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
-### events.leavesDecay()
+### events.blockPistonExtend()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.LeavesDecayEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/LeavesDecayEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockDispense()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockDispenseEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockDispenseEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockForm()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockFormEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockFormEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockPistonExtendEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockPistonExtendEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2182,51 +1776,11 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
-### events.blockIgnite()
+### events.blockBreak()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockIgniteEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockIgniteEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockPhysics()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockPhysicsEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockPhysicsEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockRedstone()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockRedstoneEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockRedstoneEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.cauldronLevelChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.CauldronLevelChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/CauldronLevelChangeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.blockCanBuild()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.BlockCanBuildEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockCanBuildEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.signChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [block.SignChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/SignChangeEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockBreakEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockBreakEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2238,6 +1792,14 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
+### events.blockDispense()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [block.BlockDispenseEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockDispenseEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.blockExplode()
 
 #### Parameters 
@@ -2246,587 +1808,35 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
-### events.blockBreak()
+### events.notePlay()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [block.BlockBreakEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockBreakEvent.html) is fired
+ * callback - A function which is called whenever the [block.NotePlayEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/NotePlayEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.prepareAnvil()
+### events.blockPistonRetract()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.PrepareAnvilEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/PrepareAnvilEvent.html) is fired
+ * callback - A function which is called whenever the [block.BlockPistonRetractEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/BlockPistonRetractEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.brew()
+### events.entityBlockForm()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.BrewEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/BrewEvent.html) is fired
+ * callback - A function which is called whenever the [block.EntityBlockFormEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/block/EntityBlockFormEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.inventoryClose()
+### events.worldLoad()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [inventory.InventoryCloseEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryCloseEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.inventoryDrag()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.InventoryDragEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryDragEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.inventoryCreative()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.InventoryCreativeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryCreativeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.prepareItemCraft()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.PrepareItemCraftEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/PrepareItemCraftEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.craftItem()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.CraftItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/CraftItemEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.inventoryClick()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.InventoryClickEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryClickEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.brewingStandFuel()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.BrewingStandFuelEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/BrewingStandFuelEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.inventoryPickupItem()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.InventoryPickupItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryPickupItemEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.furnaceExtract()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.FurnaceExtractEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/FurnaceExtractEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.inventory()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.InventoryEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.furnaceBurn()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.FurnaceBurnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/FurnaceBurnEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.furnaceSmelt()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.FurnaceSmeltEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/FurnaceSmeltEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.inventoryOpen()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.InventoryOpenEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryOpenEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.inventoryMoveItem()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [inventory.InventoryMoveItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryMoveItemEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.hangingPlace()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [hanging.HangingPlaceEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/hanging/HangingPlaceEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.hangingBreak()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [hanging.HangingBreakEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/hanging/HangingBreakEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.hangingBreakByEntity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [hanging.HangingBreakByEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/hanging/HangingBreakByEntityEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityToggleGlide()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityToggleGlideEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityToggleGlideEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.itemSpawn()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ItemSpawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ItemSpawnEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.spawnerSpawn()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.SpawnerSpawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/SpawnerSpawnEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.foodLevelChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.FoodLevelChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/FoodLevelChangeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.lingeringPotionSplash()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.LingeringPotionSplashEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/LingeringPotionSplashEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityShootBow()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityShootBowEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityShootBowEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityTargetLivingEntity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityTargetLivingEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityTargetLivingEntityEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityCombust()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityCombustEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityCombustEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityBreed()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityBreedEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityBreedEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.expBottle()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ExpBottleEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ExpBottleEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.slimeSplit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.SlimeSplitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/SlimeSplitEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityDeath()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityDeathEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDeathEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityAirChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityAirChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityAirChangeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.projectileLaunch()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ProjectileLaunchEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ProjectileLaunchEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityPortal()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityPortalEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityPortalEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.horseJump()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.HorseJumpEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/HorseJumpEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.fireworkExplode()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.FireworkExplodeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/FireworkExplodeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityExplode()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityExplodeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityExplodeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.itemMerge()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ItemMergeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ItemMergeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entitySpawn()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntitySpawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntitySpawnEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.projectileHit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ProjectileHitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ProjectileHitEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.creatureSpawn()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.CreatureSpawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/CreatureSpawnEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityPortalExit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityPortalExitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityPortalExitEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityTame()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityTameEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityTameEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityPortalEnter()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityPortalEnterEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityPortalEnterEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerLeashEntity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.PlayerLeashEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/PlayerLeashEntityEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityDamage()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityDamageEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.pigZap()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.PigZapEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/PigZapEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityCombustByEntity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityCombustByEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityCombustByEntityEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityChangeBlock()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityChangeBlockEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityChangeBlockEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.areaEffectCloudApply()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.AreaEffectCloudApplyEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/AreaEffectCloudApplyEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.creeperPower()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.CreeperPowerEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/CreeperPowerEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.sheepDyeWool()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.SheepDyeWoolEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/SheepDyeWoolEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerDeath()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.PlayerDeathEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/PlayerDeathEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.villagerReplenishTrade()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.VillagerReplenishTradeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/VillagerReplenishTradeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityCombustByBlock()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityCombustByBlockEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityCombustByBlockEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityResurrect()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityResurrectEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityResurrectEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.villagerAcquireTrade()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.VillagerAcquireTradeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/VillagerAcquireTradeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.enderDragonChangePhase()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EnderDragonChangePhaseEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EnderDragonChangePhaseEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityCreatePortal()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityCreatePortalEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityCreatePortalEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.sheepRegrowWool()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.SheepRegrowWoolEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/SheepRegrowWoolEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityRegainHealth()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityRegainHealthEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityRegainHealthEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityInteract()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityInteractEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityInteractEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.potionSplash()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.PotionSplashEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/PotionSplashEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityTarget()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityTargetEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityTargetEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityBreakDoor()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityBreakDoorEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityBreakDoorEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityUnleash()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityUnleashEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityUnleashEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityDamageByBlock()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityDamageByBlockEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageByBlockEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityTeleport()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityTeleportEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityTeleportEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.itemDespawn()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ItemDespawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ItemDespawnEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.explosionPrime()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.ExplosionPrimeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ExplosionPrimeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.entityDamageByEntity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [entity.EntityDamageByEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageByEntityEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.portalCreate()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [world.PortalCreateEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/PortalCreateEvent.html) is fired
+ * callback - A function which is called whenever the [world.WorldLoadEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/WorldLoadEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2838,11 +1848,35 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
-### events.worldLoad()
+### events.worldUnload()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.WorldLoadEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/WorldLoadEvent.html) is fired
+ * callback - A function which is called whenever the [world.WorldUnloadEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/WorldUnloadEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.spawnChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.SpawnChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/SpawnChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.portalCreate()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.PortalCreateEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/PortalCreateEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.worldInit()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [world.WorldInitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/WorldInitEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -2878,435 +1912,27 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
-### events.worldInit()
+### events.hangingBreakByEntity()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.WorldInitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/WorldInitEvent.html) is fired
+ * callback - A function which is called whenever the [hanging.HangingBreakByEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/hanging/HangingBreakByEntityEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.spawnChange()
+### events.hangingPlace()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.SpawnChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/SpawnChangeEvent.html) is fired
+ * callback - A function which is called whenever the [hanging.HangingPlaceEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/hanging/HangingPlaceEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.worldUnload()
+### events.hangingBreak()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [world.WorldUnloadEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/world/WorldUnloadEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerShearEntity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerShearEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerShearEntityEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerVelocity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerVelocityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerVelocityEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerBucketFill()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerBucketFillEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerBucketFillEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerFish()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerFishEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerFishEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerGameModeChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerGameModeChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerGameModeChangeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerCommandPreprocess()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerCommandPreprocessEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerCommandPreprocessEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerInteract()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerInteractEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerInteractEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerInteractAtEntity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerInteractAtEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerInteractAtEntityEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerPortal()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerPortalEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerPortalEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerPreLogin()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerPreLoginEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerPreLoginEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerMove()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerMoveEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerMoveEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerQuit()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerQuitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerQuitEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerToggleSneak()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerToggleSneakEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerToggleSneakEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerPickupArrow()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerPickupArrowEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerPickupArrowEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerBedLeave()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerBedLeaveEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerBedLeaveEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerChangedMainHand()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerChangedMainHandEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerChangedMainHandEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerEditBook()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerEditBookEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerEditBookEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerAnimation()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerAnimationEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerAnimationEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerResourcePackStatus()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerResourcePackStatusEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerResourcePackStatusEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerItemDamage()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerItemDamageEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerItemDamageEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerBucketEmpty()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerBucketEmptyEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerBucketEmptyEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerExpChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerExpChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerExpChangeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.asyncPlayerChat()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.AsyncPlayerChatEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/AsyncPlayerChatEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerItemBreak()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerItemBreakEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerItemBreakEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerUnleashEntity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerUnleashEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerUnleashEntityEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerRespawn()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerRespawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerRespawnEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerDropItem()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerDropItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerDropItemEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerItemHeld()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerItemHeldEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerItemHeldEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerTeleport()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerTeleportEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerTeleportEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerInteractEntity()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerInteractEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerInteractEntityEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerEggThrow()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerEggThrowEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerEggThrowEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerChat()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerChatEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerChatEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerRegisterChannel()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerRegisterChannelEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerRegisterChannelEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerSwapHandItems()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerSwapHandItemsEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerSwapHandItemsEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerChangedWorld()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerChangedWorldEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerChangedWorldEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerLevelChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerLevelChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerLevelChangeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerPickupItem()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerPickupItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerPickupItemEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.asyncPlayerPreLogin()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.AsyncPlayerPreLoginEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/AsyncPlayerPreLoginEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerUnregisterChannel()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerUnregisterChannelEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerUnregisterChannelEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerStatisticIncrement()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerStatisticIncrementEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerStatisticIncrementEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerBedEnter()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerBedEnterEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerBedEnterEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerKick()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerKickEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerKickEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerToggleSprint()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerToggleSprintEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerToggleSprintEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerAchievementAwarded()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerAchievementAwardedEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerAchievementAwardedEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerJoin()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerJoinEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerJoinEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerToggleFlight()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerToggleFlightEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerToggleFlightEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerArmorStandManipulate()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerArmorStandManipulateEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerArmorStandManipulateEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerLogin()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerLoginEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerLoginEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerItemConsume()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerItemConsumeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerItemConsumeEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.playerChatTabComplete()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [player.PlayerChatTabCompleteEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerChatTabCompleteEvent.html) is fired
-
- * priority - optional - see events.on() for more information.
-
-### events.weatherChange()
-
-#### Parameters 
-
- * callback - A function which is called whenever the [weather.WeatherChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/weather/WeatherChangeEvent.html) is fired
+ * callback - A function which is called whenever the [hanging.HangingBreakEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/hanging/HangingBreakEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -3326,200 +1952,591 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
-### events.vehicleMove()
+### events.weatherChange()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleMoveEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleMoveEvent.html) is fired
+ * callback - A function which is called whenever the [weather.WeatherChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/weather/WeatherChangeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.vehicleDamage()
+### events.brew()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleDamageEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleDamageEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.BrewEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/BrewEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.vehicleDestroy()
+### events.inventoryOpen()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleDestroyEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleDestroyEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.InventoryOpenEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryOpenEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.vehicleUpdate()
+### events.prepareItemCraft()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleUpdateEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleUpdateEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.PrepareItemCraftEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/PrepareItemCraftEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.vehicleCreate()
+### events.inventory()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleCreateEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleCreateEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.InventoryEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.vehicleEntityCollision()
+### events.inventoryMoveItem()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleEntityCollisionEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleEntityCollisionEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.InventoryMoveItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryMoveItemEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.vehicleBlockCollision()
+### events.prepareAnvil()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleBlockCollisionEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleBlockCollisionEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.PrepareAnvilEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/PrepareAnvilEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.vehicleEnter()
+### events.furnaceSmelt()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleEnterEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleEnterEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.FurnaceSmeltEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/FurnaceSmeltEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.vehicleExit()
+### events.inventoryClick()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [vehicle.VehicleExitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/vehicle/VehicleExitEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.InventoryClickEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryClickEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.prepareItemEnchant()
+### events.furnaceBurn()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [enchantment.PrepareItemEnchantEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/enchantment/PrepareItemEnchantEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.FurnaceBurnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/FurnaceBurnEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.enchantItem()
+### events.furnaceExtract()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [enchantment.EnchantItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/enchantment/EnchantItemEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.FurnaceExtractEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/FurnaceExtractEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.pluginDisable()
+### events.inventoryPickupItem()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.PluginDisableEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/PluginDisableEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.InventoryPickupItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryPickupItemEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.serverListPing()
+### events.inventoryClose()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.ServerListPingEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/ServerListPingEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.InventoryCloseEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryCloseEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.serviceRegister()
+### events.brewingStandFuel()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.ServiceRegisterEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/ServiceRegisterEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.BrewingStandFuelEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/BrewingStandFuelEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.serverCommand()
+### events.inventoryDrag()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.ServerCommandEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/ServerCommandEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.InventoryDragEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryDragEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.remoteServerCommand()
+### events.inventoryCreative()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.RemoteServerCommandEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/RemoteServerCommandEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.InventoryCreativeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryCreativeEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.pluginEnable()
+### events.craftItem()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.PluginEnableEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/PluginEnableEvent.html) is fired
+ * callback - A function which is called whenever the [inventory.CraftItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/CraftItemEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.serviceUnregister()
+### events.areaEffectCloudApply()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.ServiceUnregisterEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/ServiceUnregisterEvent.html) is fired
+ * callback - A function which is called whenever the [entity.AreaEffectCloudApplyEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/AreaEffectCloudApplyEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.tabComplete()
+### events.entityResurrect()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.TabCompleteEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/TabCompleteEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityResurrectEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityResurrectEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
-### events.mapInitialize()
+### events.entityTeleport()
 
 #### Parameters 
 
- * callback - A function which is called whenever the [server.MapInitializeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/MapInitializeEvent.html) is fired
+ * callback - A function which is called whenever the [entity.EntityTeleportEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityTeleportEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.lingeringPotionSplash()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.LingeringPotionSplashEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/LingeringPotionSplashEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerDeath()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.PlayerDeathEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/PlayerDeathEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.itemMerge()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.ItemMergeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ItemMergeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.horseJump()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.HorseJumpEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/HorseJumpEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.villagerAcquireTrade()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.VillagerAcquireTradeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/VillagerAcquireTradeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.sheepDyeWool()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.SheepDyeWoolEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/SheepDyeWoolEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityCombustByBlock()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityCombustByBlockEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityCombustByBlockEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.creeperPower()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.CreeperPowerEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/CreeperPowerEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityCombustByEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityCombustByEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityCombustByEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityShootBow()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityShootBowEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityShootBowEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.projectileHit()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.ProjectileHitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ProjectileHitEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityPortal()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityPortalEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityPortalEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.creatureSpawn()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.CreatureSpawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/CreatureSpawnEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entitySpawn()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntitySpawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntitySpawnEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityDeath()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityDeathEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDeathEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityDamageByBlock()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityDamageByBlockEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageByBlockEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityRegainHealth()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityRegainHealthEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityRegainHealthEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.potionSplash()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.PotionSplashEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/PotionSplashEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityDamageByEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityDamageByEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageByEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.slimeSplit()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.SlimeSplitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/SlimeSplitEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.itemSpawn()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.ItemSpawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ItemSpawnEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.villagerReplenishTrade()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.VillagerReplenishTradeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/VillagerReplenishTradeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityCreatePortal()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityCreatePortalEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityCreatePortalEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityUnleash()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityUnleashEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityUnleashEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityTarget()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityTargetEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityTargetEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.foodLevelChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.FoodLevelChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/FoodLevelChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityToggleGlide()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityToggleGlideEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityToggleGlideEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityExplode()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityExplodeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityExplodeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityBreed()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityBreedEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityBreedEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.spawnerSpawn()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.SpawnerSpawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/SpawnerSpawnEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityAirChange()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityAirChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityAirChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityPortalEnter()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityPortalEnterEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityPortalEnterEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.fireworkExplode()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.FireworkExplodeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/FireworkExplodeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.expBottle()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.ExpBottleEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ExpBottleEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.enderDragonChangePhase()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EnderDragonChangePhaseEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EnderDragonChangePhaseEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityPortalExit()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityPortalExitEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityPortalExitEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityChangeBlock()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityChangeBlockEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityChangeBlockEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.sheepRegrowWool()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.SheepRegrowWoolEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/SheepRegrowWoolEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.projectileLaunch()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.ProjectileLaunchEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ProjectileLaunchEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.explosionPrime()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.ExplosionPrimeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ExplosionPrimeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityBreakDoor()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityBreakDoorEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityBreakDoorEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityInteract()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityInteractEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityInteractEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityDamage()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityDamageEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.pigZap()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.PigZapEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/PigZapEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityTargetLivingEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityTargetLivingEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityTargetLivingEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerLeashEntity()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.PlayerLeashEntityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/PlayerLeashEntityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityTame()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityTameEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityTameEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.itemDespawn()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.ItemDespawnEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/ItemDespawnEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.entityCombust()
+
+#### Parameters 
+
+ * callback - A function which is called whenever the [entity.EntityCombustEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityCombustEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
 ## console global variable
 
-ScriptCraft provides a `console` global variable with the followng methods...
+ ScriptCraft provides a `console` global variable with the followng methods...
 
- * log()  
- * info() 
+ * log()
+ * info()
  * warn()
  * error()
 
-The ScriptCraft console methods work like the [Web API implementation][webcons].
+ The ScriptCraft console methods work like the [Web API implementation][webcons].
 
-### Example 
+### Example
 
-    console.log('Hello %s', 'world');
+ console.log('Hello %s', 'world');
 
-Basic variable substitution is supported (ScriptCraft's implementation
-of console uses the Bukkit Plugin [Logger][lgr] or Canary Plugin [Logman][cmlgr] under the hood and
-uses [java.lang.String.format()][strfmt] for variable
-substitution. All output will be sent to the server console (not
-in-game).
+ Basic variable substitution is supported (ScriptCraft's implementation
+ of console uses the Bukkit Plugin [Logger][lgr] or Canary Plugin [Logman][cmlgr] under the hood and
+ uses [java.lang.String.format()][strfmt] for variable
+ substitution. All output will be sent to the server console (not in-game).
 
 ### Using string substitutions
 
-ScriptCraft uses Java's [String.format()][strfmt] so any string substitution identifiers supported by 
-`java.lang.String.format()` are supported (e.g. %s , %d etc).
+ ScriptCraft uses Java's [String.format()][strfmt] so any string substitution identifiers supported by
+ `java.lang.String.format()` are supported (e.g. %s , %d etc).
 
-    for (var i=0; i<5; i++) {
-      console.log("Hello, %s. You've called me %d times.", "Bob", i+1);
-    }
+ for (var i=0; i<5; i++) {
+ console.log("Hello, %s. You've called me %d times.", "Bob", i+1);
+ }
 
-[lgr]: http://jd.bukkit.org/beta/apidocs/org/bukkit/plugin/PluginLogger.html
-[cmlgr]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/logger/Logman.html
-[strfmt]: http://docs.oracle.com/javase/6/docs/api/java/lang/String.html#format(java.lang.String, java.lang.Object...)
-[webcons]: https://developer.mozilla.org/en-US/docs/Web/API/console
+ [lgr]: http://jd.bukkit.org/beta/apidocs/org/bukkit/plugin/PluginLogger.html
+ [cmlgr]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/logger/Logman.html
+ [strfmt]: http://docs.oracle.com/javase/6/docs/api/java/lang/String.html#format(java.lang.String, java.lang.Object...)
+ [webcons]: https://developer.mozilla.org/en-US/docs/Web/API/console
 
 ## Drone Plugin
 
@@ -3528,22 +2545,22 @@ The Drone is a convenience class for building.
 It uses a fluent interface which means all of the Drone's methods return `this` and can be chained together like so...
 
     var theDrone = new Drone(self);
-    theDrone.up().left().box(blocks.oak).down().fwd(3).cylinder0(blocks.lava,8); 
+    theDrone.up().left().box(blocks.oak).down().fwd(3).cylinder0(blocks.lava,8);
 
 ### Constructing a Drone Object
 
 Drones can be created in any of the following ways...
-    
+
  1. Calling any one of the methods listed below will return a Drone object. For example...
-         
+
         var d = box( blocks.oak )
 
    ... creates a 1x1x1 wooden block at the cross-hairs or player's location and returns a Drone object. This might look odd (if you're familiar with Java's Object-dot-method syntax) but all of the Drone class's methods are also global functions that return new Drone objects. This is short-hand for creating drones and is useful for playing around with Drones at the in-game command prompt. It's shorter than typing ...
-    
-        var d = new Drone(self).box( blocks.oak ) 
-        
+
+        var d = new Drone(self).box( blocks.oak )
+
    ... All of the Drone's methods return `this` so you can chain operations together like this...
-        
+
         var d = box( blocks.oak )
                   .up()
                   .box( blocks.oak ,3,1,3)
@@ -3556,33 +2573,33 @@ Drones can be created in any of the following ways...
                   .turn()
                   .fwd(2)
                   .box( blocks.oak );
-    
- 2. Using the following form...
+
+ 2. Using `self`, which is the current player object, as the source of location details...
 
         d = new Drone(self)
-    
+
     ...will create a new Drone taking the current player as the parameter. If the player's cross-hairs are pointing at a block at the time then, that block's location becomes the drone's starting point.  If the cross-hairs are _not_ pointing at a block, then the drone's starting location will be 2 blocks directly in front of the player.  TIP: Building always happens right and front of the drone's position...
-    
+
     Plan View:
 
         ^
         |
         |
         D---->
-      
-    For convenience you can use a _corner stone_ to begin building. The corner stone should be located just above ground level. If the cross-hair is point at or into ground level when you create a new Drone() with either a player or location given as a parameter, then building begins at the location the player was looking at or at the location. You can get around this by pointing at a 'corner stone' just above ground level or alternatively use the following statement...
-    
+
+    For convenience you can use a _corner stone_ to begin building. The corner stone should be located just above ground level. If the cross-hair is pointed at or into ground level when you create a new Drone() with either a player or location given as a parameter, then building begins at the location the player was looking at or at the location. You can get around this by pointing at a 'corner stone' just above ground level or alternatively use the following statement...
+
         d = new Drone(self).up();
-          
+
     ... which will move the drone up one block as soon as it's created.
 
     ![corner stone](img/cornerstone1.png)
 
- 3. Or by using the following form...
-    
+ 3. By using the following form...
+
         d = new Drone(x,y,z,direction,world);
 
-    This will create a new Drone at the location you specified using x, y, z In minecraft, the X axis runs west to east and the Z axis runs north to south.  The direction parameter says what direction you want the drone to face: 0 = east, 1 = south, 2 = west, 3 = north.  If the direction parameter is omitted, the player's direction is used instead. Both the `direction` and `world` parameters are optional.
+ This will create a new Drone at the location you specified using x, y, z. In Minecraft, the X axis runs west to east and the Z axis runs north to south.  The direction parameter says what direction you want the drone to face: 0 = east, 1 = south, 2 = west, 3 = north.  If the direction parameter is omitted, the player's direction is used instead. Both the `direction` and `world` parameters are optional.
 
  4. Create a new Drone based on a Location object...
 
@@ -3590,37 +2607,47 @@ Drones can be created in any of the following ways...
 
     This is useful when you want to create a drone at a given `org.bukkit.Location` . The `Location` class is used throughout the bukkit API. For example, if you want to create a drone when a block is broken at the block's location you would do so like this...
 
-        events.blockBreak( function( event ) { 
+        events.blockBreak( function( event ) {
             var location = event.block.location;
             var drone = new Drone(location);
             // do more stuff with the drone here...
         });
 
+ 5. Create a new Drone based on another Drone...
+
+    var myClone = new Drone(existingDrone);
+
+For more complex building projects where more than one drone is desired, this is a convenience option which copies the x,y,z,dir,world of the existing drone into a new object. Note that this is not the same as:
+
+    var second = first;
+
+... where the second variable is now just a reference to the first, rather than a separate object.
+
 #### Parameters
 
- * Player : If a player reference is given as the sole parameter then the block the player was looking at will be used as the starting point for the drone. If the player was not looking at a block then the player's location will be used as the starting point. If a `Player` object is provided as a paramter then it should be the only parameter.
- * location  : *NB* If a `Location` object is provided as a parameter, then it should be the only parameter.
- * x : The x coordinate of the Drone (x,y,z,direction and world are not needed if either a player or location parameter is provided)
- * y : The y coordinate of the Drone 
- * z : The z coordinate of the Drone 
- * direction : The direction in which the Drone is facing. Possible values are 0 (east), 1 (south), 2 (west) or 3 (north) 
- * world : The world in which the drone is created. 
-  
+ * Player : If a player reference is given as the sole parameter then the block the player was looking at will be used as the starting point for the drone. If the player was not looking at a block then the player's location will be used as the starting point. If a `Player` object is provided as a parameter then it should be the only parameter.
+ * location  : *NB* If a `Location` or `Drone` object is provided as a parameter, then it should be the only parameter.
+ * x : The x coordinate of the Drone (x,y,z,direction and world are not needed if either a player, a location or another drone parameter is provided)
+ * y : The y coordinate of the Drone
+ * z : The z coordinate of the Drone
+ * direction : The direction in which the Drone is facing. Possible values are 0 (east), 1 (south), 2 (west) or 3 (north)
+ * world : The world in which the drone is created.
+
 ### Drone.box() method
 
-the box() method is a convenience method for building things. (For the more performance-oriented method - see cuboid)
+The box() method is a convenience method for building things. (For the more performance-oriented method - see cuboid)
 
 #### parameters
 
  * b - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
- * w (optional - default 1) - the width of the structure 
- * h (optional - default 1) - the height of the structure 
+ * w (optional - default 1) - the width of the structure
+ * h (optional - default 1) - the height of the structure
  * d (optional - default 1) - the depth of the structure - NB this is not how deep underground the structure lies - this is how far away (depth of field) from the drone the structure will extend.
 
 #### Example
 
 To create a black structure 4 blocks wide, 9 blocks tall and 1 block long...
-    
+
     box(blocks.wool.black, 4, 9, 1);
 
 ... or the following code does the same but creates a variable that can be used for further methods...
@@ -3629,7 +2656,7 @@ To create a black structure 4 blocks wide, 9 blocks tall and 1 block long...
     drone.box(blocks.wool.black, 4, 9, 1);
 
 ![box example 1](img/boxex1.png)
-    
+
 ### Drone.box0() method
 
 Another convenience method - this one creates 4 walls with no floor or ceiling.
@@ -3637,19 +2664,19 @@ Another convenience method - this one creates 4 walls with no floor or ceiling.
 #### Parameters
 
  * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
- * width (optional - default 1) - the width of the structure 
- * height (optional - default 1) - the height of the structure 
+ * width (optional - default 1) - the width of the structure
+ * height (optional - default 1) - the height of the structure
  * length (optional - default 1) - the length of the structure - how far
    away (depth of field) from the drone the structure will extend.
 
 #### Example
 
-To create a stone building with the insided hollowed out 7 wide by 3 tall by 6 long...
+To create a stone building with the inside hollowed out 7 wide by 3 tall by 6 long...
 
     box0( blocks.stone, 7, 3, 6);
 
 ![example box0](img/box0ex1.png)
-   
+
 ### Drone.boxa() method
 
 Construct a cuboid using an array of blocks. As the drone moves first along the width axis, then the height (y axis) then the length, each block is picked from the array and placed.
@@ -3667,7 +2694,7 @@ Construct a rainbow-colored road 100 blocks long...
 
     var rainbowColors = [blocks.wool.red, blocks.wool.orange, blocks.wool.yellow, blocks.wool.lime,
                          blocks.wool.lightblue, blocks.wool.blue, blocks.wool.purple];
-    
+
     boxa(rainbowColors,7,1,30);
 
 ![boxa example](img/boxaex1.png)
@@ -3676,20 +2703,20 @@ Construct a rainbow-colored road 100 blocks long...
 
 All of the Drone methods return a Drone object, which means methods can be 'chained' together so instead of writing this...
 
-    drone = new Drone( self ); 
+    drone = new Drone( self );
     drone.fwd( 3 );
     drone.left( 2 );
-    drone.box( blocks.grass ); // create a grass block 
+    drone.box( blocks.grass ); // create a grass block
     drone.up();
     drone.box( blocks.grass ); // create another grass block
     drone.down();
 
 ...you could simply write ...
-    
+
     var drone = new Drone(self).fwd(3).left(2).box(blocks.grass).up().box(blocks.grass).down();
 
 ... since each Drone method is also a global function that constructs a drone if none is supplied, you can shorten even further to just...
-    
+
     fwd(3).left(2).box(blocks.grass).up().box(blocks.grass).down()
 
 The Drone object uses a [Fluent Interface][fl] to make ScriptCraft scripts more concise and easier to write and read.  Minecraft's in-game command prompt is limited to about 80 characters so chaining drone commands together means more can be done before hitting the command prompt limit. For complex building you should save your commands in a new script file and load it using /js load()
@@ -3701,11 +2728,11 @@ The Drone object uses a [Fluent Interface][fl] to make ScriptCraft scripts more 
  * x - The Drone's position along the west-east axis (x increases as you move east)
  * y - The Drone's position along the vertical axis (y increses as you move up)
  * z - The Drone's position along the north-south axis (z increases as you move south)
- * dir - The Drone's direction 0 is east, 1 is south , 2 is west and 3 is north.
+ * dir - The Drone's direction 0 is east, 1 is south, 2 is west, and 3 is north.
 
 ### Extending Drone
 
-The Drone object can be easily extended - new buidling recipes/blueprints can be added and can become part of a Drone's chain using the *static* method `Drone.extend`. 
+The Drone object can be easily extended - new buidling recipes/blueprints can be added and can become part of a Drone's chain using the *static* method `Drone.extend`.
 
 ### Drone.extend() static method
 
@@ -3713,7 +2740,7 @@ Use this method to add new methods (which also become chainable global functions
 
 #### Parameters
 
- * name - The name of the new method e.g. 'pyramid'. 
+ * name - The name of the new method e.g. 'pyramid'.
  * function - The method body.
 
 Alternatively if you provide just a function as a parameter, then the function name will be used as the new method name. For example the following two approaches are both valid.
@@ -3721,24 +2748,24 @@ Alternatively if you provide just a function as a parameter, then the function n
 #### Example 1 Using name and function as parameters
 
     // submitted by [edonaldson][edonaldson]
-    var Drone = require('drone'); 
-    Drone.extend('pyramid', function( block, height ) { 
+    var Drone = require('drone');
+    Drone.extend('pyramid', function( block, height ) {
         this.chkpt('pyramid');
         for ( var i = height; i > 0; i -= 2) {
             this.box(block, i, 1, i).up().right().fwd();
         }
-        return this.move('pyramid');      
+        return this.move('pyramid');
     });
 
 #### Example 2 Using just a named function as a parameter
 
-    var Drone = require('drone'); 
-    function pyramid( block, height ) { 
+    var Drone = require('drone');
+    function pyramid( block, height ) {
         this.chkpt('pyramid');
         for ( var i = height; i > 0; i -= 2) {
             this.box(block, i, 1, i).up().right().fwd();
         }
-        return this.move('pyramid');      
+        return this.move('pyramid');
     }
     Drone.extend( pyramid );
 
@@ -3764,11 +2791,15 @@ An array which can be used when constructing stairs facing in the Drone's direct
 
 ... will construct a single oak stair block facing the drone.
 
+Upside down stairs can be created by adding 4 to the value after the colon, like...
+
+    d.box(blocks.stairs.oak + ':' + (Drone.PLAYER_STAIRS_FACING[d.dir] + 4));
+
 #### Drone.PLAYER_SIGN_FACING
 
 An array which can be used when placing signs so they face in a given direction. This is used internally by the Drone.sign() method. It should also be used for placing any of the following blocks...
 
- * chest 
+ * chest
  * ladder
  * furnace
  * dispenser
@@ -3800,13 +2831,10 @@ If you see an error message in the console `Build too big!` It's because the wid
 
 #### Drone.MAX_VOLUME
 
-Specifies the maximum value for any call to Drone.cuboidX (box) method.
-The default value is 1,000,000 (1 million) blocks.
+Specifies the maximum value for any call to Drone.cuboidX (box) method. If the volume (width X height X length) of any single call to the Drone.cuboidX() method exceeds this value, you will see an error message in the console `Build too big!`
+Prior to v3.3 the default value was 1,000,000 (1 million) blocks. An issue report in GitHub verifies that with a cuboid of about 60x60x60 the drone works will, but beyond that, like at 70x70x70, the server crashes. For this reason in v3.3 the Drone.MAX_VOLUME has been set to SIXTY_CUBIC_BLOCKS, or 60x60x60.
 
-If the volume (width X height X length) of any single call to the Drone.cuboidX() method exceeds this value, you will see an error message in the console `Build too big!` .
-
-The values of both the `Drone.MAX_SiDE` and `Drone.MAX_VOLUME` variables _can_ be overridden but it's not recommended.
-
+The values of both the `Drone.MAX_SiDE` and `Drone.MAX_VOLUME` variables _can_ be overridden but it's not recommended. If you need to create a larger box, change the value of MAX_VOLUME, and/or consider using the cuboid rather than the box.
 ### Drone.times() Method
 
 The `times()` method makes building multiple copies of buildings
@@ -3835,7 +2863,7 @@ declare a new Drone object first, then write a `for` loop to create the
 syntax for what should really be simple.
 
  * You can use a `while` loop &hellip;
-   
+
     d = new Drone(); var i=4; while (i--) { d.cottage().right(8); }
 
 &hellip; which is slightly shorter but still too much syntax. Each of the
@@ -3895,12 +2923,12 @@ arc() takes a single parameter - an object with the following named properties..
 To draw a 1/4 circle (top right quadrant only) with a radius of 10 and
 stroke width of 2 blocks ...
 
-    arc({blockType: blocks.iron, 
-         meta: 0, 
+    arc({blockType: blocks.iron,
+         meta: 0,
          radius: 10,
          strokeWidth: 2,
          quadrants: { topright: true },
-         orientation: 'vertical', 
+         orientation: 'vertical',
          stack: 1,
          fill: false
          } );
@@ -3929,13 +2957,13 @@ this
   .fwd(3)
   .bed()
   .back(3)
-```     
+```
 ### Drone.blocktype() method
 
 Creates the text out of blocks. Useful for large-scale in-game signs.
 
 #### Parameters
- 
+
  * message - The message to create - (use `\n` for newlines)
  * foregroundBlock (default: black wool) - The block to use for the foreground
  * backgroundBlock (default: none) - The block to use for the background
@@ -3958,9 +2986,9 @@ A drone can be used to copy and paste areas of the game world.
 As of January 10 2015 the copy-paste functions in Drone are no longer
 supported. Copy/Paste is:
 
-1. Difficult to do correctly in a way which works for both Minecraft 1.7 and 1.8 
+1. Difficult to do correctly in a way which works for both Minecraft 1.7 and 1.8
    due to how blocks changed in 1.8
-2. Not aligned with the purpose of ScriptCraft's Drone module which is to provide 
+2. Not aligned with the purpose of ScriptCraft's Drone module which is to provide
    a simple set of functions for scripting and in-game building.
 
 ### Drone.copy() method
@@ -4000,7 +3028,7 @@ A convenience method for building cylinders. Building begins radius blocks to th
 #### Parameters
 
  * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
- * radius 
+ * radius
  * height
 
 #### Example
@@ -4102,7 +3130,7 @@ Creates a ladder extending skyward.
 
 #### Parameters
 
- * height (optional - default 1) 
+ * height (optional - default 1)
 
 #### Example
 
@@ -4111,13 +3139,13 @@ To create a ladder extending 10 blocks high:
     var drone = new Drone(self);
     drone.ladder(10)
 
-At the in-game prompt, look at a block and then type:    
+At the in-game prompt, look at a block and then type:
 
     /js ladder(10)
 
 A ladder 10 blocks high will be created at the point you were looking at.
 
-#### Since 
+#### Since
 ##### 3.0.3
 ### Drone Movement
 
@@ -4138,10 +3166,12 @@ no parameter is given, the default is 1.
 
 To change direction use the `turn()` method which also takes a single
 optional parameter (numTurns) - the number of 90 degree turns to
-make. Turns are always clock-wise. If the drone is facing north, then
+make. Turns are always clockwise unless numTurns is negative in which
+case they are counterclockwise. If the drone is facing north, then
 drone.turn() will make the turn face east. If the drone is facing east
 then drone.turn(2) will make the drone turn twice so that it is facing
-west.
+west. If the drone is facing north, then drone.turn(-1) will make the
+turn face west.
 
 ### Drone Positional Info
 
@@ -4173,8 +3203,8 @@ Markers are created and returned to using the followng two methods...
     //
     // the drone can now go off on a long excursion
     //
-    for ( i = 0; i< 100; i++) {  
-        drone.fwd(12).box(6); 
+    for ( i = 0; i< 100; i++) {
+        drone.fwd(12).box(6);
     }
     //
     // return to the point before the excursion
@@ -4187,7 +3217,7 @@ Creates a prism. This is useful for roofs on houses.
 
 #### Parameters
 
- * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. 
+ * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling.
    Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
  * width - the width of the prism
  * length - the length of the prism (will be 2 time its height)
@@ -4211,16 +3241,16 @@ rand takes either an array (if each blockid has the same chance of occurring) or
 
 place random blocks stone, mossy stone and cracked stone (each block has the same chance of being picked)
 
-    rand( [blocks.brick.stone, blocks.brick.mossy, blocks.brick.cracked ],w,d,h) 
+    rand( [blocks.brick.stone, blocks.brick.mossy, blocks.brick.cracked ],w,d,h)
 
-to place random blocks stone has a 50% chance of being picked, 
+to place random blocks stone has a 50% chance of being picked,
 
     var distribution = {};
     distribution[ blocks.brick.stone ] = 5;
     distribution[ blocks.brick.mossy ] = 3;
     distribution[ blocks.brick.cracked ] = 2;
 
-    rand( distribution, width, height, depth) 
+    rand( distribution, width, height, depth)
 
 regular stone has a 50% chance, mossy stone has a 30% chance and cracked stone has just a 20% chance of being picked.
 
@@ -4240,7 +3270,7 @@ Creates a wall sign (A sign attached to a wall)
 
 ### Drone.signpost() method
 
-Creates a free-standing signpost 
+Creates a free-standing signpost
 
 #### Parameters
 
@@ -4260,7 +3290,7 @@ Signs must use block 63 (stand-alone signs) or 68 (signs on walls)
 
 #### Parameters
 
- * message -  can be a string or an array of strings. 
+ * message -  can be a string or an array of strings.
  * block - can be 63 or 68
 
 #### Example
@@ -4282,7 +3312,7 @@ To create a free-standing sign...
 Creates a sphere.
 
 #### Parameters
- 
+
  * block - The block the sphere will be made of.
  * radius - The radius of the sphere.
 
@@ -4302,7 +3332,7 @@ server to be very busy for a couple of minutes while doing so.
 Creates an empty sphere.
 
 #### Parameters
- 
+
  * block - The block the sphere will be made of.
  * radius - The radius of the sphere.
 
@@ -4357,7 +3387,7 @@ The stairs() function will build a flight of stairs
 
 #### Parameters
 
- * blockType - should be one of the following: 
+ * blockType - should be one of the following:
 
    * blocks.stairs.oak
    * blocks.stairs.cobblestone
@@ -4377,7 +3407,7 @@ The stairs() function will build a flight of stairs
 
 To build an oak staircase 3 blocks wide and 5 blocks tall:
 
-    /js stairs(blocks.stairs.oak, 3, 5) 
+    /js stairs(blocks.stairs.oak, 3, 5)
 
 Staircases do not have any blocks beneath them.
 
@@ -4408,11 +3438,11 @@ grow.
 
 ### Drone.castle() method
 
-Creates a Castle. A castle is just a big wide fort with 4 taller forts at each corner. 
+Creates a Castle. A castle is just a big wide fort with 4 taller forts at each corner.
 See also Drone.fort() method.
 
 #### Parameters
- 
+
  * side - How many blocks wide and long the castle will be (default: 24. Must be greater than 19)
  * height - How tall the castle will be (default: 10. Must be geater than 7)
 
@@ -4484,7 +3514,7 @@ d.cottage();
 Creates a tree-lined avenue with cottages on both sides.
 
 #### Parameters
- 
+
  * numberOfCottages: The number of cottages to build in total (optional: default 6)
 
 #### Example
@@ -4508,7 +3538,7 @@ Create an animated dance floor of colored tiles some of which emit light.
 The tiles change color every second creating a strobe-lit dance-floor effect.
 See it in action here [http://www.youtube.com/watch?v=UEooBt6NTFo][ytdance]
 
-#### Parameters 
+#### Parameters
 
  * width - how wide the dancefloor should be (optional: default 5)
  * length - how long the dancefloor should be (optional: default 5)
@@ -4536,7 +3566,7 @@ d.dancefloor();
 Constructs a medieval fort.
 
 #### Parameters
- 
+
  * side - How many blocks whide and long the fort will be (default: 18 . Must be greater than 9)
  * height - How tall the fort will be (default: 6 . Must be greater than 3)
 
@@ -4610,7 +3640,7 @@ d.stopLCD();
 ![lcdclock example](img/lcdclockex1.png)
 ### Drone.logojs() method
 
-Constructs a large Javascript Logo (black JS on Yellow background)
+Constructs a large JavaScript Logo (black JS on Yellow background)
 See: https://raw.github.com/voodootikigod/logo.js/master/js.png
 
 #### Parameters
@@ -4660,7 +3690,7 @@ At the in-game prompt you can create a rainbow by looking at a block and typing:
 
 Alternatively you can create a new Drone object from a Player or Location object and call the rainbow() method.
 
-```javascript    
+```javascript
 var d = new Drone(player);
 d.rainbow(30);
 ```
@@ -4699,7 +3729,7 @@ To construct a spiral staircase 5 floors high made of oak...
 Constructs a mayan temple.
 
 #### Parameters
- 
+
  * side - How many blocks wide and long the temple will be (default: 20)
 
 #### Example
@@ -4721,11 +3751,11 @@ d.temple();
 ## The at Module
 
 The at module provides a single function `at()` which can be used to schedule
-repeating (or non-repeating) tasks to be done at a particular time. 
+repeating (or non-repeating) tasks to be done at a particular time.
 
 ### at() function
 
-The utils.at() function will perform a given task at a given time in the 
+The utils.at() function will perform a given task at a given time in the
 (minecraft) day.
 
 #### Parameters
@@ -4798,7 +3828,7 @@ Example....
 
 ... creates a single firework, while ....
 
-    /js firework().fwd(3).times(5) 
+    /js firework().fwd(3).times(5)
 
 ... creates 5 fireworks in a row. Fireworks have also been added as a
 possible option for the `arrow` module. To have a firework launch
@@ -4814,106 +3844,9 @@ location. For example...
 
 ![firework example](img/firework.png)
 
-## Classroom Plugin
-
-The `classroom` object contains a couple of utility functions for use
-in a classroom setting. The goal of these functions is to make it
-easier for tutors to facilitate ScriptCraft for use by students in a
-classroom environment. Although granting ScriptCraft access to
-students on a shared server is potentially risky (Students can
-potentially abuse it), it is slighlty less risky than granting
-operator privileges to each student. (Enterprising students will
-quickly realise how to grant themselves and others operator privileges
-once they have access to ScriptCraft).
-
-The goal of this module is not so much to enforce restrictions
-(security or otherwise) but to make it easier for tutors to setup a
-shared server so students can learn Javascript. When scripting is
-turned on, every player who joins the server will have a dedicated
-directory into which they can save scripts. All scripts in such
-directories are automatically watched and loaded into a global
-variable named after the player.
-
-So for example, if player 'walterh' joins the server, a `walterh`
-global variable is created. If a file `greet.js` with the following
-content is dropped into the `scriptcraft/players/walterh`
-directory...
-
-```javascript
-exports.hi = function( player ){
-  echo( player, 'Hi ' + player.name);
-};
-```
-
-... then it can be invoked like this: `/js walterh.hi( self )` . This
-lets every player/student create their own functions without having
-naming collisions.
-
-It's strongly recommended that the
-`scriptcraft/players/` directory is shared so that
-others can connect to it and drop .js files into their student
-directories. On Ubuntu, select the folder in Nautilus (the default
-file browser) then right-click and choose *Sharing Options*, check the
-*Share this folder* checkbox and the *Allow others to create and
-delete files* and *Guest access* checkboxes. Click *Create Share*
-button to close the sharing options dialog. Students can then access
-the shared folder as follows...
-
- * Windows:   Open Explorer, Go to \\{serverAddress}\players\
- * Macintosh: Open Finder,   Go to smb://{serverAddress}/players/
- * Linux:     Open Nautilus, Go to smb://{serverAddress}/players/
-
-... where {serverAddress} is the ip address of the server (this is
-displayed to whoever invokes the classroom.allowScripting() function.)
-
-### jsp classroom command
-The `jsp classroom` command makes it easy for tutors to turn on or off
-classroom mode. This command can only be used by server operators. To
-turn on classroom mode (enable scripting for all players):
-
-    jsp classroom on
-
-To turn off classroom mode (disable scripting for all players):
-
-    jsp classroom off
-
-The `jsp classroom` command is provided as an easier way to turn on or
-off classroom mode. This should be used in preference to the
-classroom.allowScripting() function which is provided only for
-programmatically enabling or disabling classroom mode.
-
-### classroom.allowScripting() function
-
-Allow or disallow anyone who connects to the server (or is already
-connected) to use ScriptCraft. This function is preferable to granting 'ops' privileges 
-to every student in a Minecraft classroom environment.
-
-Whenever any file is added/edited or removed from any of the players/
-directories the contents are automatically reloaded. This is to
-facilitate quick turnaround time for students getting to grips with
-Javascript.
-
-#### Parameters
-
- * canScript : true or false
-
-#### Example
-
-To allow all players (and any players who connect to the server) to
-use the `js` and `jsp` commands...
-
-    /js classroom.allowScripting( true, self )
-
-To disallow scripting (and prevent players who join the server from using the commands)...
-
-    /js classroom.allowScripting( false, self )
-
-Only ops users can run the classroom.allowScripting() function - this is so that students 
-don't try to bar themselves and each other from scripting.
-
 ## Inventory Module
-This module provides functions to add items to, remove items from and check the 
-contents of a player or NPC's inventory. 
+This module provides functions to add items to, remove items from and check the
+contents of a player or NPC's inventory.
 
 ### Usage
 The inventory module is best used in conjunction with the items module. See below for examples of usage.
@@ -4947,20 +3880,117 @@ The inventory module exposes a single function which when passed a player or NPC
 * remove : removes items from the inventory (Expects parameters of type `net.canarymod.api.inventory.Item` - I strongly recommend using the `items` module for constructing items)
 * contains : checks to see if there is the specified type and amount of item in the inventory (Expects parameters of type `net.canarymod.api.inventory.Item` - I strongly recommend using the `items` module for constructing items)
 
+## Classroom Plugin
+
+The `classroom` object contains a couple of utility functions for use
+in a classroom setting. The goal of these functions is to make it
+easier for tutors to facilitate ScriptCraft for use by students in a
+classroom environment. Although granting ScriptCraft access to
+students on a shared server is potentially risky (Students can
+potentially abuse it), it is slighlty less risky than granting
+operator privileges to each student. (Enterprising students will
+quickly realise how to grant themselves and others operator privileges
+once they have access to ScriptCraft).
+
+The goal of this module is not so much to enforce restrictions
+(security or otherwise) but to make it easier for tutors to setup a
+shared server so students can learn JavaScript. When scripting is
+turned on, every player who joins the server will have a dedicated
+directory into which they can save scripts. All scripts in such
+directories are automatically watched and loaded into a global
+variable named after the player.
+
+So for example, if player 'walterh' joins the server, a `walterh`
+global variable is created. If a file `greet.js` with the following
+content is dropped into the `scriptcraft/players/walterh`
+directory...
+
+```javascript
+exports.hi = function( player ){
+  echo( player, 'Hi ' + player.name);
+};
+```
+
+... then it can be invoked like this: `/js walterh.hi( self )` . This
+lets every player/student create their own functions without having
+naming collisions.
+
+It's strongly recommended that the
+`scriptcraft/players/` directory is shared so that
+others can connect to it and drop .js files into their student
+directories. On Linux, select the folder in Nautilus (the default
+file browser) then right-click and choose *Sharing Options*, check the
+*Share this folder* checkbox and the *Allow others to create and
+delete files* and *Guest access* checkboxes. Click *Create Share*
+button to close the sharing options dialog. Students can then access
+the shared folder as follows...
+
+ * Windows:   Open Explorer, Go to \\{serverAddress}\players\
+ * Macintosh: Open Finder,   Go to smb://{serverAddress}/players/
+ * Linux:     Open Nautilus, Go to smb://{serverAddress}/players/
+
+... where {serverAddress} is the ip address of the server (this is
+displayed to whoever invokes the classroom.allowScripting() function.)
+
+### jsp classroom command
+The `jsp classroom` command makes it easy for tutors to turn on or off
+classroom mode. This command can only be used by server operators. To
+turn on classroom mode (enable scripting for all players):
+
+    jsp classroom on
+
+To turn off classroom mode (disable scripting for all players):
+
+    jsp classroom off
+
+The `jsp classroom` command is provided as an easier way to turn on or
+off classroom mode. This should be used in preference to the
+classroom.allowScripting() function which is provided only for
+programmatically enabling or disabling classroom mode.
+
+### classroom.allowScripting() function
+
+Allow or disallow anyone who connects to the server (or is already
+connected) to use ScriptCraft. This function is preferable to granting 'ops' privileges
+to every student in a Minecraft classroom environment.
+
+Whenever any file is added/edited or removed from any of the players/
+directories the contents are automatically reloaded. This is to
+facilitate quick turnaround time for students getting to grips with
+JavaScript.
+
+#### Parameters
+
+ * canScript : true or false
+
+#### Example
+
+To allow all players (and any players who connect to the server) to
+use the `js` and `jsp` commands...
+
+    /js classroom.allowScripting( true, self )
+
+To disallow scripting (and prevent players who join the server from using the commands)...
+
+    /js classroom.allowScripting( false, self )
+
+Only ops users can run the classroom.allowScripting() function - this is so that students
+don't try to bar themselves and each other from scripting.
+
 ## Asynchronous Input Module
 
-The `input` module provides a simple way to prompt players for input at the 
-in-game prompt. In Javascript browser environments the `prompt()` function provides
+The `input` module provides a simple way to prompt players for input at the
+in-game prompt. In JavaScript browser environments the `prompt()` function provides
 a way to block execution and ask the user for input. Execution is blocked until the user
-provides input using the modal dialog and clicks OK. Unfortunately Minecraft provides no 
-equivalent modal dialog which can be used to gather player text input. The only way to gather text 
-input from the player in Minecraft is to do so asynchronously. That is - a prompt message can be 
+provides input using the modal dialog and clicks OK. Unfortunately Minecraft provides no
+equivalent modal dialog which can be used to gather player text input. The only way to gather text
+input from the player in Minecraft is to do so asynchronously. That is - a prompt message can be
 sent to the player but the player is not obliged to provide input immediately, nor does the program
 execution block until the player does so.
 
-So ScriptCraft has no `prompt()` implementation because `prompt()` is a synchronous function and 
-Minecraft's API provides no equivalent functions or classes which can be used to implement this synchronously. 
-The Minecraft API does however have a 'Conversation' API which allows for prompting of the player and asynchronously gathering text input from the player. 
+So ScriptCraft has no `prompt()` implementation because `prompt()` is a synchronous function and
+Minecraft's API provides no equivalent functions or classes which can be used to implement this synchronously.
+The Minecraft API does however have a 'Conversation' API which allows for prompting of the player and asynchronously gathering text input from the player.
 
 This new `input()` function is best illustrated by example. The following code is for a number-guessing game:
 
@@ -4972,7 +4002,7 @@ exports.numberguess = function(player){
     if ( guess == 'q'){
       return;
     }
-    if ( +guess !== randomNumber ) { 
+    if ( +guess !== randomNumber ) {
       if (+guess < randomNumber ) {
         echo( guesser, 'Too low - guess again');
       }
@@ -4987,7 +4017,7 @@ exports.numberguess = function(player){
 };
 ```
 
-The `input()` function takes 3 parameters, the player, a prompt message and a callback which will be invoked when the player has entered some text at the in-game command prompt. 
+The `input()` function takes 3 parameters, the player, a prompt message and a callback which will be invoked when the player has entered some text at the in-game command prompt.
 The callback is bound to an object which has the following properties:
 
  * sender : The player who input the text
@@ -5066,7 +4096,7 @@ main thread of execution.
 
    - url: The URL of the request.
    - method: Should be one of the standard HTTP methods, GET, POST, PUT, DELETE (defaults to GET).
-   - params: A Javascript object with name-value pairs. This is for supplying parameters to the server.
+   - params: A JavaScript object with name-value pairs. This is for supplying parameters to the server.
 
  * callback: The function to be called when the Web request has completed. This function takes the following parameters...
    - responseCode: The numeric response code from the server. If the server did not respond with 200 OK then the response parameter will be undefined.
@@ -5129,16 +4159,16 @@ present in the CraftBukkit classpath. To use this module, you should
     Craftbukkit. You can now begin using this module to send and receive
     messages to/from a Net-enabled Arduino or any other device which uses
     the [MQTT protocol][mqtt]
-  
+
     ```javascript
     var mqtt = require('sc-mqtt');
     // create a new client
     var client = mqtt.client( 'tcp://localhost:1883', 'uniqueClientId' );
-    // connect to the broker 
+    // connect to the broker
     client.connect( { keepAliveInterval: 15 } );
     //  publish a message to the broker
     client.publish( 'minecraft', 'loaded' );
-    // subscribe to messages on 'arduino' topic 
+    // subscribe to messages on 'arduino' topic
     client.subscribe( 'arduino' );
     //  do something when an incoming message arrives...
     client.onMessageArrived( function( topic, message ) {
@@ -5168,8 +4198,8 @@ existing sign in the game world.
 #### Parameters
 
  * Label : A string which will be displayed in the topmost line of the
-   sign. This label is not interactive.  
- * options : An array of strings which can be selected on the sign by 
+   sign. This label is not interactive.
+ * options : An array of strings which can be selected on the sign by
    right-clicking/interacting.
  * callback : A function which will be called whenever a player
    interacts (changes selection) on a sign. This callback in turn
@@ -5179,7 +4209,7 @@ existing sign in the game world.
    * sign : The [org.bukkit.block.Sign][buksign] which the player interacted with.
    * text : The text for the currently selected option on the sign.
    * number : The index of the currently selected option on the sign.
- 
+
  * selectedIndex : optional: A number (starting at 0) indicating which
    of the options should be selected by default. 0 is the default.
 
@@ -5192,15 +4222,15 @@ an interactive sign.
 #### Example: Create a sign which changes the time of day.
 
 ##### plugins/signs/time-of-day.js
-   
-```javascript 
+
+```javascript
 var utils = require('utils'),
     signs = require('signs');
 
 var onTimeChoice = function(event){
     var selectedIndex = event.number;
     // convert to Minecraft time 0 = Dawn, 6000 = midday, 12000 = dusk, 18000 = midnight
-    var time = selectedIndex * 6000; 
+    var time = selectedIndex * 6000;
     event.player.location.world.setTime(time);
 };
 
@@ -5208,12 +4238,12 @@ var onTimeChoice = function(event){
 var convertToTimeMenu = signs.menu('Time of Day',
     ['Dawn', 'Midday', 'Dusk', 'Midnight'],
     onTimeChoice);
-        
+
 exports.time_sign = function( player ){
     var sign = signs.getTargetedBy(player);
     if ( !sign ) {
         throw new Error('You must look at a sign');
-    } 
+    }
     convertToTimeMenu(sign);
 };
 ```
@@ -5234,12 +4264,12 @@ the entity has targeted. It is a utility function for use by plugin authors.
 
 #### Example
 
-```javascript 
+```javascript
 var signs = require('signs'),
     utils = require('utils');
 var player = utils.player('tom1234');
 var sign = signs.getTargetedBy( player );
-if ( !sign ) { 
+if ( !sign ) {
     echo( player, 'Not looking at a sign');
 }
 ```
@@ -5295,7 +4325,7 @@ a simpler way to play sounds. All of the org.bukkit.Sound Enum values are attach
     sounds.play( bukkit.sound.VILLAGER_NO , self );       // same as previous statement
 
 The play() function takes either a Location object or any object which has a location.
-The volume parameter is in the range 0 to 1 and the pitch parameter is in the range 0 to 4.    
+The volume parameter is in the range 0 to 1 and the pitch parameter is in the range 0 to 4.
 
 In addition, a play function is provided for each possible sound using the following rules:
 
@@ -5330,7 +4360,7 @@ var entities = require('entities'),
 ...
 var spawnLocation = world.spawnLocation;
 spawn(entities.polar_bear(), spawnLocation);
-``` 
+```
 
 This module is in turn used by the Drone's `spawn()` method and the `jsp spawn` command.
 String class extensions
@@ -5372,11 +4402,11 @@ Example
     /js var boldGoldText = "Hello World".bold().gold();
     /js echo(self, boldGoldText );
 
-<p style="color:gold;font-weight:bold">Hello World</p>    
+<p style="color:gold;font-weight:bold">Hello World</p>
 
 ## Teleport Module
 
-This module provides a function to teleport entities (Players or NPCs). 
+This module provides a function to teleport entities (Players or NPCs).
 
 ### Parameters
 
@@ -5384,14 +4414,14 @@ This module provides a function to teleport entities (Players or NPCs).
  * destination - The location to which they should be teleported. If not of type Location but is a Player, Block or any
    object which has a `location` property then that works too. If of type String, then it's assumed that the destination is the player with that name.
 
-### Example 
+### Example
 
 The following code will teleport each player back to their spawn position.
 
 ```javascript
 var teleport = require('teleport'),
     utils = require('utils'),
-    players = utils.players(), 
+    players = utils.players(),
     i = 0;
 for ( ; i < players.length; i++ ) {
   teleport( players[i], players[i].spawnPosition );
@@ -5402,7 +4432,7 @@ The following code will teleport 'tom' to 'jane's location.
 
 ```javascript
 var teleport = require('teleport');
-teleport('tom' , 'jane'); 
+teleport('tom' , 'jane');
 ```
 ## Utilities Module
 
@@ -5421,7 +4451,7 @@ String, then it tries to find the player with that name.
 #### Parameters
 
  * playerName : A String or Player object. If no parameter is provided
-   then player() will try to return the `self` variable . It is 
+   then player() will try to return the `self` variable . It is
    strongly recommended to provide a parameter.
 
 #### Example
@@ -5439,7 +4469,7 @@ if ( player ) {
 
 [bkpl]: http://jd.bukkit.org/dev/apidocs/org/bukkit/entity/Player.html
 [cmpl]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/entity/living/humanoid/Player.html
-[cmloc]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/world/position/Location.html 
+[cmloc]: https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/world/position/Location.html
 [bkloc]: http://jd.bukkit.org/dev/apidocs/org/bukkit/Location.html
 
 ### utils.world( worldName ) function
@@ -5465,13 +4495,13 @@ utils.locationToJSON() returns a [Location][cmloc] object in JSON form...
 This can be useful if you write a plugin that needs to store location data since bukkit's Location object is a Java object which cannot be serialized to JSON by default.
 
 #### Parameters
- 
+
  * location: An object of type [Location][cmloc]
 
 #### Returns
 
 A JSON object in the above form.
- 
+
 ### utils.locationToString() function
 
 The utils.locationToString() function returns a
@@ -5484,7 +4514,7 @@ keys in a lookup table.
 
 #### Example
 
-```javascript    
+```javascript
 var utils = require('utils');
 ...
 var key = utils.locationToString(player.location);
@@ -5536,8 +4566,8 @@ var targetPos = utils.getMousePos(playerName);
 if (targetPos){
   if (__plugin.canary){
     targetPos.world.makeLightningBolt(targetPos);
-  }  
-  if (__plugin.bukkit){ 
+  }
+  if (__plugin.bukkit){
     targetPos.world.strikeLightning(targetPos);
   }
 }
@@ -5575,8 +4605,8 @@ processing of arrays.
  * delayInMilliseconds (optional, numeric) : If a delay is specified then the processing will be scheduled so that
    each item will be processed in turn with a delay between the completion of each
    item and the start of the next. This is recommended for any CPU-intensive process.
- * onDone (optional, function) : A function to be executed when all processing 
-   is complete. This parameter is only used when the processing is delayed. (It's optional even if a 
+ * onDone (optional, function) : A function to be executed when all processing
+   is complete. This parameter is only used when the processing is delayed. (It's optional even if a
    delay parameter is supplied).
 
 If called with a delay parameter then foreach() will return
@@ -5592,7 +4622,7 @@ The following example illustrates how to use foreach for immediate processing of
 ```javascript
 var utils = require('utils');
 var players = utils.players();
-utils.foreach (players, function( player ) { 
+utils.foreach (players, function( player ) {
   echo( player , 'Hi ' + player);
 });
 ```
@@ -5610,7 +4640,7 @@ function and the start of the next `next()` function.
 
 #### Parameters
 
- * next : A function which will be called if processing is to be done. 
+ * next : A function which will be called if processing is to be done.
  * hasNext : A function which is called to determine if the `next`
    callback should be invoked. This should return a boolean value -
    true if the `next` function should be called (processing is not
@@ -5625,7 +4655,7 @@ See the source code to utils.foreach for an example of how utils.nicely is used.
 ### utils.time( world ) function
 
 Returns the timeofday (in minecraft ticks) for the given world. This function is necessary because
-canarymod and bukkit differ in how the timeofday is calculated. 
+canarymod and bukkit differ in how the timeofday is calculated.
 
 See http://minecraft.gamepedia.com/Day-night_cycle#Conversions
 
@@ -5657,7 +4687,7 @@ a given directory and recursiving trawling all sub-directories.
 var utils = require('utils');
 var jsFiles = utils.find('./', function(dir,name){
     return name.match(/\.js$/);
-});  
+});
 ```
 ### utils.serverAddress() function
 
@@ -5670,14 +4700,14 @@ console.log(serverAddress);
 ```
 ### utils.array() function
 
-Converts Java collection objects to type Javascript array so they can avail of
-all of Javascript's Array goodness.
- 
+Converts Java collection objects to type JavaScript array so they can avail of
+all of JavaScript's Array goodness.
+
 #### Example
 
     var utils = require('utils');
     var worlds = utils.array(server.worldManager.getAllWorlds());
-    
+
 ### utils.players() function
 
 This function returns a javascript array of all online players on the
@@ -5702,35 +4732,35 @@ This function returns a numeric value for a given player statistic.
 #### Parameters
 
  * Player - The player object (optional - if only the statistic name parameter is provided then the statistic object is returned)
- * Statistic - A string whose value should be one of the following (CanaryMod) 
-   * ANIMALSBRED 
-   * BOATONECM 
-   * CLIMBONECM 
-   * CROUCHONECM 
-   * DAMAGEDEALT 
-   * DAMAGETAKEN 
-   * DEATHS 
-   * DRIVEONECM 
-   * DROP 
-   * FALLONECM 
-   * FISHCAUGHT 
-   * FLYONECM 
-   * HORSEONECM 
-   * JUMP 
-   * JUNKFISHED 
-   * LEAVEGAME 
-   * MINECARTONECM 
-   * MOBKILLS 
-   * PIGONECM 
-   * PLAYERKILLS 
-   * PLAYONEMINUTE 
-   * SPRINTONECM 
-   * SWIMONECM 
-   * TALKEDTOVILLAGER 
-   * TIMESINCEDEATH 
-   * TRADEDWITHVILLAGER 
-   * TREASUREFISHED 
-   * WALKONECM 
+ * Statistic - A string whose value should be one of the following (CanaryMod)
+   * ANIMALSBRED
+   * BOATONECM
+   * CLIMBONECM
+   * CROUCHONECM
+   * DAMAGEDEALT
+   * DAMAGETAKEN
+   * DEATHS
+   * DRIVEONECM
+   * DROP
+   * FALLONECM
+   * FISHCAUGHT
+   * FLYONECM
+   * HORSEONECM
+   * JUMP
+   * JUNKFISHED
+   * LEAVEGAME
+   * MINECARTONECM
+   * MOBKILLS
+   * PIGONECM
+   * PLAYERKILLS
+   * PLAYONEMINUTE
+   * SPRINTONECM
+   * SWIMONECM
+   * TALKEDTOVILLAGER
+   * TIMESINCEDEATH
+   * TRADEDWITHVILLAGER
+   * TREASUREFISHED
+   * WALKONECM
 
 See [CanaryMod's Statistic][cmstat] class for an up-to-date list of possible stat values
 
@@ -5762,16 +4792,16 @@ Watches for changes to the given file or directory and calls the function provid
 when the file changes.
 
 #### Parameters
- 
+
  * File - the file to watch (can be a file or directory)
- * Callback - The callback to invoke when the file has changed. The callback takes the 
+ * Callback - The callback to invoke when the file has changed. The callback takes the
    changed file as a parameter.
 
 #### Example
 
 ```javascript
 var watcher = require('watcher');
-watcher.watchFile( 'test.txt', function( file ) { 
+watcher.watchFile( 'test.txt', function( file ) {
   console.log( file + ' has changed');
 });
 ```
@@ -5782,18 +4812,18 @@ when the directory changes. It works by calling watchFile/watchDir for each
 file/subdirectory.
 
 #### Parameters
- 
+
  * Dir - the file to watch (can be a file or directory)
- * Callback - The callback to invoke when the directory has changed. 
-              The callback takes the changed file as a parameter. 
-              For each change inside the directory the callback will also 
+ * Callback - The callback to invoke when the directory has changed.
+              The callback takes the changed file as a parameter.
+              For each change inside the directory the callback will also
               be called.
 
 #### Example
 
 ```javascript
 var watcher = require('watcher');
-watcher.watchDir( 'players/_ial', function( dir ) { 
+watcher.watchDir( 'players/_ial', function( dir ) {
   console.log( dir + ' has changed');
 });
 ```
@@ -5817,7 +4847,7 @@ are also "unwatched"
 var watcher = require('watcher');
 watcher.unwatchDir ('players/_ial');
 ```
-Would cause also 
+Would cause also
 ```javascript
 watcher.unwatchFile (file);
 ```
@@ -5827,21 +4857,21 @@ for each file inside directory (and unwatchDir for each directory inside it)
 
 A simple minecraft plugin. The most basic module.
 
-### Usage: 
+### Usage:
 
 At the in-game prompt type ...
-  
+
     /js hello(self)
 
 ... and a message `Hello {player-name}` will appear (where
   {player-name} is replaced by your own name).
-  
+
 This example demonstrates the basics of adding new functionality which
 is only usable by server operators or users with the
 scriptcraft.evaluate permission. By default, only ops are granted this
 permission.
-  
-The `hello` function below is only usable by players with the scriptcraft.evaluate 
+
+The `hello` function below is only usable by players with the scriptcraft.evaluate
 permission since it relies on the `/js` command to execute.
 
     exports.hello = function(player){
@@ -5852,22 +4882,22 @@ permission since it relies on the `/js` command to execute.
 
 A simple minecraft plugin. Commands for other players.
 
-### Usage: 
+### Usage:
 
 At the in-game prompt type ...
-  
+
     /jsp hello
 
-... and a message `Hello {player-name}` will appear (where {player-name} is 
+... and a message `Hello {player-name}` will appear (where {player-name} is
 replaced by your own name).
-  
+
 This example demonstrates the basics of adding new functionality
 which is usable all players or those with the scriptcraft.proxy
 permission.  By default, all players are granted this permission.
-  
+
 This differs from example 1 in that a new 'jsp ' command extension
 is defined. Since all players can use the `jsp` command, all players
-can use the new extension. Unlike the previous example, the `jsp hello` 
+can use the new extension. Unlike the previous example, the `jsp hello`
 command does not evaluate javascript code so this command is much more secure.
 
     command('hello', function (parameters, player) {
@@ -5878,21 +4908,21 @@ command does not evaluate javascript code so this command is much more secure.
 
 A simple minecraft plugin. Commands for operators only.
 
-### Usage: 
+### Usage:
 
 At the in-game prompt type ...
-  
+
     /jsp op-hello
 
-... and a message `Hello {player-name}` will appear (where {player-name} is 
+... and a message `Hello {player-name}` will appear (where {player-name} is
 replaced by your own name).
-  
+
 This example demonstrates the basics of adding new functionality
 which is usable all players or those with the scriptcraft.proxy
 permission. By default, all players are granted this permission. In
 this command though, the function checks to see if the player is an
 operator and if they aren't will return immediately.
- 
+
 This differs from example 2 in that the function will only print a
 message for operators.
 
@@ -5907,19 +4937,19 @@ message for operators.
 
 A simple minecraft plugin. Handling parameters.
 
-### Usage: 
+### Usage:
 
 At the in-game prompt type ...
-  
+
     /jsp hello-params Hi
-    /jsp hello-params Saludos 
+    /jsp hello-params Saludos
     /jsp hello-params Greetings
 
 ... and a message `Hi {player-name}` or `Saludos {player-name}` etc
 will appear (where {player-name} is replaced by your own name).
-  
+
 This example demonstrates adding and using parameters in commands.
-  
+
 This differs from example 3 in that the greeting can be changed from
 a fixed 'Hello ' to anything you like by passing a parameter.
 
@@ -5932,15 +4962,15 @@ a fixed 'Hello ' to anything you like by passing a parameter.
 
 A simple minecraft plugin. Using Modules.
 
-### Usage: 
+### Usage:
 
 At the in-game prompt type ...
-  
+
     /jsp hello-module
 
-... and a message `Hello {player-name}` will appear (where {player-name} is 
+... and a message `Hello {player-name}` will appear (where {player-name} is
 replaced by your own name).
-  
+
 This example demonstrates the use of modules. In
 example-1-hello-module.js we created a new javascript module. In
 this example, we use that module...
@@ -5953,7 +4983,7 @@ this example, we use that module...
    directory.
 
  * We assign the loaded module to a variable (`greetings`) and then
-   use the module's `hello` method to display the message. 
+   use the module's `hello` method to display the message.
 
 Source Code...
 
@@ -5966,26 +4996,26 @@ Source Code...
 
 A simple minecraft plugin. Finding players by name.
 
-### Usage: 
+### Usage:
 
 At the in-game prompt type ...
-  
+
     /jsp hello-byname {player-name}
 
 ... substituting {player-name} with the name of a player currently
 online and a message `Hello ...` will be sent to the named
 player.
-  
+
 This example builds on example-5 and also introduces a new concept -
 use of shared modules. That is : modules which are not specific to
 any one plugin or set of plugins but which can be used by all
 plugins. Shared modules should be placed in the
 `scriptcraft/modules` directory.
-  
+
  * The utils module is used. Because the 'utils' module is
    located in the modules folder we don't need to specify an exact
-   path, just 'utils' will do. 
- 
+   path, just 'utils' will do.
+
  * The `utils.player()` function is used to obtain a player object
    matching the player name. Once a player object is obtained, a
    message is sent to that player.
@@ -6057,20 +5087,20 @@ function responsible for adding new *connection* event handlers - that
 is - functions which should be invoked when there's a new *connection*
 event in the game. A new *connection* event is fired whenever a player
 joins the game. There are many other types of events you can handle in
-Minecraft. You can see [a full list of events here][cmEvtList].
+Minecraft. You can see [a full list of events here][evtList].
 
-[cmEvtList]: #events-helper-module-canary-version
+[evtList]: #events-helper-module
 ## Arrows Plugin
 
-The arrows mod adds fancy arrows to the game. Arrows which ... 
+The arrows mod adds fancy arrows to the game. Arrows which ...
 
  * Launch fireworks.
- * Explode on impact. 
+ * Explode on impact.
  * Force Lightning to strike where they land.
  * Teleport the player to the landing spot.
  * Spawn Trees at the landing spot.
 
-### Usage: 
+### Usage:
 
   * `/js arrows.firework(self)` - A firework launches where the the arrow lands.
   * `/js arrows.lightning(self)` - lightning strikes where the arrow lands.
@@ -6083,7 +5113,7 @@ The arrows mod adds fancy arrows to the game. Arrows which ...
 All of the above functions can take an optional player object or name
 as a parameter. For example: `/js arrows.explosive('player23')` makes
 player23's arrows explosive.
- 
+
 ## Spawn Plugin
 
 Allows in-game operators to easily spawn creatures at current location.
@@ -6124,10 +5154,10 @@ it called `cw` (short for set Clock and Weather) which when invoked...
     /time set 4000
     /weather sun
 
-Aliases can use paramters as above. On the right hand side of the `=`, the 
+Aliases can use paramters as above. On the right hand side of the `=`, the
 `{1}` refers to the first parameter provided with the `cw` alias, `{2}`
-refers to the second parameter and so on. So `cw 4000 sun` is converted to 
-`time set 4000` and `weather sun`. 
+refers to the second parameter and so on. So `cw 4000 sun` is converted to
+`time set 4000` and `weather sun`.
 
 To set a global command alias usable by all (only operators can create
 such an alias)...
@@ -6162,7 +5192,7 @@ commands as extensions to the jsp command. For example, to create a
 new simple command for use by all players...
 
     /js command('hi', function(args,player){ echo( player, 'Hi ' + player.name); });
-  
+
 ... then players can use this command by typing...
 
     /jsp hi
@@ -6204,7 +5234,7 @@ of the ScriptCraft core.
 
 ...Displays a greeting to any player who issues the `/hi` command.
 
-### Example - timeofday-command.js 
+### Example - timeofday-command.js
 
     var times = {Dawn: 0, Midday: 6000, Dusk: 12000, Midnight:18000};
     commando('timeofday', function(params,player){
@@ -6237,7 +5267,7 @@ player's homes.
 This module is a good example of how to create a javascript-based
 minecraft mod which provides...
 
- * A programmatic interface (API) and 
+ * A programmatic interface (API) and
  * A command extension which uses that API to provide new functionality for players.
 
 The module uses the `plugin()` function to specify an object and
@@ -6257,7 +5287,7 @@ The `jsp home` command has the following options...
 
  * `/jsp home` ..command will return you to your home, if you have set one.
 
- * `/jsp home {player}` Will take you to the home of {player} (where 
+ * `/jsp home {player}` Will take you to the home of {player} (where
    {player} is the name of the player whose home you wish to visit.
 
  * `/jsp home delete` Deletes your home location from the location
@@ -6287,7 +5317,7 @@ The following administration options can only be used by server operators...
    the world, it simply removes the location from the database. No
    blocks are destroyed by this command.
 
-## NumberGuess mini-game: 
+## NumberGuess mini-game:
 
 ### Description
 This is a very simple number guessing game. Minecraft will ask you to
@@ -6296,13 +5326,16 @@ hight or too low when you guess wrong. The purpose of this mini-game
 code is to demonstrate use of Bukkit's Conversation API.
 
 ### Example
-    
+
     /js Game_NumberGuess.start(self)
 
 Once the game begins, guess a number by typing the `/` character
 followed by a number between 1 and 10.
 
+
 ## Cow Clicker Mini-Game
+
+**NOTE: This mini-game has not been verified in the current release and has been disabled in the code. The documentation has been left here in anticipation that the code will be verified and re-enabled.**
 
 ### How to Play
 
@@ -6331,7 +5364,7 @@ API][bukscore]. There are many things you'll want to consider when constructing
 your own mini-game...
 
  * Is the game itself a long-lived game - that is - should players and
-   scores be persisted (stored) between server restarts?  
+   scores be persisted (stored) between server restarts?
 
  * What should happen when a player quits the server - should this also be
    understood as quitting the mini-game?
@@ -6382,9 +5415,11 @@ The following functions are provided:
  * birchFence()
  * birchFenceGate()
  * birchWoodStairs()
+ * blackGlazedTerracotta()
  * blackShulkerBox()
  * blazePowder()
  * blazeRod()
+ * blueGlazedTerracotta()
  * blueShulkerBox()
  * boat()
  * boatAcacia()
@@ -6404,6 +5439,7 @@ The following functions are provided:
  * brewingStandItem()
  * brick()
  * brickStairs()
+ * brownGlazedTerracotta()
  * brownMushroom()
  * brownShulkerBox()
  * bucket()
@@ -6441,6 +5477,8 @@ The following functions are provided:
  * commandMinecart()
  * commandRepeating()
  * compass()
+ * concrete()
+ * concretePowder()
  * cookedBeef()
  * cookedChicken()
  * cookedFish()
@@ -6448,6 +5486,7 @@ The following functions are provided:
  * cookedRabbit()
  * cookie()
  * crops()
+ * cyanGlazedTerracotta()
  * cyanShulkerBox()
  * darkOakDoor()
  * darkOakDoorItem()
@@ -6544,7 +5583,9 @@ The following functions are provided:
  * grass()
  * grassPath()
  * gravel()
+ * grayGlazedTerracotta()
  * grayShulkerBox()
+ * greenGlazedTerracotta()
  * greenRecord()
  * greenShulkerBox()
  * grilledPork()
@@ -6583,6 +5624,7 @@ The following functions are provided:
  * jungleFence()
  * jungleFenceGate()
  * jungleWoodStairs()
+ * knowledgeBook()
  * ladder()
  * lapisBlock()
  * lapisOre()
@@ -6597,12 +5639,15 @@ The following functions are provided:
  * leaves()
  * leaves2()
  * lever()
+ * lightBlueGlazedTerracotta()
  * lightBlueShulkerBox()
+ * limeGlazedTerracotta()
  * limeShulkerBox()
  * lingeringPotion()
  * log()
  * log2()
  * longGrass()
+ * magentaGlazedTerracotta()
  * magentaShulkerBox()
  * magma()
  * magmaCream()
@@ -6633,10 +5678,12 @@ The following functions are provided:
  * noteBlock()
  * observer()
  * obsidian()
+ * orangeGlazedTerracotta()
  * orangeShulkerBox()
  * packedIce()
  * painting()
  * paper()
+ * pinkGlazedTerracotta()
  * pinkShulkerBox()
  * pistonBase()
  * pistonExtension()
@@ -6657,6 +5704,7 @@ The following functions are provided:
  * pumpkinPie()
  * pumpkinSeeds()
  * pumpkinStem()
+ * purpleGlazedTerracotta()
  * purpleShulkerBox()
  * purpurBlock()
  * purpurDoubleSlab()
@@ -6685,6 +5733,7 @@ The following functions are provided:
  * record7()
  * record8()
  * record9()
+ * redGlazedTerracotta()
  * redMushroom()
  * redNetherBrick()
  * redRose()
@@ -6715,6 +5764,7 @@ The following functions are provided:
  * shulkerShell()
  * sign()
  * signPost()
+ * silverGlazedTerracotta()
  * silverShulkerBox()
  * skull()
  * skullItem()
@@ -6780,6 +5830,7 @@ The following functions are provided:
  * waterLily()
  * web()
  * wheat()
+ * whiteGlazedTerracotta()
  * whiteShulkerBox()
  * wood()
  * woodAxe()
@@ -6798,553 +5849,8 @@ The following functions are provided:
  * workbench()
  * writtenBook()
  * yellowFlower()
+ * yellowGlazedTerracotta()
  * yellowShulkerBox()
-
-
-## Items module (CanaryMod version)
-The Items module provides a suite of functions - one for each possible item.
-See https://ci.visualillusionsent.net/job/CanaryLib/javadoc/net/canarymod/api/inventory/ItemType.html for a list of possible items
-
-### Usage
-
-    items.book(); // returns net.canarymod.api.inventory.ItemType.Book
-    items.book(2); // returns a new net.canarymod.api.inventory.Item object with an amount 2 (2 books)
-    items.book( itemType ); // compares itemType parameter to ItemType.Book or an Item of type book
-
-The following functions are provided:
-
- * acaciaDoor()
- * acaciaFence()
- * acaciaFenceGate()
- * acaciaLeaves()
- * acaciaLog()
- * acaciaSapling()
- * acaciaStairs()
- * acaciaWood()
- * acaciaWoodSlab()
- * activatorRail()
- * allium()
- * andesite()
- * anvil()
- * apple()
- * armorStand()
- * arrow()
- * azureBluet()
- * bakedPotato()
- * banner()
- * beacon()
- * bed()
- * bedrock()
- * birchDoor()
- * birchFence()
- * birchFenceGate()
- * birchLeaves()
- * birchLog()
- * birchSapling()
- * birchWood()
- * birchWoodSlab()
- * birchWoodStairs()
- * blackCarpet()
- * blackGlass()
- * blackGlassPane()
- * blackStainedClay()
- * blazePowder()
- * blazeRod()
- * blocksRecord()
- * blueCarpet()
- * blueGlass()
- * blueGlassPane()
- * blueOrchid()
- * blueStainedClay()
- * boat()
- * bone()
- * bonemeal()
- * book()
- * bookAndQuill()
- * bookshelf()
- * bottleOEnchanting()
- * bow()
- * bowl()
- * bread()
- * brewingStand()
- * brickBlock()
- * brickSlab()
- * brickStairs()
- * brownCarpet()
- * brownGlass()
- * brownGlassPane()
- * brownMushroom()
- * brownStainedClay()
- * bucket()
- * burningFurnace()
- * cactus()
- * cactusGreen()
- * cake()
- * carrot()
- * carrotOnAStick()
- * carrots()
- * cauldron()
- * chainmailBoots()
- * chainmailChestplate()
- * chainmailHelmet()
- * chainmailLeggings()
- * charcoal()
- * chest()
- * chirpRecord()
- * clay()
- * clayBall()
- * clayBrick()
- * clownFish()
- * coal()
- * coalBlock()
- * coalOre()
- * coarseDirt()
- * cobble()
- * cobbleSilverFishBlock()
- * cobbleSlab()
- * cobbleStairs()
- * cobblestoneWall()
- * cocoaBeans()
- * cocoaPlant()
- * commandBlock()
- * compass()
- * cookedChicken()
- * cookedClownFish()
- * cookedFish()
- * cookedMutton()
- * cookedPufferFish()
- * cookedRabbit()
- * cookedSalmon()
- * cookie()
- * crackedSilverFishBlock()
- * crackedStoneBrick()
- * creeperHead()
- * cyanCarpet()
- * cyanDye()
- * cyanGlass()
- * cyanGlassPane()
- * cyanStainedClay()
- * dandelionYellow()
- * darkOakDoor()
- * darkOakFence()
- * darkOakFenceGate()
- * darkOakLeaves()
- * darkOakLog()
- * darkOakSapling()
- * darkOakStairs()
- * darkOakWood()
- * darkOakWoodSlab()
- * daylightSensor()
- * deadBush()
- * detectorRail()
- * diamond()
- * diamondAxe()
- * diamondBlock()
- * diamondBoots()
- * diamondChestplate()
- * diamondHelmet()
- * diamondHoe()
- * diamondHorseArmor()
- * diamondLeggings()
- * diamondOre()
- * diamondPickaxe()
- * diamondSpade()
- * diamondSword()
- * diorite()
- * dirt()
- * dispenser()
- * doubleAcaciaWoodSlab()
- * doubleBirchWoodSlab()
- * doubleBrickBlockSlab()
- * doubleCobbleSlab()
- * doubleDarkOakWoodSlab()
- * doubleGrass()
- * doubleJungleWoodSlab()
- * doubleNetherBrickSlab()
- * doubleOakWoodSlab()
- * doubleOrnateStoneSlab()
- * doubleQuartzSlab()
- * doubleRedSandstoneSlab()
- * doubleSandStoneTrimSlab()
- * doubleSandstoneSlab()
- * doubleSpruceWoodSlab()
- * doubleStoneBricksSlab()
- * doubleStoneSlab()
- * doubleWoodSlab()
- * dropper()
- * egg()
- * elevenRecord()
- * emerald()
- * emeraldBlock()
- * emeraldOre()
- * emptyMap()
- * enchantedBook()
- * enchantmentTable()
- * endPortal()
- * endPortalFrame()
- * endStone()
- * enderChest()
- * enderDragonEgg()
- * enderPearl()
- * eyeofEnder()
- * farRecord()
- * feather()
- * fence()
- * fenceGate()
- * fermentedSpiderEye()
- * fireBlock()
- * fireCharge()
- * fireworkRocket()
- * fireworkStar()
- * fishingRod()
- * flint()
- * flintAndSteel()
- * flowerPot()
- * furnace()
- * ghastTear()
- * glass()
- * glassBottle()
- * glassPane()
- * glisteringMelon()
- * glowStone()
- * glowstoneDust()
- * goldAxe()
- * goldBlock()
- * goldBoots()
- * goldChestplate()
- * goldHelmet()
- * goldHoe()
- * goldHorseArmor()
- * goldIngot()
- * goldLeggings()
- * goldNugget()
- * goldOre()
- * goldPickaxe()
- * goldRecord()
- * goldSpade()
- * goldSword()
- * goldenApple()
- * goldenCarrot()
- * granite()
- * grass()
- * gravel()
- * grayCarpet()
- * grayDye()
- * grayGlass()
- * grayGlassPane()
- * grayStainedClay()
- * greenCarpet()
- * greenGlass()
- * greenGlassPane()
- * greenRecord()
- * greenStainedClay()
- * grilledPork()
- * gunpowder()
- * hardenedClay()
- * hayBale()
- * heavyWeightedPressurePlate()
- * hopper()
- * hugeBrownMushroom()
- * hugeRedMushroom()
- * humanHead()
- * ice()
- * inkSack()
- * ironAxe()
- * ironBars()
- * ironBlock()
- * ironBoots()
- * ironChestplate()
- * ironDoor()
- * ironHelmet()
- * ironHoe()
- * ironHorseArmor()
- * ironIngot()
- * ironLeggings()
- * ironOre()
- * ironPickaxe()
- * ironSpade()
- * ironSword()
- * itemFrame()
- * jackOLantern()
- * jukebox()
- * jungleDoor()
- * jungleFence()
- * jungleFenceGate()
- * jungleLeaves()
- * jungleLog()
- * jungleSapling()
- * jungleWood()
- * jungleWoodSlab()
- * jungleWoodStairs()
- * ladder()
- * lapisBlock()
- * lapisLazuli()
- * lapislazuliOre()
- * largeFern()
- * lava()
- * lavaBucket()
- * lavaFlowing()
- * lead()
- * leather()
- * leatherBoots()
- * leatherChestplate()
- * leatherHelmet()
- * leatherLeggings()
- * lever()
- * lightBlueCarpet()
- * lightBlueDye()
- * lightBlueGlass()
- * lightBlueGlassPane()
- * lightBlueStainedClay()
- * lightGrayCarpet()
- * lightGrayDye()
- * lightGrayGlass()
- * lightGrayGlassPane()
- * lightGrayStainedClay()
- * lightWeightedPressurePlate()
- * lilac()
- * lilypad()
- * limeCarpet()
- * limeDye()
- * limeGlass()
- * limeGlassPane()
- * limeStainedClay()
- * magentaCarpet()
- * magentaDye()
- * magentaGlass()
- * magentaGlassPane()
- * magentaStainedClay()
- * magmaCream()
- * mallRecord()
- * map()
- * mellohiRecord()
- * melon()
- * melonSeeds()
- * melonSlice()
- * milkBucket()
- * minecart()
- * minecartCommandBlock()
- * minecartHopper()
- * minecartTNT()
- * mobSpawner()
- * mossyBrickSilverFishBlock()
- * mossyCobble()
- * mossyCobbleWall()
- * mossyStoneBrick()
- * mushroomSoup()
- * mycelium()
- * nameTag()
- * netherBrick()
- * netherBrickFence()
- * netherBrickStairs()
- * netherBricks()
- * netherBricksSlab()
- * netherQuartz()
- * netherQuartzOre()
- * netherStar()
- * netherWart()
- * netherrack()
- * noteBlock()
- * oakLeaves()
- * oakLog()
- * oakSapling()
- * oakWood()
- * oakWoodSlab()
- * obsidian()
- * orangeCarpet()
- * orangeDye()
- * orangeGlass()
- * orangeGlassPane()
- * orangeStainedClay()
- * orangeTulip()
- * ornateQuartzBlock()
- * ornateSilverFishBlock()
- * ornateStoneBrick()
- * ornateStoneSlab()
- * oxeyeDaisy()
- * packedIce()
- * painting()
- * paper()
- * peony()
- * pineLeaves()
- * pineLog()
- * pineWoodStairs()
- * pinkCarpet()
- * pinkDye()
- * pinkGlass()
- * pinkGlassPane()
- * pinkStainedClay()
- * pinkTulip()
- * piston()
- * podzol()
- * poisonousPotato()
- * polishedAndesite()
- * polishedDiorite()
- * polishedGranite()
- * poppy()
- * pork()
- * portal()
- * potato()
- * potatoes()
- * potion()
- * poweredMinecart()
- * poweredRail()
- * prismarineCrystals()
- * prismarineShard()
- * pufferFish()
- * pumpkin()
- * pumpkinPie()
- * pumpkinSeeds()
- * purpleCarpet()
- * purpleDye()
- * purpleGlass()
- * purpleGlassPane()
- * purpleStainedClay()
- * quartzBlock()
- * quartzPillarCap()
- * quartzPillarHorizontal()
- * quartzPillarVertical()
- * quartzSlab()
- * quartzStairs()
- * rabbitFoot()
- * rabbitHide()
- * rabbitStew()
- * rail()
- * rawBeef()
- * rawChicken()
- * rawFish()
- * rawMutton()
- * rawRabbit()
- * rawSalmon()
- * redCarpet()
- * redGlass()
- * redGlassPane()
- * redMushroom()
- * redSandstone()
- * redSandstoneBlank()
- * redSandstoneOrnate()
- * redSandstoneSlab()
- * redSandstoneStairs()
- * redStainedClay()
- * redStone()
- * redTulip()
- * redstoneBlock()
- * redstoneComparator()
- * redstoneLampOff()
- * redstoneOre()
- * redstoneRepeater()
- * redstoneTorchOn()
- * reed()
- * roseBush()
- * roseRed()
- * rottenFlesh()
- * saddle()
- * sand()
- * sandStoneTrimSlab()
- * sandstone()
- * sandstoneBlank()
- * sandstoneOrnate()
- * sandstoneSlab()
- * sandstoneStairs()
- * seeds()
- * shears()
- * shrub()
- * sign()
- * skeletonHead()
- * slimeBall()
- * snow()
- * snowBall()
- * snowBlock()
- * soil()
- * soulSand()
- * spawnEgg()
- * spiderEye()
- * spiderWeb()
- * sponge()
- * spruceDoor()
- * spruceFence()
- * spruceFenceGate()
- * spruceSapling()
- * spruceWood()
- * spruceWoodSlab()
- * stalRecord()
- * steak()
- * stick()
- * stickyPiston()
- * stone()
- * stoneAxe()
- * stoneBrick()
- * stoneBrickSilverFishBlock()
- * stoneBrickStairs()
- * stoneBricksSlab()
- * stoneButton()
- * stoneHoe()
- * stonePickaxe()
- * stonePlate()
- * stoneSilverFishBlock()
- * stoneSlab()
- * stoneSpade()
- * stoneSword()
- * storageMinecart()
- * stradRecord()
- * string()
- * sugar()
- * sunflower()
- * tallFern()
- * tallGrass()
- * tnt()
- * torch()
- * trapdoor()
- * trappedChest()
- * tripwireHook()
- * vines()
- * waitRecord()
- * wardRecord()
- * watch()
- * water()
- * waterBucket()
- * waterFlowing()
- * wheat()
- * whiteCarpet()
- * whiteGlass()
- * whiteGlassPane()
- * whiteStainedClay()
- * whiteTulip()
- * witherSkeletonHead()
- * woodAxe()
- * woodDoor()
- * woodHoe()
- * woodPickaxe()
- * woodPlate()
- * woodSlab()
- * woodSpade()
- * woodSword()
- * woodenButton()
- * woodenStairs()
- * woolBlack()
- * woolBlue()
- * woolBrown()
- * woolCyan()
- * woolDarkGreen()
- * woolGray()
- * woolLightBlue()
- * woolLightGray()
- * woolLightGreen()
- * woolMagenta()
- * woolOrange()
- * woolPink()
- * woolPurple()
- * woolRed()
- * woolWhite()
- * woolYellow()
- * workbench()
- * writtenBook()
- * yellowCarpet()
- * yellowFlower()
- * yellowGlass()
- * yellowGlassPane()
- * yellowStainedClay()
- * zombieHead()
 
 
 ## Entities module
@@ -7400,6 +5906,7 @@ The following functions are provided:
  * guardian()
  * horse()
  * husk()
+ * illusioner()
  * iron_golem()
  * item_frame()
  * leash_hitch()
@@ -7419,6 +5926,7 @@ The following functions are provided:
  * mushroom_cow()
  * ocelot()
  * painting()
+ * parrot()
  * pig()
  * pig_zombie()
  * player()

@@ -9,7 +9,7 @@ commands as extensions to the jsp command. For example, to create a
 new simple command for use by all players...
 
     /js command('hi', function(args,player){ echo( player, 'Hi ' + player.name); });
-  
+
 ... then players can use this command by typing...
 
     /jsp hi
@@ -51,7 +51,7 @@ of the ScriptCraft core.
 
 ...Displays a greeting to any player who issues the `/hi` command.
 
-### Example - timeofday-command.js 
+### Example - timeofday-command.js
 
     var times = {Dawn: 0, Midday: 6000, Dusk: 12000, Midnight:18000};
     commando('timeofday', function(params,player){
@@ -76,47 +76,45 @@ global commands for a plugin, please let me know.
 [pcppevt]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/player/PlayerCommandPreprocessEvent.html
 
 ***/
-if (__plugin.canary){
-  console.warn('commando plugin is not yet supported in CanaryMod');
-  return;
+if(__plugin.canary) {
+    console.warn('commando plugin is not supported in CanaryMod');
+    return;
 }
 var commands = {};
-
-exports.commando = function( name, func, options, intercepts ) {
-  var result = command( name, func, options, intercepts );
-  commands[name] = result;
-  return result;
+exports.commando = function(name, func, options, intercepts) {
+    var result = command(name, func, options, intercepts);
+    commands[name] = result;
+    return result;
 };
-
-events.playerCommandPreprocess( function( evt ) {
-  var msg = '' + evt.message;
-  var parts = msg.match( /^\/([^\s]+)/ );
-  if ( !parts ) {
-    return;
-  }
-  if ( parts.length < 2 ) {
-    return;
-  }
-  var command = parts[1];
-  if ( commands[command] ) {
-    evt.message = '/jsp ' + msg.replace( /^\//, '' );
-  }
-} );
-events.serverCommand( function( evt ) {
-  var msg = '' + evt.command;
-  var parts = msg.match( /^\/*([^\s]+)/ );
-  if ( !parts ) {
-    return;
-  }
-  if ( parts.length < 2 ) {
-    return;
-  }
-  var command = parts[1];
-  if ( commands[ command ] ) {
-    var newCmd = 'jsp ' + msg.replace( /^\//, '' );
-    if ( config.verbose ) {
-      console.log( 'Redirecting to : %s', newCmd );
+events.playerCommandPreprocess(function(evt) {
+    var msg = '' + evt.message;
+    var parts = msg.match(/^\/([^\s]+)/);
+    if(!parts) {
+        return;
     }
-    evt.command = newCmd;
-  }
+    if(parts.length < 2) {
+        return;
+    }
+    var command = parts[1];
+    if(commands[command]) {
+        evt.message = '/jsp ' + msg.replace(/^\//, '');
+    }
+});
+events.serverCommand(function(evt) {
+    var msg = '' + evt.command;
+    var parts = msg.match(/^\/*([^\s]+)/);
+    if(!parts) {
+        return;
+    }
+    if(parts.length < 2) {
+        return;
+    }
+    var command = parts[1];
+    if(commands[command]) {
+        var newCmd = 'jsp ' + msg.replace(/^\//, '');
+        if(config.verbose) {
+            console.log('Redirecting to : %s', newCmd);
+        }
+        evt.command = newCmd;
+    }
 });

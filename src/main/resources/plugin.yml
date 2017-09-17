@@ -3,25 +3,25 @@ main: org.scriptcraftjs.bukkit.ScriptCraftPlugin
 version: [[version]]
 commands:
    js:
-      description: Evaluate javascript.
-      usage: /<command> Javascript code
+      description: Evaluate JavaScript.
+      usage: /<command> JavaScript code
       permission: scriptcraft.evaluate
-      permission-message: You don't have <permission> permission. 
+      permission-message: You don't have <permission> permission.
    jsp:
-      description: run a javascript plugin command.
+      description: run a JavaScript plugin command.
       usage: /<command> command-name command-parameters
       permission: scriptcraft.proxy
       permission-message: You don't have <permission> permission.
 
 permissions:
    scriptcraft.*:
-        description: Gives access to all scriptcraft comands
+        description: Gives access to all ScriptCraft comands
         children:
                 scriptcraft.evaluate: true
                 scriptcraft.proxy: true
    scriptcraft.evaluate:
-        description: Allows you to evaluate javascript code
+        description: Allows you to evaluate JavaScript code
         default: op
    scriptcraft.proxy:
-        description: Allows you to run a javascript command blessed by the operator
+        description: Allows you to run a JavaScript command blessed by the operator
         default: true

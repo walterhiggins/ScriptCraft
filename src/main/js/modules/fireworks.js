@@ -15,7 +15,7 @@ Example....
 
 ... creates a single firework, while ....
 
-    /js firework().fwd(3).times(5) 
+    /js firework().fwd(3).times(5)
 
 ... creates 5 fireworks in a row. Fireworks have also been added as a
 possible option for the `arrow` module. To have a firework launch
@@ -32,11 +32,8 @@ location. For example...
 ![firework example](img/firework.png)
 
 ***/
-
-if ( __plugin.canary ) {
-  exports.firework = require('./canary/fireworks');
+if(__plugin.canary) {
+    exports.firework = require('./canary/fireworks');
 } else {
-  exports.firework = require('./bukkit/fireworks');
+    exports.firework = require('./bukkit/fireworks');
 }
-
-

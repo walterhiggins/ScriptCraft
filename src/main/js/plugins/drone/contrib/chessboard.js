@@ -31,30 +31,27 @@ d.chessboard();
 ![chessboard example](img/chessboardex1.png)
 
 ***/
-Drone.extend('chessboard', function( whiteBlock, blackBlock, width, depth ) {
-  var i, 
-      j,
-      block;
-
-
-  if ( typeof whiteBlock == 'undefined' ) {
-    whiteBlock = blocks.wool.white;
-  }
-  if ( typeof blackBlock == 'undefined' ) {
-    blackBlock = blocks.wool.black;
-  }
-  if ( typeof width == 'undefined' ) {
-    width = 8;
-  }
-  if ( typeof depth == 'undefined' ) {
-    depth = width;
-  }
-  var squares = [ blackBlock, whiteBlock ];
-
-  this.chkpt('chessboard-start');
-  for ( i = 0; i < depth; i++ ) { 
-    this.boxa( squares, width, 1, 1).fwd();
-    squares = squares.reverse();
-  }
-  this.move('chessboard-start');
+Drone.extend('chessboard', function(whiteBlock, blackBlock, width, depth) {
+    var i,
+        j,
+        block;
+    if(typeof whiteBlock == 'undefined') {
+        whiteBlock = blocks.wool.white;
+    }
+    if(typeof blackBlock == 'undefined') {
+        blackBlock = blocks.wool.black;
+    }
+    if(typeof width == 'undefined') {
+        width = 8;
+    }
+    if(typeof depth == 'undefined') {
+        depth = width;
+    }
+    var squares = [blackBlock, whiteBlock];
+    this.chkpt('chessboard-start');
+    for(i = 0; i < depth; i++) {
+        this.boxa(squares, width, 1, 1).fwd();
+        squares = squares.reverse();
+    }
+    this.move('chessboard-start');
 });

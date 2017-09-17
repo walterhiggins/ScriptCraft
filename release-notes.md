@@ -1,6 +1,142 @@
 RELEASE NOTES
 =============
 
+See the new [Help][help] doc for links to a large number of information resources.
+
+[help]: docs/Help.md
+
+3.2.3.4 ("Bad Zombie BETA")-2017-09-16
+---------------------------------
+
+1. Added blocks, PR#326 by CGMartin.
+2. Fix to watcher, PR#328 by CGMartin.
+
+3.2.3.3 ("Bad Zombie BETA")-2017-09-14
+---------------------------------
+
+1. Corrections/improvements in Installation.md and FAQ.
+
+3.2.3.2 ("Bad Zombie BETA")-2017-09-10
+---------------------------------
+
+1. Fix: removed diagnostic output generated into helper .js code. Release bump required to get new JAR to unpack/load in server.
+
+3.2.3.1 ("Bad Zombie BETA")-2017-09-10
+---------------------------------
+
+v3.2.3 begins the Release Candidate process. Changes are now frozen except for doc updates, minor typos, fixes reported during this BETA process. From 3.2.3.x the production release will be 3.3.0.
+
+1. Lots of doc changes, link additions and corrections. Details in the commit diffs.
+1. Significant FAQ update.
+1. Moved installation details from YPG to Installation doc. (Need to test to ensure that links in all docs are accessible in various use cases.)
+
+3.2.2.8a ("Bad Zombie")-2017-09-07
+---------------------------------
+
+1. *Developers!* : The root-level `contributing.md` doc has been updated and promoted to a first-class citizen and now resides in /doc as `Contributing.md`.
+1. Added Dependencies.md.
+1. Spigot.jar removed from the published repo. The documentation is now adequate for building a new/current .jar.
+1. Removed CanaryMod jar in last commit but replaced it for now just to build.
+1. Fixed some doc notes that lost formatting with default JS code formatting, also trivial typos.
+1. The Drone.MAX_VOLUME value has been temporarily reduced from 1 million to 216 thousand due to server crashes. See comments in src/main/js/modules/drone/index.js and change if your server can support it. See [issue](https://github.com/walterhiggins/ScriptCraft/issues/337).
+1. The final scriptcraft.jar file is now auto-copied to the /latest_jar folder. This is the file to drop into /plugins to install ScriptCraftJS.
+1. Re-arranged README a bit, reduced size (cuz no one likes a long README), moved some info to Installation.md doc and elsewhere.
+1. Other small changes.
+1. Travis:
+    1. On submitting the pull request to Walter's repo, Travis CI kicked in. While I was getting a good build in my (Tony) repo, Travis failed in Walter's. This happens when the Spigot.jar is removed. Rather than getting Travis to build a new Spigot.jar, or putting the file back into the repo, Travis is now pulling from a hard-coded DropBox file. So the repo still doesn't have the file, but Travis still gets a good build. That temporary solution will be modified later.
+    1. Modified Travis CI to use latest JDK8 from Oracle and OpenJDK.
+    1. If there is a failure, Travis will dump the .log files so we can see what went wrong.
+
+3.2.2.7 ("Bad Zombie")-2017-09-03
+---------------------------------
+
+1. More doc updates.
+1. Added support for blocking out doc text using BEGIN/END comments
+1. CanaryMod sections are no longer in docs, using above BEGIN/END, Canary will be removed in v4.
+1. Cow-Clicker from docs using above BEGIN/END, needs to be tested in Spigot for next release.
+1. Added conditionals in build.xml to skip some processing related to CanaryMod.
+
+3.2.2.6 ("Bad Zombie")-2017-09-01
+---------------------------------
+
+1. Added/updated **many** documentation pages.
+    * Installation.md
+    * UNInstallation.md
+    * Help.md
+    * StartStop.md
+    * Permissions.md
+1. Removed startup messages added for testing.
+1. Changed messages in scripts from "not Yet supported for Canary" to simply "not supported for Canary" ... if it's not supported now for Canary then it will not be since support for Canary will be removed in v4.0.
+1. Fixed issue where script formatting broke generated documentation.
+
+3.2.2.5 ("Bad Zombie")-2017-08-24
+---------------------------------
+
+Cosmetic change : All .js JavaScript files have been formatted consistently. As noted below this might not be preferable formatting for everyone, but it is completely standardized throughout the app now.
+
+3.2.2.4 ("Bad Zombie")-2017-08-23
+---------------------------------
+
+1. Fixed issue where install/startup failed due to variable issue.
+1. Fixed regression where plugins folder got new folder "ScriptCraftJS" rather than long-time documented "scriptcraft". (Would be nice not to be forced to stay this way, see resources/plugin.yml)
+1. This release is now Nashorn-specific and will not work with Rhino, JDK 1.7, or Canary.
+1. ~~New issue has somehow been introduced where documentation includes the full scriptcraft.js file.~~
+1. Coding and building with NetBeans 8.2, I've re-fit the IDE with a new JavaScript code formatter that doesn't destroy the in-line comments. The next builds will have a lot of code formatting differences. These will be appealing for some, disagreeable to others, but I believe the code base is better with frequent formatting, we can discuss the nuances of style sometime later.
+
+Status: At least it installs and runs. This release can be installed in a new environment:
+
+1. You must be running Java 1.8 with Spigot 1.12.1.
+1. **Get a full backup!** This alpha build is not for someone who is worried about a damaged world or lost scripts.
+1. Stop your server
+1. Delete plugins/scripcraft folder
+1. Delete root /scriptcraft folder
+1. Overwrite plugins/scriptcraft.jar with the file from this repo: /latest_jar/scriptcraft.jar
+1. Start your server
+1. Watch the console and please copy/paste/report issues.
+1. In the console, try "js 2+2". If the console window shows "4", it's working. Go ahead and see what breaks.
+
+3.2.2bz Release (2017 08 23)
+----------------------------
+
+1. Spaces added in code formatting cause doc generation to fail. generateTOC.js now allows 0+ spaces in code comments for ## and ### doc headers.
+1. Corrected a few more typos, 'minecraft' to 'Minecraft', and a few ScriptCraft to ScriptCraftJS.
+1. Verified completion of issue #338, closed pull request. Contribution by rmariuzzo.
+1. Drone can now turn in a counter-clockwise direction with a negative count. Contribution by AndersBillLinden in pull #336.
+1. Added doc information about how to create upside down stairs. Contribution by AndersBillLinden in pull #331.
+1. In classroom mode, students can now unregister their listeners from outside the listener function. Contribution by cgmartin in pull #327.
+1. The Drone constructor now accepts another Drone object, which includes all of the parameters required to clone to new Drone. Contribution by softwaremaverick in pull #323.
+1. Started new Installation.md with more up-to-date notes on initial installation.
+1. Started new Dependencies.md which explains the history of Canary, Bukkit, Spigot, etc and why we do or do not support various packages. (File is not yet included in this build.)
+
+~~FIX: Issue with variable causes install to fail. **Do not install.**~~
+
+3.2.2bz Release (2017 08 18)
+--------------------------
+
+Work in Progress : ~~"Anxious-Villager"~~ "Bad-Zombie"
+(Not for beta/production use!)
+**This build has not been run in even a test environment yet!**
+
+1. Bug fixes and updated from Spigot 1.11.2 to Spigot 1.12.1.
+    (org.bukkit.craftbukkit.v1_12_R1)
+1. Minor doc updates.
+1. Added some in-line code comments.
+1. Some new blocks.
+1. Changes to build.xml for ant.
+1. Change in doc generation for Windows development.
+1. Moved JDK version reference from build.xml to build.properties.
+1. Updated license.txt to 2017.
+1. Some code looks changed. In some places it has, but in others it's only been reformatted and minor typos have been corrected.
+1. Modified .gitignore to serve as a backup for now, but  GH project shouldn't include build config data.
+
+
+**TODO for Bad-Zombie:**
+
+1. Check build.local.properties.
+1. Check docker info in README.txt
+1. Do we need CopyLibs?
+1. Look at FAQ
+
 3.2.1 Release (2016 12 23)
 --------------------------
 
@@ -10,13 +146,13 @@ Bug fixes and updated from Spigot 1.9 to Spigot 1.11.2
 --------------------------
 
 Bug fixes and updated from Spigot 1.8.8 to Spigot 1.9
- 
+
 Fixed issues #256 and #287
 
 3.1.12 Release (2015 12 30)
 ---------------------------
 
-Added new modules 
+Added new modules
 
 * lightning
 
@@ -26,7 +162,7 @@ To make lightning strikes when and where any arrow lands:
 
     var lightning = require('lightning');
     events.projectileHit( function( event ) {
-      if (entities.arrow( event.projectile ) 
+      if (entities.arrow( event.projectile )
         lightning( event.projectile );
     });
 
@@ -38,7 +174,7 @@ Added new modules
 * entities
 * spawn
 
-And new Drone function `spawn()` 
+And new Drone function `spawn()`
 
 To use:
 Point at a block then type...
@@ -54,12 +190,12 @@ Bug fix: modules/bukkit/sounds.js now works (fixed for Bukkit/SpigotMC/Glowstone
 
 3.1.9 Release (2015 08 01)
 --------------------------
-Bug fix: minigames/scoreboard.js module's updatePlayerScore() function did not work with latest version of CanaryMod. 
+Bug fix: minigames/scoreboard.js module's updatePlayerScore() function did not work with latest version of CanaryMod.
 Using /scoreboard command instead. See https://github.com/walterhiggins/ScriptCraft/issues/261
 
 3.1.8 Release (2015 06 07)
 --------------------------
-Bug fix: Fixes drone on Spigot 1.8.7 with JDK 7 see 
+Bug fix: Fixes drone on Spigot 1.8.7 with JDK 7 see
 https://github.com/walterhiggins/ScriptCraft/issues/254
 
 
@@ -69,7 +205,7 @@ Added workaround for https://bugs.openjdk.java.net/browse/JDK-8072596 to recipes
 
 3.1.6 Release (2015 05 31)
 --------------------------
-Provide more helpful error messages when trying to require modules which don't exist e.g. 
+Provide more helpful error messages when trying to require modules which don't exist e.g.
 require('greetings') should fail but indicate if there's a 'greeting' module present instead.
 
 Fixes problem with Fireworks module on Mac OS.
@@ -95,7 +231,7 @@ Various other fixes. See https://github.com/walterhiggins/ScriptCraft/compare/3.
 
 3.1.1 Release (2015 01 24)
 --------------------------
-This is a bug fix release. 
+This is a bug fix release.
 See https://github.com/walterhiggins/ScriptCraft/compare/3.1.0...master for bug fix details.
 
 3.1.0 Release (2015 01 11)
@@ -154,8 +290,8 @@ Instead use this:
 
     events.blockDestroy( function( event ) { ... });
 
-or 
-   
+or
+
     events.on(net.canarymod.hook.block.BlockDestroyHook, function( event ) { ... });
 
 
@@ -188,7 +324,7 @@ This is consistent with how MC treats other commands for tab completion.
 ----------
 Improved Tab Completion to work with Java Enums too.
 
-2014 05 12 
+2014 05 12
 ----------
 Turn off modality for conversations which are started via the 'input' module.
 (with modality on, player.sendMessage() is suppressed but player.sendRawMessage() isn't.
@@ -204,7 +340,7 @@ handler...
 
     events.playerJoin(function(event){
        event.player.sendMessage('welcome!');
-    }); 
+    });
 
 Added new sounds module for simpler sounds playback and in-game tab completion.
 All of the org.bukkit.Sound enum values are attached to the sounds module.
@@ -215,7 +351,7 @@ Added asynchronous `input()` function module.
 
 Version 2.0.6 (2014 03 15)
 --------------------------
-## Simplified Event handling code. 
+## Simplified Event handling code.
 
 The callback function for event handling now only takes 1 single
 parameter, the event which triggered the callback. The listener object
@@ -224,7 +360,7 @@ is bound to the callback function so within the callback function
 been greatly simplified.  You can have an event handler which fires
 only once by unregistering itself within the callback like this...
 
-    events.on('player.PlayerJoinEvent', function( event ) { 
+    events.on('player.PlayerJoinEvent', function( event ) {
 
        // do something
        event.player.sendMessage( "You're the first player to join" );
@@ -253,9 +389,9 @@ Improved background processing of Drone build commands.
 
 # 2014 02 19
 
-## Version 2.0.5 
+## Version 2.0.5
 
-Asynchronous building. Drone now builds asynchronously. 
+Asynchronous building. Drone now builds asynchronously.
 Fixed Issue #119 (exceptions on reload/stop)
 
 # 2014 02 11
@@ -282,7 +418,7 @@ message to the MQTT broker whenever a player breaks a block...
     var mqtt = require('sc-mqtt');
     var client = mqtt.client('tcp://localhost:1883','scripcraft');
     client.connect();
-    
+
     events.on('block.BlockBreakEvent', function(listener, event){
         client.publish('minecraft','block-broken');
     });
@@ -297,7 +433,7 @@ To have minecraft react to inputs from an MQTT broker...
         if (topic == 'arduino'){
            // do something with payload.
         }
-    });    
+    });
 
 [mqtt]: http://mqtt.org/
 # 2014 01 14
@@ -424,7 +560,7 @@ alias like this...
 Aliases can be set on a per-player basis or can be set globally (for
 all players). Aliases are automatically saved and restore on server
 shutdown/startup.
-    
+
 ## Added console global variable.
 
 ScriptCraft now has a `console` global variable which can be used for
@@ -478,12 +614,12 @@ If you have written plugins using a previous version of ScriptCraft then you hav
     CommonJS/Node.js modules work.
 
 If you have any questions or concerns or need help converting your
-existing javascript plugin, contact please post questions on the
+existing JavaScript plugin, contact please post questions on the
 [ScriptCraft forum][scforum] or open an issue on the [Github
 project][github]
 
 [github]: http://github.com/walterhiggins/ScriptCraft
-[scforum]: https://groups.google.com/forum/?fromgroups=#!forum/scriptcraft---scripting-minecraft 
+[scforum]: https://groups.google.com/forum/?fromgroups=#!forum/scriptcraft---scripting-minecraft
 
 In ScriptCraft, files and modules are in one-to-one correspondence. As
 an example, foo.js loads the module circle.js in the same directory.
@@ -502,7 +638,7 @@ The contents of foo.js:
 The contents of circle.js:
 
     var PI = Math.PI;
-    
+
     exports.area = function (r) {
       return PI * r * r;
     };

@@ -1,7 +1,7 @@
 /************************************************************************
 ## Inventory Module
-This module provides functions to add items to, remove items from and check the 
-contents of a player or NPC's inventory. 
+This module provides functions to add items to, remove items from and check the
+contents of a player or NPC's inventory.
 
 ### Usage
 The inventory module is best used in conjunction with the items module. See below for examples of usage.
@@ -36,8 +36,8 @@ The inventory module exposes a single function which when passed a player or NPC
 * contains : checks to see if there is the specified type and amount of item in the inventory (Expects parameters of type `net.canarymod.api.inventory.Item` - I strongly recommend using the `items` module for constructing items)
 
 ***/
-if ( __plugin.canary ) {
-  module.exports = require('../canary/inventory');
+if(__plugin.canary) {
+    module.exports = require('../canary/inventory');
 } else {
-  module.exports = require('../bukkit/inventory');
+    module.exports = require('../bukkit/inventory');
 }

@@ -15,8 +15,8 @@ existing sign in the game world.
 #### Parameters
 
  * Label : A string which will be displayed in the topmost line of the
-   sign. This label is not interactive.  
- * options : An array of strings which can be selected on the sign by 
+   sign. This label is not interactive.
+ * options : An array of strings which can be selected on the sign by
    right-clicking/interacting.
  * callback : A function which will be called whenever a player
    interacts (changes selection) on a sign. This callback in turn
@@ -26,7 +26,7 @@ existing sign in the game world.
    * sign : The [org.bukkit.block.Sign][buksign] which the player interacted with.
    * text : The text for the currently selected option on the sign.
    * number : The index of the currently selected option on the sign.
- 
+
  * selectedIndex : optional: A number (starting at 0) indicating which
    of the options should be selected by default. 0 is the default.
 
@@ -39,15 +39,15 @@ an interactive sign.
 #### Example: Create a sign which changes the time of day.
 
 ##### plugins/signs/time-of-day.js
-   
-```javascript 
+
+```javascript
 var utils = require('utils'),
     signs = require('signs');
 
 var onTimeChoice = function(event){
     var selectedIndex = event.number;
     // convert to Minecraft time 0 = Dawn, 6000 = midday, 12000 = dusk, 18000 = midnight
-    var time = selectedIndex * 6000; 
+    var time = selectedIndex * 6000;
     event.player.location.world.setTime(time);
 };
 
@@ -55,12 +55,12 @@ var onTimeChoice = function(event){
 var convertToTimeMenu = signs.menu('Time of Day',
     ['Dawn', 'Midday', 'Dusk', 'Midnight'],
     onTimeChoice);
-        
+
 exports.time_sign = function( player ){
     var sign = signs.getTargetedBy(player);
     if ( !sign ) {
         throw new Error('You must look at a sign');
-    } 
+    }
     convertToTimeMenu(sign);
 };
 ```
@@ -81,12 +81,12 @@ the entity has targeted. It is a utility function for use by plugin authors.
 
 #### Example
 
-```javascript 
+```javascript
 var signs = require('signs'),
     utils = require('utils');
 var player = utils.player('tom1234');
 var sign = signs.getTargetedBy( player );
-if ( !sign ) { 
+if ( !sign ) {
     echo( player, 'Not looking at a sign');
 }
 ```
@@ -95,32 +95,32 @@ if ( !sign ) {
 [bukle]: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/LivingEntity.html
 
 ***/
-function hasSign( block ){
-  if (__plugin.canary){
-    if (block && block.tileEntity && block.tileEntity.setTextOnLine){
-      return block.tileEntity;
+function hasSign(block) {
+    if(__plugin.canary) {
+        if(block && block.tileEntity && block.tileEntity.setTextOnLine) {
+            return block.tileEntity;
+        }
     }
-  }
-  if (__plugin.bukkit){
-    if (block && block.state && block.state.setLine){
-      return block.state;
+    if(__plugin.bukkit) {
+        if(block && block.state && block.state.setLine) {
+            return block.state;
+        }
     }
-  }
-  return false;
+    return false;
 }
 var utils = require('utils');
 var menu = require('./menu')(hasSign);
 // include all menu exports
-for ( var i in menu ) {
-  exports[i] = menu[i];
+for(var i in menu) {
+    exports[i] = menu[i];
 }
 
-function getTargetedBy( livingEntity ) {
-  var location = utils.getMousePos( livingEntity );
-  if ( !location ) { 
-    return null;
-  }
-  return hasSign(utils.blockAt(location));
+function getTargetedBy(livingEntity) {
+    var location = utils.getMousePos(livingEntity);
+    if(!location) {
+        return null;
+    }
+    return hasSign(utils.blockAt(location));
 }
 exports.getTargetedBy = getTargetedBy;
 exports.hasSign = hasSign;
