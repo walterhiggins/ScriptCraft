@@ -1,24 +1,18 @@
 /************************************************************************
 ## Blocks Module
-
 You hate having to lookup [Data Values][dv] when you use ScriptCraft's
 Drone() functions. So do I.  So I created this blocks object which is
 a helper object for use in construction.
-
 ### Examples
-
     box( blocks.oak ); // creates a single oak wood block
     box( blocks.sand, 3, 2, 1 ); // creates a block of sand 3 wide x 2 high x 1 long
     box( blocks.wool.green, 2 ); // creates a block of green wool 2 blocks wide
-	
 Color aliased properties that were a direct descendant of the blocks
 object are no longer used to avoid confusion with carpet and stained
 clay blocks. In addition, there's a convenience array `blocks.rainbow`
 which is an array of the 7 colors of the rainbow (or closest
 approximations).
-
 The blocks module is globally exported by the Drone module.
-
 ***/
 var colors = require('./block-colors');
 
