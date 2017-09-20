@@ -38,8 +38,12 @@ if (FRAMEWORK == 'CanaryMod'){
 for (var i = 0; i< content.length; i++){
   out.println(content[i]);
 }
-while ( ( entry = zis.nextEntry) != null) { 
-  var name = new String( entry.name );
+var names = [];
+while ( ( entry = zis.nextEntry) != null) {
+  names.push(String(entry.name));
+}
+names.sort();
+names.forEach(function(name) {
   var re1 = /org\/bukkit\/event\/.+Event\.class$/;
   if (canary){
     re1 = /net\/canarymod\/hook\/.+Hook\.class$/;
@@ -54,7 +58,7 @@ while ( ( entry = zis.nextEntry) != null) {
     }
     var isAbstract = Modifier.isAbstract(clz.getModifiers());
     if ( isAbstract ) {
-      continue;
+      return;
     }
     var parts = name.split('.');
     var shortName = null;
@@ -77,7 +81,7 @@ while ( ( entry = zis.nextEntry) != null) {
       '/*********************',
       '### events.' + fname + '()',
       '',
-      '#### Parameters ',
+      '#### Parameters',
       '',
       ' * callback - A function which is called whenever the ['+ shortName + ' event](' + javaDoc + shortName.replace('.','/') + '.html) is fired',
       '',
@@ -97,7 +101,4 @@ while ( ( entry = zis.nextEntry) != null) {
     }
     out.println('};');
   }
-}
-
-
-  
+});
