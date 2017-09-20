@@ -217,6 +217,7 @@ Walter Higgins
    * [events.entityDeath()](#eventsentitydeath-1)
    * [events.entityExplode()](#eventsentityexplode)
    * [events.entityInteract()](#eventsentityinteract)
+   * [events.entityPickupItem()](#eventsentitypickupitem)
    * [events.entityPortalEnter()](#eventsentityportalenter)
    * [events.entityPortal()](#eventsentityportal)
    * [events.entityPortalExit()](#eventsentityportalexit)
@@ -273,6 +274,7 @@ Walter Higgins
    * [events.asyncPlayerChat()](#eventsasyncplayerchat)
    * [events.asyncPlayerPreLogin()](#eventsasyncplayerprelogin)
    * [events.playerAchievementAwarded()](#eventsplayerachievementawarded)
+   * [events.playerAdvancementDone()](#eventsplayeradvancementdone)
    * [events.playerAnimation()](#eventsplayeranimation)
    * [events.playerArmorStandManipulate()](#eventsplayerarmorstandmanipulate)
    * [events.playerBedEnter()](#eventsplayerbedenter)
@@ -300,6 +302,7 @@ Walter Higgins
    * [events.playerJoin()](#eventsplayerjoin)
    * [events.playerKick()](#eventsplayerkick)
    * [events.playerLevelChange()](#eventsplayerlevelchange)
+   * [events.playerLocaleChange()](#eventsplayerlocalechange)
    * [events.playerLogin()](#eventsplayerlogin)
    * [events.playerMove()](#eventsplayermove-1)
    * [events.playerPickupArrow()](#eventsplayerpickuparrow)
@@ -320,6 +323,7 @@ Walter Higgins
    * [events.playerUnleashEntity()](#eventsplayerunleashentity)
    * [events.playerUnregisterChannel()](#eventsplayerunregisterchannel)
    * [events.playerVelocity()](#eventsplayervelocity)
+   * [events.broadcastMessage()](#eventsbroadcastmessage)
    * [events.mapInitialize()](#eventsmapinitialize)
    * [events.pluginDisable()](#eventsplugindisable-1)
    * [events.pluginEnable()](#eventspluginenable-1)
@@ -2414,6 +2418,14 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
+### events.entityPickupItem()
+
+#### Parameters
+
+ * callback - A function which is called whenever the [entity.EntityPickupItemEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityPickupItemEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.entityPortalEnter()
 
 #### Parameters
@@ -2862,6 +2874,14 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
+### events.playerAdvancementDone()
+
+#### Parameters
+
+ * callback - A function which is called whenever the [player.PlayerAdvancementDoneEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerAdvancementDoneEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.playerAnimation()
 
 #### Parameters
@@ -3078,6 +3098,14 @@ The crucial difference is that the events module now has functions for each of t
 
  * priority - optional - see events.on() for more information.
 
+### events.playerLocaleChange()
+
+#### Parameters
+
+ * callback - A function which is called whenever the [player.PlayerLocaleChangeEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerLocaleChangeEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
 ### events.playerLogin()
 
 #### Parameters
@@ -3235,6 +3263,14 @@ The crucial difference is that the events module now has functions for each of t
 #### Parameters
 
  * callback - A function which is called whenever the [player.PlayerVelocityEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerVelocityEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.broadcastMessage()
+
+#### Parameters
+
+ * callback - A function which is called whenever the [server.BroadcastMessageEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/server/BroadcastMessageEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 
@@ -6376,9 +6412,11 @@ The following functions are provided:
  * birchFence()
  * birchFenceGate()
  * birchWoodStairs()
+ * blackGlazedTerracotta()
  * blackShulkerBox()
  * blazePowder()
  * blazeRod()
+ * blueGlazedTerracotta()
  * blueShulkerBox()
  * boat()
  * boatAcacia()
@@ -6398,6 +6436,7 @@ The following functions are provided:
  * brewingStandItem()
  * brick()
  * brickStairs()
+ * brownGlazedTerracotta()
  * brownMushroom()
  * brownShulkerBox()
  * bucket()
@@ -6435,6 +6474,8 @@ The following functions are provided:
  * commandMinecart()
  * commandRepeating()
  * compass()
+ * concrete()
+ * concretePowder()
  * cookedBeef()
  * cookedChicken()
  * cookedFish()
@@ -6442,6 +6483,7 @@ The following functions are provided:
  * cookedRabbit()
  * cookie()
  * crops()
+ * cyanGlazedTerracotta()
  * cyanShulkerBox()
  * darkOakDoor()
  * darkOakDoorItem()
@@ -6538,7 +6580,9 @@ The following functions are provided:
  * grass()
  * grassPath()
  * gravel()
+ * grayGlazedTerracotta()
  * grayShulkerBox()
+ * greenGlazedTerracotta()
  * greenRecord()
  * greenShulkerBox()
  * grilledPork()
@@ -6577,6 +6621,7 @@ The following functions are provided:
  * jungleFence()
  * jungleFenceGate()
  * jungleWoodStairs()
+ * knowledgeBook()
  * ladder()
  * lapisBlock()
  * lapisOre()
@@ -6591,12 +6636,15 @@ The following functions are provided:
  * leaves()
  * leaves2()
  * lever()
+ * lightBlueGlazedTerracotta()
  * lightBlueShulkerBox()
+ * limeGlazedTerracotta()
  * limeShulkerBox()
  * lingeringPotion()
  * log()
  * log2()
  * longGrass()
+ * magentaGlazedTerracotta()
  * magentaShulkerBox()
  * magma()
  * magmaCream()
@@ -6627,10 +6675,12 @@ The following functions are provided:
  * noteBlock()
  * observer()
  * obsidian()
+ * orangeGlazedTerracotta()
  * orangeShulkerBox()
  * packedIce()
  * painting()
  * paper()
+ * pinkGlazedTerracotta()
  * pinkShulkerBox()
  * pistonBase()
  * pistonExtension()
@@ -6651,6 +6701,7 @@ The following functions are provided:
  * pumpkinPie()
  * pumpkinSeeds()
  * pumpkinStem()
+ * purpleGlazedTerracotta()
  * purpleShulkerBox()
  * purpurBlock()
  * purpurDoubleSlab()
@@ -6679,6 +6730,7 @@ The following functions are provided:
  * record7()
  * record8()
  * record9()
+ * redGlazedTerracotta()
  * redMushroom()
  * redNetherBrick()
  * redRose()
@@ -6709,6 +6761,7 @@ The following functions are provided:
  * shulkerShell()
  * sign()
  * signPost()
+ * silverGlazedTerracotta()
  * silverShulkerBox()
  * skull()
  * skullItem()
@@ -6774,6 +6827,7 @@ The following functions are provided:
  * waterLily()
  * web()
  * wheat()
+ * whiteGlazedTerracotta()
  * whiteShulkerBox()
  * wood()
  * woodAxe()
@@ -6792,6 +6846,7 @@ The following functions are provided:
  * workbench()
  * writtenBook()
  * yellowFlower()
+ * yellowGlazedTerracotta()
  * yellowShulkerBox()
 
 
@@ -7394,6 +7449,7 @@ The following functions are provided:
  * guardian()
  * horse()
  * husk()
+ * illusioner()
  * iron_golem()
  * item_frame()
  * leash_hitch()
@@ -7413,6 +7469,7 @@ The following functions are provided:
  * mushroom_cow()
  * ocelot()
  * painting()
+ * parrot()
  * pig()
  * pig_zombie()
  * player()
