@@ -1,0 +1,5 @@
+main-class = org.scriptcraftjs.canarymod.ScriptCraftPlugin
+isLibrary = false
+name = ScriptCraft
+author = Walter Higgins
+version = [[version]]
