@@ -124,7 +124,6 @@ var blocks = {
       dark_oak: '126:13'
     },
     snow: 78,
-    stone: 44,
     oak: 126,
     spruce: '126:1',
     birch: '126:2',
@@ -187,7 +186,6 @@ var blocks = {
   clay: 82,
   sugar_cane: 83,
   jukebox: 84,
-  fence: 85,
   pumpkin: 86,
   netherrack: 87,
   soulsand: 88,
