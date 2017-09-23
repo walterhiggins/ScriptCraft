@@ -35,10 +35,9 @@ exports.signs = {
   // This is an example sign that displays a menu of times of day
   // interacting with the sign will change the time of day accordingly.
   //
-  // In game, create a sign , target it and type ...
+  // In game, create a sign, target it and type ...
   //
-  // /js var signExamples = require('./signs/examples');
-  // /js signExamples.timeOfDay()
+  // /js signs.menu_time()
   //
   menu_time:  function(cmdSender){
     var sign = signs.getTargetedBy(cmdSender);
@@ -48,4 +47,3 @@ exports.signs = {
     convertToTimeMenu(sign);
   }
 };
-
