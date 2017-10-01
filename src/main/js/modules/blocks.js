@@ -324,10 +324,12 @@ var blocks = {
     acacia: 187
   },
   fence: {
+    oak: 85,
+    nether_brick: 113,
     spruce: 188,
     birch: 189,
     jungle: 190,
-    oak: 191,
+    dark_oak: 191,
     acacia: 192
   },
   end_rod: 198,
