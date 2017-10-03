@@ -1,5 +1,5 @@
 'use strict';
-/*global require, module, __plugin, __dirname, echo, persist, isOp, events, Packages, command, global */
+/*global require, module, __plugin, __dirname, echo, persist, isOp, events, Packages, command, global, setInterval, clearInterval, setTimeout, clearTimeout */
 var utils = require('utils'),
   watcher = require('watcher'),
   autoload = require('plugin').autoload,
@@ -134,6 +134,8 @@ function revokeScripting ( player ) {
 var autoloadTime = {};
 
 var playerEventHandlers = {};
+var playerIntervals = {};
+var playerTimeouts = {};
 
 function reloadPlayerModules( playerContext, playerDir ){
   /*
@@ -151,6 +153,32 @@ function reloadPlayerModules( playerContext, playerDir ){
     eventHandlers = playerEventHandlers[playerDirPath];
   }
   /*
+   Glorf 20171003 also unregister any timeout and interval registered
+   */
+  var intervals = playerIntervals[playerDirPath];
+  if (intervals){
+    for (var i = 0;i < intervals.length; i++){
+      clearInterval(intervals[i]);
+    }
+    intervals.length  = 0;
+  } else {
+    playerIntervals[playerDirPath] = [];
+    intervals = playerIntervals[playerDirPath];
+  }
+
+
+  var timeouts = playerTimeouts[playerDirPath];
+  if (timeouts){
+    for (var i = 0;i < timeouts.length; i++){
+      clearTimeout(timeouts[i]);
+    }
+    timeouts.length  = 0;
+  } else {
+    playerTimeouts[playerDirPath] = [];
+    timeouts = playerTimeouts[playerDirPath];
+  }
+
+  /*
    override events.on() so that the listener is stored here so it can be unregistered.
    */
   var oldOn = events.on;
@@ -159,8 +187,30 @@ function reloadPlayerModules( playerContext, playerDir ){
     eventHandlers.push(handler);
   };
   events.on = newOn;
+  /*
+   Gloorf 20171003 override setInterval()/setTimeout() so the timeout/interval object is stored to be unregistered
+   */
+  var oldInterval = global.setInterval;
+  var newInterval = function(callback, delay) {
+    var handler = oldInterval(callback, delay);
+    intervals.push(handler);
+    return handler;
+  };
+  global.setInterval = newInterval;
+
+  var oldTimeout = global.setTimeout;
+  var newTimeout = function(callback, delay) {
+    var handler = oldTimeout(callback, delay);
+    timeouts.push(handler);
+    return handler;
+  };
+  global.setTimeout = newTimeout;
+
   autoload( playerContext, playerDir, { cache: false });
   events.on = oldOn;
+  global.setInterval = oldInterval;
+  global.setTimeout = oldTimeout;
+
 }
 function grantScripting( player ) {
   console.log('Enabling scripting for player ' + player.name);
