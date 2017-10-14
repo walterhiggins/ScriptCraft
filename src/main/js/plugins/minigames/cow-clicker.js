@@ -42,8 +42,8 @@ your own mini-game...
 ***/
 var sounds = require('sounds');
 
-if ( __plugin.canary ){
-  console.warn('cow-clicker minigame is not yet supported in CanaryMod');
+if ( __plugin.canary || __plugin.bukkit){
+  console.warn('cow-clicker minigame is not yet supported in CanaryMod or Bukkit');
   return;
 }
 var store = {},
