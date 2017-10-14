@@ -23,7 +23,6 @@ var _getProperties = function( o ) {
   var result = [], 
     i,
     j,
-    isObjectMethod,
     propValue,
     typeofProperty;
 
@@ -42,7 +41,6 @@ var _getProperties = function( o ) {
       //
       // don't include standard Object methods
       //
-      isObjectMethod = false;
       for ( j = 0; j < _javaLangObjectMethods.length; j++ ) {
         if ( _javaLangObjectMethods[j] == i ) {
           continue propertyLoop;
@@ -50,14 +48,14 @@ var _getProperties = function( o ) {
       }
       typeofProperty = null;
       try { 
-	propValue = o[i];
+        propValue = o[i];
         typeofProperty = typeof propValue;
       } catch( e ) {
         if ( e.message == 'java.lang.IllegalStateException: Entity not leashed' ) {
           // wph 20131020 fail silently for Entity leashing in craftbukkit
         } else {
-	  // don't throw an error during tab completion just make a best effort to 
-	  // do the job.
+          // don't throw an error during tab completion just make a best effort to 
+          // do the job.
         }
       }
       if ( typeofProperty == 'function' ) {
@@ -75,14 +73,16 @@ var _getProperties = function( o ) {
         if ( typeof o[i] == 'function'){ 
           if ( ! (o[i] instanceof java.lang.Object) ) {
             try {
-              if (o[i].constructor){} // throws error for java objects in jre7 
+              /* eslint no-empty: off */
+              if (o[i].constructor){
+              } // throws error for java objects in jre7 
               result.push(i + '()');
             } catch (e ){
               result.push(i);
             }
             
           }else {
-           result.push( i );
+            result.push( i );
           }
         } else {
           result.push( i );
@@ -110,7 +110,6 @@ var onTabCompleteJS = function( ) {
     objectProps,
     candidate,
     re,
-    li,
     possibleCompletion,
     result,
     cmdSender,
@@ -180,7 +179,7 @@ var onTabCompleteJS = function( ) {
         try {
           // this causes problems in jre if symbol is an enum and name is partial-match
           symbol = symbol[name]; // this causes problem in jre8 if name is ''
-	} catch (e){
+        } catch (e){
           symbol = null;
           break;
         }
@@ -215,8 +214,6 @@ var onTabCompleteJS = function( ) {
           // server.wo
           //
           //print('debug:case Y2: server.wo');
-          
-          li = statement.lastIndexOf(name);
           for ( i = 0; i < objectProps.length; i++ ) {
             if ( objectProps[i].indexOf(name) == 0 ) {
               candidate = lastSymbol.substring( 0, lastSymbol.lastIndexOf( name ) );
@@ -227,7 +224,7 @@ var onTabCompleteJS = function( ) {
           }
         }
       } else {
-	//print('debug:case Y3: server');
+        //print('debug:case Y3: server');
         objectProps = _getProperties( symbol );
         for ( i = 0; i < objectProps.length; i++ ) {
           re = new RegExp( lastSymbol+ '$', 'g' );

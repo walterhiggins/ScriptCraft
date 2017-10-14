@@ -22,7 +22,7 @@ for a list of possible entities (creatures) which can be spawned.
 
 ***/
 var entities = require('entities'),
-    spawn = require('spawn');
+  spawn = require('spawn');
 var entityNames = [];
 for (var name in entities){
   entityNames.push(name);

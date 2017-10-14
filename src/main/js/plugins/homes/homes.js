@@ -110,7 +110,7 @@ var homes =  plugin( 'homes', {
       return;
     }
     if ( !this._canVisit( guest, host ) ) {
-      echo( guest,  'You can not visit ' + host.name + "'s home yet" );
+      echo( guest,  'You can not visit ' + host.name + '\'s home yet' );
       return;
     }
     homeLoc = utils.locationFromJSON( loc );
@@ -131,9 +131,9 @@ var homes =  plugin( 'homes', {
     invitations = _store.invites[ host.name ];
     if ( invitations ) {
       for ( i = 0; i < invitations.length; i++ ) {
-	if ( invitations[i] == guest.name ) {
-	  return true;
-	}
+        if ( invitations[i] == guest.name ) {
+          return true;
+        }
       }
     }
     return false;
@@ -169,9 +169,9 @@ var homes =  plugin( 'homes', {
     for ( host in _store.invites ) {
       guests = _store.invites[host];
       for ( i = 0; i < guests.length; i++ ) {
-	if ( guests[i] == player.name ) {
-	  result.push(host);
-	}
+        if ( guests[i] == player.name ) {
+          result.push(host);
+        }
       }
     }
     return result;
@@ -181,22 +181,22 @@ var homes =  plugin( 'homes', {
    */
   ilist: function( player ) {
     var result = [],
-	onlinePlayers,
-	i;
+      onlinePlayers,
+      i;
     player = utils.player( player );
     // if home is public - all players
     if ( _store.openHouses[player.name] ) {
       onlinePlayers = bkBukkit.getOnlinePlayers();
       for ( i = 0; i < onlinePlayers.length; i++ ) {
-	if ( onlinePlayers[i].name != player.name) {
-	  result.push( onlinePlayers[i].name );
-	}
+        if ( onlinePlayers[i].name != player.name) {
+          result.push( onlinePlayers[i].name );
+        }
       }
     } else {
       if ( _store.invites[player.name] ) { 
-	result = _store.invites[ player.name ];
+        result = _store.invites[ player.name ];
       } else {
-	result = [];
+        result = [];
       }
     }
     return result;
@@ -232,7 +232,7 @@ var homes =  plugin( 'homes', {
     revisedInvites = [];
     for ( i = 0; i < invitations.length; i++ ) {
       if ( invitations[i] != guest.name ) { 
-	revisedInvites.push( invitations[i] );
+        revisedInvites.push( invitations[i] );
       }
     }
     _store.invites[host.name] = revisedInvites;

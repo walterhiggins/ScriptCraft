@@ -75,7 +75,7 @@ module specification, the '.js' suffix is optional.
   }
 
   function _canonize(file){ 
-    return "" + file.canonicalPath.replaceAll("\\\\","/"); 
+    return '' + file.canonicalPath.replaceAll('\\\\','/'); 
   }
     
   function readModuleFromDirectory( dir ) {
@@ -102,7 +102,7 @@ module specification, the '.js' suffix is optional.
   }
 
 
-/**********************************************************************
+  /**********************************************************************
 ### module name resolution
 
 When resolving module names to file paths, ScriptCraft uses the following rules...
@@ -139,7 +139,6 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
   function resolveModuleToFile( moduleName, parentDir ) {
     var file = new File(moduleName),
       i = 0,
-      pathWithJSExt,
       resolvedFile;
     if ( file.exists() ) {
       return fileExists(file);
@@ -162,9 +161,9 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     } else {
       if ((file = new File(parentDir, moduleName)).exists()) {
         return fileExists(file);
-      } else if ((file = new File(parentDir, moduleName + ".js")).exists()) { // try .js extension
+      } else if ((file = new File(parentDir, moduleName + '.js')).exists()) { // try .js extension
         return file;
-      } else if ((file = new File(parentDir, moduleName + ".json")).exists()) { // try .json extension
+      } else if ((file = new File(parentDir, moduleName + '.json')).exists()) { // try .json extension
         return file;
       }
     }
@@ -175,12 +174,12 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
    */
   function _require( parentFile, path, options ) {
     var file,
-        canonizedFilename,
-        moduleInfo,
-        buffered,
-        head = '(function(exports,module,require,__filename,__dirname){ ',
-        code = '',
-        line = null;
+      canonizedFilename,
+      moduleInfo,
+      buffered,
+      head = '(function(exports,module,require,__filename,__dirname){ ',
+      code = '',
+      line = null;
 
     if ( typeof options == 'undefined' ) { 
       options = { cache: true };
@@ -192,33 +191,33 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
 
     file = resolveModuleToFile(path, parentFile);
     if ( !file ) {
-      var errMsg = '' + _format("require() failed to find matching file for module '%s' " + 
-                                "in working directory '%s' ", [path, parentFile.canonicalPath]);
+      var errMsg = '' + _format('require() failed to find matching file for module \'%s\' ' + 
+                                'in working directory \'%s\' ', [path, parentFile.canonicalPath]);
       if (! ( (''+path).match( /^\./ ) ) ) {
         errMsg = errMsg + ' and not found in paths ' + JSON.stringify(modulePaths);
       }
       var find = _require(parentFile, 'find').exports;
       var allJS = [];
       for (var i = 0;i < modulePaths.length; i++){
-	var js = find( modulePaths[i] );
-	for (var j = 0;j < js.length; j++){
-	  if (js[j].match(/\.js$/)){
-	    allJS.push( js[j].replace(modulePaths[i],'') );
-	  }
-	}
+        var js = find( modulePaths[i] );
+        for (var j = 0;j < js.length; j++){
+          if (js[j].match(/\.js$/)){
+            allJS.push( js[j].replace(modulePaths[i],'') );
+          }
+        }
       }
       var pathL = path.toLowerCase();
       var candidates = [];
       for (i = 0;i < allJS.length;i++){
-	var filenameparts = allJS[i];
-	var candidate = filenameparts.replace(/\.js/,'') ;
-	var lastpart = candidate.toLowerCase();
-	if (pathL.indexOf(lastpart) > -1 || lastpart.indexOf(pathL) > -1){
-	  candidates.push(candidate);
-	}
+        var filenameparts = allJS[i];
+        var candidate = filenameparts.replace(/\.js/,'') ;
+        var lastpart = candidate.toLowerCase();
+        if (pathL.indexOf(lastpart) > -1 || lastpart.indexOf(pathL) > -1){
+          candidates.push(candidate);
+        }
       }
       if (candidates.length > 0){
-	errMsg += '\nBut found module/s named: ' + candidates.join(',') + ' - is this what you meant?';
+        errMsg += '\nBut found module/s named: ' + candidates.join(',') + ' - is this what you meant?';
       }
       throw new Error(errMsg);
     }
@@ -239,8 +238,8 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     }
     buffered.close(); // close the stream so there's no file locks
 
-    if(canonizedFilename.toLowerCase().substring(canonizedFilename.length - 5) === ".json") // patch code when it is json
-      code = "module.exports = (" + code + ");";
+    if(canonizedFilename.toLowerCase().substring(canonizedFilename.length - 5) === '.json') // patch code when it is json
+      code = 'module.exports = (' + code + ');';
     
     moduleInfo = {
       loaded: false,
@@ -262,9 +261,9 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
        wph 20140313 JRE8 (nashorn) gives misleading linenumber of evaluating code not evaluated code.
        This can be fixed by instead using __engine.eval 
        */
-      throw new Error( "Error evaluating module " + path
-          + " line #" + e.lineNumber
-	  + " : " + e.message, canonizedFilename, e.lineNumber );
+      throw new Error( 'Error evaluating module ' + path
+          + ' line #' + e.lineNumber
+          + ' : ' + e.message, canonizedFilename, e.lineNumber );
     }
     var __dirname = '' + file.parentFile.canonicalPath;
     var parameters = [
@@ -277,22 +276,22 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     try {
       compiledWrapper
         .apply(moduleInfo.exports,  /* this */
-               parameters);   
+          parameters);   
     } catch (e) {
       var snippet = '';
       if ((''+e.lineNumber).match(/[0-9]/)){
-	var lines = code.split(/\n/);
-	if (e.lineNumber > 1){
-	  snippet = ' ' + lines[e.lineNumber-2] + '\n';
-	}
-	snippet += '> ' + lines[e.lineNumber-1] + '\n';
-	if (e.lineNumber < lines.length){
-	  snippet += ' ' + lines[e.lineNumber] + '\n';
-	}
+        var lines = code.split(/\n/);
+        if (e.lineNumber > 1){
+          snippet = ' ' + lines[e.lineNumber-2] + '\n';
+        }
+        snippet += '> ' + lines[e.lineNumber-1] + '\n';
+        if (e.lineNumber < lines.length){
+          snippet += ' ' + lines[e.lineNumber] + '\n';
+        }
       }
-      throw new Error( "Error executing module " + path
-        + " line #" + e.lineNumber
-        + " : " + e.message + (snippet?('\n' + snippet):''), canonizedFilename, e.lineNumber );
+      throw new Error( 'Error executing module ' + path
+        + ' line #' + e.lineNumber
+        + ' : ' + e.message + (snippet?('\n' + snippet):''), canonizedFilename, e.lineNumber );
     }
     if ( hooks ) { 
       hooks.loaded( canonizedFilename );
@@ -318,4 +317,5 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
   var _format = java.lang.String.format;
   return _requireClosure( new java.io.File(rootDir) );
   // last line deliberately has no semicolon!
+  /* eslint semi: off*/
 })

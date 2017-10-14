@@ -1,7 +1,7 @@
 'use strict';
 /*global require*/
 var Drone = require('drone'),
-    blocks = require('blocks');
+  blocks = require('blocks');
 
 /************************************************************************
 ### Drone.rainbow() method
@@ -34,7 +34,7 @@ function rainbow( radius ) {
     colors,
     bm;
   
-  if ( typeof radius == "undefined" ) {
+  if ( typeof radius == 'undefined' ) {
     radius = 18;
   }
   
@@ -51,7 +51,7 @@ function rainbow( radius ) {
       radius: radius-i,
       strokeWidth: 2,
       quadrants: {topright: true,
-                  topleft: true},
+        topleft: true},
       orientation: 'vertical'}).right().up();
   }
   return this.move('rainbow');

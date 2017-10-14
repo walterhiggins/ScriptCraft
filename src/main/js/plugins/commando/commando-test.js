@@ -15,8 +15,8 @@ commando( 'js-time' , function( params, sender ) {
   if ( sender.location ) {
     for ( ; i < 4; i++ ) {
       if ( times[i].toLowerCase() == time ) { 
-	sender.location.world.setTime( i * 6000 );
-	break;
+        sender.location.world.setTime( i * 6000 );
+        break;
       }
     }
   } else {

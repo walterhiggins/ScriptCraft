@@ -6,6 +6,29 @@ var bkLocation = Packages.org.bukkit.Location,
   sound,
   soundName;
 
+function play(sound, locationOrHasLocation,  volume, pitch) {
+  var location = null;
+  if (!locationOrHasLocation)
+    return;
+  if (locationOrHasLocation instanceof bkLocation){
+    location = locationOrHasLocation;
+  } else {
+    locationOrHasLocation = locationOrHasLocation.location;
+    if (locationOrHasLocation && locationOrHasLocation instanceof bkLocation ){
+      location = locationOrHasLocation;
+    }
+  }
+  if (!location){
+    console.warn('sounds.play() needs a location');
+    return;
+  }
+  if (typeof volume == 'undefined')
+    volume = 1;
+  if (typeof pitch == 'undefined')
+    pitch = 1;
+  location.world.playSound(location, sound, volume, pitch);
+}
+
 for ( ; i < len; i++ ) {
   sound = allSounds[i];
   soundName = '' + sound.name();
@@ -38,25 +61,4 @@ for ( ; i < len; i++ ) {
     };
   })(sound);
 }
-exports.play = function(sound, locationOrHasLocation,  volume, pitch) {
-  var location = null;
-  if (!locationOrHasLocation)
-    return;
-  if (locationOrHasLocation instanceof bkLocation){
-    location = locationOrHasLocation;
-  } else {
-    locationOrHasLocation = locationOrHasLocation.location;
-    if (locationOrHasLocation && locationOrHasLocation instanceof bkLocation ){
-      location = locationOrHasLocation;
-    }
-  }
-  if (!location){
-    console.warn('sounds.play() needs a location');
-    return;
-  }
-  if (typeof volume == 'undefined')
-    volume = 1;
-  if (typeof pitch == 'undefined')
-    pitch = 1;
-  location.world.playSound(location, sound, volume, pitch);
-};
+exports.play = play;

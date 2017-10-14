@@ -28,7 +28,7 @@ d.maze();
 
 ***/
 var Drone = require('drone'),
-    blocks = require('blocks');
+  blocks = require('blocks');
 
 // User-facing code starts here
 // Example: Try /js maze(5,7)
@@ -50,7 +50,7 @@ Drone.extend( function maze( width, length ) {
 function maze_make(x,y) {
   var n=x*y-1;
   if (n<0) {
-    console.log ("illegal maze dimensions");
+    console.log ('illegal maze dimensions');
     return ({x: 0, y: 0});
   }
   var horiz=[]; 
@@ -68,7 +68,7 @@ function maze_make(x,y) {
   }
   while (0<n) {
     var potential= [[here[0]+1, here[1]], [here[0],here[1]+1],
-        [here[0]-1, here[1]], [here[0],here[1]-1]];
+      [here[0]-1, here[1]], [here[0],here[1]-1]];
     var neighbors= [];
     for (j= 0; j < 4; j++)
       if (unvisited[potential[j][0]+1][potential[j][1]+1])
@@ -89,20 +89,20 @@ function maze_make(x,y) {
 }
 
 function maze_display(m) {
-  var text= [];
-  for (var j= 0; j<m.x*2+1; j++) {
+  var text= [], k, j;
+  for (j = 0; j < m.x * 2 + 1; j++) {
     var line= [];
     if (0 == j%2)
-      for (var k=0; k<m.y*4+1; k++)
+      for (k = 0; k < m.y * 4 + 1; k++)
         if (0 == k%4) 
           line[k]= '+';
         else
-          if (j>0 && m.verti[j/2-1][Math.floor(k/4)])
-            line[k]= ' ';
-          else
-            line[k]= '-';
+        if (j>0 && m.verti[j/2-1][Math.floor(k/4)])
+          line[k]= ' ';
+        else
+          line[k]= '-';
     else
-      for (var k=0; k<m.y*4+1; k++)
+      for (k = 0; k < m.y * 4 + 1; k++)
         if (0 == k%4)
           if (k>0 && m.horiz[(j-1)/2][k/4-1])
             line[k]= ' ';

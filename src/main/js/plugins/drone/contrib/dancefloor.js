@@ -1,8 +1,8 @@
 'use strict';
 /*global require, clearInterval, setInterval*/
 var Drone = require('drone'),
-    blocks = require('blocks'),
-    SECOND = 1000;
+  blocks = require('blocks'),
+  SECOND = 1000;
 /************************************************************************
 ### Drone.dancefloor() method
 Create an animated dance floor of colored tiles some of which emit light.

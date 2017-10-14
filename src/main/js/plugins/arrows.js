@@ -27,18 +27,18 @@ player23's arrows explosive.
  
 ***/
 var Drone = require('drone'),
-    teleport = require('teleport'),
-    signs = require('signs'),
-    fireworks = require('fireworks'),
-    utils = require('utils'),
-    bkArrow = org.bukkit.entity.Arrow,
-    bkPlayer = org.bukkit.entity.Player,
-    EXPLOSIVE_YIELD = 2.5,
-    store = persist('arrows',{ players: { } }),
-    arrows = {},
-    i,
-    type,
-    _types = [ 'Normal', 'Explosive', 'Teleport', 'Flourish', 'Lightning', 'Firework' ];
+  teleport = require('teleport'),
+  signs = require('signs'),
+  fireworks = require('fireworks'),
+  utils = require('utils'),
+  bkArrow = org.bukkit.entity.Arrow,
+  bkPlayer = org.bukkit.entity.Player,
+  EXPLOSIVE_YIELD = 2.5,
+  store = persist('arrows',{ players: { } }),
+  arrows = {},
+  i,
+  type,
+  _types = [ 'Normal', 'Explosive', 'Teleport', 'Flourish', 'Lightning', 'Firework' ];
 
 exports.arrows = arrows;
 
@@ -83,10 +83,10 @@ arrows.sign = function( cmdSender ) {
  */
 function onBukkitArrowHit( event ) {
   var projectile = event.entity,
-      world = projectile.world,
-      shooter = projectile.shooter,
-      fireworkCount = 5,
-      arrowType;
+    world = projectile.world,
+    shooter = projectile.shooter,
+    fireworkCount = 5,
+    arrowType;
 
   function launch(){
     fireworks.firework( projectile.location );

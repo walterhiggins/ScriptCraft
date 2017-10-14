@@ -1,8 +1,6 @@
 /*global nashorn, exports, require, Packages, __plugin*/
 var cmPriority = Packages.net.canarymod.plugin.Priority,
   cmCanary = Packages.net.canarymod.Canary,
-  cmDispatcher = Packages.net.canarymod.hook.Dispatcher,
-  cmRegisteredPluginListener = Packages.net.canarymod.plugin.RegisteredPluginListener,
   cmPluginListener = Packages.net.canarymod.plugin.PluginListener;
 var cmHookExecutor = cmCanary.hooks();
 
@@ -13,8 +11,7 @@ exports.on = function(
   handler,   
   /* (optional) String (CRITICAL, HIGH, NORMAL, LOW, PASSIVE), */
   priority   ) {
-  var handlerList,
-    regd,
+  var regd,
     eventExecutor;
 
   if ( typeof priority == 'undefined' ) {

@@ -1,7 +1,7 @@
 'use strict';
 /*global require, __plugin, org*/
 var Drone = require('drone'),
-    blocks = require('blocks');
+  blocks = require('blocks');
 /************************************************************************
 ### Drone.hangtorch() method
 
@@ -33,14 +33,14 @@ function canHang( block ) {
   if (__plugin.bukkit){
     var bkMaterial = org.bukkit.Material;
     if ( block.type.equals(bkMaterial.AIR) ||
-	 block.type.equals(bkMaterial.VINE) ) {
+         block.type.equals(bkMaterial.VINE) ) {
       return true;
     } 
   }
   if (__plugin.canary){
     if (block.typeId == blocks.air || 
-	block.typeId == blocks.vines ) {
-	return true;
+ block.typeId == blocks.vines ) {
+      return true;
     }
   }
   return false;
@@ -56,7 +56,7 @@ function hangtorch() {
     this.back();
     if (moves == 10){
       this
-	.fwd(moves);
+        .fwd(moves);
       console.log('nowhere to hang torch');
       return;
     }

@@ -1,7 +1,7 @@
 'use strict';
 /*global require */
 var Drone = require('drone'),
-    blocks = require('blocks');
+  blocks = require('blocks');
 /************************************************************************
 ### Drone.chessboard() method
 
@@ -32,10 +32,7 @@ d.chessboard();
 
 ***/
 Drone.extend('chessboard', function( whiteBlock, blackBlock, width, depth ) {
-  var i, 
-      j,
-      block;
-
+  var i;
 
   if ( typeof whiteBlock == 'undefined' ) {
     whiteBlock = blocks.wool.white;

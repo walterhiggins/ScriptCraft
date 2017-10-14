@@ -398,10 +398,10 @@ This function takes a single parameter and returns true if it's an operator or h
 var global = this;
 var server;
 global.nashorn = typeof Java !== 'undefined';
-/*
-  private implementation
-*/
+/* private implementation */
+
 var __onDisableImpl;
+/* eslint no-unused-vars: off */
 function __onDisable ( __engine, __plugin ) {
   __onDisableImpl( __engine, __plugin);
 }
@@ -413,7 +413,7 @@ function __onEnable ( __engine, __plugin, __script ) {
       msg = arguments[1];
     } else { 
       if ( typeof self == 'undefined' ) {
-	return;
+        return;
       }
       sender = self;
       msg = arguments[0];
@@ -469,7 +469,7 @@ function __onEnable ( __engine, __plugin, __script ) {
         }
         result = JSON.parse(contents);
       } catch ( e ) {
-	logError('Error evaluating ' + canonizedFilename + ', ' + e );
+        logError('Error evaluating ' + canonizedFilename + ', ' + e );
       }
       finally {
         try {
@@ -489,7 +489,6 @@ function __onEnable ( __engine, __plugin, __script ) {
     var result = null,
       file = filename,
       r,
-      parent,
       reader,
       br,
       code,
@@ -512,7 +511,7 @@ function __onEnable ( __engine, __plugin, __script ) {
         result = __engine.eval( wrappedCode );
         // issue #103 avoid side-effects of || operator on Mac Rhino
       } catch ( e ) {
-	logError('Error evaluating ' + canonizedFilename + ', ' + e );
+        logError('Error evaluating ' + canonizedFilename + ', ' + e );
       }
       finally {
         try {
@@ -523,7 +522,7 @@ function __onEnable ( __engine, __plugin, __script ) {
       }
     } else {
       if ( warnOnFileNotFound ) {
-	logWarn(canonizedFilename + ' not found' );
+        logWarn(canonizedFilename + ' not found' );
       }
     }
     return result;
@@ -548,12 +547,12 @@ function __onEnable ( __engine, __plugin, __script ) {
       Canary.manager().enablePlugin( pluginName );
     } else {
       __plugin.pluginLoader.disablePlugin( __plugin );
-      org.bukkit.event.HandlerList["unregisterAll(org.bukkit.plugin.Plugin)"]( __plugin );
+      org.bukkit.event.HandlerList['unregisterAll(org.bukkit.plugin.Plugin)']( __plugin );
       server.scheduler.cancelTasks( __plugin );
       __plugin.pluginLoader.enablePlugin( __plugin );
     }
   } // end _refresh()
-  function _onDisable( evt ) {
+  function _onDisable(/* evt */) {
     // save config
     _save( global.config, new File( jsPluginsRootDir, 'data/global-config.json' ) );
     _runUnloadHandlers();
@@ -575,7 +574,6 @@ function __onEnable ( __engine, __plugin, __script ) {
       sender,
       args,
       cmd, 
-      label,
       fnBody;
 
     if ( __plugin.canary ) {
@@ -583,16 +581,15 @@ function __onEnable ( __engine, __plugin, __script ) {
       args = arguments[1];
       cmdName = (''+args[0]).toLowerCase().replace(/^\//,'');
       for ( i = 1; i < args.length ; i++ ) {
-	jsArgs.push( '' + args[i] );
+        jsArgs.push( '' + args[i] );
       }
     } else {
       sender = arguments[0];
       cmd = arguments[1];
-      label = arguments[2];
       args = arguments[3];
       cmdName = ( '' + cmd.name ).toLowerCase();
       for ( ; i < args.length ; i++ ) {
-	jsArgs.push( '' + args[i] );
+        jsArgs.push( '' + args[i] );
       }
     }
     result = false;
@@ -628,7 +625,7 @@ function __onEnable ( __engine, __plugin, __script ) {
                 echo(sender, JSON.stringify( jsResult, replacer, 2) );
               }
             } catch ( displayError ) { 
-	      logError('Error while trying to display result: ' + jsResult + ', Error: '+ displayError) ;
+              logError('Error while trying to display result: ' + jsResult + ', Error: '+ displayError) ;
             }
           }
         } 
@@ -708,7 +705,7 @@ function __onEnable ( __engine, __plugin, __script ) {
    */
   (function(){
     var jsonFileReader = new FileReader( new File( jsPluginsRootDirName + '/lib/json2.js' ) );
-    var jsonLoaded = __engine['eval(java.io.Reader)']( jsonFileReader );
+    __engine['eval(java.io.Reader)']( jsonFileReader );
   }());
 
   global.addUnloadHandler = _addUnloadHandler;
@@ -724,7 +721,7 @@ function __onEnable ( __engine, __plugin, __script ) {
    setup paths to search for modules
    */
   var modulePaths = [ jsPluginsRootDirName + '/lib/',
-                      jsPluginsRootDirName + '/modules/' ];
+    jsPluginsRootDirName + '/modules/' ];
 
   if ( config.verbose ) {
     logger.info( 'Setting up CommonJS-style module system. Root Directory: ' + jsPluginsRootDirName );

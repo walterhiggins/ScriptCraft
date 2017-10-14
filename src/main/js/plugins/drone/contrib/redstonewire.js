@@ -1,7 +1,6 @@
 'use strict';
 /*global require*/
-var Drone = require('drone'),
-    blocks = require('blocks');
+var Drone = require('drone');
 
 //
 // usage: 
@@ -25,85 +24,85 @@ var Drone = require('drone'),
 
 Drone.extend('wireblock',function(blockType) 
 {
-    this.chkpt('wireblock')
-        .box(blockType,1,2,1)  // 2 blocks tall, top block will be wire dropped on lower
-        .up();
+  this.chkpt('wireblock')
+    .box(blockType,1,2,1)  // 2 blocks tall, top block will be wire dropped on lower
+    .up();
 
-    this.world.getBlockAt(this.x,this.y,this.z).setTypeId(55); //apply wire
+  this.world.getBlockAt(this.x,this.y,this.z).setTypeId(55); //apply wire
 
-    return this.move('wireblock');
+  return this.move('wireblock');
 });
 
 Drone.extend('wire',function ()
 {
-    this.chkpt('wire')
-        .up();
+  this.chkpt('wire')
+    .up();
 
-    this.world.getBlockAt(this.x,this.y,this.z).setTypeId(55);  // apply wire
+  this.world.getBlockAt(this.x,this.y,this.z).setTypeId(55);  // apply wire
 
-    return this.move('wire');
+  return this.move('wire');
 });
 
 Drone.extend('torchblock', function(blockType)
 {
-    this.box(blockType,1,2,1)  // 2 blocks tall
-        .up();
+  this.box(blockType,1,2,1)  // 2 blocks tall
+    .up();
 
-    this.world.getBlockAt(this.x,this.y,this.z).setTypeId(76);  // apply torch
+  this.world.getBlockAt(this.x,this.y,this.z).setTypeId(76);  // apply torch
 
-    return this.down();    
+  return this.down();    
 });
 
 Drone.extend('repeaterblock',function(blockType) 
 {
-    this.chkpt('repeaterblock')
-        .box(blockType,1,2,1) 
-        .up();
+  this.chkpt('repeaterblock')
+    .box(blockType,1,2,1) 
+    .up();
 
-    var block = this.world.getBlockAt(this.x,this.y,this.z);
-    block.setTypeId(94);        // apply repeater
+  var block = this.world.getBlockAt(this.x,this.y,this.z);
+  block.setTypeId(94);        // apply repeater
 
-    // redstone repeater dirs: north=0,east=1,south=2,west=3
-    var direction = [1,2,3,0][this.dir];    // convert drone dir to repeater dir.
-    block.setData(direction);   
+  // redstone repeater dirs: north=0,east=1,south=2,west=3
+  var direction = [1,2,3,0][this.dir];    // convert drone dir to repeater dir.
+  block.setData(direction);   
 
-    return this.move('repeaterblock');
+  return this.move('repeaterblock');
 });
 
 
 Drone.extend('wirestraight',function (blockType,distance)
 {
-    this.chkpt('wirestraight');
+  this.chkpt('wirestraight');
 
-    this.torchblock(blockType);
+  this.torchblock(blockType);
+  this.fwd();
+
+  for (var i = 1; i < distance; i++) {
+    if(i % 14 == 0)
+    {
+      this.repeaterblock(blockType);
+    }
+    else
+    {
+      this.wireblock(blockType);
+    }
+
     this.fwd();
+  }
 
-    for (var i = 1; i < distance; i++) {
-        if(i % 14 == 0)
-        {
-            this.repeaterblock(blockType);
-        }
-        else
-        {
-            this.wireblock(blockType);
-        }
-
-        this.fwd();
-    };
-
-    return this.move('wirestraight');
+  return this.move('wirestraight');
 });
 
 
 Drone.extend('redstoneroad', function (roadBlockType, redstoneunderBlockType, distance)
 {
-    return  this.down()
-                .wirestraight(redstoneunderBlockType, distance)
-                .right()
-                .box(roadBlockType, 4,1,distance)
-                .right(4)
-                .wirestraight(redstoneunderBlockType, distance)
-                .up();
+  return  this.down()
+    .wirestraight(redstoneunderBlockType, distance)
+    .right()
+    .box(roadBlockType, 4,1,distance)
+    .right(4)
+    .wirestraight(redstoneunderBlockType, distance)
+    .up();
 });
 
 

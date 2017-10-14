@@ -1,8 +1,7 @@
 /*global Java, exports, org, __plugin */
 var bkEventPriority = org.bukkit.event.EventPriority,
   bkEventExecutor = org.bukkit.plugin.EventExecutor,
-  bkRegisteredListener = org.bukkit.plugin.RegisteredListener,
-  bkEventPackage = 'org.bukkit.event.';
+  bkRegisteredListener = org.bukkit.plugin.RegisteredListener;
 
 var nashorn = (typeof Java != 'undefined');
 
@@ -15,7 +14,7 @@ function getHandlerListForEventType( eventType ){
     //so to avoid this problem, call getHandlerList using java.lang.reflect
     //methods
     clazz = eventType['class'];
-    result = clazz.getMethod("getHandlerList").invoke(null);
+    result = clazz.getMethod('getHandlerList').invoke(null);
     
   } else { 
     result = eventType.getHandlerList();

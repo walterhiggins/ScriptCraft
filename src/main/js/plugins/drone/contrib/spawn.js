@@ -1,6 +1,6 @@
 'use strict';
 var spawnFn = require('spawn'),
-    Drone = require('drone')
+  Drone = require('drone')
     ;
 function spawn(entityType){
   spawnFn(entityType, this.getBlock().location);

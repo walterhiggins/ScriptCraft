@@ -30,19 +30,19 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
         try {
             ScriptEngineManager factory = new ScriptEngineManager();
             this.engine = factory.getEngineByName("JavaScript");
-			if (this.engine == null) {
-				this.getLogger().severe(NO_JAVASCRIPT_MESSAGE);
-			} else {
-				Invocable inv = (Invocable) this.engine;
-				this.engine.eval(new InputStreamReader(this.getResource("boot.js")));
-				inv.invokeFunction("__scboot", this, engine);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			this.getLogger().severe(e.getMessage());
-		} finally {
-			currentThread.setContextClassLoader(previousClassLoader);
-		}
+            if (this.engine == null) {
+                this.getLogger().severe(NO_JAVASCRIPT_MESSAGE);
+            } else {
+                Invocable inv = (Invocable) this.engine;
+                this.engine.eval(new InputStreamReader(this.getResource("boot.js")));
+                inv.invokeFunction("__scboot", this, engine);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.getLogger().severe(e.getMessage());
+        } finally {
+            currentThread.setContextClassLoader(previousClassLoader);
+        }
     }
 
     public List<String> onTabComplete(CommandSender sender, Command cmd,

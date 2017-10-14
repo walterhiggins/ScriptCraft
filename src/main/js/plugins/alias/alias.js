@@ -22,7 +22,7 @@ it called `cw` (short for set Clock and Weather) which when invoked...
     /time set 4000
     /weather sun
 
-Aliases can use paramters as above. On the right hand side of the `=`, the 
+Aliases can use parameters as above. On the right hand side of the `=`, the 
 `{1}` refers to the first parameter provided with the `cw` alias, `{2}`
 refers to the second parameter and so on. So `cw 4000 sun` is converted to 
 `time set 4000` and `weather sun`. 
@@ -129,7 +129,7 @@ var _list = function( params, player ) {
       echo( player, 'Your aliases:');
       for ( alias in _store.players[player.name] ) {
         echo( player, alias + ' = ' + 
-	      JSON.stringify( _store.players[player.name][alias] ) );
+              JSON.stringify( _store.players[player.name][alias] ) );
       }
     } else {
       echo( player, 'You have no player-specific aliases.' );
@@ -156,7 +156,7 @@ var alias = plugin( 'alias', {
   help:   _help
 }, true );
 
-var aliasCmd = command( 'alias', function(  params, invoker ) {
+command( 'alias', function(  params, invoker ) {
   var operation = params[0], 
     fn;
   if ( !operation ) {
@@ -186,7 +186,6 @@ var _intercept = function( msg, invoker, exec ) {
     template = [], 
     isAlias = false, 
     cmds = [],
-    commandObj,
     filledinCommand,
     i;
   
@@ -205,9 +204,9 @@ var _intercept = function( msg, invoker, exec ) {
     filledinCommand = template[i].replace( /{([0-9]+)}/g, function( match, index ) { 
       index = parseInt( index, 10 );
       if ( msgParts[index] ) {
-	return msgParts[index];
+        return msgParts[index];
       } else {
-	return match;
+        return match;
       }
     });
     cmds.push( filledinCommand );

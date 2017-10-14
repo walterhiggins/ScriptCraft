@@ -12,7 +12,14 @@ module.exports = {
     "__dirname": true,
     "persist": true,
     "isOp": true,
-    "echo": true
+    "echo": true,
+    "scload": true,
+    "nashorn": true,
+    "plugin": true, // not the same as __plugin!!!
+    "command": true,
+    "config": true,
+    "window": false,
+    "document": false
   },
   "extends": "eslint:recommended",
   "rules": {

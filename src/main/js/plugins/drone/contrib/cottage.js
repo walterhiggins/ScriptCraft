@@ -1,7 +1,7 @@
 'use strict';
 /*global require */
 var Drone = require('drone'),
-    blocks = require('blocks');
+  blocks = require('blocks');
 /************************************************************************
 ### Drone.cottage() method
 
@@ -139,7 +139,7 @@ function cottage_road( numberCottages ) {
       .up()
       .cottage();
     return drone;
-  };
+  }
   //
   // step 3 build cottages on each side
   //

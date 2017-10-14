@@ -109,4 +109,4 @@ if (__plugin.canary){
 }
 for ( var func in helper ) {
   module.exports[func] = helper[func];
-};
+}

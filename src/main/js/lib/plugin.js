@@ -1,9 +1,6 @@
 'use strict';
 /*global persist,exports,config,__plugin,require*/
-var File = java.io.File,
-    FileWriter = java.io.FileWriter,
-    PrintWriter = java.io.PrintWriter,
-    find = require('./find');
+var find = require('./find');
 /*
   plugin management
 */
@@ -34,9 +31,9 @@ function _autoload( context, pluginDir, options ) {
    Reload all of the .js files in the given directory 
    */
   var sourceFiles = [],
-      property,
-      module,
-      pluginPath;
+    property,
+    module,
+    pluginPath;
   sourceFiles = find(pluginDir);
 
   var len = sourceFiles.length;

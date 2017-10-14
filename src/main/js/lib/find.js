@@ -4,10 +4,10 @@ module.exports = function find(dir, filter) {
   var result = [];
   function recurse( dir, store ) {
     var files, 
-	len,
-	i,
-	file,
-	dirfile = new File( dir );
+      len,
+      i,
+      file,
+      dirfile = new File( dir );
     
     if ( typeof filter == 'undefined' ) {
       files = dirfile.list();
