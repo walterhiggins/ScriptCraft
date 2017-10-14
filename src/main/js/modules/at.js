@@ -13,11 +13,10 @@ The utils.at() function will perform a given task at a given time in the
 
 #### Parameters
 
-* time24hr : The time in 24hr form - e.g. 9:30 in the morning is '09:30' while
-   9:30 pm is '21:30', midnight is '00:00' and midday is '12:00'
-   * callback : A javascript function which will be invoked at the given time.
-   * worlds : (optional) An array of worlds. Each world has its own clock. If no array of worlds is specified, all the server's worlds are used.
-   * repeat : (optional) true or false, default is true (repeat the task every day)
+* time24hr : The time in 24hr form - e.g. 9:30 in the morning is '09:30' while 9:30 pm is '21:30', midnight is '00:00' and midday is '12:00'
+* callback : A javascript function which will be invoked at the given time.
+* worlds : (optional) An array of worlds. Each world has its own clock. If no array of worlds is specified, all the server's worlds are used.
+* repeat : (optional) true or false, default is true (repeat the task every day)
 
 #### Example
 
