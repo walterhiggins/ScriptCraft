@@ -1,8 +1,7 @@
 'use strict';
-/*global __plugin, org, Packages, module, exports*/
 var entities = {},
   entitytypes,
-  t, i, name;
+  t, name;
 if (__plugin.bukkit) {
   entitytypes = org.bukkit.entity.EntityType.values();
 }
@@ -16,12 +15,12 @@ function getEntityHandler( entityType ) {
     }
     if (arguments.length == 1){
       if (entity){
-	if (__plugin.bukkit){
-	  return entity.type == entityType;
-	}
-	if (__plugin.canary){
-	  return entity.entityType == entityType;
-	}
+        if (__plugin.bukkit){
+          return entity.type == entityType;
+        }
+        if (__plugin.canary){
+          return entity.entityType == entityType;
+        }
       }
     }
     return null;

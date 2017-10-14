@@ -1,9 +1,9 @@
 'use strict';
 /*global __plugin, require, org, setTimeout, addUnloadHandler, global, Packages, server, module*/
 var utils = require('utils'),
-    blocks = require('blocks'),
-    THOUSAND = 1000,
-    MILLION = THOUSAND * THOUSAND;
+  blocks = require('blocks'),
+  THOUSAND = 1000,
+  MILLION = THOUSAND * THOUSAND;
 
 
 /*********************************************************************
@@ -454,7 +454,7 @@ function processQueue(){
     }
   }
   setTimeout( processQueue, 1000 / Drone.opsPerSec );
-};
+}
 setTimeout( processQueue, 1000 / Drone.opsPerSec );
 
 addUnloadHandler( function() {
@@ -661,7 +661,7 @@ Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite) {
   // 
   var blocksForBuild = blocks.slice();
   var len = blocksForBuild.length,
-  i = 0;
+    i = 0;
   for ( ; i < len; i++ ) {
     blocksForBuild[i] = this.getBlockIdAndMeta( blocksForBuild[ i ] );
   }
@@ -683,7 +683,7 @@ function isTooBig(w, h, d ) {
     ( w >= Drone.MAX_SIDE ) || 
     ( h >= Drone.MAX_SIDE ) ||
     ( d >= Drone.MAX_SIDE );
-};
+}
 /*
  faster cuboid because blockid, meta and world must be provided 
  use this method when you need to repeatedly place blocks
@@ -712,7 +712,7 @@ Drone.prototype.cuboidX = function( blockType, meta, w, h, d, immediate ) {
   if ( !immediate ) {
     this.then(function(){
       traverseDHW( this, d,h,w, function( ) {
-	this.setBlock( blockType, meta );
+        this.setBlock( blockType, meta );
       });
     });
   } else {
@@ -788,10 +788,10 @@ Drone.prototype.debug = function( ) {
 
 function getBlockIdAndMeta( b ) { 
   var defaultMeta = 0,
-      i = 0,
-      bs,
-      md,
-      sp;
+    i = 0,
+    bs,
+    md,
+    sp;
   if (typeof b === 'number' || /^[0-9]+$/.test(b)) {
     // wph 20130414 - use sensible defaults for certain blocks e.g. stairs
     // should face the drone.
@@ -801,17 +801,17 @@ function getBlockIdAndMeta( b ) {
       switch (b) {
       case blocks.sign:
       case blocks.ladder:
-	// bug: furnace, chest, dispenser don't always use the right metadata
+        // bug: furnace, chest, dispenser don't always use the right metadata
       case blocks.furnace:  
       case blocks.furnace_burning: 
       case blocks.chest:
       case blocks.enderchest:
       case blocks.dispenser:
-	defaultMeta = Drone.PLAYER_SIGN_FACING[ this.dir % 4 ];
-	break;
+        defaultMeta = Drone.PLAYER_SIGN_FACING[ this.dir % 4 ];
+        break;
       case blocks.sign_post:
-	defaultMeta = ( 12 + ( ( this.dir + 2 ) * 4 ) ) % 16;
-	break;
+        defaultMeta = ( 12 + ( ( this.dir + 2 ) * 4 ) ) % 16;
+        break;
       }
     }
     return [ b, defaultMeta ];
@@ -829,11 +829,10 @@ function getBlockIdAndMeta( b ) {
   }
   if (b.id){
     // wph 20141230 we are dealing with an object 
-    var blockInfo = b;
     var metadata = {};
     for (i in b){
       if (i !== 'id')
-	metadata[i] = b[i];
+        metadata[i] = b[i];
     }
     return [b.id, metadata];
   }
@@ -885,7 +884,7 @@ function traverseHeight( drone,n,callback ) {
     callback.call(drone, drone.y-s );
   }
   drone.y = s;
-};
+}
 function traverseDHW( drone, d,h,w, callback ){
   _traverse[drone.dir].depth( drone, d, function traverseDepthCallback( ) { 
     traverseHeight( this, h, function traverseHeightCallback( ) { 

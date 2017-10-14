@@ -54,8 +54,8 @@ http.request( {
 /*global exports, encodeURI, server, __plugin, setTimeout*/
 function paramsToString( params ) {
   var result = '',
-      paramNames = [],
-      i;
+    paramNames = [],
+    i;
   for ( i in params ) {
     paramNames.push( i );
   }
@@ -127,7 +127,7 @@ exports.request = function( request, callback ) {
     var stream;
     if ( rc == 200 ) {
       stream = conn.getInputStream();
-      response = new java.util.Scanner( stream ).useDelimiter("\\A").next();
+      response = new java.util.Scanner( stream ).useDelimiter('\\A').next();
     }
     invokeNow( function( ) {
       callback( rc, response );

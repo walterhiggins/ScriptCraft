@@ -1,6 +1,4 @@
 'use strict';
-/*global require, module*/
-
 /************************************************************************
 ### Copy & Paste using Drone
 
@@ -22,10 +20,10 @@ pasting the copied area elsewhere...
 
 #### Parameters
 
- * name - the name to be given to the copied area (used by `paste`)
- * width - the width of the area to copy
- * height - the height of the area to copy
- * length - the length of the area (extending away from the drone) to copy
+* name - the name to be given to the copied area (used by `paste`)
+* width - the width of the area to copy
+* height - the height of the area to copy
+* length - the length of the area (extending away from the drone) to copy
 
 #### Example
 
@@ -48,7 +46,7 @@ point) into memory.  the copied area can be referenced using the name
 ***/
 var clipBoard = {};
 
-function paste( name, immediate ){
+function paste( name/*, immediate */){
   console.warn('Drone copy/paste is no longer in active development');
   var Drone = this.constructor;
   var ccContent = clipBoard[name];
@@ -66,73 +64,73 @@ function paste( name, immediate ){
       var d = srcBlocks[ww][hh].length;
       this.traverseDepth(d,function( dd ) { 
         var b = srcBlocks[ww][hh][dd],
-            cb = b.type,
-            md = b.data,
-	    newDir,
-	    dir,
-	    a,
-	    c,
-	    len;
+          cb = b.type,
+          md = b.data,
+          newDir,
+          dir,
+          a,
+          c,
+          len;
         //
         // need to adjust blocks which face a direction
         //
         switch ( cb ) {
-          // 
-          // doors
-          //
-          case 64: // wood
-          case 71: // iron
-            // top half of door doesn't need to change
-            if ( md < 8 ) {
-              md = (md + dirOffset ) % 4;
-            }
-            break;
+        // 
+        // doors
+        //
+        case 64: // wood
+        case 71: // iron
+          // top half of door doesn't need to change
+          if ( md < 8 ) {
+            md = (md + dirOffset ) % 4;
+          }
+          break;
           //
           // stairs
           //
-          case 53:  // oak 
-          case 67:  // cobblestone 
-          case 108: // red brick 
-          case 109: // stone brick 
-          case 114: // nether brick
-          case 128: // sandstone
-          case 134: // spruce
-          case 135: // birch
-          case 136: // junglewood
-            dir = md & 0x3;
-            a = Drone.PLAYER_STAIRS_FACING;
-            len = a.length;
-            for ( c = 0; c < len; c++ ) { 
-              if ( a[c] == dir ) { 
-                break;
-              }
+        case 53:  // oak 
+        case 67:  // cobblestone 
+        case 108: // red brick 
+        case 109: // stone brick 
+        case 114: // nether brick
+        case 128: // sandstone
+        case 134: // spruce
+        case 135: // birch
+        case 136: // junglewood
+          dir = md & 0x3;
+          a = Drone.PLAYER_STAIRS_FACING;
+          len = a.length;
+          for ( c = 0; c < len; c++ ) { 
+            if ( a[c] == dir ) { 
+              break;
             }
-            c = (c + dirOffset ) %4;
-            newDir = a[c];
-            md = (md >>2<<2 ) + newDir;
-            break;
+          }
+          c = (c + dirOffset ) %4;
+          newDir = a[c];
+          md = (md >>2<<2 ) + newDir;
+          break;
           //
           // signs , ladders etc
           //
-          case 23: // dispenser
-          case 54: // chest
-          case 61: // furnace
-          case 62: // burning furnace
-          case 65: // ladder
-          case 68: // wall sign
-            a = Drone.PLAYER_SIGN_FACING;
-            len = a.length;
-            for ( c=0; c < len; c++ ) { 
-              if ( a[c] == md ) { 
-                break;
-              }
+        case 23: // dispenser
+        case 54: // chest
+        case 61: // furnace
+        case 62: // burning furnace
+        case 65: // ladder
+        case 68: // wall sign
+          a = Drone.PLAYER_SIGN_FACING;
+          len = a.length;
+          for ( c=0; c < len; c++ ) { 
+            if ( a[c] == md ) { 
+              break;
             }
-            c = (c + dirOffset ) %4;
-            newDir = a[c];
-            md = newDir;
-            break;
           }
-	  this.setBlock(cb,md);
+          c = (c + dirOffset ) %4;
+          newDir = a[c];
+          md = newDir;
+          break;
+        }
+        this.setBlock(cb,md);
       } );
     } );
   } );

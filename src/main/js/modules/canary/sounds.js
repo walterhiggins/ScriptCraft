@@ -38,26 +38,26 @@ for ( ; i < len; i++ ) {
     return function()
     {
       switch (arguments.length) { 
-	case 3:
-	  playSound(sound, arguments[0], arguments[1], arguments[2]);
-	  break;
-	case 2:
-	  // TODO: possible combinations: 
-	  // location, volume, 
-          // volume pitch
-	  playSound(sound, arguments[0],arguments[1]);
-	  break;
-	case 1:
-	  playSound(sound, arguments[0]);
-	  break;
-	case 0:
-	  // play the sound at full vol, medium pitch for all players
-	  //
-	  foreach( server.playerList, function(player) {
-	    playSound(sound, player, 1, 0);
-	  });
-	default:
-	}
+      case 3:
+        playSound(sound, arguments[0], arguments[1], arguments[2]);
+        break;
+      case 2:
+        // TODO: possible combinations: 
+        // location, volume, 
+        // volume pitch
+        playSound(sound, arguments[0],arguments[1]);
+        break;
+      case 1:
+        playSound(sound, arguments[0]);
+        break;
+      case 0:
+        // play the sound at full vol, medium pitch for all players
+        //
+        foreach( server.playerList, function(player) {
+          playSound(sound, player, 1, 0);
+        });
+      default:
+      }
     };
   })(sound);
 }

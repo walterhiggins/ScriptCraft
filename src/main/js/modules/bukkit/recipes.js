@@ -1,4 +1,3 @@
-var items = require('items');
 var bkShapedRecipe = org.bukkit.inventory.ShapedRecipe;
 
 exports.add = function( recipe ){

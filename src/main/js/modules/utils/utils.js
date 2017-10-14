@@ -1,7 +1,4 @@
-/*global require, __plugin, org, exports, server, setTimeout, Packages, setInterval, addUnloadHandler, clearInterval, events*/
 'use strict';
-var File = java.io.File;
-
 if (__plugin.bukkit){
   var bkBukkit = org.bukkit.Bukkit,
     bkLocation = org.bukkit.Location,
@@ -60,14 +57,14 @@ function _player( playerName ) {
   } else {
     if ( typeof playerName == 'string' )
       if (__plugin.canary) {
-	return Canary.server.getPlayer( playerName );
+        return Canary.server.getPlayer( playerName );
       } else { 
-	return bkBukkit.getPlayer( playerName );
+        return bkBukkit.getPlayer( playerName );
       }
     else
       return playerName; // assumes it's a player object
   }
-};
+}
 /*************************************************************************
 ### utils.world( worldName ) function
 
@@ -82,8 +79,8 @@ function _world( worldName ){
     var worldMgr = Canary.server.worldManager;
     try { 
       if (worldName === undefined){
-	var worldNames = worldMgr.getLoadedWorldsNames();
-	worldName = worldNames[0];
+        var worldNames = worldMgr.getLoadedWorldsNames();
+        worldName = worldNames[0];
       }
       return worldMgr.getWorld( worldName, true );
     } catch (error) {
@@ -153,7 +150,7 @@ function _locationToJSON( location ) {
     yaw: yaw,
     pitch: location.pitch
   };
-};
+}
 /*************************************************************************
 ### utils.locationToString() function
 
@@ -237,15 +234,15 @@ function getPlayerPos( player ){
   if ( player ) {
     if (__plugin.bukkit){
       if ( player instanceof bkBlockCommandSender )
-	return player.block.location;
+        return player.block.location;
       else
-	return player.location;
+        return player.location;
     }
     if (__plugin.canary){
       if ( player instanceof Packages.net.canarymod.api.world.blocks.CommandBlock)
-	return player.block.location;
+        return player.block.location;
       else
-	return player.location;
+        return player.location;
     }
   } 
   return null;
@@ -391,7 +388,7 @@ function _foreach( array, callback, context, delay, onCompletion ) {
       callback( array[i], i, context, array );
     }
   }
-};
+}
 exports.foreach = _foreach;
 /************************************************************************
 ### utils.nicely() function
@@ -428,11 +425,11 @@ function _nicely( next, hasNext, onDone, delay ) {
       onDone();
     }
   }
-};
+}
 exports.nicely = _nicely;
 
 function _at( time24hr, callback, pWorlds, repeat ) {
-  console.warn("utils.at() is deprecated, use require('at') instead");
+  console.warn('utils.at() is deprecated, use require(\'at\') instead');
   var at = require('at');
   return at( time24hr, callback, pWorlds, repeat);
 }
@@ -508,7 +505,7 @@ var jsFiles = utils.find('./', function(dir,name){
 ```
 ***/
 exports.find = function( path, filter){
-  console.warn("utils.find() is deprecated, use require('find') instead");
+  console.warn('utils.find() is deprecated, use require(\'find\') instead');
   return require('find')(path, filter);
 };
 /************************************************************************
@@ -536,9 +533,9 @@ exports.serverAddress = function serverAddress() {
     while (addresses.hasMoreElements()) {
       current_addr = addresses.nextElement();
       if ( current_addr.isLoopbackAddress() ) 
-	continue;
+        continue;
       if ( current_addr instanceof java.net.Inet4Address)
-          return current_addr.getHostAddress();
+        return current_addr.getHostAddress();
     }
   }  
   return null;
@@ -632,24 +629,25 @@ if (__plugin.canary) {
 }
 
 function getStatBukkit(){
+  var stat, player;
   if (arguments.length == 1){
-    var stat = arguments[1];
+    stat = arguments[1];
     return org.bukkit.Statistic[stat.toUpperCase()];
   } else {
-    var player = arguments[0];
-    var stat = arguments[1];
+    player = arguments[0];
+    stat = arguments[1];
     return player.getStatistic(org.bukkit.Statistic[stat.toUpperCase()]);
   }
   
 }
 function getStatCanary(){
-  var cmStatistics = Packages.net.canarymod.api.statistics.Statistics;
+  var stat, player, cmStatistics = Packages.net.canarymod.api.statistics.Statistics;
   if (arguments.length == 1){
-    var stat = arguments[0];
+    stat = arguments[0];
     return cmStatistics[stat.toUpperCase()].instance;
   } else {
-    var player = arguments[0];
-    var stat = arguments[1];
+    player = arguments[0];
+    stat = arguments[1];
     return player.getStat(cmStatistics[stat.toUpperCase()].instance);
   }
 }

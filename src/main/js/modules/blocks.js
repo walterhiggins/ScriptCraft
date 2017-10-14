@@ -121,7 +121,6 @@ var blocks = {
       dark_oak: '126:13'
     },
     snow: 78,
-    stone: 44,
     oak: 126,
     spruce: '126:1',
     birch: '126:2',
@@ -184,7 +183,6 @@ var blocks = {
   clay: 82,
   sugar_cane: 83,
   jukebox: 84,
-  fence: 85,
   pumpkin: 86,
   netherrack: 87,
   soulsand: 88,
@@ -218,7 +216,6 @@ var blocks = {
   mycelium: 110,
   lily_pad: 111,
   nether: 112,
-  nether_fence: 113,
   netherwart: 115,
   table_enchantment: 116,
   brewing_stand: 117,
@@ -321,10 +318,12 @@ var blocks = {
     acacia: 187
   },
   fence: {
+    oak: 85,
+    nether: 113,
     spruce: 188,
     birch: 189,
     jungle: 190,
-    oak: 191,
+    darkoak: 191,
     acacia: 192
   }
 };
@@ -341,12 +340,12 @@ var colorized_blocks = [
 
 for (var i = 0, len = colorized_blocks.length; i < len; i++) {
   var block = colorized_blocks[i],
-      data_value = blocks[block].white;
+    data_value = blocks[block].white;
   
   for (var color in colors) {
     blocks[block][color] = data_value + ':' + colors[color];
   }
-};
+}
 
 /*
   rainbow colors - a convenience

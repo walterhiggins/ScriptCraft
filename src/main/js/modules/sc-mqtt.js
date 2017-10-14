@@ -99,9 +99,9 @@ function Client( brokerUrl, clientId ) {
 
     disconnect: function( quiesceTimeout ) {
       if ( typeof quiesceTimeout == 'undefined' ) {
-	client.disconnect();
+        client.disconnect();
       } else {
-	client.disconnect( quiesceTimeout );
+        client.disconnect( quiesceTimeout );
       }
       return client;
     },

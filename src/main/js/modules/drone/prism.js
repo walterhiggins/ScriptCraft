@@ -66,7 +66,7 @@ function prism( block, w, d ) {
     this.down(c ).back(c );
   }
   return this;
-};
+}
 //
 // prism0 private implementation
 //

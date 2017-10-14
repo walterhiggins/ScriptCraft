@@ -63,14 +63,14 @@ function door( doorMaterial, hinge) {
     var upper = this.setBlock(doorMaterial, hinge=='left' ? 8 : 9, 0,1,0, false);
     if (Drone.bountiful){
       var DoorHalf = Packages.net.minecraft.block.BlockDoor.EnumDoorHalf,
-	  HingePosition = Packages.net.minecraft.block.BlockDoor.EnumHingePosition,
-	  prop = require('blockhelper').property;
+        HingePosition = Packages.net.minecraft.block.BlockDoor.EnumHingePosition,
+        prop = require('blockhelper').property;
       prop(lower)
-	.set('facing', this.dir)
-	.set('half', DoorHalf.LOWER );
+        .set('facing', this.dir)
+        .set('half', DoorHalf.LOWER );
       prop(upper)
-	.set('hinge', hinge == 'left' ? HingePosition.LEFT: HingePosition.RIGHT)
-	.set('half', DoorHalf.UPPER);
+        .set('hinge', hinge == 'left' ? HingePosition.LEFT: HingePosition.RIGHT)
+        .set('half', DoorHalf.UPPER);
     }
     if (__plugin.canary){
       lower.update();

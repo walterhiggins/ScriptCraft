@@ -97,7 +97,7 @@ function bresenham( x0,y0,radius, setPixel, quadrants ) {
       setPixel(x0 + y, y0 - x ); // quadrant IV
     }
   }
-};
+}
 
 function getStrokeDir( x,y ) { 
   var absY = Math.abs(y );
@@ -112,7 +112,7 @@ function getStrokeDir( x,y ) {
   else if ( x < 0 && absX >= absY )
     strokeDir = 3 ; // right
   return strokeDir;
-};
+}
 
 /*
  The daddy of all arc-related API calls - 
@@ -162,10 +162,10 @@ function arcImpl( params ) {
         if ( strokeWidth == 1 ) { 
           gotoxy(x,y )
             .cuboidX( params.blockType, params.meta,
-                     1, // width
-                     stack, // height
-                     strokeWidth // depth
-                    )
+              1, // width
+              stack, // height
+              strokeWidth // depth
+            )
             .move('center' );
         } else {
           var strokeDir = getStrokeDir( x, y );
@@ -257,7 +257,7 @@ function arcImpl( params ) {
   bresenham(x0,y0,radius,setPixel,quadrants );
   
   params.drone.move('arc2' );
-};
+}
 
 module.exports = function(Drone){
   Drone.extend(function arc( params ) {

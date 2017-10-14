@@ -15,12 +15,12 @@ for (var i = 0;i < materials.length; i++ ){
   items[name] = (function(material){
     return function(amount){
       if (typeof amount == 'undefined'){
-	return material;
+        return material;
       }
       if (typeof amount == 'number'){
-	return new bkItemStack(material, amount);
+        return new bkItemStack(material, amount);
       } else {
-	return amount == material;
+        return amount == material;
       }
     };
   })(materials[i]);

@@ -60,8 +60,6 @@ function putSign( drone, texts, blockId, meta ) {
   var i,
     len = texts.length,
     block,
-    state,
-    getState, 
     isSign, 
     setLine;
 
@@ -96,7 +94,7 @@ function putSign( drone, texts, blockId, meta ) {
       setLine(block, i, texts[ i ] );
     }
   }
-};
+}
 function signpost( message ){
   this.then(function(){
     this.sign(message, blocks.sign_post);
@@ -112,11 +110,11 @@ function wallsign( message ){
       this.sign(message, blocks.sign);
     } else {
       this
-	.back()
-	.sign(message, blocks.sign)
-	.fwd();
+        .back()
+        .sign(message, blocks.sign)
+        .fwd();
     }
-});
+  });
   
 }
 function sign( message, block ) {

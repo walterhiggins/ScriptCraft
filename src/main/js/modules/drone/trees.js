@@ -35,13 +35,13 @@ function bukkitTreeFactory( k, v ) {
       this.up( );
     }
     var treeLoc = this.getLocation();
-    var successful = treeLoc.world.generateTree(treeLoc,v );
+    treeLoc.world.generateTree(treeLoc,v );
     if ( block.typeId == blocks.grass ) { 
       this.down( );
     }
   };
 }
-function canaryTreeFactory( k, v ){
+function canaryTreeFactory( k ){
   return function(){
     var block = this.getBlock();
     if ( block.typeId == blocks.grass ) { 
@@ -51,7 +51,7 @@ function canaryTreeFactory( k, v ){
     if (!treeLoc.world.generateTree){
       var msg = k + '() is not supported in this version';
       if (this.player){
-	echo(this.player, msg);
+        echo(this.player, msg);
       }
       console.log(msg);
       return;
@@ -64,7 +64,7 @@ function canaryTreeFactory( k, v ){
       spruce: cmTreeType.SPRUCE
     };
 
-    var successful = treeLoc.world.generateTree(treeLoc, trees[k] );
+    treeLoc.world.generateTree(treeLoc, trees[k] );
     if ( block.typeId == blocks.grass ) { 
       this.down( );
     }

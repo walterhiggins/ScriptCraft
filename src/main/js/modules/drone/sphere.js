@@ -24,17 +24,16 @@ server to be very busy for a couple of minutes while doing so.
 ***/
 function sphere( block, radius ) {
   var lastRadius = radius,
-      slices = [ [ radius , 0 ] ],
-      diameter = radius * 2,
-      bm = this.getBlockIdAndMeta( block ),
-      r2 = radius * radius,
-      i = 0,
-      newRadius,
-      yOffset,
-      sr,
-      sh,
-      v,
-      h;
+    slices = [ [ radius , 0 ] ],
+    bm = this.getBlockIdAndMeta( block ),
+    r2 = radius * radius,
+    i = 0,
+    newRadius,
+    yOffset,
+    sr,
+    sh,
+    v,
+    h;
 
   if ( radius > 127 ) { 
     throw new Error('Sphere radius must be less than 128 blocks');
@@ -107,18 +106,17 @@ server to be very busy for a couple of minutes while doing so.
 function sphere0(block,radius)
 {
   var lastRadius = radius,
-      slices = [ [ radius, 0 ] ],
-      diameter = radius * 2,
-      bm = this.getBlockIdAndMeta( block ),
-      r2 = radius*radius,
-      i,
-      newRadius,
-      sr,
-      sh,
-      v,
-      h,
-      len,
-      yOffset;
+    slices = [ [ radius, 0 ] ],
+    bm = this.getBlockIdAndMeta( block ),
+    r2 = radius*radius,
+    i,
+    newRadius,
+    sr,
+    sh,
+    v,
+    h,
+    len,
+    yOffset;
 
   if ( radius > 127 ) { 
     throw new Error('Sphere radius must be less than 128 blocks');
@@ -139,12 +137,12 @@ function sphere0(block,radius)
   //
   this.up( radius - slices[0][1] )
     .arc({ blockType: bm[0], 
-           meta: bm[1], 
-           radius: radius, 
-           strokeWidth: 2,
-           stack: (slices[0][1]*2)-1,
-           fill: false
-         })
+      meta: bm[1], 
+      radius: radius, 
+      strokeWidth: 2,
+      stack: (slices[0][1]*2)-1,
+      fill: false
+    })
     .down( radius - slices[0][1] );
   
   yOffset = -1;
@@ -208,12 +206,11 @@ To create a wood 'north' hemisphere with a radius of 7 blocks...
 ***/
 function hemisphere( block, radius, northSouth ) {
   var lastRadius = radius,
-      slices = [ [ radius, 0 ] ],
-      diameter = radius * 2,
-      bm = this.getBlockIdAndMeta(block),
-      r2 = radius * radius,
-      i = 0,
-      newRadius;
+    slices = [ [ radius, 0 ] ],
+    bm = this.getBlockIdAndMeta(block),
+    r2 = radius * radius,
+    i = 0,
+    newRadius;
 
   if ( radius > 255 ) { 
     throw new Error('Hemisphere radius must be less than 256 blocks');
@@ -288,13 +285,12 @@ function hemisphere0( block, radius, northSouth ) {
   }
 
   var lastRadius = radius,
-      slices = [ [ radius, 0 ] ],
-      diameter = radius * 2,
-      bm = this.getBlockIdAndMeta(block),
-      r2 = radius * radius,
-      i = 0,
-      len,
-      newRadius;
+    slices = [ [ radius, 0 ] ],
+    bm = this.getBlockIdAndMeta(block),
+    r2 = radius * radius,
+    i = 0,
+    len,
+    newRadius;
 
   if ( radius > 255 ) { 
     throw new Error('Hemisphere radius must be less than 256 blocks');

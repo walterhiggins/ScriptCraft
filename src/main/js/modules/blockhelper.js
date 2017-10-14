@@ -1,7 +1,7 @@
 'use strict';
 /*global module, exports, require, Packages, __plugin, server*/
 var blocks = require('blocks'),
-    bountiful = false;
+  bountiful = false;
 
 if (__plugin.canary){
   bountiful = parseFloat(server.canaryModVersion) > 1.7;
@@ -78,11 +78,11 @@ function property( block ){
     set: function(name,value){
       var bp = block.getPropertyForName(name);
       if (bp === null){
-	console.warn(block + ' has no property named ' + name);
-	return result;
+        console.warn(block + ' has no property named ' + name);
+        return result;
       }
       if (lookup[bp.name]){
-	value = lookup[bp.name][value];
+        value = lookup[bp.name][value];
       }
       block.setPropertyValue(bp, value);
       return result;
@@ -104,12 +104,12 @@ function applyFacing( block, metadata ){
     switch( block.typeId ){
     case blocks.sign:
     case blocks.ladder:
-      // bug: furnace, chest, dispenser don't always use the right metadata
     case blocks.furnace:  
     case blocks.furnace_burning: 
     case blocks.chest:
     case blocks.enderchest:
     case blocks.dispenser:
+      // bug: furnace, chest, dispenser don't always use the right metadata
       face( [null,null,'north','south','west','east'][metadata] );
       break;
     case blocks.torch:
@@ -144,9 +144,9 @@ function applyRotation( block, metadata ){
 function applyVariant( block, metadata ){
   var cmQuartzProperties = Packages.net.canarymod.api.world.blocks.properties.helpers.QuartzProperties;
   switch (block.typeId){
-    case blocks.quartz:
-      cmQuartzProperties.applyVariant(block, cmQuartzProperties.Variant.valueOf(metadata));
-      break;
+  case blocks.quartz:
+    cmQuartzProperties.applyVariant(block, cmQuartzProperties.Variant.valueOf(metadata));
+    break;
   }
 }
 function applyProperties( block, metadata ){

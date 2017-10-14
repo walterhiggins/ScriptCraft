@@ -51,7 +51,7 @@ function cylinder0( block,radius,height,exactParams ) {
     arcParams.meta = md[1];
   }
   return this.arc(arcParams );
-};
+}
 function cylinder( block,radius,height,exactParams ) { 
   var arcParams = {
     radius: radius,
@@ -69,7 +69,7 @@ function cylinder( block,radius,height,exactParams ) {
     arcParams.meta = md[1];
   }
   return this.arc(arcParams );
-};
+}
 module.exports = function(Drone){
   Drone.extend(cylinder0 );
   Drone.extend(cylinder );

@@ -34,10 +34,10 @@ teleport('tom' , 'jane');
 ```
 ***/
 function teleport( entity, destination){
-  if (typeof entity === 'String' || entity instanceof java.lang.String){
+  if (typeof entity === 'string' || entity instanceof java.lang.String){
     entity = utils.player(entity);
   }
-  if (typeof destination === 'String' || destination instanceof java.lang.String){
+  if (typeof destination === 'string' || destination instanceof java.lang.String){
     var player = utils.player(destination);
     if (player){
       destination = player.location;

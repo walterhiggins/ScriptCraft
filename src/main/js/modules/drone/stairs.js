@@ -47,7 +47,7 @@ function stairs(blockType, width, height){
     this.chkpt('_stairs');
     while (height > 0) {
       this.traverseWidth(width, function(){
-	this.setBlock(bm[0], bm[1]);
+        this.setBlock(bm[0], bm[1]);
       });
 
       this.fwd().up();

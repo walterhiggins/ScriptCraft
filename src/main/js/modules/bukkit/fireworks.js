@@ -33,10 +33,10 @@ function bukkitFirework( location ) {
   var c1 = getColor( r1i );
   var c2 = getColor( r2i );
   var effectBuilder = bkFireworkEffect.builder()
-        .flicker( Math.round( Math.random() ) == 0 )
-        .withColor( c1 )
-        .withFade( c2 )
-        .trail( Math.round( Math.random() ) == 0 );
+    .flicker( Math.round( Math.random() ) == 0 )
+    .withColor( c1 )
+    .withFade( c2 )
+    .trail( Math.round( Math.random() ) == 0 );
   effectBuilder['with']( type );
   var effect = effectBuilder.build();
   fwm.addEffect( effect );

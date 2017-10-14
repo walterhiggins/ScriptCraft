@@ -1,9 +1,8 @@
 'use strict';
-/*global events, require, org, module, persist, __plugin*/
 var utils = require('utils'),
-  stringExt = require('utils/string-exts'),
   store = persist('signs',{});
 
+require('utils/string-exts');
 /*
   Define the signs module - signs are persistent 
   (that is - a menu sign will still be a menu after the
@@ -38,12 +37,12 @@ var _redrawMenuSign = function( p_sign, p_selectedIndex, p_displayOptions ) {
   // the offset is where the menu window begins
   var offset = Math.max( 0, Math.min( optLen-3, Math.floor( p_selectedIndex/3 ) * 3) );
   for ( i = 0;i < 3; i++ ) {
-    text = "";
+    text = '';
     if ( offset+i < optLen ) {
       text = p_displayOptions[offset+i];
     }
     if ( offset+i == p_selectedIndex ) {
-      text = ('' + text).replace(/^ /,">");
+      text = ('' + text).replace(/^ /,'>');
     }
     setLine(p_sign, i+1, text);
   }
@@ -64,21 +63,21 @@ signs.menu = signMenu;
 
 function signMenu( label, options, callback,  selectedIndex ) {
   
-  if ( typeof selectedIndex == "undefined" ) {
+  if ( typeof selectedIndex == 'undefined' ) {
     selectedIndex = 0;
   }
   //
   // variables common to all instances of this menu can go here
   //
-  var labelPadding =  "---------------";
-  var optionPadding = "              ";
+  var labelPadding =  '---------------';
+  var optionPadding = '              ';
   var i;
   var paddedLabel = ( labelPadding + label + labelPadding)
-	.substr( ( ( label.length+30 ) / 2 ) - 7, 15 );
+    .substr( ( ( label.length+30 ) / 2 ) - 7, 15 );
   var optLen = options.length;
   var displayOptions = [];
   for ( i = 0; i < options.length; i++ ) {
-    displayOptions[i] = (" " + options[i] + optionPadding).substring(0,15);
+    displayOptions[i] = (' ' + options[i] + optionPadding).substring(0,15);
   }
   /*
    this function is returned by signs.menu and when it is invoked it will
@@ -87,7 +86,7 @@ function signMenu( label, options, callback,  selectedIndex ) {
    The function returned by signs.menu is for use by admins/ops.
    */
   var convertToMenuSign = function(/* Sign */ sign, save) {
-    if (typeof save == "undefined") {
+    if (typeof save == 'undefined') {
       save = true;
     }
     //
@@ -99,7 +98,7 @@ function signMenu( label, options, callback,  selectedIndex ) {
       cSelectedIndex = ( cSelectedIndex + 1 ) % optLen;
       _redrawMenuSign( p_sign, cSelectedIndex, displayOptions );
       var signSelectionEvent = {
-	player: p_player,
+        player: p_player,
         sign: p_sign,
         text: options[ cSelectedIndex ], 
         number: cSelectedIndex
@@ -128,11 +127,11 @@ function signMenu( label, options, callback,  selectedIndex ) {
      when the server starts up again.
      */
     if ( save ) {
-      if ( typeof store.menus == "undefined") {
+      if ( typeof store.menus == 'undefined') {
         store.menus = {};
       }
       var signLocations = store.menus[label];
-      if ( typeof signLocations == "undefined" ) {
+      if ( typeof signLocations == 'undefined' ) {
         signLocations = store.menus[label] = [];
       }
       signLocations.push( menuSignSaveData );
@@ -168,7 +167,7 @@ function signMenu( label, options, callback,  selectedIndex ) {
     }
   }
   return convertToMenuSign;
-};
+}
 
 /*
 if (__plugin.canary){

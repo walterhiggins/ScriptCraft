@@ -1,5 +1,4 @@
 'use strict';
-/*global require, module, __plugin, __dirname, echo, persist, isOp, events, Packages, command, global */
 var utils = require('utils'),
   watcher = require('watcher'),
   autoload = require('plugin').autoload,
@@ -55,9 +54,9 @@ delete files* and *Guest access* checkboxes. Click *Create Share*
 button to close the sharing options dialog. Students can then access
 the shared folder as follows...
 
- * Windows:   Open Explorer, Go to \\{serverAddress}\players\
- * Macintosh: Open Finder,   Go to smb://{serverAddress}/players/
- * Linux:     Open Nautilus, Go to smb://{serverAddress}/players/
+* Windows:   Open Explorer, Go to \\{serverAddress}\players\
+* Macintosh: Open Finder,   Go to smb://{serverAddress}/players/
+* Linux:     Open Nautilus, Go to smb://{serverAddress}/players/
 
 ... where {serverAddress} is the ip address of the server (this is
 displayed to whoever invokes the classroom.allowScripting() function.)
@@ -91,7 +90,7 @@ Javascript.
 
 #### Parameters
 
- * canScript : true or false
+* canScript : true or false
 
 #### Example
 
@@ -115,9 +114,9 @@ function revokeScripting ( player ) {
   if (__plugin.bukkit){
     foreach( player.getEffectivePermissions(), function( perm ) {
       if ( (''+perm.permission).indexOf( 'scriptcraft.' ) == 0 ) {
-	if ( perm.attachment ) {
-	  perm.attachment.remove();
-	}
+        if ( perm.attachment ) {
+          perm.attachment.remove();
+        }
       }
     });
   }
@@ -137,8 +136,8 @@ var playerEventHandlers = {};
 
 function reloadPlayerModules( playerContext, playerDir ){
   /*
-   wph 20150118 first unregister any event handlers registered by the player
-   */
+    wph 20150118 first unregister any event handlers registered by the player
+  */
   var playerDirPath = ''+ playerDir.getAbsolutePath();
   var eventHandlers = playerEventHandlers[playerDirPath];
   if (eventHandlers){
@@ -151,8 +150,8 @@ function reloadPlayerModules( playerContext, playerDir ){
     eventHandlers = playerEventHandlers[playerDirPath];
   }
   /*
-   override events.on() so that the listener is stored here so it can be unregistered.
-   */
+    override events.on() so that the listener is stored here so it can be unregistered.
+  */
   var oldOn = events.on;
   var newOn = function( eventType, fn, priority){
     var handler = oldOn(eventType, fn, priority);
@@ -170,12 +169,12 @@ function grantScripting( player ) {
   var playerDir = new File( playersDir + playerName );
   if (!playerDir.exists()) {
     playerDir.mkdirs();
-    var exampleJs = "//Try running this function from Minecraft with: /js $username.hi( self )\n" +
-        "//Remember to use your real username instead of $username!\n" +
-        "//So if you had username 'walterh', you would run: /js walterh.hi( self )\n" +
-        "exports.hi = function( player ){\n" +
-        "\techo( player, 'Hi ' + player.name);\n" +
-        "};"
+    var exampleJs = '//Try running this function from Minecraft with: /js $username.hi( self )\n' +
+        '//Remember to use your real username instead of $username!\n' +
+        '//So if you had username \'walterh\', you would run: /js walterh.hi( self )\n' +
+        'exports.hi = function( player ){\n' +
+        '\techo( player, \'Hi \' + player.name);\n' +
+        '};';
     createFile(playerDir, 'greet.js', exampleJs);
   }
 
@@ -188,7 +187,7 @@ function grantScripting( player ) {
   var playerContext = {};
   reloadPlayerModules( playerContext, playerDir );
   global[playerName] = playerContext;
-  watchDir( playerDir, function( changedDir ){
+  watchDir( playerDir, function( /*changedDir*/ ){
     var currentTime = new java.util.Date().getTime();
     //this check is here because this callback might get called multiple times for the watch interval
     //one call for the file change and another for directory change 
@@ -205,12 +204,12 @@ function grantScripting( player ) {
     out.close();
   }
 
-/*
-  echo( player, 'Create your own minecraft mods by adding javascript (.js) files');
-  echo( player, ' Windows:   Open Explorer, go to \\\\' + serverAddress + '\\players\\' + player.name);
-  echo( player, ' Macintosh: Open Finder, Go to smb://' + serverAddress + '/players/' + player.name);
-  echo( player, ' Linux: Open Nautilus, Go to smb://' + serverAddress + '/players/' + player.name);
-*/
+  /*
+    echo( player, 'Create your own minecraft mods by adding javascript (.js) files');
+    echo( player, ' Windows:   Open Explorer, go to \\\\' + serverAddress + '\\players\\' + player.name);
+    echo( player, ' Macintosh: Open Finder, Go to smb://' + serverAddress + '/players/' + player.name);
+    echo( player, ' Linux: Open Nautilus, Go to smb://' + serverAddress + '/players/' + player.name);
+  */
 
 }
 
@@ -223,8 +222,8 @@ var _classroom = {
       return;
     }
     /*
-     only operators should be allowed run this function
-     */
+      only operators should be allowed run this function
+    */
     if ( !isOp(sender) ) {
       console.log( 'Attempt to set classroom scripting without credentials: ' + sender.name );
       echo( sender, 'Only operators can use this function');
@@ -232,13 +231,13 @@ var _classroom = {
     }
     utils.players(function(player){
       if (!isOp(player)){
-	canScript ? grantScripting(player) : revokeScripting(player);
+        canScript ? grantScripting(player) : revokeScripting(player);
       }
     });
     store.enableScripting = canScript;
 
     echo( sender, 'Scripting turned ' + ( canScript ? 'on' : 'off' ) + 
-      ' for all players on server ' + serverAddress);
+          ' for all players on server ' + serverAddress);
   }
 };
 

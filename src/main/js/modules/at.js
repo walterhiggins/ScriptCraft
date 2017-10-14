@@ -1,5 +1,4 @@
 'use strict';
-/*global events, module, require, __plugin, setInterval, clearInterval, setTimeout, addUnloadHandler*/
 var utils = require('utils');
 /************************************************************************
 ## The at Module
@@ -14,11 +13,11 @@ The utils.at() function will perform a given task at a given time in the
 
 #### Parameters
 
- * time24hr : The time in 24hr form - e.g. 9:30 in the morning is '09:30' while
+* time24hr : The time in 24hr form - e.g. 9:30 in the morning is '09:30' while
    9:30 pm is '21:30', midnight is '00:00' and midday is '12:00'
- * callback : A javascript function which will be invoked at the given time.
- * worlds : (optional) An array of worlds. Each world has its own clock. If no array of worlds is specified, all the server's worlds are used.
- * repeat : (optional) true or false, default is true (repeat the task every day)
+   * callback : A javascript function which will be invoked at the given time.
+   * worlds : (optional) An array of worlds. Each world has its own clock. If no array of worlds is specified, all the server's worlds are used.
+   * repeat : (optional) true or false, default is true (repeat the task every day)
 
 #### Example
 
@@ -67,7 +66,7 @@ function at(time24hr, callback, pWorlds, repeat) {
   utils.foreach( pWorlds, function ( world ) {
     atAddTask( timeMins, callback, world, repeat);
   });
-};
+}
 var atTasks = {};
 
 function tasksToString(){
@@ -77,7 +76,7 @@ function tasksToString(){
     for (var time in atTasks[world]){
       var scheduledFuncs = atTasks[world][time];
       for (var i = 0;i < scheduledFuncs.length; i++){
-	result += ' ' + time + ': ' + scheduledFuncs[i].constructor + '\n';
+        result += ' ' + time + ': ' + scheduledFuncs[i].constructor + '\n';
       }
     }
     result += '(current world time: ' + utils.time24(world) + ')\n';
@@ -85,8 +84,8 @@ function tasksToString(){
   return result;
 }
 /*
- constructs a function which will be called every x ticks to 
- track the schedule for a given world
+  constructs a function which will be called every x ticks to 
+  track the schedule for a given world
 */
 function atMonitorFactory(world){
   var worldName = ''+ world.name;
@@ -110,16 +109,16 @@ function atMonitorFactory(world){
 
       var tasks = worldSchedule[lastRun++];
       if (!tasks){
-	continue;
+        continue;
       }
       utils.foreach(tasks, function(task, i){
-	if (!task){
-	  return;
-	}
-	setTimeout(task.callback.bind(null, timeMins, world), 1);
-	if (!task.repeat){
-	  tasks[i] = null;
-	}
+        if (!task){
+          return;
+        }
+        setTimeout(task.callback.bind(null, timeMins, world), 1);
+        if (!task.repeat){
+          tasks[i] = null;
+        }
       });
     }
   };

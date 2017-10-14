@@ -11,12 +11,12 @@ function canaryAsyncInput( sender, promptMesg, callback) {
     if (event.player == sender) {
       var receivers = event.getReceiverList();
       if (receivers.size() == 1 && receivers.contains(sender)){
-	var value = event.message;
-	var that = this;
-	event.setCanceled();
-	callback.apply( { repeat: repeat, sender: sender, message: promptMesg, value: value },
-			[value, sender, repeat]);
-	setTimeout(function(){that.unregister();},10);
+        var value = event.message;
+        var that = this;
+        event.setCanceled();
+        callback.apply( { repeat: repeat, sender: sender, message: promptMesg, value: value },
+          [value, sender, repeat]);
+        setTimeout(function(){that.unregister();},10);
       }
     }
   },'CRITICAL');

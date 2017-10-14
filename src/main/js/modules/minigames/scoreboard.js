@@ -1,6 +1,4 @@
 'use strict';
-/*global Packages, require, server, exports*/
-
 /*
  wph 20150103 - temporarily commenting out - textcolors was removed.
  var textcolors = require('textcolors');
@@ -16,6 +14,7 @@ if (__plugin.canary){
 function execCommand( command ){
   server.executeVanillaCommand(server, command);
 }
+/*
 function getTeamByName( teamName ){
   var allTeams = sb.getTeams().toArray();
   for (var i = 0;i < allTeams.length; i++){
@@ -25,17 +24,18 @@ function getTeamByName( teamName ){
   }
   return null;
 }
+*/
 function createScoreboard( objectiveName, displayName ){
   execCommand('scoreboard objectives add ' + objectiveName + ' dummy ' + displayName);
   execCommand('scoreboard objectives setdisplay sidebar ' + objectiveName);
 }
-function addTeamToScoreboard( teamName, color){
+function addTeamToScoreboard( teamName /*, color*/){
   execCommand('scoreboard teams add ' + teamName);
-  var team = getTeamByName( teamName );
   /*
    wph 20150103 - temporarily commenting out - textcolors was removed.
    team.prefix = textcolors.colorize(color, '');
    */
+  //var team = getTeamByName( teamName );
   //execCommand('scoreboard teams option ' + teamName + ' color ' + color);
 }
 function removeScoreboard( name ){

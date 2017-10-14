@@ -20,9 +20,9 @@ function createRecipe( recipe ){
       cells = recipe.shape[i].split('');
       rr = [];
       for ( j = 0; j < cells.length ; j++){
-	if (cells[j] != ' '){
-	  rr.push(recipe.ingredients[cells[j]]);
-	}
+        if (cells[j] != ' '){
+          rr.push(recipe.ingredients[cells[j]]);
+        }
       }
       rows.push( new cmRecipeRow(recipe.shape[i], rr) );
     }

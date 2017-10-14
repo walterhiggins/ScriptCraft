@@ -98,7 +98,7 @@ watcher.unwatchFile('test.txt');
 ```
 
 ***/
-exports.unwatchFile = function( file, callback ) {
+exports.unwatchFile = function( file ) {
   if ( typeof file == 'string' ) { 
     file = new File(file);
   }
@@ -123,7 +123,7 @@ watcher.unwatchFile (file);
 for each file inside directory (and unwatchDir for each directory inside it)
 
 ***/
-exports.unwatchDir = function( dir, callback ) {
+exports.unwatchDir = function( dir) {
   if ( typeof dir == 'string' ) { 
     dir = new File(dir);
   }
@@ -135,15 +135,15 @@ exports.unwatchDir = function( dir, callback ) {
   }
   for ( var i = 0; i < files.length; i++ ) {
     file = files[i];
-    if (file.isDirectory( )) {
-      exports.unwatchDir(file,callback);
+    if ( file.isDirectory() ) {
+      exports.unwatchDir( file );
     }else{
-      exports.unwatchFile(file,callback);
+      exports.unwatchFile( file );
     }
   }
 };
 
-function fileWatcher(calledCallbacks) {
+function fileWatcher( ) {
   for (var file in filesWatched) {
     var fileObject = new File(file);
     var lm = fileObject.lastModified();
@@ -155,13 +155,13 @@ function fileWatcher(calledCallbacks) {
       }
     }
   }
-};
+}
 
 
 //monitors directories for time change
 //when a change is detected watchFiles are invoked for each of the files in directory
 //and callback is called
-function dirWatcher(calledCallbacks) {
+function dirWatcher( ) {
   for (var dir in dirsWatched) {
     var dirObject = new File(dir);
     var lm = dirObject.lastModified();
@@ -177,13 +177,13 @@ function dirWatcher(calledCallbacks) {
       } 
     }
   }
-};
+}
 
 //guarantees that a callback is only called once for each change 
 function monitorDirAndFiles() {
   fileWatcher ();
   dirWatcher ();
   setTimeout( monitorDirAndFiles, 3000 );
-};
+}
 
 setTimeout( monitorDirAndFiles, 3000 );

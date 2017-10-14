@@ -5,7 +5,7 @@ var itemFactory = Canary.factory().itemFactory;
 
 function items( material, amount ) {
   material = material.toUpperCase();
-  var result = itemFactory["newItem(net.canarymod.api.inventory.ItemType)"](material);
+  var result = itemFactory['newItem(net.canarymod.api.inventory.ItemType)'](material);
   result.amount = amount;
   return result;
 }
@@ -15,16 +15,16 @@ function getMaterialHandler( material ){
       return material;
     }
     if (typeof amount == 'number'){
-      var itemStack = itemFactory["newItem(net.canarymod.api.inventory.ItemType)"](material);
+      var itemStack = itemFactory['newItem(net.canarymod.api.inventory.ItemType)'](material);
       itemStack.amount = amount;
       return itemStack;
     } else {
       var result = (amount == material);
       if (!result){
-	if (amount.getId && amount.getData){
-	  var m2 = ItemType.fromIdAndData(amount.id, amount.data);
-	  result = (m2 == material);
-	}
+        if (amount.getId && amount.getData){
+          var m2 = ItemType.fromIdAndData(amount.id, amount.data);
+          result = (m2 == material);
+        }
       }
       return result;
     }

@@ -34,9 +34,9 @@ function ladder( height ){
       this.box(blocks.ladder, 1, height, 1, true);
     } else {
       this
-	.back()
-	.box(blocks.ladder, 1, height, 1, true)
-	.fwd();
+        .back()
+        .box(blocks.ladder, 1, height, 1, true)
+        .fwd();
     }
   });
 }
