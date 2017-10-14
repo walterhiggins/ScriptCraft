@@ -47,7 +47,6 @@ Walter Higgins
    * [inc.js](#incjs)
    * [program.js](#programjs)
    * [Important](#important)
-   * [module name resolution](#module-name-resolution)
  * [events Module](#events-module)
    * [events.on() static method](#eventson-static-method)
  * [Events Helper Module (CanaryMod version)](#events-helper-module-canarymod-version)
@@ -418,11 +417,11 @@ Walter Higgins
    * [Examples](#examples)
  * [Fireworks Module](#fireworks-module)
    * [Examples](#examples-1)
- * [Inventory Module](#inventory-module)
-   * [Usage](#usage-2)
  * [Classroom Plugin](#classroom-plugin)
    * [jsp classroom command](#jsp-classroom-command)
    * [classroom.allowScripting() function](#classroomallowscripting-function)
+ * [Inventory Module](#inventory-module)
+   * [Usage](#usage-2)
  * [Asynchronous Input Module](#asynchronous-input-module)
  * [Lightning module](#lightning-module)
    * [Usage](#usage-3)
@@ -958,38 +957,6 @@ Modules can be loaded using relative or absolute paths. Per the CommonJS
 module specification, the '.js' suffix is optional.
 
 [cjsmodules]: http://wiki.commonjs.org/wiki/Modules/1.1.1.
-
-### module name resolution
-
-When resolving module names to file paths, ScriptCraft uses the following rules...
-
- 1. if the module does not begin with './' or '/' then ...
-
-    1.1 Look in the 'scriptcraft/lib' directory. If it's not there then...
-    1.2 Look in the 'scriptcraft/modules' directory. If it's not there then 
-        Throw an Error.
-
- 2. If the module begins with './' or '/' then ...
-    
-    2.1 if the module begins with './' then it's treated as a file path. File paths are 
-        always relative to the module from which the require() call is being made.
-
-    2.2 If the module begins with '/' then it's treated as an absolute path.
-
-    If the module does not have a '.js' suffix, and a file with the same name and a .js sufix exists, 
-    then the file will be loaded.
-
- 3. If the module name resolves to a directory then...
-    
-    3.1 look for a package.json file in the directory and load the `main` property e.g.
-    
-    // package.json located in './some-library/'
-    {
-      "main": './some-lib.js',
-      "name": 'some-library'
-    }
-    
-    3.2 if no package.json file exists then look for an index.js file in the directory
 
 ## events Module
 
@@ -4006,10 +3973,10 @@ pasting the copied area elsewhere...
 
 #### Parameters
 
- * name - the name to be given to the copied area (used by `paste`)
- * width - the width of the area to copy
- * height - the height of the area to copy
- * length - the length of the area (extending away from the drone) to copy
+* name - the name to be given to the copied area (used by `paste`)
+* width - the width of the area to copy
+* height - the height of the area to copy
+* length - the length of the area (extending away from the drone) to copy
 
 #### Example
 
@@ -4766,11 +4733,10 @@ The utils.at() function will perform a given task at a given time in the
 
 #### Parameters
 
- * time24hr : The time in 24hr form - e.g. 9:30 in the morning is '09:30' while
-   9:30 pm is '21:30', midnight is '00:00' and midday is '12:00'
- * callback : A javascript function which will be invoked at the given time.
- * worlds : (optional) An array of worlds. Each world has its own clock. If no array of worlds is specified, all the server's worlds are used.
- * repeat : (optional) true or false, default is true (repeat the task every day)
+* time24hr : The time in 24hr form - e.g. 9:30 in the morning is '09:30' while 9:30 pm is '21:30', midnight is '00:00' and midday is '12:00'
+* callback : A javascript function which will be invoked at the given time.
+* worlds : (optional) An array of worlds. Each world has its own clock. If no array of worlds is specified, all the server's worlds are used.
+* repeat : (optional) true or false, default is true (repeat the task every day)
 
 #### Example
 
@@ -4844,42 +4810,6 @@ location. For example...
 
 ![firework example](img/firework.png)
 
-## Inventory Module
-This module provides functions to add items to, remove items from and check the 
-contents of a player or NPC's inventory. 
-
-### Usage
-The inventory module is best used in conjunction with the items module. See below for examples of usage.
-
-```javascript
-var inventory = require('inventory');
-var items = require('items');
-var utils = require('utils');
-
-// gives every player a cookie and a baked potatoe
-utils.players(function(player){
-  inventory(player)
-    .add( items.cookie(1) )
-    .add( items.bakedPotato(1) )
-});
-
-// give a player 6 cookies then take away 4 of them
-
-inventory(player)
-  .add( items.cookie(6) )
-  .remove ( items.cookie(4) )
-
-// check if a player has any cookies
-
-var hasCookies = inventory(player).contains( items.cookie(1) );
-
-```
-The inventory module exposes a single function which when passed a player or NPC will return an object with 3 methods:
-
-* add : Adds items to the inventory (Expects parameters of type `net.canarymod.api.inventory.Item` - I strongly recommend using the `items` module for constructing items)
-* remove : removes items from the inventory (Expects parameters of type `net.canarymod.api.inventory.Item` - I strongly recommend using the `items` module for constructing items)
-* contains : checks to see if there is the specified type and amount of item in the inventory (Expects parameters of type `net.canarymod.api.inventory.Item` - I strongly recommend using the `items` module for constructing items)
-
 ## Classroom Plugin
 
 The `classroom` object contains a couple of utility functions for use
@@ -4925,9 +4855,9 @@ delete files* and *Guest access* checkboxes. Click *Create Share*
 button to close the sharing options dialog. Students can then access
 the shared folder as follows...
 
- * Windows:   Open Explorer, Go to \\{serverAddress}\players\
- * Macintosh: Open Finder,   Go to smb://{serverAddress}/players/
- * Linux:     Open Nautilus, Go to smb://{serverAddress}/players/
+* Windows:   Open Explorer, Go to \\{serverAddress}\players\
+* Macintosh: Open Finder,   Go to smb://{serverAddress}/players/
+* Linux:     Open Nautilus, Go to smb://{serverAddress}/players/
 
 ... where {serverAddress} is the ip address of the server (this is
 displayed to whoever invokes the classroom.allowScripting() function.)
@@ -4961,7 +4891,7 @@ Javascript.
 
 #### Parameters
 
- * canScript : true or false
+* canScript : true or false
 
 #### Example
 
@@ -4976,6 +4906,42 @@ To disallow scripting (and prevent players who join the server from using the co
 
 Only ops users can run the classroom.allowScripting() function - this is so that students 
 don't try to bar themselves and each other from scripting.
+
+## Inventory Module
+This module provides functions to add items to, remove items from and check the 
+contents of a player or NPC's inventory. 
+
+### Usage
+The inventory module is best used in conjunction with the items module. See below for examples of usage.
+
+```javascript
+var inventory = require('inventory');
+var items = require('items');
+var utils = require('utils');
+
+// gives every player a cookie and a baked potatoe
+utils.players(function(player){
+  inventory(player)
+    .add( items.cookie(1) )
+    .add( items.bakedPotato(1) )
+});
+
+// give a player 6 cookies then take away 4 of them
+
+inventory(player)
+  .add( items.cookie(6) )
+  .remove ( items.cookie(4) )
+
+// check if a player has any cookies
+
+var hasCookies = inventory(player).contains( items.cookie(1) );
+
+```
+The inventory module exposes a single function which when passed a player or NPC will return an object with 3 methods:
+
+* add : Adds items to the inventory (Expects parameters of type `net.canarymod.api.inventory.Item` - I strongly recommend using the `items` module for constructing items)
+* remove : removes items from the inventory (Expects parameters of type `net.canarymod.api.inventory.Item` - I strongly recommend using the `items` module for constructing items)
+* contains : checks to see if there is the specified type and amount of item in the inventory (Expects parameters of type `net.canarymod.api.inventory.Item` - I strongly recommend using the `items` module for constructing items)
 
 ## Asynchronous Input Module
 
@@ -6154,7 +6120,7 @@ it called `cw` (short for set Clock and Weather) which when invoked...
     /time set 4000
     /weather sun
 
-Aliases can use paramters as above. On the right hand side of the `=`, the 
+Aliases can use parameters as above. On the right hand side of the `=`, the 
 `{1}` refers to the first parameter provided with the `cw` alias, `{2}`
 refers to the second parameter and so on. So `cw 4000 sun` is converted to 
 `time set 4000` and `weather sun`. 
