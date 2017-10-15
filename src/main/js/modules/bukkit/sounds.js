@@ -32,7 +32,9 @@ function play(sound, locationOrHasLocation,  volume, pitch) {
 for ( ; i < len; i++ ) {
   sound = allSounds[i];
   soundName = '' + sound.name();
-  var methodName = soundName.toLowerCase().replace(/_(.)/g,function(a,b){ return b.toUpperCase();});
+  var methodName = soundName.toLowerCase().replace(/_(.)/g,function(a,b){
+    return b.toUpperCase();
+  });
   exports[methodName] = (function(sound){ 
     return function()
     {

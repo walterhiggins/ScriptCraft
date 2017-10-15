@@ -1,3 +1,4 @@
+/*global args*/
 args = Array.prototype.slice.call(args,1);
 // [0] = type, [1] = lib.jar [2] = blockX, [3] = classX
 var File = java.io.File,
@@ -88,7 +89,7 @@ names.forEach(function(name) {
       ' * priority - optional - see events.on() for more information.',
       '',
       '***/'
-//http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerJoinEvent.html
+      //http://jd.bukkit.org/rb/apidocs/org/bukkit/event/player/PlayerJoinEvent.html
     ];
     for (var i = 0; i < comment.length; i++){
       out.println(comment[i]);

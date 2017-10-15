@@ -13,12 +13,12 @@ function foreach(array, func){
 function find(dir,store,re) {
   var files = dir.listFiles();
   foreach (files, function(filename){
-    filename = "" + filename;
+    filename = '' + filename;
     var file = new File(filename);
     if (file.isDirectory()) {
       find(file,store,re);
     } else {
-      if (typeof re == "undefined") 
+      if (typeof re == 'undefined') 
         store.push(filename);
       else if (filename.match(re)) 
         store.push(filename);
@@ -91,18 +91,18 @@ var store = [];
 find(new io.File(dir),store,/\/[a-zA-Z0-9_\-]+\.js$/);
 
 store.sort(sorter([ 
-    /lib\/scriptcraft\.js$/, 
-    /lib\/require\.js$/,
-    /lib\/plugin\.js$/,
-    /lib\/events\.js$/,
-    /lib\/events\-helper\-canary/,
-    /lib\/events\-helper\-bukkit/,
-    /lib\//, 
-    /modules\/drone\/index\.js/, 
-    /modules\/drone\//,
-    /plugins\/drone\//,
-    /modules\//,
-    /examples\//
+  /lib\/scriptcraft\.js$/, 
+  /lib\/require\.js$/,
+  /lib\/plugin\.js$/,
+  /lib\/events\.js$/,
+  /lib\/events\-helper\-canary/,
+  /lib\/events\-helper\-bukkit/,
+  /lib\//, 
+  /modules\/drone\/index\.js/, 
+  /modules\/drone\//,
+  /plugins\/drone\//,
+  /modules\//,
+  /examples\//
 ]));
 
 var contents = [];

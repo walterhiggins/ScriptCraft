@@ -1,8 +1,6 @@
-args = Array.prototype.slice.call(args,1);
-// [0] = type, [1] = lib.jar [2] = blockX, [3] = classX
-var out = java.lang.System.out,
-  err = java.lang.System.err,
-  entry = null;
+'use strict';
+/*global cmItemTypeClass*/
+var out = java.lang.System.out;
 var content = [
   '',
   '## Items module (SpigotMC version)',
@@ -69,7 +67,7 @@ for ( i = 0;i < materials.length; i++ ){
 enumVals.sort();
 content = content.concat(enumVals);
 content.push('');
-for (var i = 0; i< content.length; i++){
+for ( i = 0; i< content.length; i++){
   out.println(content[i]);
 }
 
