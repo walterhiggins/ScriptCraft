@@ -1,5 +1,11 @@
 RELEASE NOTES
 =============
+3.3.0 Release (2017 10 15)
+--------------------------
+
+Bug Fixes.
+Updated from Spigot 1.11.2 to 1.12.2.
+Expanded documentation (sounds).
 
 3.2.1 Release (2016 12 23)
 --------------------------
