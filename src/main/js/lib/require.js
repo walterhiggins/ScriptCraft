@@ -265,9 +265,15 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     if ( options.cache ) {
       _loadedModules[canonizedFilename] = moduleInfo;
     }
+    var codeFn = null;
     try {
       evalHooks.forEach(function(evalHook){
-	code = evalHook(code);
+	var result = evalHook(code);
+	if (result.constructor !== String){
+	  codeFn = result;
+	}else {
+	  code = result;
+	}
       });
       
     } catch (e) {
@@ -288,7 +294,7 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
       __dirname           /* __dirname */
     ];
     try {
-      code.apply(moduleInfo.exports,  /* this */  parameters);   
+      codeFn.apply(moduleInfo.exports,  /* this */  parameters);   
     } catch (e) {
       var snippet = '';
       if ((''+e.lineNumber).match(/[0-9]/)){

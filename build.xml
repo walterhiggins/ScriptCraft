@@ -49,6 +49,7 @@
 
     <available file="${lib.canary}" property="canary.present"/>
     <available file="${dist}/js/modules/underscore.js" property="underscore.present"/>
+    <available file="${dist}/js/modules/babel.js" property="babel.present"/>
   </target>
 
   <target name="test" depends="package" description="Perform unit tests">
@@ -208,14 +209,20 @@ Walter Higgins
     </zip>
   </target>
 
+  <target name="get_babel" depends="copy-js" unless="babel.present">
+    <!-- download babel -->
+    <get src="https://github.com/babel/babel-standalone/releases/download/release-6.26.0/babel.js"
+	 verbose="true"
+	 dest="${dist}/js/modules/babel.js"/>
+  </target>
+
   <target name="get_underscore" depends="copy-js" unless="underscore.present">
     <!-- download underscore -->
-    <get src="http://underscorejs.org/underscore.js"
-	 verbose="true"
+    <get src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js" verbose="true"
 	 dest="${dist}/js/modules/underscore.js"/>
   </target>
 
-  <target name="zip_modules" depends="copy-js, get_underscore">
+  <target name="zip_modules" depends="copy-js, get_underscore, get_babel">
     <delete file="${build}/modules.zip"/>
     <zip destfile="${build}/modules.zip" 
          basedir="${dist}/js" 
