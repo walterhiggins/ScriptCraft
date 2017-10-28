@@ -565,6 +565,17 @@ function __onEnable ( __engine, __plugin, __script ) {
       unloadHandlers[i]( );
     }
   }
+
+  function engineEval( code ) {
+    return __engine.eval( code );
+  }
+
+  var moduleHooks = [engineEval];
+  var replHooks = [engineEval];
+  
+  global._moduleHooks = moduleHooks;
+  global._replHooks = replHooks;
+  
   function __onCommand() {
     var jsArgs = [],
       i = 0,
@@ -607,7 +618,11 @@ function __onEnable ( __engine, __plugin, __script ) {
         // js hearts
         // ... throws an execption ('hearts' is not defined). vars are not sticky in native eval .
         //
-        jsResult = __engine.eval( fnBody );
+        var code = fnBody;
+        replHooks.forEach(function(xform){
+          code = xform(code);
+        });
+        jsResult = code;
 
         if ( typeof jsResult != 'undefined' ) { 
           if ( jsResult == null) { 
@@ -739,16 +754,11 @@ function __onEnable ( __engine, __plugin, __script ) {
       }
     }
   };
-  global._evalHooks = [
-    function( code ) {
-      return __engine.eval( code );
-    }
-  ];
   global.require = configRequire( 
     jsPluginsRootDirName, 
     modulePaths, 
     requireHooks,
-    _evalHooks
+    moduleHooks
   );
 
   var testJSPatch = require('js-patch')( global );
