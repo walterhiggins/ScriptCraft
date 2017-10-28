@@ -60,8 +60,21 @@ module specification, the '.js' suffix is optional.
 [cjsmodules]: http://wiki.commonjs.org/wiki/Modules/1.1.1.
 
 ***/
-(function ( rootDir, modulePaths, hooks, evaluate ) {
+(function ( rootDir, modulePaths, hooks, evalHooks ) {
 
+  function commonJsWrap(code){
+    return '(function(exports,module,require,__filename,__dirname){ \n' + code  + '\n})';
+  }
+  var i = 0, len = evalHooks.length, registered = false;
+  for (; i < len; i++){
+    if (evalHooks[i] === commonJsWrap){
+      registered = true;
+      break;
+    }
+  }
+  if (!registered){
+    evalHooks.unshift(commonJsWrap);
+  }
   var File = java.io.File,
     FileReader = java.io.FileReader,
     BufferedReader = java.io.BufferedReader;
@@ -177,7 +190,6 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
       canonizedFilename,
       moduleInfo,
       buffered,
-      head = '(function(exports,module,require,__filename,__dirname){ ',
       code = '',
       line = null;
 
@@ -238,8 +250,10 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
     }
     buffered.close(); // close the stream so there's no file locks
 
-    if(canonizedFilename.toLowerCase().substring(canonizedFilename.length - 5) === '.json') // patch code when it is json
+    if(canonizedFilename.toLowerCase().substring(canonizedFilename.length - 5) === '.json'){
+      // patch code when it is json
       code = 'module.exports = (' + code + ');';
+    }
     
     moduleInfo = {
       loaded: false,
@@ -247,15 +261,15 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
       exports: {},
       require: _requireClosure(file.parentFile)
     };
-    var tail = '})';
-    code = head + code + tail;
 
     if ( options.cache ) {
       _loadedModules[canonizedFilename] = moduleInfo;
     }
-    var compiledWrapper = null;
     try {
-      compiledWrapper = evaluate(code);
+      evalHooks.forEach(function(evalHook){
+	code = evalHook(code);
+      });
+      
     } catch (e) {
       /*
        wph 20140313 JRE8 (nashorn) gives misleading linenumber of evaluating code not evaluated code.
@@ -274,9 +288,7 @@ When resolving module names to file paths, ScriptCraft uses the following rules.
       __dirname           /* __dirname */
     ];
     try {
-      compiledWrapper
-        .apply(moduleInfo.exports,  /* this */
-          parameters);   
+      code.apply(moduleInfo.exports,  /* this */  parameters);   
     } catch (e) {
       var snippet = '';
       if ((''+e.lineNumber).match(/[0-9]/)){

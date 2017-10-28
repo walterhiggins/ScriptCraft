@@ -739,13 +739,16 @@ function __onEnable ( __engine, __plugin, __script ) {
       }
     }
   };
+  global._evalHooks = [
+    function( code ) {
+      return __engine.eval( code );
+    }
+  ];
   global.require = configRequire( 
     jsPluginsRootDirName, 
     modulePaths, 
     requireHooks,
-    function( code ) {
-      return __engine.eval( code );
-    }
+    _evalHooks
   );
 
   var testJSPatch = require('js-patch')( global );
