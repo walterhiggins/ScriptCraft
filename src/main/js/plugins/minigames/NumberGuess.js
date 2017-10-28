@@ -35,7 +35,7 @@ exports.Game_NumberGuess = {
 
     var number = Math.ceil( Math.random() * 10 );
     
-    var prompt = new bkPrompt( ) {
+    var prompt = new bkPrompt({
 
       getPromptText: function( ctx ) {
         var hint = '';
@@ -58,10 +58,10 @@ exports.Game_NumberGuess = {
         } else {
           if ( s < number ) {
             ctx.setSessionData( 'hint', 'too low\n' );
-	  }
+          }
           if ( s > number ) {
             ctx.setSessionData( 'hint', 'too high\n' );
-	  }
+          }
           guesses++;
           sb( 'players set ' + sender.name + ' NumberGuess ' + guesses );
           
@@ -69,15 +69,15 @@ exports.Game_NumberGuess = {
         }
       },
 
-      blocksForInput: function( ctx ) { 
-	return true; 
+      blocksForInput: function( /*ctx*/ ) { 
+        return true; 
       }
-    };
-    var convPrefix = new bkConversationPrefix( ) { 
-      getPrefix: function( ctx ) { 
-	return '[1-10] ';
+    });
+    var convPrefix = new bkConversationPrefix( { 
+      getPrefix: function( /*ctx*/ ) { 
+        return '[1-10] ';
       } 
-    };
+    });
     new bkConversationFactory( __plugin )
       .withModality( true )
       .withFirstPrompt( prompt )
