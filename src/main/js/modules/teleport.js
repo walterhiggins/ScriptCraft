@@ -33,26 +33,31 @@ var teleport = require('teleport');
 teleport('tom' , 'jane'); 
 ```
 ***/
-function teleport( entity, destination){
-  if (typeof entity === 'string' || entity instanceof java.lang.String){
+function teleport(entity, destination) {
+  if (typeof entity === 'string' || entity instanceof java.lang.String) {
     entity = utils.player(entity);
   }
-  if (typeof destination === 'string' || destination instanceof java.lang.String){
+  if (
+    typeof destination === 'string' ||
+    destination instanceof java.lang.String
+  ) {
     var player = utils.player(destination);
-    if (player){
+    if (player) {
       destination = player.location;
     }
   } else {
-    if (destination.location){
+    if (destination.location) {
       destination = destination.location;
     }
   }
-  if (__plugin.bukkit){
-    var bkTeleportCause = org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-    entity.teleport( destination, bkTeleportCause.PLUGIN);
+  if (__plugin.bukkit) {
+    var bkTeleportCause =
+      org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+    entity.teleport(destination, bkTeleportCause.PLUGIN);
   }
-  if (__plugin.canary){
-    var cmTeleportCause = Packages.net.canarymod.hook.player.TeleportHook.TeleportCause;
+  if (__plugin.canary) {
+    var cmTeleportCause =
+      Packages.net.canarymod.hook.player.TeleportHook.TeleportCause;
     entity.teleportTo(destination, cmTeleportCause.PLUGIN);
   }
 }

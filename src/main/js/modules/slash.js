@@ -39,23 +39,23 @@ slash([
 ```
 
 ***/
-function slash( commands, sender ){
-  if (_.isArray(commands)){
-    _.each(commands, function(command){
+function slash(commands, sender) {
+  if (_.isArray(commands)) {
+    _.each(commands, function(command) {
       slash(command, sender);
     });
     return;
   }
-  if (__plugin.canary){
-    if (sender === server){
-      server.consoleCommand( commands );
+  if (__plugin.canary) {
+    if (sender === server) {
+      server.consoleCommand(commands);
     } else {
-      server.consoleCommand( commands, sender );
+      server.consoleCommand(commands, sender);
     }
   }
-  if (__plugin.bukkit){
-    if (!sender){
-      // if sender is not specified assume server console 
+  if (__plugin.bukkit) {
+    if (!sender) {
+      // if sender is not specified assume server console
       server.dispatchCommand(server.consoleSender, commands);
     } else {
       server.dispatchCommand(sender, commands);

@@ -24,19 +24,23 @@ for a list of possible entities (creatures) which can be spawned.
 var entities = require('entities'),
   spawn = require('spawn');
 var entityNames = [];
-for (var name in entities){
+for (var name in entities) {
   entityNames.push(name);
 }
-command('spawn', function (parameters, sender) {
-  if (!isOp(sender)) {
-    echo(sender, 'Only operators can perform this command');
-    return;
-  }
-  var location = sender.location;
-  if (!location) {
-    echo(sender, 'You have no location. This command only works in-game.');
-    return;
-  }
-  var name = ('' + parameters[0]).toUpperCase();
-  spawn( name, sender.location);
-}, entityNames);
+command(
+  'spawn',
+  function(parameters, sender) {
+    if (!isOp(sender)) {
+      echo(sender, 'Only operators can perform this command');
+      return;
+    }
+    var location = sender.location;
+    if (!location) {
+      echo(sender, 'You have no location. This command only works in-game.');
+      return;
+    }
+    var name = ('' + parameters[0]).toUpperCase();
+    spawn(name, sender.location);
+  },
+  entityNames
+);

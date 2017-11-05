@@ -4,26 +4,27 @@ var cmPriority = Packages.net.canarymod.plugin.Priority,
   cmPluginListener = Packages.net.canarymod.plugin.PluginListener;
 var cmHookExecutor = cmCanary.hooks();
 
-exports.on = function( 
+exports.on = function(
   /* Java Class */
-  eventType, 
-  /* function( registeredListener, event) */ 
-  handler,   
-  /* (optional) String (CRITICAL, HIGH, NORMAL, LOW, PASSIVE), */
-  priority   ) {
-  var regd,
-    eventExecutor;
+  eventType,
+  /* function( registeredListener, event) */
 
-  if ( typeof priority == 'undefined' ) {
+  handler,
+  /* (optional) String (CRITICAL, HIGH, NORMAL, LOW, PASSIVE), */
+  priority
+) {
+  var regd, eventExecutor;
+
+  if (typeof priority == 'undefined') {
     priority = cmPriority.NORMAL;
   } else {
     priority = cmPriority[priority.toUpperCase().trim()];
   }
-  
-  var result = { };
-  eventExecutor = __plugin.getDispatcher( function(l,e){ 
-    function cancel(){
-      if (e.setCanceled){
+
+  var result = {};
+  eventExecutor = __plugin.getDispatcher(function(l, e) {
+    function cancel() {
+      if (e.setCanceled) {
         e.setCanceled();
       }
     }
@@ -32,16 +33,21 @@ exports.on = function(
      or this.unregister() to unregister from future events.
      */
     var bound = {};
-    for (var i in result){
+    for (var i in result) {
       bound[i] = result[i];
     }
     bound.cancel = cancel;
-    try { 
-      handler.call(bound, e, cancel); 
-    } catch ( error ){
-      console.log('Error while executing handler:' + handler + 
-                  ' for event type:' + eventType + 
-                  ' error: ' + error);
+    try {
+      handler.call(bound, e, cancel);
+    } catch (error) {
+      console.log(
+        'Error while executing handler:' +
+          handler +
+          ' for event type:' +
+          eventType +
+          ' error: ' +
+          error
+      );
     }
   });
   /* 
@@ -52,13 +58,19 @@ exports.on = function(
    The workaround is to make the ScriptCraftPlugin java class a Listener.
    Should only unregister() registered plugins in ScriptCraft js code.
    */
-  if (nashorn){
+  if (nashorn) {
     // nashorn
     eventType = require('nashorn-type')(eventType);
-  } 
+  }
   regd = new cmPluginListener({});
-  cmHookExecutor.registerHook(regd, __plugin, eventType, eventExecutor, priority);
-  result.unregister = function(){
+  cmHookExecutor.registerHook(
+    regd,
+    __plugin,
+    eventType,
+    eventExecutor,
+    priority
+  );
+  result.unregister = function() {
     cmHookExecutor.unregisterPluginListener(regd);
   };
   return result;

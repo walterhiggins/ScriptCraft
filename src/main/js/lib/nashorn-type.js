@@ -3,6 +3,6 @@
  environments. So need to have it in a separate module which should only be loaded in
  nashorn environment.
 */
-module.exports = function(t){
+module.exports = function(t) {
   return t.class;
 };

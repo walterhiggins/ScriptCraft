@@ -1,15 +1,15 @@
-function inventory(entity){
+function inventory(entity) {
   var inv = entity.inventory;
   var result = {
-    add: function(items){
+    add: function(items) {
       inv.addItem([items]);
       return result;
     },
-    remove: function(items){
+    remove: function(items) {
       inv.removeItem([items]);
       return result;
     },
-    contains: function(items){
+    contains: function(items) {
       return inv['contains(org.bukkit.inventory.ItemStack)'](items);
     }
   };

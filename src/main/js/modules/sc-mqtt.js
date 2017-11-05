@@ -58,90 +58,90 @@ library.
 [mqtt]: http://mqtt.org/
 
 ***/
-var MISSING_MQTT = '\nMissing class org.walterhiggins.scriptcraft.ScriptCraftMqttCallback.\n' +
-  'Make sure sc-mqtt.jar is in the classpath.\n' + 
+var MISSING_MQTT =
+  '\nMissing class org.walterhiggins.scriptcraft.ScriptCraftMqttCallback.\n' +
+  'Make sure sc-mqtt.jar is in the classpath.\n' +
   'See http://github.com/walterhiggins/scriptcraft-extras-mqtt for details.\n';
 
-function Client( brokerUrl, clientId ) {
-
+function Client(brokerUrl, clientId) {
   var Callback = org.walterhiggins.scriptcraft.ScriptCraftMqttCallback;
   var MqttClient = org.eclipse.paho.client.mqttv3.MqttClient;
 
   var callback = new Callback(
-    function( err ) {
-      console.log( 'connectionLost: ' + err );
+    function(err) {
+      console.log('connectionLost: ' + err);
     },
-    function( topic, message ) {
-      console.log( 'messageArrived ' + topic + '> ' + message );
+    function(topic, message) {
+      console.log('messageArrived ' + topic + '> ' + message);
     },
-    function( token ) {
-      console.log( 'deliveryComplete:' + token );
+    function(token) {
+      console.log('deliveryComplete:' + token);
     }
   );
-  
-  if ( !brokerUrl ) {
+
+  if (!brokerUrl) {
     brokerUrl = 'tcp://localhost:1883';
   }
-  if ( !clientId ) {
+  if (!clientId) {
     clientId = 'scriptcraft' + new Date().getTime();
   }
-  var client = new MqttClient( brokerUrl, clientId, null );
-  client.setCallback( callback );
+  var client = new MqttClient(brokerUrl, clientId, null);
+  client.setCallback(callback);
   return {
-    connect: function( options ) {
-      if ( typeof options === 'undefined' ) {
+    connect: function(options) {
+      if (typeof options === 'undefined') {
         client.connect();
-      }else{
+      } else {
         client.connect(options);
       }
       return client;
     },
 
-    disconnect: function( quiesceTimeout ) {
-      if ( typeof quiesceTimeout == 'undefined' ) {
+    disconnect: function(quiesceTimeout) {
+      if (typeof quiesceTimeout == 'undefined') {
         client.disconnect();
       } else {
-        client.disconnect( quiesceTimeout );
+        client.disconnect(quiesceTimeout);
       }
       return client;
     },
 
-    publish: function( topic, message, qos, retained ) {
-      if ( typeof message == 'string' ) {
-        message = new java.lang.String( message ).bytes;
+    publish: function(topic, message, qos, retained) {
+      if (typeof message == 'string') {
+        message = new java.lang.String(message).bytes;
       }
-      if (typeof qos == 'undefined'){
+      if (typeof qos == 'undefined') {
         qos = 1;
       }
-      if (typeof retained == 'undefined'){
+      if (typeof retained == 'undefined') {
         retained = false;
       }
-      client.publish( topic, message,qos, retained );
+      client.publish(topic, message, qos, retained);
       return client;
     },
 
-    subscribe: function( topic ) {
-      client.subscribe( topic );
+    subscribe: function(topic) {
+      client.subscribe(topic);
       return client;
     },
 
-    unsubscribe: function( topic ) {
-      client.unsubscribe( topic );
+    unsubscribe: function(topic) {
+      client.unsubscribe(topic);
       return client;
     },
 
-    onMessageArrived: function( fn ) {
-      callback.setMesgArrived( fn );
+    onMessageArrived: function(fn) {
+      callback.setMesgArrived(fn);
       return client;
     },
 
-    onDeliveryComplete: function( fn ) {
-      callback.setDeliveryComplete( fn );
+    onDeliveryComplete: function(fn) {
+      callback.setDeliveryComplete(fn);
       return client;
     },
 
-    onConnectionLost: function( fn ) {
-      callback.setConnLost( fn );
+    onConnectionLost: function(fn) {
+      callback.setConnLost(fn);
       return client;
     }
   };
@@ -149,10 +149,11 @@ function Client( brokerUrl, clientId ) {
 /*
  Return a new MQTT Client
 */
-exports.client = function( brokerUrl, clientId, options ) {
-  if ( typeof org.walterhiggins.scriptcraft.ScriptCraftMqttCallback != 'function' ) {
+exports.client = function(brokerUrl, clientId, options) {
+  if (
+    typeof org.walterhiggins.scriptcraft.ScriptCraftMqttCallback != 'function'
+  ) {
     throw MISSING_MQTT;
   }
-  return new Client( brokerUrl, clientId, options );
+  return new Client(brokerUrl, clientId, options);
 };
-

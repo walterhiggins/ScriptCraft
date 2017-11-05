@@ -36,20 +36,25 @@ var content = [
   ''
 ];
 
-var enumVals = [],  i;
-var sound, soundName, sounds = org.bukkit.Sound.values();
-for (i = 0; i < sounds.length; i++ ){
+var enumVals = [],
+  i;
+var sound,
+  soundName,
+  sounds = org.bukkit.Sound.values();
+for (i = 0; i < sounds.length; i++) {
   sound = sounds[i];
   soundName = '' + sound.name();
-  var methodName = (''+soundName).toLowerCase().replace(/_(.)/g,function(a,b){
-    return b.toUpperCase();
-  });
+  var methodName = ('' + soundName)
+    .toLowerCase()
+    .replace(/_(.)/g, function(a, b) {
+      return b.toUpperCase();
+    });
   enumVals.push(' * ' + methodName + '()');
 }
 enumVals.sort();
 content = content.concat(enumVals);
 content.push('');
-for (i = 0; i< content.length; i++){
+for (i = 0; i < content.length; i++) {
   out.println(content[i]);
 }
 
@@ -92,10 +97,10 @@ content = [
 
 enumVals = [];
 sounds = Packages.net.canarymod.api.world.effects.SoundEffect.Type.values();
-for (i = 0; i < sounds.length; i++ ){
+for (i = 0; i < sounds.length; i++) {
   sound = sounds[i];
   soundName = '' + sound.name();
-  methodName = (''+soundName).toLowerCase().replace(/_(.)/g,function(a,b){
+  methodName = ('' + soundName).toLowerCase().replace(/_(.)/g, function(a, b) {
     return b.toUpperCase();
   });
   enumVals.push(' * ' + methodName + '()');
@@ -103,7 +108,6 @@ for (i = 0; i < sounds.length; i++ ){
 enumVals.sort();
 content = content.concat(enumVals);
 content.push('');
-for (i = 0; i< content.length; i++){
+for (i = 0; i < content.length; i++) {
   out.println(content[i]);
 }
-

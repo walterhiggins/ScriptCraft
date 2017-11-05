@@ -46,35 +46,35 @@ at('06:00', wakeup, null, false);
 
 ***/
 var SECOND = 1000;
-var POLLING_INTERVAL = 3 * SECOND; // this is probably precise enough 
+var POLLING_INTERVAL = 3 * SECOND; // this is probably precise enough
 
 function at(time24hr, callback, pWorlds, repeat) {
-  if (arguments.length === 0){
+  if (arguments.length === 0) {
     // TODO: Document this behaviour
     console.log(tasksToString());
     return;
   }
-  var timeParts = time24hr.split( ':' );
-  var timeMins = (timeParts[0] * 60) + (timeParts[1] * 1);
-  if (!pWorlds ||  pWorlds === undefined ) {
+  var timeParts = time24hr.split(':');
+  var timeMins = timeParts[0] * 60 + timeParts[1] * 1;
+  if (!pWorlds || pWorlds === undefined) {
     pWorlds = utils.worlds();
   }
-  if (repeat === undefined){
+  if (repeat === undefined) {
     repeat = true;
   }
-  utils.foreach( pWorlds, function ( world ) {
-    atAddTask( timeMins, callback, world, repeat);
+  utils.foreach(pWorlds, function(world) {
+    atAddTask(timeMins, callback, world, repeat);
   });
 }
 var atTasks = {};
 
-function tasksToString(){
+function tasksToString() {
   var result = '';
-  for (var world in atTasks){
-    result += 'world: ' + world +'\n';
-    for (var time in atTasks[world]){
+  for (var world in atTasks) {
+    result += 'world: ' + world + '\n';
+    for (var time in atTasks[world]) {
       var scheduledFuncs = atTasks[world][time];
-      for (var i = 0;i < scheduledFuncs.length; i++){
+      for (var i = 0; i < scheduledFuncs.length; i++) {
         result += ' ' + time + ': ' + scheduledFuncs[i].constructor + '\n';
       }
     }
@@ -86,66 +86,65 @@ function tasksToString(){
   constructs a function which will be called every x ticks to 
   track the schedule for a given world
 */
-function atMonitorFactory(world){
-  var worldName = ''+ world.name;
+function atMonitorFactory(world) {
+  var worldName = '' + world.name;
   var lastRun = null;
 
-  return function atMonitorForWorld(){
+  return function atMonitorForWorld() {
     var timeMins = utils.time24(world);
-    if (timeMins === lastRun){
+    if (timeMins === lastRun) {
       return;
     }
-    if (lastRun === null ){
+    if (lastRun === null) {
       lastRun = timeMins - 1;
-    }else {
+    } else {
       lastRun = lastRun % 1440;
     }
     var worldSchedule = atTasks[worldName];
-    if (!worldSchedule){
+    if (!worldSchedule) {
       return;
     }
-    while ( lastRun > timeMins ? (lastRun <= 1440) : ( lastRun < timeMins ) ){
-
+    while (lastRun > timeMins ? lastRun <= 1440 : lastRun < timeMins) {
       var tasks = worldSchedule[lastRun++];
-      if (!tasks){
+      if (!tasks) {
         continue;
       }
-      utils.foreach(tasks, function(task, i){
-        if (!task){
+      utils.foreach(tasks, function(task, i) {
+        if (!task) {
           return;
         }
         setTimeout(task.callback.bind(null, timeMins, world), 1);
-        if (!task.repeat){
+        if (!task.repeat) {
           tasks[i] = null;
         }
       });
     }
   };
 }
-function atAddTask( timeMins, callback, world, repeat){
-  var worldName = ''+world.name;
-  if (!atTasks[worldName]){
+function atAddTask(timeMins, callback, world, repeat) {
+  var worldName = '' + world.name;
+  if (!atTasks[worldName]) {
     atTasks[worldName] = {};
   }
-  if (!atTasks[worldName][timeMins]){
+  if (!atTasks[worldName][timeMins]) {
     atTasks[worldName][timeMins] = [];
   }
-  atTasks[worldName][timeMins].push({callback: callback, repeat: repeat});
+  atTasks[worldName][timeMins].push({ callback: callback, repeat: repeat });
 }
 var atMonitors = [];
-function onLoadStartMonitor(event){
-  var monitor = setInterval( atMonitorFactory(event.world), POLLING_INTERVAL);
-  atMonitors.push( monitor );
+function onLoadStartMonitor(event) {
+  var monitor = setInterval(atMonitorFactory(event.world), POLLING_INTERVAL);
+  atMonitors.push(monitor);
 }
-if (__plugin.canary){
-  events.loadWorld( onLoadStartMonitor );
+if (__plugin.canary) {
+  events.loadWorld(onLoadStartMonitor);
 }
-if (__plugin.bukkit){
-  events.worldLoad( onLoadStartMonitor );
+if (__plugin.bukkit) {
+  events.worldLoad(onLoadStartMonitor);
 }
 
-addUnloadHandler(function(){
-  utils.foreach(atMonitors, function(atInterval){
+addUnloadHandler(function() {
+  utils.foreach(atMonitors, function(atInterval) {
     clearInterval(atInterval);
   });
 });

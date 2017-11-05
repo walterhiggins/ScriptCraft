@@ -33,16 +33,12 @@ d.dancefloor();
 [ytdance]: http://www.youtube.com/watch?v=UEooBt6NTFo
 ![dancefloor example](img/dancefloorex1.png)
 ***/
- 
 
 //
-function dancefloor(width, length, duration)
-{
-  if (typeof width == 'undefined')
-    width = 5;
-  if (typeof length == 'undefined')
-    length = width;
-  if (typeof duration === 'undefined'){
+function dancefloor(width, length, duration) {
+  if (typeof width == 'undefined') width = 5;
+  if (typeof length == 'undefined') length = width;
+  if (typeof duration === 'undefined') {
     duration = 30;
   }
   //
@@ -54,7 +50,7 @@ function dancefloor(width, length, duration)
   //
   disco
     .down()
-    .box( blocks.glowstone, width, 1, length)
+    .box(blocks.glowstone, width, 1, length)
     .up();
 
   //
@@ -64,11 +60,11 @@ function dancefloor(width, length, duration)
   var strobe = function() {
     disco.rand(blocks.rainbow, width, 1, length);
     duration--;
-    if ( duration == 0 ){
+    if (duration == 0) {
       // turn off the lights
       clearInterval(task);
     }
   };
-  task = setInterval( strobe, 1 * SECOND);
+  task = setInterval(strobe, 1 * SECOND);
 }
-Drone.extend( dancefloor );
+Drone.extend(dancefloor);

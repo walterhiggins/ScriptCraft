@@ -25,6 +25,6 @@ permission since it relies on the `/js` command to execute.
     };
 
 ***/
-exports.hello = function( player ) {
-  echo( player, 'Hello ' + player.name );
+exports.hello = function(player) {
+  echo(player, 'Hello ' + player.name);
 };

@@ -28,21 +28,20 @@ d.temple();
 ![temple example](img/templeex1.png)
 
 ***/
-function temple( side ) {
-  if ( !side ) {
+function temple(side) {
+  if (!side) {
     side = 20;
   }
   this.chkpt('temple');
 
-  while ( side > 4 ) {
-    var middle = Math.round( (side-2) / 2 );
-    this
-      .chkpt('temple-corner')
-      .box( blocks.brick.mossy, side, 1, side )
-      .right( middle )
-      .box( blocks.stairs.stone )
+  while (side > 4) {
+    var middle = Math.round((side - 2) / 2);
+    this.chkpt('temple-corner')
+      .box(blocks.brick.mossy, side, 1, side)
+      .right(middle)
+      .box(blocks.stairs.stone)
       .right()
-      .box( blocks.stairs.stone )
+      .box(blocks.stairs.stone)
       .move('temple-corner')
       .up()
       .fwd()
@@ -52,4 +51,4 @@ function temple( side ) {
 
   this.move('temple');
 }
-Drone.extend( temple );
+Drone.extend(temple);

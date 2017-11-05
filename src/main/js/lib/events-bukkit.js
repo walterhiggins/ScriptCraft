@@ -3,48 +3,46 @@ var bkEventPriority = org.bukkit.event.EventPriority,
   bkEventExecutor = org.bukkit.plugin.EventExecutor,
   bkRegisteredListener = org.bukkit.plugin.RegisteredListener;
 
-var nashorn = (typeof Java != 'undefined');
+var nashorn = typeof Java != 'undefined';
 
-function getHandlerListForEventType( eventType ){
+function getHandlerListForEventType(eventType) {
   var result = null;
   var clazz = null;
   if (nashorn) {
-    
     //Nashorn doesn't like when getHandlerList is in a superclass of your event
     //so to avoid this problem, call getHandlerList using java.lang.reflect
     //methods
     clazz = eventType['class'];
     result = clazz.getMethod('getHandlerList').invoke(null);
-    
-  } else { 
+  } else {
     result = eventType.getHandlerList();
   }
 
   return result;
 }
-exports.on = function( 
+exports.on = function(
   /* Java Class */
-  eventType, 
-  /* function( registeredListener, event) */ 
-  handler,   
-  /* (optional) String (HIGH, HIGHEST, LOW, LOWEST, NORMAL, MONITOR), */
-  priority   ) {
-  var handlerList,
-    regd,
-    eventExecutor;
+  eventType,
+  /* function( registeredListener, event) */
 
-  if ( typeof priority == 'undefined' ) {
+  handler,
+  /* (optional) String (HIGH, HIGHEST, LOW, LOWEST, NORMAL, MONITOR), */
+  priority
+) {
+  var handlerList, regd, eventExecutor;
+
+  if (typeof priority == 'undefined') {
     priority = bkEventPriority.HIGHEST;
   } else {
     priority = bkEventPriority[priority.toUpperCase().trim()];
   }
-  handlerList = getHandlerListForEventType (eventType);
+  handlerList = getHandlerListForEventType(eventType);
 
-  var result = { };
-  eventExecutor = new bkEventExecutor( {
-    execute: function( l, evt ) {
-      function cancel(){
-        if (evt instanceof org.bukkit.event.Cancellable){
+  var result = {};
+  eventExecutor = new bkEventExecutor({
+    execute: function(l, evt) {
+      function cancel() {
+        if (evt instanceof org.bukkit.event.Cancellable) {
           evt.setCancelled(true);
         }
       }
@@ -53,13 +51,13 @@ exports.on = function(
        or this.unregister() to unregister from future events.
        */
       var bound = {};
-      for (var i in result){
+      for (var i in result) {
         bound[i] = result[i];
       }
       bound.cancel = cancel;
-      handler.call( bound, evt, cancel );
-    } 
-  } );
+      handler.call(bound, evt, cancel);
+    }
+  });
   /* 
    wph 20130222 issue #64 bad interaction with Essentials plugin
    if another plugin tries to unregister a Listener (not a Plugin or a RegisteredListener)
@@ -68,10 +66,16 @@ exports.on = function(
    The workaround is to make the ScriptCraftPlugin java class a Listener.
    Should only unregister() registered plugins in ScriptCraft js code.
    */
-  regd = new bkRegisteredListener( __plugin, eventExecutor, priority, __plugin, false );
-  handlerList.register( regd );
-  result.unregister = function(){
-    handlerList.unregister( regd );
+  regd = new bkRegisteredListener(
+    __plugin,
+    eventExecutor,
+    priority,
+    __plugin,
+    false
+  );
+  handlerList.register(regd);
+  result.unregister = function() {
+    handlerList.unregister(regd);
   };
   return result;
 };

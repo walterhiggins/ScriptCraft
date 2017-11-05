@@ -17,19 +17,24 @@ var content = [
   ''
 ];
 
-var enumVals = [], t, i, name;
+var enumVals = [],
+  t,
+  i,
+  name;
 var types = org.bukkit.Material.values();
 for (t in types) {
   if (types[t] && types[t].ordinal) {
     name = ('' + types[t].name()).toLowerCase();
-    name = name.replace(/(_.)/g,function(a){ return a.replace(/_/,'').toUpperCase(); });
+    name = name.replace(/(_.)/g, function(a) {
+      return a.replace(/_/, '').toUpperCase();
+    });
     enumVals.push(' * ' + name + '()');
   }
 }
 enumVals.sort();
 content = content.concat(enumVals);
 content.push('');
-for (i = 0; i< content.length; i++){
+for (i = 0; i < content.length; i++) {
   out.println(content[i]);
 }
 
@@ -53,23 +58,19 @@ content = [
 var materials = cmItemTypeClass.getDeclaredFields();
 
 enumVals = [];
-for ( i = 0;i < materials.length; i++ ){
-
+for (i = 0; i < materials.length; i++) {
   if (materials[i].type != cmItemTypeClass) {
     continue;
   }
   var materialField = materials[i];
-  name = (''+materialField.name).replace(/^(.)/,function(a){ 
-    return a.toLowerCase() ;
+  name = ('' + materialField.name).replace(/^(.)/, function(a) {
+    return a.toLowerCase();
   });
   enumVals.push(' * ' + name + '()');
 }
 enumVals.sort();
 content = content.concat(enumVals);
 content.push('');
-for ( i = 0; i< content.length; i++){
+for (i = 0; i < content.length; i++) {
   out.println(content[i]);
 }
-
-
-  

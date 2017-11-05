@@ -28,42 +28,38 @@ d.hangtorch();
 ```
 
 ***/
-function canHang( block ) {
-
-  if (__plugin.bukkit){
+function canHang(block) {
+  if (__plugin.bukkit) {
     var bkMaterial = org.bukkit.Material;
-    if ( block.type.equals(bkMaterial.AIR) ||
-         block.type.equals(bkMaterial.VINE) ) {
+    if (
+      block.type.equals(bkMaterial.AIR) ||
+      block.type.equals(bkMaterial.VINE)
+    ) {
       return true;
-    } 
+    }
   }
-  if (__plugin.canary){
-    if (block.typeId == blocks.air || 
- block.typeId == blocks.vines ) {
+  if (__plugin.canary) {
+    if (block.typeId == blocks.air || block.typeId == blocks.vines) {
       return true;
     }
   }
   return false;
-}  
-function hangtorch() { 
+}
+function hangtorch() {
   var torch = blocks.torch + ':' + Drone.PLAYER_TORCH_FACING[this.dir];
   var moves = 0;
   var block = this.getBlock();
 
-  while ( !canHang(block) ){
-
+  while (!canHang(block)) {
     moves++;
     this.back();
-    if (moves == 10){
-      this
-        .fwd(moves);
+    if (moves == 10) {
+      this.fwd(moves);
       console.log('nowhere to hang torch');
       return;
     }
     block = this.getBlock();
   }
-  this
-    .box(torch)
-    .fwd(moves);
+  this.box(torch).fwd(moves);
 }
 Drone.extend(hangtorch);

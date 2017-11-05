@@ -29,8 +29,8 @@ watcher.watchFile( 'test.txt', function( file ) {
 var filesWatched = {};
 var dirsWatched = {};
 
-exports.watchFile = function( file, callback ) {
-  if ( typeof file == 'string' ) { 
+exports.watchFile = function(file, callback) {
+  if (typeof file == 'string') {
     file = new File(file);
   }
   filesWatched[file.canonicalPath] = {
@@ -64,25 +64,26 @@ watcher.watchDir( 'players/_ial', function( dir ) {
 ```
 ***/
 
-exports.watchDir = function( dir, callback ) {
-  if ( typeof dir == 'string' ) { 
+exports.watchDir = function(dir, callback) {
+  if (typeof dir == 'string') {
     dir = new File(dir);
   }
   dirsWatched[dir.canonicalPath] = {
     callback: callback,
     lastModified: dir.lastModified()
   };
-  
-  var files = dir.listFiles(),file;
-  if ( !files ) {
+
+  var files = dir.listFiles(),
+    file;
+  if (!files) {
     return;
   }
-  for ( var i = 0; i < files.length; i++ ) {
+  for (var i = 0; i < files.length; i++) {
     file = files[i];
-    if (file.isDirectory( )) {
-      exports.watchDir(file,callback);
-    }else{
-      exports.watchFile(file,callback);
+    if (file.isDirectory()) {
+      exports.watchDir(file, callback);
+    } else {
+      exports.watchFile(file, callback);
     }
   }
 };
@@ -98,11 +99,11 @@ watcher.unwatchFile('test.txt');
 ```
 
 ***/
-exports.unwatchFile = function( file ) {
-  if ( typeof file == 'string' ) { 
+exports.unwatchFile = function(file) {
+  if (typeof file == 'string') {
     file = new File(file);
   }
-  delete filesWatched[file.canonicalPath];  
+  delete filesWatched[file.canonicalPath];
 };
 
 /************************************************************************
@@ -123,67 +124,67 @@ watcher.unwatchFile (file);
 for each file inside directory (and unwatchDir for each directory inside it)
 
 ***/
-exports.unwatchDir = function( dir) {
-  if ( typeof dir == 'string' ) { 
+exports.unwatchDir = function(dir) {
+  if (typeof dir == 'string') {
     dir = new File(dir);
   }
-  delete dirsWatched[dir.canonicalPath];  
-  
-  var files = dir.listFiles(),file;
-  if ( !files ) {
+  delete dirsWatched[dir.canonicalPath];
+
+  var files = dir.listFiles(),
+    file;
+  if (!files) {
     return;
   }
-  for ( var i = 0; i < files.length; i++ ) {
+  for (var i = 0; i < files.length; i++) {
     file = files[i];
-    if ( file.isDirectory() ) {
-      exports.unwatchDir( file );
-    }else{
-      exports.unwatchFile( file );
+    if (file.isDirectory()) {
+      exports.unwatchDir(file);
+    } else {
+      exports.unwatchFile(file);
     }
   }
 };
 
-function fileWatcher( ) {
+function fileWatcher() {
   for (var file in filesWatched) {
     var fileObject = new File(file);
     var lm = fileObject.lastModified();
-    if ( String(lm) != String(filesWatched[file].lastModified) ) {
+    if (String(lm) != String(filesWatched[file].lastModified)) {
       filesWatched[file].lastModified = lm;
       filesWatched[file].callback(fileObject);
       if (!fileObject.exists()) {
-        exports.unwatchFile(file,filesWatched[file].callback);
+        exports.unwatchFile(file, filesWatched[file].callback);
       }
     }
   }
 }
 
-
 //monitors directories for time change
 //when a change is detected watchFiles are invoked for each of the files in directory
 //and callback is called
-function dirWatcher( ) {
+function dirWatcher() {
   for (var dir in dirsWatched) {
     var dirObject = new File(dir);
     var lm = dirObject.lastModified();
     var dw = dirsWatched[dir];
-    if ( String(lm) != String(dirsWatched[dir].lastModified) ) {
+    if (String(lm) != String(dirsWatched[dir].lastModified)) {
       dirsWatched[dir].lastModified = lm;
       dirsWatched[dir].callback(dirObject);
-      
+
       exports.unwatchDir(dir, dw.callback);
       //causes all files to be rewatched
       if (dirObject.exists()) {
         exports.watchDir(dir, dw.callback);
-      } 
+      }
     }
   }
 }
 
-//guarantees that a callback is only called once for each change 
+//guarantees that a callback is only called once for each change
 function monitorDirAndFiles() {
-  fileWatcher ();
-  dirWatcher ();
-  setTimeout( monitorDirAndFiles, 3000 );
+  fileWatcher();
+  dirWatcher();
+  setTimeout(monitorDirAndFiles, 3000);
 }
 
-setTimeout( monitorDirAndFiles, 3000 );
+setTimeout(monitorDirAndFiles, 3000);

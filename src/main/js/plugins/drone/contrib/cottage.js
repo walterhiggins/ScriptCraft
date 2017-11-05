@@ -24,43 +24,41 @@ d.cottage();
 ![cottage example](img/cottageex1.png)
 
 ***/
-function cottage( ) {
-  this
-    .chkpt('cottage')
+function cottage() {
+  this.chkpt('cottage')
     .down()
     .box(blocks.birch, 7, 1, 6) // birch wood floor
     .up()
     .box(blocks.air, 7, 5, 6) // clear area first
-    .box0( blocks.moss_stone, 7, 2, 6)  // 4 walls
+    .box0(blocks.moss_stone, 7, 2, 6) // 4 walls
     .right(3)
     .door() // door front and center
     .up(1)
     .left(2)
-    .box( blocks.glass_pane ) // windows to left and right
+    .box(blocks.glass_pane) // windows to left and right
     .right(4)
-    .box( blocks.glass_pane )
+    .box(blocks.glass_pane)
     .left(5)
     .up()
-    .prism0( blocks.stairs.oak, 7, 6) // add a roof
+    .prism0(blocks.stairs.oak, 7, 6) // add a roof
     .down()
     .right(4)
     .back()
-    .wallsign(['Home','Sweet','Home'])
+    .wallsign(['Home', 'Sweet', 'Home'])
     .fwd()
     .move('cottage')
     .right(3)
     .fwd(4)
     .up()
-    .hangtorch()     // place a torch on wall
+    .hangtorch() // place a torch on wall
     .move('cottage')
     .right()
     .fwd(3)
-    .bed()           // place a bed against left wall
+    .bed() // place a bed against left wall
     .fwd()
     .right(4)
     .box(blocks.furnace) // place a furnace against right wall
-    .move('cottage')
-  ;
+    .move('cottage');
 }
 /************************************************************************
 ### Drone.cottage_road() method
@@ -93,44 +91,47 @@ d.cottage_road();
 // a more complex script that builds an tree-lined avenue with
 // cottages on both sides.
 //
-function cottage_road( numberCottages ) {
-  if (typeof numberCottages == 'undefined'){
+function cottage_road(numberCottages) {
+  if (typeof numberCottages == 'undefined') {
     numberCottages = 6;
   }
-  var i=0, distanceBetweenTrees = 11;
+  var i = 0,
+    distanceBetweenTrees = 11;
   //
   // step 1 build the road.
   //
-  var cottagesPerSide = Math.floor(numberCottages/2);
+  var cottagesPerSide = Math.floor(numberCottages / 2);
   this
     // make sure the drone's state is saved.
-    .chkpt('cottage_road') 
+    .chkpt('cottage_road')
     // build the road
-    .box( blocks.double_slab.stone, 3, 1, cottagesPerSide * ( distanceBetweenTrees + 1 ) ) 
+    .box(
+      blocks.double_slab.stone,
+      3,
+      1,
+      cottagesPerSide * (distanceBetweenTrees + 1)
+    )
     .up()
     // now centered in middle of road
-    .right() 
+    .right()
     // will be returning to this position later
-    .chkpt('cottage_road_cr'); 
+    .chkpt('cottage_road_cr');
 
   //
   // step 2 line the road with trees
   //
-  for ( ; i < cottagesPerSide+1;i++ ) {
-    this
-      .left(5)
-      .oak() 
+  for (; i < cottagesPerSide + 1; i++) {
+    this.left(5)
+      .oak()
       .right(10)
       .oak()
       .left(5) // return to middle of road
-      .fwd( distanceBetweenTrees + 1 ); // move forward.
+      .fwd(distanceBetweenTrees + 1); // move forward.
   }
-  this
-    .move('cottage_road_cr')
-    .back(6); // move back 1/2 the distance between trees
+  this.move('cottage_road_cr').back(6); // move back 1/2 the distance between trees
 
   // this function builds a path leading to a cottage.
-  function pathAndCottage( drone ) {
+  function pathAndCottage(drone) {
     drone
       .down()
       .box(blocks.double_slab.stone, 1, 1, 5)
@@ -143,18 +144,15 @@ function cottage_road( numberCottages ) {
   //
   // step 3 build cottages on each side
   //
-  for ( i = 0; i < cottagesPerSide; i++ ) {
-    this
-      .fwd( distanceBetweenTrees + 1 )
-      .chkpt('r'+i);
+  for (i = 0; i < cottagesPerSide; i++) {
+    this.fwd(distanceBetweenTrees + 1).chkpt('r' + i);
     // build cottage on left
-    pathAndCottage( this.turn(3) ).move( 'r' + i );
+    pathAndCottage(this.turn(3)).move('r' + i);
     // build cottage on right
-    pathAndCottage( this.turn() ).move( 'r' + i );
+    pathAndCottage(this.turn()).move('r' + i);
   }
   // return drone to where it was at start of function
-  this.move('cottage_road'); 
+  this.move('cottage_road');
 }
 Drone.extend(cottage_road);
 Drone.extend(cottage);
-

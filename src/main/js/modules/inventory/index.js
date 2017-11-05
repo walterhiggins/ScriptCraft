@@ -36,7 +36,7 @@ The inventory module exposes a single function which when passed a player or NPC
 * contains : checks to see if there is the specified type and amount of item in the inventory (Expects parameters of type `net.canarymod.api.inventory.Item` - I strongly recommend using the `items` module for constructing items)
 
 ***/
-if ( __plugin.canary ) {
+if (__plugin.canary) {
   module.exports = require('../canary/inventory');
 } else {
   module.exports = require('../bukkit/inventory');

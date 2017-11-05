@@ -1,10 +1,10 @@
 'use strict';
-if (__plugin.bukkit){
+if (__plugin.bukkit) {
   var bkBukkit = org.bukkit.Bukkit,
     bkLocation = org.bukkit.Location,
     bkBlockCommandSender = org.bukkit.command.BlockCommandSender;
 }
-if (__plugin.canary){
+if (__plugin.canary) {
   var Canary = Packages.net.canarymod.Canary;
 }
 /************************************************************************
@@ -47,22 +47,21 @@ if ( player ) {
 [bkloc]: http://jd.bukkit.org/dev/apidocs/org/bukkit/Location.html
 
 ***/
-function _player( playerName ) {
-  if ( typeof playerName == 'undefined' ) {
-    if ( typeof self == 'undefined' ) {
+function _player(playerName) {
+  if (typeof playerName == 'undefined') {
+    if (typeof self == 'undefined') {
       return null;
-    } else { 
+    } else {
       return self;
     }
   } else {
-    if ( typeof playerName == 'string' )
+    if (typeof playerName == 'string')
       if (__plugin.canary) {
-        return Canary.server.getPlayer( playerName );
-      } else { 
-        return bkBukkit.getPlayer( playerName );
+        return Canary.server.getPlayer(playerName);
+      } else {
+        return bkBukkit.getPlayer(playerName);
       }
-    else
-      return playerName; // assumes it's a player object
+    else return playerName; // assumes it's a player object
   }
 }
 /*************************************************************************
@@ -71,30 +70,32 @@ function _player( playerName ) {
 Returns a World object matching the given name
 
 ***/
-function _world( worldName ){
-  if (__plugin.canary){
-    if (worldName instanceof Packages.net.canarymod.api.world.World){
+function _world(worldName) {
+  if (__plugin.canary) {
+    if (worldName instanceof Packages.net.canarymod.api.world.World) {
       return worldName;
     }
     var worldMgr = Canary.server.worldManager;
-    try { 
-      if (worldName === undefined){
+    try {
+      if (worldName === undefined) {
         var worldNames = worldMgr.getLoadedWorldsNames();
         worldName = worldNames[0];
       }
-      return worldMgr.getWorld( worldName, true );
+      return worldMgr.getWorld(worldName, true);
     } catch (error) {
-      console.error( 'utils.world() failed to load ' + worldName + ',Error:' + error );
+      console.error(
+        'utils.world() failed to load ' + worldName + ',Error:' + error
+      );
     }
   }
-  if (__plugin.bukkit){
-    if (worldName instanceof org.bukkit.World){
+  if (__plugin.bukkit) {
+    if (worldName instanceof org.bukkit.World) {
       return worldName;
     }
-    if (worldName === undefined){
+    if (worldName === undefined) {
       return bkBukkit.getWorlds().get(0);
     }
-    return bkBukkit.getWorld( worldName );
+    return bkBukkit.getWorld(worldName);
   }
   return null;
 }
@@ -106,11 +107,11 @@ exports.world = _world;
 Returns the Block at the given location.
 
 ***/
-function _blockAt( location ){
-  if (__plugin.canary){
+function _blockAt(location) {
+  if (__plugin.canary) {
     return location.world.getBlockAt(location);
   }
-  if (__plugin.bukkit){
+  if (__plugin.bukkit) {
     return location.block;
   }
   return null;
@@ -140,13 +141,15 @@ This can be useful if you write a plugin that needs to store location data since
 A JSON object in the above form.
  
 ***/
-function _locationToJSON( location ) {
-  var yaw = __plugin.bukkit ? location.yaw : (__plugin.canary ? location.rotation : 0);
-  return { 
-    world: ''+location.world.name, 
-    x: location.x, 
-    y: location.y, 
-    z: location.z, 
+function _locationToJSON(location) {
+  var yaw = __plugin.bukkit
+    ? location.yaw
+    : __plugin.canary ? location.rotation : 0;
+  return {
+    world: '' + location.world.name,
+    x: location.x,
+    y: location.y,
+    z: location.z,
     yaw: yaw,
     pitch: location.pitch
   };
@@ -172,8 +175,8 @@ lookupTable[key] = player.name;
 ```
 
 ***/
-exports.locationToString = function locationToString( location ) {
-  return JSON.stringify( _locationToJSON( location ) );
+exports.locationToString = function locationToString(location) {
+  return JSON.stringify(_locationToJSON(location));
 };
 exports.locationToJSON = _locationToJSON;
 
@@ -187,28 +190,44 @@ returned by locationToJSON() and reconstructs and returns a bukkit
 Location object.
 
 ***/
-exports.locationFromJSON = function locationFromJSON( json ) {
+exports.locationFromJSON = function locationFromJSON(json) {
   var world;
-  if ( json.constructor == Array ) { 
+  if (json.constructor == Array) {
     // for support of legacy format
-    world = _world( json[0] );
-    return new bkLocation( world, json[1], json[2] , json[3] );
+    world = _world(json[0]);
+    return new bkLocation(world, json[1], json[2], json[3]);
   } else {
-    if (__plugin.canary){
-      world = _world( json.world );
+    if (__plugin.canary) {
+      world = _world(json.world);
       var cmLocation = Packages.net.canarymod.api.world.position.Location;
-      return new cmLocation(world, json.x, json.y, json.z, json.pitch?json.pitch:0, json.yaw?json.yaw:0);
+      return new cmLocation(
+        world,
+        json.x,
+        json.y,
+        json.z,
+        json.pitch ? json.pitch : 0,
+        json.yaw ? json.yaw : 0
+      );
     } else {
-      world = _world( json.world );
-      return new bkLocation( world, json.x, json.y , json.z, json.yaw?json.yaw:0, json.pitch?json.pitch:0 );
+      world = _world(json.world);
+      return new bkLocation(
+        world,
+        json.x,
+        json.y,
+        json.z,
+        json.yaw ? json.yaw : 0,
+        json.pitch ? json.pitch : 0
+      );
     }
   }
 };
 
 exports.player = _player;
 
-exports.getPlayerObject = function getPlayerObject( player ) {
-  console.warn( 'utils.getPlayerObject() is deprecated. Use utils.player() instead.' );
+exports.getPlayerObject = function getPlayerObject(player) {
+  console.warn(
+    'utils.getPlayerObject() is deprecated. Use utils.player() instead.'
+  );
   return _player(player);
 };
 /*************************************************************************
@@ -229,22 +248,21 @@ A [Location][cmloc] object.
 [bkbcs]: http://jd.bukkit.org/dev/apidocs/org/bukkit/command/BlockCommandSender.html
 [bksndr]: http://jd.bukkit.org/dev/apidocs/index.html?org/bukkit/command/CommandSender.html
 ***/
-function getPlayerPos( player ){
-  player = _player( player );
-  if ( player ) {
-    if (__plugin.bukkit){
-      if ( player instanceof bkBlockCommandSender )
-        return player.block.location;
-      else
-        return player.location;
+function getPlayerPos(player) {
+  player = _player(player);
+  if (player) {
+    if (__plugin.bukkit) {
+      if (player instanceof bkBlockCommandSender) return player.block.location;
+      else return player.location;
     }
-    if (__plugin.canary){
-      if ( player instanceof Packages.net.canarymod.api.world.blocks.CommandBlock)
+    if (__plugin.canary) {
+      if (
+        player instanceof Packages.net.canarymod.api.world.blocks.CommandBlock
+      )
         return player.block.location;
-      else
-        return player.location;
+      else return player.location;
     }
-  } 
+  }
   return null;
 }
 exports.getPlayerPos = getPlayerPos;
@@ -278,32 +296,31 @@ if (targetPos){
 ```
 
 ***/
-exports.getMousePos = function getMousePos( player ) {
-  
+exports.getMousePos = function getMousePos(player) {
   player = _player(player);
-  if ( !player ) {
+  if (!player) {
     return null;
   }
-  var targetedBlock ;
-  if ( __plugin.canary ) {
+  var targetedBlock;
+  if (__plugin.canary) {
     var cmLineTracer = Packages.net.canarymod.LineTracer;
     var lineTracer = new cmLineTracer(player);
     targetedBlock = lineTracer.getTargetBlock();
-    if (targetedBlock == null){
+    if (targetedBlock == null) {
       return null;
     }
-  } else { 
+  } else {
     // player might be CONSOLE or a CommandBlock
-    if ( !player.getTargetBlock ) {
+    if (!player.getTargetBlock) {
       return null;
     }
     try {
-      targetedBlock = player.getTargetBlock( null, 5 );
-    }catch (e){
+      targetedBlock = player.getTargetBlock(null, 5);
+    } catch (e) {
       // spigot 1.8.7 adds new overload which causes problems with JDK 7
-      targetedBlock = player['getTargetBlock(java.util.Set,int)'](null, 5 );
+      targetedBlock = player['getTargetBlock(java.util.Set,int)'](null, 5);
     }
-    if ( targetedBlock == null || targetedBlock.isEmpty() ) {
+    if (targetedBlock == null || targetedBlock.isEmpty()) {
       return null;
     }
   }
@@ -368,24 +385,24 @@ utils.foreach (players, function( player ) {
 Java-style collection. This is important because many objects in the
 CanaryMod and Bukkit APIs use Java-style collections.
 ***/
-function _foreach( array, callback, context, delay, onCompletion ) {
-  if ( array instanceof java.util.Collection ) {
+function _foreach(array, callback, context, delay, onCompletion) {
+  if (array instanceof java.util.Collection) {
     array = array.toArray();
   }
   var i = 0;
   var len = array.length;
-  function next() { 
-    callback(array[i], i, context, array); 
+  function next() {
+    callback(array[i], i, context, array);
     i++;
   }
   function hasNext() {
     return i < len;
   }
-  if ( delay ) {
-    _nicely( next, hasNext, onCompletion, delay );
+  if (delay) {
+    _nicely(next, hasNext, onCompletion, delay);
   } else {
-    for ( ;i < len; i++ ) {
-      callback( array[i], i, context, array );
+    for (; i < len; i++) {
+      callback(array[i], i, context, array);
     }
   }
 }
@@ -414,24 +431,24 @@ function and the start of the next `next()` function.
 See the source code to utils.foreach for an example of how utils.nicely is used.
 
 ***/
-function _nicely( next, hasNext, onDone, delay ) {
-  if ( hasNext() ){
+function _nicely(next, hasNext, onDone, delay) {
+  if (hasNext()) {
     next();
-    setTimeout( function() {
-      _nicely( next, hasNext, onDone, delay );
-    }, delay );
-  }else{
-    if ( onDone ) {
+    setTimeout(function() {
+      _nicely(next, hasNext, onDone, delay);
+    }, delay);
+  } else {
+    if (onDone) {
       onDone();
     }
   }
 }
 exports.nicely = _nicely;
 
-function _at( time24hr, callback, pWorlds, repeat ) {
-  console.warn('utils.at() is deprecated, use require(\'at\') instead');
+function _at(time24hr, callback, pWorlds, repeat) {
+  console.warn("utils.at() is deprecated, use require('at') instead");
   var at = require('at');
-  return at( time24hr, callback, pWorlds, repeat);
+  return at(time24hr, callback, pWorlds, repeat);
 }
 exports.at = _at;
 /*************************************************************************
@@ -443,19 +460,19 @@ canarymod and bukkit differ in how the timeofday is calculated.
 See http://minecraft.gamepedia.com/Day-night_cycle#Conversions
 
 ***/
-function getTime(world){
+function getTime(world) {
   world = _world(world);
 
-  if (__plugin.bukkit){
+  if (__plugin.bukkit) {
     return world.time;
   }
-  if (__plugin.canary){
-    // there's a bug in canary where if you call world.setTime() the world.totalTime 
+  if (__plugin.canary) {
+    // there's a bug in canary where if you call world.setTime() the world.totalTime
     // becomes huge.
-    if (world.totalTime < world.rawTime){
+    if (world.totalTime < world.rawTime) {
       return world.totalTime;
-    } else { 
-      return ((world.totalTime % world.rawTime) + world.relativeTime) % 24000;
+    } else {
+      return (world.totalTime % world.rawTime + world.relativeTime) % 24000;
     }
   }
   return 0;
@@ -474,10 +491,10 @@ See http://minecraft.gamepedia.com/Day-night_cycle#Conversions
  * world : the name of the world or world object for which you want to get time
 
 ***/
-function getTime24( world ){
+function getTime24(world) {
   world = _world(world); // accept world name or object or undeifned
   var mcTime = getTime(world);
-  var mins = Math.floor( ( (mcTime + 6000) % 24000) / 16.6667 );
+  var mins = Math.floor(((mcTime + 6000) % 24000) / 16.6667);
   return mins;
 }
 exports.time24 = getTime24;
@@ -504,8 +521,8 @@ var jsFiles = utils.find('./', function(dir,name){
 });  
 ```
 ***/
-exports.find = function( path, filter){
-  console.warn('utils.find() is deprecated, use require(\'find\') instead');
+exports.find = function(path, filter) {
+  console.warn("utils.find() is deprecated, use require('find') instead");
   return require('find')(path, filter);
 };
 /************************************************************************
@@ -521,23 +538,20 @@ console.log(serverAddress);
 ***/
 exports.serverAddress = function serverAddress() {
   var interfaces = java.net.NetworkInterface.getNetworkInterfaces();
-  var current,
-    addresses,
-    current_addr;
-  while ( interfaces.hasMoreElements() ) {
+  var current, addresses, current_addr;
+  while (interfaces.hasMoreElements()) {
     current = interfaces.nextElement();
-    if ( ! current.isUp() || current.isLoopback() || current.isVirtual() ) {
+    if (!current.isUp() || current.isLoopback() || current.isVirtual()) {
       continue;
     }
     addresses = current.getInetAddresses();
     while (addresses.hasMoreElements()) {
       current_addr = addresses.nextElement();
-      if ( current_addr.isLoopbackAddress() ) 
-        continue;
-      if ( current_addr instanceof java.net.Inet4Address)
+      if (current_addr.isLoopbackAddress()) continue;
+      if (current_addr instanceof java.net.Inet4Address)
         return current_addr.getHostAddress();
     }
-  }  
+  }
   return null;
 };
 /**************************************************************************
@@ -552,23 +566,23 @@ all of Javascript's Array goodness.
     var worlds = utils.array(server.worldManager.getAllWorlds());
     
 ***/
-function toArray( ){
+function toArray() {
   var result = [],
     javaArray = null,
     i = 0;
-  if (arguments[0] instanceof java.util.Collection){
+  if (arguments[0] instanceof java.util.Collection) {
     // it's a java collection
     javaArray = arguments[0].toArray();
-    for ( ;i < javaArray.length; i++) {
+    for (; i < javaArray.length; i++) {
       result.push(javaArray[i]);
     }
-  } else if (arguments[0].constructor === Array){
+  } else if (arguments[0].constructor === Array) {
     // it's a javascript array
     return arguments[0];
   } else if (arguments[0].length) {
     // it's a java array
     javaArray = arguments[0];
-    for ( ;i < javaArray.length; i++) {
+    for (; i < javaArray.length; i++) {
       result.push(javaArray[i]);
     }
   }
@@ -576,11 +590,11 @@ function toArray( ){
 }
 exports.array = toArray;
 
-function worlds(){
-  if (__plugin.canary){
+function worlds() {
+  if (__plugin.canary) {
     return toArray(server.worldManager.allWorlds);
   }
-  if (__plugin.bukkit){
+  if (__plugin.bukkit) {
     return toArray(server.worlds);
   }
 }
@@ -605,18 +619,18 @@ Any players with a bow will be able to launch fireworks by shooting.
 This function returns a javascript array of player names (as javascript strings)
 
 ***/
-function getPlayersBukkit(){
+function getPlayersBukkit() {
   var result = [];
   var players = server.getOnlinePlayers();
-  for (var i = 0; i < players.size(); i++){
+  for (var i = 0; i < players.size(); i++) {
     result.push(players.get(i));
   }
   return result;
 }
-function getPlayersCanary(){
+function getPlayersCanary() {
   var result = [];
   var players = server.playerList;
-  for (var i = 0; i < players.size(); i++){
+  for (var i = 0; i < players.size(); i++) {
     result.push(players.get(i));
   }
   return result;
@@ -628,9 +642,9 @@ if (__plugin.canary) {
   getPlayers = getPlayersBukkit;
 }
 
-function getStatBukkit(){
+function getStatBukkit() {
   var stat, player;
-  if (arguments.length == 1){
+  if (arguments.length == 1) {
     stat = arguments[1];
     return org.bukkit.Statistic[stat.toUpperCase()];
   } else {
@@ -638,11 +652,12 @@ function getStatBukkit(){
     stat = arguments[1];
     return player.getStatistic(org.bukkit.Statistic[stat.toUpperCase()]);
   }
-  
 }
-function getStatCanary(){
-  var stat, player, cmStatistics = Packages.net.canarymod.api.statistics.Statistics;
-  if (arguments.length == 1){
+function getStatCanary() {
+  var stat,
+    player,
+    cmStatistics = Packages.net.canarymod.api.statistics.Statistics;
+  if (arguments.length == 1) {
     stat = arguments[0];
     return cmStatistics[stat.toUpperCase()].instance;
   } else {
@@ -651,27 +666,29 @@ function getStatCanary(){
     return player.getStat(cmStatistics[stat.toUpperCase()].instance);
   }
 }
-if (__plugin.canary){
+if (__plugin.canary) {
   var cmStatistics = Packages.net.canarymod.api.statistics.Statistics;
   var values = cmStatistics.values();
-  for (var i = 0;i < values.length; i++){
+  for (var i = 0; i < values.length; i++) {
     var value = values[i];
-    try { 
+    try {
       var stat = value.instance;
       getStatCanary[value.name()] = stat;
-    }catch (e){
+    } catch (e) {
       // as of 20141018 some calls to getInstance() will generate an NPE
       // see https://github.com/CanaryModTeam/CanaryMod/issues/84
     }
   }
 }
 
-function getPlayerNames(){
-  return getPlayers().map(function(p){ return p.name; });
+function getPlayerNames() {
+  return getPlayers().map(function(p) {
+    return p.name;
+  });
 }
-exports.players = function players(fn){
+exports.players = function players(fn) {
   var result = getPlayers();
-  if (fn){
+  if (fn) {
     result.forEach(fn);
   }
   return result;
@@ -737,5 +754,4 @@ This function also contains values for each possible stat so you can get at stat
     var JUMPSTAT = utils.stat.JUMP; // Accessing the value
     var jumpCount = player.getStat ( JUMPSTAT ); // canary-specific code
 ***/
-exports.stat = __plugin.canary ? getStatCanary: getStatBukkit;
-
+exports.stat = __plugin.canary ? getStatCanary : getStatBukkit;

@@ -18,15 +18,32 @@ var colors = require('./block-colors');
 
 var blocks = {
   air: 0,
-  stone: 1, 
-  granite: '1:1', polished_granite: '1:2', 
-  diorite: '1:3', polished_diorite: '1:4',
-  andesite: '1:5', polished_andesite: '1:6',
+  stone: 1,
+  granite: '1:1',
+  polished_granite: '1:2',
+  diorite: '1:3',
+  polished_diorite: '1:4',
+  andesite: '1:5',
+  polished_andesite: '1:6',
   grass: 2,
-  dirt: 3, coarse_dirt: '3:1', podzol: '3:2',
+  dirt: 3,
+  coarse_dirt: '3:1',
+  podzol: '3:2',
   cobblestone: 4,
-  oak: 5, spruce: '5:1', birch: '5:2', jungle: '5:3', acacia: '5:4', dark_oak: '5:5',
-  sapling: { oak: 6, spruce: '6:1', birch: '6:2', jungle: '6:3', acacia: '6:4', dark_oak: '6:5' },
+  oak: 5,
+  spruce: '5:1',
+  birch: '5:2',
+  jungle: '5:3',
+  acacia: '5:4',
+  dark_oak: '5:5',
+  sapling: {
+    oak: 6,
+    spruce: '6:1',
+    birch: '6:2',
+    jungle: '6:3',
+    acacia: '6:4',
+    dark_oak: '6:5'
+  },
   bedrock: 7,
   water: 8,
   water_still: 9,
@@ -37,8 +54,14 @@ var blocks = {
   gold_ore: 14,
   iron_ore: 15,
   coal_ore: 16,
-  wood: 17, spruce_wood: '17:1', birch_wood: '17:2', jungle_wood: '17:3',
-  leaves: 18, spruce_leaves: '18:1', birch_leaves: '18:2', jungle_leaves: '18:3',
+  wood: 17,
+  spruce_wood: '17:1',
+  birch_wood: '17:2',
+  jungle_wood: '17:3',
+  leaves: 18,
+  spruce_leaves: '18:1',
+  birch_leaves: '18:2',
+  jungle_leaves: '18:3',
   sponge: 19,
   sponge_wet: '19:1',
   glass: 20,
@@ -60,11 +83,14 @@ var blocks = {
   grass_tall: 31,
   dead_bush: 32,
   piston: 33,
-  piston_extn: 34, piston_head: 34,
-  wool: {  white: 35 /* All other colors added below */ },
+  piston_extn: 34,
+  piston_head: 34,
+  wool: { white: 35 /* All other colors added below */ },
   piston_extended: 36,
-  dandelion: 37, flower_yellow: 37,
-  rose: 38, flower_red: 38,
+  dandelion: 37,
+  flower_yellow: 37,
+  rose: 38,
+  flower_red: 38,
   mushroom_brown: 39,
   mushroom_red: 40,
   gold: 41,
@@ -87,12 +113,12 @@ var blocks = {
     cobblestone: '43:3',
     brick: '43:4',
     stonebrick: '43:5',
-    netherbrick:'43:6',
+    netherbrick: '43:6',
     quartz: '43:7',
     smooth_stone: '43:8',
     smooth_sandstone: '43:9',
     tile_quartz: '43:15',
-    purpur: 204,
+    purpur: 204
   },
   slab: {
     stone: '44:0',
@@ -101,7 +127,7 @@ var blocks = {
     cobblestone: '44:3',
     brick: '44:4',
     stonebrick: '44:5',
-    netherbrick:'44:6',
+    netherbrick: '44:6',
     quartz: '44:7',
     upper: {
       stone: '44:8',
@@ -111,7 +137,7 @@ var blocks = {
       cobblestone: '44:11',
       brick: '44:12',
       stonebrick: '44:13',
-      netherbrick:'44:14',
+      netherbrick: '44:14',
       quartz: '44:15',
       oak: '126:8',
       spruce: '126:9',
@@ -128,7 +154,7 @@ var blocks = {
     acacia: '126:4',
     dark_oak: '126:5',
     sandstone_red: 182,
-    purpur: 205,
+    purpur: 205
   },
   // see brick.red 45
   tnt: 46,
@@ -152,7 +178,7 @@ var blocks = {
     acacia: 163,
     dark_oak: 164,
     sandstone_red: 180,
-    purpur: 203,
+    purpur: 203
   },
   chest: 54,
   redstone_wire: 55,
@@ -192,7 +218,7 @@ var blocks = {
   cake: 92,
   redstone_repeater: 93,
   redstone_repeater_active: 94,
-  stained_glass: { 
+  stained_glass: {
     white: 95 // all other colors added below
   },
   trapdoor: 96,
@@ -240,7 +266,8 @@ var blocks = {
   potatoes: 142,
   beetroot: 207,
   button_wood: 143,
-  skull: 144, mobhead: 144, 
+  skull: 144,
+  mobhead: 144,
   anvil: 145,
   chest_trapped: 146,
   pressure_plate_weighted_light: 147,
@@ -249,10 +276,11 @@ var blocks = {
   redstone_comparator_active: 150,
   daylight_sensor: 151,
   redstone: 152,
-  quartzore: 153, netherquartzore: 153,
+  quartzore: 153,
+  netherquartzore: 153,
   hopper: 154,
   quartz: 155,
-  quartz_chiseled: '155:1', 
+  quartz_chiseled: '155:1',
   quartz_pillar_vertical: '155:2',
   quartz_pillar_horizontal: '155:3',
   quartz_pillar_cap: '155:4',
@@ -279,7 +307,7 @@ var blocks = {
   hardened_clay: 172,
   coal_block: 173,
   packed_ice: 174,
-  double_plant: 175, 
+  double_plant: 175,
   sunflower: 175,
   purpur: 201,
   purpur_pillar: 202,
@@ -331,17 +359,17 @@ var blocks = {
 // Add all available colors to colorized block collections
 
 var colorized_blocks = [
-  'wool', 
-  'stained_clay', 
-  'carpet', 
-  'stained_glass', 
+  'wool',
+  'stained_clay',
+  'carpet',
+  'stained_glass',
   'stained_glass_pane'
 ];
 
 for (var i = 0, len = colorized_blocks.length; i < len; i++) {
   var block = colorized_blocks[i],
     data_value = blocks[block].white;
-  
+
   for (var color in colors) {
     blocks[block][color] = data_value + ':' + colors[color];
   }
@@ -362,11 +390,10 @@ blocks.rainbow = [
   blocks.stained_glass.blue,
   blocks.stained_glass.purple
 ];
-blocks.isStair = function(id){
+blocks.isStair = function(id) {
   var p;
-  for (p in this.stairs){
-    if (this.stairs[p] == id)
-      return true;
+  for (p in this.stairs) {
+    if (this.stairs[p] == id) return true;
   }
   return false;
 };

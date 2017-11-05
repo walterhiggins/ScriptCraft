@@ -44,7 +44,7 @@ stroke width of 2 blocks ...
 /*
  do the bresenham thing
  */
-function bresenham( x0,y0,radius, setPixel, quadrants ) { 
+function bresenham(x0, y0, radius, setPixel, quadrants) {
   //
   // credit: Following code is copied almost verbatim from
   // http://en.wikipedia.org/wiki/Midpoint_circle_algorithm
@@ -55,62 +55,65 @@ function bresenham( x0,y0,radius, setPixel, quadrants ) {
   var ddF_y = -2 * radius;
   var x = 0;
   var y = radius;
-  var defaultQuadrants = {topleft: true, topright: true, bottomleft: true, bottomright: true};
-  quadrants = quadrants?quadrants:defaultQuadrants;
+  var defaultQuadrants = {
+    topleft: true,
+    topright: true,
+    bottomleft: true,
+    bottomright: true
+  };
+  quadrants = quadrants ? quadrants : defaultQuadrants;
   /*
    II  | I
    ------------
    III | IV
    */
-  if ( quadrants.topleft || quadrants.topright )
-    setPixel(x0, y0 + radius ); // quadrant I/II topmost
-  if ( quadrants.bottomleft || quadrants.bottomright )
-    setPixel(x0, y0 - radius ); // quadrant III/IV bottommost
-  if ( quadrants.topright || quadrants.bottomright )
-    setPixel(x0 + radius, y0 ); // quadrant I/IV rightmost
-  if ( quadrants.topleft || quadrants.bottomleft )
-    setPixel(x0 - radius, y0 ); // quadrant II/III leftmost
-  
-  while ( x < y ) {
-    if(f >= 0 ) {
+  if (quadrants.topleft || quadrants.topright) setPixel(x0, y0 + radius); // quadrant I/II topmost
+  if (quadrants.bottomleft || quadrants.bottomright) setPixel(x0, y0 - radius); // quadrant III/IV bottommost
+  if (quadrants.topright || quadrants.bottomright) setPixel(x0 + radius, y0); // quadrant I/IV rightmost
+  if (quadrants.topleft || quadrants.bottomleft) setPixel(x0 - radius, y0); // quadrant II/III leftmost
+
+  while (x < y) {
+    if (f >= 0) {
       y--;
       ddF_y += 2;
       f += ddF_y;
     }
     x++;
     ddF_x += 2;
-    f += ddF_x;    
-    if ( quadrants.topright ) { 
-      setPixel(x0 + x, y0 + y ); // quadrant I
-      setPixel(x0 + y, y0 + x ); // quadrant I
+    f += ddF_x;
+    if (quadrants.topright) {
+      setPixel(x0 + x, y0 + y); // quadrant I
+      setPixel(x0 + y, y0 + x); // quadrant I
     }
-    if ( quadrants.topleft ) { 
-      setPixel(x0 - x, y0 + y ); // quadrant II
-      setPixel(x0 - y, y0 + x ); // quadrant II
+    if (quadrants.topleft) {
+      setPixel(x0 - x, y0 + y); // quadrant II
+      setPixel(x0 - y, y0 + x); // quadrant II
     }
-    if ( quadrants.bottomleft ) { 
-      setPixel(x0 - x, y0 - y ); // quadrant III
-      setPixel(x0 - y, y0 - x ); // quadrant III
+    if (quadrants.bottomleft) {
+      setPixel(x0 - x, y0 - y); // quadrant III
+      setPixel(x0 - y, y0 - x); // quadrant III
     }
-    if ( quadrants.bottomright ) { 
-      setPixel(x0 + x, y0 - y ); // quadrant IV
-      setPixel(x0 + y, y0 - x ); // quadrant IV
+    if (quadrants.bottomright) {
+      setPixel(x0 + x, y0 - y); // quadrant IV
+      setPixel(x0 + y, y0 - x); // quadrant IV
     }
   }
 }
 
-function getStrokeDir( x,y ) { 
-  var absY = Math.abs(y );
-  var absX = Math.abs(x );
+function getStrokeDir(x, y) {
+  var absY = Math.abs(y);
+  var absX = Math.abs(x);
   var strokeDir = 0;
-  if ( y > 0 && absY >= absX )
-    strokeDir = 0 ; //down
-  else if ( y < 0 && absY >= absX )
-    strokeDir = 1 ; // up
-  else if ( x > 0 && absX >= absY )
-    strokeDir = 2 ; // left
-  else if ( x < 0 && absX >= absY )
-    strokeDir = 3 ; // right
+  if (y > 0 && absY >= absX) strokeDir = 0;
+  else if (y < 0 && absY >= absX)
+    //down
+    strokeDir = 1;
+  else if (x > 0 && absX >= absY)
+    // up
+    strokeDir = 2;
+  else if (x < 0 && absX >= absY)
+    // left
+    strokeDir = 3; // right
   return strokeDir;
 }
 
@@ -118,135 +121,165 @@ function getStrokeDir( x,y ) {
  The daddy of all arc-related API calls - 
  if you're drawing anything that bends it ends up here.
  */
-function arcImpl( params ) {
+function arcImpl(params) {
   var drone = params.drone;
-  var orientation = params.orientation?params.orientation:'horizontal';
-  var quadrants = params.quadrants?params.quadrants:{
-    topright:1,
-    topleft:2,
-    bottomleft:3,
-    bottomright:4
-  };
-  var stack = params.stack?params.stack:1;
+  var orientation = params.orientation ? params.orientation : 'horizontal';
+  var quadrants = params.quadrants
+    ? params.quadrants
+    : {
+        topright: 1,
+        topleft: 2,
+        bottomleft: 3,
+        bottomright: 4
+      };
+  var stack = params.stack ? params.stack : 1;
   var radius = params.radius;
-  var strokeWidth = params.strokeWidth?params.strokeWidth:1;
-  drone.chkpt('arc2' );
-  var x0, y0, gotoxy,setPixel;
-  
-  if ( orientation == 'horizontal' ) { 
-    gotoxy = function( x,y ) {  return drone.right(x ).fwd(y );};
-    drone.right(radius ).fwd(radius ).chkpt('center' );
-    switch ( drone.dir ) {
-    case 0: // east
-    case 2: // west
-      x0 = drone.z;
-      y0 = drone.x;
-      break;
-    case 1: // south
-    case 3: // north
-      x0 = drone.x;
-      y0 = drone.z;
+  var strokeWidth = params.strokeWidth ? params.strokeWidth : 1;
+  drone.chkpt('arc2');
+  var x0, y0, gotoxy, setPixel;
+
+  if (orientation == 'horizontal') {
+    gotoxy = function(x, y) {
+      return drone.right(x).fwd(y);
+    };
+    drone
+      .right(radius)
+      .fwd(radius)
+      .chkpt('center');
+    switch (drone.dir) {
+      case 0: // east
+      case 2: // west
+        x0 = drone.z;
+        y0 = drone.x;
+        break;
+      case 1: // south
+      case 3: // north
+        x0 = drone.x;
+        y0 = drone.z;
     }
-    setPixel = function( x, y ) {
-      x = ( x-x0 );
-      y = ( y-y0 );
-      if ( params.fill ) { 
+    setPixel = function(x, y) {
+      x = x - x0;
+      y = y - y0;
+      if (params.fill) {
         // wph 20130114 more efficient esp. for large cylinders/spheres
-        if ( y < 0 ) { 
+        if (y < 0) {
           drone
-            .fwd( y ).right( x )
-            .cuboidX( params.blockType, params.meta, 1, stack, Math.abs( y * 2 ) + 1 )
-            .back( y ).left( x );
+            .fwd(y)
+            .right(x)
+            .cuboidX(
+              params.blockType,
+              params.meta,
+              1,
+              stack,
+              Math.abs(y * 2) + 1
+            )
+            .back(y)
+            .left(x);
         }
-      }else{
-        if ( strokeWidth == 1 ) { 
-          gotoxy(x,y )
-            .cuboidX( params.blockType, params.meta,
+      } else {
+        if (strokeWidth == 1) {
+          gotoxy(x, y)
+            .cuboidX(
+              params.blockType,
+              params.meta,
               1, // width
               stack, // height
               strokeWidth // depth
             )
-            .move('center' );
+            .move('center');
         } else {
-          var strokeDir = getStrokeDir( x, y );
-          var width = 1, depth = 1;
-          switch ( strokeDir ) {
-          case 0: // down
-            y = y-( strokeWidth - 1 );
-            depth = strokeWidth;
-            break;
-          case 1: // up
-            depth = strokeWidth;
-            break;
-          case 2: // left
-            width = strokeWidth;
-            x = x-(strokeWidth-1 );
-            break;
-          case 3: // right
-            width = strokeWidth;
-            break;
+          var strokeDir = getStrokeDir(x, y);
+          var width = 1,
+            depth = 1;
+          switch (strokeDir) {
+            case 0: // down
+              y = y - (strokeWidth - 1);
+              depth = strokeWidth;
+              break;
+            case 1: // up
+              depth = strokeWidth;
+              break;
+            case 2: // left
+              width = strokeWidth;
+              x = x - (strokeWidth - 1);
+              break;
+            case 3: // right
+              width = strokeWidth;
+              break;
           }
-          gotoxy( x, y )
-            .cuboidX( params.blockType, params.meta, width, stack, depth )
-            .move( 'center' );
-
+          gotoxy(x, y)
+            .cuboidX(params.blockType, params.meta, width, stack, depth)
+            .move('center');
         }
       }
     };
-  }else{
+  } else {
     // vertical
-    gotoxy = function( x,y ) {  return drone.right(x ).up(y );};
-    drone.right(radius ).up(radius ).chkpt('center' ); 
-    switch ( drone.dir ) {
-    case 0: // east
-    case 2: // west
-      x0 = drone.z;
-      y0 = drone.y;
-      break;
-    case 1: // south
-    case 3: // north
-      x0 = drone.x;
-      y0 = drone.y;
+    gotoxy = function(x, y) {
+      return drone.right(x).up(y);
+    };
+    drone
+      .right(radius)
+      .up(radius)
+      .chkpt('center');
+    switch (drone.dir) {
+      case 0: // east
+      case 2: // west
+        x0 = drone.z;
+        y0 = drone.y;
+        break;
+      case 1: // south
+      case 3: // north
+        x0 = drone.x;
+        y0 = drone.y;
     }
-    setPixel = function( x, y ) {
-      x = ( x - x0 );
-      y = ( y - y0 );
-      if ( params.fill ) { 
+    setPixel = function(x, y) {
+      x = x - x0;
+      y = y - y0;
+      if (params.fill) {
         // wph 20130114 more efficient esp. for large cylinders/spheres
-        if ( y < 0 ) { 
+        if (y < 0) {
           drone
-            .up( y ).right( x )
-            .cuboidX( params.blockType, params.meta, 1, Math.abs( y * 2 ) + 1, stack )
-            .down( y ).left( x );
+            .up(y)
+            .right(x)
+            .cuboidX(
+              params.blockType,
+              params.meta,
+              1,
+              Math.abs(y * 2) + 1,
+              stack
+            )
+            .down(y)
+            .left(x);
         }
-      }else{
-        if ( strokeWidth == 1 ) { 
-          gotoxy( x, y )
-            .cuboidX( params.blockType, params.meta, strokeWidth, 1, stack )
-            .move( 'center' );
-        }else{
-          var strokeDir = getStrokeDir( x,y );
-          var width = 1, height = 1;
-          switch ( strokeDir ) {
-          case 0: // down
-            y = y - ( strokeWidth - 1 );
-            height = strokeWidth;
-            break;
-          case 1: // up
-            height = strokeWidth;
-            break;
-          case 2: // left
-            width = strokeWidth;
-            x = x - ( strokeWidth - 1 );
-            break;
-          case 3: // right
-            width = strokeWidth;
-            break;
+      } else {
+        if (strokeWidth == 1) {
+          gotoxy(x, y)
+            .cuboidX(params.blockType, params.meta, strokeWidth, 1, stack)
+            .move('center');
+        } else {
+          var strokeDir = getStrokeDir(x, y);
+          var width = 1,
+            height = 1;
+          switch (strokeDir) {
+            case 0: // down
+              y = y - (strokeWidth - 1);
+              height = strokeWidth;
+              break;
+            case 1: // up
+              height = strokeWidth;
+              break;
+            case 2: // left
+              width = strokeWidth;
+              x = x - (strokeWidth - 1);
+              break;
+            case 3: // right
+              width = strokeWidth;
+              break;
           }
-          gotoxy(x,y )
-            .cuboidX(params.blockType, params.meta, width, height, stack )
-            .move('center' );
-          
+          gotoxy(x, y)
+            .cuboidX(params.blockType, params.meta, width, height, stack)
+            .move('center');
         }
       }
     };
@@ -254,14 +287,14 @@ function arcImpl( params ) {
   /*
    setPixel assumes a 2D plane - need to put a block along appropriate plane
    */
-  bresenham(x0,y0,radius,setPixel,quadrants );
-  
-  params.drone.move('arc2' );
+  bresenham(x0, y0, radius, setPixel, quadrants);
+
+  params.drone.move('arc2');
 }
 
-module.exports = function(Drone){
-  Drone.extend(function arc( params ) {
+module.exports = function(Drone) {
+  Drone.extend(function arc(params) {
     params.drone = this;
-    arcImpl( params );
+    arcImpl(params);
   });
 };

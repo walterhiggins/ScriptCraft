@@ -33,10 +33,8 @@ location. For example...
 
 ***/
 
-if ( __plugin.canary ) {
+if (__plugin.canary) {
   exports.firework = require('./canary/fireworks');
 } else {
   exports.firework = require('./bukkit/fireworks');
 }
-
-
