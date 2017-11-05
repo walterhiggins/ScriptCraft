@@ -51,7 +51,7 @@ http.request( {
 
 ***/
 
-/*global exports, encodeURI, server, __plugin, setTimeout*/
+/*global exports, encodeURIComponent, server, __plugin, setTimeout*/
 function paramsToString( params ) {
   var result = '',
     paramNames = [],
@@ -60,7 +60,7 @@ function paramsToString( params ) {
     paramNames.push( i );
   }
   for ( i = 0; i < paramNames.length; i++ ) {
-    result += paramNames[i] + '=' + encodeURI( params[ paramNames[i] ] );
+    result += paramNames[i] + '=' + encodeURIComponent( params[ paramNames[i] ] );
     if ( i < paramNames.length-1 )
       result += '&';
   }
