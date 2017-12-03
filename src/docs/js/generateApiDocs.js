@@ -101,6 +101,12 @@ store.sort(
 
 var contents = [];
 foreach(store, function(filename) {
+  if (filename.match(/babel\.js/)) {
+    return;
+  }
+  if (filename.match(/underscore\.js/)) {
+    return;
+  }
   var br = new io.BufferedReader(new io.FileReader(filename));
   var line;
   while ((line = br.readLine()) != null) {
