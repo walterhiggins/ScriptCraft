@@ -10,7 +10,7 @@ var content = [
   '### Usage',
   '',
   '    items.book(); // returns org.bukkit.Material.BOOK',
-  '    items.book(2); // returns a new org.bukkit.Material object with an amount 2 (2 books)',
+  '    items.book(2); // returns a new org.bukkit.inventory.ItemStack object of 2 books',
   '    items.book( itemType ); // compares itemType parameter to org.bukkit.Material.BOOK or an Item of type book',
   '',
   'The following functions are provided:',

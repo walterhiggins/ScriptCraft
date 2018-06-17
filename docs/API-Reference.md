@@ -4963,22 +4963,32 @@ var inventory = require('inventory');
 var items = require('items');
 var utils = require('utils');
 
-// gives every player a cookie and a baked potatoe
-utils.players(function(player){
-  inventory(player)
-    .add( items.cookie(1) )
-    .add( items.bakedPotato(1) )
+// gives every player 2 cookies and a baked potatoe
+var bakedPotato = items.bakedPotato(1);
+var cookies2 = items.cookie(2);
+
+utils.players(function( player ){
+  inventory( player )
+    .add( cookies2 )
+    .add( bakedPotato )
 });
 
 // give a player 6 cookies then take away 4 of them
 
-inventory(player)
+inventory( player )
   .add( items.cookie(6) )
   .remove ( items.cookie(4) )
 
 // check if a player has any cookies
 
 var hasCookies = inventory(player).contains( items.cookie(1) );
+
+// Enchant an item and give it to the player (CraftBukkit/Spigot only)
+
+var luck = org.bukkit.enchantments.Enchantment.getByName("LUCK");
+var luckyRod = items.fishingRod( 1 );
+luckyRod.addEnchantment( luck, 3);
+inventory( player ).add( luckyRod );
 
 ```
 The inventory module exposes a single function which when passed a player or NPC will return an object with 3 methods:
@@ -6365,7 +6375,7 @@ See https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html for a list
 ### Usage
 
     items.book(); // returns org.bukkit.Material.BOOK
-    items.book(2); // returns a new org.bukkit.Material object with an amount 2 (2 books)
+    items.book(2); // returns a new org.bukkit.inventory.ItemStack object of 2 books
     items.book( itemType ); // compares itemType parameter to org.bukkit.Material.BOOK or an Item of type book
 
 The following functions are provided:
