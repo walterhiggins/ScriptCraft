@@ -298,6 +298,7 @@ Walter Higgins
    * [events.playerItemConsume()](#eventsplayeritemconsume)
    * [events.playerItemDamage()](#eventsplayeritemdamage)
    * [events.playerItemHeld()](#eventsplayeritemheld)
+   * [events.playerItemMend()](#eventsplayeritemmend)
    * [events.playerJoin()](#eventsplayerjoin)
    * [events.playerKick()](#eventsplayerkick)
    * [events.playerLevelChange()](#eventsplayerlevelchange)
@@ -3073,6 +3074,14 @@ The crucial difference is that the events module now has functions for each of t
 #### Parameters
 
  * callback - A function which is called whenever the [player.PlayerItemHeldEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerItemHeldEvent.html) is fired
+
+ * priority - optional - see events.on() for more information.
+
+### events.playerItemMend()
+
+#### Parameters
+
+ * callback - A function which is called whenever the [player.PlayerItemMendEvent event](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/player/PlayerItemMendEvent.html) is fired
 
  * priority - optional - see events.on() for more information.
 

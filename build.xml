@@ -12,7 +12,7 @@
 
   <!-- compiles against these libraries -->
   <property name="lib.canary" location="lib/canarymod-1.8.0.jar"/>
-  <property name="lib.bukkit" location="lib/spigot-api-1.12.2.jar"/>
+  <property name="lib.bukkit" location="lib/spigot-api-1.12.2-R0.1-SNAPSHOT.jar"/>
 
   <property name="build" location="target/classes"/>
   <property name="dist" location="target/" />
