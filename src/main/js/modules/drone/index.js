@@ -326,6 +326,33 @@ function getDirFromRotation(location) {
   if (r > 225 && r <= 315) return 0; // east
   return 1; // south
 }
+
+var setTypeIdAndData = makeTypeIdAndDataSetter();
+
+function makeTypeIdAndDataSetter() {
+  if (!__plugin.bukkit) {
+    return null;
+  }
+
+  var Block = Java.type('org.bukkit.block.Block');
+  if (
+    Java.from(Block.class.methods).some(function(m) {
+      return m.name == 'setTypeIdAndData';
+    })
+  ) {
+    console.log('Drone using Block.setTypeIdAndData method');
+    return function(block, typeId, data, applyPhysics) {
+      block.setTypeIdAndData(typeId, data, applyPhysics);
+    };
+  } else {
+    console.log('Drone using CraftEvil.setTypeIdAndData method');
+    var CraftEvil = Java.type(server.class.package.name + '.util.CraftEvil');
+    return function(block, typeId, data, applyPhysics) {
+      CraftEvil.setTypeIdAndData(block, typeId, data, applyPhysics);
+    };
+  }
+}
+
 /*
  low-level function to place a block in the world - all drone methods which 
  place blocks ultimately invoke this function.
@@ -349,8 +376,7 @@ function putBlock(x, y, z, blockId, metadata, world, update) {
     }
   }
   if (__plugin.bukkit) {
-    block.setTypeIdAndData(blockId, metadata, false);
-    block.data = metadata;
+    setTypeIdAndData(block, blockId, metadata, update);
   }
   return block;
 }
