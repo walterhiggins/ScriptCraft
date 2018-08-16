@@ -234,14 +234,13 @@ scload() will return the result of the last statement evaluated in the file.
 
 ### scsave() function
 
-The scsave() function saves an in-memory javascript object to a
-specified file. Under the hood, scsave() uses JSON (specifically
-json2.js) to save the object. There will usually be no need to call
-this function directly - If you want to have a javascript object
-automatically loaded at startup and saved on shutdown then use the
-`persist()` module. The `persist()` module uses scsave and scload
-under the hood.  Any in-memory object saved using the `scsave()`
-function can later be restored using the `scload()` function.
+The scsave() function saves an in-memory javascript object to a specified file.
+Under the hood, scsave() uses JSON to save the object. There will usually be no
+need to call this function directly - If you want to have a javascript object
+automatically loaded at startup and saved on shutdown then use the `persist()`
+module. The `persist()` module uses scsave and scload under the hood.  Any
+in-memory object saved using the `scsave()` function can later be restored
+using the `scload()` function.
 
 #### Parameters
 
@@ -764,15 +763,6 @@ function __onEnable(__engine, __plugin, __script) {
   }
   global.config = config;
   global.__plugin = __plugin;
-  /*
-   wph 20131229 Issue #103 JSON is not bundled with javax.scripting / Rhino on Mac.
-   */
-  (function() {
-    var jsonFileReader = new FileReader(
-      new File(jsPluginsRootDirName + '/lib/json2.js')
-    );
-    __engine['eval(java.io.Reader)'](jsonFileReader);
-  })();
 
   global.addUnloadHandler = _addUnloadHandler;
   global.refresh = _refresh;
