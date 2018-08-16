@@ -3,23 +3,15 @@ var bkEventPriority = org.bukkit.event.EventPriority,
   bkEventExecutor = org.bukkit.plugin.EventExecutor,
   bkRegisteredListener = org.bukkit.plugin.RegisteredListener;
 
-var nashorn = typeof Java != 'undefined';
-
 function getHandlerListForEventType(eventType) {
-  var result = null;
-  var clazz = null;
-  if (nashorn) {
-    //Nashorn doesn't like when getHandlerList is in a superclass of your event
-    //so to avoid this problem, call getHandlerList using java.lang.reflect
-    //methods
-    clazz = eventType['class'];
-    result = clazz.getMethod('getHandlerList').invoke(null);
-  } else {
-    result = eventType.getHandlerList();
-  }
-
-  return result;
+  // Nashorn doesn't make inherited static methods accessible on derived
+  // classes (see https://stackoverflow.com/a/38258630), e.g.
+  // org.bukkit.event.block.BlockBreakEvent.getHandlerList() does not work.
+  // So to avoid this problem, call getHandlerList using java.lang.reflect
+  // methods.
+  return eventType.class.getMethod('getHandlerList').invoke(null);
 }
+
 exports.on = function(
   /* Java Class */
   eventType,
