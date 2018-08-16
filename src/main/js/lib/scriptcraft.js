@@ -538,7 +538,6 @@ function __onEnable(__engine, __plugin, __script) {
         }
         wrappedCode = '(' + code + ')';
         result = __engine.eval(wrappedCode);
-        // issue #103 avoid side-effects of || operator on Mac Rhino
       } catch (e) {
         logError('Error evaluating ' + canonizedFilename + ', ' + e);
       } finally {
