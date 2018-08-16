@@ -696,13 +696,8 @@ function __onEnable(__engine, __plugin, __script) {
         );
         throw e;
       } finally {
-        /*
-         wph 20140312 don't delete self on nashorn until https://bugs.openjdk.java.net/browse/JDK-8034055 is fixed
-         */
-        if (!nashorn) {
-          delete global.self;
-          delete global.__engine;
-        }
+        delete global.self;
+        delete global.__engine;
       }
     }
     if (cmdName == 'jsp') {
