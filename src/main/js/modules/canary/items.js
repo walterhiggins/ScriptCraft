@@ -38,7 +38,7 @@ if (nashorn) {
   /*
    nashorn
    */
-  var itemTypeClass = require('nashorn-type')(ItemType);
+  var itemTypeClass = ItemType.class;
   var materials = itemTypeClass.getDeclaredFields();
   var name;
   for (var i = 0; i < materials.length; i++) {
