@@ -183,11 +183,7 @@ var onTabCompleteJS = function() {
           symbol = null;
           break;
         }
-        if (typeof symbol == 'undefined') {
-          break;
-        }
-        // nashorn - object[missingProperty] returns null not undefined
-        if (symbol == null) {
+        if (typeof symbol == 'undefined' || symbol === null) {
           break;
         }
         lastGoodSymbol = symbol;
