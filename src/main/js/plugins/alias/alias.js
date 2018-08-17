@@ -172,19 +172,12 @@ command('alias', function(params, invoker) {
     echo(invoker, 'Usage:\n' + _usage);
     return;
   }
-  /*
-   wph 20140122 this is kind of dumb but Nashorn has some serious problems 
-   accessing object properties by array index notation
-   in JRE8 alias[operation] returns null - definitely a bug in Nashorn.
-   */
-  for (var key in alias) {
-    if (key == operation) {
-      fn = alias[key];
-      fn(params.slice(1), invoker);
-      return;
-    }
+
+  if (alias[operation]) {
+    alias[operation](params.slice(1), invoker);
+  } else {
+    echo(invoker, 'Usage:\n' + _usage);
   }
-  echo(invoker, 'Usage:\n' + _usage);
 });
 
 var _intercept = function(msg, invoker, exec) {
