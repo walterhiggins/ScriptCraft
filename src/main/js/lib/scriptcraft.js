@@ -575,9 +575,7 @@ function __onEnable(__engine, __plugin, __script) {
       Canary.manager().enablePlugin(pluginName);
     } else {
       __plugin.pluginLoader.disablePlugin(__plugin);
-      org.bukkit.event.HandlerList['unregisterAll(org.bukkit.plugin.Plugin)'](
-        __plugin
-      );
+      org.bukkit.event.HandlerList.unregisterAll(__plugin);
       server.scheduler.cancelTasks(__plugin);
       __plugin.pluginLoader.enablePlugin(__plugin);
     }
