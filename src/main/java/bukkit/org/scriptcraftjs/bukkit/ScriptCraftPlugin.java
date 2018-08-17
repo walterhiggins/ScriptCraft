@@ -2,7 +2,6 @@ package org.scriptcraftjs.bukkit;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.script.Invocable;
@@ -12,7 +11,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScriptCraftPlugin extends JavaPlugin implements Listener
+public class ScriptCraftPlugin extends JavaPlugin
 {
     public boolean canary = false;
     public boolean bukkit = true;

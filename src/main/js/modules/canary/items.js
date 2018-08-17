@@ -1,4 +1,4 @@
-/*global nashorn, require, Packages, module*/
+/*global require, Packages, module*/
 var ItemType = Packages.net.canarymod.api.inventory.ItemType;
 var Canary = Packages.net.canarymod.Canary;
 var itemFactory = Canary.factory().itemFactory;
@@ -34,39 +34,21 @@ function getMaterialHandler(material) {
     }
   };
 }
-if (nashorn) {
-  /*
-   nashorn
-   */
-  var itemTypeClass = require('nashorn-type')(ItemType);
-  var materials = itemTypeClass.getDeclaredFields();
-  var name;
-  for (var i = 0; i < materials.length; i++) {
-    if (materials[i].type != itemTypeClass) {
-      continue;
-    }
-    var materialField = materials[i];
-    name = '' + materialField.name;
-    name = name.replace(/^(.)/, function(a) {
-      return a.toLowerCase();
-    });
 
-    items[name] = getMaterialHandler(materialField.get(ItemType));
+var itemTypeClass = ItemType.class;
+var materials = itemTypeClass.getDeclaredFields();
+var name;
+for (var i = 0; i < materials.length; i++) {
+  if (materials[i].type != itemTypeClass) {
+    continue;
   }
-} else {
-  // non-nashorn
-  for (var field in ItemType) {
-    if (ItemType[field] === undefined) {
-      continue;
-    }
-    if (!(ItemType[field] instanceof ItemType)) {
-      continue;
-    }
-    name = ('' + field).replace(/^(.)/, function(a) {
-      return a.toLowerCase();
-    });
-    items[name] = getMaterialHandler(ItemType[field]);
-  }
+  var materialField = materials[i];
+  name = '' + materialField.name;
+  name = name.replace(/^(.)/, function(a) {
+    return a.toLowerCase();
+  });
+
+  items[name] = getMaterialHandler(materialField.get(ItemType));
 }
 
 module.exports = items;

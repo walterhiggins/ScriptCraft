@@ -50,8 +50,8 @@ others.
 ### Important
 
 Although ScriptCraft now supports Node.js style modules, it does not
-support node modules. Node.js and Rhino are two very different
-Javascript environments. ScriptCraft uses Rhino Javascript, not
+support node modules. Node.js and Nashorn are two very different
+Javascript environments. ScriptCraft uses Nashorn Javascript, not
 Node.js. Standard Node.js modules such as `'fs'` are not available in ScriptCraft.
 
 Modules can be loaded using relative or absolute paths. Per the CommonJS

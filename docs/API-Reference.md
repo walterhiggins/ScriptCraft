@@ -745,14 +745,13 @@ scload() will return the result of the last statement evaluated in the file.
 
 ### scsave() function
 
-The scsave() function saves an in-memory javascript object to a
-specified file. Under the hood, scsave() uses JSON (specifically
-json2.js) to save the object. There will usually be no need to call
-this function directly - If you want to have a javascript object
-automatically loaded at startup and saved on shutdown then use the
-`persist()` module. The `persist()` module uses scsave and scload
-under the hood.  Any in-memory object saved using the `scsave()`
-function can later be restored using the `scload()` function.
+The scsave() function saves an in-memory javascript object to a specified file.
+Under the hood, scsave() uses JSON to save the object. There will usually be no
+need to call this function directly - If you want to have a javascript object
+automatically loaded at startup and saved on shutdown then use the `persist()`
+module. The `persist()` module uses scsave and scload under the hood.  Any
+in-memory object saved using the `scsave()` function can later be restored
+using the `scload()` function.
 
 #### Parameters
 
@@ -985,8 +984,8 @@ others.
 ### Important
 
 Although ScriptCraft now supports Node.js style modules, it does not
-support node modules. Node.js and Rhino are two very different
-Javascript environments. ScriptCraft uses Rhino Javascript, not
+support node modules. Node.js and Nashorn are two very different
+Javascript environments. ScriptCraft uses Nashorn Javascript, not
 Node.js. Standard Node.js modules such as `'fs'` are not available in ScriptCraft.
 
 Modules can be loaded using relative or absolute paths. Per the CommonJS

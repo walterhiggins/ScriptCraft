@@ -1,4 +1,4 @@
-/*global nashorn, exports, require, Packages, __plugin*/
+/*global exports, require, Packages, __plugin*/
 var cmPriority = Packages.net.canarymod.plugin.Priority,
   cmCanary = Packages.net.canarymod.Canary,
   cmPluginListener = Packages.net.canarymod.plugin.PluginListener;
@@ -58,10 +58,7 @@ exports.on = function(
    The workaround is to make the ScriptCraftPlugin java class a Listener.
    Should only unregister() registered plugins in ScriptCraft js code.
    */
-  if (nashorn) {
-    // nashorn
-    eventType = require('nashorn-type')(eventType);
-  }
+  eventType = eventType.class;
   regd = new cmPluginListener({});
   cmHookExecutor.registerHook(
     regd,
