@@ -1,6 +1,6 @@
 'use strict';
 /*global __plugin, module, server*/
-function bukkitSetTimeout(callback, delayInMillis){
+function bukkitSetTimeout(callback, delayInMillis) {
   var delay = Math.ceil(delayInMillis / 50);
   var Run = Java.type("java.lang.Runnable");
   var MyRun = Java.extend(Run, {
