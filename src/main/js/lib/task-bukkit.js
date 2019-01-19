@@ -2,7 +2,11 @@
 /*global __plugin, module, server*/
 function bukkitSetTimeout(callback, delayInMillis) {
   var delay = Math.ceil(delayInMillis / 50);
-  var task = server.scheduler.runTaskLater(__plugin, callback, delay);
+  var Run = Java.type("java.lang.Runnable");
+  var MyRun = Java.extend(Run, {
+    run: callback
+  });
+  var task = server.scheduler.runTaskLater(__plugin, new MyRun(), delay);
   return task;
 }
 function bukkitClearTimeout(task) {
