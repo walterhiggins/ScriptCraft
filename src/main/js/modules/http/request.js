@@ -67,7 +67,10 @@ function paramsToString(params) {
 }
 function invokeNow(fn) {
   if (__plugin.bukkit) {
-    server.scheduler.runTask(__plugin, fn);
+    server.scheduler['runTask(org.bukkit.plugin.Plugin, java.lang.Runnable)'](
+      __plugin,
+      fn
+    );
     return;
   }
   if (__plugin.canary) {
@@ -77,7 +80,9 @@ function invokeNow(fn) {
 }
 function invokeLater(fn) {
   if (__plugin.bukkit) {
-    server.scheduler.runTaskAsynchronously(__plugin, fn);
+    server.scheduler[
+      'runTaskAsynchronously​(org.bukkit.plugin.Plugin, java.lang.Runnable)'
+    ](__plugin, fn);
     return;
   }
   if (__plugin.canary) {

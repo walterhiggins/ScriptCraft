@@ -12,7 +12,7 @@
 
   <!-- compiles against these libraries -->
   <property name="lib.canary" location="lib/canarymod-1.8.0.jar"/>
-  <property name="lib.bukkit" location="lib/spigot-api-1.12.2-R0.1-SNAPSHOT.jar"/>
+  <property name="lib.bukkit" location="lib/spigot-api-1.13.2-R0.1-SNAPSHOT-shaded.jar"/>
 
   <property name="build" location="target/classes"/>
   <property name="dist" location="target/" />
@@ -24,13 +24,17 @@
     <attribute name="src"/>
     <attribute name="out"/>
     <attribute name="err"/>
+    <attribute name="lib"/>
     <element name="js-args" implicit="yes" optional="true"/>
     <sequential>
-      <java classname="jscript" failonerror="true" fork="true" output="@{out}"  error="@{err}">
+      <echo message="cp=${build}:${lib.canary}:${lib.bukkit}"></echo>
+      <echo message="src=@{src} out=@{out} err=@{err}"></echo>
+      <java classname="jscript" 
+	    failonerror="true"
+	    fork="true" output="@{out}"  error="@{err}">
 	<classpath>
           <pathelement path="${build}"/>      
-	  <pathelement path="${lib.canary}"/>
-	  <pathelement path="${lib.bukkit}"/>
+	  <pathelement path="@{lib}"/>
 	</classpath>
       <arg value="@{src}"/>
       <js-args/>
@@ -72,7 +76,9 @@
     </javac>
   </target>
     
-  <target name="gendocs" depends="construct-ypgpm, construct-api-ref" description="Generate API documentation">
+  <target name="gendocs"
+	  depends="construct-ypgpm, construct-api-ref"
+	  description="Generate API documentation">
   </target>
 
   <target name="compile-docs" depends="init">
@@ -86,28 +92,32 @@
   <target name="generate-api-ref-entries" depends="copy-js,compile-docs,init">
 
     <jscript src="src/docs/js/generateApiDocs.js" 
-	     out="${dist}/apiref.md" 
+	     out="${dist}/apiref.md"
+	     lib="${lib.bukkit}"
 	     err="${dist}/gen-api-error.log">
       <arg value="${dist}/js"/>      
     </jscript>
 
-    <jscript src="src/docs/js/generateItemsDoc.js" 
-	     out="${dist}/items.md" 
+    <jscript src="src/docs/js/generateItemsDocBukkit.js" 
+	     out="${dist}/items-bukkit.md"
+	     lib="${lib.bukkit}"
 	     err="${dist}/gen-items-error.log" />
 
-    <jscript src="src/docs/js/generateSoundsDoc.js" 
-	     out="${dist}/sounds.md" 
+    <jscript src="src/docs/js/generateSoundsDocBukkit.js" 
+	     out="${dist}/sounds-bukkit.md" 
+	     lib="${lib.bukkit}"
 	     err="${dist}/gen-sounds-error.log" />
 
-    <jscript src="src/docs/js/generateEntitiesDoc.js" 
-	     out="${dist}/entities.md" 
+    <jscript src="src/docs/js/generateEntitiesDocBukkit.js" 
+	     out="${dist}/entities-bukkit.md"
+	     lib="${lib.bukkit}"
 	     err="${dist}/gen-entities-error.log" />
 
     <concat destfile="${dist}/apiref-con.md">
       <fileset file="${dist}/apiref.md" />
-      <fileset file="${dist}/items.md" />
-      <fileset file="${dist}/sounds.md" />
-      <fileset file="${dist}/entities.md" />
+      <fileset file="${dist}/items-bukkit.md" />
+      <fileset file="${dist}/sounds-bukkit.md" />
+      <fileset file="${dist}/entities-bukkit.md" />
     </concat>
 
   </target>
@@ -116,7 +126,8 @@
   <target name="gen-events-helper-canary" depends="compile-docs,init">
     <mkdir dir="${dist}/js/lib"/>
     <jscript src="src/docs/js/generateEventsHelper.js" 
-	     out="${dist}/js/lib/events-helper-canary.js" 
+	     out="${dist}/js/lib/events-helper-canary.js"
+	     lib="${lib.canary}"
 	     err="${dist}/gen-events-canary-error.log">
       <arg value="CanaryMod"/>
       <arg value="${lib.canary}"/>
@@ -128,7 +139,8 @@
   <target name="gen-events-helper-bukkit" depends="compile-docs,init">
     <mkdir dir="${dist}/js/lib"/>
     <jscript src="src/docs/js/generateEventsHelper.js" 
-	     out="${dist}/js/lib/events-helper-bukkit.js" 
+	     out="${dist}/js/lib/events-helper-bukkit.js"
+	     lib="${lib.bukkit}"
 	     err="${dist}/gen-events-bukkit-error.log">
       <arg value="SpigotMC"/>
       <arg value="${lib.bukkit}"/>
@@ -162,7 +174,8 @@ Walter Higgins
   
   <target name="gen-toc-apiref" depends="compile-docs,generate-api-ref-entries, init" description="Generate Table of Contents for API Reference">
     <jscript src="src/docs/js/generateTOC.js" 
-	     out="${dist}/toc-apiref.md"  
+	     out="${dist}/toc-apiref.md"
+	     lib="${lib.bukkit}"
 	     err="${dist}/gen-toc-error.log">
       <arg value="${dist}/apiref-con.md"/>
     </jscript>
@@ -171,6 +184,7 @@ Walter Higgins
   <target name="gen-toc-ypgpm" depends="compile-docs,init" description="Generate Table of Contents for Young Programmers Guide">
     <jscript src="src/docs/js/generateTOC.js" 
 	     out="${dist}/toc-ypgpm.md" 
+	     lib="${lib.bukkit}"
 	     err="${dist}/gen-ypgpm-error.log">
       <arg value="src/docs/templates/ypgpm.md"/>
     </jscript>
