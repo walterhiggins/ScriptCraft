@@ -178,7 +178,7 @@ ScriptCraft plugin:
    invoked the `/js` command. Again, this is a good jumping off point for
    diving into the SpigotMC API.
 
-[dl]: http://scriptcraftjs.org/download/latest
+[dl]: https://github.com/walterhiggins/ScriptCraft/releases/latest
 [api]: https://hub.spigotmc.org/javadocs/spigot/
 [ic]: http://canarymod.net/releases
 [spigotdl]: https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
