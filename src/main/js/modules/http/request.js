@@ -80,9 +80,7 @@ function invokeNow(fn) {
 }
 function invokeLater(fn) {
   if (__plugin.bukkit) {
-    server.scheduler[
-      'runTaskAsynchronously​(org.bukkit.plugin.Plugin, java.lang.Runnable)'
-    ](__plugin, fn);
+    server.scheduler['runTaskAsynchronously​(org.bukkit.plugin.Plugin, java.lang.Runnable)'](__plugin, fn);
     return;
   }
   if (__plugin.canary) {
