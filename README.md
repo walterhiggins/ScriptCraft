@@ -256,7 +256,7 @@ You can find all files used to build this container in github project: [docker-s
 [yp]: docs/YoungPersonsGuideToProgrammingMinecraft.md
 [mm]: docs/Anatomy-of-a-Plugin.md
 [api]: docs/API-Reference.md
-[website]: http://scriptcraftjs.org/
+[website]: https://scriptcraftjs.org/
 [cd]: http://coderdojo.com/
 [scr]: http://scratch.mit.edu/
 [cda]: http://cdathenry.wordpress.com/category/modderdojo/
