@@ -14,7 +14,7 @@ main thread of execution.
 
 #### Parameters
 
- * request: The request details either a plain URL e.g. "http://scriptcraft.js/sample.json" or an object with the following properties...
+ * request: The request details either a plain URL e.g. "https://scriptcraft.js/sample.json" or an object with the following properties...
 
    - url: The URL of the request.
    - method: Should be one of the standard HTTP methods, GET, POST, PUT, DELETE (defaults to GET).
@@ -31,7 +31,7 @@ The following example illustrates how to use http.request to make a request to a
 ```javascript
 var jsResponse;
 var http = require('http');
-http.request('http://scriptcraftjs.org/sample.json',function(responseCode, responseBody){
+http.request('https://scriptcraftjs.org/sample.json',function(responseCode, responseBody){
   jsResponse = JSON.parse( responseBody );
 });
 ```

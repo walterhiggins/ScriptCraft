@@ -5260,7 +5260,7 @@ main thread of execution.
 
 #### Parameters
 
- * request: The request details either a plain URL e.g. "http://scriptcraft.js/sample.json" or an object with the following properties...
+ * request: The request details either a plain URL e.g. "https://scriptcraft.js/sample.json" or an object with the following properties...
 
    - url: The URL of the request.
    - method: Should be one of the standard HTTP methods, GET, POST, PUT, DELETE (defaults to GET).
@@ -5277,7 +5277,7 @@ The following example illustrates how to use http.request to make a request to a
 ```javascript
 var jsResponse;
 var http = require('http');
-http.request('http://scriptcraftjs.org/sample.json',function(responseCode, responseBody){
+http.request('https://scriptcraftjs.org/sample.json',function(responseCode, responseBody){
   jsResponse = JSON.parse( responseBody );
 });
 ```
@@ -5306,7 +5306,7 @@ This module can only be used if the separate `sc-mqtt.jar` file is
 present in the CraftBukkit classpath. To use this module, you should
 ...
 
- 1. Download sc-mqtt.jar from <http://scriptcraftjs.org/download/extras/>
+ 1. Download sc-mqtt.jar from <https://scriptcraftjs.org/download/extras/>
  2. Save the file to the same directory where craftbukkit.jar resides.
  3. Create a new batch file (windows-only) called
     craftbukkit-sc-mqtt.bat and edit it to include the following
