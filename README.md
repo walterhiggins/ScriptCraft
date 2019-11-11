@@ -213,8 +213,6 @@ and plugins directories are optional and not part of ScriptCraft core.
 
 # Further Reading
 
-ScriptCraft has [its own website][website] with further information.
-
  * To get started using ScriptCraft to Learn JavaScript, read [The Young Person's Guide to Programming in Minecraft][yp].
  * The ScriptCraft [API documentation][api].
  * To delve deeper into creating your own minecraft mod for use by others, read [Creating a complete Minecraft Mod in JavaScript][mm].
@@ -256,7 +254,6 @@ You can find all files used to build this container in github project: [docker-s
 [yp]: docs/YoungPersonsGuideToProgrammingMinecraft.md
 [mm]: docs/Anatomy-of-a-Plugin.md
 [api]: docs/API-Reference.md
-[website]: https://scriptcraftjs.org/
 [cd]: http://coderdojo.com/
 [scr]: http://scratch.mit.edu/
 [cda]: http://cdathenry.wordpress.com/category/modderdojo/
