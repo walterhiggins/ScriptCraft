@@ -11,7 +11,7 @@ This module can only be used if the separate `sc-mqtt.jar` file is
 present in the CraftBukkit classpath. To use this module, you should
 ...
 
- 1. Download sc-mqtt.jar from <http://scriptcraftjs.org/download/extras/>
+ 1. Download sc-mqtt.jar from <https://scriptcraftjs.org/download/extras/>
  2. Save the file to the same directory where craftbukkit.jar resides.
  3. Create a new batch file (windows-only) called
     craftbukkit-sc-mqtt.bat and edit it to include the following

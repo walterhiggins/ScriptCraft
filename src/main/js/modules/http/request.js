@@ -14,7 +14,7 @@ main thread of execution.
 
 #### Parameters
 
- * request: The request details either a plain URL e.g. "http://scriptcraft.js/sample.json" or an object with the following properties...
+ * request: The request details either a plain URL e.g. "https://scriptcraft.js/sample.json" or an object with the following properties...
 
    - url: The URL of the request.
    - method: Should be one of the standard HTTP methods, GET, POST, PUT, DELETE (defaults to GET).
@@ -31,7 +31,7 @@ The following example illustrates how to use http.request to make a request to a
 ```javascript
 var jsResponse;
 var http = require('http');
-http.request('http://scriptcraftjs.org/sample.json',function(responseCode, responseBody){
+http.request('https://scriptcraftjs.org/sample.json',function(responseCode, responseBody){
   jsResponse = JSON.parse( responseBody );
 });
 ```
@@ -67,7 +67,10 @@ function paramsToString(params) {
 }
 function invokeNow(fn) {
   if (__plugin.bukkit) {
-    server.scheduler.runTask(__plugin, fn);
+    server.scheduler['runTask(org.bukkit.plugin.Plugin, java.lang.Runnable)'](
+      __plugin,
+      fn
+    );
     return;
   }
   if (__plugin.canary) {
@@ -77,7 +80,7 @@ function invokeNow(fn) {
 }
 function invokeLater(fn) {
   if (__plugin.bukkit) {
-    server.scheduler.runTaskAsynchronously(__plugin, fn);
+    server.scheduler['runTaskAsynchronously​(org.bukkit.plugin.Plugin, java.lang.Runnable)'](__plugin, fn);
     return;
   }
   if (__plugin.canary) {

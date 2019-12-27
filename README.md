@@ -178,7 +178,7 @@ ScriptCraft plugin:
    invoked the `/js` command. Again, this is a good jumping off point for
    diving into the SpigotMC API.
 
-[dl]: http://scriptcraftjs.org/download/latest
+[dl]: https://github.com/walterhiggins/ScriptCraft/releases/latest
 [api]: https://hub.spigotmc.org/javadocs/spigot/
 [ic]: http://canarymod.net/releases
 [spigotdl]: https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
@@ -212,8 +212,6 @@ be set to true to get the latest core ScriptCraft code . The modules
 and plugins directories are optional and not part of ScriptCraft core.
 
 # Further Reading
-
-ScriptCraft has [its own website][website] with further information.
 
  * To get started using ScriptCraft to Learn JavaScript, read [The Young Person's Guide to Programming in Minecraft][yp].
  * The ScriptCraft [API documentation][api].
@@ -256,7 +254,6 @@ You can find all files used to build this container in github project: [docker-s
 [yp]: docs/YoungPersonsGuideToProgrammingMinecraft.md
 [mm]: docs/Anatomy-of-a-Plugin.md
 [api]: docs/API-Reference.md
-[website]: http://scriptcraftjs.org/
 [cd]: http://coderdojo.com/
 [scr]: http://scratch.mit.edu/
 [cda]: http://cdathenry.wordpress.com/category/modderdojo/

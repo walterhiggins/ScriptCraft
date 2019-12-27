@@ -1250,7 +1250,7 @@ different objects and methods available for use by ScriptCraft.
 [dlbuk2]: http://dl.bukkit.org/downloads/craftbukkit/
 [dlcm]: http://canarymod.net/releases
 [bii]: http://wiki.bukkit.org/Setting_up_a_server
-[sc-plugin]: http://scriptcraftjs.org/download/
+[sc-plugin]: https://scriptcraftjs.org/download/
 [ce]: http://www.codecademy.com/
 [mcdv]: http://www.minecraftwiki.net/wiki/Data_values
 [np]: http://notepad-plus-plus.org/

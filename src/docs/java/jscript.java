@@ -11,7 +11,10 @@ public class jscript
         java.io.File file = new java.io.File(args[0]);
         engine.put("engine",engine);
         engine.put("args",args);
-	engine.put("cmItemTypeClass",ItemType.class);
+	try { 
+	    engine.put("cmItemTypeClass",Class.forName("net.canarymod.api.inventroy.ItemType"));
+	}catch(Exception e){
+	}
         FileReader fr = new java.io.FileReader(file);
         engine.eval(fr);
         fr.close();
