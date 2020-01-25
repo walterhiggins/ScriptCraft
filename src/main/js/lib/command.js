@@ -7,32 +7,33 @@ var _commands = {},
 /*
   execute a JSP command.
 */
-var executeCmd = function( args, player ) {
+var executeCmd = function(args, player) {
   var name,
     cmd,
     intercepted,
     result = null;
 
-  if ( args.length === 0 ) {
+  if (args.length === 0) {
     throw new Error('Usage: jsp command-name command-parameters');
   }
   name = args[0];
   cmd = _commands[name];
-  if ( typeof cmd === 'undefined' ) {
+  if (typeof cmd === 'undefined') {
     // it's not a global command - pass it on to interceptors
     intercepted = false;
-    for ( var i = 0; i < _cmdInterceptors.length; i++ ) {
-      if ( _cmdInterceptors[i]( args, player ) )
-        intercepted = true;
+    for (var i = 0; i < _cmdInterceptors.length; i++) {
+      if (_cmdInterceptors[i](args, player)) intercepted = true;
     }
-    if ( !intercepted ) {
-      console.warn( 'Command %s is not recognised', name );
+    if (!intercepted) {
+      console.warn('Command %s is not recognised', name);
     }
-  }else{
-    try { 
-      result = cmd.callback( args.slice(1), player );
-    } catch ( e ) {
-      console.error( 'Error while trying to execute command: ' + JSON.stringify( args ) );
+  } else {
+    try {
+      result = cmd.callback(args.slice(1), player);
+    } catch (e) {
+      console.error(
+        'Error while trying to execute command: ' + JSON.stringify(args)
+      );
       throw e;
     }
   }
@@ -41,20 +42,19 @@ var executeCmd = function( args, player ) {
 /*
   define a new JSP command.
 */
-var defineCmd = function( name, func, options, intercepts ) {
-
-  if ( typeof name == 'function'){
+var defineCmd = function(name, func, options, intercepts) {
+  if (typeof name == 'function') {
     intercepts = options;
     options = func;
     func = name;
     name = func.name;
   }
-  
-  if ( typeof options == 'undefined' ) {
+
+  if (typeof options == 'undefined') {
     options = [];
   }
   _commands[name] = { callback: func, options: options };
-  if ( intercepts ) {
+  if (intercepts) {
     _cmdInterceptors.push(func);
   }
   return func;

@@ -1,7 +1,7 @@
 'use strict';
 /*global require*/
 var Drone = require('drone'),
-    blocks = require('blocks');
+  blocks = require('blocks');
 
 /************************************************************************
 ### Drone.spiral_stairs() method
@@ -32,15 +32,14 @@ To construct a spiral staircase 5 floors high made of oak...
     spiral_stairs('oak', 5);
 
 ***/
-function spiral_stairs(stairBlock, flights){
+function spiral_stairs(stairBlock, flights) {
   this.chkpt('spiral_stairs');
-    
-  for (var i = 0; i < flights; i++){
-    this
-      .box(blocks.stairs[stairBlock] )
+
+  for (var i = 0; i < flights; i++) {
+    this.box(blocks.stairs[stairBlock])
       .up()
       .fwd()
-      .box(blocks.stairs[stairBlock] )
+      .box(blocks.stairs[stairBlock])
       .up()
       .fwd()
       .box(blocks.slab[stairBlock])

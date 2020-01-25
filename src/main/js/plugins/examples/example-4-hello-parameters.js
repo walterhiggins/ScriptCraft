@@ -26,7 +26,7 @@ a fixed 'Hello ' to anything you like by passing a parameter.
 
 ***/
 
-command('hello-params', function( parameters, player ) {
+command('hello-params', function(parameters, player) {
   /*
    parameters is an array (or list) of strings.  parameters[0]
    refers to the first element in the list.  Arrays in Javascript
@@ -35,6 +35,6 @@ command('hello-params', function( parameters, player ) {
    so on. In this example, parameters[1] refers to the first word
    which appears after `jsp hello-params `.
    */
-  var salutation = parameters[0] ;
-  echo( player, salutation + ' ' + player.name );
+  var salutation = parameters[0];
+  echo(player, salutation + ' ' + player.name);
 });

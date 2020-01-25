@@ -2,7 +2,6 @@ package org.scriptcraftjs.bukkit;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.script.Invocable;
@@ -12,7 +11,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScriptCraftPlugin extends JavaPlugin implements Listener
+public class ScriptCraftPlugin extends JavaPlugin
 {
     public boolean canary = false;
     public boolean bukkit = true;
@@ -30,19 +29,19 @@ public class ScriptCraftPlugin extends JavaPlugin implements Listener
         try {
             ScriptEngineManager factory = new ScriptEngineManager();
             this.engine = factory.getEngineByName("JavaScript");
-			if (this.engine == null) {
-				this.getLogger().severe(NO_JAVASCRIPT_MESSAGE);
-			} else {
-				Invocable inv = (Invocable) this.engine;
-				this.engine.eval(new InputStreamReader(this.getResource("boot.js")));
-				inv.invokeFunction("__scboot", this, engine);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			this.getLogger().severe(e.getMessage());
-		} finally {
-			currentThread.setContextClassLoader(previousClassLoader);
-		}
+            if (this.engine == null) {
+                this.getLogger().severe(NO_JAVASCRIPT_MESSAGE);
+            } else {
+                Invocable inv = (Invocable) this.engine;
+                this.engine.eval(new InputStreamReader(this.getResource("boot.js")));
+                inv.invokeFunction("__scboot", this, engine);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.getLogger().severe(e.getMessage());
+        } finally {
+            currentThread.setContextClassLoader(previousClassLoader);
+        }
     }
 
     public List<String> onTabComplete(CommandSender sender, Command cmd,

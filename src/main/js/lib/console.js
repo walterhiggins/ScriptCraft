@@ -36,44 +36,59 @@ ScriptCraft uses Java's [String.format()][strfmt] so any string substitution ide
 [webcons]: https://developer.mozilla.org/en-US/docs/Web/API/console
 
 ***/
-function argsToArray( args ) {
+function argsToArray(args) {
   var result = [];
-  for ( var i =0; i < args.length; i++ ) {
+  for (var i = 0; i < args.length; i++) {
     result.push(args[i]);
   }
   return result;
 }
-function consMsg(params){
+function consMsg(params) {
   var args = argsToArray(params);
-  if ( args.length > 1 ) {
-    return java.lang.String.format( args[0], args.slice(1) );
+  if (args.length > 1) {
+    return java.lang.String.format(args[0], args.slice(1));
   } else {
     return args[0];
   }
 }
 
-module.exports = function(logger){
-
-  function bukkitLog( level, restOfArgs ) {
-    logger['log(java.util.logging.Level,java.lang.String)']( 
-      java.util.logging.Level[level], 
-      consMsg(restOfArgs) 
+module.exports = function(logger) {
+  function bukkitLog(level, restOfArgs) {
+    logger['log(java.util.logging.Level,java.lang.String)'](
+      java.util.logging.Level[level],
+      consMsg(restOfArgs)
     );
   }
 
-  if (__plugin.canary){
+  if (__plugin.canary) {
     return {
-      log: function( ) { logger.info( consMsg(arguments) ); },
-      info: function( ) { logger.info( consMsg(arguments) ); },
-      warn: function( ) { logger.warn( consMsg(arguments) ); },
-      error: function( ) { logger.error( consMsg(arguments) ); }
+      log: function() {
+        logger.info(consMsg(arguments));
+      },
+      info: function() {
+        logger.info(consMsg(arguments));
+      },
+      warn: function() {
+        logger.warn(consMsg(arguments));
+      },
+      error: function() {
+        logger.error(consMsg(arguments));
+      }
     };
   } else {
     return {
-      log: function() { bukkitLog('INFO', arguments ); },
-      info: function() { bukkitLog('INFO', arguments ); },
-      warn: function( ) { bukkitLog('WARNING', arguments ); },
-      error: function( ) { bukkitLog('SEVERE', arguments ); }
+      log: function() {
+        bukkitLog('INFO', arguments);
+      },
+      info: function() {
+        bukkitLog('INFO', arguments);
+      },
+      warn: function() {
+        bukkitLog('WARNING', arguments);
+      },
+      error: function() {
+        bukkitLog('SEVERE', arguments);
+      }
     };
   }
 };

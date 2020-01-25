@@ -1,10 +1,9 @@
 'use strict';
 /*global __plugin, require, org, setTimeout, addUnloadHandler, global, Packages, server, module*/
 var utils = require('utils'),
-    blocks = require('blocks'),
-    THOUSAND = 1000,
-    MILLION = THOUSAND * THOUSAND;
-
+  blocks = require('blocks'),
+  THOUSAND = 1000,
+  MILLION = THOUSAND * THOUSAND;
 
 /*********************************************************************
 ## Drone Plugin
@@ -298,119 +297,148 @@ The values of both the `Drone.MAX_SiDE` and `Drone.MAX_VOLUME` variables _can_ b
 //
 // Implementation
 // ==============
-// 
+//
 // There is no need to read any further unless you want to understand how the Drone object works.
 //
-function getDirFromRotation( location ) { 
+function getDirFromRotation(location) {
   // 0 = east, 1 = south, 2 = west, 3 = north
   // 46 to 135 = west
   // 136 to 225 = north
   // 226 to 315 = east
   // 316 to 45 = south
   var r;
-  if (__plugin.canary ) {
+  if (__plugin.canary) {
     r = location.rotation;
-  } 
-  if (__plugin.bukkit) { 
+  }
+  if (__plugin.bukkit) {
     r = location.yaw;
   }
-    
+
   // west = -270
   // north = -180
   // east = -90
   // south = 0
-  
-  r = (r + 360 ) % 360; // east could be 270 or -90
 
-  if ( r > 45 && r <= 135 )
-    return 2; // west
-  if ( r > 135 && r <= 225 )
-    return 3; // north
-  if ( r > 225 && r <= 315 )
-    return 0; // east
+  r = (r + 360) % 360; // east could be 270 or -90
+
+  if (r > 45 && r <= 135) return 2; // west
+  if (r > 135 && r <= 225) return 3; // north
+  if (r > 225 && r <= 315) return 0; // east
   return 1; // south
 }
+
+var setTypeIdAndData = makeTypeIdAndDataSetter();
+
+function makeTypeIdAndDataSetter() {
+  if (!__plugin.bukkit) {
+    return null;
+  }
+
+  var Block = Java.type('org.bukkit.block.Block');
+  if (
+    Java.from(Block.class.methods).some(function(m) {
+      return m.name == 'setTypeIdAndData';
+    })
+  ) {
+    console.log('Drone using Block.setTypeIdAndData method');
+    return function(block, typeId, data, applyPhysics) {
+      block.setTypeIdAndData(typeId, data, applyPhysics);
+    };
+  } else {
+    console.log('Drone using CraftEvil.setTypeIdAndData method');
+    var CraftEvil = Java.type(server.class.package.name + '.util.CraftEvil');
+    return function(block, typeId, data, applyPhysics) {
+      CraftEvil.setTypeIdAndData(block, typeId, data, applyPhysics);
+    };
+  }
+}
+
 /*
  low-level function to place a block in the world - all drone methods which 
  place blocks ultimately invoke this function.
 */
-function putBlock( x, y, z, blockId, metadata, world, update ) {
-  if ( typeof metadata == 'undefined' ) {
+function putBlock(x, y, z, blockId, metadata, world, update) {
+  if (typeof metadata == 'undefined') {
     metadata = 0;
   }
-  var block = world.getBlockAt( x, y, z );
+  var block = world.getBlockAt(x, y, z);
 
   if (__plugin.canary) {
     var BlockType = Packages.net.canarymod.api.world.blocks.BlockType;
     block.type = BlockType.fromId(blockId);
     var applyProperties = require('blockhelper').applyProperties;
     applyProperties(block, metadata);
-    if (typeof update === 'undefined'){
+    if (typeof update === 'undefined') {
       update = true;
     }
-    if (update){
+    if (update) {
       block.update();
     }
   }
   if (__plugin.bukkit) {
-    block.setTypeIdAndData( blockId, metadata, false );
-    block.data = metadata;
+    setTypeIdAndData(block, blockId, metadata, update);
   }
   return block;
 }
 /*
  Drone constructs a new Drone object
 */
-function Drone( x, y, z, dir, world ) {
+function Drone(x, y, z, dir, world) {
   this.record = false;
   var usePlayerCoords = false;
-  var player = (typeof self !== 'undefined' ? self : null);
+  var player = typeof self !== 'undefined' ? self : null;
   var playerPos;
-  if ( x.location && x.name) {
+  if (x.location && x.name) {
     player = x;
-  } 
+  }
   playerPos = x.location;
 
   var that = this;
-  var populateFromLocation = function( loc ) {
+  var populateFromLocation = function(loc) {
     that.x = loc.x;
     that.y = loc.y;
     that.z = loc.z;
     that.dir = getDirFromRotation(loc);
     that.world = loc.world;
   };
-  var mp = utils.getMousePos( player );
-  if ( typeof x == 'undefined' || x.location ) {
-    if ( mp ) {
-      populateFromLocation( mp );
-      if ( playerPos ) {
+  var mp = utils.getMousePos(player);
+  if (typeof x == 'undefined' || x.location) {
+    if (mp) {
+      populateFromLocation(mp);
+      if (playerPos) {
         this.dir = getDirFromRotation(playerPos);
       }
     } else {
       // base it on the player's current location
       usePlayerCoords = true;
       //
-      // it's possible that drone.js could be loaded by a non-playing op 
+      // it's possible that drone.js could be loaded by a non-playing op
       // (from the server console)
       //
-      if ( !playerPos ) {
+      if (!playerPos) {
         return null;
       }
-      populateFromLocation( playerPos );
+      populateFromLocation(playerPos);
     }
+  } else if (x instanceof Drone) {
+    this.x = x.x;
+    this.y = x.y;
+    this.z = x.z;
+    this.dir = x.dir;
+    this.world = x.world;
   } else {
-    if ( arguments[0].x && arguments[0].y && arguments[0].z ) {
-      populateFromLocation( arguments[ 0 ] );
+    if (arguments[0].x && arguments[0].y && arguments[0].z) {
+      populateFromLocation(arguments[0]);
     } else {
       this.x = x;
       this.y = y;
       this.z = z;
-      if ( typeof dir == 'undefined' ) {
-        this.dir = getDirFromRotation( playerPos);
+      if (typeof dir == 'undefined') {
+        this.dir = getDirFromRotation(playerPos);
       } else {
-        this.dir = dir%4;
+        this.dir = dir % 4;
       }
-      if ( typeof world == 'undefined' ) {
+      if (typeof world == 'undefined') {
         this.world = playerPos.world;
       } else {
         this.world = world;
@@ -418,10 +446,10 @@ function Drone( x, y, z, dir, world ) {
     }
   }
 
-  if ( usePlayerCoords ) {
-    this.fwd( 3 );
+  if (usePlayerCoords) {
+    this.fwd(3);
   }
-  this.chkpt( 'start' );
+  this.chkpt('start');
   this.record = true;
   this.history = [];
   this.player = player;
@@ -432,61 +460,65 @@ Drone.getDirFromRotation = getDirFromRotation;
 
 Drone.opsPerSec = 10;
 var theQueue = [];
-function processQueue(){
+function processQueue() {
   var process,
     i = 0,
     queues = getAllQueues();
 
-  for ( ; i < queues.length; i++ ) {  
+  for (; i < queues.length; i++) {
     process = queues[i].shift();
-    if (process){
-      try { 
+    if (process) {
+      try {
         process();
-      } catch( e ) { 
-        console.log('Drone build error: ' +  e + ' while processing ' + process);
-      } 
+      } catch (e) {
+        console.log('Drone build error: ' + e + ' while processing ' + process);
+      }
     }
   }
-  setTimeout( processQueue, 1000 / Drone.opsPerSec );
-};
-setTimeout( processQueue, 1000 / Drone.opsPerSec );
+  setTimeout(processQueue, 1000 / Drone.opsPerSec);
+}
+setTimeout(processQueue, 1000 / Drone.opsPerSec);
 
-addUnloadHandler( function() {
+addUnloadHandler(function() {
   var pendingBuildOps = 0;
   var allQueues = getAllQueues();
-  for (var i = 0; i < allQueues.length; i++){
+  for (var i = 0; i < allQueues.length; i++) {
     pendingBuildOps += allQueues[i].length;
   }
-  if (pendingBuildOps > 0){
-    console.warn('There were ' + pendingBuildOps + ' pending build operations which were cancelled');
+  if (pendingBuildOps > 0) {
+    console.warn(
+      'There were ' +
+        pendingBuildOps +
+        ' pending build operations which were cancelled'
+    );
   }
 });
 //
 // add custom methods to the Drone object using this function
 //
-Drone.extend = function( name, func ) {
-  if (arguments.length == 1){
+Drone.extend = function(name, func) {
+  if (arguments.length == 1) {
     func = name;
-    if ( !func.name ){
+    if (!func.name) {
       throw 'A Drone extension function must have a name!';
     }
     name = func.name;
   }
-  Drone.prototype[ '_' + name ] = func;
-  Drone.prototype[ name ] = function( ) {
-    if ( this.record ) {
-      this.history.push( [ name, arguments ] );
+  Drone.prototype['_' + name] = func;
+  Drone.prototype[name] = function() {
+    if (this.record) {
+      this.history.push([name, arguments]);
     }
     var oldVal = this.record;
     this.record = false;
-    this[ '_' + name ].apply( this, arguments );    
+    this['_' + name].apply(this, arguments);
     this.record = oldVal;
     return this;
   };
-  
-  global[name] = function( ) {
-    var result = new Drone( self );
-    result[name].apply( result, arguments );
+
+  global[name] = function() {
+    var result = new Drone(self);
+    result[name].apply(result, arguments);
     return result;
   };
 };
@@ -557,55 +589,57 @@ Another example: This statement creates a row of trees 2 by 3:
 ![times example 1](img/times-trees.png)
 
 ***/
-Drone.prototype.times = function( numTimes, commands ) {
-  if ( typeof commands == 'undefined' ) {
+Drone.prototype.times = function(numTimes, commands) {
+  if (typeof commands == 'undefined') {
     commands = this.history.concat();
   }
-  
-  this.history = [ [ 'times', [ numTimes + 1, commands ] ] ];
+
+  this.history = [['times', [numTimes + 1, commands]]];
   var oldVal = this.record;
   this.record = false;
-  for ( var j = 1; j < numTimes; j++ ) {
-    for ( var i = 0; i < commands.length; i++) {
+  for (var j = 1; j < numTimes; j++) {
+    for (var i = 0; i < commands.length; i++) {
       var command = commands[i];
       var methodName = command[0];
       var args = command[1];
-      this[ methodName ].apply( this, args );
+      this[methodName].apply(this, args);
     }
   }
   this.record = oldVal;
   return this;
 };
 
-
-Drone.prototype.getBlock = function(){
-  return this.world.getBlockAt(this.x,this.y,this.z);
+Drone.prototype.getBlock = function() {
+  return this.world.getBlockAt(this.x, this.y, this.z);
 };
-Drone.prototype.setBlock = function(blockType, data, ow, oh, od, update){
-  if (typeof ow == 'undefined')
-    ow = 0;
-  if (typeof oh == 'undefined')
-    oh = 0;
-  if (typeof od == 'undefined')
-    od = 0;
-  this
-    .right(ow)
+Drone.prototype.setBlock = function(blockType, data, ow, oh, od, update) {
+  if (typeof ow == 'undefined') ow = 0;
+  if (typeof oh == 'undefined') oh = 0;
+  if (typeof od == 'undefined') od = 0;
+  this.right(ow)
     .up(oh)
     .fwd(od);
-  var result = putBlock(this.x, this.y, this.z, blockType, data, this.world, update);
-  this
-    .left(ow)
+  var result = putBlock(
+    this.x,
+    this.y,
+    this.z,
+    blockType,
+    data,
+    this.world,
+    update
+  );
+  this.left(ow)
     .down(oh)
     .back(od);
   return result;
 };
-Drone.prototype.traverseWidth = function(width, callback){
+Drone.prototype.traverseWidth = function(width, callback) {
   _traverse[this.dir].width(this, width, callback);
 };
-Drone.prototype.traverseHeight = function(height, callback){
+Drone.prototype.traverseHeight = function(height, callback) {
   traverseHeight(this, height, callback);
 };
-Drone.prototype.traverseDepth = function(depth, callback){
+Drone.prototype.traverseDepth = function(depth, callback) {
   _traverse[this.dir].depth(this, depth, callback);
 };
 //
@@ -617,11 +651,11 @@ var playerQueues = {};
  if the drone has an associated player, then use that player's queue otherwise
  use the global queue.
 */
-function getQueue( drone ){
-  if ( drone.player ) {
-    var playerName = ''+drone.player.name;
+function getQueue(drone) {
+  if (drone.player) {
+    var playerName = '' + drone.player.name;
     var result = playerQueues[playerName];
-    if (result === undefined){
+    if (result === undefined) {
       playerQueues[playerName] = [];
       return playerQueues[playerName];
     }
@@ -631,38 +665,38 @@ function getQueue( drone ){
   }
 }
 function getAllQueues() {
-  var result = [ theQueue ];
+  var result = [theQueue];
   for (var pq in playerQueues) {
-    result.push(playerQueues[pq]) ;
+    result.push(playerQueues[pq]);
   }
   return result;
-} 
+}
 Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite) {
-  if ( typeof overwrite == 'undefined' ) { 
+  if (typeof overwrite == 'undefined') {
     overwrite = true;
   }
-  if ( typeof h == 'undefined' ) {
+  if (typeof h == 'undefined') {
     h = 1;
   }
-  if ( typeof d == 'undefined' ) {
+  if (typeof d == 'undefined') {
     d = 1;
   }
-  if ( typeof w == 'undefined' ) {
+  if (typeof w == 'undefined') {
     w = 1;
   }
   //
   // wph 20140823 make a copy because don't want to modify array in background
-  // 
+  //
   var blocksForBuild = blocks.slice();
   var len = blocksForBuild.length,
-  i = 0;
-  for ( ; i < len; i++ ) {
-    blocksForBuild[i] = this.getBlockIdAndMeta( blocksForBuild[ i ] );
+    i = 0;
+  for (; i < len; i++) {
+    blocksForBuild[i] = this.getBlockIdAndMeta(blocksForBuild[i]);
   }
-  this.then(function(){
+  this.then(function() {
     var bi = 0;
-    traverseDHW( this, d,h,w, function traverseWidthCallback( ) { 
-      var properBlock = blocksForBuild[ bi % len ];
+    traverseDHW(this, d, h, w, function traverseWidthCallback() {
+      var properBlock = blocksForBuild[bi % len];
       this.setBlock(properBlock[0], properBlock[1]);
       bi++;
     });
@@ -672,193 +706,201 @@ Drone.prototype.cuboida = function(/* Array */ blocks, w, h, d, overwrite) {
 Drone.MAX_VOLUME = 1 * MILLION;
 Drone.MAX_SIDE = 1 * THOUSAND;
 
-function isTooBig(w, h, d ) {
-  return ( w * h * d ) >= Drone.MAX_VOLUME || 
-    ( w >= Drone.MAX_SIDE ) || 
-    ( h >= Drone.MAX_SIDE ) ||
-    ( d >= Drone.MAX_SIDE );
-};
+function isTooBig(w, h, d) {
+  return (
+    w * h * d >= Drone.MAX_VOLUME ||
+    w >= Drone.MAX_SIDE ||
+    h >= Drone.MAX_SIDE ||
+    d >= Drone.MAX_SIDE
+  );
+}
 /*
  faster cuboid because blockid, meta and world must be provided 
  use this method when you need to repeatedly place blocks
  */
-Drone.prototype.cuboidX = function( blockType, meta, w, h, d, immediate ) {
-
-  if ( typeof h == 'undefined' ) {
+Drone.prototype.cuboidX = function(blockType, meta, w, h, d, immediate) {
+  if (typeof h == 'undefined') {
     h = 1;
   }
-  if ( typeof d == 'undefined' ) {
+  if (typeof d == 'undefined') {
     d = 1;
   }
-  if ( typeof w == 'undefined' ) {
+  if (typeof w == 'undefined') {
     w = 1;
   }
-  if ( isTooBig( w, h, d ) ) {
-    this.sign([
-      'Build too Big!',
-      'width:' + w,
-      'height:' + h,
-      'depth:' + d
-    ], 68);
+  if (isTooBig(w, h, d)) {
+    this.sign(
+      ['Build too Big!', 'width:' + w, 'height:' + h, 'depth:' + d],
+      68
+    );
     console.warn('Build too big! ' + w + ' X ' + h + ' X ' + d);
     return this;
   }
-  if ( !immediate ) {
-    this.then(function(){
-      traverseDHW( this, d,h,w, function( ) {
-	this.setBlock( blockType, meta );
+  if (!immediate) {
+    this.then(function() {
+      traverseDHW(this, d, h, w, function() {
+        this.setBlock(blockType, meta);
       });
     });
   } else {
-    traverseDHW( this, d,h,w, function( ) {
-      this.setBlock( blockType, meta );
+    traverseDHW(this, d, h, w, function() {
+      this.setBlock(blockType, meta);
     });
   }
   return this;
-  
 };
 /*
  deferred execution of a drone method
 */
 var thenID = 0;
-Drone.prototype.then = function( next ){
-  var chkptThen = '_now' + (thenID++);
+Drone.prototype.then = function(next) {
+  var chkptThen = '_now' + thenID++;
   this.chkpt(chkptThen);
   var thisNext = next.bind(this);
-  function wrapperFn(){
-    var chkNow = '_now' + (thenID++);
+  function wrapperFn() {
+    var chkNow = '_now' + thenID++;
     this.chkpt(chkNow);
     this.move(chkptThen);
     thisNext();
     this.move(chkNow);
   }
-  getQueue(this).push( wrapperFn.bind(this) );    
+  getQueue(this).push(wrapperFn.bind(this));
   return this;
 };
-Drone.prototype.cuboid = function( block, w, h, d, immediate ) {
-  var bm = this.getBlockIdAndMeta( block );
-  return this.cuboidX( bm[0], bm[1], w, h, d, immediate);
+Drone.prototype.cuboid = function(block, w, h, d, immediate) {
+  var bm = this.getBlockIdAndMeta(block);
+  return this.cuboidX(bm[0], bm[1], w, h, d, immediate);
 };
 
-Drone.prototype.cuboid0 = function( block, w, h, d, immediate ) {
+Drone.prototype.cuboid0 = function(block, w, h, d, immediate) {
   var start = 'cuboid0' + w + h + d + immediate;
-  this
-    .chkpt( start )
-    .cuboid( block, w, h, 1, immediate ) // Front wall
-    .cuboid( block, 1, h, d, immediate ) // Left wall
-    .right( w - 1 )
-    .cuboid( block, 1, h, d, immediate ) // Right wall
-    .left( w - 1 )
-    .fwd( d - 1 )
-    .cuboid( block, w, h, 1, immediate ) // Back wall
-    .move( start );
+  this.chkpt(start)
+    .cuboid(block, w, h, 1, immediate) // Front wall
+    .cuboid(block, 1, h, d, immediate) // Left wall
+    .right(w - 1)
+    .cuboid(block, 1, h, d, immediate) // Right wall
+    .left(w - 1)
+    .fwd(d - 1)
+    .cuboid(block, w, h, 1, immediate) // Back wall
+    .move(start);
 };
-
-
 
 // player dirs: 0 = east, 1 = south, 2 = west,   3 = north
 // block dirs:  0 = east, 1 = west,  2 = south , 3 = north
 // sign dirs:   5 = east, 3 = south, 4 = west, 2 = north
-Drone.PLAYER_STAIRS_FACING = [ 0, 2, 1, 3 ];
+Drone.PLAYER_STAIRS_FACING = [0, 2, 1, 3];
 
 // for blocks 68 (wall signs) 65 (ladders) 61,62 (furnaces) 23 (dispenser) and 54 (chest)
-Drone.PLAYER_SIGN_FACING = [ 4, 2, 5, 3 ]; 
-Drone.PLAYER_TORCH_FACING = [ 2, 4, 1, 3 ];
+Drone.PLAYER_SIGN_FACING = [4, 2, 5, 3];
+Drone.PLAYER_TORCH_FACING = [2, 4, 1, 3];
 
-Drone.extend('box', Drone.prototype.cuboid );
-Drone.extend('box0',Drone.prototype.cuboid0 );
-Drone.extend('boxa',Drone.prototype.cuboida );
+Drone.extend('box', Drone.prototype.cuboid);
+Drone.extend('box0', Drone.prototype.cuboid0);
+Drone.extend('boxa', Drone.prototype.cuboida);
 //
-// show the Drone's position and direction 
+// show the Drone's position and direction
 //
-Drone.prototype.toString = function( ) { 
-  var dirs = ['east','south','west','north'];
-  return 'x: ' + this.x + ' y: '+this.y + ' z: ' + this.z + ' dir: ' + this.dir  + ' '+dirs[this.dir];
+Drone.prototype.toString = function() {
+  var dirs = ['east', 'south', 'west', 'north'];
+  return (
+    'x: ' +
+    this.x +
+    ' y: ' +
+    this.y +
+    ' z: ' +
+    this.z +
+    ' dir: ' +
+    this.dir +
+    ' ' +
+    dirs[this.dir]
+  );
 };
-Drone.prototype.debug = function( ) { 
-  console.log(this.toString( ) );
+Drone.prototype.debug = function() {
+  console.log(this.toString());
   return this;
 };
 
-function getBlockIdAndMeta( b ) { 
+function getBlockIdAndMeta(b) {
   var defaultMeta = 0,
-      i = 0,
-      bs,
-      md,
-      sp;
+    i = 0,
+    bs,
+    md,
+    sp;
   if (typeof b === 'number' || /^[0-9]+$/.test(b)) {
     // wph 20130414 - use sensible defaults for certain blocks e.g. stairs
     // should face the drone.
-    if ( blocks.isStair(b) ) {
-      defaultMeta = Drone.PLAYER_STAIRS_FACING[ this.dir % 4 ];
-    } else { 
+    if (blocks.isStair(b)) {
+      defaultMeta = Drone.PLAYER_STAIRS_FACING[this.dir % 4];
+    } else {
       switch (b) {
-      case blocks.sign:
-      case blocks.ladder:
-	// bug: furnace, chest, dispenser don't always use the right metadata
-      case blocks.furnace:  
-      case blocks.furnace_burning: 
-      case blocks.chest:
-      case blocks.enderchest:
-      case blocks.dispenser:
-	defaultMeta = Drone.PLAYER_SIGN_FACING[ this.dir % 4 ];
-	break;
-      case blocks.sign_post:
-	defaultMeta = ( 12 + ( ( this.dir + 2 ) * 4 ) ) % 16;
-	break;
+        case blocks.sign:
+        case blocks.ladder:
+        // bug: furnace, chest, dispenser don't always use the right metadata
+        case blocks.furnace:
+        case blocks.furnace_burning:
+        case blocks.chest:
+        case blocks.enderchest:
+        case blocks.dispenser:
+          defaultMeta = Drone.PLAYER_SIGN_FACING[this.dir % 4];
+          break;
+        case blocks.sign_post:
+          defaultMeta = (12 + (this.dir + 2) * 4) % 16;
+          break;
       }
     }
-    return [ b, defaultMeta ];
+    return [b, defaultMeta];
   }
-  if ( typeof b === 'string' ) { 
+  if (typeof b === 'string') {
     bs = b;
-    sp = bs.indexOf(':' );
-    if ( sp == -1 ) { 
-      b = parseInt( bs );
-      return [ b, defaultMeta ];
+    sp = bs.indexOf(':');
+    if (sp == -1) {
+      b = parseInt(bs);
+      return [b, defaultMeta];
     }
-    b = parseInt(bs.substring(0,sp ) );
-    md = parseInt(bs.substring(sp+1,bs.length ) );
-    return [b,md];
+    b = parseInt(bs.substring(0, sp));
+    md = parseInt(bs.substring(sp + 1, bs.length));
+    return [b, md];
   }
-  if (b.id){
-    // wph 20141230 we are dealing with an object 
-    var blockInfo = b;
+  if (b.id) {
+    // wph 20141230 we are dealing with an object
     var metadata = {};
-    for (i in b){
-      if (i !== 'id')
-	metadata[i] = b[i];
+    for (i in b) {
+      if (i !== 'id') metadata[i] = b[i];
     }
     return [b.id, metadata];
   }
 }
-var _traverse = [{},{},{},{}];
+var _traverse = [{}, {}, {}, {}];
 // east
-function walkWidthEast( drone, n,callback ) { 
-  var s = drone.z, e = s + n;
-  for ( ; drone.z < e; drone.z++ ) { 
-    callback.call(drone ,drone.z-s );
+function walkWidthEast(drone, n, callback) {
+  var s = drone.z,
+    e = s + n;
+  for (; drone.z < e; drone.z++) {
+    callback.call(drone, drone.z - s);
   }
   drone.z = s;
 }
-function walkDepthEast( drone,n,callback ) { 
-  var s = drone.x, e = s+n;
-  for ( ;drone.x < e;drone.x++ ) { 
-    callback.call(drone, drone.x-s );
+function walkDepthEast(drone, n, callback) {
+  var s = drone.x,
+    e = s + n;
+  for (; drone.x < e; drone.x++) {
+    callback.call(drone, drone.x - s);
   }
   drone.x = s;
 }
-function walkWidthSouth( drone,n,callback ) { 
-  var s = drone.x, e = s-n;
-  for ( ;drone.x > e;drone.x-- ) { 
-    callback.call(drone, s-drone.x );
+function walkWidthSouth(drone, n, callback) {
+  var s = drone.x,
+    e = s - n;
+  for (; drone.x > e; drone.x--) {
+    callback.call(drone, s - drone.x);
   }
   drone.x = s;
 }
-function walkWidthWest( drone,n,callback ) { 
-  var s = drone.z, e = s-n;
-  for ( ;drone.z > e;drone.z-- ) { 
-    callback.call(drone, s-drone.z );
+function walkWidthWest(drone, n, callback) {
+  var s = drone.z,
+    e = s - n;
+  for (; drone.z > e; drone.z--) {
+    callback.call(drone, s - drone.z);
   }
   drone.z = s;
 }
@@ -873,17 +915,18 @@ _traverse[2].depth = walkWidthSouth;
 // north
 _traverse[3].width = walkDepthEast;
 _traverse[3].depth = walkWidthWest;
-function traverseHeight( drone,n,callback ) { 
-  var s = drone.y, e = s + n;
-  for ( ; drone.y < e; drone.y++ ) { 
-    callback.call(drone, drone.y-s );
+function traverseHeight(drone, n, callback) {
+  var s = drone.y,
+    e = s + n;
+  for (; drone.y < e; drone.y++) {
+    callback.call(drone, drone.y - s);
   }
   drone.y = s;
-};
-function traverseDHW( drone, d,h,w, callback ){
-  _traverse[drone.dir].depth( drone, d, function traverseDepthCallback( ) { 
-    traverseHeight( this, h, function traverseHeightCallback( ) { 
-      _traverse[this.dir].width( this, w, callback);
+}
+function traverseDHW(drone, d, h, w, callback) {
+  _traverse[drone.dir].depth(drone, d, function traverseDepthCallback() {
+    traverseHeight(this, h, function traverseHeightCallback() {
+      _traverse[this.dir].width(this, w, callback);
     });
   });
 }
@@ -892,11 +935,15 @@ function traverseDHW( drone, d,h,w, callback ){
 // wph 20130130 - make this a method - extensions can use it.
 //
 Drone.prototype.getBlockIdAndMeta = getBlockIdAndMeta;
-Drone.prototype._getBlockIdAndMeta = function(b){
-  console.warn('_getBlockIdAndMeta is deprecated. Use .getBlockIdAndMeta() instead');
+Drone.prototype._getBlockIdAndMeta = function(b) {
+  console.warn(
+    '_getBlockIdAndMeta is deprecated. Use .getBlockIdAndMeta() instead'
+  );
   return this.getBlockIdAndMeta(b);
 };
-Drone.bountiful = __plugin.canary ? parseFloat(server.canaryModVersion) > 1.7 : false;
+Drone.bountiful = __plugin.canary
+  ? parseFloat(server.canaryModVersion) > 1.7
+  : false;
 
 var droneCoreExts = [
   './arc',
@@ -916,7 +963,7 @@ var droneCoreExts = [
   './stairs',
   './trees'
 ];
-utils.foreach(droneCoreExts, function(path){
+utils.foreach(droneCoreExts, function(path) {
   require(path)(Drone);
 });
 module.exports = Drone;

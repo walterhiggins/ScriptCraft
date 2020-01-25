@@ -95,14 +95,14 @@ if ( !sign ) {
 [bukle]: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/LivingEntity.html
 
 ***/
-function hasSign( block ){
-  if (__plugin.canary){
-    if (block && block.tileEntity && block.tileEntity.setTextOnLine){
+function hasSign(block) {
+  if (__plugin.canary) {
+    if (block && block.tileEntity && block.tileEntity.setTextOnLine) {
       return block.tileEntity;
     }
   }
-  if (__plugin.bukkit){
-    if (block && block.state && block.state.setLine){
+  if (__plugin.bukkit) {
+    if (block && block.state && block.state.setLine) {
       return block.state;
     }
   }
@@ -111,13 +111,13 @@ function hasSign( block ){
 var utils = require('utils');
 var menu = require('./menu')(hasSign);
 // include all menu exports
-for ( var i in menu ) {
+for (var i in menu) {
   exports[i] = menu[i];
 }
 
-function getTargetedBy( livingEntity ) {
-  var location = utils.getMousePos( livingEntity );
-  if ( !location ) { 
+function getTargetedBy(livingEntity) {
+  var location = utils.getMousePos(livingEntity);
+  if (!location) {
     return null;
   }
   return hasSign(utils.blockAt(location));

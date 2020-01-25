@@ -34,6 +34,7 @@ Follow these steps to download and install SpigotMC.
 5. The server will start up then shut down very shortly afterwards. You'll need to edit a file called `eula.txt` - change `eula=false` to `eula=true` and save the file.
 6. Run the `java -jar spigot-1.10.2.jar` command again - this time the server will start up. Shut it down by typing `stop` at the server prompt.
 
+
 ## Installing ScriptCraft
 
 Follow these steps to download and install ScriptCraft.
@@ -1243,11 +1244,13 @@ Reference][spigotapi] provides lots of valuable information about the
 different objects and methods available for use by ScriptCraft.
 
 
+[spigotdl]: https://hub.spigotmc.org/jenkins/job/BuildTools/
+[dl]: https://github.com/walterhiggins/ScriptCraft/releases/latest
 [cmadmin]: https://github.com/walterhiggins/canarymod-admin-guide/
 [dlbuk2]: http://dl.bukkit.org/downloads/craftbukkit/
 [dlcm]: http://canarymod.net/releases
 [bii]: http://wiki.bukkit.org/Setting_up_a_server
-[sc-plugin]: http://scriptcraftjs.org/download/
+[sc-plugin]: https://scriptcraftjs.org/download/
 [ce]: http://www.codecademy.com/
 [mcdv]: http://www.minecraftwiki.net/wiki/Data_values
 [np]: http://notepad-plus-plus.org/

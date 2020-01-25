@@ -72,8 +72,10 @@ var formattingCodes = {
   underline: 'n',
   reset: 'r'
 };
-for ( var method in formattingCodes ) {
-  String.prototype[method] = function( c ) {
-    return function(){ return c + this; };
-  }( COLOR_CHAR + formattingCodes[method] );
+for (var method in formattingCodes) {
+  String.prototype[method] = (function(c) {
+    return function() {
+      return c + this;
+    };
+  })(COLOR_CHAR + formattingCodes[method]);
 }

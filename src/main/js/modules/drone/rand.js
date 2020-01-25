@@ -26,42 +26,42 @@ regular stone has a 50% chance, mossy stone has a 30% chance and cracked stone h
 //
 // standard fisher-yates shuffle algorithm
 //
-function fisherYates(  myArray  ) {
+function fisherYates(myArray) {
   var i = myArray.length;
-  if (  i == 0 ) return false;
-  while ( --i ) {
-    var j = Math.floor( Math.random( ) * ( i + 1 ) );
+  if (i == 0) return false;
+  while (--i) {
+    var j = Math.floor(Math.random() * (i + 1));
     var tempi = myArray[i];
     var tempj = myArray[j];
     myArray[i] = tempj;
     myArray[j] = tempi;
   }
 }
-function _rand( blockDistribution ) { 
-  if ( !(blockDistribution.constructor == Array ) ) { 
+function _rand(blockDistribution) {
+  if (!(blockDistribution.constructor == Array)) {
     var a = [];
-    for ( var p in blockDistribution ) { 
+    for (var p in blockDistribution) {
       var n = blockDistribution[p];
-      for ( var i = 0;i < n;i++ ) { 
-        a.push(p );
+      for (var i = 0; i < n; i++) {
+        a.push(p);
       }
     }
     blockDistribution = a;
   }
-  while ( blockDistribution.length < 1000 ) { 
+  while (blockDistribution.length < 1000) {
     // make array bigger so that it's more random
-    blockDistribution = blockDistribution.concat(blockDistribution );
+    blockDistribution = blockDistribution.concat(blockDistribution);
   }
-  fisherYates(blockDistribution );
+  fisherYates(blockDistribution);
   return blockDistribution;
 }
-function rand( dist, width, height, depth, overwrite ) { 
-  if ( typeof overwrite == 'undefined' ) { 
+function rand(dist, width, height, depth, overwrite) {
+  if (typeof overwrite == 'undefined') {
     overwrite = true;
   }
-  var randomized = _rand( dist );
-  this.boxa( randomized, width, height, depth, overwrite);
+  var randomized = _rand(dist);
+  this.boxa(randomized, width, height, depth, overwrite);
 }
-module.exports = function(Drone){
-  Drone.extend( rand );
+module.exports = function(Drone) {
+  Drone.extend(rand);
 };

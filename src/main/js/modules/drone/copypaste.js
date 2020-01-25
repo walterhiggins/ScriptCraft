@@ -1,6 +1,4 @@
 'use strict';
-/*global require, module*/
-
 /************************************************************************
 ### Copy & Paste using Drone
 
@@ -22,10 +20,10 @@ pasting the copied area elsewhere...
 
 #### Parameters
 
- * name - the name to be given to the copied area (used by `paste`)
- * width - the width of the area to copy
- * height - the height of the area to copy
- * length - the length of the area (extending away from the drone) to copy
+* name - the name to be given to the copied area (used by `paste`)
+* width - the width of the area to copy
+* height - the height of the area to copy
+* length - the length of the area (extending away from the drone) to copy
 
 #### Example
 
@@ -48,52 +46,52 @@ point) into memory.  the copied area can be referenced using the name
 ***/
 var clipBoard = {};
 
-function paste( name, immediate ){
+function paste(name /*, immediate */) {
   console.warn('Drone copy/paste is no longer in active development');
   var Drone = this.constructor;
   var ccContent = clipBoard[name];
-  if (ccContent == undefined){
+  if (ccContent == undefined) {
     console.warn('Nothing called ' + name + ' in clipboard!');
     return;
   }
   var srcBlocks = ccContent.blocks;
   var srcDir = ccContent.dir; // direction player was facing when copied.
-  var dirOffset = (4 + (this.dir - srcDir ) ) %4;
+  var dirOffset = (4 + (this.dir - srcDir)) % 4;
 
-  this.traverseWidth(srcBlocks.length,function( ww ) { 
+  this.traverseWidth(srcBlocks.length, function(ww) {
     var h = srcBlocks[ww].length;
-    this.traverseHeight(h,function( hh ) { 
+    this.traverseHeight(h, function(hh) {
       var d = srcBlocks[ww][hh].length;
-      this.traverseDepth(d,function( dd ) { 
+      this.traverseDepth(d, function(dd) {
         var b = srcBlocks[ww][hh][dd],
-            cb = b.type,
-            md = b.data,
-	    newDir,
-	    dir,
-	    a,
-	    c,
-	    len;
+          cb = b.type,
+          md = b.data,
+          newDir,
+          dir,
+          a,
+          c,
+          len;
         //
         // need to adjust blocks which face a direction
         //
-        switch ( cb ) {
-          // 
+        switch (cb) {
+          //
           // doors
           //
           case 64: // wood
           case 71: // iron
             // top half of door doesn't need to change
-            if ( md < 8 ) {
-              md = (md + dirOffset ) % 4;
+            if (md < 8) {
+              md = (md + dirOffset) % 4;
             }
             break;
           //
           // stairs
           //
-          case 53:  // oak 
-          case 67:  // cobblestone 
-          case 108: // red brick 
-          case 109: // stone brick 
+          case 53: // oak
+          case 67: // cobblestone
+          case 108: // red brick
+          case 109: // stone brick
           case 114: // nether brick
           case 128: // sandstone
           case 134: // spruce
@@ -102,14 +100,14 @@ function paste( name, immediate ){
             dir = md & 0x3;
             a = Drone.PLAYER_STAIRS_FACING;
             len = a.length;
-            for ( c = 0; c < len; c++ ) { 
-              if ( a[c] == dir ) { 
+            for (c = 0; c < len; c++) {
+              if (a[c] == dir) {
                 break;
               }
             }
-            c = (c + dirOffset ) %4;
+            c = (c + dirOffset) % 4;
             newDir = a[c];
-            md = (md >>2<<2 ) + newDir;
+            md = ((md >> 2) << 2) + newDir;
             break;
           //
           // signs , ladders etc
@@ -122,38 +120,38 @@ function paste( name, immediate ){
           case 68: // wall sign
             a = Drone.PLAYER_SIGN_FACING;
             len = a.length;
-            for ( c=0; c < len; c++ ) { 
-              if ( a[c] == md ) { 
+            for (c = 0; c < len; c++) {
+              if (a[c] == md) {
                 break;
               }
             }
-            c = (c + dirOffset ) %4;
+            c = (c + dirOffset) % 4;
             newDir = a[c];
             md = newDir;
             break;
-          }
-	  this.setBlock(cb,md);
-      } );
-    } );
-  } );
+        }
+        this.setBlock(cb, md);
+      });
+    });
+  });
 }
-function copy( name, w, h, d ) {
+function copy(name, w, h, d) {
   console.warn('Drone copy/paste is no longer in active development');
   var ccContent = [];
-  this.traverseWidth(w,function( ww ) { 
-    ccContent.push([] );
-    this.traverseHeight(h,function( hh ) { 
-      ccContent[ww].push([] );
-      this.traverseDepth(d,function( dd ) { 
+  this.traverseWidth(w, function(ww) {
+    ccContent.push([]);
+    this.traverseHeight(h, function(hh) {
+      ccContent[ww].push([]);
+      this.traverseDepth(d, function(dd) {
         var b = this.getBlock();
-        ccContent[ww][hh][dd] = {type:b.getTypeId(), data:b.data};
-      } );
-    } );
-  } );
-  clipBoard[name] = {dir: this.dir, blocks: ccContent};
+        ccContent[ww][hh][dd] = { type: b.getTypeId(), data: b.data };
+      });
+    });
+  });
+  clipBoard[name] = { dir: this.dir, blocks: ccContent };
 }
 
-module.exports = function(Drone){
-  Drone.extend( copy );
-  Drone.extend( paste );
+module.exports = function(Drone) {
+  Drone.extend(copy);
+  Drone.extend(paste);
 };

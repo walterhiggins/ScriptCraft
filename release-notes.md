@@ -1,5 +1,11 @@
 RELEASE NOTES
 =============
+3.3.0 Release (2017 10 15)
+--------------------------
+
+Bug Fixes.
+Updated from Spigot 1.11.2 to 1.12.2.
+Expanded documentation (sounds).
 
 3.2.1 Release (2016 12 23)
 --------------------------
@@ -269,7 +275,7 @@ Various bug fixes, enhanced classroom module and improved error logging on start
 Added support for communication with Arduino and other devices which
 use the [MQTT protocol][mqtt] via a new `sc-mqtt` module. This module
 requires a separate sc-mqtt.jar file downloadable from
-<http://scriptcraftjs.org/download/extras/mqtt> which must be included
+<https://scriptcraftjs.org/download/extras/mqtt> which must be included
 in the CraftBukkit classpath. If using MQTT in ScriptCraft, then
 Craftbukkit should be launched like this...
 

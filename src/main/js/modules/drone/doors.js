@@ -50,52 +50,62 @@ Create double iron doors
 
 var blocks = require('blocks');
 /*global require, Packages, __plugin*/
-function door( doorMaterial, hinge) {
-  if ( typeof doorMaterial == 'undefined' ) {
+function door(doorMaterial, hinge) {
+  if (typeof doorMaterial == 'undefined') {
     doorMaterial = blocks.door_wood; // wood
-  } 
-  if (typeof hinge == 'undefined') { 
+  }
+  if (typeof hinge == 'undefined') {
     hinge = 'left';
   }
   var Drone = this.constructor;
-  this.then(function(){
+  this.then(function() {
     var lower = this.setBlock(doorMaterial, this.dir, 0, 0, 0, false);
-    var upper = this.setBlock(doorMaterial, hinge=='left' ? 8 : 9, 0,1,0, false);
-    if (Drone.bountiful){
+    var upper = this.setBlock(
+      doorMaterial,
+      hinge == 'left' ? 8 : 9,
+      0,
+      1,
+      0,
+      false
+    );
+    if (Drone.bountiful) {
       var DoorHalf = Packages.net.minecraft.block.BlockDoor.EnumDoorHalf,
-	  HingePosition = Packages.net.minecraft.block.BlockDoor.EnumHingePosition,
-	  prop = require('blockhelper').property;
+        HingePosition =
+          Packages.net.minecraft.block.BlockDoor.EnumHingePosition,
+        prop = require('blockhelper').property;
       prop(lower)
-	.set('facing', this.dir)
-	.set('half', DoorHalf.LOWER );
+        .set('facing', this.dir)
+        .set('half', DoorHalf.LOWER);
       prop(upper)
-	.set('hinge', hinge == 'left' ? HingePosition.LEFT: HingePosition.RIGHT)
-	.set('half', DoorHalf.UPPER);
+        .set(
+          'hinge',
+          hinge == 'left' ? HingePosition.LEFT : HingePosition.RIGHT
+        )
+        .set('half', DoorHalf.UPPER);
     }
-    if (__plugin.canary){
+    if (__plugin.canary) {
       lower.update();
       upper.update();
     }
   });
 }
-module.exports = function(Drone){
-  Drone.extend( door );
+module.exports = function(Drone) {
+  Drone.extend(door);
 
-  Drone.extend( function door_iron( ) {
+  Drone.extend(function door_iron() {
     this.door(blocks.door_iron);
-  } );
+  });
 
-  Drone.extend( function door2( doorMaterial ) {
-    if ( typeof doorMaterial == 'undefined' ) {
+  Drone.extend(function door2(doorMaterial) {
+    if (typeof doorMaterial == 'undefined') {
       doorMaterial = blocks.door_wood;
-    } 
-    this
-      .door( doorMaterial, 'left')
+    }
+    this.door(doorMaterial, 'left')
       .right()
-      .door( doorMaterial, 'right')
+      .door(doorMaterial, 'right')
       .left();
-  } );
-  Drone.extend( function door2_iron( ) {
-    this.door2( blocks.door_iron );
-  } );
+  });
+  Drone.extend(function door2_iron() {
+    this.door2(blocks.door_iron);
+  });
 };

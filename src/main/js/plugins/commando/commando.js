@@ -76,46 +76,46 @@ global commands for a plugin, please let me know.
 [pcppevt]: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/player/PlayerCommandPreprocessEvent.html
 
 ***/
-if (__plugin.canary){
+if (__plugin.canary) {
   console.warn('commando plugin is not yet supported in CanaryMod');
   return;
 }
 var commands = {};
 
-exports.commando = function( name, func, options, intercepts ) {
-  var result = command( name, func, options, intercepts );
+exports.commando = function(name, func, options, intercepts) {
+  var result = command(name, func, options, intercepts);
   commands[name] = result;
   return result;
 };
 
-events.playerCommandPreprocess( function( evt ) {
+events.playerCommandPreprocess(function(evt) {
   var msg = '' + evt.message;
-  var parts = msg.match( /^\/([^\s]+)/ );
-  if ( !parts ) {
+  var parts = msg.match(/^\/([^\s]+)/);
+  if (!parts) {
     return;
   }
-  if ( parts.length < 2 ) {
+  if (parts.length < 2) {
     return;
   }
   var command = parts[1];
-  if ( commands[command] ) {
-    evt.message = '/jsp ' + msg.replace( /^\//, '' );
+  if (commands[command]) {
+    evt.message = '/jsp ' + msg.replace(/^\//, '');
   }
-} );
-events.serverCommand( function( evt ) {
+});
+events.serverCommand(function(evt) {
   var msg = '' + evt.command;
-  var parts = msg.match( /^\/*([^\s]+)/ );
-  if ( !parts ) {
+  var parts = msg.match(/^\/*([^\s]+)/);
+  if (!parts) {
     return;
   }
-  if ( parts.length < 2 ) {
+  if (parts.length < 2) {
     return;
   }
   var command = parts[1];
-  if ( commands[ command ] ) {
-    var newCmd = 'jsp ' + msg.replace( /^\//, '' );
-    if ( config.verbose ) {
-      console.log( 'Redirecting to : %s', newCmd );
+  if (commands[command]) {
+    var newCmd = 'jsp ' + msg.replace(/^\//, '');
+    if (config.verbose) {
+      console.log('Redirecting to : %s', newCmd);
     }
     evt.command = newCmd;
   }

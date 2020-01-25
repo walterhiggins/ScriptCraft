@@ -34,20 +34,18 @@ Staircases do not have any blocks beneath them.
 ***/
 var blocks = require('blocks');
 /*global require*/
-function stairs(blockType, width, height){
-  if (typeof width === 'undefined')
-    width = 1;
-  if (typeof height === 'undefined')
-    height = 1;
-  if (typeof blockType === 'undefined'){
+function stairs(blockType, width, height) {
+  if (typeof width === 'undefined') width = 1;
+  if (typeof height === 'undefined') height = 1;
+  if (typeof blockType === 'undefined') {
     blockType = blocks.stairs.oak;
   }
   var bm = this.getBlockIdAndMeta(blockType);
-  this.then(function(){
+  this.then(function() {
     this.chkpt('_stairs');
     while (height > 0) {
-      this.traverseWidth(width, function(){
-	this.setBlock(bm[0], bm[1]);
+      this.traverseWidth(width, function() {
+        this.setBlock(bm[0], bm[1]);
       });
 
       this.fwd().up();
@@ -56,6 +54,6 @@ function stairs(blockType, width, height){
     this.move('_stairs');
   });
 }
-module.exports = function(Drone){
+module.exports = function(Drone) {
   Drone.extend(stairs);
 };

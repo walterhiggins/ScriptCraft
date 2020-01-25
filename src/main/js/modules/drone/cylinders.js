@@ -33,7 +33,7 @@ To create a hollow cylinder of Iron 7 blocks in radius and 1 block high...
 
 ***/
 
-function cylinder0( block,radius,height,exactParams ) { 
+function cylinder0(block, radius, height, exactParams) {
   var arcParams = {
     radius: radius,
     fill: false,
@@ -41,18 +41,18 @@ function cylinder0( block,radius,height,exactParams ) {
     stack: height
   };
 
-  if ( exactParams ) { 
-    for ( var p in exactParams ) {
+  if (exactParams) {
+    for (var p in exactParams) {
       arcParams[p] = exactParams[p];
     }
-  }else{
-    var md = this.getBlockIdAndMeta(block );
+  } else {
+    var md = this.getBlockIdAndMeta(block);
     arcParams.blockType = md[0];
     arcParams.meta = md[1];
   }
-  return this.arc(arcParams );
-};
-function cylinder( block,radius,height,exactParams ) { 
+  return this.arc(arcParams);
+}
+function cylinder(block, radius, height, exactParams) {
   var arcParams = {
     radius: radius,
     fill: true,
@@ -60,17 +60,17 @@ function cylinder( block,radius,height,exactParams ) {
     stack: height
   };
 
-  if ( exactParams ) { 
+  if (exactParams) {
     arcParams.blockType = exactParams.blockType;
     arcParams.meta = exactParams.meta;
-  }else{
-    var md = this.getBlockIdAndMeta(block );
+  } else {
+    var md = this.getBlockIdAndMeta(block);
     arcParams.blockType = md[0];
     arcParams.meta = md[1];
   }
-  return this.arc(arcParams );
-};
-module.exports = function(Drone){
-  Drone.extend(cylinder0 );
-  Drone.extend(cylinder );
+  return this.arc(arcParams);
+}
+module.exports = function(Drone) {
+  Drone.extend(cylinder0);
+  Drone.extend(cylinder);
 };

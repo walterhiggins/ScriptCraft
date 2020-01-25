@@ -40,165 +40,166 @@ your own mini-game...
 [bukscore]: http://jd.bukkit.org/beta/apidocs/org/bukkit/scoreboard/package-summary.html
 
 ***/
+var sounds = require('sounds');
 
-if (__plugin.canary || __plugin.bukkit){
-  console.warn('cow-clicker minigame is not yet supported in CanaryMod and Craftbukkit');
+if (__plugin.canary || __plugin.bukkit) {
+  console.warn(
+    'cow-clicker minigame is not yet supported in CanaryMod or Bukkit'
+  );
   return;
 }
 var store = {},
   bkBukkit = org.bukkit.Bukkit,
   bkCow = org.bukkit.entity.Cow,
   bkOfflinePlayer = org.bukkit.OfflinePlayer,
-  scoreboardConfig = { 
+  scoreboardConfig = {
     cowclicker: {
       SIDEBAR: 'Cows Clicked'
     }
   };
 var scoreboard = require('minigames/scoreboard')(scoreboardConfig);
 
-var _onPlayerInteract = function( event ) {
+function onPlayerInteract(event) {
   var player = event.player,
-    clickedEntity = event.rightClicked,
-    loc = clickedEntity.location;
-  
-  if ( !store[ player.name ] ) {
+    clickedEntity = event.rightClicked;
+
+  if (!store[player.name]) {
     return;
   }
 
-  var sound = function( snd, vol, pitch ) {
-    loc.world.playSound( loc, snd, vol, pitch );
-  };
+  if (clickedEntity instanceof bkCow) {
+    store[player.name].score++;
+    scoreboard.update('cowclicker', player, store[player.name].score);
 
-  if ( clickedEntity instanceof  bkCow) {
-    store[ player.name ].score++;
-    scoreboard.update( 'cowclicker', player, store[ player.name ].score );
-    
-    bkBukkit.dispatchCommand( player, 'me clicked a cow!' );
-    sound( bukkit.sound.CLICK, 1, 1 );
-    setTimeout( function( ) {
-      sound( bukkit.sound.COW_HURT, 10, 0.85 ) ;
-    }, 200 );
+    bkBukkit.dispatchCommand(player, 'me clicked a cow!');
+    sounds.uiButtonClick(clickedEntity);
+    setTimeout(function() {
+      sounds.entityCowHurt(clickedEntity);
+    }, 200);
   }
-};
-var _onPlayerQuit = function( event ) {
-  _removePlayer( event.player );
-};
-var _onPlayerJoin = function( event ) {
+}
+
+function onPlayerQuit(event) {
+  removePlayer(event.player);
+}
+
+function onPlayerJoin(event) {
   var gamePlayer = store[event.player.name];
-  if ( gamePlayer ) {
-    _addPlayer( event.player, gamePlayer.score );
+  if (gamePlayer) {
+    addPlayer(event.player, gamePlayer.score);
   }
-};
+}
 
-var _startGame = function( ) {
-  var p,
-    player;
-  if ( config.verbose ) {
+function startGame() {
+  var p, player;
+  if (config.verbose) {
     console.log('Staring game: Cow Clicker');
   }
-  
-  events.playerQuit( _onPlayerQuit );
-  events.playerJoin( _onPlayerJoin );
-  events.playerInteractEntity( _onPlayerInteract );
+
+  events.playerQuit(onPlayerQuit);
+  events.playerJoin(onPlayerJoin);
+  events.playerInteractEntity(onPlayerInteract);
 
   scoreboard.start();
 
-  store = persist( 'cowclicker', store );
-  for ( p in store ) {
-    player = server.getPlayer( p );
-    if ( player ) {
+  store = persist('cowclicker', store);
+  for (p in store) {
+    player = server.getPlayer(p);
+    if (player) {
       /*
        only add online players
        */
       var score = store[p].score;
-      _addPlayer( player, score );
+      addPlayer(player, score);
     }
   }
-};
+}
 
-var _addPlayer = function( player, score ) {
-  if ( config.verbose ) {
-    console.log( 'Adding player %s to Cow Clicker game', player );
+function addPlayer(player, score) {
+  if (config.verbose) {
+    console.log('Adding player %s to Cow Clicker game', player);
   }
-  if ( typeof score == 'undefined' ) {
+  if (typeof score == 'undefined') {
     score = 0;
   }
-  store[ player.name ] = { score: score };
-  scoreboard.update( 'cowclicker', player, store[ player.name ].score);
-  
-  echo( player, 'Go forth and click some cows!' );
-};
+  store[player.name] = { score: score };
+  scoreboard.update('cowclicker', player, store[player.name].score);
 
-var _removePlayer = function( player, notify ) {
+  echo(player, 'Go forth and click some cows!');
+}
 
-  if ( player instanceof bkOfflinePlayer && player.player ) {
+function removePlayer(player, notify) {
+  if (player instanceof bkOfflinePlayer && player.player) {
     player = player.player;
   }
 
-  if ( !store[player.name] ) {
+  if (!store[player.name]) {
     return;
   }
-  if ( config.verbose ) {
-    console.log( 'Removing player %s from Cow Clicker', player );
+  if (config.verbose) {
+    console.log('Removing player %s from Cow Clicker', player);
   }
-  
-  var playerScore = store[ player.name ].score;
 
-  scoreboard.restore( player );
+  var playerScore = store[player.name].score;
 
-  delete store[ player.name ];
-  if ( notify && player ) {
-    echo( player, 'You clicked ' + playerScore + ' cows! ' + 
-	  'You must be tired after all that clicking.' );
+  scoreboard.restore(player);
+
+  delete store[player.name];
+  if (notify && player) {
+    echo(
+      player,
+      'You clicked ' +
+        playerScore +
+        ' cows! ' +
+        'You must be tired after all that clicking.'
+    );
   }
-};
+}
 
-var _removeAllPlayers = function( notify ) {
-  if ( typeof notify == 'undefined' ) {
+function removeAllPlayers(notify) {
+  if (typeof notify == 'undefined') {
     notify = false;
   }
-  for ( var p in store ) {
-    var player = server.getOfflinePlayer( p );
-    if ( player ) {
-      _removePlayer( player, notify );
+  for (var p in store) {
+    var player = server.getOfflinePlayer(p);
+    if (player) {
+      removePlayer(player, notify);
     }
     delete store[p];
   }
-};
+}
 
-var _stopGame = function( removePlayers ) {
-  if ( typeof removePlayers == 'undefined' ) {
+function stopGame(removePlayers) {
+  if (typeof removePlayers == 'undefined') {
     removePlayers = true;
   }
-  if ( config.verbose ) {
-    console.log( 'Stopping game: Cow Clicker' );
+  if (config.verbose) {
+    console.log('Stopping game: Cow Clicker');
   }
   scoreboard.stop();
-  if ( !removePlayers ) {
+  if (!removePlayers) {
     return;
   }
-  _removeAllPlayers( false );
-  persist( 'cowclicker', store.pers, 'w' );
-
-};
+  removeAllPlayers(false);
+  persist('cowclicker', store.pers, 'w');
+}
 /*
  start the game automatically when this module is loaded.
  */
-_startGame();
+startGame();
 /*
  players can join and leave the game by typing `jsp cowclicker`
  */
-command( 'cowclicker', function( params, sender ) {
-  if ( !store[sender.name] ) {
-    _addPlayer( sender );
+command('cowclicker', function(params, sender) {
+  if (!store[sender.name]) {
+    addPlayer(sender);
   } else {
-    _removePlayer( sender );
+    removePlayer(sender);
   }
 });
 /*
  stop the game when ScriptCraft is unloaded.
  */
-addUnloadHandler( function( ) {
-  _stopGame( false );
-} );
-
+addUnloadHandler(function() {
+  stopGame(false);
+});

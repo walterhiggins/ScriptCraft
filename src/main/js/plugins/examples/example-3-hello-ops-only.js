@@ -30,13 +30,13 @@ message for operators.
     });
 ***/
 
-command( 'op-hello', function( parameters, player ) {
+command('op-hello', function(parameters, player) {
   /*
    this is how you limit based on player privileges
    */
-  if ( !isOp(player) ) {
-    echo( player, 'Only operators can do this.' );
+  if (!isOp(player)) {
+    echo(player, 'Only operators can do this.');
     return;
   }
-  echo( player, 'Hello ' + player.name );
+  echo(player, 'Hello ' + player.name);
 });

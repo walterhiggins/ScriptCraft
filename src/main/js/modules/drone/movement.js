@@ -65,12 +65,24 @@ Markers are created and returned to using the followng two methods...
     drone.move('town-square');
 
 ***/
-var _movements = [{},{},{},{}];
+var _movements = [{}, {}, {}, {}];
 // east
-_movements[0].right = function( drone,n ) {  drone.z +=n; return drone;};
-_movements[0].left = function( drone,n ) {  drone.z -=n; return drone;};
-_movements[0].fwd = function( drone,n ) {  drone.x +=n; return drone;};
-_movements[0].back = function( drone,n ) {  drone.x -= n; return drone;};
+_movements[0].right = function(drone, n) {
+  drone.z += n;
+  return drone;
+};
+_movements[0].left = function(drone, n) {
+  drone.z -= n;
+  return drone;
+};
+_movements[0].fwd = function(drone, n) {
+  drone.x += n;
+  return drone;
+};
+_movements[0].back = function(drone, n) {
+  drone.x -= n;
+  return drone;
+};
 // south
 _movements[1].right = _movements[0].back;
 _movements[1].left = _movements[0].fwd;
@@ -87,103 +99,102 @@ _movements[3].left = _movements[0].back;
 _movements[3].fwd = _movements[0].left;
 _movements[3].back = _movements[0].right;
 
-function turn( n ) {
-  if ( typeof n == 'undefined' ) {
+function turn(n) {
+  if (typeof n == 'undefined') {
     n = 1;
   }
   this.dir += n;
-  this.dir %=4;
+  this.dir %= 4;
 }
-function chkpt( name ) {
-  this._checkpoints[ name ] = { x:this.x, y:this.y, z:this.z, dir:this.dir };
+function chkpt(name) {
+  this._checkpoints[name] = { x: this.x, y: this.y, z: this.z, dir: this.dir };
 }
-function move( ) {
+function move() {
   var Drone = this.constructor;
-  if ( arguments[0].x && arguments[0].y && arguments[0].z) {
+  if (arguments[0].x && arguments[0].y && arguments[0].z) {
     this.x = arguments[0].x;
     this.y = arguments[0].y;
     this.z = arguments[0].z;
-    this.dir = Drone.getDirFromRotation(arguments[0] );
+    this.dir = Drone.getDirFromRotation(arguments[0]);
     this.world = arguments[0].world;
-  } else if ( typeof arguments[0] === 'string' ) {
+  } else if (typeof arguments[0] === 'string') {
     var coords = this._checkpoints[arguments[0]];
-    if ( coords ) {
+    if (coords) {
       this.x = coords.x;
       this.y = coords.y;
       this.z = coords.z;
-      this.dir = coords.dir%4;
-    }            
+      this.dir = coords.dir % 4;
+    }
   } else {
     // expect x,y,z,dir
-    switch( arguments.length ) {
-    case 4:
-      this.dir = arguments[3];
-    case 3:
-      this.z = arguments[2];
-    case 2:
-      this.y = arguments[1];
-    case 1:
-      this.x = arguments[0];
+    switch (arguments.length) {
+      case 4:
+        this.dir = arguments[3];
+      case 3:
+        this.z = arguments[2];
+      case 2:
+        this.y = arguments[1];
+      case 1:
+        this.x = arguments[0];
     }
   }
 }
-function right( n ) { 
-  if ( typeof n == 'undefined' ) {
+function right(n) {
+  if (typeof n == 'undefined') {
     n = 1;
   }
-  _movements[ this.dir ].right( this, n ); 
+  _movements[this.dir].right(this, n);
 }
-function left( n ) { 
-  if ( typeof n == 'undefined') { 
+function left(n) {
+  if (typeof n == 'undefined') {
     n = 1;
   }
-  _movements[ this.dir ].left( this, n );
+  _movements[this.dir].left(this, n);
 }
-function fwd( n ) { 
-  if ( typeof n == 'undefined' ) {
+function fwd(n) {
+  if (typeof n == 'undefined') {
     n = 1;
   }
-  _movements[ this.dir ].fwd( this, n );
+  _movements[this.dir].fwd(this, n);
 }
-function back( n ) { 
-  if ( typeof n == 'undefined' ) { 
+function back(n) {
+  if (typeof n == 'undefined') {
     n = 1;
   }
-  _movements[ this.dir ].back( this, n );
+  _movements[this.dir].back(this, n);
 }
-function up( n ) { 
-  if ( typeof n == 'undefined' ) {
+function up(n) {
+  if (typeof n == 'undefined') {
     n = 1;
   }
-  this.y+= n; 
+  this.y += n;
 }
-function down( n ) { 
-  if ( typeof n == 'undefined' ) {
+function down(n) {
+  if (typeof n == 'undefined') {
     n = 1;
   }
-  this.y-= n; 
+  this.y -= n;
 }
-function getLocation( ) {
+function getLocation() {
   if (__plugin.canary) {
     var cmLocation = Packages.net.canarymod.api.world.position.Location;
-    return new cmLocation( this.world, this.x, this.y, this.z, 0, 0);
+    return new cmLocation(this.world, this.x, this.y, this.z, 0, 0);
   }
-  if (__plugin.bukkit) { 
+  if (__plugin.bukkit) {
     var bkLocation = org.bukkit.Location;
-    return new bkLocation( this.world, this.x, this.y, this.z );
+    return new bkLocation(this.world, this.x, this.y, this.z);
   }
 }
-module.exports = function(Drone){
+module.exports = function(Drone) {
   Drone.prototype._checkpoints = {};
   Drone.prototype.getLocation = getLocation;
-  Drone.extend( chkpt );
-  Drone.extend( move );
-  Drone.extend( turn );
-  Drone.extend( right );
-  Drone.extend( left );
-  Drone.extend( fwd );
-  Drone.extend( back );
-  Drone.extend( up );
-  Drone.extend( down );
+  Drone.extend(chkpt);
+  Drone.extend(move);
+  Drone.extend(turn);
+  Drone.extend(right);
+  Drone.extend(left);
+  Drone.extend(fwd);
+  Drone.extend(back);
+  Drone.extend(up);
+  Drone.extend(down);
 };
-

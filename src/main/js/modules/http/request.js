@@ -14,7 +14,7 @@ main thread of execution.
 
 #### Parameters
 
- * request: The request details either a plain URL e.g. "http://scriptcraft.js/sample.json" or an object with the following properties...
+ * request: The request details either a plain URL e.g. "https://scriptcraft.js/sample.json" or an object with the following properties...
 
    - url: The URL of the request.
    - method: Should be one of the standard HTTP methods, GET, POST, PUT, DELETE (defaults to GET).
@@ -31,7 +31,7 @@ The following example illustrates how to use http.request to make a request to a
 ```javascript
 var jsResponse;
 var http = require('http');
-http.request('http://scriptcraftjs.org/sample.json',function(responseCode, responseBody){
+http.request('https://scriptcraftjs.org/sample.json',function(responseCode, responseBody){
   jsResponse = JSON.parse( responseBody );
 });
 ```
@@ -51,73 +51,78 @@ http.request( {
 
 ***/
 
-/*global exports, encodeURI, server, __plugin, setTimeout*/
-function paramsToString( params ) {
+/*global exports, encodeURIComponent, server, __plugin, setTimeout*/
+function paramsToString(params) {
   var result = '',
-      paramNames = [],
-      i;
-  for ( i in params ) {
-    paramNames.push( i );
+    paramNames = [],
+    i;
+  for (i in params) {
+    paramNames.push(i);
   }
-  for ( i = 0; i < paramNames.length; i++ ) {
-    result += paramNames[i] + '=' + encodeURI( params[ paramNames[i] ] );
-    if ( i < paramNames.length-1 )
-      result += '&';
+  for (i = 0; i < paramNames.length; i++) {
+    result += paramNames[i] + '=' + encodeURIComponent(params[paramNames[i]]);
+    if (i < paramNames.length - 1) result += '&';
   }
   return result;
 }
-function invokeNow( fn ){
-  if (__plugin.bukkit){
-    server.scheduler.runTask( __plugin, fn);
+function invokeNow(fn) {
+  if (__plugin.bukkit) {
+    server.scheduler['runTask(org.bukkit.plugin.Plugin, java.lang.Runnable)'](
+      __plugin,
+      fn
+    );
     return;
   }
-  if (__plugin.canary){
+  if (__plugin.canary) {
     fn();
     return;
   }
 }
-function invokeLater( fn ){
-  if (__plugin.bukkit){
-    server.scheduler.runTaskAsynchronously( __plugin, fn);
+function invokeLater(fn) {
+  if (__plugin.bukkit) {
+    server.scheduler['runTaskAsynchronously​(org.bukkit.plugin.Plugin, java.lang.Runnable)'](__plugin, fn);
     return;
   }
-  if (__plugin.canary){
-    setTimeout(fn,20);
+  if (__plugin.canary) {
+    setTimeout(fn, 20);
     return;
   }
 }
-exports.request = function( request, callback ) {
-  invokeLater( function() {
+exports.request = function(request, callback) {
+  invokeLater(function() {
     var url, paramsAsString, conn, requestMethod;
-    if (typeof request === 'string'){
+    if (typeof request === 'string') {
       url = request;
       requestMethod = 'GET';
-    }else{
+    } else {
       url = request.url;
-      paramsAsString = paramsToString( request.params );
-      if ( request.method ) {
+      paramsAsString = paramsToString(request.params);
+      if (request.method) {
         requestMethod = request.method;
       } else {
         requestMethod = 'GET';
       }
-      if ( requestMethod == 'GET' && request.params ) {
+      if (requestMethod == 'GET' && request.params) {
         // append each parameter to the URL
         url = request.url + '?' + paramsAsString;
       }
     }
-    conn = new java.net.URL( url ).openConnection();
+    conn = new java.net.URL(url).openConnection();
     conn.requestMethod = requestMethod;
     conn.doOutput = true;
     conn.instanceFollowRedirects = false;
 
-    if ( conn.requestMethod == 'POST' ) {
+    if (conn.requestMethod == 'POST') {
       conn.doInput = true;
       // put each parameter in the outputstream
-      conn.setRequestProperty('Content-Type', 'application/x-www-form-urlencoded');
+      conn.setRequestProperty(
+        'Content-Type',
+        'application/x-www-form-urlencoded'
+      );
       conn.setRequestProperty('charset', 'utf-8');
       conn.setRequestProperty('Content-Length', '' + paramsAsString.length);
-      conn.useCaches =false ;
-      var wr = new java.io.DataOutputStream(conn.getOutputStream ());
+      conn.useCaches = false;
+      var wr = new java.io.DataOutputStream(conn.getOutputStream());
       wr.writeBytes(paramsAsString);
       wr.flush();
       wr.close();
@@ -125,13 +130,12 @@ exports.request = function( request, callback ) {
     var rc = conn.responseCode;
     var response;
     var stream;
-    if ( rc == 200 ) {
+    if (rc == 200) {
       stream = conn.getInputStream();
-      response = new java.util.Scanner( stream ).useDelimiter("\\A").next();
+      response = new java.util.Scanner(stream).useDelimiter('\\A').next();
     }
-    invokeNow( function( ) {
-      callback( rc, response );
+    invokeNow(function() {
+      callback(rc, response);
     });
   });
-
 };

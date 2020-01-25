@@ -1,0 +1,3 @@
+# .prettierrc
+printWidth: 80
+singleQuotes: true
