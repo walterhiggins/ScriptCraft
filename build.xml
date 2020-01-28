@@ -63,8 +63,8 @@
 
   <target name="compile-plugins" depends="init" description="compile canary plugin source">
     <javac includeantruntime="false" 
-           source="1.6" 
-           target="1.6" 
+           source="1.8" 
+           target="1.8" 
            destdir="${build}" 
            debug="true">
       <src path="${src.canary}"/>
