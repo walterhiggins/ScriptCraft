@@ -19,8 +19,6 @@ jobs:
           java-version: 1.8
       - name: Build with Ant
         run: ant -noinput -buildfile build.xml
-      - name: Build Plugin
-        run: ant
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
