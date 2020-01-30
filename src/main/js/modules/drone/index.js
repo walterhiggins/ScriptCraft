@@ -346,10 +346,21 @@ function makeTypeIdAndDataSetter() {
     };
   } else {
     console.log('Drone using CraftEvil.setTypeIdAndData method');
-    var CraftEvil = Java.type(server.class.package.name + '.util.CraftEvil');
-    return function(block, typeId, data, applyPhysics) {
-      CraftEvil.setTypeIdAndData(block, typeId, data, applyPhysics);
-    };
+    try {
+      var CraftEvil = Java.type(server.class.package.name + '.util.CraftEvil');
+      return function(block, typeId, data, applyPhysics) {
+        CraftEvil.setTypeIdAndData(block, typeId, data, applyPhysics);
+      };
+    } catch (e) {
+      console.log(
+        'Drone not available on this server - no setTypeIdAndData support'
+      );
+      return function(block, typeId, data, applyPhysics) {
+        throw new Error(
+          `Drone not supported on versions > 1.15.1 - no setTypeIdAndData support`
+        );
+      };
+    }
   }
 }
 
