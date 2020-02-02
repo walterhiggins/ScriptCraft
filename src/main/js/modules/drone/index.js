@@ -353,12 +353,11 @@ function makeTypeIdAndDataSetter() {
       };
     } catch (e) {
       console.log(
-        'Drone not available on this server - no setTypeIdAndData support'
+        'Drone support is experimental on 1.15.2 and above, and may be broken...'
       );
       return function(block, typeId, data, applyPhysics) {
-        throw new Error(
-          `Drone not supported on versions > 1.15.1 - no setTypeIdAndData support`
-        );
+        block.setBlockData(data, applyPhysics);
+        block.setType(typeId);
       };
     }
   }
