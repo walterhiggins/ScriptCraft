@@ -345,11 +345,21 @@ function makeTypeIdAndDataSetter() {
       block.setTypeIdAndData(typeId, data, applyPhysics);
     };
   } else {
-    console.log('Drone using CraftEvil.setTypeIdAndData method');
-    var CraftEvil = Java.type(server.class.package.name + '.util.CraftEvil');
-    return function(block, typeId, data, applyPhysics) {
-      CraftEvil.setTypeIdAndData(block, typeId, data, applyPhysics);
-    };
+    try {
+      var CraftEvil = Java.type(server.class.package.name + '.util.CraftEvil');
+      console.log('Drone using CraftEvil.setTypeIdAndData method');
+      return function(block, typeId, data, applyPhysics) {
+        CraftEvil.setTypeIdAndData(block, typeId, data, applyPhysics);
+      };
+    } catch (e) {
+      console.log(
+        'Drone support is experimental on 1.15.2 and above, and may be broken...'
+      );
+      return function(block, typeId, data, applyPhysics) {
+        block.setBlockData(data, applyPhysics);
+        block.setType(typeId);
+      };
+    }
   }
 }
 
