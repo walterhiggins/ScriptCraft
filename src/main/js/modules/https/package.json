@@ -1,0 +1,4 @@
+{
+        "name": "https",
+        "main": "./request.js"
+}
