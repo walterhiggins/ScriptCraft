@@ -89,7 +89,7 @@ exports.commando = function(name, func, options, intercepts) {
 };
 
 events.playerCommandPreprocess(function(evt) {
-  var msg = '' + evt.message;
+  var msg = '' + evt.message.toLowerCase();
   var parts = msg.match(/^\/([^\s]+)/);
   if (!parts) {
     return;
@@ -103,7 +103,7 @@ events.playerCommandPreprocess(function(evt) {
   }
 });
 events.serverCommand(function(evt) {
-  var msg = '' + evt.command;
+  var msg = '' + evt.command.toLowerCase();
   var parts = msg.match(/^\/*([^\s]+)/);
   if (!parts) {
     return;
