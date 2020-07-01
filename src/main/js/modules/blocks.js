@@ -30,6 +30,7 @@ var blocks = {
   coarse_dirt: '3:1',
   podzol: '3:2',
   cobblestone: 4,
+  oak_wood: 5,
   oak: 5,
   spruce: '5:1',
   birch: '5:2',
@@ -85,7 +86,7 @@ var blocks = {
   piston: 33,
   piston_extn: 34,
   piston_head: 34,
-  wool: { white: 35 /* All other colors added below */ },
+  wool: { white: 35, /* All other colors added below */ },
   piston_extended: 36,
   dandelion: 37,
   flower_yellow: 37,
@@ -159,6 +160,7 @@ var blocks = {
   // see brick.red 45
   tnt: 46,
   bookshelf: 47,
+  mossy_stone_bricks: 48,
   moss_stone: 48,
   obsidian: 49,
   torch: 50,
@@ -190,9 +192,11 @@ var blocks = {
   furnace: 61,
   furnace_burning: 62,
   sign_post: 63,
+  dark_oak_door: 64,
   door_wood: 64,
   ladder: 65,
   rail: 66,
+  oak_sign: 68,
   sign: 68,
   lever: 69,
   pressure_plate_stone: 70,
@@ -223,6 +227,7 @@ var blocks = {
   },
   trapdoor: 96,
   monster_egg: 97,
+  stone_bricks: 98,
   brick: {
     stone: 98,
     mossy: '98:1',
@@ -397,4 +402,19 @@ blocks.isStair = function(id) {
   }
   return false;
 };
+blocks.material = function(id) {
+  if (id == 35 || id == 95 || id == 159 || id == 160 || id == 171) id = id+":0";
+  for (var p in blocks ) {
+    if (typeof blocks[p] == 'object') {
+      for (var e in blocks[p]) {
+       if (typeof blocks[p][e] == 'object') {
+         for (var i in blocks[p][e]) {
+           if (blocks[p][e][i] == id) return (i+'_'+e).toUpperCase();
+         }
+       } else if (blocks[p][e] == id) return (e+'_'+p).toUpperCase(); 
+      }
+    } else if (blocks[p] == id) return (p).toUpperCase();
+  }      
+  return false;
+}
 module.exports = blocks;

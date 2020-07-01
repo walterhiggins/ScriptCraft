@@ -335,6 +335,7 @@ function makeTypeIdAndDataSetter() {
   }
 
   var Block = Java.type('org.bukkit.block.Block');
+  var Material = Java.type('org.bukkit.Material');
   if (
     Java.from(Block.class.methods).some(function(m) {
       return m.name == 'setTypeIdAndData';
@@ -356,8 +357,17 @@ function makeTypeIdAndDataSetter() {
         'Drone support is experimental on 1.15.2 and above, and may be broken...'
       );
       return function(block, typeId, data, applyPhysics) {
-        block.setBlockData(data, applyPhysics);
-        block.setType(typeId);
+        //block.setBlockData(data, applyPhysics);
+        // https://minecraft-ids.grahamedgecombe.com/
+        var mstr = blocks.material(typeId);
+        if (mstr ) {
+          var mid = Material.getMaterial(mstr);
+          if (mid) block.setType(mid);
+          else {
+            console.log(typeId + " Material: " + mstr + " Not Found!");
+            block.setType(Material.getMaterial('OAK_PLANKS'));
+          }
+        } else console.log("BlockId: "+typeId+" Not Found!");
       };
     }
   }
