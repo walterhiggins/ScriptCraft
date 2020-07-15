@@ -1,13 +1,13 @@
-const FileInputStream = Java.type('java.io.FileInputStream');
-const FileOutputStream = Java.type('java.io.FileOutputStream');
-const Files = Java.type('java.nio.file.Files');
-const Paths = Java.type('java.nio.file.Paths');
-const Scanner = Java.type('java.util.Scanner');
+var FileInputStream = Java.type('java.io.FileInputStream');
+var FileOutputStream = Java.type('java.io.FileOutputStream');
+var Files = Java.type('java.nio.file.Files');
+var Paths = Java.type('java.nio.file.Paths');
+var Scanner = Java.type('java.util.Scanner');
 // ES modules are not supported on scriptcraft
 // const Source = Java.type('org.graalvm.polyglot.Source');
-const StandardCopyOption = Java.type('java.nio.file.StandardCopyOption');
-const URL = Java.type('java.net.URL');
-const ZipInputStream = Java.type('java.util.zip.ZipInputStream');
+var StandardCopyOption = Java.type('java.nio.file.StandardCopyOption');
+var URL = Java.type('java.net.URL');
+var ZipInputStream = Java.type('java.util.zip.ZipInputStream');
 
 /**
  * @type {{
@@ -24,8 +24,10 @@ var core = {
     * @param {function} modifier
     * @returns {void}
     */
-   chain: (base, modifier) => {
-      var chain = (object) => modifier(object, chain);
+   chain: function (base, modifier) {
+      var chain = function (object) {
+         return modifier(object, chain);
+      }
       chain(base);
    },
    /**
@@ -55,7 +57,7 @@ var core = {
     *    unzip: core$fetch$unzip
     * }}
     */
-   fetch: (from) => {
+   fetch: function (from) {
       var link = new URL(from).openConnection();
       link.setDoOutput(true);
       link.setRequestMethod('GET');
@@ -63,20 +65,20 @@ var core = {
       var code = link.getResponseCode();
       if (code === 200) {
          var thing = {
-            json: () => {
+            json: function () {
                try {
                   return JSON.parse(thing.read());
                } catch (error) {
                   return null;
                }
             },
-            read: () => {
+            read: function () {
                return new Scanner(thing.stream()).useDelimiter('\\A').next();
             },
-            stream: () => {
+            stream: function () {
                return link.getInputStream();
             },
-            unzip: (to) => {
+            unzip: function (to) {
                return core.unzip(thing.stream(), to);
             }
          };
@@ -160,22 +162,23 @@ var core = {
     */
    /**
     * @callback core$file
-    * @param {...string} path
+    * @param {string[]} path
     * @returns {core$file$}
     */
-   file: (...path) => {
-      var io = Paths.get(...path).normalize().toFile();
+   file: function () {
+      var path = [].slice.apply(arguments);
+      var io = eval('Paths.get(' + path.map(JSON.stringify) + ')').normalize().toFile();
       var thing = {
-         add: () => {
+         add: function () {
             thing.file('..').dir();
             io.createNewFile();
             return thing;
          },
-         child: (index) => {
+         child: function (index) {
             return io.listFiles()[index] ? core.file(io.listFiles()[index].getPath()) : null;
          },
-         dir: () => {
-            core.chain(io, (io, loop) => {
+         dir: function () {
+            core.chain(io, function (io, loop) {
                var up = io.getParentFile();
                up && !up.exists() && loop(up);
                io.mkdir();
@@ -185,11 +188,11 @@ var core = {
          get exists () {
             return io.exists();
          },
-         file: (...sub) => {
-            return core.file(...path, ...sub);
+         file: function () {
+            return core.file.apply(null, path.concat([].slice.apply(arguments)));
          },
-         flush: () => {
-            core.chain(io, (io, loop) => {
+         flush: function () {
+            core.chain(io, function (io, loop) {
                var up = io.getParentFile();
                up && !up.listFiles()[0] && up.delete() && loop(up);
             });
@@ -198,7 +201,7 @@ var core = {
          get io () {
             return io;
          },
-         json: () => {
+         json: function () {
             try {
                return JSON.parse(thing.read());
             } catch (error) {
@@ -215,24 +218,24 @@ var core = {
             return thing;
          },
          */
-         read: () => {
-            return io.exists() && !io.isDirectory() ? Files.readString(io.toPath()) : null;
+         read: function () {
+            return io.exists() && !io.isDirectory() ? [].slice.apply(Files.readAllLines(io.toPath()).toArray()).join('\n') : null;
          },
-         remove: () => {
-            core.chain(io, (io, loop) => {
-               io.isDirectory() && [ ...io.listFiles() ].forEach(loop);
+         remove: function () {
+            core.chain(io, function (io, loop) {
+               io.isDirectory() && [].slice.apply(io.listFiles()).forEach(loop);
                io.exists() && io.delete();
             });
             return thing.flush();
          },
-         stream: () => {
+         stream: function () {
             return new FileOutputStream(io);
          },
-         transfer: (to, action) => {
-            core.chain([ io, to ], (io, loop) => {
+         transfer: function (to, action) {
+            core.chain([ io, to ], function (io, loop) {
                if (io[0].isDirectory()) {
                   io[1].mkdir();
-                  [ ...io[0].listFiles() ].forEach((from) => {
+                  [].slice.apply(io[0].listFiles()).forEach(function (from) {
                      loop([ from, Paths.get(io[1].getPath(), from.getName()).toFile() ]);
                   });
                } else if (io[0].exists() && !io[1].exists()) {
@@ -241,11 +244,11 @@ var core = {
             });
             return thing.flush();
          },
-         write: (content) => {
+         write: function (content){
             io.exists() && !io.isDirectory() && Files.writeString(io.toPath(), content);
             return thing;
          },
-         unzip: (to) => {
+         unzip: function (to) {
             core.unzip(new FileInputStream(io), to);
          }
       };
@@ -257,7 +260,7 @@ var core = {
     * @param {any} to
     * @returns {core$file$}
     */
-   unzip: (from, to) => {
+   unzip: function (from, to) {
       var stream = new ZipInputStream(from);
       try {
          var entry;
