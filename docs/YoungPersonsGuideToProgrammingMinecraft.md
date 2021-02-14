@@ -1213,7 +1213,7 @@ function getScore(player){
 var janesScore = getScore('jane'); // returns 8
 ```
     
-... putting it all together, a hypothetical scoreboard.js mdoule might
+... putting it all together, a hypothetical scoreboard.js module might
 look something like this...
 
 ```javascript
