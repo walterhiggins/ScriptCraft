@@ -1,4 +1,4 @@
-<!-- 
+<!--
 IMPORTANT NOTE FOR CONTRIBUTORS
 -------------------------------
 Contributors: This file is generated from source file src/docs/templates/ypgpm.md

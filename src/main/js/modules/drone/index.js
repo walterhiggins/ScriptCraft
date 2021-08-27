@@ -13,22 +13,22 @@ The Drone is a convenience class for building.
 It uses a fluent interface which means all of the Drone's methods return `this` and can be chained together like so...
 
     var theDrone = new Drone(self);
-    theDrone.up().left().box(blocks.oak).down().fwd(3).cylinder0(blocks.lava,8); 
+    theDrone.up().left().box(blocks.oak).down().fwd(3).cylinder0(blocks.lava,8);
 
 ### Constructing a Drone Object
 
 Drones can be created in any of the following ways...
-    
+
  1. Calling any one of the methods listed below will return a Drone object. For example...
-         
+
         var d = box( blocks.oak )
 
    ... creates a 1x1x1 wooden block at the cross-hairs or player's location and returns a Drone object. This might look odd (if you're familiar with Java's Object-dot-method syntax) but all of the Drone class's methods are also global functions that return new Drone objects. This is short-hand for creating drones and is useful for playing around with Drones at the in-game command prompt. It's shorter than typing ...
-    
-        var d = new Drone(self).box( blocks.oak ) 
-        
+
+        var d = new Drone(self).box( blocks.oak )
+
    ... All of the Drone's methods return `this` so you can chain operations together like this...
-        
+
         var d = box( blocks.oak )
                   .up()
                   .box( blocks.oak ,3,1,3)
@@ -41,30 +41,30 @@ Drones can be created in any of the following ways...
                   .turn()
                   .fwd(2)
                   .box( blocks.oak );
-    
+
  2. Using the following form...
 
         d = new Drone(self)
-    
+
     ...will create a new Drone taking the current player as the parameter. If the player's cross-hairs are pointing at a block at the time then, that block's location becomes the drone's starting point.  If the cross-hairs are _not_ pointing at a block, then the drone's starting location will be 2 blocks directly in front of the player.  TIP: Building always happens right and front of the drone's position...
-    
+
     Plan View:
 
         ^
         |
         |
         D---->
-      
+
     For convenience you can use a _corner stone_ to begin building. The corner stone should be located just above ground level. If the cross-hair is point at or into ground level when you create a new Drone() with either a player or location given as a parameter, then building begins at the location the player was looking at or at the location. You can get around this by pointing at a 'corner stone' just above ground level or alternatively use the following statement...
-    
+
         d = new Drone(self).up();
-          
+
     ... which will move the drone up one block as soon as it's created.
 
     ![corner stone](img/cornerstone1.png)
 
  3. Or by using the following form...
-    
+
         d = new Drone(x,y,z,direction,world);
 
     This will create a new Drone at the location you specified using x, y, z In minecraft, the X axis runs west to east and the Z axis runs north to south.  The direction parameter says what direction you want the drone to face: 0 = east, 1 = south, 2 = west, 3 = north.  If the direction parameter is omitted, the player's direction is used instead. Both the `direction` and `world` parameters are optional.
@@ -75,7 +75,7 @@ Drones can be created in any of the following ways...
 
     This is useful when you want to create a drone at a given `org.bukkit.Location` . The `Location` class is used throughout the bukkit API. For example, if you want to create a drone when a block is broken at the block's location you would do so like this...
 
-        events.blockBreak( function( event ) { 
+        events.blockBreak( function( event ) {
             var location = event.block.location;
             var drone = new Drone(location);
             // do more stuff with the drone here...
@@ -86,11 +86,11 @@ Drones can be created in any of the following ways...
  * Player : If a player reference is given as the sole parameter then the block the player was looking at will be used as the starting point for the drone. If the player was not looking at a block then the player's location will be used as the starting point. If a `Player` object is provided as a paramter then it should be the only parameter.
  * location  : *NB* If a `Location` object is provided as a parameter, then it should be the only parameter.
  * x : The x coordinate of the Drone (x,y,z,direction and world are not needed if either a player or location parameter is provided)
- * y : The y coordinate of the Drone 
- * z : The z coordinate of the Drone 
- * direction : The direction in which the Drone is facing. Possible values are 0 (east), 1 (south), 2 (west) or 3 (north) 
- * world : The world in which the drone is created. 
-  
+ * y : The y coordinate of the Drone
+ * z : The z coordinate of the Drone
+ * direction : The direction in which the Drone is facing. Possible values are 0 (east), 1 (south), 2 (west) or 3 (north)
+ * world : The world in which the drone is created.
+
 ### Drone.box() method
 
 the box() method is a convenience method for building things. (For the more performance-oriented method - see cuboid)
@@ -98,14 +98,14 @@ the box() method is a convenience method for building things. (For the more perf
 #### parameters
 
  * b - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
- * w (optional - default 1) - the width of the structure 
- * h (optional - default 1) - the height of the structure 
+ * w (optional - default 1) - the width of the structure
+ * h (optional - default 1) - the height of the structure
  * d (optional - default 1) - the depth of the structure - NB this is not how deep underground the structure lies - this is how far away (depth of field) from the drone the structure will extend.
 
 #### Example
 
 To create a black structure 4 blocks wide, 9 blocks tall and 1 block long...
-    
+
     box(blocks.wool.black, 4, 9, 1);
 
 ... or the following code does the same but creates a variable that can be used for further methods...
@@ -114,7 +114,7 @@ To create a black structure 4 blocks wide, 9 blocks tall and 1 block long...
     drone.box(blocks.wool.black, 4, 9, 1);
 
 ![box example 1](img/boxex1.png)
-    
+
 ### Drone.box0() method
 
 Another convenience method - this one creates 4 walls with no floor or ceiling.
@@ -122,8 +122,8 @@ Another convenience method - this one creates 4 walls with no floor or ceiling.
 #### Parameters
 
  * block - the block id - e.g. 6 for an oak sapling or '6:2' for a birch sapling. Alternatively you can use any one of the `blocks` values e.g. `blocks.sapling.birch`
- * width (optional - default 1) - the width of the structure 
- * height (optional - default 1) - the height of the structure 
+ * width (optional - default 1) - the width of the structure
+ * height (optional - default 1) - the height of the structure
  * length (optional - default 1) - the length of the structure - how far
    away (depth of field) from the drone the structure will extend.
 
@@ -134,7 +134,7 @@ To create a stone building with the insided hollowed out 7 wide by 3 tall by 6 l
     box0( blocks.stone, 7, 3, 6);
 
 ![example box0](img/box0ex1.png)
-   
+
 ### Drone.boxa() method
 
 Construct a cuboid using an array of blocks. As the drone moves first along the width axis, then the height (y axis) then the length, each block is picked from the array and placed.
@@ -152,7 +152,7 @@ Construct a rainbow-colored road 100 blocks long...
 
     var rainbowColors = [blocks.wool.red, blocks.wool.orange, blocks.wool.yellow, blocks.wool.lime,
                          blocks.wool.lightblue, blocks.wool.blue, blocks.wool.purple];
-    
+
     boxa(rainbowColors,7,1,30);
 
 ![boxa example](img/boxaex1.png)
@@ -161,20 +161,20 @@ Construct a rainbow-colored road 100 blocks long...
 
 All of the Drone methods return a Drone object, which means methods can be 'chained' together so instead of writing this...
 
-    drone = new Drone( self ); 
+    drone = new Drone( self );
     drone.fwd( 3 );
     drone.left( 2 );
-    drone.box( blocks.grass ); // create a grass block 
+    drone.box( blocks.grass ); // create a grass block
     drone.up();
     drone.box( blocks.grass ); // create another grass block
     drone.down();
 
 ...you could simply write ...
-    
+
     var drone = new Drone(self).fwd(3).left(2).box(blocks.grass).up().box(blocks.grass).down();
 
 ... since each Drone method is also a global function that constructs a drone if none is supplied, you can shorten even further to just...
-    
+
     fwd(3).left(2).box(blocks.grass).up().box(blocks.grass).down()
 
 The Drone object uses a [Fluent Interface][fl] to make ScriptCraft scripts more concise and easier to write and read.  Minecraft's in-game command prompt is limited to about 80 characters so chaining drone commands together means more can be done before hitting the command prompt limit. For complex building you should save your commands in a new script file and load it using /js load()
@@ -190,7 +190,7 @@ The Drone object uses a [Fluent Interface][fl] to make ScriptCraft scripts more 
 
 ### Extending Drone
 
-The Drone object can be easily extended - new buidling recipes/blueprints can be added and can become part of a Drone's chain using the *static* method `Drone.extend`. 
+The Drone object can be easily extended - new buidling recipes/blueprints can be added and can become part of a Drone's chain using the *static* method `Drone.extend`.
 
 ### Drone.extend() static method
 
@@ -198,7 +198,7 @@ Use this method to add new methods (which also become chainable global functions
 
 #### Parameters
 
- * name - The name of the new method e.g. 'pyramid'. 
+ * name - The name of the new method e.g. 'pyramid'.
  * function - The method body.
 
 Alternatively if you provide just a function as a parameter, then the function name will be used as the new method name. For example the following two approaches are both valid.
@@ -206,24 +206,24 @@ Alternatively if you provide just a function as a parameter, then the function n
 #### Example 1 Using name and function as parameters
 
     // submitted by [edonaldson][edonaldson]
-    var Drone = require('drone'); 
-    Drone.extend('pyramid', function( block, height ) { 
+    var Drone = require('drone');
+    Drone.extend('pyramid', function( block, height ) {
         this.chkpt('pyramid');
         for ( var i = height; i > 0; i -= 2) {
             this.box(block, i, 1, i).up().right().fwd();
         }
-        return this.move('pyramid');      
+        return this.move('pyramid');
     });
 
 #### Example 2 Using just a named function as a parameter
 
-    var Drone = require('drone'); 
-    function pyramid( block, height ) { 
+    var Drone = require('drone');
+    function pyramid( block, height ) {
         this.chkpt('pyramid');
         for ( var i = height; i > 0; i -= 2) {
             this.box(block, i, 1, i).up().right().fwd();
         }
-        return this.move('pyramid');      
+        return this.move('pyramid');
     }
     Drone.extend( pyramid );
 
@@ -253,7 +253,7 @@ An array which can be used when constructing stairs facing in the Drone's direct
 
 An array which can be used when placing signs so they face in a given direction. This is used internally by the Drone.sign() method. It should also be used for placing any of the following blocks...
 
- * chest 
+ * chest
  * ladder
  * furnace
  * dispenser
@@ -346,7 +346,10 @@ function makeTypeIdAndDataSetter() {
     };
   } else {
     try {
-      var CraftEvil = Java.type(server.class.package.name + '.util.CraftEvil');
+      // Enrico, fix as per https://github.com/walterhiggins/ScriptCraft/issues/447
+      // since CraftEvil become legacy (obsoleted)
+      //var CraftEvil = Java.type(server.class.package.name + '.util.CraftEvil');
+      var CraftEvil = Java.type(server.class.package.name + '.legacy.CraftEvil');
       console.log('Drone using CraftEvil.setTypeIdAndData method');
       return function(block, typeId, data, applyPhysics) {
         CraftEvil.setTypeIdAndData(block, typeId, data, applyPhysics);
@@ -356,6 +359,7 @@ function makeTypeIdAndDataSetter() {
         'Drone support is experimental on 1.15.2 and above, and may be broken...'
       );
       return function(block, typeId, data, applyPhysics) {
+        // not working: setBlockData() 'data' parameter is not an integer
         block.setBlockData(data, applyPhysics);
         block.setType(typeId);
       };
@@ -364,7 +368,7 @@ function makeTypeIdAndDataSetter() {
 }
 
 /*
- low-level function to place a block in the world - all drone methods which 
+ low-level function to place a block in the world - all drone methods which
  place blocks ultimately invoke this function.
 */
 function putBlock(x, y, z, blockId, metadata, world, update) {
@@ -386,8 +390,9 @@ function putBlock(x, y, z, blockId, metadata, world, update) {
     }
   }
   if (__plugin.bukkit) {
-    setTypeIdAndData(block, blockId, metadata, update);
-  }
+    // Adding '!!' to force conversion of 'null' or 'undefined' to 'false'
+    // otherwise GraalJS refuses to cast 'undefined' to a boolean value
+    setTypeIdAndData(block, blockId, metadata, !!update);  }
   return block;
 }
 /*
@@ -562,7 +567,7 @@ declare a new Drone object first, then write a `for` loop to create the
 syntax for what should really be simple.
 
  * You can use a `while` loop &hellip;
-   
+
     d = new Drone(); var i=4; while (i--) { d.cottage().right(8); }
 
 &hellip; which is slightly shorter but still too much syntax. Each of the
@@ -725,7 +730,7 @@ function isTooBig(w, h, d) {
   );
 }
 /*
- faster cuboid because blockid, meta and world must be provided 
+ faster cuboid because blockid, meta and world must be provided
  use this method when you need to repeatedly place blocks
  */
 Drone.prototype.cuboidX = function(blockType, meta, w, h, d, immediate) {

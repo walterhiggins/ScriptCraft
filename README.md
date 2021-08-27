@@ -85,9 +85,17 @@ Java version 7 or later installed. Check the version by typing `java
 
 # Installation
 
-Before installing ScriptCraft you must first install SpigotMC which is
-a special version of Minecraft Server that makes it easy to customize
-the game.
+Before installing ScriptCraft you must first install 
+
+1. Java and JavaScript engine
+2. SpigotMC which is a special version of Minecraft Server that makes it easy to customize the game.
+
+## Installing Java and JavaScript
+
+Unfortunately, the most used Java distribution (Oracle JDK or OpenJDK) does NOT include any more the JavaScript engine (called Nashorn), starting from [release 15](https://openjdk.java.net/jeps/372) (and deprecated since [release 11](https://docs.oracle.com/en/java/javase/11/docs/api/jdk.scripting.nashorn/module-summary.html)).
+The most suited replacement is [GraalVM](https://www.graalvm.org/), still from Oracle. You can dowload the package from the [GraalVM web site](https://www.graalvm.org/) and [install it](https://www.graalvm.org/docs/getting-started/) according to your Operating System. Note that this may require some manual setup (e.g. under Windows, adding the binaries path to the PATH environmental variable).
+Note that if you already have a working Java installation (e.g. OpenJDK) the two may clash, so you may end up with Java from OpenJDK and JavaScript from GraalVM. This is untested.
+
 
 ## Installing and Running SpigotMC
 
@@ -102,12 +110,26 @@ Follow these steps to download and install SpigotMC.
 
 ## Installing ScriptCraft
 
+### Install pre-compiled ScriptCraft
+
 Follow these steps to download and install ScriptCraft.
 
 1. Download the [scriptcraft.jar][dl] plugin and save it to the `plugins` directory and restart the server by typing `java -jar spigot-1.10.2.jar`.
+**REMARK: the compiled scriptcraft.jar may fail with the newer Java/JavaScript version, in particular with GraalVM, due to subtle incompatibitities, see e.g. the [migration guide from Nashorn to GraalJS](https://docs.oracle.com/en/graalvm/enterprise/20/docs/reference-manual/js/NashornMigrationGuide/)**. In this case (errors when loading the plugin during the server start-up) you may need to use a newer scriptcraft.jar (you can try the 'scriptcraft.jar' file you can find in the 'target' directory in this repository), or compile it yourself, see next paragraph.
 2. At the server prompt type `js 1 + 1` and hit enter. The result `2` should be displayed. 
 
 Congratulations - you've just installed your Custom Minecraft Server and are ready to begin writing your first mod!
+
+### Install ScriptCraft from sources
+
+Download the latest sources from the current repository (the one hosting this readme). You can dowload them as Zip file or, if you know how to use **git**, you can clone the repository.
+
+These sources contain some patches that have been tested with GraalVM with Java release 21.2.0 under Windows10 and SpigotMC server. They are not guaranteed to work in other environments but may help fixing compatibility issues also in those cases.
+
+The sources are built using [Ant](https://ant.apache.org/). You must first install Ant. Be sure to follow the [installation instructions](https://ant.apache.org/manual/index.html) as it needs some manual configuration.
+
+Now you should be able to build ScriptCraft out of the box issuing the 'ant' command from a shell in the base directory where you cloned / unzipped your sources.
+Ant will create a folder called 'target' in which you will find the file scriptcraft.jar at the end of the build process.
 
 # Post Install
 
