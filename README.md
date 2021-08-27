@@ -115,7 +115,7 @@ Follow these steps to download and install SpigotMC.
 Follow these steps to download and install ScriptCraft.
 
 1. Download the [scriptcraft.jar][dl] plugin and save it to the `plugins` directory and restart the server by typing `java -jar spigot-1.10.2.jar`.
-**REMARK: the compiled scriptcraft.jar may fail with the newer Java/JavaScript version, in particular with GraalVM, due to subtle incompatibitities, see e.g. the [migration guide from Nashorn to GraalJS](https://docs.oracle.com/en/graalvm/enterprise/20/docs/reference-manual/js/NashornMigrationGuide/)**. In this case (errors when loading the plugin during the server start-up) you may need to use a newer scriptcraft.jar (you can try the 'scriptcraft.jar' file you can find in the 'target' directory in this repository), or compile it yourself, see next paragraph.
+**REMARK: the compiled scriptcraft.jar may fail with the newer Java/JavaScript version, in particular with GraalVM, due to subtle incompatibitities, see e.g. the [migration guide from Nashorn to GraalJS](https://docs.oracle.com/en/graalvm/enterprise/20/docs/reference-manual/js/NashornMigrationGuide/)**. In this case (errors when loading the plugin during the server start-up) you may need to use a newer scriptcraft.jar (you can try the '[scriptcraft.jar](https://github.com/ediloren/ScriptCraft/blob/development/target/scriptcraft.jar)' file you can find in the 'target' directory in this repository), or compile it yourself, see next paragraph.
 2. At the server prompt type `js 1 + 1` and hit enter. The result `2` should be displayed. 
 
 Congratulations - you've just installed your Custom Minecraft Server and are ready to begin writing your first mod!
