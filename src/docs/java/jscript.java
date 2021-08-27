@@ -8,10 +8,15 @@ public class jscript
     {
         ScriptEngineManager factory = new ScriptEngineManager();
         ScriptEngine engine = factory.getEngineByName("JavaScript");
+        // Adding bindings to work with GraalJS
+        Bindings bindings = engine.getBindings(ScriptContext.ENGINE_SCOPE);
+        bindings.put("polyglot.js.allowAllAccess", true);
+        bindings.put("polyglot.js.nashorn-compat", true);
+
         java.io.File file = new java.io.File(args[0]);
         engine.put("engine",engine);
         engine.put("args",args);
-	try { 
+	try {
 	    engine.put("cmItemTypeClass",Class.forName("net.canarymod.api.inventroy.ItemType"));
 	}catch(Exception e){
 	}
